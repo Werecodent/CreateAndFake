@@ -19,7 +19,7 @@ public static class AssertChainerTests
     [Theory, RandomData]
     internal static void And_ReturnsInput(object data)
     {
-        new AssertChainer<object>(data, Tools.Gen, Tools.Valuer).And.Assert().Is(data);
+        new AssertChainer<object>(data, Tools.Asserter.Options).And.Assert().Is(data);
     }
 
     [Theory, RandomData]

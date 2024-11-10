@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.RandomizerTool;
 
 namespace CreateAndFakeTests.TestBases;
@@ -28,7 +27,7 @@ public abstract class CreateHintTestBase<T>(
     [Fact]
     public void CreateHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(TestInstance);
+        Tools.Tester.PreventsNullRefException(TestInstance, Tools.Randomizer.Options);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
@@ -72,6 +71,13 @@ public abstract class CreateHintTestBase<T>(
     /// <returns>Chainer to use for testing.</returns>
     protected static RandomizerChainer CreateChainer()
     {
-        return new RandomizerChainer(Tools.Faker, new FastRandom(), (t, c) => Tools.Randomizer.Create(t));
+        return CreateChainer(Tools.Randomizer.Options);
+    }
+
+    /// <returns>Chainer to use for testing.</returns>
+    /// <param name="options">Options to pass via the chainer.</param>
+    protected static RandomizerChainer CreateChainer(RandomizerOptions options)
+    {
+        return new RandomizerChainer(options, (t, c) => Tools.Randomizer.Create(t));
     }
 }

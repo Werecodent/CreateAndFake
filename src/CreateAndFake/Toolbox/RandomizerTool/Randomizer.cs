@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Collections.Specialized;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
 using CreateAndFake.Toolbox.RandomizerTool.CreateHints;
@@ -10,18 +10,9 @@ using CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 namespace CreateAndFake.Toolbox.RandomizerTool;
 
 /// <inheritdoc cref="IRandomizer"/>
-/// <param name="faker"><inheritdoc cref="_faker" path="/summary"/></param>
-/// <param name="gen"><inheritdoc cref="_gen" path="/summary"/></param>
-/// <param name="limiter"><inheritdoc cref="_limiter" path="/summary"/></param>
-/// <param name="includeDefaultHints">If the default set of hints should be added.</param>
-/// <param name="hints"><inheritdoc cref="_hints" path="/summary"/></param>
-public sealed class Randomizer(
-    IFaker faker,
-    IRandom gen,
-    Limiter limiter,
-    bool includeDefaultHints = true,
-    params CreateHint[] hints)
-    : IRandomizer, IDuplicatable
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 {
     /// <summary>Default set of hints to use for randomization.</summary>
     private static readonly CreateHint[] _DefaultHints =
@@ -31,6 +22,8 @@ public sealed class Randomizer(
         new GenericCreateHint(),
         new AsyncCollectionCreateHint(),
         new CollectionCreateHint(),
+        new ImmutableCollectionCreateHint(),
+        new FrozenCollectionCreateHint(),
         new LegacyCollectionCreateHint(),
         new StringCreateHint(),
         new DelegateCreateHint(),
@@ -40,40 +33,54 @@ public sealed class Randomizer(
         new FakeCreateHint(),
         new FakedCreateHint(),
         new ExceptionCreateHint(),
+        new OptionsCreateHint(),
         new ObjectCreateHint()
     ];
 
-    /// <summary>Provides stubs.</summary>
-    private readonly IFaker _faker = faker ?? throw new ArgumentNullException(nameof(faker));
-
-    /// <summary>Value generator used for base randomization.</summary>
-    private readonly IRandom _gen = gen ?? throw new ArgumentNullException(nameof(gen));
-
-    /// <summary>Limits attempts at matching conditions.</summary>
-    private readonly Limiter _limiter = limiter ?? throw new ArgumentNullException(nameof(limiter));
+    /// <inheritdoc/>
+    public RandomizerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Generators used to randomize specific types.</summary>
-    private readonly List<CreateHint> _hints = (hints ?? Enumerable.Empty<CreateHint>())
-        .Concat(includeDefaultHints ? _DefaultHints : [])
-        .ToList();
+    private readonly ImmutableArray<CreateHint> _hints = BuildHints(options);
 
-    /// <inheritdoc/>
-    public T Create<T>(Func<T, bool>? condition = null)
+    /// <summary>Builds hints to use for randomization based upon <paramref name="newOptions"/>.</summary>
+    /// <param name="newOptions">Configuration for randomization.</param>
+    /// <returns>Built hints to use.</returns>
+    private static ImmutableArray<CreateHint> BuildHints(RandomizerOptions newOptions)
     {
-        return (T)Create(typeof(T), o => condition?.Invoke((T)o) ?? true);
+        return newOptions.IncludeDefaultHints
+            ? newOptions.Hints.AddRange(_DefaultHints)
+            : newOptions.Hints;
+    }
+
+    /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
+    /// <param name="localOptions">Potentially modified configuration to use.</param>
+    /// <returns>Cached hints if possible; built hints otherwise.</returns>
+    private IImmutableList<CreateHint> SelectHints(RandomizerOptions localOptions)
+    {
+        return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
+            ? _hints
+            : BuildHints(localOptions);
     }
 
     /// <inheritdoc/>
-    public object Create(Type type, Func<object, bool>? condition = null)
+    public T Create<T>(Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null)
     {
+        return (T)Create(typeof(T), optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public object Create(Type type, Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null)
+    {
+        RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
-            return _limiter.StallUntil(
+            return localOptions.Limiter.StallUntil(
                 $"Trying to create instance of '{type}'",
-                () => Create(type, new RandomizerChainer(_faker, _gen, Create)),
+                () => CreateByHint(type, new RandomizerChainer(localOptions, (t, c) => CreateByHint(t, c))),
                 result =>
                 {
-                    if (condition?.Invoke(result!) ?? true)
+                    if (localOptions.FinalCondition?.Invoke(result!) ?? true)
                     {
                         return true;
                     }
@@ -108,14 +115,13 @@ public sealed class Randomizer(
         }
     }
 
-    /// <param name="type">Type to create.</param>
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="Create(Type,Func{object,bool})"/>
-    private object Create(Type type, RandomizerChainer chainer)
+    /// <inheritdoc cref="Create(Type,Func{RandomizerOptions,RandomizerOptions})"/>
+    private object CreateByHint(Type type, RandomizerChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        (bool, object?) result = _hints
+        (bool, object?) result = SelectHints(chainer.Options)
             .Select(h => h.TryCreate(type, chainer))
             .FirstOrDefault(r => r.Item1);
 
@@ -132,56 +138,6 @@ public sealed class Randomizer(
     }
 
     /// <inheritdoc/>
-    public T CreateSized<T>(int count)
-    {
-        return (T)CreateSized(typeof(T), count);
-    }
-
-    /// <inheritdoc/>
-    public object CreateSized(Type type, int count)
-    {
-        try
-        {
-            return CreateSized(type, count, new RandomizerChainer(_faker, _gen, Create));
-        }
-        catch (InsufficientExecutionStackException)
-        {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to randomize type '{type}'.");
-        }
-        catch (Exception e) when (e is not NotSupportedException)
-        {
-            throw new InvalidOperationException(
-                $"Encountered issue creating instance of type '{type}'.", e);
-        }
-    }
-
-    /// <param name="type">Type to create.</param>
-    /// <param name="count">Number of items to generate.</param>
-    /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="CreateSized(Type,int)"/>
-    private object CreateSized(Type type, int count, RandomizerChainer chainer)
-    {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
-
-        (bool, object?) result = _hints
-            .OfType<CreateCollectionHint>()
-            .Select(h => h.TryCreate(type, count, chainer))
-            .FirstOrDefault(r => r.Item1);
-
-        if (!result.Equals(default))
-        {
-            return result.Item2!;
-        }
-        else
-        {
-            throw new NotSupportedException(
-                $"Collection type '{type.FullName}' not supported by the randomizer. " +
-                "Create a collection hint to generate the type and pass it to the randomizer.");
-        }
-    }
-
-    /// <inheritdoc/>
     public MethodCallWrapper CreateFor(MethodBase method, params object?[]? values)
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
@@ -193,11 +149,11 @@ public sealed class Randomizer(
             .Select(v => Tuple.Create(v!.GetType(), v))
             .ToList();
 
-        List<Tuple<string, object?>> args = new(method.GetParameters().Length);
+        OrderedDictionary args = new(method.GetParameters().Length);
 
         foreach (ParameterInfo param in method.GetParameters())
         {
-            args.Add(Tuple.Create(param.Name ?? $"{args.Count}", ExtractArg(param, data, args)));
+            args.Add(param.Name ?? $"{args.Count}", ExtractArg(param, data, args));
         }
 
         return new MethodCallWrapper(method, args);
@@ -208,7 +164,7 @@ public sealed class Randomizer(
     /// <param name="data">Canned data to prefer.</param>
     /// <param name="args">Already created parameter data.</param>
     /// <returns>The created arg to fill the parameter with.</returns>
-    private object? ExtractArg(ParameterInfo param, List<Tuple<Type, object>> data, List<Tuple<string, object?>> args)
+    private object? ExtractArg(ParameterInfo param, List<Tuple<Type, object>> data, OrderedDictionary args)
     {
         Tuple<Type, object> match = data.FirstOrDefault(t => t.Item1.Inherits(param.ParameterType))!;
         if (param.IsOut)
@@ -221,11 +177,19 @@ public sealed class Randomizer(
         }
         else if (param.GetCustomAttributes<StubAttribute>().Any())
         {
-            return _faker.Stub(param.ParameterType).Dummy;
+            return Options.Faker.Stub(param.ParameterType).Dummy;
         }
         else if (param.GetCustomAttributes<SizeAttribute>().Any())
         {
-            return CreateSized(param.ParameterType, param.GetCustomAttribute<SizeAttribute>()!.Count);
+            int size = param.GetCustomAttribute<SizeAttribute>()!.Count;
+            return Create(param.ParameterType, opt => opt with
+            {
+                CollectionMinSize = size,
+                CollectionMaxSize = size,
+                StringMinSize = size,
+                StringMaxSize = size,
+                NestedOptions = opt
+            });
         }
         else if (match != default)
         {
@@ -235,7 +199,8 @@ public sealed class Randomizer(
         else
         {
             return Inject(param.ParameterType, args
-                .Select(a => a.Item2)
+                .Values
+                .Cast<object>()
                 .Where(a => a is Fake or IFaked)
                 .Reverse()
                 .ToArray());
@@ -312,20 +277,5 @@ public sealed class Randomizer(
             .FirstOrDefault()
             ?.OrderBy(c => c.GetParameters())
             .FirstOrDefault();
-    }
-
-    /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
-    {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
-
-        return new Randomizer(duplicator.Copy(_faker)!, duplicator.Copy(_gen)!,
-            duplicator.Copy(_limiter)!, false, [.. duplicator.Copy(_hints)]);
-    }
-
-    /// <inheritdoc/>
-    public void AddHint(CreateHint hint)
-    {
-        _hints.Insert(0, hint ?? throw new ArgumentNullException(nameof(hint)));
     }
 }

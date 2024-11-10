@@ -74,7 +74,7 @@ public sealed class FakeCreateHint : CreateHint
     {
         Type target = type.GetGenericArguments().Single();
 
-        Fake mock = randomizer.Stub(target);
+        Fake mock = randomizer.Options.Faker.Stub(target);
         mock.Dummy.FakeMeta.Identifier = randomizer.Create<int>();
 
         // Generic returns have to just use stub behavior.

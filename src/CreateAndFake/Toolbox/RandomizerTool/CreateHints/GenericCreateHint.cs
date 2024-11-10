@@ -50,7 +50,7 @@ public sealed class GenericCreateHint : CreateHint
         if (type.GenericParameterAttributes.HasFlag(
             GenericParameterAttributes.NotNullableValueTypeConstraint))
         {
-            arg = randomizer.Gen.NextItem(ValueRandom.ValueTypes);
+            arg = randomizer.Options.Gen.NextItem(ValueRandom.ValueTypes);
         }
         else if (newNeeded)
         {
@@ -92,10 +92,10 @@ public sealed class GenericCreateHint : CreateHint
     /// <returns>Created arg <c>Type</c>.</returns>
     private static Type CreateArgViaConstraint(Type[] constraints, Type parent, RandomizerChainer randomizer)
     {
-        Type constraint = randomizer.Gen.NextItem(constraints);
+        Type constraint = randomizer.Options.Gen.NextItem(constraints);
         if (parent == constraint)
         {
-            return randomizer.Gen.NextItemOrDefault(parent.FindLoadedSubclasses())
+            return randomizer.Options.Gen.NextItemOrDefault(parent.FindLoadedSubclasses())
                 ?? throw new InvalidOperationException(
                     $"Cannot create '{parent}' due to self-reference and no visible subclasses.");
         }

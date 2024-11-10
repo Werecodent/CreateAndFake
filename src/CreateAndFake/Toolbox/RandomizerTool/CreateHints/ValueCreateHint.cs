@@ -10,9 +10,9 @@ public sealed class ValueCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (randomizer.Gen.Supports(type))
+        if (randomizer.Options.Gen.Supports(type))
         {
-            return (true, randomizer.Gen.Next(type));
+            return (true, randomizer.Options.Gen.Next(type));
         }
         else
         {

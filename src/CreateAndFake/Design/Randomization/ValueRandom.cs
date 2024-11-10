@@ -48,7 +48,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     }
 
     /// <summary>All supported value types.</summary>
-    public static ICollection<Type> ValueTypes => _Gens.Keys;
+    public static IReadOnlyCollection<Type> ValueTypes => _Gens.Keys;
 
     /// <summary>Flag to prevent generating invalid values (NaN, -∞ and +∞).</summary>
     public bool OnlyValidValues { get; set; } = onlyValidValues;
@@ -179,6 +179,10 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         {
             return collection.ElementAt(Next(collection.Count));
         }
+        else if (items is IReadOnlyCollection<T> readOnlyCollection && readOnlyCollection.Count > 0)
+        {
+            return readOnlyCollection.ElementAt(Next(readOnlyCollection.Count));
+        }
         else
         {
             return items.OrderBy(i => Next<int>()).First();
@@ -196,6 +200,10 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         else if (items is ICollection<T> collection && collection.Count > 0)
         {
             return collection.ElementAt(Next(collection.Count))!;
+        }
+        else if (items is IReadOnlyCollection<T> readOnlyCollection && readOnlyCollection.Count > 0)
+        {
+            return readOnlyCollection.ElementAt(Next(readOnlyCollection.Count))!;
         }
         else
         {

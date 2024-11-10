@@ -1,13 +1,16 @@
 ﻿using System.Reflection;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.FakerTool;
 
 /// <inheritdoc cref="IFaker"/>
-/// <param name="valuer">Handles comparisons.</param>
-public sealed class Faker(IValuer valuer) : IFaker
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+public sealed class Faker(FakerOptions options) : IFaker
 {
+    /// <inheritdoc/>
+    public FakerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+
     /// <inheritdoc/>
     public bool Supports<T>()
     {
@@ -24,7 +27,7 @@ public sealed class Faker(IValuer valuer) : IFaker
     public Fake<T> Mock<T>(params Type[] interfaces)
     {
         IFaked provider = Subclasser.Create(typeof(T), interfaces);
-        provider.FakeMeta.Valuer = valuer;
+        provider.FakeMeta.Valuer = Options.Valuer;
         return new Fake<T>(provider);
     }
 
@@ -32,7 +35,7 @@ public sealed class Faker(IValuer valuer) : IFaker
     public Fake Mock(Type parent, params Type[] interfaces)
     {
         IFaked provider = Subclasser.Create(parent, interfaces);
-        provider.FakeMeta.Valuer = valuer;
+        provider.FakeMeta.Valuer = Options.Valuer;
         return new Fake(provider);
     }
 

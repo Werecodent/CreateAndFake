@@ -1,5 +1,4 @@
 ﻿using CreateAndFake.Design;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.FakerTool.Proxy;
@@ -9,7 +8,7 @@ namespace CreateAndFake.Toolbox.FakerTool.Proxy;
 /// <param name="generics"><inheritdoc cref="_generics" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
 /// <param name="valuer"><inheritdoc cref="_valuer" path="/summary"/></param>
-internal sealed class CallData(string methodName, Type[] generics, object?[] args, IValuer? valuer) : IDuplicatable
+internal sealed class CallData(string methodName, Type[] generics, object?[] args, IValuer? valuer)
 {
     /// <summary>Name tied to the call.</summary>
     private readonly string _methodName = methodName ?? throw new ArgumentNullException(nameof(methodName));
@@ -39,14 +38,6 @@ internal sealed class CallData(string methodName, Type[] generics, object?[] arg
                 _ = changes.Remove(change);
             }
         }
-    }
-
-    /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
-    {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
-
-        return new CallData(_methodName, [.. _generics], duplicator.Copy(_args)!, duplicator.Copy(_valuer));
     }
 
     /// <summary>Determines if behavior is intended for a call.</summary>

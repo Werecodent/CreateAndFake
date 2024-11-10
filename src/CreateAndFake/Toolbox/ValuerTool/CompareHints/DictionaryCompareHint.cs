@@ -22,6 +22,11 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     private static IEnumerable<Difference> LazyCompare(
         IDictionary expected, IDictionary actual, ValuerChainer valuer)
     {
+        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        {
+            yield return new Difference(expected.GetType(), actual.GetType());
+        }
+
         object[] expectedKeys = expected.Keys.Cast<object>().ToArray();
         object[] actualKeys = actual.Keys.Cast<object>().ToArray();
 
@@ -59,7 +64,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += valuer.GetHashCode(entry.Key, entry.Value);
+            hash += valuer.GetHashCode(entry);
         }
         return hash;
     }

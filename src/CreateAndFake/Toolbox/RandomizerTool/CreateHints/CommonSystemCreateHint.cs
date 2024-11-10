@@ -10,20 +10,20 @@ public sealed class CommonSystemCreateHint : CreateHint
     /// <summary>Supported types and the methods used to generate them.</summary>
     private static readonly Dictionary<Type, Func<RandomizerChainer, object>> _Gens = new()
         {
-            { typeof(CultureInfo), rand => rand.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures)) },
-            { typeof(TimeSpan), rand => new TimeSpan(rand.Gen.Next<long>()) },
-            { typeof(DateTime), rand => new DateTime(rand.Gen.Next(DateTime.MinValue.Ticks, DateTime.MaxValue.Ticks)) },
+            { typeof(CultureInfo), rand => rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures)) },
+            { typeof(TimeSpan), rand => new TimeSpan(rand.Options.Gen.Next<long>()) },
+            { typeof(DateTime), rand => new DateTime(rand.Options.Gen.Next(DateTime.MinValue.Ticks, DateTime.MaxValue.Ticks)) },
             { typeof(DateTimeOffset), rand => new DateTimeOffset(rand.Create<DateTime>()) },
             { typeof(Guid), rand => new Guid(Enumerable.Range(0, 16).Select(i => rand.Create<byte>()).ToArray()) },
 
-            { typeof(Assembly), rand => rand.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
+            { typeof(Assembly), rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
             { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },
             { typeof(Type).GetType(), rand => rand.Create<Type>()! },
-            { typeof(Type), rand => rand.Gen.NextItem(Assembly.GetExecutingAssembly().GetTypes()) },
+            { typeof(Type), rand => rand.Options.Gen.NextItem(Assembly.GetExecutingAssembly().GetTypes()) },
 
             { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
             { typeof(UriBuilder), rand => new UriBuilder(
-                rand.Create<bool>() ? "http" : "https", rand.Create<string>(), rand.Gen.Next(-1, 65535)) },
+                rand.Create<bool>() ? "http" : "https", rand.Create<string>(), rand.Options.Gen.Next(-1, 65535)) },
 
             { typeof(ConstructorInfo), rand => FindTypeInfo(rand, t => t.GetConstructors()) },
             { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
@@ -64,6 +64,6 @@ public sealed class CommonSystemCreateHint : CreateHint
             result = grabber.Invoke((Type)_Gens[typeof(Type)].Invoke(randomizer));
         } while (result.Length == 0);
 
-        return randomizer.Gen.NextItem(result);
+        return randomizer.Options.Gen.NextItem(result);
     }
 }

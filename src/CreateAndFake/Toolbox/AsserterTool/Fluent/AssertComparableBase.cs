@@ -1,13 +1,10 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
-
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles common comparables assertion calls.</summary>
 /// <param name="value"><inheritdoc cref="Value" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertComparableBase<T>(IRandom gen, IValuer valuer, IComparable? value)
-    : AssertObjectBase<T>(gen, valuer, value) where T : AssertComparableBase<T>
+public abstract class AssertComparableBase<T>(AsserterOptions options, IComparable? value)
+    : AssertObjectBase<T>(options, value) where T : AssertComparableBase<T>
 {
     /// <summary>Value to run assertion checks with.</summary>
     protected IComparable? Value { get; } = value;
@@ -30,7 +27,7 @@ public abstract class AssertComparableBase<T>(IRandom gen, IValuer valuer, IComp
     /// <inheritdoc cref="HandleMathCheck"/>
     public virtual AssertChainer<T> GreaterThanOrIs(IComparable expected, string? details = null)
     {
-        return Valuer.Equals(Value, expected)
+        return Options.Valuer.Equals(Value, expected)
             ? ToChainer()
             : GreaterThanOrEqualTo(expected, details);
     }
@@ -53,7 +50,7 @@ public abstract class AssertComparableBase<T>(IRandom gen, IValuer valuer, IComp
     /// <inheritdoc cref="HandleMathCheck"/>
     public virtual AssertChainer<T> LessThanOrIs(IComparable expected, string? details = null)
     {
-        return Valuer.Equals(Value, expected)
+        return Options.Valuer.Equals(Value, expected)
             ? ToChainer()
             : LessThanOrEqualTo(expected, details);
     }
@@ -69,19 +66,19 @@ public abstract class AssertComparableBase<T>(IRandom gen, IValuer valuer, IComp
         {
             throw new AssertException(
                 $"Value was null and not in range [{min}, {max}].",
-                details, Gen.InitialSeed);
+                details, Options.Gen.InitialSeed);
         }
         else if (min == null || max == null)
         {
             throw new AssertException(
                 $"Min {min} or max {max} was null and not valid for math comparison check.",
-                details, Gen.InitialSeed, Value.ToString());
+                details, Options.Gen.InitialSeed, Value.ToString());
         }
         else if (Value.CompareTo(min) < 0 || Value.CompareTo(max) > 0)
         {
             throw new AssertException(
                 $"Value was not in range [{min}, {max}].",
-                details, Gen.InitialSeed, Value.ToString());
+                details, Options.Gen.InitialSeed, Value.ToString());
         }
         else
         {
@@ -102,19 +99,19 @@ public abstract class AssertComparableBase<T>(IRandom gen, IValuer valuer, IComp
         {
             throw new AssertException(
                 $"Value was null and not {description} '{expected}'.",
-                details, Gen.InitialSeed);
+                details, Options.Gen.InitialSeed);
         }
         else if (expected == null)
         {
             throw new AssertException(
                 $"Expected was null and not valid for math comparison check.",
-                details, Gen.InitialSeed, Value.ToString());
+                details, Options.Gen.InitialSeed, Value.ToString());
         }
         else if (!math())
         {
             throw new AssertException(
                 $"Value was not {description} '{expected}'.",
-                details, Gen.InitialSeed, Value.ToString());
+                details, Options.Gen.InitialSeed, Value.ToString());
         }
         else
         {

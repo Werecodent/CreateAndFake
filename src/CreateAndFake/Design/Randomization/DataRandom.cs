@@ -17,7 +17,7 @@ public sealed class DataRandom
     };
 
     /// <summary>All searchable names.</summary>
-    internal static ICollection<string> SupportedProperties => _Matcher.Keys;
+    internal static IReadOnlyCollection<string> SupportedProperties => _Matcher.Keys;
 
     /// <inheritdoc cref="IRandom"/>
     private readonly IRandom _gen;

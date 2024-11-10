@@ -1,4 +1,3 @@
-using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.AsserterTool;
 using CreateAndFake.Toolbox.DuplicatorTool;
@@ -38,13 +37,13 @@ public sealed class ToolSet(
     public static ToolSet CreateViaSeed(int seed)
     {
         IRandom gen = new SeededRandom(seed);
-        IValuer valuer = new Valuer();
-        IFaker faker = new Faker(valuer);
-        IRandomizer randomizer = new Randomizer(faker, gen, Limiter.Dozen);
-        IMutator mutator = new Mutator(randomizer, valuer, Limiter.Dozen);
-        Asserter asserter = new(gen, valuer);
-        IDuplicator duplicator = new Duplicator(asserter);
-        Tester tester = new(gen, randomizer, duplicator, asserter);
+        IValuer valuer = new Valuer(new ValuerOptions());
+        IFaker faker = new Faker(new FakerOptions { Valuer = valuer });
+        IRandomizer randomizer = new Randomizer(new RandomizerOptions { Gen = gen, Faker = faker });
+        IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer });
+        Asserter asserter = new(new AsserterOptions { Gen = gen, Valuer = valuer });
+        IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter });
+        Tester tester = new(new TesterOptions { Gen = gen, Randomizer = randomizer, Duplicator = duplicator, Asserter = asserter });
 
         return new ToolSet(gen, valuer, faker, randomizer, mutator, asserter, duplicator, tester);
     }

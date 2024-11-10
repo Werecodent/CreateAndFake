@@ -7,12 +7,10 @@ using CreateAndFake.Design;
 namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 
 /// <summary>Handles randomizing legacy collections for <see cref="IRandomizer"/>.</summary>
-/// <inheritdoc cref="CollectionCreateHint"/>
-public sealed class LegacyCollectionCreateHint(int minSize = 1, int range = 3) : CreateCollectionHint
+public sealed class LegacyCollectionCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly (Type, Func<string[], RandomizerChainer, object>)[] _Creators
-        =
+    private static readonly (Type, Func<string[], RandomizerChainer, object>)[] _Creators =
         [
             (typeof(Hashtable), CreateDict<Hashtable>),
             (typeof(SortedList), CreateDict<SortedList>),
@@ -42,17 +40,13 @@ public sealed class LegacyCollectionCreateHint(int minSize = 1, int range = 3) :
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)
     {
-        return TryCreate(type, minSize + randomizer?.Gen.Next(range) ?? 0, randomizer);
-    }
-
-    /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, int size, RandomizerChainer? randomizer)
-    {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type.Inherits<IEnumerable>() && FindMatches(type).Any())
         {
-            return (true, randomizer.Gen.NextItem(FindMatches(type)).Item2
+            int size = randomizer.Options.NextCollectionSize();
+
+            return (true, randomizer.Options.Gen.NextItem(FindMatches(type)).Item2
                 .Invoke(CreateInternalData(size, randomizer), randomizer));
         }
         else

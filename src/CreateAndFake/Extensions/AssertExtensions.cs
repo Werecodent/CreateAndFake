@@ -11,7 +11,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
     public static AssertObject Assert(this object? actual)
     {
-        return new AssertObject(Tools.Gen, Tools.Valuer, actual);
+        return new AssertObject(Tools.Asserter.Options, actual);
     }
 
     /// <inheritdoc cref="AssertGroup"/>
@@ -19,7 +19,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
     public static AssertGroup Assert(this IEnumerable? collection)
     {
-        return new AssertGroup(Tools.Gen, Tools.Valuer, collection);
+        return new AssertGroup(Tools.Asserter.Options, collection);
     }
 
     /// <inheritdoc cref="AssertText"/>
@@ -27,7 +27,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="text"/> with.</returns>
     public static AssertText Assert(this string? text)
     {
-        return new AssertText(Tools.Gen, Tools.Valuer, text);
+        return new AssertText(Tools.Asserter.Options, text);
     }
 
     /// <inheritdoc cref="AssertComparable"/>
@@ -35,7 +35,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="value"/> with.</returns>
     public static AssertComparable Assert(this IComparable? value)
     {
-        return new AssertComparable(Tools.Gen, Tools.Valuer, value);
+        return new AssertComparable(Tools.Asserter.Options, value);
     }
 
     /// <inheritdoc cref="AssertType"/>
@@ -43,7 +43,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="type"/> with.</returns>
     public static AssertType Assert(this Type? type)
     {
-        return new AssertType(Tools.Gen, Tools.Valuer, type);
+        return new AssertType(Tools.Asserter.Options, type);
     }
 
     /// <inheritdoc cref="AssertError"/>
@@ -51,7 +51,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="error"/> with.</returns>
     public static AssertError Assert(this Exception? error)
     {
-        return new AssertError(Tools.Gen, Tools.Valuer, error);
+        return new AssertError(Tools.Asserter.Options, error);
     }
 
     /// <inheritdoc cref="AssertBehavior"/>
@@ -59,7 +59,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertBehavior Assert(this Action? behavior)
     {
-        return new AssertBehavior(Tools.Gen, Tools.Valuer, behavior);
+        return new AssertBehavior(Tools.Asserter.Options, behavior);
     }
 
     /// <inheritdoc cref="AssertBehavior"/>
@@ -68,7 +68,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertBehavior Assert<T>(this Func<T>? behavior)
     {
-        return new AssertBehavior(Tools.Gen, Tools.Valuer, behavior);
+        return new AssertBehavior(Tools.Asserter.Options, behavior);
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>

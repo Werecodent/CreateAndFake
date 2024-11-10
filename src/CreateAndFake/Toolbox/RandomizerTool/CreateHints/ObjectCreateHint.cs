@@ -39,7 +39,7 @@ public sealed class ObjectCreateHint : CreateHint
             return randomizer.Create(type);
         }
 
-        DataRandom smartData = randomizer.Gen.NextData();
+        DataRandom smartData = randomizer.Options.Gen.NextData();
         object? data = CreateNew(type, randomizer, smartData);
         if (data == null)
         {
@@ -106,7 +106,7 @@ public sealed class ObjectCreateHint : CreateHint
         ConstructorInfo? defaultConstructor = type.GetConstructor(Type.EmptyTypes);
         if (type == typeof(object))
         {
-            IFaked fake = randomizer.Stub<IFaked>().Dummy;
+            IFaked fake = randomizer.Options.Faker.Stub<IFaked>().Dummy;
             fake.FakeMeta.Identifier = randomizer.Create<int>();
             return fake;
         }
@@ -134,9 +134,9 @@ public sealed class ObjectCreateHint : CreateHint
             return CreateFrom(randomizer, smartData, (c, d) => c.Invoke(d),
                 FindConstructors(type, BindingFlags.NonPublic, randomizer));
         }
-        else if (randomizer.FakerSupports(type))
+        else if (randomizer.Options.Faker.Supports(type))
         {
-            return randomizer.Stub(type).Dummy;
+            return randomizer.Options.Faker.Stub(type).Dummy;
         }
         else
         {
@@ -154,7 +154,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static object CreateFrom<T>(RandomizerChainer randomizer, DataRandom smartData,
         Func<T, object?[], object> invoker, IEnumerable<T> creators) where T : MethodBase
     {
-        T creator = randomizer.Gen.NextItem(creators);
+        T creator = randomizer.Options.Gen.NextItem(creators);
 
         if (creator is MethodInfo method && method.IsGenericMethodDefinition)
         {
@@ -191,7 +191,7 @@ public sealed class ObjectCreateHint : CreateHint
             }
         }
 
-        return randomizer.Gen.NextItemOrDefault(subclasses.Where(t => !randomizer.AlreadyCreated(t))) ?? type;
+        return randomizer.Options.Gen.NextItemOrDefault(subclasses.Where(t => !randomizer.AlreadyCreated(t))) ?? type;
     }
 
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>

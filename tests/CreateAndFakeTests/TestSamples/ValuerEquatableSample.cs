@@ -20,6 +20,6 @@ public class ValuerEquatableSample : IValuerEquatable
 
     public virtual int GetValueHash(IValuer valuer)
     {
-        return valuer?.GetHashCode(StringValue, NumberValue) ?? throw new ArgumentNullException(nameof(valuer));
+        return valuer?.GetHashCode(new object[] { StringValue, NumberValue }) ?? throw new ArgumentNullException(nameof(valuer));
     }
 }

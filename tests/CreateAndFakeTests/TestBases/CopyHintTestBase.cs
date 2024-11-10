@@ -88,6 +88,6 @@ public abstract class CopyHintTestBase<T>(
     /// <returns>Chainer to use for testing.</returns>
     protected static DuplicatorChainer CreateChainer()
     {
-        return new DuplicatorChainer(Tools.Duplicator, (o, c) => Tools.Duplicator.Copy(o));
+        return new DuplicatorChainer(Tools.Duplicator.Options, Tools.Duplicator, (o, c) => Tools.Duplicator.Copy(o));
     }
 }

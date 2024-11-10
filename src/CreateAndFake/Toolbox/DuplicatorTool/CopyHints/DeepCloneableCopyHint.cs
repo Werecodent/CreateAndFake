@@ -9,7 +9,7 @@ public sealed class DeepCloneableCopyHint : CopyHint<IDeepCloneable>
     /// <inheritdoc/>
     protected override IDeepCloneable Copy(IDeepCloneable source, DuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, "source");
+        ArgumentGuard.ThrowIfNull(source, nameof(source));
 
         return source.DeepClone();
     }

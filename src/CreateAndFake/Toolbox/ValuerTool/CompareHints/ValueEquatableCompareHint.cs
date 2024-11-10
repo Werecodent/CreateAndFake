@@ -26,7 +26,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 
         if (!expected.ValuesEqual(actual))
         {
-            yield return new Difference(".ValuesEqual", new Difference(true, false));
+            yield return new Difference($".{nameof(IValuerEquatable.ValuesEqual)}", new Difference(true, false));
 
             (bool, IEnumerable<Difference>?) byValues = _NestedHint.TryCompare(expected, actual, valuer);
             if (byValues.Item1)

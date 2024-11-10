@@ -22,7 +22,7 @@ public static class FakerTests
     [Fact]
     internal static void New_NullValuerValid()
     {
-        new Faker(null).Assert().Pass();
+        new Faker(Tools.Faker.Options with { Valuer = null }).Assert().Pass();
     }
 
     [Fact]

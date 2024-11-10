@@ -148,7 +148,7 @@ public static class Fake_T_Tests
             m => m.Equals(true, true),
             Behavior.Returns(true));
         valuer.ToFake().Setup(
-            m => m.Compare(true, Arg.Any<bool?>()),
+            m => m.Compare(true, Arg.Any<bool?>(), null),
             Behavior.Set((object o1, object o2) =>
             {
                 return (!o1.Equals(o2))
@@ -156,7 +156,7 @@ public static class Fake_T_Tests
                     : [];
             }));
 
-        Asserter tester = new(Tools.Gen, valuer);
+        Asserter tester = new(Tools.Asserter.Options with { Valuer = valuer });
         tester.IsNotEmpty(data);
         tester.Assert(t => t.IsNotEmpty(null)).Throws<AssertException>();
         tester.Assert(t => t.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();

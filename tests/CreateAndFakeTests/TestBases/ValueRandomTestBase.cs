@@ -190,6 +190,13 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
         data.Assert().Contains(_TestInstance.NextItem(data));
     }
 
+    /// <summary>Verifies readonly collections work.</summary>
+    [Theory, RandomData]
+    public void NextItem_ReadOnlyCollectionsWork(IReadOnlyCollection<string> data)
+    {
+        data.Assert().Contains(_TestInstance.NextItem(data));
+    }
+
     /// <summary>Verifies linq enumerables work.</summary>
     [Fact]
     public void NextItem_YieldWorks()

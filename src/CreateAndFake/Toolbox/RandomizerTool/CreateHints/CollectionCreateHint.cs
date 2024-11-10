@@ -5,10 +5,7 @@ using CreateAndFake.Design;
 namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 
 /// <summary>Handles randomizing collections for <see cref="IRandomizer"/>.</summary>
-/// <param name="minSize">Min size for created collections.</param>
-/// <param name="range">Size variance for created collections.</param>
-/// <remarks>Specifies the size of generated collections.</remarks>
-public sealed class CollectionCreateHint(int minSize = 1, int range = 3) : CreateCollectionHint
+public sealed class CollectionCreateHint : CreateHint
 {
     /// <summary>Collections able to be randomized.</summary>
     private static readonly Type[] _Collections =
@@ -23,7 +20,7 @@ public sealed class CollectionCreateHint(int minSize = 1, int range = 3) : Creat
         typeof(ArraySegment<>),
         typeof(ConcurrentQueue<>),
         typeof(ConcurrentStack<>),
-        typeof(ConcurrentDictionary<,>)
+        typeof(ConcurrentDictionary<,>),
     ];
 
     /// <summary>Collections that the hint can create.</summary>
@@ -32,17 +29,13 @@ public sealed class CollectionCreateHint(int minSize = 1, int range = 3) : Creat
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)
     {
-        return TryCreate(type, minSize + randomizer?.Gen.Next(range) ?? 0, randomizer);
-    }
-
-    /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, int size, RandomizerChainer? randomizer)
-    {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
         if (type == null)
         {
             return (false, null);
         }
+
+        int size = randomizer.Options.NextCollectionSize();
 
         Type? itemType = GetItemType(type);
         if (itemType != null && FindMatches(type, itemType).Any())
@@ -61,7 +54,7 @@ public sealed class CollectionCreateHint(int minSize = 1, int range = 3) : Creat
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object? Create(Type type, int size, Type itemType, RandomizerChainer randomizer)
     {
-        Type collection = randomizer.Gen.NextItem(FindMatches(type, itemType));
+        Type collection = randomizer.Options.Gen.NextItem(FindMatches(type, itemType));
         Type newType = MakeNewType(collection, itemType);
 
         Array internalData = CreateInternalData(itemType, size,

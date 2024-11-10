@@ -174,7 +174,9 @@ public abstract class CompareHintTestBase<T>(
     /// <returns>Chainer to use for testing.</returns>
     protected static ValuerChainer CreateChainer()
     {
-        return new ValuerChainer(Tools.Valuer,
+        return new ValuerChainer(
+            Tools.Valuer.Options,
+            Tools.Valuer,
             (o, c) => Tools.Valuer.GetHashCode(o),
             (e, a, c) => Tools.Valuer.Compare(e, a));
     }

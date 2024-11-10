@@ -3,6 +3,9 @@
 /// <summary>Changes the value of objects or creates alternatives.</summary>
 public interface IMutator
 {
+    /// <summary>Configured options for <c>this</c>.</summary>
+    MutatorOptions Options { get; }
+
     /// <typeparam name="T"><c>Type</c> to create.</typeparam>
     /// <inheritdoc cref="Variant"/>
     T Variant<T>(T instance, params T?[]? extraInstances);

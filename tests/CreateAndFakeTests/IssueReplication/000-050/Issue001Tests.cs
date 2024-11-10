@@ -1,4 +1,4 @@
-namespace CreateAndFakeTests.IssueReplication._000_050;
+namespace CreateAndFakeTests.IssueReplication;
 
 public static class Issue001Tests
 {

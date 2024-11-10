@@ -1,6 +1,3 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
-
 #pragma warning disable CA1716 // Rename conflicting virtual/interface member: Overriding here should be a rarity.
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
@@ -8,8 +5,8 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 /// <summary>Handles common <see cref="Type"/> assertion calls.</summary>
 /// <param name="type"><inheritdoc cref="Type" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertTypeBase<T>(IRandom gen, IValuer valuer, Type? type)
-    : AssertObjectBase<T>(gen, valuer, type) where T : AssertTypeBase<T>
+public abstract class AssertTypeBase<T>(AsserterOptions options, Type? type)
+    : AssertObjectBase<T>(options, type) where T : AssertTypeBase<T>
 {
     /// <summary>Type to run assertion checks with.</summary>
     protected Type? Type { get; } = type;
@@ -26,7 +23,7 @@ public abstract class AssertTypeBase<T>(IRandom gen, IValuer valuer, Type? type)
             throw new AssertException(
                 $"'{ExpandTypeName(Type)}' does not inherit '{ExpandTypeName(typeof(TChild))}'.",
                 details,
-                Gen.InitialSeed);
+                Options.Gen.InitialSeed);
         }
         return ToChainer();
     }
@@ -41,7 +38,7 @@ public abstract class AssertTypeBase<T>(IRandom gen, IValuer valuer, Type? type)
             throw new AssertException(
                 $"'{ExpandTypeName(Type)}' does not inherit '{ExpandTypeName(child)}'.",
                 details,
-                Gen.InitialSeed);
+                Options.Gen.InitialSeed);
         }
         return ToChainer();
     }
@@ -56,7 +53,7 @@ public abstract class AssertTypeBase<T>(IRandom gen, IValuer valuer, Type? type)
             throw new AssertException(
                 $"'{ExpandTypeName(typeof(TParent))}' does not inherit '{ExpandTypeName(Type)}'.",
                 details,
-                Gen.InitialSeed);
+                Options.Gen.InitialSeed);
         }
         return ToChainer();
     }
@@ -71,7 +68,7 @@ public abstract class AssertTypeBase<T>(IRandom gen, IValuer valuer, Type? type)
             throw new AssertException(
                 $"'{ExpandTypeName(parent)}' does not inherit '{ExpandTypeName(Type)}'.",
                 details,
-                Gen.InitialSeed);
+                Options.Gen.InitialSeed);
         }
         return ToChainer();
     }

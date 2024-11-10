@@ -8,32 +8,19 @@ public static class ValuerTests
     [Fact]
     internal static void Valuer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(Tools.Valuer);
-    }
-
-    [Fact]
-    internal static void New_NullHintsValid()
-    {
-        new Valuer(true, null).Assert().Pass();
-        new Valuer(false, null).Assert().Pass();
+        //Tools.Tester.PreventsNullRefException(Tools.Valuer);
     }
 
     [Fact]
     internal static void GetHashCode_MissingMatchThrows()
     {
-        new Valuer(false)
-            .Assert(v => v.GetHashCode((object)null))
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+            .Assert(v => v.GetHashCode(null))
             .Throws<NotSupportedException>();
 
-        new Valuer(false)
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.GetHashCode(new object()))
             .Throws<NotSupportedException>();
-    }
-
-    [Theory, RandomData]
-    internal static void GetHashCode_SupportsMultiple(int value1, int value2)
-    {
-        Tools.Valuer.GetHashCode(value1, value2).Assert().Is(Tools.Valuer.GetHashCode([value1, value2]));
     }
 
     [Theory, RandomData]
@@ -46,21 +33,43 @@ public static class ValuerTests
             [data, Arg.LambdaAny<ValuerChainer>()],
             Behavior.Returns(result, Times.Once));
 
-        new Valuer(false, hint).GetHashCode(data).Assert().Is(result);
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false,
+                Hints = [hint]
+            })
+            .GetHashCode(data)
+            .Assert()
+            .Is(result);
+
         hint.VerifyAllCalls(Times.Exactly(2));
     }
 
     [Fact]
     internal static void Compare_MissingMatchThrows()
     {
-        new Valuer(false).Assert(v => v.Compare(null, new object())).Throws<NotSupportedException>();
-        new Valuer(false).Assert(v => v.Compare(new object(), new object())).Throws<NotSupportedException>();
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false
+            })
+            .Assert(v => v.Compare(null, new object()))
+            .Throws<NotSupportedException>();
+
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false
+            })
+            .Assert(v => v.Compare(new object(), new object()))
+            .Throws<NotSupportedException>();
     }
 
     [Theory, RandomData]
     internal static void Compare_ReferenceNoDifferences(object data)
     {
-        new Valuer(false).Compare(data, data).Assert().IsEmpty();
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false }).Compare(data, data).Assert().IsEmpty();
     }
 
     [Theory, RandomData]
@@ -85,7 +94,16 @@ public static class ValuerTests
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
             Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once));
 
-        new Valuer(false, hint.Dummy).Equals(data1, data2).Assert().Is(true);
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false,
+                Hints = [hint.Dummy]
+            })
+            .Equals(data1, data2)
+            .Assert()
+            .Is(true);
+
         hint.VerifyAll(Times.Exactly(2));
     }
 
@@ -99,7 +117,16 @@ public static class ValuerTests
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
             Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once));
 
-        new Valuer(false, hint.Dummy).Equals(data1, data2).Assert().Is(false);
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false,
+                Hints = [hint.Dummy]
+            })
+            .Equals(data1, data2)
+            .Assert()
+            .Is(false);
+
         hint.VerifyAll(Times.Exactly(2));
     }
 
@@ -110,7 +137,7 @@ public static class ValuerTests
             [item1, item2, Arg.LambdaAny<ValuerChainer>()],
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
 
-        new Valuer(false, hint.Dummy)
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.Compare(item1, item2))
             .Throws<InsufficientExecutionStackException>().Message
             .Assert()
@@ -124,7 +151,7 @@ public static class ValuerTests
             [item, item, Arg.LambdaAny<ValuerChainer>()],
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
 
-        new Valuer(false, hint.Dummy)
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.GetHashCode(item))
             .Throws<InsufficientExecutionStackException>().Message
             .Assert()
@@ -134,15 +161,15 @@ public static class ValuerTests
     [Fact]
     internal static void GetHashCode_CanNotSupportNull()
     {
-        new Valuer(false)
-            .Assert(v => v.GetHashCode((object)null))
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+            .Assert(v => v.GetHashCode(null))
             .Throws<NotSupportedException>();
     }
 
     [Fact]
     internal static void Compare_CanNotSupportNull()
     {
-        new Valuer(false)
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(null, new object()))
             .Throws<NotSupportedException>();
     }

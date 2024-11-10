@@ -7,9 +7,13 @@ using CreateAndFake.Toolbox.FakerTool.Proxy;
 namespace CreateAndFake.Toolbox.DuplicatorTool;
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <param name="duplicator"><inheritdoc cref="Duplicator" path="/summary"/></param>
 /// <param name="callback"><inheritdoc cref="_callback" path="/summary"/></param>
-public sealed class DuplicatorChainer(IDuplicator duplicator, Func<object?, DuplicatorChainer, object?> callback)
+public sealed class DuplicatorChainer(
+    DuplicatorOptions options,
+    IDuplicator duplicator,
+    Func<object?, DuplicatorChainer, object?> callback)
 {
     /// <summary>Reference to the actual duplicator.</summary>
     internal IDuplicator Duplicator { get; } = duplicator
@@ -21,6 +25,9 @@ public sealed class DuplicatorChainer(IDuplicator duplicator, Func<object?, Dupl
 
     /// <summary>History of clones to match up references.</summary>
     private readonly ConditionalWeakTable<object, object?> _history = new();
+
+    /// <inheritdoc cref="DuplicatorOptions"/>
+    public DuplicatorOptions Options { get; } = options;
 
     /// <summary>Adds successful clone details to history.</summary>
     /// <param name="source">Object cloned.</param>

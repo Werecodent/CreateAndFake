@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.ValuerTool;
 
@@ -8,16 +7,12 @@ using CreateAndFake.Toolbox.ValuerTool;
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles common <see cref="object"/> assertion calls.</summary>
-/// <param name="gen"><inheritdoc cref="Gen" path="/summary"/></param>
-/// <param name="valuer"><inheritdoc cref="Valuer" path="/summary"/></param>
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <param name="actual"><inheritdoc cref="Actual" path="/summary"/></param>
-public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? actual) where T : AssertObjectBase<T>
+public abstract class AssertObjectBase<T>(AsserterOptions options, object? actual) where T : AssertObjectBase<T>
 {
-    /// <summary>Core randomizer with a potential seed for logging.</summary>
-    protected IRandom Gen { get; } = gen ?? throw new ArgumentNullException(nameof(gen));
-
-    /// <summary>Handles comparisons for assertion checks.</summary>
-    protected IValuer Valuer { get; } = valuer ?? throw new ArgumentNullException(nameof(valuer));
+    /// <summary>Configured options for <c>this</c>.</summary>
+    protected AsserterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Instance to run assertion checks with.</summary>
     protected object? Actual { get; } = actual;
@@ -45,7 +40,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     {
         if (!ReferenceEquals(expected, Actual))
         {
-            throw new AssertException("References failed to equal.", details, Gen.InitialSeed);
+            throw new AssertException("References failed to equal.", details, Options.Gen.InitialSeed);
         }
         return ToChainer();
     }
@@ -56,7 +51,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     {
         if (ReferenceEquals(expected, Actual))
         {
-            throw new AssertException("References failed to not equal.", details, Gen.InitialSeed);
+            throw new AssertException("References failed to not equal.", details, Options.Gen.InitialSeed);
         }
         return ToChainer();
     }
@@ -64,11 +59,11 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     /// <inheritdoc cref="Is"/>
     public virtual AssertChainer<T> ValuesEqual(object? expected, string? details = null)
     {
-        Difference[] differences = Valuer.Compare(expected, Actual).ToArray();
+        Difference[] differences = Options.Valuer.Compare(expected, Actual).ToArray();
         if (differences.Length > 0)
         {
             throw new AssertException($"Value equality failed for type '{GetTypeName(expected)}'.",
-                details, Gen.InitialSeed, string.Join<Difference>(Environment.NewLine, differences));
+                details, Options.Gen.InitialSeed, string.Join<Difference>(Environment.NewLine, differences));
         }
         return ToChainer();
     }
@@ -76,11 +71,11 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     /// <inheritdoc cref="IsNot"/>
     public virtual AssertChainer<T> ValuesNotEqual(object? expected, string? details = null)
     {
-        if (!Valuer.Compare(expected, Actual).Any())
+        if (!Options.Valuer.Compare(expected, Actual).Any())
         {
             throw new AssertException(
                 $"Value inequality failed for type '{GetTypeName(expected)}'.",
-                details, Gen.InitialSeed, expected?.ToString());
+                details, Options.Gen.InitialSeed, expected?.ToString());
         }
         return ToChainer();
     }
@@ -97,7 +92,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
 
         int i = 0;
         StringBuilder contents = new();
-        foreach (object value in ContentMap.Extract(Actual).FindSharedContent(Valuer, ContentMap.Extract(expected)))
+        foreach (object value in ContentMap.Extract(Actual).FindSharedContent(Options.Valuer, ContentMap.Extract(expected)))
         {
             _ = contents.Append('#').Append(i++).Append(':').Append(value).AppendLine();
         }
@@ -106,7 +101,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
         {
             throw new AssertException(
                 $"Expected no shared content, but had '{i}' shared items.",
-                details, Gen.InitialSeed, contents.ToString());
+                details, Options.Gen.InitialSeed, contents.ToString());
         }
 
         return ToChainer();
@@ -116,7 +111,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     /// <param name="details">Optional failure details to include.</param>
     public virtual void Fail(string? details = null)
     {
-        throw new AssertException("Test failed.", details, Gen.InitialSeed, Actual?.ToString());
+        throw new AssertException("Test failed.", details, Options.Gen.InitialSeed, Actual?.ToString());
     }
 
     /// <summary>Stipulates the test is successful if it reaches this point.</summary>
@@ -153,7 +148,7 @@ public abstract class AssertObjectBase<T>(IRandom gen, IValuer valuer, object? a
     /// <returns>The created chainer.</returns>
     protected internal AssertChainer<T> ToChainer()
     {
-        return new AssertChainer<T>((T)this, Gen, Valuer);
+        return new AssertChainer<T>((T)this, Options);
     }
 }
 

@@ -8,7 +8,7 @@ namespace CreateAndFake.Fluent;
 /// <summary>Provides fluent randomization options.</summary>
 public static class CreateExtensions
 {
-    /// <inheritdoc cref="IDuplicator.Copy{T}(T)"/>
+    /// <inheritdoc cref="IDuplicator.Copy{T}(T,Func{DuplicatorOptions,DuplicatorOptions})"/>
     [return: NotNullIfNotNull(nameof(source))]
     public static T CreateDeepClone<T>(this T source)
     {
@@ -27,7 +27,7 @@ public static class CreateExtensions
         return Tools.Mutator.Unique(source);
     }
 
-    /// <inheritdoc cref="IRandomizer.Create(Type,Func{object,bool})"/>
+    /// <inheritdoc cref="IRandomizer.Create(Type,Func{RandomizerOptions,RandomizerOptions})"/>
     public static object CreateRandomInstance(this Type type)
     {
         return Tools.Randomizer.Create(type);

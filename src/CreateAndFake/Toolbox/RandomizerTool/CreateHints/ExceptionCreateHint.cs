@@ -30,7 +30,7 @@ public sealed class ExceptionCreateHint : CreateHint
             .ToArray();
 
         return (options.Length != 0)
-            ? (true, randomizer.Gen.NextItem(options).Invoke([randomizer.Create<string>()]))
+            ? (true, randomizer.Options.Gen.NextItem(options).Invoke([randomizer.Create<string>()]))
             : (false, null);
     }
 }

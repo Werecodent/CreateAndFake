@@ -37,7 +37,7 @@ public sealed class InjectedCreateHint : CreateHint
             object?[] args = new object[info.Length];
             for (int i = 0; i < args.Length; i++)
             {
-                args[i] = randomizer.FakerSupports(info[i].ParameterType)
+                args[i] = randomizer.Options.Faker.Supports(info[i].ParameterType)
                     ? randomizer.Create(typeof(Fake<>).MakeGenericType(info[i].ParameterType))
                     : randomizer.Create(info[i].ParameterType);
             }
@@ -64,7 +64,7 @@ public sealed class InjectedCreateHint : CreateHint
     private static ConstructorInfo? FindConstructor(Type target, RandomizerChainer randomizer, BindingFlags scope)
     {
         return target.GetConstructors(BindingFlags.Instance | scope)
-            .GroupBy(c => c.GetParameters().Count(p => randomizer.FakerSupports(p.ParameterType)))
+            .GroupBy(c => c.GetParameters().Count(p => randomizer.Options.Faker.Supports(p.ParameterType)))
             .OrderByDescending(g => g.Key)
             .FirstOrDefault()
             ?.OrderBy(c => c.GetParameters())

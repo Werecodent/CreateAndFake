@@ -1,6 +1,3 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
-
 #pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
 #pragma warning disable CA1310 // Specify StringComparison for correctness: Not available for all versions.
 
@@ -9,8 +6,8 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 /// <summary>Handles common <see cref="string"/> assertion calls.</summary>
 /// <param name="text"><inheritdoc cref="Text" path="/summary"/></param>
 /// <inheritdoc cref="AssertGroupBase{T}"/>
-public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? text)
-    : AssertGroupBase<T>(gen, valuer, text) where T : AssertTextBase<T>
+public abstract class AssertTextBase<T>(AsserterOptions options, string? text)
+    : AssertGroupBase<T>(options, text) where T : AssertTextBase<T>
 {
     /// <summary>Text to run assertion checks with.</summary>
     protected string? Text { get; } = text;
@@ -24,7 +21,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text == null || !Text.Contains(content))
         {
-            throw new AssertException($"Text was missing '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text was missing '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }
@@ -35,7 +32,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text != null && Text.Contains(content))
         {
-            throw new AssertException($"Text contained '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text contained '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }
@@ -46,7 +43,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text == null || !Text.StartsWith(content))
         {
-            throw new AssertException($"Text did not start with '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text did not start with '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }
@@ -57,7 +54,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text != null && Text.StartsWith(content))
         {
-            throw new AssertException($"Text started with '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text started with '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }
@@ -68,7 +65,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text == null || !Text.EndsWith(content))
         {
-            throw new AssertException($"Text did not end with '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text did not end with '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }
@@ -79,7 +76,7 @@ public abstract class AssertTextBase<T>(IRandom gen, IValuer valuer, string? tex
     {
         if (Text != null && Text.EndsWith(content))
         {
-            throw new AssertException($"Text ended with '{content}'.", details, Gen.InitialSeed, Text);
+            throw new AssertException($"Text ended with '{content}'.", details, Options.Gen.InitialSeed, Text);
         }
         return ToChainer();
     }

@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Content;
+﻿using System.Collections;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Toolbox.ValuerTool.CompareHints;
 
@@ -23,7 +24,7 @@ public sealed class EarlyFailCompareHint : CompareHint
     {
         return (expected != actual
                 && !(expected.Inherits(typeof(IAsyncEnumerable<>)) && actual.Inherits(typeof(IAsyncEnumerable<>)))
-                && !(expected.Inherits(typeof(IEnumerable<>)) && actual.Inherits(typeof(IEnumerable<>))))
+                && !(expected.Inherits(typeof(IEnumerable)) && actual.Inherits(typeof(IEnumerable))))
             || expected.IsPrimitive
             || expected.IsEnum
             || _SupportedTypes.Contains(expected);

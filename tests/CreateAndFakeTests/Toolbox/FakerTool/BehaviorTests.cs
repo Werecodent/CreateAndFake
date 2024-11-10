@@ -34,13 +34,13 @@ public static class BehaviorTests
             Behavior noTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), null]);
 
             noTimes.HasExpectedCalls().Assert().Is(false);
-            noTimes.Invoke(args.Select(g => Tools.Randomizer.Create(g)).ToArray());
+            noTimes.Invoke(args.Select(a => Tools.Randomizer.Create(a)).ToArray());
             noTimes.HasExpectedCalls().Assert().Is(true);
 
             Behavior withTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), Times.Never]);
 
             withTimes.HasExpectedCalls().Assert().Is(true);
-            withTimes.Invoke(args.Select(g => Tools.Randomizer.Create(g)).ToArray());
+            withTimes.Invoke(args.Select(a => Tools.Randomizer.Create(a)).ToArray());
             withTimes.HasExpectedCalls().Assert().Is(false);
         }
     }

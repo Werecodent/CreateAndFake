@@ -12,7 +12,7 @@ public sealed class EnumCreateHint : CreateHint
 
         if (type?.IsEnum ?? false)
         {
-            return (true, randomizer.Gen.NextItem(Enum.GetValues(type).Cast<object>()));
+            return (true, randomizer.Options.Gen.NextItem(Enum.GetValues(type).Cast<object>()));
         }
         else
         {

@@ -5,10 +5,12 @@ using CreateAndFake.Toolbox.FakerTool.Proxy;
 namespace CreateAndFake.Toolbox.ValuerTool;
 
 /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <param name="valuer"><inheritdoc cref="Valuer" path="/summary"/></param>
 /// <param name="hasher"><inheritdoc cref="_hasher" path="/summary"/></param>
 /// <param name="comparer"><inheritdoc cref="_comparer" path="/summary"/></param>
 public sealed class ValuerChainer(
+    ValuerOptions options,
     IValuer valuer,
     Func<object?, ValuerChainer, int> hasher,
     Func<object?, object?, ValuerChainer, IEnumerable<Difference>> comparer)
@@ -30,6 +32,9 @@ public sealed class ValuerChainer(
     /// <summary>Reference to the actual source valuer.</summary>
     internal IValuer Valuer { get; } = valuer ?? throw new ArgumentNullException(nameof(valuer));
 
+    /// <inheritdoc cref="ValuerOptions"/>
+    public ValuerOptions Options { get; } = options;
+
     /// <inheritdoc cref="IValuer.Compare"/>
     public IEnumerable<Difference> Compare(object? expected, object? actual)
     {
@@ -48,7 +53,7 @@ public sealed class ValuerChainer(
         }
     }
 
-    /// <inheritdoc cref="IValuer.Equals"/>
+    /// <inheritdoc cref="IValuer.Equals(object,object)"/>
     public new bool Equals(object? x, object? y)
     {
         return !Compare(x, y).Any();
@@ -78,12 +83,6 @@ public sealed class ValuerChainer(
         {
             _ = _hashHistory.Remove(refHash);
         }
-    }
-
-    /// <inheritdoc cref="IValuer.GetHashCode(object[])"/>
-    public int GetHashCode(params object?[]? items)
-    {
-        return GetHashCode((object?)items);
     }
 
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>

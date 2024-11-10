@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.FakerTool;
 
 namespace CreateAndFake.Toolbox.RandomizerTool;
 
@@ -13,24 +11,19 @@ public sealed class RandomizerChainer
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
     private readonly IDictionary<Type, object> _history;
 
-    /// <summary>Provides stubs.</summary>
-    private readonly IFaker _faker;
-
-    /// <summary>Value generator to use for base randomization.</summary>
-    public IRandom Gen { get; }
-
     /// <summary>Container of the instance to create.</summary>
     public object? Parent { get; }
 
+    /// <inheritdoc cref="RandomizerOptions"/>
+    public RandomizerOptions Options { get; }
+
     /// <inheritdoc cref="RandomizerChainer"/>
-    /// <param name="faker"><inheritdoc cref="_faker" path="/summary"/></param>
-    /// <param name="gen"><inheritdoc cref="Gen" path="/summary"/></param>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="randomizer"><inheritdoc cref="_randomizer" path="/summary"/></param>
-    public RandomizerChainer(IFaker faker, IRandom gen, Func<Type, RandomizerChainer, object> randomizer)
+    public RandomizerChainer(RandomizerOptions options, Func<Type, RandomizerChainer, object> randomizer)
     {
-        _faker = faker ?? throw new ArgumentNullException(nameof(faker));
-        Gen = gen ?? throw new ArgumentNullException(nameof(gen));
         _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
+        Options = options ?? throw new ArgumentNullException(nameof(options));
 
         _history = new Dictionary<Type, object>();
         Parent = null;
@@ -38,12 +31,12 @@ public sealed class RandomizerChainer
 
     /// <inheritdoc cref="RandomizerChainer"/>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <param name="options">FIX ME</param>
     /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
-    private RandomizerChainer(RandomizerChainer prevChainer, object? parent)
+    private RandomizerChainer(RandomizerChainer prevChainer, RandomizerOptions? options, object? parent)
     {
         Parent = parent;
-        Gen = prevChainer.Gen;
-        _faker = prevChainer._faker;
+        Options = options ?? prevChainer.Options.NestedOptions ?? prevChainer.Options;
         _randomizer = prevChainer._randomizer;
 
         if (parent != null)
@@ -88,6 +81,16 @@ public sealed class RandomizerChainer
     /// <returns>The created instance.</returns>
     public object Create(Type type, object? parent = null)
     {
+        return Create(type, null, parent);
+    }
+
+    /// <summary>Calls the randomizer to create a random instance of the given <paramref name="type"/>.</summary>
+    /// <param name="type">Type to create.</param>
+    /// <param name="options">FIX ME</param>
+    /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
+    /// <returns>The created instance.</returns>
+    public object Create(Type type, RandomizerOptions? options, object? parent = null)
+    {
         if (parent != null)
         {
             if (AlreadyCreated(type))
@@ -105,30 +108,6 @@ public sealed class RandomizerChainer
         }
 
         RuntimeHelpers.EnsureSufficientExecutionStack();
-        return _randomizer.Invoke(type, new RandomizerChainer(this, (parent != Parent) ? parent : null));
-    }
-
-    /// <inheritdoc cref="IFaker.Stub{T}(Type[])"/>
-    public Fake<T> Stub<T>(params Type[] interfaces)
-    {
-        return _faker.Stub<T>(interfaces);
-    }
-
-    /// <inheritdoc cref="IFaker.Stub(Type,Type[])"/>
-    public Fake Stub(Type parent, params Type[] interfaces)
-    {
-        return _faker.Stub(parent, interfaces);
-    }
-
-    /// <inheritdoc cref="IFaker.Supports{T}()"/>
-    public bool FakerSupports<T>()
-    {
-        return _faker.Supports<T>();
-    }
-
-    /// <inheritdoc cref="IFaker.Supports(Type)"/>
-    public bool FakerSupports(Type type)
-    {
-        return _faker.Supports(type);
+        return _randomizer.Invoke(type, new RandomizerChainer(this, options, (parent != Parent) ? parent : null));
     }
 }

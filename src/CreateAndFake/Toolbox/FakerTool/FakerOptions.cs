@@ -1,0 +1,11 @@
+using CreateAndFake.Design.Content;
+using CreateAndFake.Toolbox.ValuerTool;
+
+namespace CreateAndFake.Toolbox.FakerTool;
+
+/// <summary>Configuration for controlling faking behavior.</summary>
+public record FakerOptions : IToolOptions
+{
+    /// <summary>Handles comparisons.</summary>
+    public required IValuer? Valuer { get; init; }
+}

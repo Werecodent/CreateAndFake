@@ -4,7 +4,7 @@ namespace CreateAndFake.Design.Data;
 public static class NameData
 {
     /// <summary>Possible names for randomization.</summary>
-    public static ICollection<string> Values { get; } =
+    public static IReadOnlyCollection<string> Values { get; } =
     [
         // Aa
         "Aaron",

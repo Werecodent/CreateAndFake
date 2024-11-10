@@ -35,6 +35,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     {
         List<Difference> differences = [];
 
+        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        {
+            differences.Add(new Difference(expected.GetType(), actual.GetType()));
+        }
+
         IAsyncEnumerator<T> expectedEnumerator = expected.GetAsyncEnumerator();
         IAsyncEnumerator<T> actualEnumerator = actual.GetAsyncEnumerator();
         await using (expectedEnumerator.ConfigureAwait(false))

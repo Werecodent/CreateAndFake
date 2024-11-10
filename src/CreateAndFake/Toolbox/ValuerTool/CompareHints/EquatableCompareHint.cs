@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Toolbox.ValuerTool.CompareHints;
 
@@ -9,9 +10,13 @@ public sealed class EquatableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
     {
-        return expected != null
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        return valuer.Options.UseEquatableComparisons
+            && expected != null
             && expected.GetType().Inherits(typeof(IEquatable<>).MakeGenericType(expected.GetType()))
-            && expected is not IStructuralEquatable;
+            && expected is not IStructuralEquatable
+            && expected is not IToolOptions;
     }
 
     /// <inheritdoc/>

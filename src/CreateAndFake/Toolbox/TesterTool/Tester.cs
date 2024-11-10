@@ -1,40 +1,16 @@
 ﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.AsserterTool;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.FakerTool;
-using CreateAndFake.Toolbox.RandomizerTool;
 
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Automates common tests.</summary>
-/// <param name="gen">Core value random handler.</param>
-/// <param name="randomizer">Creates objects and populates them with random values.</param>
-/// <param name="duplicator">Deep clones objects.</param>
-/// <param name="asserter">Handles common test scenarios.</param>
-/// <param name="timeout">How long to wait for tests to complete.</param>
-/// <exception cref="ArgumentNullException">If given nulls.</exception>
-public class Tester(IRandom gen, IRandomizer randomizer,
-    IDuplicator duplicator, Asserter asserter, TimeSpan? timeout = null)
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+public class Tester(TesterOptions options)
 {
-    /// <summary>Retries tests if timeout is reached.</summary>
-    private static readonly Limiter _Limiter = Limiter.Few;
-
-    /// <summary>Core value random handler.</summary>
-    protected IRandom Gen { get; } = gen ?? throw new ArgumentNullException(nameof(gen));
-
-    /// <summary>Creates objects and populates them with random values.</summary>
-    protected IRandomizer Randomizer { get; } = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
-
-    /// <summary>Deep clones objects.</summary>
-    protected IDuplicator Duplicator { get; } = duplicator ?? throw new ArgumentNullException(nameof(duplicator));
-
-    /// <summary>Handles common test scenarios.</summary>
-    protected Asserter Asserter { get; } = asserter ?? throw new ArgumentNullException(nameof(asserter));
-
-    /// <summary>How long to wait for tests to complete.</summary>
-    private readonly TimeSpan _timeout = timeout ?? new(0, 0, 3);
+    /// <inheritdoc/>
+    public TesterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>
     ///     Verifies nulls are guarded on the type.
@@ -61,20 +37,20 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        NullGuarder checker = new(new GenericFixer(Gen, Randomizer), Randomizer, Asserter, _timeout);
+        NullGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout);
 
-        _Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{type}'",
+        Options.Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{type}'",
             () => checker.PreventsNullRefExceptionOnConstructors(type, true, injectionValues)).Wait();
 
         if (!(type.IsAbstract && type.IsSealed))
         {
-            _Limiter.Retry<TimeoutException>(
+            Options.Limiter.Retry<TimeoutException>(
                 $"Null reference check on methods for type '{type}'",
                 () =>
                 {
                     object? instance = (injectionValues?.Length > 0)
-                        ? Randomizer.Inject(type, injectionValues)
-                        : Randomizer.Create(type);
+                        ? Options.Randomizer.Inject(type, injectionValues)
+                        : Options.Randomizer.Create(type);
                     try
                     {
                         checker.PreventsNullRefExceptionOnMethods(instance!, injectionValues);
@@ -86,7 +62,7 @@ public class Tester(IRandom gen, IRandomizer randomizer,
                 }).Wait();
         }
 
-        _Limiter.Retry<TimeoutException>($"Null reference check on static methods for type '{type}'",
+        Options.Limiter.Retry<TimeoutException>($"Null reference check on static methods for type '{type}'",
             () => checker.PreventsNullRefExceptionOnStatics(type, true, injectionValues)).Wait();
     }
 
@@ -101,13 +77,13 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     /// <param name="injectionValues">Values to inject into the method.</param>
     public virtual void PreventsNullRefException<T>(T instance, params object[] injectionValues)
     {
-        NullGuarder checker = new(new GenericFixer(Gen, Randomizer), Randomizer, Asserter, _timeout);
+        NullGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout);
 
-        _Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{typeof(T).Name}'",
             () => checker.PreventsNullRefExceptionOnConstructors(typeof(T), false, injectionValues)).Wait();
-        _Limiter.Retry<TimeoutException>($"Null reference check on methods for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Null reference check on methods for type '{typeof(T).Name}'",
             () => checker.PreventsNullRefExceptionOnMethods(instance!, injectionValues)).Wait();
-        _Limiter.Retry<TimeoutException>($"Null reference check on static methods for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Null reference check on static methods for type '{typeof(T).Name}'",
             () => checker.PreventsNullRefExceptionOnStatics(typeof(T), false, injectionValues)).Wait();
     }
 
@@ -134,21 +110,21 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        MutationGuarder checker = new(new GenericFixer(Gen, Randomizer),
-            Randomizer, Duplicator, Asserter, _timeout);
+        MutationGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer),
+            Options.Randomizer, Options.Duplicator, Options.Asserter, Options.Timeout);
 
-        _Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{type}'",
+        Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{type}'",
             () => checker.PreventsMutationOnConstructors(type, true, injectionValues)).Wait();
 
         if (!(type.IsAbstract && type.IsSealed))
         {
-            _Limiter.Retry<TimeoutException>(
+            Options.Limiter.Retry<TimeoutException>(
                 $"Parameter mutation check on methods for type '{type}'",
                 () =>
                 {
                     object? instance = (injectionValues?.Length > 0)
-                        ? Randomizer.Inject(type, injectionValues)
-                        : Randomizer.Create(type);
+                        ? Options.Randomizer.Inject(type, injectionValues)
+                        : Options.Randomizer.Create(type);
                     try
                     {
                         checker.PreventsMutationOnMethods(instance!, injectionValues);
@@ -160,7 +136,7 @@ public class Tester(IRandom gen, IRandomizer randomizer,
                 }).Wait();
         }
 
-        _Limiter.Retry<TimeoutException>($"Parameter mutation check on static methods for type '{type}'",
+        Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on static methods for type '{type}'",
             () => checker.PreventsMutationOnStatics(type, true, injectionValues)).Wait();
     }
 
@@ -174,14 +150,14 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     /// <param name="injectionValues">Values to inject into the method.</param>
     public virtual void PreventsParameterMutation<T>(T instance, params object[] injectionValues)
     {
-        MutationGuarder checker = new(new GenericFixer(Gen, Randomizer),
-            Randomizer, Duplicator, Asserter, _timeout);
+        MutationGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer),
+            Options.Randomizer, Options.Duplicator, Options.Asserter, Options.Timeout);
 
-        _Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{typeof(T).Name}'",
             () => checker.PreventsMutationOnConstructors(typeof(T), false, injectionValues)).Wait();
-        _Limiter.Retry<TimeoutException>($"Parameter mutation check on methods for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on methods for type '{typeof(T).Name}'",
             () => checker.PreventsMutationOnMethods(instance!, injectionValues)).Wait();
-        _Limiter.Retry<TimeoutException>($"Parameter mutation check on static methods for type '{typeof(T).Name}'",
+        Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on static methods for type '{typeof(T).Name}'",
             () => checker.PreventsMutationOnStatics(typeof(T), false, injectionValues)).Wait();
     }
 
@@ -190,7 +166,7 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     /// <param name="injectionValues">Values to inject into called methods.</param>
     public virtual void PassthroughWithNoExceptions<T>(params object[] injectionValues)
     {
-        PassthroughWithNoExceptions(Randomizer.Create<Injected<T>>()!.Dummy!, injectionValues);
+        PassthroughWithNoExceptions(Options.Randomizer.Create<Injected<T>>()!.Dummy!, injectionValues);
     }
 
     /// <summary>Verifies no exceptions are thrown on any method.</summary>
@@ -198,7 +174,7 @@ public class Tester(IRandom gen, IRandomizer randomizer,
     /// <param name="injectionValues">Values to inject into called methods.</param>
     public virtual void PassthroughWithNoExceptions(object instance, params object[] injectionValues)
     {
-        new ExceptionGuarder(new GenericFixer(Gen, Randomizer), Randomizer, Asserter, _timeout)
+        new ExceptionGuarder(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout)
             .CallAllMethods(instance, injectionValues);
     }
 }

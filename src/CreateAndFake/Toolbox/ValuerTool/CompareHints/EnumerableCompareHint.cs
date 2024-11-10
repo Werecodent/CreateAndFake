@@ -22,6 +22,11 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     private static IEnumerable<Difference> LazyCompare(
         IEnumerable expected, IEnumerable actual, ValuerChainer valuer)
     {
+        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        {
+            yield return new Difference(expected.GetType(), actual.GetType());
+        }
+
         IEnumerator expectedEnumerator = expected.GetEnumerator();
         IEnumerator actualEnumerator = actual.GetEnumerator();
         int index = 0;

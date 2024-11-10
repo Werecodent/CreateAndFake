@@ -1,9 +1,5 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.AsserterTool;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.FakerTool;
-using CreateAndFake.Toolbox.RandomizerTool;
 using CreateAndFake.Toolbox.TesterTool;
 using CreateAndFakeTests.Toolbox.TesterTool.TestSamples;
 
@@ -11,11 +7,15 @@ namespace CreateAndFakeTests.Toolbox.TesterTool;
 
 public static class TesterTests
 {
-    private static readonly Tester _ShortTestInstance = new(Tools.Gen,
-        Tools.Randomizer, Tools.Duplicator, Tools.Asserter, new TimeSpan(0, 0, 0, 0, 100));
+    private static readonly Tester _ShortTestInstance = new(Tools.Tester.Options with
+    {
+        Timeout = new TimeSpan(0, 0, 0, 0, 100)
+    });
 
-    private static readonly Tester _LongTestInstance = new(Tools.Gen,
-        Tools.Randomizer, Tools.Duplicator, Tools.Asserter, new TimeSpan(0, 0, 10));
+    private static readonly Tester _LongTestInstance = new(Tools.Tester.Options with
+    {
+        Timeout = new TimeSpan(0, 0, 10)
+    });
 
     [Fact]
     internal static void Tester_AllMethodsVirtual()
@@ -23,18 +23,13 @@ public static class TesterTests
         Tools.Asserter.IsEmpty(typeof(Tester)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .Where(m => !m.IsVirtual)
-            .Select(m => m.Name));
+            .Select(m => m.Name)
+            .Where(n => n != $"get_{nameof(Tester.Options)}"));
     }
 
-    [Theory, RandomData]
-    internal static void Tester_GuardsNulls(IRandom gen, IRandomizer randomizer,
-        IDuplicator duplicator, Asserter asserter, TimeSpan? timeout)
+    [Fact]
+    internal static void Tester_GuardsNulls()
     {
-        Tools.Asserter.Throws<ArgumentNullException>(() => new Tester(null, randomizer, duplicator, asserter, timeout));
-        Tools.Asserter.Throws<ArgumentNullException>(() => new Tester(gen, null, duplicator, asserter, timeout));
-        Tools.Asserter.Throws<ArgumentNullException>(() => new Tester(gen, randomizer, null, asserter, timeout));
-        Tools.Asserter.Throws<ArgumentNullException>(() => new Tester(gen, randomizer, duplicator, null, timeout));
-
         Tools.Asserter.Throws<ArgumentNullException>(() => _ShortTestInstance.PreventsNullRefException(null));
         Tools.Asserter.Throws<ArgumentNullException>(() => _ShortTestInstance.PreventsParameterMutation(null));
     }

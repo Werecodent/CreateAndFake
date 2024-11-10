@@ -10,7 +10,7 @@ public sealed class AsserterTests
 
     public AsserterTests()
     {
-        _testInstance = new Asserter(Tools.Gen, Tools.Valuer);
+        _testInstance = new Asserter(Tools.Asserter.Options);
     }
 
     [Fact]
@@ -32,7 +32,8 @@ public sealed class AsserterTests
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .Where(m => !m.IsVirtual)
             .Select(m => m.Name)
-            .Where(n => n is not "Is" and not "IsNot"));
+            .Where(n => n is not nameof(Asserter.Is) and not nameof(Asserter.IsNot))
+            .Where(n => n is not $"get_{nameof(Asserter.Options)}"));
     }
 
     [Fact]

@@ -1,25 +1,15 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Toolbox.RandomizerTool;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.MutatorTool;
 
 /// <inheritdoc cref="IMutator"/>
-/// <param name="randomizer"><inheritdoc cref="_randomizer" path="/summary"/></param>
-/// <param name="valuer"><inheritdoc cref="_valuer" path="/summary"/></param>
-/// <param name="limiter"><inheritdoc cref="_limiter" path="/summary"/></param>
-public sealed class Mutator(IRandomizer randomizer, IValuer valuer, Limiter limiter) : IMutator
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+public sealed class Mutator(MutatorOptions options) : IMutator
 {
-    /// <summary>Handles randomization.</summary>
-    private readonly IRandomizer _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
-
-    /// <summary>Ensures object variance.</summary>
-    private readonly IValuer _valuer = valuer ?? throw new ArgumentNullException(nameof(valuer));
-
-    /// <summary>Limits attempts at creating variants.</summary>
-    private readonly Limiter _limiter = limiter ?? throw new ArgumentNullException(nameof(limiter));
+    /// <inheritdoc/>
+    public MutatorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public T Variant<T>(T instance, params T?[]? extraInstances)
@@ -33,12 +23,12 @@ public sealed class Mutator(IRandomizer randomizer, IValuer valuer, Limiter limi
         IEnumerable<object?> values = (extraInstances ?? Enumerable.Empty<object?>()).Prepend(instance);
         try
         {
-            return _limiter.StallUntil(
+            return Options.Limiter.StallUntil(
                 $"Create variant of type '{type}'",
-                () => _randomizer.Create(type),
+                () => Options.Randomizer.Create(type),
                 result =>
                 {
-                    if (values.All(o => !_valuer.Equals(result, o)))
+                    if (values.All(o => !Options.Valuer.Equals(result, o)))
                     {
                         return true;
                     }
@@ -72,12 +62,12 @@ public sealed class Mutator(IRandomizer randomizer, IValuer valuer, Limiter limi
 
         try
         {
-            return _limiter.StallUntil(
+            return Options.Limiter.StallUntil(
                 $"Create unique of type '{type}'",
-                () => _randomizer.Create(type),
+                () => Options.Randomizer.Create(type),
                 result =>
                 {
-                    if (!ContentMap.Extract(result).HasSharedContent(valuer, maps))
+                    if (!ContentMap.Extract(result).HasSharedContent(Options.Valuer, maps))
                     {
                         return true;
                     }

@@ -1,41 +1,30 @@
-﻿using System.Reflection;
+﻿using System.Collections.Specialized;
+using System.Reflection;
 using CreateAndFake.Design;
-using CreateAndFake.Toolbox.DuplicatorTool;
 
 namespace CreateAndFake.Toolbox.RandomizerTool;
 
 /// <summary>Holds parameter data for a method.</summary>
-public sealed class MethodCallWrapper : IDuplicatable
+public sealed class MethodCallWrapper
 {
     /// <summary>Associated method.</summary>
     private readonly MethodBase _method;
 
-    /// <summary>Ordered parameter names.</summary>
-    private readonly IEnumerable<string> _names;
-
     /// <summary>Parameter names with associated data to pass.</summary>
-    private readonly Dictionary<string, object?> _args;
+    private readonly OrderedDictionary _args;
 
     /// <summary>Parameter data for the method.</summary>
-    public IEnumerable<object?> Args => _names.Select(n => _args[n]).ToArray();
+    public IEnumerable<object?> Args => _args.Values.Cast<object>().ToArray();
 
     /// <inheritdoc cref="MethodCallWrapper"/>
     /// <param name="method"><inheritdoc cref="_method" path="/summary"/></param>
     /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
-    public MethodCallWrapper(MethodBase method, IEnumerable<Tuple<string, object?>> args)
+    public MethodCallWrapper(MethodBase method, OrderedDictionary args)
     {
         ArgumentGuard.ThrowIfNull(args, nameof(args));
 
         _method = method ?? throw new ArgumentNullException(nameof(method));
-        _args = [];
-
-        List<string> names = [];
-        foreach (Tuple<string, object?> arg in args)
-        {
-            names.Add(arg.Item1);
-            _args.Add(arg.Item1, arg.Item2);
-        }
-        _names = names;
+        _args = args ?? throw new ArgumentNullException(nameof(method));
     }
 
     /// <summary>Sets parameter named <paramref name="name"/> to <paramref name="value"/>.</summary>
@@ -43,7 +32,7 @@ public sealed class MethodCallWrapper : IDuplicatable
     /// <param name="value">New value to use.</param>
     public void ModifyArg(string name, object value)
     {
-        if (_args.ContainsKey(name))
+        if (_args.Contains(name))
         {
             _args[name] = value;
         }
@@ -58,15 +47,6 @@ public sealed class MethodCallWrapper : IDuplicatable
     /// <returns>Results from the call.</returns>
     public object? InvokeOn(object instance)
     {
-        return _method.Invoke(instance, Args.ToArray());
-    }
-
-    /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
-    {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
-
-        return new MethodCallWrapper(duplicator.Copy(_method)!,
-            duplicator.Copy(_names.Select(n => Tuple.Create(n, _args[n])).ToArray())!);
+        return _method.Invoke(instance, _args.Values.Cast<object>().ToArray());
     }
 }

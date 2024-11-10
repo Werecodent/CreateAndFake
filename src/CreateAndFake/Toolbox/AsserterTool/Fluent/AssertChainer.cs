@@ -1,15 +1,12 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Allows assertion calls to be chained fluently.</summary>
 /// <typeparam name="T">Assertion base <c>Type</c> to chain.</typeparam>
 /// <param name="chain">Assertion base instance to chain.</param>
-/// <param name="gen">Core randomizer with a potential seed for logging.</param>
-/// <param name="valuer">Handles comparisons for assertion checks.</param>
-public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
+/// <param name="options">Configured options for <c>this</c>.</param>
+public sealed class AssertChainer<T>(T chain, AsserterOptions options)
 {
     /// <summary>Includes another assertion on the instance to test.</summary>
     public T And { get; } = chain;
@@ -19,7 +16,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
     public AssertObject Also(object? actual)
     {
-        return new AssertObject(gen, valuer, actual);
+        return new AssertObject(options, actual);
     }
 
     /// <param name="collection"><inheritdoc cref="AssertGroupBase{T}.Collection" path="/summary"/></param>
@@ -27,7 +24,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertGroup Also(IEnumerable? collection)
     {
-        return new AssertGroup(gen, valuer, collection);
+        return new AssertGroup(options, collection);
     }
 
     /// <param name="text"><inheritdoc cref="AssertTextBase{T}.Text" path="/summary"/></param>
@@ -35,7 +32,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertText Also(string? text)
     {
-        return new AssertText(Tools.Gen, Tools.Valuer, text);
+        return new AssertText(options, text);
     }
 
     /// <param name="value"><inheritdoc cref="AssertComparableBase{T}.Value" path="/summary"/></param>
@@ -43,7 +40,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertComparable Also(IComparable? value)
     {
-        return new AssertComparable(Tools.Gen, Tools.Valuer, value);
+        return new AssertComparable(options, value);
     }
 
     /// <param name="type"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
@@ -51,7 +48,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertType Also(Type? type)
     {
-        return new AssertType(Tools.Gen, Tools.Valuer, type);
+        return new AssertType(options, type);
     }
 
     /// <param name="error"><inheritdoc cref="AssertErrorBase{T}.Error" path="/summary"/></param>
@@ -59,7 +56,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertError Also(Exception? error)
     {
-        return new AssertError(Tools.Gen, Tools.Valuer, error);
+        return new AssertError(options, error);
     }
 
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
@@ -67,7 +64,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertBehavior Also(Action? behavior)
     {
-        return new AssertBehavior(Tools.Gen, Tools.Valuer, behavior);
+        return new AssertBehavior(options, behavior);
     }
 
     /// <typeparam name="TReturn">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
@@ -76,7 +73,7 @@ public sealed class AssertChainer<T>(T chain, IRandom gen, IValuer valuer)
     /// <inheritdoc cref="Also(object)"/>
     public AssertBehavior Also<TReturn>(Func<TReturn>? behavior)
     {
-        return new AssertBehavior(Tools.Gen, Tools.Valuer, behavior);
+        return new AssertBehavior(options, behavior);
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>

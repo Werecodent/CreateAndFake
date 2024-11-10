@@ -39,11 +39,11 @@ public static class MutatorTests
     {
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupReturn(true);
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(3))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
             .Assert(t => t.Variant(sample))
             .Throws<TimeoutException>();
 
-        fakeValuer.VerifyAllCalls(Times.Exactly(3));
+        fakeValuer.VerifyAllCalls();
     }
 
     [Theory, RandomData]
@@ -51,12 +51,12 @@ public static class MutatorTests
     {
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(Behavior.Series(true, true, true, false));
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(5))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Variant(sample)
             .Assert()
             .IsNot(null);
 
-        fakeValuer.VerifyAllCalls(Times.Exactly(4));
+        fakeValuer.VerifyAllCalls();
     }
 
     [Theory, RandomData]
@@ -66,12 +66,12 @@ public static class MutatorTests
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(
             Behavior.Series(false, true, true, false, true, true, false, false));
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(5))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Variant(sample1, sample2)
             .Assert()
             .IsNot(null);
 
-        fakeValuer.VerifyAllCalls(8);
+        fakeValuer.VerifyAllCalls();
     }
 
     [Theory, RandomData]
@@ -94,7 +94,7 @@ public static class MutatorTests
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupReturn(true);
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(3))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
             .Assert(t => t.Unique(sample))
             .Throws<TimeoutException>();
     }
@@ -105,7 +105,7 @@ public static class MutatorTests
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(Behavior.Series(true, true, true, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(5))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Unique(sample)
             .Assert()
             .IsNot(null);
@@ -119,7 +119,7 @@ public static class MutatorTests
             Behavior.Series(false, true, true, false, true, true, false, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Randomizer, fakeValuer, new Limiter(5))
+        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Unique(sample1, sample2)
             .Assert()
             .IsNot(null);

@@ -1,15 +1,12 @@
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles assertion calls for delegates.</summary>
-/// <param name="gen">Core value random handler.</param>
-/// <param name="valuer">Handles comparisons.</param>
 /// <param name="behavior">Delegate to check.</param>
-public abstract class AssertBehaviorBase<T>(IRandom gen, IValuer valuer, Delegate? behavior)
-    : AssertObjectBase<T>(gen, valuer, behavior) where T : AssertBehaviorBase<T>
+/// <inheritdoc cref="AssertObjectBase{T}"/>
+public abstract class AssertBehaviorBase<T>(AsserterOptions options, Delegate? behavior)
+    : AssertObjectBase<T>(options, behavior) where T : AssertBehaviorBase<T>
 {
     /// <summary>Delegate to check.</summary>
     protected Delegate? Behavior { get; } = behavior;
@@ -44,15 +41,15 @@ public abstract class AssertBehaviorBase<T>(IRandom gen, IValuer valuer, Delegat
             }
             else
             {
-                throw new AssertException(errorMessage, details, Gen.InitialSeed, e);
+                throw new AssertException(errorMessage, details, Options.Gen.InitialSeed, e);
             }
         }
         catch (Exception e)
         {
-            throw new AssertException(errorMessage, details, Gen.InitialSeed, e);
+            throw new AssertException(errorMessage, details, Options.Gen.InitialSeed, e);
         }
 
-        throw new AssertException(errorMessage, details, Gen.InitialSeed);
+        throw new AssertException(errorMessage, details, Options.Gen.InitialSeed);
     }
 
     /// <summary>Verifies <c>behavior</c> does not throw an exception.</summary>
@@ -73,7 +70,7 @@ public abstract class AssertBehaviorBase<T>(IRandom gen, IValuer valuer, Delegat
         }
         catch (Exception e)
         {
-            throw new AssertException("Expected no exception.", details, Gen.InitialSeed, e);
+            throw new AssertException("Expected no exception.", details, Options.Gen.InitialSeed, e);
         }
     }
 }

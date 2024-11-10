@@ -1,15 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.ValuerTool.CompareHints;
 
 namespace CreateAndFake.Toolbox.ValuerTool;
 
 /// <inheritdoc cref="IValuer"/>
-/// <param name="includeDefaultHints">If the default set of hints should be used.</param>
-/// <param name="hints"><inheritdoc cref="_hints" path="/summary"/></param>
-public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]? hints) : IValuer, IDuplicatable
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+public sealed class Valuer(ValuerOptions options) : IValuer
 {
     /// <summary>Default set of hints to use for comparisons.</summary>
     private static readonly CompareHint[] _DefaultHints =
@@ -29,10 +27,31 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
         new StatelessCompareHint()
     ];
 
-    /// <summary>Hints used to compare specific types.</summary>
-    private readonly List<CompareHint> _hints = (hints ?? Enumerable.Empty<CompareHint>())
-            .Concat(includeDefaultHints ? _DefaultHints : [])
-            .ToList();
+    /// <inheritdoc/>
+    public ValuerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+
+    /// <summary>Generators used to copy specific types.</summary>
+    private readonly ImmutableArray<CompareHint> _hints = BuildHints(options);
+
+    /// <summary>Builds hints to use for randomization based upon <paramref name="newOptions"/>.</summary>
+    /// <param name="newOptions">Configuration for randomization.</param>
+    /// <returns>Built hints to use.</returns>
+    private static ImmutableArray<CompareHint> BuildHints(ValuerOptions newOptions)
+    {
+        return newOptions.IncludeDefaultHints
+            ? newOptions.Hints.AddRange(_DefaultHints)
+            : newOptions.Hints;
+    }
+
+    /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
+    /// <param name="localOptions">Potentially modified configuration to use.</param>
+    /// <returns>Cached hints if possible; built hints otherwise.</returns>
+    private IImmutableList<CompareHint> SelectHints(ValuerOptions localOptions)
+    {
+        return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
+            ? _hints
+            : BuildHints(localOptions);
+    }
 
     /// <inheritdoc/>
     public new bool Equals(object? x, object? y)
@@ -41,15 +60,26 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
     }
 
     /// <inheritdoc/>
-    [SuppressMessage("Microsoft.Design",
-        "CA1065:DoNotRaiseExceptionsInUnexpectedLocations",
-        Justification = "Forwarded.")]
+    public bool Equals(object? x, object? y, Func<ValuerOptions, ValuerOptions>? optionConfiguration)
+    {
+        return !Compare(x, y, optionConfiguration).Any();
+    }
+
+    /// <inheritdoc/>
     public int GetHashCode(object? item)
     {
+        return GetHashCode(item, (Func<ValuerOptions, ValuerOptions>?)null);
+    }
+
+    /// <inheritdoc/>
+    public int GetHashCode(object? item, Func<ValuerOptions, ValuerOptions>? optionConfiguration = null)
+    {
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
         string? typeName = item?.GetType().Name;
         try
         {
-            return GetHashCode(item, new ValuerChainer(this, GetHashCode, Compare));
+            return GetHashCode(item, new ValuerChainer(localOptions, this, GetHashCode, Compare));
         }
         catch (InsufficientExecutionStackException)
         {
@@ -62,7 +92,7 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
     /// <inheritdoc cref="GetHashCode(object)"/>
     private int GetHashCode(object? item, ValuerChainer chainer)
     {
-        (bool, int) result = _hints
+        (bool, int) result = SelectHints(chainer.Options)
             .Select(h => h.TryGetHashCode(item, chainer))
             .FirstOrDefault(r => r.Item1);
 
@@ -79,18 +109,14 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
     }
 
     /// <inheritdoc/>
-    public int GetHashCode(params object?[]? items)
+    public IEnumerable<Difference> Compare(object? expected, object? actual, Func<ValuerOptions, ValuerOptions>? optionConfiguration = null)
     {
-        return GetHashCode((object?)items);
-    }
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-    /// <inheritdoc/>
-    public IEnumerable<Difference> Compare(object? expected, object? actual)
-    {
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return Compare(expected, actual, new ValuerChainer(this, GetHashCode, Compare));
+            return Compare(expected, actual, new ValuerChainer(localOptions, this, GetHashCode, Compare));
         }
         catch (InsufficientExecutionStackException)
         {
@@ -100,7 +126,7 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
     }
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="Compare(object,object)"/>
+    /// <inheritdoc cref="Compare(object,object,Func{ValuerOptions,ValuerOptions})"/>
     private IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer chainer)
     {
         if (ReferenceEquals(expected, actual))
@@ -108,7 +134,7 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
             return [];
         }
 
-        (bool, IEnumerable<Difference>?) result = _hints
+        (bool, IEnumerable<Difference>?) result = SelectHints(chainer.Options)
             .Select(h => h.TryCompare(expected, actual, chainer))
             .FirstOrDefault(r => r.Item1);
 
@@ -122,19 +148,5 @@ public sealed class Valuer(bool includeDefaultHints = true, params CompareHint[]
                 $"Type '{expected?.GetType().FullName}' not supported by the valuer. " +
                 "Create a hint to generate the type and pass it to the valuer.");
         }
-    }
-
-    /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
-    {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
-
-        return new Valuer(false, [.. duplicator.Copy(_hints)]);
-    }
-
-    /// <inheritdoc/>
-    public void AddHint(CompareHint hint)
-    {
-        _hints.Insert(0, hint ?? throw new ArgumentNullException(nameof(hint)));
     }
 }

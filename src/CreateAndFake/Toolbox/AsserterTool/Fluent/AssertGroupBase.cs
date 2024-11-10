@@ -1,15 +1,13 @@
 ﻿using System.Collections;
 using System.Text;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles common collection assertion calls.</summary>
 /// <param name="collection"><inheritdoc cref="Collection" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerable? collection)
-    : AssertObjectBase<T>(gen, valuer, collection) where T : AssertGroupBase<T>
+public abstract class AssertGroupBase<T>(AsserterOptions options, IEnumerable? collection)
+    : AssertObjectBase<T>(options, collection) where T : AssertGroupBase<T>
 {
     /// <summary>Collection to run assertion checks with.</summary>
     protected IEnumerable? Collection { get; } = collection;
@@ -30,12 +28,12 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         if (Collection == null)
         {
             throw new AssertException(
-                $"Expected collection with elements, but was 'null'.", details, Gen.InitialSeed);
+                $"Expected collection with elements, but was 'null'.", details, Options.Gen.InitialSeed);
         }
         else if (!Collection.GetEnumerator().MoveNext())
         {
             throw new AssertException(
-                "Expected collection with elements, but was empty.", details, Gen.InitialSeed);
+                "Expected collection with elements, but was empty.", details, Options.Gen.InitialSeed);
         }
         else
         {
@@ -51,7 +49,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         if (Collection == null)
         {
             throw new AssertException(
-                $"Expected collection of '{count}' elements, but was 'null'.", details, Gen.InitialSeed);
+                $"Expected collection of '{count}' elements, but was 'null'.", details, Options.Gen.InitialSeed);
         }
 
         int i = 0;
@@ -65,7 +63,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         {
             throw new AssertException(
                 $"Expected collection of '{count}' elements, but was '{i}'.",
-                details, Gen.InitialSeed, contents.ToString());
+                details, Options.Gen.InitialSeed, contents.ToString());
         }
 
         return ToChainer();
@@ -79,7 +77,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         if (Collection == null)
         {
             throw new AssertException(
-                $"Expected collection to contain '{content}', but was 'null'.", details, Gen.InitialSeed);
+                $"Expected collection to contain '{content}', but was 'null'.", details, Options.Gen.InitialSeed);
         }
 
         int i = 0;
@@ -87,7 +85,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         StringBuilder contents = new();
         for (IEnumerator data = Collection.GetEnumerator(); data.MoveNext(); i++)
         {
-            success = success || Valuer.Equals(content, data.Current);
+            success = success || Options.Valuer.Equals(content, data.Current);
 
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
@@ -96,7 +94,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",
-                details, Gen.InitialSeed, contents.ToString());
+                details, Options.Gen.InitialSeed, contents.ToString());
         }
 
         return ToChainer();
@@ -112,7 +110,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         if (Collection == null)
         {
             throw new AssertException(
-                $"Expected collection to contain '{content}', but was 'null'.", details, Gen.InitialSeed);
+                $"Expected collection to contain '{content}', but was 'null'.", details, Options.Gen.InitialSeed);
         }
 
         int i = 0;
@@ -120,7 +118,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         StringBuilder contents = new();
         for (IEnumerator data = Collection.GetEnumerator(); data.MoveNext(); i++)
         {
-            success &= !Valuer.Equals(content, data.Current);
+            success &= !Options.Valuer.Equals(content, data.Current);
 
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
@@ -129,7 +127,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",
-                details, Gen.InitialSeed, contents.ToString());
+                details, Options.Gen.InitialSeed, contents.ToString());
         }
 
         return ToChainer();
@@ -140,7 +138,7 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
     {
         if (Collection == null)
         {
-            throw new AssertException($"Test failed.", details, Gen.InitialSeed, (string?)null);
+            throw new AssertException($"Test failed.", details, Options.Gen.InitialSeed, (string?)null);
         }
 
         int i = 0;
@@ -150,6 +148,6 @@ public abstract class AssertGroupBase<T>(IRandom gen, IValuer valuer, IEnumerabl
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
 
-        throw new AssertException("Test failed.", details, Gen.InitialSeed, contents.ToString());
+        throw new AssertException("Test failed.", details, Options.Gen.InitialSeed, contents.ToString());
     }
 }

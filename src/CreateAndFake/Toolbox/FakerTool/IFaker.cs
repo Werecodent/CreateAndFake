@@ -3,6 +3,9 @@
 /// <summary>Creates fake objects.</summary>
 public interface IFaker
 {
+    /// <summary>Configured options for <c>this</c>.</summary>
+    FakerOptions Options { get; }
+
     /// <summary>Determines if type <typeparamref name="T"/> can be faked.</summary>
     /// <typeparam name="T"><c>Type</c> to check.</typeparam>
     /// <returns><c>true</c> if possible; <c>false</c> otherwise.</returns>
