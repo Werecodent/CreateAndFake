@@ -35,7 +35,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         await items.GetAsyncEnumerator().DisposeAsync().ConfigureAwait(true);
 
         int count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.ConfigureAwait(true))
         {
             count++;
             if (count == 3)
@@ -45,7 +45,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         }
 
         count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.ConfigureAwait(true))
         {
             count++;
         }

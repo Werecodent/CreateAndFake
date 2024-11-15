@@ -4,5 +4,5 @@
 public sealed class AssertObject : AssertObjectBase<AssertObject>
 {
     /// <inheritdoc/>
-    internal AssertObject(AsserterOptions options, object? actual) : base(options, actual) { }
+    internal AssertObject(IAsserter asserter, object? actual) : base(asserter, actual) { }
 }

@@ -4,5 +4,5 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 public sealed class AssertBehavior : AssertBehaviorBase<AssertBehavior>
 {
     /// <inheritdoc/>
-    internal AssertBehavior(AsserterOptions options, Delegate? behavior) : base(options, behavior) { }
+    internal AssertBehavior(IAsserter asserter, Delegate? behavior) : base(asserter, behavior) { }
 }

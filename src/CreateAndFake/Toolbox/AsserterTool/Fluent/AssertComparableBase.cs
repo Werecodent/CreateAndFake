@@ -1,121 +1,132 @@
+using CreateAndFake.Toolbox.AsserterTool.Categories;
+
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles common comparables assertion calls.</summary>
 /// <param name="value"><inheritdoc cref="Value" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertComparableBase<T>(AsserterOptions options, IComparable? value)
-    : AssertObjectBase<T>(options, value) where T : AssertComparableBase<T>
+public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? value)
+    : AssertObjectBase<T>(asserter, value) where T : AssertComparableBase<T>
 {
     /// <summary>Value to run assertion checks with.</summary>
     protected IComparable? Value { get; } = value;
 
-    /// <summary>Verifies <c>value</c> &gt; <paramref name="expected"/>.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> GreaterThan(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThan(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThan(IComparable target, string? details = null)
     {
-        return HandleMathCheck(() => Value!.CompareTo(expected) > 0, "greater than", expected, details);
+        Asserter.GreaterThan(target, Value, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <c>value</c> &gt;= <paramref name="expected"/>.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> GreaterThanOrEqualTo(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThan(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
     {
-        return HandleMathCheck(() => Value!.CompareTo(expected) >= 0, "greater than or equal to", expected, details);
+        Asserter.GreaterThan(target, Value, optionConfiguration, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <c>value</c> &gt; <paramref name="expected"/> or equals by value.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> GreaterThanOrIs(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrEqualTo(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThanOrEqualTo(IComparable target, string? details = null)
     {
-        return Options.Valuer.Equals(Value, expected)
-            ? ToChainer()
-            : GreaterThanOrEqualTo(expected, details);
+        Asserter.GreaterThanOrEqualTo(target, Value, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <c>value</c> &lt; <paramref name="expected"/>.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> LessThan(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThanOrEqualTo(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
     {
-        return HandleMathCheck(() => Value!.CompareTo(expected) < 0, "less than", expected, details);
+        Asserter.GreaterThanOrEqualTo(target, Value, optionConfiguration, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies value is &lt;= <paramref name="expected"/>.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> LessThanOrEqualTo(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrIs(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThanOrIs(IComparable target, string? details = null)
     {
-        return HandleMathCheck(() => Value!.CompareTo(expected) <= 0, "less than or equal to", expected, details);
+        Asserter.GreaterThanOrIs(target, Value, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <c>value</c> &lt; <paramref name="expected"/> or equals by value.</summary>
-    /// <inheritdoc cref="HandleMathCheck"/>
-    public virtual AssertChainer<T> LessThanOrIs(IComparable expected, string? details = null)
+    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> GreaterThanOrIs(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
     {
-        return Options.Valuer.Equals(Value, expected)
-            ? ToChainer()
-            : LessThanOrEqualTo(expected, details);
+        Asserter.GreaterThanOrIs(target, Value, optionConfiguration, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <paramref name="min"/> &lt;= <c>value</c> &lt;= <paramref name="max"/>.</summary>
-    /// <param name="min">Inclusive lower bound.</param>
-    /// <param name="max">Inclusive upper bound.</param>
-    /// <param name="details">Optional failure details to include.</param>
-    /// <returns>Chainer to make additional assertions with.</returns>
+    /// <inheritdoc cref="IComparableAsserter.LessThan(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThan(IComparable target, string? details = null)
+    {
+        Asserter.LessThan(target, Value, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.LessThan(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThan(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
+    {
+        Asserter.LessThan(target, Value, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.LessThanOrEqualTo(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThanOrEqualTo(IComparable target, string? details = null)
+    {
+        Asserter.LessThanOrEqualTo(target, Value, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.LessThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThanOrEqualTo(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
+    {
+        Asserter.LessThanOrEqualTo(target, Value, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.LessThanOrIs(IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThanOrIs(IComparable target, string? details = null)
+    {
+        Asserter.LessThanOrIs(target, Value, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.LessThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> LessThanOrIs(IComparable target,
+        AsserterMod optionConfiguration, string? details = null)
+    {
+        Asserter.LessThanOrIs(target, Value, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IComparableAsserter.InRange(IComparable,IComparable,IComparable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> InRange(IComparable min, IComparable max, string? details = null)
     {
-        if (Value == null)
-        {
-            throw new AssertException(
-                $"Value was null and not in range [{min}, {max}].",
-                details, Options.Gen.InitialSeed);
-        }
-        else if (min == null || max == null)
-        {
-            throw new AssertException(
-                $"Min {min} or max {max} was null and not valid for math comparison check.",
-                details, Options.Gen.InitialSeed, Value.ToString());
-        }
-        else if (Value.CompareTo(min) < 0 || Value.CompareTo(max) > 0)
-        {
-            throw new AssertException(
-                $"Value was not in range [{min}, {max}].",
-                details, Options.Gen.InitialSeed, Value.ToString());
-        }
-        else
-        {
-            return ToChainer();
-        }
+        Asserter.InRange(min, max, Value, details);
+        return ToChainer();
     }
 
-    /// <summary>Verifies <c>value</c> matches the <paramref name="math"/>.</summary>
-    /// <param name="math">Math used to check the <c>value</c>.</param>
-    /// <param name="description">Math description to use for error message.</param>
-    /// <param name="expected">Value to compare with.</param>
-    /// <param name="details">Optional failure details to include.</param>
-    /// <returns>Chainer to make additional assertions with.</returns>
-    /// <exception cref="AssertException">If <c>value</c> does not match <paramref name="math"/>.</exception>
-    private AssertChainer<T> HandleMathCheck(Func<bool> math, string description, IComparable expected, string? details)
+    /// <inheritdoc cref="IComparableAsserter.InRange(IComparable,IComparable,IComparable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> InRange(IComparable min, IComparable max,
+        AsserterMod optionConfiguration, string? details = null)
     {
-        if (Value == null)
-        {
-            throw new AssertException(
-                $"Value was null and not {description} '{expected}'.",
-                details, Options.Gen.InitialSeed);
-        }
-        else if (expected == null)
-        {
-            throw new AssertException(
-                $"Expected was null and not valid for math comparison check.",
-                details, Options.Gen.InitialSeed, Value.ToString());
-        }
-        else if (!math())
-        {
-            throw new AssertException(
-                $"Value was not {description} '{expected}'.",
-                details, Options.Gen.InitialSeed, Value.ToString());
-        }
-        else
-        {
-            return ToChainer();
-        }
+        Asserter.InRange(min, max, Value, optionConfiguration, details);
+        return ToChainer();
     }
 }

@@ -68,7 +68,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     {
         foreach (Type type in _ActionTypes.Concat(_FuncTypes))
         {
-            _TestInstance.TryCreate(type, CreateChainer()).Item1.Assert().Is(true);
+            Tools.Randomizer.Create(type).Assert().IsNot(null);
         }
     }
 

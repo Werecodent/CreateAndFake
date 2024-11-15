@@ -19,6 +19,10 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return (true, new Uri(link.OriginalString));
         }
+        else if (source is Guid guid)
+        {
+            return (true, new Guid(guid.ToByteArray()));
+        }
         else if (source is WeakReference reference)
         {
             return (true, new WeakReference(reference.Target, reference.TrackResurrection));

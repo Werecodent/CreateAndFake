@@ -46,7 +46,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IImmutableList<CopyHint> SelectHints(DuplicatorOptions localOptions)
+    private ImmutableArray<CopyHint> SelectHints(DuplicatorOptions localOptions)
     {
         return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
             ? _hints

@@ -15,13 +15,13 @@ public static class CreateExtensions
         return Tools.Duplicator.Copy(source);
     }
 
-    /// <inheritdoc cref="IMutator.Variant{T}(T,T[])"/>
+    /// <inheritdoc cref="IMutator.Variant{T}"/>
     public static T CreateVariant<T>(this T source)
     {
         return Tools.Mutator.Variant(source);
     }
 
-    /// <inheritdoc cref="IMutator.Unique{T}(T,T[])"/>
+    /// <inheritdoc cref="IMutator.Unique{T}"/>
     public static T CreateUnique<T>(this T source)
     {
         return Tools.Mutator.Unique(source);

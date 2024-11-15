@@ -19,6 +19,10 @@ dotnet_diagnostic.CA1051.severity = none
 # Not necessary for tests to early fail for nulls.
 dotnet_diagnostic.CA1062.severity = none
 
+# CA1515: Types can be made internal
+# Scope is a part of testing.
+dotnet_diagnostic.CA1515.severity = none
+
 # CA1307: Specify StringComparison for clarity
 # Unnecessary for tests.
 dotnet_diagnostic.CA1307.severity = none
@@ -34,6 +38,10 @@ dotnet_diagnostic.CA1805.severity = none
 # CA1812: Avoid uninstantiated internal classes
 # Needed for testing and cleaner tests.
 dotnet_diagnostic.CA1812.severity = none
+
+# CA2263: Prefer the generic overload
+# Needed for testing non-generic methods.
+dotnet_diagnostic.CA2263.severity = none
 
 # CS1591: Missing XML comment for publicaly visible
 # Tests do not need comments.

@@ -80,7 +80,7 @@ public static class FakeExtensions
     }
 
     /// <inheritdoc cref="Called(AssertObject,object,Times)"/>
-    public static AssertChainer<AssertGroup> Called(this AssertGroup asserter, object fake, Times? total = null)
+    public static AssertChainer<AssertEnumerable> Called(this AssertEnumerable asserter, object fake, Times? total = null)
     {
         ArgumentGuard.ThrowIfNull(asserter, nameof(asserter));
 
@@ -98,7 +98,7 @@ public static class FakeExtensions
     }
 
     /// <inheritdoc cref="Called(AssertObject,object,Times)"/>
-    public static AssertChainer<AssertText> Called(this AssertText asserter, object fake, Times? total = null)
+    public static AssertChainer<AssertString> Called(this AssertString asserter, object fake, Times? total = null)
     {
         ArgumentGuard.ThrowIfNull(asserter, nameof(asserter));
 

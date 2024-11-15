@@ -131,7 +131,7 @@ public static class TypeExtensions
         {
             if (!_InheritCache.TryGetValue(parent, out children))
             {
-                _InheritCache[parent] = children = new HashSet<Type>(FindInheritance(parent).Distinct());
+                _InheritCache[parent] = children = [.. FindInheritance(parent).Distinct()];
             }
         }
 

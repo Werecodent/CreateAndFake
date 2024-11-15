@@ -31,7 +31,7 @@ public interface IRandomizer
     /// <param name="method">Method to create parameters for.</param>
     /// <param name="values">Starting values to inject into instances.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
-    MethodCallWrapper CreateFor(MethodBase method, params object?[]? values);
+    MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values);
 
     /// <summary>
     ///     Creates a <typeparamref name="T"/> instance using <paramref name="values"/> or random data as needed.
@@ -39,11 +39,11 @@ public interface IRandomizer
     /// <typeparam name="T">Type to create.</typeparam>
     /// <param name="values">Values to inject into the <typeparamref name="T"/> instance.</param>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
-    T Inject<T>(params object?[]? values);
+    T Inject<T>(params IEnumerable<object?>? values);
 
     /// <summary>Creates an instance using <paramref name="values"/> or random data as needed.</summary>
     /// <param name="type">Type to create.</param>
     /// <param name="values">Values to inject into the instance.</param>
     /// <returns>The created instance.</returns>
-    object Inject(Type type, params object?[]? values);
+    object Inject(Type type, params IEnumerable<object?>? values);
 }

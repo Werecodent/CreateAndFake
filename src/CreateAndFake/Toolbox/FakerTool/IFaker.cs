@@ -18,31 +18,31 @@ public interface IFaker
 
     /// <typeparam name="T"><c>Type</c> being faked.</typeparam>
     /// <inheritdoc cref="Mock"/>
-    Fake<T> Mock<T>(params Type[] interfaces);
+    Fake<T> Mock<T>(params IEnumerable<Type> interfaces);
 
     /// <summary>Creates a strict fake where calls fail unless set up.</summary>
     /// <param name="parent">Type being faked.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>Handler for fake behavior.</returns>
-    Fake Mock(Type parent, params Type[] interfaces);
+    Fake Mock(Type parent, params IEnumerable<Type> interfaces);
 
     /// <typeparam name="T"><c>Type</c> being faked.</typeparam>
     /// <inheritdoc cref="Stub"/>
-    Fake<T> Stub<T>(params Type[] interfaces);
+    Fake<T> Stub<T>(params IEnumerable<Type> interfaces);
 
     /// <summary>Creates a loose fake with a base default implementation.</summary>
     /// <param name="parent">Type being faked.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>Handler for the fake behavior.</returns>
-    Fake Stub(Type parent, params Type[] interfaces);
+    Fake Stub(Type parent, params IEnumerable<Type> interfaces);
 
     /// <summary>Creates an instance injected with mocks.</summary>
     /// <inheritdoc cref="InjectStubs"/>
-    Injected<T> InjectMocks<T>(params object[] values);
+    Injected<T> InjectMocks<T>(params IEnumerable<object> values);
 
     /// <summary>Creates an instance injected with stubs.</summary>
     /// <typeparam name="T">Instance type to be created.</typeparam>
     /// <param name="values">Values to inject instead where possible.</param>
     /// <returns>The created instance with its fakes.</returns>
-    Injected<T> InjectStubs<T>(params object[] values);
+    Injected<T> InjectStubs<T>(params IEnumerable<object> values);
 }

@@ -56,7 +56,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IImmutableList<CreateHint> SelectHints(RandomizerOptions localOptions)
+    private ImmutableArray<CreateHint> SelectHints(RandomizerOptions localOptions)
     {
         return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
             ? _hints
@@ -138,7 +138,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     }
 
     /// <inheritdoc/>
-    public MethodCallWrapper CreateFor(MethodBase method, params object?[]? values)
+    public MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values)
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
 
@@ -208,13 +208,13 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     }
 
     /// <inheritdoc/>
-    public T Inject<T>(params object?[]? values)
+    public T Inject<T>(params IEnumerable<object?>? values)
     {
         return (T)Inject(typeof(T), values);
     }
 
     /// <inheritdoc/>
-    public object Inject(Type type, params object?[]? values)
+    public object Inject(Type type, params IEnumerable<object?>? values)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 

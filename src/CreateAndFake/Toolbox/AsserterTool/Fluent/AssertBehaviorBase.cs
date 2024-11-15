@@ -1,76 +1,43 @@
-using CreateAndFake.Design.Content;
+using CreateAndFake.Toolbox.AsserterTool.Categories;
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertBehaviorBase<T>(AsserterOptions options, Delegate? behavior)
-    : AssertObjectBase<T>(options, behavior) where T : AssertBehaviorBase<T>
+public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavior)
+    : AssertObjectBase<T>(asserter, behavior) where T : AssertBehaviorBase<T>
 {
-    /// <summary>Delegate to check.</summary>
+    /// <summary>Delegate to run assertion checks with.</summary>
     protected Delegate? Behavior { get; } = behavior;
 
-    /// <summary>Verifies <c>behavior</c> throws an exception.</summary>
-    /// <typeparam name="TException">Exception type expected.</typeparam>
-    /// <param name="details">Optional failure details to include.</param>
-    /// <exception cref="AssertException">If the expected behavior doesn't happen.</exception>
+    /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual TException Throws<TException>(string? details = null) where TException : Exception
     {
-        string errorMessage = $"Expected exception of type '{typeof(TException).FullName}'.";
-        try
-        {
-            if (Behavior is Action action)
-            {
-                action.Invoke();
-            }
-            else
-            {
-                Disposer.Cleanup(((dynamic?)Behavior)?.Invoke());
-            }
-        }
-        catch (TException e)
-        {
-            return e;
-        }
-        catch (AggregateException e)
-        {
-            if (e.InnerExceptions.Count == 1 && e.InnerExceptions[0] is TException actual)
-            {
-                return actual;
-            }
-            else
-            {
-                throw new AssertException(errorMessage, details, Options.Gen.InitialSeed, e);
-            }
-        }
-        catch (Exception e)
-        {
-            throw new AssertException(errorMessage, details, Options.Gen.InitialSeed, e);
-        }
-
-        throw new AssertException(errorMessage, details, Options.Gen.InitialSeed);
+        return Asserter.Throws<TException>(Behavior, details);
     }
 
-    /// <summary>Verifies <c>behavior</c> does not throw an exception.</summary>
-    /// <param name="details">Optional failure details to include.</param>
-    /// <exception cref="AssertException">If the expected behavior doesn't happen.</exception>
-    public virtual void ThrowsNoException(string? details = null)
+    /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual TException Throws<TException>(
+        AsserterMod optionConfiguration, string? details = null) where TException : Exception
     {
-        try
-        {
-            if (Behavior is Action action)
-            {
-                action.Invoke();
-            }
-            else
-            {
-                Disposer.Cleanup(((dynamic?)Behavior)?.Invoke());
-            }
-        }
-        catch (Exception e)
-        {
-            throw new AssertException("Expected no exception.", details, Options.Gen.InitialSeed, e);
-        }
+        return Asserter.Throws<TException>(Behavior, optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="IDelegateAsserter.ThrowsNo{T}(Delegate,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual void ThrowsNo<TException>(string? details = null) where TException : Exception
+    {
+        Asserter.ThrowsNo<Exception>(Behavior, details);
+    }
+
+    /// <inheritdoc cref="IDelegateAsserter.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual void ThrowsNo<TException>(
+        AsserterMod optionConfiguration, string? details = null) where TException : Exception
+    {
+        Asserter.ThrowsNo<Exception>(Behavior, optionConfiguration, details);
     }
 }

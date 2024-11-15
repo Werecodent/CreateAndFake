@@ -8,7 +8,7 @@ namespace System.Runtime.CompilerServices;
 /// <summary>
 ///     Indicates that compiler support for a particular feature is required for the location where this attribute is applied.
 /// </summary>
-/// <param name="featureName"><inheritdoc cref="Options" path="/summary"/></param>
+/// <param name="featureName"><inheritdoc cref="FeatureName" path="/summary"/></param>
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
 internal sealed class CompilerFeatureRequiredAttribute(string featureName) : Attribute
 {

@@ -4,6 +4,6 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 public sealed class AssertError : AssertErrorBase<AssertError>
 {
     /// <inheritdoc/>
-    internal AssertError(AsserterOptions options, Exception? error) : base(options, error) { }
+    internal AssertError(IAsserter asserter, Exception? error) : base(asserter, error) { }
 }
 

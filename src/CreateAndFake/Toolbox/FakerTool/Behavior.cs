@@ -153,22 +153,16 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
 
     /// <summary>Specifies behavior returning values for a fake.</summary>
     /// <typeparam name="T">Value type to return.</typeparam>
-    /// <param name="value">Value to return first.</param>
-    /// <param name="values">Following sequential values to return.</param>
+    /// <param name="values">Sequential values to return.</param>
     /// <returns>Instance to set up the mock with.</returns>
-    public static Behavior<T> Series<T>(T value, params T[] values)
+    public static Behavior<T> Series<T>(params IEnumerable<T> values)
     {
-        int counter = -2;
+        IEnumerator<T> gen = (values ?? []).GetEnumerator();
         return Set(() =>
         {
-            counter++;
-            if (counter == -1)
+            if (gen.MoveNext())
             {
-                return value;
-            }
-            else if (counter < values?.Length)
-            {
-                return values[counter];
+                return gen.Current;
             }
             else
             {

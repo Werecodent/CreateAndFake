@@ -138,7 +138,7 @@ public sealed class ValueComparer :
     /// <summary>Computes an identifying hash code for <paramref name="items"/> based upon value.</summary>
     /// <param name="items">Bundled objects to generate a single value hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="items"/>.</returns>
-    public int GetHashCode(params object?[]? items)
+    public int GetHashCode(params IEnumerable<object?>? items)
     {
         return GetHashCode((IEnumerable?)items);
     }

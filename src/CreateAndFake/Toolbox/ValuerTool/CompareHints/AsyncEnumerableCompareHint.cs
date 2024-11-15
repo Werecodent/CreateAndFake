@@ -86,7 +86,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     private static async Task<int> GetHashCodeAsync<T>(IAsyncEnumerable<T> item, ValuerChainer valuer)
     {
         int hash = ValueComparer.BaseHash;
-        await foreach (T current in item)
+        await foreach (T current in item.ConfigureAwait(false))
         {
             hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(current);
         }

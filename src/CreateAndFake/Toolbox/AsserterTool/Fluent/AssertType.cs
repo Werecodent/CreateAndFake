@@ -4,5 +4,5 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 public sealed class AssertType : AssertTypeBase<AssertType>
 {
     /// <inheritdoc/>
-    internal AssertType(AsserterOptions options, Type? type) : base(options, type) { }
+    internal AssertType(IAsserter asserter, Type? type) : base(asserter, type) { }
 }

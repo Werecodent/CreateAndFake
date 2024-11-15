@@ -4,7 +4,7 @@ using static SimpleExec.Command;
 namespace Build;
 
 /// <summary>Manages build behavior for the solution.</summary>
-public static class Program
+internal static class Program
 {
     /// <summary>Base directory for all output.</summary>
     private static readonly string _ArtifactDir = Path.Combine(Directory.GetCurrentDirectory(), "artifacts");

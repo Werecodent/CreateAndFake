@@ -32,7 +32,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     /// <returns>Clone of <paramref name="source"/>.</returns>
     private static async IAsyncEnumerable<T?> CopyAsync<T>(IAsyncEnumerable<T> source, DuplicatorChainer duplicator)
     {
-        await foreach (T item in source)
+        await foreach (T item in source.ConfigureAwait(false))
         {
             yield return duplicator.Copy(item);
         }

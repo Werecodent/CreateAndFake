@@ -78,7 +78,7 @@ public sealed class DelegateCreateHint : CreateHint
 
         /// <summary>Randomizes any <see cref="OutRef{T}"/> inputs.</summary>
         /// <param name="inputs">Inputs for the delegate.</param>
-        private void HandleIn(params object?[] inputs)
+        private void HandleIn(params IEnumerable<object?> inputs)
         {
             foreach (object? outRef in inputs)
             {
@@ -98,7 +98,7 @@ public sealed class DelegateCreateHint : CreateHint
         /// <typeparam name="T">Return <c>Type</c> for the delegate.</typeparam>
         /// <param name="inputs">Inputs for the delegate.</param>
         /// <returns>Generated output for the delegate.</returns>
-        private T? HandleInAndOut<T>(params object?[] inputs)
+        private T? HandleInAndOut<T>(params IEnumerable<object?> inputs)
         {
             HandleIn(inputs);
             return (T?)_randomizer.Create(typeof(T), _randomizer.Parent);

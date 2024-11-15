@@ -124,7 +124,7 @@ public sealed class CollectionCreateHint : CreateHint
 
         if (type.IsArray
             || typeAsGeneric.IsInheritedBy(typeof(IList<>))
-            || typeAsGeneric.IsInheritedBy(typeof(IList)))
+            || typeAsGeneric.IsInheritedBy<IList>())
         {
             yield return typeof(Array);
         }

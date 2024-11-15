@@ -24,7 +24,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Fake<T> Mock<T>(params Type[] interfaces)
+    public Fake<T> Mock<T>(params IEnumerable<Type> interfaces)
     {
         IFaked provider = Subclasser.Create(typeof(T), interfaces);
         provider.FakeMeta.Valuer = Options.Valuer;
@@ -32,7 +32,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Fake Mock(Type parent, params Type[] interfaces)
+    public Fake Mock(Type parent, params IEnumerable<Type> interfaces)
     {
         IFaked provider = Subclasser.Create(parent, interfaces);
         provider.FakeMeta.Valuer = Options.Valuer;
@@ -40,7 +40,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Fake<T> Stub<T>(params Type[] interfaces)
+    public Fake<T> Stub<T>(params IEnumerable<Type> interfaces)
     {
         Fake<T> fake = Mock<T>(interfaces);
         fake.ThrowByDefault = false;
@@ -48,7 +48,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Fake Stub(Type parent, params Type[] interfaces)
+    public Fake Stub(Type parent, params IEnumerable<Type> interfaces)
     {
         Fake fake = Mock(parent, interfaces);
         fake.ThrowByDefault = false;
@@ -56,15 +56,15 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Injected<T> InjectMocks<T>(params object[] values)
+    public Injected<T> InjectMocks<T>(params IEnumerable<object> values)
     {
-        return Inject<T>(values ?? [], (Type t) => Mock(t));
+        return Inject<T>(values?.ToArray() ?? [], (Type t) => Mock(t));
     }
 
     /// <inheritdoc/>
-    public Injected<T> InjectStubs<T>(params object[] values)
+    public Injected<T> InjectStubs<T>(params IEnumerable<object> values)
     {
-        return Inject<T>(values ?? [], (Type t) => Stub(t));
+        return Inject<T>(values?.ToArray() ?? [], (Type t) => Stub(t));
     }
 
     /// <summary>Creates an instance injected with fakes.</summary>
@@ -72,7 +72,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <param name="values">Values to inject instead where possible.</param>
     /// <param name="subclasser">Fake creation method to use.</param>
     /// <returns>The created instance with its fakes.</returns>
-    private Injected<T> Inject<T>(object[] values, Func<Type, Fake> subclasser)
+    private Injected<T> Inject<T>(ICollection<object> values, Func<Type, Fake> subclasser)
     {
         Type[] startingTypes = values
             .Where(v => v != null)
@@ -100,7 +100,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     ///  <param name="values">Values to inject instead where possible.</param>
     /// <param name="subclasser">Fake creation method to use.</param>
     /// <returns>The created args to inject an instance with.</returns>
-    private object?[] CreateInjectArgs(ConstructorInfo maker, object[] values, Func<Type, Fake> subclasser)
+    private object?[] CreateInjectArgs(ConstructorInfo maker, IEnumerable<object> values, Func<Type, Fake> subclasser)
     {
         List<Tuple<Type, object>> data = values
             .Where(v => v != null)

@@ -31,7 +31,7 @@ public static class Subclasser
     /// <typeparam name="T">Parent type to inherit from.</typeparam>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>An instance of the created child type.</returns>
-    public static T Create<T>(params Type[] interfaces)
+    public static T Create<T>(params IEnumerable<Type> interfaces)
     {
         return (T)Create(typeof(T), interfaces);
     }
@@ -40,7 +40,7 @@ public static class Subclasser
     /// <param name="parent">Parent type to inherit from.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>An instance of the created child type.</returns>
-    public static IFaked Create(Type parent, params Type[] interfaces)
+    public static IFaked Create(Type parent, params IEnumerable<Type> interfaces)
     {
         return (IFaked)CreateInfo(parent, interfaces).AsType()
             .GetConstructor([Emitter.MetaType])!
@@ -51,7 +51,7 @@ public static class Subclasser
     /// <param name="parent">Parent type to inherit from.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>The created child type.</returns>
-    internal static TypeInfo CreateInfo(Type parent, params Type[] interfaces)
+    internal static TypeInfo CreateInfo(Type parent, params IEnumerable<Type> interfaces)
     {
         List<Type> allInterfaces = interfaces?.ToList() ?? [];
         allInterfaces.Add(Emitter.FakeType);

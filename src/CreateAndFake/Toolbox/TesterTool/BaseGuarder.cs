@@ -122,7 +122,7 @@ internal abstract class BaseGuarder(GenericFixer fixer, IRandomizer randomizer, 
     /// <summary>Checks data for disposables and disposes them.</summary>
     /// <param name="injectedValues">Injected values to ignore.</param>
     /// <param name="data">Data to check and dispose.</param>
-    protected void DisposeAllButInjected(object?[]? injectedValues, params object?[]? data)
+    protected void DisposeAllButInjected(object?[]? injectedValues, params IEnumerable<object?>? data)
     {
         foreach (object? item in data ?? [])
         {

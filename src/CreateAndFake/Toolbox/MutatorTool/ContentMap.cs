@@ -58,7 +58,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content)
     /// <param name="maps">Content to compare <c>this</c> with.</param>
     /// <returns><c>true</c> if <c>this</c> has content from <paramref name="maps"/>; <c>false</c> otherwise.</returns>
     /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    public bool HasSharedContent(IValuer valuer, params ContentMap[] maps)
+    public bool HasSharedContent(IValuer valuer, params IEnumerable<ContentMap> maps)
     {
         return FindSharedContent(valuer, maps).Any();
     }
@@ -68,7 +68,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content)
     /// <param name="maps">Content to compare <c>this</c> with.</param>
     /// <returns>All shared content found.</returns>
     /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    public IEnumerable<object> FindSharedContent(IValuer valuer, params ContentMap[] maps)
+    public IEnumerable<object> FindSharedContent(IValuer valuer, params IEnumerable<ContentMap> maps)
     {
         return maps
             .SelectMany(m => m.AllContent())
@@ -84,7 +84,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content)
     public IEnumerable<T> FindAll<T>()
     {
         return _content.Keys
-            .Where(t => t.Inherits(typeof(T)))
+            .Where(t => t.Inherits<T>())
             .SelectMany(t => _content[t])
             .OfType<T>();
     }

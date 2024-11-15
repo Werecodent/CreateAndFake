@@ -23,7 +23,7 @@ public sealed class AssertException : Exception
     /// <param name="details">Optional fail details.</param>
     /// <param name="seed">Seed used for data generation.</param>
     /// <param name="innerException">Inner exception that occurred.</param>
-    public AssertException(string? message, string? details, int? seed, Exception innerException)
+    public AssertException(string? message, string? details, int? seed, Exception? innerException)
         : base(BuildMessage(message, details, seed), innerException) { }
 
     /// <inheritdoc cref="AssertException"/>
@@ -32,7 +32,7 @@ public sealed class AssertException : Exception
     /// <param name="seed">Seed used for data generation.</param>
     /// <param name="content">Optional related content.</param>
     /// <param name="innerException">Inner exception that occurred.</param>
-    public AssertException(string? message, string? details, int? seed, string? content, Exception innerException)
+    public AssertException(string? message, string? details, int? seed, string? content, Exception? innerException)
         : base(BuildMessage(message, details, seed, content), innerException) { }
 
     /// <inheritdoc cref="AssertException"/>

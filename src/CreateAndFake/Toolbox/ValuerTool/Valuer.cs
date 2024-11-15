@@ -46,7 +46,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IImmutableList<CompareHint> SelectHints(ValuerOptions localOptions)
+    private ImmutableArray<CompareHint> SelectHints(ValuerOptions localOptions)
     {
         return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
             ? _hints

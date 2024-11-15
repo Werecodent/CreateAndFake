@@ -14,7 +14,7 @@ public static class Issue096Tests
     internal static async Task Issue096_SupportsSizedAsyncEnumerable([Size(5)] IAsyncEnumerable<int> items)
     {
         int count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.ConfigureAwait(true))
         {
             count++;
         }
