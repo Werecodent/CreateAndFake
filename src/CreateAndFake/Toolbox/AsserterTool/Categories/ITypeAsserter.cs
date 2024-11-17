@@ -12,7 +12,7 @@ public interface ITypeAsserter
     /// <typeparam name="TChild">Expected child of <c>type</c>.</typeparam>
     /// <param name="type">Type to run assertion checks with.</param>
     /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
-    void Inherits<TChild>(Type? type, AsserterMod optionConfiguration, string? details = null);
+    void Inherits<TChild>(Type? type, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="Inherits(Type,Type,AsserterMod,string)"/>
     void Inherits(Type? child, Type? type, string? details = null);
@@ -20,7 +20,7 @@ public interface ITypeAsserter
     /// <summary>Verifies <c>type</c> inherits <paramref name="child"/>.</summary>
     /// <param name="child">Expected child of <c>Type</c>.</param>
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
-    void Inherits(Type? child, Type? type, AsserterMod optionConfiguration, string? details = null);
+    void Inherits(Type? child, Type? type, AsserterMod? optionConfiguration, string? details = null);
 
 #pragma warning restore CA1716 // Identifiers should not match keywords.
 
@@ -30,7 +30,7 @@ public interface ITypeAsserter
     /// <summary>Verifies <typeparamref name="TParent"/> inherits <c>type</c>.</summary>
     /// <typeparam name="TParent">Expected parent of <c>type</c>.</typeparam>
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
-    void InheritedBy<TParent>(Type? type, AsserterMod optionConfiguration, string? details = null);
+    void InheritedBy<TParent>(Type? type, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="InheritedBy(Type,Type,AsserterMod,string)"/>
     void InheritedBy(Type? parent, Type? type, string? details = null);
@@ -38,5 +38,5 @@ public interface ITypeAsserter
     /// <summary>Verifies <paramref name="parent"/> inherits <c>type</c>.</summary>
     /// <param name="parent">Expected parent of <c>type</c>.</param>
     /// <inheritdoc cref="InheritedBy{T}(Type,AsserterMod,string)"/>
-    void InheritedBy(Type? parent, Type? type, AsserterMod optionConfiguration, string? details = null);
+    void InheritedBy(Type? parent, Type? type, AsserterMod? optionConfiguration, string? details = null);
 }

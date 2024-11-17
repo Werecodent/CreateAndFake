@@ -41,7 +41,7 @@ public static class Issue055Tests
     {
         db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
         api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
-        db.VerifyAllCalls();
+        db.Assert().Called();
     }
 
     [Fact]

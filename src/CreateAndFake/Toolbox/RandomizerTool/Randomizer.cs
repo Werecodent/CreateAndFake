@@ -64,13 +64,13 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     }
 
     /// <inheritdoc/>
-    public T Create<T>(Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null)
+    public T Create<T>(RandomizerMod? optionConfiguration = null)
     {
         return (T)Create(typeof(T), optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public object Create(Type type, Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null)
+    public object Create(Type type, RandomizerMod? optionConfiguration = null)
     {
         RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
@@ -116,7 +116,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     }
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="Create(Type,Func{RandomizerOptions,RandomizerOptions})"/>
+    /// <inheritdoc cref="Create(Type,RandomizerMod)"/>
     private object CreateByHint(Type type, RandomizerChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));

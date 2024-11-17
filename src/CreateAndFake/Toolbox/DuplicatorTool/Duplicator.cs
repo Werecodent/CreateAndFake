@@ -55,7 +55,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
 
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]
-    public T Copy<T>(T source, Func<DuplicatorOptions, DuplicatorOptions>? optionConfiguration = null)
+    public T Copy<T>(T source, DuplicatorMod? optionConfiguration = null)
     {
         DuplicatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
@@ -74,7 +74,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     }
 
     /// <param name="chainer">Handles cloning child values.</param>
-    /// <inheritdoc cref="Copy{T}(T,Func{DuplicatorOptions, DuplicatorOptions})"/>
+    /// <inheritdoc cref="Copy{T}(T,DuplicatorMod)"/>
     [return: NotNullIfNotNull(nameof(source))]
     private T Copy<T>(T source, DuplicatorChainer chainer)
     {

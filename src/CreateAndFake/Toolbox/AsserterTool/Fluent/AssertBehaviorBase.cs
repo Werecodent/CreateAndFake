@@ -21,7 +21,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
     /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual TException Throws<TException>(
-        AsserterMod optionConfiguration, string? details = null) where TException : Exception
+        AsserterMod? optionConfiguration, string? details = null) where TException : Exception
     {
         return Asserter.Throws<TException>(Behavior, optionConfiguration, details);
     }
@@ -36,7 +36,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
     /// <inheritdoc cref="IDelegateAsserter.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual void ThrowsNo<TException>(
-        AsserterMod optionConfiguration, string? details = null) where TException : Exception
+        AsserterMod? optionConfiguration, string? details = null) where TException : Exception
     {
         Asserter.ThrowsNo<Exception>(Behavior, optionConfiguration, details);
     }

@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 /// <summary>Handles common <see cref="Exception"/> assertion calls.</summary>
@@ -10,6 +12,7 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
     protected Exception? Error { get; } = error;
 
     /// <inheritdoc/>
+    [DoesNotReturn]
     public override void Fail(string? details = null)
     {
         Asserter.Fail(Error, details);

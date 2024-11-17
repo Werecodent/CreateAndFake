@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿global using RandomizerMod = System.Func<
+    CreateAndFake.Toolbox.RandomizerTool.RandomizerOptions,
+    CreateAndFake.Toolbox.RandomizerTool.RandomizerOptions>;
+using System.Reflection;
 
 namespace CreateAndFake.Toolbox.RandomizerTool;
 
@@ -11,17 +14,17 @@ public interface IRandomizer
     /// <summary>Creates a randomized <typeparamref name="T"/> instance.</summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
-    /// <inheritdoc cref="Create(Type,Func{RandomizerOptions,RandomizerOptions})"/>
-    T Create<T>(Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null);
+    /// <inheritdoc cref="Create(Type,RandomizerMod)"/>
+    T Create<T>(RandomizerMod? optionConfiguration = null);
 
     /// <summary>Creates a randomized instance.</summary>
     /// <param name="type">Type to create.</param>
-    /// <param name="optionConfiguration">Modifications for the randomizer options to use.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     /// <returns>The created instance.</returns>
     /// <exception cref="NotSupportedException">If no hint supports generating the type.</exception>
     /// <exception cref="TimeoutException">If an instance couldn't be created to match the condition.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
-    object Create(Type type, Func<RandomizerOptions, RandomizerOptions>? optionConfiguration = null);
+    object Create(Type type, RandomizerMod? optionConfiguration = null);
 
     /// <summary>
     ///     Constructs the parameters for <paramref name="method"/>.

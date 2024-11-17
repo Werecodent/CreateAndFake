@@ -25,7 +25,7 @@ public static class Issue038Tests
         sample.Value.Assert().Is(null);
         sample.Value.SetupReturn(value);
         sample.Value.Assert().Is(value);
-        sample.VerifyAllCalls();
+        sample.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -34,7 +34,7 @@ public static class Issue038Tests
         sample.Value.Assert().IsNot(null);
         sample.Value.SetupReturn(value);
         sample.Value.Assert().Is(value);
-        sample.VerifyAllCalls();
+        sample.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -42,7 +42,7 @@ public static class Issue038Tests
     {
         sample.Check(item).SetupReturn(result);
         sample.Check(Tools.Duplicator.Copy(item)).Assert().Is(result);
-        sample.VerifyAllCalls();
+        sample.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -51,7 +51,7 @@ public static class Issue038Tests
         sample.Check(Arg.Any<string>(), Arg.Where<string>(s => s == item2)).SetupReturn(result);
         sample.Check(item2, item1).Assert().Is(0);
         sample.Check(item1, item2).Assert().Is(result);
-        sample.VerifyAllCalls();
+        sample.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -59,9 +59,9 @@ public static class Issue038Tests
     {
         sample.Value.SetupReturn(value, Times.Exactly(2));
         sample.Value.Assert().Is(value);
-        sample.Assert(s => s.VerifyAllCalls()).Throws<FakeVerifyException>();
+        sample.Assert(s => s.Assert().Called()).Throws<FakeVerifyException>();
         sample.Value.Assert().Is(value);
-        sample.VerifyAllCalls();
+        sample.Assert().Called();
     }
 
     [Theory, RandomData]

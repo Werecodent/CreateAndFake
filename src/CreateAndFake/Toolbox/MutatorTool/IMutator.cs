@@ -1,4 +1,7 @@
-﻿namespace CreateAndFake.Toolbox.MutatorTool;
+﻿global using MutatorMod = System.Func<
+    CreateAndFake.Toolbox.MutatorTool.MutatorOptions,
+    CreateAndFake.Toolbox.MutatorTool.MutatorOptions>;
+namespace CreateAndFake.Toolbox.MutatorTool;
 
 /// <summary>Changes the value of objects or creates alternatives.</summary>
 public interface IMutator
@@ -35,6 +38,7 @@ public interface IMutator
 
     /// <summary>Attempts to mutate an object.</summary>
     /// <param name="instance">Object to modify.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     /// <returns><c>true</c> if <paramref name="instance"/> has been modified; <c>false</c> otherwise.</returns>
-    bool Modify(object? instance);
+    bool Modify(object? instance, MutatorMod? optionConfiguration = null);
 }

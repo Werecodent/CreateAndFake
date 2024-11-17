@@ -14,6 +14,6 @@ public static class GenericFixerTests
     [Theory, RandomData]
     internal static void GenericFixer_NoParameterMutation(IRandom gen)
     {
-        Tools.Tester.PreventsParameterMutation(new GenericFixer(gen, Tools.Randomizer));
+        Tools.Tester.PreventsParameterMutation(new GenericFixer(Tools.Tester.Options with { Gen = gen }));
     }
 }

@@ -22,7 +22,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThan(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.GreaterThan(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -39,7 +39,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.GreaterThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrEqualTo(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.GreaterThanOrEqualTo(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -56,7 +56,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.GreaterThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrIs(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.GreaterThanOrIs(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -73,7 +73,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.LessThan(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThan(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.LessThan(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -90,7 +90,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.LessThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrEqualTo(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.LessThanOrEqualTo(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -107,7 +107,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.LessThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrIs(IComparable target,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.LessThanOrIs(target, Value, optionConfiguration, details);
         return ToChainer();
@@ -124,7 +124,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <inheritdoc cref="IComparableAsserter.InRange(IComparable,IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> InRange(IComparable min, IComparable max,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.InRange(min, max, Value, optionConfiguration, details);
         return ToChainer();

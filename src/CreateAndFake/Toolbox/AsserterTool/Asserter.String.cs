@@ -2,8 +2,7 @@ using CreateAndFake.Toolbox.AsserterTool.Categories;
 
 namespace CreateAndFake.Toolbox.AsserterTool;
 
-#pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
-#pragma warning disable CA1310 // Specify StringComparison for correctness: Not available for all versions.
+#pragma warning disable CA2249 // Use "string.Contains" instead of "string.IndexOf": Not available for all versions.
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IStringAsserter
@@ -15,10 +14,10 @@ public partial class Asserter : IStringAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Contains(string content, string? text, AsserterMod optionConfiguration, string? details = null)
+    public virtual void Contains(string content, string? text, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || !text.Contains(content))
+        if (text == null || text.IndexOf(content, localOptions.StringCompareOption) == -1)
         {
             throw new AssertException($"Text was missing '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
@@ -32,10 +31,10 @@ public partial class Asserter : IStringAsserter
 
     /// <inheritdoc/>
     public virtual void ContainsNot(string content, string? text,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.Contains(content))
+        if (text != null && text.IndexOf(content, localOptions.StringCompareOption) >= 0)
         {
             throw new AssertException($"Text contained '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
@@ -49,10 +48,10 @@ public partial class Asserter : IStringAsserter
 
     /// <inheritdoc/>
     public virtual void StartsWith(string content, string? text,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || !text.StartsWith(content))
+        if (text == null || !text.StartsWith(content, localOptions.StringCompareOption))
         {
             throw new AssertException($"Text did not start with '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
@@ -66,10 +65,10 @@ public partial class Asserter : IStringAsserter
 
     /// <inheritdoc/>
     public virtual void StartsNotWith(string content, string? text,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.StartsWith(content))
+        if (text != null && text.StartsWith(content, localOptions.StringCompareOption))
         {
             throw new AssertException($"Text started with '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
@@ -82,10 +81,10 @@ public partial class Asserter : IStringAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void EndsWith(string content, string? text, AsserterMod optionConfiguration, string? details = null)
+    public virtual void EndsWith(string content, string? text, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || !text.EndsWith(content))
+        if (text == null || !text.EndsWith(content, localOptions.StringCompareOption))
         {
             throw new AssertException($"Text did not end with '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
@@ -99,15 +98,14 @@ public partial class Asserter : IStringAsserter
 
     /// <inheritdoc/>
     public virtual void EndsNotWith(string content, string? text,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.EndsWith(content))
+        if (text != null && text.EndsWith(content, localOptions.StringCompareOption))
         {
             throw new AssertException($"Text ended with '{content}'.", details, localOptions.Gen.InitialSeed, text);
         }
     }
 }
 
-#pragma warning restore CA1307 // Specify StringComparison for clarity
-#pragma warning restore CA1310 // Specify StringComparison for correctness
+#pragma warning restore CA2249 // Use "string.Contains" instead of "string.IndexOf"

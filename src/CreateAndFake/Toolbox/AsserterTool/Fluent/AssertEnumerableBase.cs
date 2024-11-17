@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Toolbox.AsserterTool.Categories;
 
 namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
@@ -22,7 +23,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
 
     /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> IsEmpty(AsserterMod optionConfiguration, string? details = null)
+    public virtual AssertChainer<T> IsEmpty(AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.IsEmpty(Collection, optionConfiguration, details);
         return ToChainer();
@@ -38,7 +39,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
 
     /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> IsNotEmpty(AsserterMod optionConfiguration, string? details = null)
+    public virtual AssertChainer<T> IsNotEmpty(AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.IsNotEmpty(Collection, optionConfiguration, details);
         return ToChainer();
@@ -54,7 +55,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
 
     /// <inheritdoc cref="IEnumerableAsserter.HasCount(int,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> HasCount(int count, AsserterMod optionConfiguration, string? details = null)
+    public virtual AssertChainer<T> HasCount(int count, AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.HasCount(count, Collection, optionConfiguration, details);
         return ToChainer();
@@ -70,7 +71,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
 
     /// <inheritdoc cref="IEnumerableAsserter.Contains(object,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> Contains(object? content, AsserterMod optionConfiguration, string? details = null)
+    public virtual AssertChainer<T> Contains(object? content, AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.Contains(content, Collection, optionConfiguration, details);
         return ToChainer();
@@ -87,15 +88,23 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(
-        object? content, AsserterMod optionConfiguration, string? details = null)
+        object? content, AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.ContainsNot(content, Collection, optionConfiguration, details);
         return ToChainer();
     }
 
     /// <inheritdoc/>
+    [DoesNotReturn]
     public override void Fail(string? details = null)
     {
         Asserter.Fail(Collection, details);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    public override void Fail(AsserterMod? optionConfiguration, string? details = null)
+    {
+        Asserter.Fail(Collection, optionConfiguration, details);
     }
 }

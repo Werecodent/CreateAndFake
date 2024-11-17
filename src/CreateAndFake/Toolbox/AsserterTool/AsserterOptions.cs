@@ -12,4 +12,7 @@ public record AsserterOptions : IToolOptions
 
     /// <summary>Handles comparisons for assertion checks.</summary>
     public required IValuer Valuer { get; init; }
+
+    /// <summary>Options to use when performing <c>String</c> comparison (such as ignoring case or symbols).</summary>
+    public StringComparison StringCompareOption { get; init; } = StringComparison.InvariantCulture;
 }

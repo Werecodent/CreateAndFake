@@ -14,11 +14,23 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public bool Supports<T>()
     {
+        return Supports<T>(null);
+    }
+
+    /// <inheritdoc/>
+    public bool Supports<T>(FakerMod? optionConfiguration)
+    {
         return Subclasser.Supports<T>();
     }
 
     /// <inheritdoc/>
     public bool Supports(Type type)
+    {
+        return Supports(type, null);
+    }
+
+    /// <inheritdoc/>
+    public bool Supports(Type type, FakerMod? optionConfiguration)
     {
         return Subclasser.Supports(type);
     }
@@ -26,21 +38,39 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public Fake<T> Mock<T>(params IEnumerable<Type> interfaces)
     {
+        return Mock<T>(null, interfaces);
+    }
+
+    /// <inheritdoc/>
+    public Fake<T> Mock<T>(FakerMod? optionConfiguration, params IEnumerable<Type> interfaces)
+    {
         IFaked provider = Subclasser.Create(typeof(T), interfaces);
-        provider.FakeMeta.Valuer = Options.Valuer;
+        provider.FakeMeta.Options = optionConfiguration?.Invoke(Options) ?? Options;
         return new Fake<T>(provider);
     }
 
     /// <inheritdoc/>
     public Fake Mock(Type parent, params IEnumerable<Type> interfaces)
     {
+        return Mock(parent, null, interfaces);
+    }
+
+    /// <inheritdoc/>
+    public Fake Mock(Type parent, FakerMod? optionConfiguration, params IEnumerable<Type> interfaces)
+    {
         IFaked provider = Subclasser.Create(parent, interfaces);
-        provider.FakeMeta.Valuer = Options.Valuer;
+        provider.FakeMeta.Options = optionConfiguration?.Invoke(Options) ?? Options;
         return new Fake(provider);
     }
 
     /// <inheritdoc/>
     public Fake<T> Stub<T>(params IEnumerable<Type> interfaces)
+    {
+        return Stub<T>(null, interfaces);
+    }
+
+    /// <inheritdoc/>
+    public Fake<T> Stub<T>(FakerMod? optionConfiguration, params IEnumerable<Type> interfaces)
     {
         Fake<T> fake = Mock<T>(interfaces);
         fake.ThrowByDefault = false;
@@ -50,6 +80,12 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public Fake Stub(Type parent, params IEnumerable<Type> interfaces)
     {
+        return Stub(parent, null, interfaces);
+    }
+
+    /// <inheritdoc/>
+    public Fake Stub(Type parent, FakerMod? optionConfiguration, params IEnumerable<Type> interfaces)
+    {
         Fake fake = Mock(parent, interfaces);
         fake.ThrowByDefault = false;
         return fake;
@@ -58,11 +94,23 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public Injected<T> InjectMocks<T>(params IEnumerable<object> values)
     {
+        return InjectMocks<T>(null, values);
+    }
+
+    /// <inheritdoc/>
+    public Injected<T> InjectMocks<T>(FakerMod? optionConfiguration, params IEnumerable<object> values)
+    {
         return Inject<T>(values?.ToArray() ?? [], (Type t) => Mock(t));
     }
 
     /// <inheritdoc/>
     public Injected<T> InjectStubs<T>(params IEnumerable<object> values)
+    {
+        return InjectStubs<T>(null, values);
+    }
+
+    /// <inheritdoc/>
+    public Injected<T> InjectStubs<T>(FakerMod? optionConfiguration, params IEnumerable<object> values)
     {
         return Inject<T>(values?.ToArray() ?? [], (Type t) => Stub(t));
     }

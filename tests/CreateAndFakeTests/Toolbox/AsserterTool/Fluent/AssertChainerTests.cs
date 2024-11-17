@@ -73,7 +73,7 @@ public static class AssertChainerTests
     [Theory, RandomData]
     internal static void Also_HandlesCompiledAction(AssertChainer<object> chainer, string data)
     {
-        chainer.Also(data, d => d.VerifyAllCalls()).GetType().Assert().Inherits<AssertBehavior>();
+        chainer.Also(data, d => d.Assert().Called()).GetType().Assert().Inherits<AssertBehavior>();
     }
 
     [Theory, RandomData]

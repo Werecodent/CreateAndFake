@@ -27,10 +27,10 @@ public static class Issue093Tests
     {
         faked.Value.SetupReturn(value);
 
-        Tools.Asserter.Throws<FakeVerifyException>(() => "".Assert().Called(faked).And.Is(""));
+        Tools.Asserter.Throws<FakeVerifyException>(() => faked.Assert().Called());
 
-        sample.Value.Assert().Called(faked).And.Is(value);
+        sample.Value.Assert().Is(value).Also(faked).Called();
 
-        Tools.Asserter.Throws<AssertException>(() => sample.Value.Assert().Called(faked).And.Is(""));
+        Tools.Asserter.Throws<AssertException>(() => sample.Value.Assert().Is(""));
     }
 }

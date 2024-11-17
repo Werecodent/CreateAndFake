@@ -60,7 +60,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public bool Equals(object? x, object? y, Func<ValuerOptions, ValuerOptions>? optionConfiguration)
+    public bool Equals(object? x, object? y, ValuerMod? optionConfiguration)
     {
         return !Compare(x, y, optionConfiguration).Any();
     }
@@ -68,11 +68,11 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc/>
     public int GetHashCode(object? item)
     {
-        return GetHashCode(item, (Func<ValuerOptions, ValuerOptions>?)null);
+        return GetHashCode(item, (ValuerMod?)null);
     }
 
     /// <inheritdoc/>
-    public int GetHashCode(object? item, Func<ValuerOptions, ValuerOptions>? optionConfiguration = null)
+    public int GetHashCode(object? item, ValuerMod? optionConfiguration = null)
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -109,7 +109,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public IEnumerable<Difference> Compare(object? expected, object? actual, Func<ValuerOptions, ValuerOptions>? optionConfiguration = null)
+    public IEnumerable<Difference> Compare(object? expected, object? actual, ValuerMod? optionConfiguration = null)
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -126,7 +126,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="Compare(object,object,Func{ValuerOptions,ValuerOptions})"/>
+    /// <inheritdoc cref="Compare(object,object,ValuerMod)"/>
     private IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer chainer)
     {
         if (ReferenceEquals(expected, actual))

@@ -9,11 +9,11 @@ namespace CreateAndFakeTests.Toolbox.TesterTool;
 public static class MutationGuarderTests
 {
     private static readonly MutationGuarder _ShortTestInstance = new(
-        new GenericFixer(Tools.Gen, Tools.Randomizer), Tools.Randomizer,
+        new GenericFixer(Tools.Tester.Options), Tools.Randomizer,
         Tools.Duplicator, Tools.Asserter, new TimeSpan(0, 0, 0, 0, 100));
 
     private static readonly MutationGuarder _LongTestInstance = new(
-        new GenericFixer(Tools.Gen, Tools.Randomizer), Tools.Randomizer,
+        new GenericFixer(Tools.Tester.Options), Tools.Randomizer,
         Tools.Duplicator, Tools.Asserter, new TimeSpan(0, 0, 10));
 
     [Fact]

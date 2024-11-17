@@ -1,6 +1,6 @@
-﻿namespace CreateAndFake.Toolbox.AsserterTool;
+﻿using System.Diagnostics.CodeAnalysis;
 
-#pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
+namespace CreateAndFake.Toolbox.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
@@ -11,12 +11,12 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     public AsserterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Default option configuration to use.</summary>
-    protected AsserterMod Unconfigured { get; } = null!;
+    protected AsserterMod? Unconfigured { get; } = null;
 
     /// <summary>Merges <see cref="Options"/> with <paramref name="optionConfiguration"/>.</summary>
-    /// <param name="optionConfiguration">Provided modifications of <see cref="AsserterOptions"/> to merge.</param>
+    /// <param name="optionConfiguration">Provided modifications of <see cref="Options"/> to merge.</param>
     /// <returns>The merged options to use.</returns>
-    protected AsserterOptions ApplyConfiguration(AsserterMod optionConfiguration)
+    protected AsserterOptions ApplyConfiguration(AsserterMod? optionConfiguration)
     {
         return optionConfiguration?.Invoke(Options) ?? Options;
     }
@@ -25,29 +25,33 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     public virtual void Pass() { }
 
     /// <inheritdoc/>
-    public virtual void Pass(AsserterMod optionConfiguration) { }
+    public virtual void Pass(AsserterMod? optionConfiguration) { }
 
     /// <inheritdoc/>
+    [DoesNotReturn]
     public virtual void Fail(string? details = null, string? content = null)
     {
         Fail(Unconfigured, details, content);
     }
 
     /// <inheritdoc/>
-    public virtual void Fail(AsserterMod optionConfiguration, string? details = null, string? content = null)
+    [DoesNotReturn]
+    public virtual void Fail(AsserterMod? optionConfiguration, string? details = null, string? content = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, content);
     }
 
     /// <inheritdoc/>
+    [DoesNotReturn]
     public virtual void Fail(Exception? exception, string? details = null)
     {
         Fail(exception, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual void Fail(Exception? exception, AsserterMod optionConfiguration, string? details = null)
+    [DoesNotReturn]
+    public virtual void Fail(Exception? exception, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, exception);
@@ -62,6 +66,8 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         return ExpandTypeName((expected ?? actual)?.GetType());
     }
 
+#pragma warning disable CA1865 // Use 'string.IndexOf(char)' instead: Not available for all versions.
+
     /// <summary>Builds <c>Type</c> name with generic argument names.</summary>
     /// <param name="type"><c>Type</c> to describe.</param>
     /// <returns>The built name.</returns>
@@ -70,7 +76,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         if (type != null && type.IsGenericType)
         {
             return string.Concat(
-                type.Name.Substring(0, type.Name.IndexOf('`')),
+                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
                 "<",
                 string.Join(",", type.GetGenericArguments().Select(ExpandTypeName)),
                 ">");
@@ -80,6 +86,6 @@ public partial class Asserter(AsserterOptions options) : IAsserter
             return type?.Name;
         }
     }
-}
 
-#pragma warning restore CA1307 // Specify StringComparison for clarity
+#pragma warning restore CA1865 // Use 'string.IndexOf(char)' instead
+}

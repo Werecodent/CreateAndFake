@@ -85,7 +85,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     }
 
     /// <inheritdoc/>
-    public bool Modify(object? instance)
+    public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
         if (instance == null)
         {

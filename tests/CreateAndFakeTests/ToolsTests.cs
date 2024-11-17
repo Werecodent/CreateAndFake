@@ -28,7 +28,7 @@ public static class ToolsTests
 
         faked.HasNested(dupe).SetupReturn(true, Times.Once);
         faked.HasNested(original).Assert().Is(true, "Value equality did not work for args.");
-        faked.VerifyAllCalls();
+        faked.Assert().Called();
     }
 
     [Theory, RandomData]

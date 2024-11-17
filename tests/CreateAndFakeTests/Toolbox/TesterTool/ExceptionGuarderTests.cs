@@ -45,6 +45,6 @@ public static class ExceptionGuarderTests
         new ExceptionGuarder(fixer, Tools.Randomizer, asserter, timeout)
             .CallAllMethods(new MethodThrowsSample(), null);
 
-        asserter.VerifyAllCalls();
+        asserter.Assert().Called();
     }
 }

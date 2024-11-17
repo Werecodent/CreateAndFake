@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using CreateAndFake.Toolbox.AsserterTool.Categories;
 
@@ -8,13 +9,15 @@ namespace CreateAndFake.Toolbox.AsserterTool;
 public partial class Asserter : IEnumerableAsserter
 {
     /// <inheritdoc/>
+    [DoesNotReturn]
     public virtual void Fail(IEnumerable? collection, string? details = null)
     {
         Fail(collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual void Fail(IEnumerable? collection, AsserterMod optionConfiguration, string? details = null)
+    [DoesNotReturn]
+    public virtual void Fail(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
@@ -39,7 +42,7 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void IsEmpty(IEnumerable? collection, AsserterMod optionConfiguration, string? details = null)
+    public virtual void IsEmpty(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
     {
         HasCount(0, collection, optionConfiguration, details);
     }
@@ -51,7 +54,7 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void IsNotEmpty(IEnumerable? collection, AsserterMod optionConfiguration, string? details = null)
+    public virtual void IsNotEmpty(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
@@ -74,7 +77,7 @@ public partial class Asserter : IEnumerableAsserter
 
     /// <inheritdoc/>
     public virtual void HasCount(int count, IEnumerable? collection,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
@@ -106,7 +109,7 @@ public partial class Asserter : IEnumerableAsserter
 
     /// <inheritdoc/>
     public virtual void Contains(object? content, IEnumerable? collection,
-        AsserterMod optionConfiguration, string? details)
+        AsserterMod? optionConfiguration, string? details)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
@@ -141,7 +144,7 @@ public partial class Asserter : IEnumerableAsserter
 
     /// <inheritdoc/>
     public virtual void ContainsNot(object? content, IEnumerable? collection,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)

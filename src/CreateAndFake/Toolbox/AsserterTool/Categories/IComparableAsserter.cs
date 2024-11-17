@@ -10,7 +10,7 @@ public interface IComparableAsserter
     /// <param name="target">Expected value to compare with.</param>
     /// <param name="value">Actual value under test needing to match the condition</param>
     /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
-    void GreaterThan(IComparable? target, IComparable? value, AsserterMod optionConfiguration, string? details = null);
+    void GreaterThan(IComparable? target, IComparable? value, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="GreaterThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     void GreaterThanOrEqualTo(IComparable? target, IComparable? value, string? details = null);
@@ -18,7 +18,7 @@ public interface IComparableAsserter
     /// <summary>Verifies <c>value</c> &gt;= <paramref name="target"/>.</summary>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void GreaterThanOrEqualTo(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null);
+        AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="GreaterThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     void GreaterThanOrIs(IComparable? target, IComparable? value, string? details = null);
@@ -26,14 +26,14 @@ public interface IComparableAsserter
     /// <summary>Verifies <c>value</c> &gt; <paramref name="target"/> or equals by value.</summary>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void GreaterThanOrIs(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null);
+        AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="LessThan(IComparable,IComparable,AsserterMod,string)"/>
     void LessThan(IComparable? target, IComparable? value, string? details = null);
 
     /// <summary>Verifies <c>value</c> &lt; <paramref name="target"/>.</summary>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
-    void LessThan(IComparable? target, IComparable? value, AsserterMod optionConfiguration, string? details = null);
+    void LessThan(IComparable? target, IComparable? value, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="LessThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     void LessThanOrEqualTo(IComparable? target, IComparable? value, string? details = null);
@@ -41,7 +41,7 @@ public interface IComparableAsserter
     /// <summary>Verifies value is &lt;= <paramref name="target"/>.</summary>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void LessThanOrEqualTo(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null);
+        AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="LessThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     void LessThanOrIs(IComparable? target, IComparable? value, string? details = null);
@@ -49,7 +49,7 @@ public interface IComparableAsserter
     /// <summary>Verifies <c>value</c> &lt; <paramref name="target"/> or equals by value.</summary>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void LessThanOrIs(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null);
+        AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="InRange(IComparable,IComparable,IComparable,AsserterMod,string)"/>
     void InRange(IComparable? min, IComparable? max, IComparable? value, string? details = null);
@@ -59,5 +59,5 @@ public interface IComparableAsserter
     /// <param name="max">Inclusive upper bound.</param>
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void InRange(IComparable? min, IComparable? max, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null);
+        AsserterMod? optionConfiguration, string? details = null);
 }

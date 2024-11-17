@@ -1,5 +1,7 @@
 using System.Text;
 using CreateAndFake.Toolbox.AsserterTool.Categories;
+using CreateAndFake.Toolbox.FakerTool;
+using CreateAndFake.Toolbox.FakerTool.Proxy;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.ValuerTool;
 
@@ -15,7 +17,7 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public void Is(object? expected, object? actual, AsserterMod optionConfiguration, string? details = null)
+    public void Is(object? expected, object? actual, AsserterMod? optionConfiguration, string? details = null)
     {
         ValuesEqual(expected, actual, optionConfiguration, details);
     }
@@ -27,7 +29,7 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public void IsNot(object? expected, object? actual, AsserterMod optionConfiguration, string? details = null)
+    public void IsNot(object? expected, object? actual, AsserterMod? optionConfiguration, string? details = null)
     {
         ValuesNotEqual(expected, actual, optionConfiguration, details);
     }
@@ -40,7 +42,7 @@ public partial class Asserter : IObjectAsserter
 
     /// <inheritdoc/>
     public virtual void ReferenceEqual(object? expected, object? actual,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!ReferenceEquals(expected, actual))
@@ -57,7 +59,7 @@ public partial class Asserter : IObjectAsserter
 
     /// <inheritdoc/>
     public virtual void ReferenceNotEqual(object? expected, object? actual,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (ReferenceEquals(expected, actual))
@@ -74,7 +76,7 @@ public partial class Asserter : IObjectAsserter
 
     /// <inheritdoc/>
     public virtual void ValuesEqual(object? expected, object? actual,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -94,7 +96,7 @@ public partial class Asserter : IObjectAsserter
 
     /// <inheritdoc/>
     public virtual void ValuesNotEqual(object? expected, object? actual,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Compare(expected, actual).Any())
@@ -113,7 +115,7 @@ public partial class Asserter : IObjectAsserter
 
     /// <inheritdoc/>  
     public virtual void AreUnique(object? expected, object? actual,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -132,5 +134,18 @@ public partial class Asserter : IObjectAsserter
                 $"Expected no shared content, but had '{i}' shared items.",
                 details, localOptions.Gen.InitialSeed, contents.ToString());
         }
+    }
+
+    /// <inheritdoc/>
+    public virtual void Called(object? fake, Times? total = null)
+    {
+        Called(fake, Unconfigured, total);
+    }
+
+    /// <inheritdoc/>
+    public virtual void Called(object? fake, AsserterMod? optionConfiguration, Times? total = null)
+    {
+        IsNot(null, fake);
+        new Fake((IFaked)fake!).VerifyAll(total);
     }
 }

@@ -2,28 +2,12 @@
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
-using CreateAndFake.Toolbox.RandomizerTool;
 
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Handles generic resolution.</summary>
-internal sealed class GenericFixer
+internal sealed class GenericFixer(TesterOptions options)
 {
-    /// <summary>Core value random handler.</summary>
-    private readonly IRandom _gen;
-
-    /// <summary>Creates objects and populates them with random values.</summary>
-    private readonly IRandomizer _randomizer;
-
-    /// <summary>Initializes a new instance of the <see cref="GenericFixer"/> class.</summary>
-    /// <param name="gen">Core value random handler.</param>
-    /// <param name="randomizer">Creates objects and populates them with random values.</param>
-    internal GenericFixer(IRandom gen, IRandomizer randomizer)
-    {
-        _gen = gen ?? throw new ArgumentNullException(nameof(gen));
-        _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
-    }
-
     /// <summary>Defines any generics in a method.</summary>
     /// <param name="method">Method to fix.</param>
     /// <returns>Method with all generics defined.</returns>
@@ -32,15 +16,18 @@ internal sealed class GenericFixer
         ArgumentGuard.ThrowIfNull(method, nameof(method));
 
         return method.ContainsGenericParameters
-            ? method.MakeGenericMethod(method.GetGenericArguments().Select(CreateArg).ToArray())
+            ? method.MakeGenericMethod(method.GetGenericArguments().Select(arg => CreateArg(arg, method)).ToArray())
             : method;
     }
 
     /// <summary>Creates a concrete arg type from the given generic arg.</summary>
     /// <param name="type">Generic arg to create.</param>
-    /// <returns>Created arg type.</returns>
-    private Type CreateArg(Type type)
+    /// <param name="method">Method with the generics.</param>
+    /// <returns>Created arg <c>Type</c>.</returns>
+    private Type CreateArg(Type type, MethodInfo method)
     {
+        ArgumentGuard.ThrowIfNull(type, nameof(type));
+
         bool newNeeded = type.GenericParameterAttributes.HasFlag(
             GenericParameterAttributes.DefaultConstructorConstraint);
 
@@ -48,7 +35,7 @@ internal sealed class GenericFixer
         if (type.GenericParameterAttributes.HasFlag(
             GenericParameterAttributes.NotNullableValueTypeConstraint))
         {
-            arg = _gen.NextItem(ValueRandom.ValueTypes);
+            arg = options.Gen.NextItem(ValueRandom.ValueTypes);
         }
         else if (newNeeded)
         {
@@ -59,24 +46,40 @@ internal sealed class GenericFixer
             arg = typeof(string);
         }
 
-        Type[] constraints = type.GetGenericParameterConstraints();
+        Type[] constraints = type
+            .GetGenericParameterConstraints()
+            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)
+            .ToArray();
 
-        Limiter.Dozen.Repeat(
-            $"Creating generic argument of type '{type}'",
-            () =>
-            {
-                while (!constraints.All(c => arg.Inherits(c))
-                    && (!newNeeded || arg.GetConstructor(Type.EmptyTypes) != null))
+        bool isValidArg()
+        {
+            return constraints.All(c => arg.Inherits(c) || (arg.IsValueType && c == typeof(ValueType)))
+                && (!newNeeded || arg.GetConstructor(Type.EmptyTypes) != null || arg.IsValueType);
+        }
+
+        if (!isValidArg())
+        {
+            Limiter.Few.Retry(
+                $"Creating generic arguments of type '{type}' for method '{method}' [Retry]",
+                () => Limiter.Few.StallUntil($"Trying arguments of type '{type}' for method '{method}' [Stall]", () =>
                 {
-                    object? constraint = _randomizer.Create(_gen.NextItem(constraints));
-                    if (constraint != null)
-                    {
-                        arg = constraint.GetType();
-                    }
-                    Disposer.Cleanup(constraint);
-                }
-            }).Wait();
+                    arg = CreateArgViaConstraint(constraints);
+                }, isValidArg).Wait()).Wait();
+        }
 
         return arg;
+    }
+
+    /// <summary>Creates an arg type from the given constraints.</summary>
+    /// <param name="constraints">Constraints limiting the arg type.</param>
+    /// <returns>Created arg <c>Type</c>.</returns>
+    private Type CreateArgViaConstraint(Type[] constraints)
+    {
+        Type constraint = options.Gen.NextItem(constraints);
+
+        object sample = options.Randomizer.Create(constraint);
+        Type result = sample.GetType();
+        Disposer.Cleanup(sample);
+        return result;
     }
 }

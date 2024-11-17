@@ -45,7 +45,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual T Throws<T>(Action? behavior, AsserterMod optionConfiguration, string? details = null) where T : Exception
+    public virtual T Throws<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
     {
         return Throws<T>((Delegate?)behavior, optionConfiguration, details);
     }
@@ -57,7 +57,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual T Throws<T>(Func<object?>? behavior, AsserterMod optionConfiguration, string? details = null) where T : Exception
+    public virtual T Throws<T>(Func<object?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
     {
         return Throws<T>((Delegate?)behavior, optionConfiguration, details);
     }
@@ -69,7 +69,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual T Throws<T>(Delegate? behavior, AsserterMod optionConfiguration, string? details = null) where T : Exception
+    public virtual T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -115,7 +115,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Action? behavior, AsserterMod optionConfiguration, string? details) where T : Exception
+    public virtual void ThrowsNo<T>(Action? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
     {
         ThrowsNo<T>((Delegate?)behavior, optionConfiguration, details);
     }
@@ -127,7 +127,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Func<object?>? behavior, AsserterMod optionConfiguration, string? details) where T : Exception
+    public virtual void ThrowsNo<T>(Func<object?>? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
     {
         ThrowsNo<T>((Delegate?)behavior, optionConfiguration, details);
     }
@@ -139,7 +139,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Delegate? behavior, AsserterMod optionConfiguration, string? details) where T : Exception
+    public virtual void ThrowsNo<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         try

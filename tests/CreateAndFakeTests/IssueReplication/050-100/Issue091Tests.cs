@@ -43,7 +43,7 @@ public static class Issue091Tests
 
         api.FindItem(key).Assert().Is(sample);
 
-        layer.VerifyAllCalls();
+        layer.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -53,7 +53,7 @@ public static class Issue091Tests
 
         api.FindItem(sample.Id).Assert().Is(sample);
 
-        layer.VerifyAllCalls();
+        layer.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -63,7 +63,7 @@ public static class Issue091Tests
 
         api.FindItem(key).Assert().Is(sample);
 
-        layer.VerifyAllCalls();
+        layer.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -73,6 +73,6 @@ public static class Issue091Tests
 
         api.FindItem(null).Assert().Is(sample);
 
-        layer.VerifyAllCalls();
+        layer.Assert().Called();
     }
 }

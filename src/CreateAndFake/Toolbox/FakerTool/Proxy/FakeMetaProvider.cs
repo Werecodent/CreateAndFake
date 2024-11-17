@@ -2,7 +2,6 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Toolbox.DuplicatorTool;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.FakerTool.Proxy;
 
@@ -28,8 +27,8 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <summary>Determines behavior when missing set behavior for a call.</summary>
     public bool ThrowByDefault { get; set; } = true;
 
-    /// <inheritdoc cref="IValuer"/>
-    internal IValuer? Valuer { get; set; }
+    /// <inheritdoc cref="FakerOptions"/>
+    internal FakerOptions? Options { get; set; }
 
     /// <inheritdoc cref="FakeMetaProvider"/>
     public FakeMetaProvider() { }
@@ -62,7 +61,7 @@ public sealed class FakeMetaProvider : IDuplicatable
             _behavior.Reverse().Select(t => duplicator.Copy(t)),
             _log.Select(t => duplicator.Copy(t)!))
         {
-            Valuer = duplicator.Copy(Valuer),
+            Options = duplicator.Copy(Options),
             Identifier = Identifier,
             ThrowByDefault = ThrowByDefault,
             _defaultCalls = _defaultCalls
@@ -157,7 +156,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <returns>Faked result previously set up.</returns>
     internal T? CallRet<T>(object instance, string name, Type[] generics, object[] args)
     {
-        CallData data = new(name, generics, args, Valuer);
+        CallData data = new(name, generics, args, Options);
         _log.Add(data);
         _LastCall = Tuple.Create(this, data);
 

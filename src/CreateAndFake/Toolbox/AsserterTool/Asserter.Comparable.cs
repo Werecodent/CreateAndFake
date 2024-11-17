@@ -13,7 +13,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void GreaterThan(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         HandleMathCheck(
             () => value!.CompareTo(target) > 0, "greater than",
@@ -28,7 +28,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void GreaterThanOrEqualTo(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         HandleMathCheck(
             () => value!.CompareTo(target) >= 0, "greater than or equal to",
@@ -43,7 +43,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void GreaterThanOrIs(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Equals(value, target))
@@ -60,7 +60,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void LessThan(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         HandleMathCheck(
             () => value!.CompareTo(target) < 0, "less than",
@@ -75,7 +75,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void LessThanOrEqualTo(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         HandleMathCheck(
             () => value!.CompareTo(target) <= 0, "less than or equal to",
@@ -90,7 +90,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void LessThanOrIs(IComparable? target, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Equals(value, target))
@@ -107,7 +107,7 @@ public partial class Asserter : IComparableAsserter
 
     /// <inheritdoc/>
     public virtual void InRange(IComparable? min, IComparable? max, IComparable? value,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (value == null)
@@ -138,7 +138,7 @@ public partial class Asserter : IComparableAsserter
     /// <returns>Chainer to make additional assertions with.</returns>
     /// <exception cref="AssertException">If <c>value</c> does not match <paramref name="math"/>.</exception>
     private void HandleMathCheck(Func<bool> math, string description,
-        IComparable? target, IComparable? value, AsserterMod optionConfiguration, string? details)
+        IComparable? target, IComparable? value, AsserterMod? optionConfiguration, string? details)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (value == null)

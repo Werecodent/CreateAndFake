@@ -57,7 +57,7 @@ public static class ValueComparerTests
         ValueComparer.Use.Equals(stub, null).Assert().Is(result);
         ValueComparer.Use.Equals(null, stub).Assert().Is(result);
         ValueComparer.Use.Equals((IValueEquatable)null, null).Assert().Is(true);
-        stub.VerifyAllCalls();
+        stub.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -66,7 +66,7 @@ public static class ValueComparerTests
         stub.GetValueHash().SetupReturn(hash, 2);
         ValueComparer.Use.GetHashCode(stub).Assert().Is(hash);
         ValueComparer.Use.GetHashCode((object)stub).Assert().Is(hash);
-        stub.VerifyAllCalls();
+        stub.Assert().Called();
     }
 
     [Fact]

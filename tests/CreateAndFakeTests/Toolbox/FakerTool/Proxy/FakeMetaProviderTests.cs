@@ -25,7 +25,7 @@ public static class FakeMetaProviderTests
             ThrowByDefault = false
         };
 
-        CallData data = new(name, Type.EmptyTypes, [], Tools.Valuer);
+        CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
 
         provider.SetCallBehavior(data, Behavior.None(Times.Once));
         provider.Assert(p => p.Verify()).Throws<FakeVerifyException>();
@@ -48,7 +48,7 @@ public static class FakeMetaProviderTests
             ThrowByDefault = false
         };
 
-        CallData data = new(name, Type.EmptyTypes, [], Tools.Valuer);
+        CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
 
         provider.Verify(0, data);
         provider.Assert(p => p.Verify(1, data)).Throws<FakeVerifyException>();
@@ -91,7 +91,7 @@ public static class FakeMetaProviderTests
     {
         FakeMetaProvider provider = new();
 
-        CallData data = new(name, Type.EmptyTypes, [], Tools.Valuer);
+        CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
         provider.SetCallBehavior(data, Behavior.Returns(""));
 
         provider.Assert(p => p.CallVoid(null, name, Type.EmptyTypes, [])).Throws<InvalidOperationException>();

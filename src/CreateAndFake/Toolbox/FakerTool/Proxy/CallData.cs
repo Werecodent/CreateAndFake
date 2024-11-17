@@ -1,5 +1,4 @@
 ﻿using CreateAndFake.Design;
-using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.FakerTool.Proxy;
 
@@ -7,8 +6,8 @@ namespace CreateAndFake.Toolbox.FakerTool.Proxy;
 /// <param name="methodName"><inheritdoc cref="_methodName" path="/summary"/></param>
 /// <param name="generics"><inheritdoc cref="_generics" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
-/// <param name="valuer"><inheritdoc cref="_valuer" path="/summary"/></param>
-internal sealed class CallData(string methodName, Type[] generics, object?[] args, IValuer? valuer)
+/// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
+internal sealed class CallData(string methodName, Type[] generics, object?[] args, FakerOptions? options)
 {
     /// <summary>Name tied to the call.</summary>
     private readonly string _methodName = methodName ?? throw new ArgumentNullException(nameof(methodName));
@@ -20,7 +19,7 @@ internal sealed class CallData(string methodName, Type[] generics, object?[] arg
     private readonly object?[] _args = args ?? throw new ArgumentNullException(nameof(args));
 
     /// <summary>How to compare call data.</summary>
-    private readonly IValuer? _valuer = valuer;
+    private readonly FakerOptions? _options = options;
 
     /// <summary>Converts arg values to designated Arg matchers.</summary>
     /// <param name="argChanges">Created Args to substitute on the given values.</param>
@@ -82,9 +81,9 @@ internal sealed class CallData(string methodName, Type[] generics, object?[] arg
             {
                 matches &= exp.Matches(inputArgs[i]);
             }
-            else if (_valuer != null)
+            else if (_options?.Valuer != null)
             {
-                matches &= _valuer.Equals(inputArgs[i], _args[i]);
+                matches &= _options.Valuer.Equals(inputArgs[i], _args[i]);
             }
             else
             {

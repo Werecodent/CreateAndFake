@@ -24,7 +24,7 @@ public static class ValueComparer_T_Tests
         ValueComparer<IValueEquatable>.Use.GetHashCode(stub).Assert().Is(hash);
         ValueComparer<IValueEquatable>.Use.GetHashCode([stub]).Assert().IsNot(0);
         ValueComparer<IValueEquatable>.Use.GetHashCode(MapByIndex([stub])).Assert().IsNot(0);
-        stub.VerifyAllCalls();
+        stub.Assert().Called();
     }
 
     [Theory, RandomData]

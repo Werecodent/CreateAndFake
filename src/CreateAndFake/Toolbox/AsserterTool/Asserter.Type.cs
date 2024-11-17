@@ -14,7 +14,7 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Inherits<TChild>(Type? type, AsserterMod optionConfiguration, string? details = null)
+    public virtual void Inherits<TChild>(Type? type, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.Inherits<TChild>())
@@ -33,7 +33,7 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Inherits(Type? child, Type? type, AsserterMod optionConfiguration, string? details = null)
+    public virtual void Inherits(Type? child, Type? type, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.Inherits(child))
@@ -54,7 +54,7 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void InheritedBy<TParent>(Type? type, AsserterMod optionConfiguration, string? details = null)
+    public virtual void InheritedBy<TParent>(Type? type, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.IsInheritedBy<TParent>())
@@ -74,7 +74,7 @@ public partial class Asserter : ITypeAsserter
 
     /// <inheritdoc/>
     public virtual void InheritedBy(Type? parent, Type? type,
-        AsserterMod optionConfiguration, string? details = null)
+        AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.IsInheritedBy(parent))

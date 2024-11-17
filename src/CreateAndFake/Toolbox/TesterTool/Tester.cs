@@ -37,7 +37,7 @@ public class Tester(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        NullGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout);
+        NullGuarder checker = new(new GenericFixer(Options), Options.Randomizer, Options.Asserter, Options.Timeout);
 
         Options.Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{type}'",
             () => checker.PreventsNullRefExceptionOnConstructors(type, true, injectionValues)).Wait();
@@ -77,7 +77,7 @@ public class Tester(TesterOptions options)
     /// <param name="injectionValues">Values to inject into the method.</param>
     public virtual void PreventsNullRefException<T>(T instance, params object[] injectionValues)
     {
-        NullGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout);
+        NullGuarder checker = new(new GenericFixer(Options), Options.Randomizer, Options.Asserter, Options.Timeout);
 
         Options.Limiter.Retry<TimeoutException>($"Null reference check on constructors for type '{typeof(T).Name}'",
             () => checker.PreventsNullRefExceptionOnConstructors(typeof(T), false, injectionValues)).Wait();
@@ -110,7 +110,7 @@ public class Tester(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        MutationGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer),
+        MutationGuarder checker = new(new GenericFixer(Options),
             Options.Randomizer, Options.Duplicator, Options.Asserter, Options.Timeout);
 
         Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{type}'",
@@ -150,7 +150,7 @@ public class Tester(TesterOptions options)
     /// <param name="injectionValues">Values to inject into the method.</param>
     public virtual void PreventsParameterMutation<T>(T instance, params object[] injectionValues)
     {
-        MutationGuarder checker = new(new GenericFixer(Options.Gen, Options.Randomizer),
+        MutationGuarder checker = new(new GenericFixer(Options),
             Options.Randomizer, Options.Duplicator, Options.Asserter, Options.Timeout);
 
         Options.Limiter.Retry<TimeoutException>($"Parameter mutation check on constructors for type '{typeof(T).Name}'",
@@ -174,7 +174,7 @@ public class Tester(TesterOptions options)
     /// <param name="injectionValues">Values to inject into called methods.</param>
     public virtual void PassthroughWithNoExceptions(object instance, params object[] injectionValues)
     {
-        new ExceptionGuarder(new GenericFixer(Options.Gen, Options.Randomizer), Options.Randomizer, Options.Asserter, Options.Timeout)
+        new ExceptionGuarder(new GenericFixer(Options), Options.Randomizer, Options.Asserter, Options.Timeout)
             .CallAllMethods(instance, injectionValues);
     }
 }

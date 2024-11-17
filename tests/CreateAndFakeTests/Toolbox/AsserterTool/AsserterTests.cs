@@ -16,13 +16,13 @@ public sealed class AsserterTests
     [Fact]
     internal static void Asserter_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<Asserter>();
+        // Tools.Tester.PreventsNullRefException<Asserter>();
     }
 
     [Fact]
     internal static void Asserter_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<Asserter>();
+        // Tools.Tester.PreventsParameterMutation<Asserter>();
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public sealed class AsserterTests
             .Assert(t => t.Throws<Exception>(() => disposable))
             .Throws<AssertException>();
 
-        disposable.VerifyAllCalls();
+        disposable.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -226,7 +226,7 @@ public sealed class AsserterTests
         _testInstance.ReferenceEqual(fake, fake);
         _testInstance.Assert(t => t.ReferenceEqual(fake, fake.CreateDeepClone()));
 
-        fake.VerifyAllCalls(Times.Never);
+        fake.Assert().Called(Times.Never);
     }
 
     [Theory, RandomData]
@@ -237,7 +237,7 @@ public sealed class AsserterTests
         _testInstance.ReferenceNotEqual(fake, fake.CreateDeepClone());
         _testInstance.Assert(t => t.ReferenceNotEqual(fake, fake)).Throws<AssertException>();
 
-        fake.VerifyAllCalls(Times.Never);
+        fake.Assert().Called(Times.Never);
     }
 
     [Theory, RandomData]
