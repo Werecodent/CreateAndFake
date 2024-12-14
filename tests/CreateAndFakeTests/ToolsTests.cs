@@ -68,6 +68,7 @@ public static class ToolsTests
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),
+            typeof(ITester)
         ];
 
         foreach (Type type in typeof(Tools).Assembly.GetTypes()

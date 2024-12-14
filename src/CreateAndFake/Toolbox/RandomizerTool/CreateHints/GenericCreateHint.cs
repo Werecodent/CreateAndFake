@@ -79,7 +79,7 @@ public sealed class GenericCreateHint : CreateHint
                 () => Limiter.Few.StallUntil($"Trying arguments of type '{type}' for type '{parent}' [Stall]", () =>
                 {
                     arg = CreateArgViaConstraint(constraints, parent, randomizer);
-                }, isValidArg).Wait()).Wait();
+                }, isValidArg));
         }
 
         return arg;

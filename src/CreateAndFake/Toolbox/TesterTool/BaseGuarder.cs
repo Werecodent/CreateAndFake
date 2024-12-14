@@ -2,27 +2,21 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Toolbox.RandomizerTool;
 
 #pragma warning disable CA1822 // Member does not access instance data and can be marked static
 
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Automates checks.</summary>
-/// <param name="fixer">Handles generic resolution.</param>
-/// <param name="randomizer">Creates objects and populates them with random values.</param>
-/// <param name="timeout">How long to wait for methods to complete.</param>
-internal abstract class BaseGuarder(GenericFixer fixer, IRandomizer randomizer, TimeSpan timeout)
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+internal abstract class BaseGuarder(TesterOptions options)
 {
-    /// <summary>Handles generic resolution.</summary>
-    protected GenericFixer Fixer { get; } = fixer ?? throw new ArgumentNullException(nameof(fixer));
-
-    /// <summary>Creates objects and populates them with random values.</summary>
-    protected IRandomizer Randomizer { get; } = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
+    /// <summary>Configured options for testing.</summary>
+    protected TesterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>How long to wait for methods to complete.</summary>
-    protected TimeSpan Timeout { get; } = (timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
-            ? timeout
+    protected TimeSpan Timeout { get; } = (options.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+            ? options.Timeout
             : TimeSpan.FromMilliseconds(-1);
 
     /// <summary>Gets all testable constructors on a type.</summary>
@@ -55,16 +49,16 @@ internal abstract class BaseGuarder(GenericFixer fixer, IRandomizer randomizer, 
     /// <param name="instance">Instance whose methods to test.</param>
     /// <param name="injectionValues">Values to inject into the method.</param>
     protected void CallAllMethods(MethodBase? testOrigin,
-        ParameterInfo? testParam, object instance, object?[]? injectionValues)
+        ParameterInfo? testParam, object instance, ICollection<object?>? injectionValues)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
-            .Where(m => m.Name is not "Finalize" and not "Dispose")
-            .Where(m => !m.IsFamily)
-            .Select(Fixer.FixMethod))
+                .Where(m => m.Name is not "Finalize" and not "Dispose")
+                .Where(m => !m.IsFamily)
+                .Select(m => GenericFixer.FixMethod(m, options)))
         {
-            object?[] data = Randomizer.CreateFor(method, injectionValues).Args.ToArray();
+            object?[] data = options.Randomizer.CreateFor(method, injectionValues).Args.ToArray();
             try
             {
                 Disposer.Cleanup(RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!));
@@ -92,7 +86,7 @@ internal abstract class BaseGuarder(GenericFixer fixer, IRandomizer randomizer, 
                 object result = call.Invoke();
                 if (result is IEnumerable collection)
                 {
-                    // Required to run through yield return methods.
+                    // Required to execute yield return methods.
                     return collection.OfType<object>().ToArray();
                 }
                 else
@@ -120,20 +114,26 @@ internal abstract class BaseGuarder(GenericFixer fixer, IRandomizer randomizer, 
     }
 
     /// <summary>Checks data for disposables and disposes them.</summary>
-    /// <param name="injectedValues">Injected values to ignore.</param>
     /// <param name="data">Data to check and dispose.</param>
-    protected void DisposeAllButInjected(object?[]? injectedValues, params IEnumerable<object?>? data)
+    /// <param name="injectedValues">Injected values to ignore.</param>
+    protected void DisposeAllButInjected(object? data, IEnumerable<object?>? injectedValues)
     {
-        foreach (object? item in data ?? [])
+        if (data is IDictionary asDict)
         {
-            if (item is object?[] nested)
+            DisposeAllButInjected(asDict.Keys, injectedValues);
+            DisposeAllButInjected(asDict.Values, injectedValues);
+        }
+        else if (data is IEnumerable asEnum && asEnum is not string)
+        {
+            IEnumerator gen = asEnum.GetEnumerator();
+            while (gen.MoveNext())
             {
-                DisposeAllButInjected(injectedValues, nested);
+                DisposeAllButInjected(gen.Current, injectedValues);
             }
-            else if (!(injectedValues?.Any(v => ReferenceEquals(item, v)) ?? false))
-            {
-                Disposer.Cleanup(item);
-            }
+        }
+        else if (!(injectedValues?.Any(v => ReferenceEquals(data, v)) ?? false))
+        {
+            Disposer.Cleanup(data);
         }
     }
 

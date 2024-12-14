@@ -11,7 +11,7 @@ public interface IMutator
 
     /// <typeparam name="T"><c>Type</c> to create.</typeparam>
     /// <inheritdoc cref="Variant"/>
-    T Variant<T>(T instance, params T?[]? extraInstances);
+    T Variant<T>(T instance, params IEnumerable<T?>? extraInstances);
 
     /// <summary>Creates an object with different values.</summary>
     /// <param name="type"><c>Type</c> to create.</param>
@@ -20,11 +20,11 @@ public interface IMutator
     /// <returns>
     ///     The created object that differs from <paramref name="instance"/> and <paramref name="extraInstances"/>.
     /// </returns>
-    object Variant(Type type, object? instance, params object?[]? extraInstances);
+    object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances);
 
     /// <typeparam name="T"><c>Type</c> to create.</typeparam>
     /// <inheritdoc cref="Unique"/>
-    T Unique<T>(T instance, params T?[]? extraInstances);
+    T Unique<T>(T instance, params IEnumerable<T?>? extraInstances);
 
     /// <summary>Creates an object with completely different values.</summary>
     /// <param name="type"><c>Type</c> to create.</param>
@@ -34,7 +34,7 @@ public interface IMutator
     ///     The created object that differs from <paramref name="instance"/> and <paramref name="extraInstances"/>.
     /// </returns>
     /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    object Unique(Type type, object? instance, params object?[]? extraInstances);
+    object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances);
 
     /// <summary>Attempts to mutate an object.</summary>
     /// <param name="instance">Object to modify.</param>

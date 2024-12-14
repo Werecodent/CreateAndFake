@@ -32,7 +32,7 @@ public static class Tools
     public static IMutator Mutator => Source.Mutator;
 
     /// <inheritdoc cref="ToolSet.Asserter"/>
-    public static Asserter Asserter => Source.Asserter;
+    public static IAsserter Asserter => Source.Asserter;
 
     /// <inheritdoc cref="ToolSet.Duplicator"/>
     public static IDuplicator Duplicator => Source.Duplicator;

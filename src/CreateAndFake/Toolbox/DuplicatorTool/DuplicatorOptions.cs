@@ -8,7 +8,7 @@ namespace CreateAndFake.Toolbox.DuplicatorTool;
 public record DuplicatorOptions : IToolOptions
 {
     /// <summary>Verifies duplicates are valid.</summary>
-    public required Asserter Asserter { get; init; }
+    public required IAsserter Asserter { get; init; }
 
     /// <summary>If the default set of hints should be used in duplication.</summary>
     public bool IncludeDefaultHints { get; init; } = true;

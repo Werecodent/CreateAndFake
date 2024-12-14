@@ -24,7 +24,7 @@ public sealed class ToolSet(
     IFaker faker,
     IRandomizer randomizer,
     IMutator mutator,
-    Asserter asserter,
+    IAsserter asserter,
     IDuplicator duplicator,
     Tester tester)
 {
@@ -41,7 +41,7 @@ public sealed class ToolSet(
         IFaker faker = new Faker(new FakerOptions { Valuer = valuer });
         IRandomizer randomizer = new Randomizer(new RandomizerOptions { Gen = gen, Faker = faker });
         IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer });
-        Asserter asserter = new(new AsserterOptions { Gen = gen, Valuer = valuer });
+        IAsserter asserter = new Asserter(new AsserterOptions { Gen = gen, Valuer = valuer });
         IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter });
         Tester tester = new(new TesterOptions { Gen = gen, Randomizer = randomizer, Duplicator = duplicator, Asserter = asserter });
 
@@ -63,8 +63,8 @@ public sealed class ToolSet(
     /// <inheritdoc cref="IMutator"/>
     public IMutator Mutator { get; } = mutator;
 
-    /// <inheritdoc cref="Toolbox.AsserterTool.Asserter"/>
-    public Asserter Asserter { get; } = asserter;
+    /// <inheritdoc cref="IAsserter"/>
+    public IAsserter Asserter { get; } = asserter;
 
     /// <inheritdoc cref="IDuplicator"/>
     public IDuplicator Duplicator { get; } = duplicator;

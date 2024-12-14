@@ -73,7 +73,7 @@ public partial class Asserter : IDelegateAsserter
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        string errorMessage = $"Expected exception of type '{typeof(T).FullName}'.";
+        string errorMessage = $"Expected exception of type '{typeof(T).FullName}' but received: ";
         try
         {
             if (behavior is Action action)
@@ -97,15 +97,15 @@ public partial class Asserter : IDelegateAsserter
             }
             else
             {
-                throw new AssertException(errorMessage, details, localOptions.Gen.InitialSeed, e);
+                throw new AssertException(errorMessage + e.GetType().Name, details, localOptions.Gen.InitialSeed, e);
             }
         }
         catch (Exception e)
         {
-            throw new AssertException(errorMessage, details, localOptions.Gen.InitialSeed, e);
+            throw new AssertException(errorMessage + e.GetType().Name, details, localOptions.Gen.InitialSeed, e);
         }
 
-        throw new AssertException(errorMessage, details, localOptions.Gen.InitialSeed);
+        throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
     /// <inheritdoc/>
@@ -150,7 +150,7 @@ public partial class Asserter : IDelegateAsserter
             }
             else
             {
-                Disposer.Cleanup(((dynamic?)behavior)?.Invoke());
+                Disposer.Cleanup([((dynamic?)behavior)?.Invoke()]);
             }
         }
         catch (Exception e)

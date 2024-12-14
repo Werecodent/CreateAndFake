@@ -7,6 +7,6 @@ public static class Issue107Tests
     [Fact]
     internal static void Issue107_SelfReferenceGenericMustHaveSubclass()
     {
-        typeof(SelfReferenceContainer<>).Assert(c => c.CreateRandomInstance()).Throws<InvalidOperationException>();
+        typeof(SelfReferenceContainer<>).Assert(c => c.CreateRandomInstance()).Throws<TimeoutException>();
     }
 }

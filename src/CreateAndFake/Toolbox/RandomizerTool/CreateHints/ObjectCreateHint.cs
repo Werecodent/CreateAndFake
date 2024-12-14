@@ -23,8 +23,7 @@ public sealed class ObjectCreateHint : CreateHint
         object? result = (type == null) ? null : Limiter
             .Dozen
             .Attempt($"Create object of type '{type}'",
-                () => Create(FindTypeToCreate(type, randomizer), type, randomizer))
-            .Result;
+                () => Create(FindTypeToCreate(type, randomizer), type, randomizer));
 
         return (result != null, result);
     }

@@ -1,27 +1,12 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
-using CreateAndFake.Toolbox.AsserterTool;
-using CreateAndFake.Toolbox.RandomizerTool;
 
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Automates null reference guard checks.</summary>
-internal sealed class NullGuarder : BaseGuarder
+/// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
+internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <summary>Handles common test scenarios.</summary>
-    private readonly Asserter _asserter;
-
-    /// <summary>Initializes a new instance of the <see cref="NullGuarder"/> class.</summary>
-    /// <param name="fixer">Handles generic resolution.</param>
-    /// <param name="randomizer">Creates objects and populates them with random values.</param>
-    /// <param name="asserter">Handles common test scenarios.</param>
-    /// <param name="timeout">How long to wait for methods to complete.</param>
-    internal NullGuarder(GenericFixer fixer, IRandomizer randomizer, Asserter asserter, TimeSpan timeout)
-        : base(fixer, randomizer, timeout)
-    {
-        _asserter = asserter ?? throw new ArgumentNullException(nameof(asserter));
-    }
-
     /// <summary>
     ///     Verifies nulls are guarded on constructors.
     ///     Tests each nullable parameter possible with null.
@@ -31,7 +16,7 @@ internal sealed class NullGuarder : BaseGuarder
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
     /// <param name="injectionValues">Values to inject into the method.</param>
     internal void PreventsNullRefExceptionOnConstructors(
-        Type type, bool callAllMethods, params object[] injectionValues)
+        Type type, bool callAllMethods, ICollection<object?>? injectionValues)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
@@ -48,14 +33,14 @@ internal sealed class NullGuarder : BaseGuarder
     /// </summary>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="injectionValues">Values to inject into the method.</param>
-    internal void PreventsNullRefExceptionOnMethods(object instance, params object?[]? injectionValues)
+    internal void PreventsNullRefExceptionOnMethods(object instance, ICollection<object?>? injectionValues)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
             .Where(m => m.Name is not "Finalize" and not "Dispose"))
         {
-            PreventsNullRefException(instance, Fixer.FixMethod(method), false, injectionValues);
+            PreventsNullRefException(instance, GenericFixer.FixMethod(method, Options), false, injectionValues);
         }
     }
 
@@ -68,13 +53,13 @@ internal sealed class NullGuarder : BaseGuarder
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
     /// <param name="injectionValues">Values to inject into the method.</param>
     internal void PreventsNullRefExceptionOnStatics(
-        Type type, bool callAllMethods, params object[] injectionValues)
+        Type type, bool callAllMethods, ICollection<object?>? injectionValues)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
-            PreventsNullRefException(null, Fixer.FixMethod(method),
+            PreventsNullRefException(null, GenericFixer.FixMethod(method, Options),
                 callAllMethods && method.ReturnType.Inherits(type), injectionValues);
         }
     }
@@ -85,13 +70,13 @@ internal sealed class NullGuarder : BaseGuarder
     /// <param name="callAllMethods">If all instance methods should be called after the method.</param>
     /// <param name="injectionValues">Values to inject into the method.</param>
     private void PreventsNullRefException(object? instance,
-        MethodBase method, bool callAllMethods, object?[]? injectionValues)
+        MethodBase method, bool callAllMethods, ICollection<object?>? injectionValues)
     {
         object?[]? data = null;
         object? result = null;
         try
         {
-            data = Randomizer.CreateFor(method, injectionValues).Args.ToArray();
+            data = Options.Randomizer.CreateFor(method, injectionValues).Args.ToArray();
 
             for (int i = 0; i < data.Length; i++)
             {
@@ -123,7 +108,8 @@ internal sealed class NullGuarder : BaseGuarder
         }
         finally
         {
-            DisposeAllButInjected(injectionValues, data, result);
+            DisposeAllButInjected(data, injectionValues);
+            DisposeAllButInjected(result, injectionValues);
         }
     }
 
@@ -137,7 +123,7 @@ internal sealed class NullGuarder : BaseGuarder
 
         string details = $"on method '{testOrigin.Name}' with parameter '{testParam.Name}'";
 
-        _asserter.Is(false, taskException is NullReferenceException,
+        Options.Asserter.Is(false, taskException is NullReferenceException,
             $"Null reference exception encountered {details}.");
     }
 }

@@ -6,17 +6,21 @@ using CreateAndFake.Design.Randomization;
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Handles generic resolution.</summary>
-internal sealed class GenericFixer(TesterOptions options)
+internal static class GenericFixer
 {
     /// <summary>Defines any generics in a method.</summary>
     /// <param name="method">Method to fix.</param>
     /// <returns>Method with all generics defined.</returns>
-    internal MethodInfo FixMethod(MethodInfo method)
+    internal static MethodInfo FixMethod(MethodInfo method, TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
+        ArgumentGuard.ThrowIfNull(options, nameof(options));
 
         return method.ContainsGenericParameters
-            ? method.MakeGenericMethod(method.GetGenericArguments().Select(arg => CreateArg(arg, method)).ToArray())
+            ? method.MakeGenericMethod(method
+                .GetGenericArguments()
+                .Select(arg => CreateArg(arg, method, options))
+                .ToArray())
             : method;
     }
 
@@ -24,7 +28,7 @@ internal sealed class GenericFixer(TesterOptions options)
     /// <param name="type">Generic arg to create.</param>
     /// <param name="method">Method with the generics.</param>
     /// <returns>Created arg <c>Type</c>.</returns>
-    private Type CreateArg(Type type, MethodInfo method)
+    private static Type CreateArg(Type type, MethodInfo method, TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
@@ -61,10 +65,12 @@ internal sealed class GenericFixer(TesterOptions options)
         {
             Limiter.Few.Retry(
                 $"Creating generic arguments of type '{type}' for method '{method}' [Retry]",
-                () => Limiter.Few.StallUntil($"Trying arguments of type '{type}' for method '{method}' [Stall]", () =>
-                {
-                    arg = CreateArgViaConstraint(constraints);
-                }, isValidArg).Wait()).Wait();
+                () => Limiter.Few.StallUntil(
+                    $"Trying arguments of type '{type}' for method '{method}' [Stall]",
+                    () =>
+                    {
+                        arg = CreateArgViaConstraint(constraints, options);
+                    }, isValidArg));
         }
 
         return arg;
@@ -73,7 +79,7 @@ internal sealed class GenericFixer(TesterOptions options)
     /// <summary>Creates an arg type from the given constraints.</summary>
     /// <param name="constraints">Constraints limiting the arg type.</param>
     /// <returns>Created arg <c>Type</c>.</returns>
-    private Type CreateArgViaConstraint(Type[] constraints)
+    private static Type CreateArgViaConstraint(Type[] constraints, TesterOptions options)
     {
         Type constraint = options.Gen.NextItem(constraints);
 

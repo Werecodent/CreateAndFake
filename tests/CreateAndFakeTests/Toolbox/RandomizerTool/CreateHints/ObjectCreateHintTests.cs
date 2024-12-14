@@ -32,9 +32,9 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
     }
 
     [Fact]
-    public async Task Create_RetriesUntilGoodSample()
+    public void Create_RetriesUntilGoodSample()
     {
-        await Limiter.Dozen.Repeat("",
-            () => typeof(IIsGoodOrBadSample).CreateRandomInstance().Assert().IsNot(null)).ConfigureAwait(true);
+        Limiter.Dozen.Repeat("",
+            () => typeof(IIsGoodOrBadSample).CreateRandomInstance().Assert().IsNot(null));
     }
 }

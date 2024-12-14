@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Toolbox.AsserterTool;
 
 namespace CreateAndFakeTests.IssueReplication;
 
@@ -17,6 +18,6 @@ public static class Issue015Tests
     [Fact]
     internal static void Issue015_GuardsParameterMutation()
     {
-        typeof(Sample).Assert(t => Tools.Tester.PreventsParameterMutation(t)).Throws<AggregateException>();
+        typeof(Sample).Assert(t => Tools.Tester.PreventsParameterMutation(t)).Throws<AssertException>();
     }
 }

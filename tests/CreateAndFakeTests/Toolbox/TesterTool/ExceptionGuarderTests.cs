@@ -35,14 +35,13 @@ public static class ExceptionGuarderTests
     }
 
     [Theory, RandomData]
-    internal static void HandleCheckException_UsesAsserterFail(
-        GenericFixer fixer, [Fake] Asserter asserter, TimeSpan timeout)
+    internal static void HandleCheckException_UsesAsserterFail([Fake] IAsserter asserter)
     {
         asserter.ToFake().Setup(
             d => d.Fail(Arg.Any<Exception>(), Arg.Any<string>()),
             Behavior.None(Times.Once));
 
-        new ExceptionGuarder(fixer, Tools.Randomizer, asserter, timeout)
+        new ExceptionGuarder(Tools.Tester.Options with { Asserter = asserter })
             .CallAllMethods(new MethodThrowsSample(), null);
 
         asserter.Assert().Called();

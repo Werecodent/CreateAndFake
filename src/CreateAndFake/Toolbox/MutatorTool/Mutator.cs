@@ -12,15 +12,15 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     public MutatorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public T Variant<T>(T instance, params T?[]? extraInstances)
+    public T Variant<T>(T instance, params IEnumerable<T?>? extraInstances)
     {
-        return (T)Variant(typeof(T), instance, extraInstances?.Cast<object>().ToArray());
+        return (T)Variant(typeof(T), instance, extraInstances?.Cast<object>());
     }
 
     /// <inheritdoc/>
-    public object Variant(Type type, object? instance, params object?[]? extraInstances)
+    public object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
-        IEnumerable<object?> values = (extraInstances ?? Enumerable.Empty<object?>()).Prepend(instance);
+        object?[] values = (extraInstances ?? []).Prepend(instance).ToArray();
         try
         {
             return Options.Limiter.StallUntil(
@@ -37,7 +37,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                         Disposer.Cleanup(result);
                         return false;
                     }
-                }).Result.Last();
+                }).Last();
         }
         catch (AggregateException e)
         {
@@ -46,13 +46,13 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     }
 
     /// <inheritdoc/>
-    public T Unique<T>(T instance, params T?[]? extraInstances)
+    public T Unique<T>(T instance, params IEnumerable<T?>? extraInstances)
     {
         return (T)Unique(typeof(T), instance, extraInstances);
     }
 
     /// <inheritdoc/>
-    public object Unique(Type type, object? instance, params object?[]? extraInstances)
+    public object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
         ContentMap[] maps = (extraInstances ?? [])
             .Prepend(instance)
@@ -76,7 +76,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                         Disposer.Cleanup(result);
                         return false;
                     }
-                }).Result.Last();
+                }).Last();
         }
         catch (AggregateException e)
         {

@@ -9,12 +9,10 @@ namespace CreateAndFakeTests.Toolbox.TesterTool;
 public static class NullGuarderTests
 {
     private static readonly NullGuarder _ShortTestInstance = new(
-        new GenericFixer(Tools.Tester.Options),
-        Tools.Randomizer, Tools.Asserter, new TimeSpan(0, 0, 0, 0, 100));
+        Tools.Tester.Options with { Timeout = new TimeSpan(0, 0, 0, 0, 100) });
 
     private static readonly NullGuarder _LongTestInstance = new(
-        new GenericFixer(Tools.Tester.Options),
-        Tools.Randomizer, Tools.Asserter, new TimeSpan(0, 0, 10));
+        Tools.Tester.Options with { Timeout = new TimeSpan(0, 0, 10) });
 
     [Fact]
     internal static void NullGuarder_GuardsNulls()
@@ -32,7 +30,7 @@ public static class NullGuarderTests
     internal static void NullCheck_TimesOut()
     {
         _ShortTestInstance
-            .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false))
+            .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false, []))
             .Throws<TimeoutException>();
     }
 
@@ -40,7 +38,7 @@ public static class NullGuarderTests
     internal static void NullCheck_NullReferenceThrows()
     {
         _ShortTestInstance
-            .Assert(t => t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true))
+            .Assert(t => t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true, []))
             .Throws<AssertException>();
     }
 
@@ -48,13 +46,13 @@ public static class NullGuarderTests
     internal static void PreventsNullRefException_InjectsMultipleValues(
         Fake<IOnlyMockSample> fake1, Fake<IOnlyMockSample> fake2)
     {
-        Tools.Tester.PreventsNullRefException<InjectMockSample>(fake1, fake2);
+        Tools.Tester.PreventsNullRefException<InjectMockSample>(opt => opt with { InjectionValues = [fake1, fake2] });
     }
 
     [Theory, RandomData]
     internal static void PreventsNullRefException_InjectsWithMethods(Fake<IOnlyMockSample> fake)
     {
-        Tools.Tester.PreventsNullRefException<MockMethodPassOnly>(fake);
+        Tools.Tester.PreventsNullRefException<MockMethodPassOnly>(opt => opt with { InjectionValues = [fake] });
     }
 
     [Fact]
@@ -71,12 +69,6 @@ public static class NullGuarderTests
         Tools.Tester.PreventsNullRefException<StatelessSample>();
     }
 
-    [Fact]
-    internal static void PreventsNullRefException_NullInjectionsFine()
-    {
-        Tools.Tester.PreventsNullRefException<StatelessSample>((object[])null);
-    }
-
     [Theory, RandomData]
     internal static void PreventsNullRefExceptionOnConstructors_Disposes([Stub] IDisposable disposable)
     {
@@ -86,7 +78,7 @@ public static class NullGuarderTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = disposable.ToFake();
 
-            _LongTestInstance.PreventsNullRefExceptionOnConstructors(typeof(MockDisposableSample), true);
+            _LongTestInstance.PreventsNullRefExceptionOnConstructors(typeof(MockDisposableSample), true, []);
             Tools.Asserter.Is(1, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());
@@ -103,7 +95,7 @@ public static class NullGuarderTests
             MockDisposableSample._Fake = disposable.ToFake();
 
             using MockDisposableSample sample = new(null);
-            _LongTestInstance.PreventsNullRefExceptionOnMethods(sample);
+            _LongTestInstance.PreventsNullRefExceptionOnMethods(sample, []);
             Tools.Asserter.Is(0, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());

@@ -16,7 +16,7 @@ public record MutatorOptions : IToolOptions
     public required IValuer Valuer { get; init; }
 
     /// <summary>Limits attempts at creating variants.</summary>
-    public Limiter Limiter { get; init; } = Limiter.Dozen;
+    public Limiter Limiter { get; init; } = Limiter.Score;
 
     /// <summary>Types with too small of range for unique randomization.</summary>
     public FrozenSet<Type> UniqueIgnoredTypes { get; init; } = FrozenSet.ToFrozenSet([

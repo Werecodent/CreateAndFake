@@ -2,7 +2,7 @@
 
 namespace CreateAndFake.Toolbox.AsserterTool;
 
-/// <summary>Exception for a failed <see cref="Asserter"/> case.</summary>
+/// <summary>Exception for a failed <see cref="IAsserter"/> case.</summary>
 [Serializable, KnownType(typeof(Exception)), KnownType(typeof(Exception[]))]
 public sealed class AssertException : Exception
 {

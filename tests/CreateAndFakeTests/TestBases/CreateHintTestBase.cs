@@ -27,7 +27,8 @@ public abstract class CreateHintTestBase<T>(
     [Fact]
     public void CreateHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(TestInstance, Tools.Randomizer.Options);
+        Tools.Tester.PreventsNullRefException(
+            TestInstance, opt => opt with { InjectionValues = [Tools.Randomizer.Options] });
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

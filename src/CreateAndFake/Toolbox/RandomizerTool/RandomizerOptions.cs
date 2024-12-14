@@ -17,7 +17,7 @@ public record RandomizerOptions : IToolOptions
     public required IFaker Faker { get; init; }
 
     /// <summary>Limits attempts at matching conditions.</summary>
-    public Limiter Limiter { get; init; } = Limiter.Dozen;
+    public Limiter Limiter { get; init; } = Limiter.Score;
 
     /// <summary>Inclusive minimum size for created collections.</summary>
     public int CollectionMinSize { get; init; } = 1;

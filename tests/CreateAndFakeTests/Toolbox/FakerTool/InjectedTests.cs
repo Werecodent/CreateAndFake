@@ -9,13 +9,13 @@ public static class InjectedTests
     [Theory, RandomData]
     internal static void Injected_GuardsNulls(Injected<InjectSample> sample)
     {
-        Tools.Tester.PreventsNullRefException(sample, sample.Fakes);
+        Tools.Tester.PreventsNullRefException(sample, opt => opt with { InjectionValues = [sample.Fakes] });
     }
 
     [Theory, RandomData]
     internal static void Injected_NoParameterMutation(Injected<InjectSample> sample)
     {
-        Tools.Tester.PreventsParameterMutation(sample, sample.Fakes);
+        Tools.Tester.PreventsParameterMutation(sample, opt => opt with { InjectionValues = [sample.Fakes] });
     }
 
     [Theory, RandomData]

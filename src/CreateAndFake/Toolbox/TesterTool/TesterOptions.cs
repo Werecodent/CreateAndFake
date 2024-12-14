@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
@@ -20,11 +21,23 @@ public record TesterOptions : IToolOptions
     public required IDuplicator Duplicator { get; init; }
 
     /// <summary>Handles common test scenarios.</summary>
-    public required Asserter Asserter { get; init; }
+    public required IAsserter Asserter { get; init; }
 
     /// <summary>Retries tests if timeout is reached.</summary>
     public Limiter Limiter { get; init; } = Limiter.Dozen;
 
     /// <summary>How long to wait for tests to complete.</summary>
     public TimeSpan Timeout { get; init; } = new(0, 0, 3);
+
+    /// <summary>Values to inject into called methods.</summary>
+    public ImmutableArray<object?> InjectionValues { get; init; } = [];
+
+    /// <summary>If constructors are included when running tests on classes.</summary>
+    public bool IncludeConstructors { get; init; } = true;
+
+    /// <summary>If class methods are included when running tests on classes.</summary>
+    public bool IncludeInstanceMethods { get; init; } = true;
+
+    /// <summary>If static methods are included when running tests on classes.</summary>
+    public bool IncludeStaticMethods { get; init; } = true;
 }

@@ -110,12 +110,12 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
 
     /// <summary>Verifies backup stumble behavior works.</summary>
     [Fact]
-    public async Task Next_StumbleWorks()
+    public void Next_StumbleWorks()
     {
         int min = int.MinValue / 2 - 1;
         int max = int.MaxValue / 2 + 1;
 
-        await Limiter.Myriad.Repeat("Testing stumble behavior.", () =>
+        Limiter.Myriad.Repeat("Testing stumble behavior.", () =>
         {
             _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
         });

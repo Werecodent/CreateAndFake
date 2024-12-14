@@ -89,28 +89,30 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                         Disposer.Cleanup(result);
                         return false;
                     }
-                }).Result.Last()!;
+                }).Last()!;
         }
-        catch (AggregateException e)
+        catch (Exception e)
         {
-            if (e.InnerException is InsufficientExecutionStackException)
+            Exception error = (e is AggregateException agg) ? agg.InnerException ?? e : e;
+
+            if (error is InsufficientExecutionStackException)
             {
                 throw new InsufficientExecutionStackException(
                     $"Ran into infinite generation trying to randomize type '{type}'.");
             }
-            else if (e.InnerException is TimeoutException)
+            else if (error is TimeoutException)
             {
                 throw new TimeoutException(
-                    $"Could not create instance of type '{type}' matching condition.", e);
+                    $"Could not create instance of type '{type}' matching condition.", error);
             }
-            else if (e.InnerException is NotSupportedException)
+            else if (error is NotSupportedException)
             {
-                throw e.InnerException;
+                throw error;
             }
             else
             {
                 throw new InvalidOperationException(
-                    $"Encountered issue creating instance of type '{type}'.", e);
+                    $"Encountered issue creating instance of type '{type}'.", error);
             }
         }
     }
