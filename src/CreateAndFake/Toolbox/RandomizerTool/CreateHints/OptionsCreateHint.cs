@@ -13,7 +13,7 @@ public sealed class OptionsCreateHint : CreateHint<RandomizerOptions>
 
         return randomizer.Options with
         {
-            Gen = new FastRandom(),
+            Gen = randomizer.Create<SeededRandom>(),
             CollectionMinSize = randomizer.Options.Gen.Next(0, 2),
             CollectionMaxSize = randomizer.Options.Gen.Next(0, 5),
             StringMinSize = randomizer.Options.Gen.Next(0, 4),

@@ -108,8 +108,14 @@ internal abstract class BaseGuarder(TesterOptions options)
                 actual = ex.InnerException!;
             }
 
-            HandleCheckException(testOrigin, testParam, actual);
-            return null;
+            if (HandleCheckException(testOrigin, testParam, actual))
+            {
+                return null;
+            }
+            else
+            {
+                throw actual;
+            }
         }
     }
 
@@ -141,7 +147,8 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="taskException">Exception encountered.</param>
-    protected abstract void HandleCheckException(MethodBase testOrigin,
+    /// <returns>If the exception is handled and should not be rethrown.</returns>
+    protected abstract bool HandleCheckException(MethodBase testOrigin,
         ParameterInfo? testParam, Exception taskException);
 }
 

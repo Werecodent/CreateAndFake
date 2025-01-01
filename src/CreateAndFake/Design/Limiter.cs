@@ -27,8 +27,12 @@ public sealed class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
     /// <summary>Instance that defaults to a thousand attempts.</summary>
     public static Limiter Myriad { get; } = new Limiter(1000);
 
-    /// <summary>Instance that defaults to half a second with a small delay.</summary>
+    /// <summary>Instance that defaults to 25 ms with a minimal delay.</summary>
     public static Limiter Quick { get; } = new Limiter(
+        new TimeSpan(0, 0, 0, 0, 25), new TimeSpan(0, 0, 0, 0, 1));
+
+    /// <summary>Instance that defaults to half a second with a small delay.</summary>
+    public static Limiter Fast { get; } = new Limiter(
         new TimeSpan(0, 0, 0, 0, 500), new TimeSpan(0, 0, 0, 0, 20));
 
     /// <summary>Instance that defaults to five seconds with a large delay.</summary>

@@ -52,8 +52,7 @@ public sealed class CollectionCopyHint : CopyHint<IEnumerable>
         Type type = source.GetType();
         Type? genericType = type.AsGenericType();
 
-        object?[] data = CopyContentsHelper(source, duplicator,
-            _ReverseCases.Contains(genericType ?? type));
+        object?[] data = CopyContentsHelper(source, duplicator, _ReverseCases.Contains(genericType ?? type));
 
         if (genericType != null)
         {

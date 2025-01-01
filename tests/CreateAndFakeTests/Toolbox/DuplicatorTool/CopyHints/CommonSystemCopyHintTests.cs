@@ -6,7 +6,7 @@ namespace CreateAndFakeTests.Toolbox.DuplicatorTool.CopyHints;
 
 public sealed class CommonSystemCopyHintTests : CopyHintTestBase<CommonSystemCopyHint>
 {
-    private static readonly Type[] _ValidTypes = [typeof(TimeSpan), typeof(WeakReference), typeof(Uri)];
+    private static readonly Type[] _ValidTypes = [typeof(TimeSpan), typeof(Uri)];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
@@ -19,5 +19,16 @@ public sealed class CommonSystemCopyHintTests : CopyHintTestBase<CommonSystemCop
 
         result.Item1.Assert().Is(true);
         result.Item2.Assert().ReferenceEqual(data);
+    }
+
+    [Theory, RandomData]
+    internal static void TryCopy_HandlesWeakReference(string data)
+    {
+        WeakReference original = new(data);
+
+        (bool, object) result = new CommonSystemCopyHint().TryCopy(original, CreateChainer());
+
+        result.Item1.Assert().Is(true);
+        result.Item2.Assert().Is(original);
     }
 }

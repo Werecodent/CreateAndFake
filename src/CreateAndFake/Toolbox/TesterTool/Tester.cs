@@ -7,7 +7,7 @@ namespace CreateAndFake.Toolbox.TesterTool;
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
-public class Tester(TesterOptions options)
+public class Tester(TesterOptions options) : ITester
 {
     /// <inheritdoc/>
     public TesterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
@@ -28,36 +28,27 @@ public class Tester(TesterOptions options)
 
         if (localOptions.IncludeConstructors)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on constructors for type '{type}'",
-                () => checker.PreventsNullRefExceptionOnConstructors(type, true, localOptions.InjectionValues));
+            checker.PreventsNullRefExceptionOnConstructors(type, true, localOptions.InjectionValues);
         }
 
         if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on methods for type '{type}'",
-                () =>
-                {
-                    object? instance = (localOptions.InjectionValues.Length > 0)
-                        ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
-                        : Options.Randomizer.Create(type);
-                    try
-                    {
-                        checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues);
-                    }
-                    finally
-                    {
-                        Disposer.Cleanup(instance);
-                    }
-                });
+            object? instance = (localOptions.InjectionValues.Length > 0)
+                ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
+                : Options.Randomizer.Create(type);
+            try
+            {
+                checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues);
+            }
+            finally
+            {
+                Disposer.Cleanup(instance);
+            }
         }
 
         if (localOptions.IncludeStaticMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on static methods for type '{type}'",
-                () => checker.PreventsNullRefExceptionOnStatics(type, true, localOptions.InjectionValues));
+            checker.PreventsNullRefExceptionOnStatics(type, true, localOptions.InjectionValues);
         }
     }
 
@@ -69,21 +60,15 @@ public class Tester(TesterOptions options)
 
         if (localOptions.IncludeConstructors)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on constructors for type '{typeof(T).Name}'",
-                () => checker.PreventsNullRefExceptionOnConstructors(typeof(T), false, localOptions.InjectionValues));
+            checker.PreventsNullRefExceptionOnConstructors(typeof(T), false, localOptions.InjectionValues);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on methods for type '{typeof(T).Name}'",
-                () => checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues));
+            checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Null reference check on static methods for type '{typeof(T).Name}'",
-                () => checker.PreventsNullRefExceptionOnStatics(typeof(T), false, localOptions.InjectionValues));
+            checker.PreventsNullRefExceptionOnStatics(typeof(T), false, localOptions.InjectionValues);
         }
     }
 
@@ -103,36 +88,27 @@ public class Tester(TesterOptions options)
 
         if (localOptions.IncludeConstructors)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on constructors for type '{type}'",
-                () => checker.PreventsMutationOnConstructors(type, true, localOptions.InjectionValues));
+            checker.PreventsMutationOnConstructors(type, true, localOptions.InjectionValues);
         }
 
         if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on methods for type '{type}'",
-                () =>
-                {
-                    object? instance = (localOptions.InjectionValues.Length > 0)
-                        ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
-                        : Options.Randomizer.Create(type);
-                    try
-                    {
-                        checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues);
-                    }
-                    finally
-                    {
-                        Disposer.Cleanup(instance);
-                    }
-                });
+            object? instance = (localOptions.InjectionValues.Length > 0)
+                ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
+                : Options.Randomizer.Create(type);
+            try
+            {
+                checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues);
+            }
+            finally
+            {
+                Disposer.Cleanup(instance);
+            }
         }
 
         if (localOptions.IncludeStaticMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on static methods for type '{type}'",
-                () => checker.PreventsMutationOnStatics(type, true, localOptions.InjectionValues));
+            checker.PreventsMutationOnStatics(type, true, localOptions.InjectionValues);
         }
     }
 
@@ -144,21 +120,15 @@ public class Tester(TesterOptions options)
 
         if (localOptions.IncludeConstructors)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on constructors for type '{typeof(T).Name}'",
-                () => checker.PreventsMutationOnConstructors(typeof(T), false, localOptions.InjectionValues));
+            checker.PreventsMutationOnConstructors(typeof(T), false, localOptions.InjectionValues);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on methods for type '{typeof(T).Name}'",
-                () => checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues));
+            checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            Options.Limiter.Retry<TimeoutException>(
-                $"Parameter mutation check on static methods for type '{typeof(T).Name}'",
-                () => checker.PreventsMutationOnStatics(typeof(T), false, localOptions.InjectionValues));
+            checker.PreventsMutationOnStatics(typeof(T), false, localOptions.InjectionValues);
         }
     }
 

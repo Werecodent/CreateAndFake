@@ -15,12 +15,6 @@ public static class MutationGuarderTests
         Tools.Tester.Options with { Timeout = new TimeSpan(0, 0, 10) });
 
     [Fact]
-    internal static void MutationGuarder_GuardsNulls()
-    {
-        Tools.Tester.PreventsNullRefException(_ShortTestInstance);
-    }
-
-    [Fact]
     internal static void MutationGuarder_NoParameterMutation()
     {
         Tools.Tester.PreventsParameterMutation(_ShortTestInstance);

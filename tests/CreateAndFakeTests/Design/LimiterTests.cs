@@ -268,7 +268,7 @@ public static class LimiterTests
             .Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)))
             .Throws<TimeoutException>();
 
-        Limiter.Quick
+        Limiter.Fast
             .Assert(l => l.StallUntil("", () => false, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }

@@ -86,7 +86,11 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     }
 
     /// <inheritdoc/>
-    protected override void HandleCheckException(
+    protected override bool HandleCheckException(
         MethodBase testOrigin, ParameterInfo? testParam, Exception taskException)
-    { }
+    {
+        ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
+
+        return Options.IgnorableExceptions.Contains(taskException.GetType());
+    }
 }

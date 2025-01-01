@@ -114,7 +114,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     }
 
     /// <inheritdoc/>
-    protected override void HandleCheckException(MethodBase testOrigin,
+    protected override bool HandleCheckException(MethodBase testOrigin,
         ParameterInfo? testParam, Exception taskException)
     {
         ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
@@ -123,7 +123,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 
         string details = $"on method '{testOrigin.Name}' with parameter '{testParam.Name}'";
 
-        Options.Asserter.Is(false, taskException is NullReferenceException,
-            $"Null reference exception encountered {details}.");
+        if (taskException is NullReferenceException)
+        {
+            Options.Asserter.Fail(taskException, $"Null reference exception encountered {details}.");
+        }
+
+        return Options.IgnorableExceptions.Contains(taskException.GetType());
     }
 }

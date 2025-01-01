@@ -33,6 +33,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         new FakeCreateHint(),
         new FakedCreateHint(),
         new ExceptionCreateHint(),
+        new SelfCreateHint(),
         new OptionsCreateHint(),
         new ObjectCreateHint()
     ];
@@ -107,7 +108,8 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
             }
             else if (error is NotSupportedException)
             {
-                throw error;
+                throw new NotSupportedException(
+                    $"Encountered issue creating instance of type '{type}'.", error);
             }
             else
             {
@@ -134,7 +136,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         else
         {
             throw new NotSupportedException(
-                $"Type '{type.FullName}' not supported by the randomizer. " +
+                $"Type '{type}' not supported by the randomizer. " +
                 "Create a hint to generate the type and pass it to the randomizer.");
         }
     }
