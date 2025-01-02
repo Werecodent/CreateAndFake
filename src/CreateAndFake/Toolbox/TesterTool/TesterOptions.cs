@@ -30,7 +30,7 @@ public record TesterOptions : IToolOptions
     public Limiter Limiter { get; init; } = Limiter.Few;
 
     /// <summary>How long to wait for tests to complete.</summary>
-    public TimeSpan Timeout { get; init; } = new(0, 0, 6);
+    public TimeSpan Timeout { get; init; } = new(0, 0, 3);
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
@@ -49,6 +49,8 @@ public record TesterOptions : IToolOptions
         typeof(TargetParameterCountException),
         typeof(ArgumentOutOfRangeException),
         typeof(InvalidOperationException),
+        typeof(TargetInvocationException),
+        typeof(IndexOutOfRangeException),
         typeof(NotImplementedException),
         typeof(MissingMethodException),
         typeof(NullReferenceException),

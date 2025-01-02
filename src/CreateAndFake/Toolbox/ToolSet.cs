@@ -1,6 +1,7 @@
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.AsserterTool;
 using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.ExtractorTool;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.RandomizerTool;
@@ -14,6 +15,7 @@ namespace CreateAndFake;
 /// <param name="valuer"><inheritdoc cref="IValuer" path="/summary"/></param>
 /// <param name="faker"><inheritdoc cref="IFaker" path="/summary"/></param>
 /// <param name="randomizer"><inheritdoc cref="IRandomizer" path="/summary"/></param>
+/// <param name="extractor"><inheritdoc cref="IExtractor" path="/summary"/></param>
 /// <param name="mutator"><inheritdoc cref="IMutator" path="/summary"/></param>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
 /// <param name="duplicator"><inheritdoc cref="IDuplicator" path="/summary"/></param>
@@ -23,6 +25,7 @@ public sealed class ToolSet(
     IValuer valuer,
     IFaker faker,
     IRandomizer randomizer,
+    IExtractor extractor,
     IMutator mutator,
     IAsserter asserter,
     IDuplicator duplicator,
@@ -40,12 +43,13 @@ public sealed class ToolSet(
         IValuer valuer = new Valuer(new ValuerOptions());
         IFaker faker = new Faker(new FakerOptions { Valuer = valuer });
         IRandomizer randomizer = new Randomizer(new RandomizerOptions { Gen = gen, Faker = faker });
-        IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer });
-        IAsserter asserter = new Asserter(new AsserterOptions { Gen = gen, Valuer = valuer });
+        IExtractor extractor = new Extractor(new ExtractorOptions { Randomizer = randomizer, Valuer = valuer });
+        IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer, Extractor = extractor });
+        IAsserter asserter = new Asserter(new AsserterOptions { Gen = gen, Extractor = extractor, Valuer = valuer });
         IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter });
         Tester tester = new(new TesterOptions { Gen = gen, Randomizer = randomizer, Duplicator = duplicator, Asserter = asserter });
 
-        return new ToolSet(gen, valuer, faker, randomizer, mutator, asserter, duplicator, tester);
+        return new ToolSet(gen, valuer, faker, randomizer, extractor, mutator, asserter, duplicator, tester);
     }
 
     /// <inheritdoc cref="IRandom"/>
@@ -59,6 +63,9 @@ public sealed class ToolSet(
 
     /// <inheritdoc cref="IRandomizer"/>
     public IRandomizer Randomizer { get; } = randomizer;
+
+    /// <inheritdoc cref="IExtractor"/>
+    public IExtractor Extractor { get; } = extractor;
 
     /// <inheritdoc cref="IMutator"/>
     public IMutator Mutator { get; } = mutator;

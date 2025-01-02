@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Toolbox.AsserterTool;
+using CreateAndFake.Toolbox.AsserterTool.Fluent;
 using CreateAndFakeTests.TestSamples;
 
 namespace CreateAndFakeTests.Toolbox.AsserterTool.Fluent;
@@ -8,13 +9,13 @@ public static class AssertEnumerableTests
     [Fact]
     internal static void AssertEnumerable_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<AssertEnumerable>();
+        Tools.Tester.PreventsNullRefException<AssertEnumerable>();
     }
 
     [Fact]
     internal static void AssertEnumerable_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<AssertEnumerable>();
+        Tools.Tester.PreventsParameterMutation<AssertEnumerable>();
     }
 
     [Theory, RandomData]

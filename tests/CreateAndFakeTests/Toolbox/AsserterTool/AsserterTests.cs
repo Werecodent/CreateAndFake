@@ -16,13 +16,13 @@ public sealed class AsserterTests
     [Fact]
     internal static void Asserter_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<Asserter>();
+        Tools.Tester.PreventsNullRefException<Asserter>();
     }
 
     [Fact]
     internal static void Asserter_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<Asserter>();
+        Tools.Tester.PreventsParameterMutation<Asserter>();
     }
 
     [Fact]

@@ -1,4 +1,5 @@
 using CreateAndFake.Toolbox.AsserterTool;
+using CreateAndFake.Toolbox.AsserterTool.Fluent;
 
 namespace CreateAndFakeTests.Toolbox.AsserterTool.Fluent;
 
@@ -7,13 +8,13 @@ public static class AssertStringTests
     [Fact]
     internal static void AssertString_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<AssertString>();
+        Tools.Tester.PreventsNullRefException<AssertString>();
     }
 
     [Fact]
     internal static void AssertString_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<AssertString>();
+        Tools.Tester.PreventsParameterMutation<AssertString>();
     }
 
     [Theory, RandomData]

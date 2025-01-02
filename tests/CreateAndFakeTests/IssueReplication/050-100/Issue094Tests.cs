@@ -1,5 +1,6 @@
 using CreateAndFake.Toolbox.AsserterTool;
 using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.ExtractorTool;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.RandomizerTool;
@@ -27,42 +28,56 @@ public static class Issue094Tests
     internal static void Issue094_AsserterOptionsWorks()
     {
         TestToolBehavior<AsserterOptions>();
+        TestToolBehavior<Func<AsserterOptions, AsserterOptions>>();
     }
 
     [Fact]
     internal static void Issue094_DuplicatorOptionsWorks()
     {
         TestToolBehavior<DuplicatorOptions>();
+        TestToolBehavior<Func<DuplicatorOptions, DuplicatorOptions>>();
     }
 
     [Fact]
     internal static void Issue094_FakerOptionsWorks()
     {
         TestToolBehavior<FakerOptions>();
+        TestToolBehavior<Func<FakerOptions, FakerOptions>>();
     }
 
     [Fact]
     internal static void Issue094_MutatorOptionsWorks()
     {
         TestToolBehavior<MutatorOptions>();
+        TestToolBehavior<Func<MutatorOptions, MutatorOptions>>();
+    }
+
+    [Fact]
+    internal static void Issue094_ExtractorOptionsWorks()
+    {
+        TestToolBehavior<ExtractorOptions>();
+        TestToolBehavior<Func<ExtractorOptions, ExtractorOptions>>();
     }
 
     [Fact]
     internal static void Issue094_RandomizerOptionsWorks()
     {
         TestToolBehavior<RandomizerOptions>();
+        TestToolBehavior<Func<RandomizerOptions, RandomizerOptions>>();
     }
 
     [Fact]
     internal static void Issue094_TesterOptionsWorks()
     {
         TestToolBehavior<TesterOptions>();
+        TestToolBehavior<Func<TesterOptions, TesterOptions>>();
     }
 
     [Fact]
     internal static void Issue094_ValuerOptionsWorks()
     {
         TestToolBehavior<ValuerOptions>();
+        TestToolBehavior<Func<ValuerOptions, ValuerOptions>>();
     }
 
     [Fact]
@@ -94,6 +109,13 @@ public static class Issue094Tests
     }
 
     [Fact]
+    internal static void Issue094_ExtractorWorks()
+    {
+        TestToolBehavior<IExtractor>();
+        TestToolBehavior<Extractor>();
+    }
+
+    [Fact]
     internal static void Issue094_RandomizerWorks()
     {
         TestToolBehavior<IRandomizer>();
@@ -112,6 +134,12 @@ public static class Issue094Tests
     {
         TestToolBehavior<IValuer>();
         TestToolBehavior<Valuer>();
+    }
+
+    [Fact]
+    internal static void Issue094_IntPtrWorks()
+    {
+        TestToolBehavior<IntPtr>();
     }
 
     private static void TestToolBehavior<T>()

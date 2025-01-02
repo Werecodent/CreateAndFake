@@ -31,7 +31,7 @@ public sealed class RandomizerChainer
 
     /// <inheritdoc cref="RandomizerChainer"/>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
-    /// <param name="options">FIX ME</param>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
     private RandomizerChainer(RandomizerChainer prevChainer, RandomizerOptions? options, object? parent)
     {
@@ -86,7 +86,7 @@ public sealed class RandomizerChainer
 
     /// <summary>Calls the randomizer to create a random instance of the given <paramref name="type"/>.</summary>
     /// <param name="type">Type to create.</param>
-    /// <param name="options">FIX ME</param>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
     /// <returns>The created instance.</returns>
     public object Create(Type type, RandomizerOptions? options, object? parent = null)

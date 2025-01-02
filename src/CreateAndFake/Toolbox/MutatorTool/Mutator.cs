@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Toolbox.ExtractorTool;
 
 namespace CreateAndFake.Toolbox.MutatorTool;
 
@@ -57,7 +58,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         ContentMap[] maps = (extraInstances ?? [])
             .Prepend(instance)
             .Where(e => e != null)
-            .Select(ContentMap.Extract)
+            .Select(e => Options.Extractor.Extract(e))
             .ToArray();
 
         try
@@ -67,7 +68,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                 () => Options.Randomizer.Create(type),
                 result =>
                 {
-                    if (!ContentMap.Extract(result).HasSharedContent(Options.Valuer, maps))
+                    if (!Options.Extractor.Extract(result).HasSharedContent(maps))
                     {
                         return true;
                     }

@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Toolbox.ExtractorTool;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.ValuerTool;
@@ -11,13 +12,13 @@ public static class MutatorTests
     [Fact]
     internal static void Mutator_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<Mutator>(Tools.Randomizer, Tools.Valuer, Limiter.Dozen);
+        Tools.Tester.PreventsNullRefException<Mutator>();
     }
 
     [Fact]
     internal static void Mutator_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation(Tools.Mutator);
+        Tools.Tester.PreventsParameterMutation<Mutator>(opt => opt with { IncludeConstructors = false });
     }
 
     [Theory, RandomData]
@@ -94,7 +95,16 @@ public static class MutatorTests
         fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupReturn(true);
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                Extractor = new Extractor(Tools.Extractor.Options with
+                {
+                    Valuer = fakeValuer,
+                    Limiter = new Limiter(3)
+                })
+            })
             .Assert(t => t.Unique(sample))
             .Throws<TimeoutException>();
     }

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Toolbox.AsserterTool;
@@ -15,4 +16,9 @@ public record DuplicatorOptions : IToolOptions
 
     /// <summary>Custom duplicators used to deep copy specific types.</summary>
     public ImmutableArray<CopyHint> Hints { get; init; } = [];
+
+    /// <summary>Types that need no further inspection for serialization/deserialization.</summary>
+    public FrozenSet<Type> SerializableTypes { get; init; } = FrozenSet.ToFrozenSet([
+        typeof(string),
+        typeof(Type)]);
 }

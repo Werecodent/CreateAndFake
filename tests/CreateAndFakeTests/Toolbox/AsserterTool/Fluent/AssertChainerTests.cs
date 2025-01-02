@@ -7,13 +7,13 @@ public static class AssertChainerTests
     [Fact]
     internal static void AssertChainer_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<AssertChainer<object>>();
+        Tools.Tester.PreventsNullRefException<AssertChainer<object>>();
     }
 
     [Fact]
     internal static void AssertChainer_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<AssertChainer<object>>();
+        Tools.Tester.PreventsParameterMutation<AssertChainer<object>>();
     }
 
     [Theory, RandomData]

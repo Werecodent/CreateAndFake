@@ -2,7 +2,6 @@ using System.Text;
 using CreateAndFake.Toolbox.AsserterTool.Categories;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
-using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFake.Toolbox.AsserterTool;
@@ -123,7 +122,9 @@ public partial class Asserter : IObjectAsserter
 
         int i = 0;
         StringBuilder contents = new();
-        foreach (object value in ContentMap.Extract(actual).FindSharedContent(localOptions.Valuer, ContentMap.Extract(expected)))
+        foreach (object value in localOptions.Extractor
+            .Extract(actual)
+            .FindSharedContent(localOptions.Extractor.Extract(expected)))
         {
             _ = contents.Append('#').Append(i++).Append(':').Append(value).AppendLine();
         }

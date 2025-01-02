@@ -8,7 +8,7 @@ public static class ValuerTests
     [Fact]
     internal static void Valuer_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException(Tools.Valuer);
+        Tools.Tester.PreventsNullRefException<Valuer>();
     }
 
     [Fact]

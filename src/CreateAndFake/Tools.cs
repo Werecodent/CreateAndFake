@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.AsserterTool;
 using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.ExtractorTool;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.MutatorTool;
 using CreateAndFake.Toolbox.RandomizerTool;
@@ -27,6 +28,9 @@ public static class Tools
 
     /// <inheritdoc cref="ToolSet.Randomizer"/>
     public static IRandomizer Randomizer => Source.Randomizer;
+
+    /// <inheritdoc cref="ToolSet.Extractor"/>
+    public static IExtractor Extractor => Source.Extractor;
 
     /// <inheritdoc cref="ToolSet.Mutator"/>
     public static IMutator Mutator => Source.Mutator;

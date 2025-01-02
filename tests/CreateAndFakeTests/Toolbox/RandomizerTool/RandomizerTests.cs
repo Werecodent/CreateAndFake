@@ -15,7 +15,7 @@ public static class RandomizerTests
     [Fact]
     internal static void Randomizer_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException(Tools.Randomizer);
+        Tools.Tester.PreventsNullRefException<Randomizer>();
     }
 
     [Fact]

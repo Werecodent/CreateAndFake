@@ -8,7 +8,7 @@ public static class DuplicatorTests
     [Fact]
     internal static void Duplicator_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<Duplicator>();
+        Tools.Tester.PreventsNullRefException<Duplicator>();
     }
 
     [Fact]

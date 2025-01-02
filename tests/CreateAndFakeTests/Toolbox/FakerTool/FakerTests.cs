@@ -10,13 +10,13 @@ public static class FakerTests
     [Fact]
     internal static void Faker_GuardsNulls()
     {
-        // Fix me: Tools.Tester.PreventsNullRefException<Faker>();
+        Tools.Tester.PreventsNullRefException<Faker>();
     }
 
     [Fact]
     internal static void Faker_NoParameterMutation()
     {
-        // Fix me: Tools.Tester.PreventsParameterMutation<Faker>();
+        Tools.Tester.PreventsParameterMutation<Faker>();
     }
 
     [Fact]

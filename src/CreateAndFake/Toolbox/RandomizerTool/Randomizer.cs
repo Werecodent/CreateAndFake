@@ -232,13 +232,16 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         ConstructorInfo? maker = FindConstructor(type, data, BindingFlags.Public)
             ?? FindConstructor(type, data, BindingFlags.NonPublic);
 
-        if (maker != null && !type.Inherits<Fake>() && !type.Inherits(typeof(Injected<>)))
+        if (maker == null
+            || type.Inherits<Fake>()
+            || type.Inherits(typeof(Injected<>))
+            || type.Inherits<Delegate>())
         {
-            return maker.Invoke(CreateInjectArgs(maker, data));
+            return Create(type);
         }
         else
         {
-            return Create(type);
+            return maker.Invoke(CreateInjectArgs(maker, data));
         }
     }
 
