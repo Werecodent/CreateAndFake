@@ -30,7 +30,7 @@ public static class NullGuarderTests
     internal static void NullCheck_TimesOut()
     {
         _ShortTestInstance
-            .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false, []))
+            .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false))
             .Throws<TimeoutException>();
     }
 
@@ -38,7 +38,7 @@ public static class NullGuarderTests
     internal static void NullCheck_NullReferenceThrows()
     {
         _ShortTestInstance
-            .Assert(t => t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true, []))
+            .Assert(t => t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true))
             .Throws<AssertException>();
     }
 
@@ -78,7 +78,7 @@ public static class NullGuarderTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = disposable.ToFake();
 
-            _LongTestInstance.PreventsNullRefExceptionOnConstructors(typeof(MockDisposableSample), true, []);
+            _LongTestInstance.PreventsNullRefExceptionOnConstructors(typeof(MockDisposableSample), true);
             Tools.Asserter.Is(1, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());
@@ -95,7 +95,7 @@ public static class NullGuarderTests
             MockDisposableSample._Fake = disposable.ToFake();
 
             using MockDisposableSample sample = new(null);
-            _LongTestInstance.PreventsNullRefExceptionOnMethods(sample, []);
+            _LongTestInstance.PreventsNullRefExceptionOnMethods(sample);
             Tools.Asserter.Is(0, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());

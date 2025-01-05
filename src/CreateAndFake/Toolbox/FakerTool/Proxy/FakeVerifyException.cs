@@ -16,13 +16,13 @@ public sealed class FakeVerifyException : Exception
     /// <param name="actual">Actual number of calls.</param>
     /// <param name="log">Log of all made calls.</param>
     internal FakeVerifyException(CallData data, Times expected, int actual, IEnumerable<CallData> log)
-        : base(BuildMessage(data, expected.ToString(), actual, log)) { }
+        : base(BuildMessage(data, expected?.ToString(), actual, log)) { }
 
     /// <inheritdoc cref="FakeVerifyException"/>
     /// <param name="expected">Expected number of calls.</param>
     /// <param name="log">Log of all made calls.</param>
     internal FakeVerifyException(Times expected, IEnumerable<CallData> log)
-        : base(BuildMessage(null, expected.ToString(), log.Count(), log)) { }
+        : base(BuildMessage(null, expected?.ToString(), log?.Count(), log)) { }
 
     /// <inheritdoc cref="FakeVerifyException"/>
     /// <param name="invalid">Call data with behavior that aren't valid.</param>
@@ -48,7 +48,7 @@ public sealed class FakeVerifyException : Exception
     /// <param name="actual">Actual number of calls.</param>
     /// <param name="log">Log of all made calls.</param>
     /// <returns>Message to use for the exception.</returns>
-    private static string BuildMessage(CallData? source, string expected, int actual, IEnumerable<CallData>? log)
+    private static string BuildMessage(CallData? source, string? expected, int? actual, IEnumerable<CallData>? log)
     {
         string nl = Environment.NewLine;
 

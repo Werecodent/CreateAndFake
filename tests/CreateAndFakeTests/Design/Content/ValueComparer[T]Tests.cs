@@ -8,13 +8,13 @@ public static class ValueComparer_T_Tests
     [Fact]
     internal static void ValueComparer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ValueComparer<IValueEquatable>>();
+        Tools.Tester.PreventsNullRefException(typeof(ValueComparer<>));
     }
 
     [Fact]
     internal static void ValueComparer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ValueComparer<IValueEquatable>>();
+        Tools.Tester.PreventsParameterMutation(typeof(ValueComparer<>));
     }
 
     [Theory, RandomData]

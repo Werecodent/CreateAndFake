@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.Design.Content;
 using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.TesterTool;
 
 namespace CreateAndFakeTests.TestBases;
 
@@ -25,11 +26,18 @@ public abstract class CopyHintTestBase<T>(
     /// <summary>If the hint copies by reference instead for value types.</summary>
     private readonly bool _copiesByRef = copiesByRef;
 
-    /// <summary>Verifies null reference exceptions are prevented.</summary>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void CopyHint_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException(TestInstance);
+    }
+
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void CopyHint_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation(TestInstance);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

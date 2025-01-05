@@ -1,5 +1,7 @@
 using System.Reflection;
 using CreateAndFake.Design.Context;
+using CreateAndFake.Design.Randomization;
+using CreateAndFake.Toolbox.TesterTool;
 
 namespace CreateAndFakeTests.TestBases;
 
@@ -7,11 +9,18 @@ namespace CreateAndFakeTests.TestBases;
 /// <typeparam name="T">Type to test.</typeparam>
 public abstract class DataContextTestBase<T> where T : BaseDataContext
 {
-    /// <summary>Verifies null reference exceptions are prevented.</summary>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void DataContext_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<PersonContext>();
+        Tools.Tester.PreventsNullRefException<T>();
+    }
+
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void DataContext_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<T>(opt => opt with { InjectionValues = [new FastRandom()] });
     }
 
     /// <summary>Verifies data remains consistent on instance.</summary>

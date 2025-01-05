@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.RandomizerTool;
+using CreateAndFake.Toolbox.TesterTool;
 
 namespace CreateAndFakeTests.TestBases;
 
@@ -23,12 +25,24 @@ public abstract class CreateHintTestBase<T>(
     /// <summary>Types that can't be created by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
 
-    /// <summary>Verifies null reference exceptions are prevented.</summary>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void CreateHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(
-            TestInstance, opt => opt with { InjectionValues = [Tools.Randomizer.Options] });
+        Tools.Tester.PreventsNullRefException(TestInstance);
+    }
+
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void CreateHint_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation(TestInstance, opt => opt with
+        {
+            InjectionValues = [CreateChainer(Tools.Randomizer.Options with
+            {
+                Gen = Tools.Randomizer.Create<FastRandom>()
+            })]
+        });
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

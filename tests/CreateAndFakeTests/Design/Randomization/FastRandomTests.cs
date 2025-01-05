@@ -17,6 +17,18 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
         float.PositiveInfinity];
 
     [Fact]
+    internal static void FastRandom_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException<FastRandom>();
+    }
+
+    [Fact]
+    internal static void FastRandom_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<FastRandom>();
+    }
+
+    [Fact]
     internal static void Create_InvalidValuesPossible()
     {
         FastRandom random = new(false);

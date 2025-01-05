@@ -7,14 +7,17 @@ namespace CreateAndFake.Toolbox.TesterTool;
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <inheritdoc cref="BaseGuarder.CallAllMethods(MethodBase,ParameterInfo,object,ICollection{object})"/>
-    internal void CallAllMethods(object instance, ICollection<object?>? injectionValues)
+    /// <inheritdoc cref="BaseGuarder.CallAllMethods(MethodBase,ParameterInfo,object)"/>
+    internal void CallAllMethods(object instance)
     {
-        CallAllMethods(null, null, instance, injectionValues);
+        CallAllMethods(null, null, instance);
     }
 
     /// <inheritdoc/>
-    protected override bool HandleCheckException(MethodBase testOrigin, ParameterInfo? testParam, Exception taskException)
+    protected override bool HandleCheckException(
+        MethodBase testOrigin,
+        ParameterInfo? testParam,
+        Exception taskException)
     {
         ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
         ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));

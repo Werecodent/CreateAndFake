@@ -14,12 +14,7 @@ public static class DuplicatorTests
     [Fact]
     internal static void Copy_MissingMatchThrows()
     {
-        new Duplicator(
-            new DuplicatorOptions()
-            {
-                Asserter = Tools.Asserter,
-                IncludeDefaultHints = false
-            })
+        new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })
             .Assert(d => d.Copy(new object()))
             .Throws<NotSupportedException>();
     }
@@ -27,12 +22,7 @@ public static class DuplicatorTests
     [Fact]
     internal static void Copy_NullWorks()
     {
-        new Duplicator(
-            new DuplicatorOptions()
-            {
-                Asserter = Tools.Asserter,
-                IncludeDefaultHints = false
-            })
+        new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })
             .Copy<object>(null)
             .Assert()
             .Is(null);
@@ -44,9 +34,8 @@ public static class DuplicatorTests
         hint.TryCopy(data, Arg.Any<DuplicatorChainer>()).SetupReturn((true, data), Times.Once);
 
         new Duplicator(
-            new DuplicatorOptions()
+            Tools.Duplicator.Options with
             {
-                Asserter = Tools.Asserter,
                 IncludeDefaultHints = false,
                 Hints = [hint]
             })
@@ -65,9 +54,8 @@ public static class DuplicatorTests
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
 
         new Duplicator(
-            new DuplicatorOptions()
+            Tools.Duplicator.Options with
             {
-                Asserter = Tools.Asserter,
                 IncludeDefaultHints = false,
                 Hints = [hint]
             })

@@ -2,13 +2,18 @@
 
 namespace CreateAndFakeTests.Attributes;
 
-/// <summary>Verifies behavior.</summary>
 public static class RandomDataAttributeTests
 {
     [Fact]
-    internal static void TypeExtensions_GuardsNulls()
+    internal static void RandomDataAttribute_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException<RandomDataAttribute>();
+    }
+
+    [Fact]
+    internal static void RandomDataAttribute_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<RandomDataAttribute>(opt => opt with { InjectionValues = [3] });
     }
 
     [Fact]

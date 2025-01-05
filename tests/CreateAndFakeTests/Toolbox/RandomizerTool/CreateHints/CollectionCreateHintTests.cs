@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 using CreateAndFakeTests.TestBases;
 
@@ -42,13 +41,21 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
 
     public CollectionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
+    [Fact]
+    public void TryCreate_RetriesSetsWithDuplicates()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            _TestInstance.TryCreate(typeof(IDictionary<bool, int>), CreateChainer());
+        }
+    }
+
     private static Type MakeDefined(Type type)
     {
         if (type.IsGenericTypeDefinition)
         {
-            FastRandom random = new();
             return type.MakeGenericType(type.GetGenericArguments().Select(
-                t => random.NextItem(_ItemTypes)).ToArray());
+                t => Tools.Gen.NextItem(_ItemTypes)).ToArray());
         }
         else
         {

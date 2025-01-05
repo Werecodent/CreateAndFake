@@ -7,4 +7,10 @@ public static class FakeExtensionsTests
     {
         Tools.Tester.PreventsNullRefException(typeof(FakeExtensions));
     }
+
+    [Fact]
+    internal static void FakeExtensions_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation(typeof(FakeExtensions));
+    }
 }

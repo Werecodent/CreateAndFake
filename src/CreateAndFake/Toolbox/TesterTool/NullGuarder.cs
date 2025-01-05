@@ -14,15 +14,13 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
-    /// <param name="injectionValues">Values to inject into the method.</param>
-    internal void PreventsNullRefExceptionOnConstructors(
-        Type type, bool callAllMethods, ICollection<object?>? injectionValues)
+    internal void PreventsNullRefExceptionOnConstructors(Type type, bool callAllMethods)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         foreach (ConstructorInfo constructor in FindAllConstructors(type))
         {
-            PreventsNullRefException(null, constructor, callAllMethods, injectionValues);
+            PreventsNullRefException(null, constructor, callAllMethods);
         }
     }
 
@@ -32,15 +30,14 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
     /// <param name="instance">Instance to test the methods on.</param>
-    /// <param name="injectionValues">Values to inject into the method.</param>
-    internal void PreventsNullRefExceptionOnMethods(object instance, ICollection<object?>? injectionValues)
+    internal void PreventsNullRefExceptionOnMethods(object instance)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
             .Where(m => m.Name is not "Finalize" and not "Dispose"))
         {
-            PreventsNullRefException(instance, GenericFixer.FixMethod(method, Options), false, injectionValues);
+            PreventsNullRefException(instance, GenericFixer.FixMethod(method, Options), false);
         }
     }
 
@@ -51,16 +48,14 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
-    /// <param name="injectionValues">Values to inject into the method.</param>
-    internal void PreventsNullRefExceptionOnStatics(
-        Type type, bool callAllMethods, ICollection<object?>? injectionValues)
+    internal void PreventsNullRefExceptionOnStatics(Type type, bool callAllMethods)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
             PreventsNullRefException(null, GenericFixer.FixMethod(method, Options),
-                callAllMethods && method.ReturnType.Inherits(type), injectionValues);
+                callAllMethods && method.ReturnType.Inherits(type));
         }
     }
 
@@ -68,15 +63,13 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <param name="instance">Instance with the method under test.</param>
     /// <param name="method">Method under test.</param>
     /// <param name="callAllMethods">If all instance methods should be called after the method.</param>
-    /// <param name="injectionValues">Values to inject into the method.</param>
-    private void PreventsNullRefException(object? instance,
-        MethodBase method, bool callAllMethods, ICollection<object?>? injectionValues)
+    private void PreventsNullRefException(object? instance, MethodBase method, bool callAllMethods)
     {
         object?[]? data = null;
         object? result = null;
         try
         {
-            data = Options.Randomizer.CreateFor(method, injectionValues).Args.ToArray();
+            data = Options.Randomizer.CreateFor(method, Options.InjectionValues).Args.ToArray();
 
             for (int i = 0; i < data.Length; i++)
             {
@@ -97,7 +90,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 
                     if (result != null && callAllMethods)
                     {
-                        CallAllMethods(method, param, result, injectionValues);
+                        CallAllMethods(method, param, result);
                     }
                 }
                 finally
@@ -108,8 +101,8 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         }
         finally
         {
-            DisposeAllButInjected(data, injectionValues);
-            DisposeAllButInjected(result, injectionValues);
+            DisposeAllButInjected(data);
+            DisposeAllButInjected(result);
         }
     }
 

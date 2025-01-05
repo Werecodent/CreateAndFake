@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Toolbox.TesterTool;
 using CreateAndFakeTests.TestSamples;
 
 namespace CreateAndFakeTests.TestBases;
@@ -11,14 +12,14 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
     /// <summary>Instance to test with.</summary>
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
 
-    /// <summary>Verifies null reference exceptions are prevented.</summary>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void ValueRandom_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException<T>();
     }
 
-    /// <summary>Verifies parameters are not mutated.</summary>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void ValueRandom_NoParameterMutation()
     {

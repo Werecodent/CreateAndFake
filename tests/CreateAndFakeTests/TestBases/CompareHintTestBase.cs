@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Content;
+using CreateAndFake.Toolbox.TesterTool;
 using CreateAndFake.Toolbox.ValuerTool;
 
 namespace CreateAndFakeTests.TestBases;
@@ -22,11 +23,18 @@ public abstract class CompareHintTestBase<T>(
     /// <summary>Types that can't be compared by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes;
 
-    /// <summary>Verifies null reference exceptions are prevented.</summary>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
     [Fact]
     public void CompareHint_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException(TestInstance);
+    }
+
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void CompareHint_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation(TestInstance);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

@@ -50,7 +50,7 @@ public static class MutationGuarderTests
     internal static void CallMethod_TimesOut()
     {
         _ShortTestInstance
-            .Assert(t => t.PreventsMutationOnStatics(typeof(LongMethodSample), false, []))
+            .Assert(t => t.PreventsMutationOnStatics(typeof(LongMethodSample), false))
             .Throws<TimeoutException>();
     }
 
@@ -63,7 +63,7 @@ public static class MutationGuarderTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            _LongTestInstance.PreventsMutationOnConstructors(typeof(MockDisposableSample), true, []);
+            _LongTestInstance.PreventsMutationOnConstructors(typeof(MockDisposableSample), true);
             Tools.Asserter.Is(1, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());
@@ -80,7 +80,7 @@ public static class MutationGuarderTests
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
             using MockDisposableSample sample = new(null);
-            _LongTestInstance.PreventsMutationOnMethods(sample, []);
+            _LongTestInstance.PreventsMutationOnMethods(sample);
             Tools.Asserter.Is(0, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());

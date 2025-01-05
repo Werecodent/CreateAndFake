@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using CreateAndFake.Toolbox.TesterTool;
 
 namespace CreateAndFakeTests.TestBases;
 
@@ -7,6 +8,20 @@ namespace CreateAndFakeTests.TestBases;
 /// <typeparam name="T">Exception type to test.</typeparam>
 public abstract class ExceptionTestBase<T> where T : Exception
 {
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void Exception_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException<T>();
+    }
+
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    [Fact]
+    public void Exception_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<T>();
+    }
+
     /// <summary>Verifies the default constructor is present for serialization but private.</summary>
     [Fact]
     public void Exception_DefaultConstructorPrivate()

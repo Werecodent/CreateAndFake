@@ -19,6 +19,9 @@ public record RandomizerOptions : IToolOptions
     /// <summary>Limits attempts at matching conditions.</summary>
     public Limiter Limiter { get; init; } = Limiter.Score;
 
+    /// <summary>Limits population attempts for collections when encountering problems.</summary>
+    public Limiter CollectionAttempts { get; init; } = Limiter.Score;
+
     /// <summary>Inclusive minimum size for created collections.</summary>
     public int CollectionMinSize { get; init; } = 1;
 

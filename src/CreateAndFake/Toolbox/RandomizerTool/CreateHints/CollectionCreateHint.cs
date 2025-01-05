@@ -35,17 +35,20 @@ public sealed class CollectionCreateHint : CreateHint
             return (false, null);
         }
 
-        int size = randomizer.Options.NextCollectionSize();
+        return randomizer.Options.CollectionAttempts.Retry($"Generating '{type}' collection.", () =>
+        {
+            int size = randomizer.Options.NextCollectionSize();
 
-        Type? itemType = GetItemType(type);
-        if (itemType != null && FindMatches(type, itemType).Any())
-        {
-            return (true, Create(type, size, itemType, randomizer));
-        }
-        else
-        {
-            return (false, null);
-        }
+            Type? itemType = GetItemType(type);
+            if (itemType != null && FindMatches(type, itemType).Any())
+            {
+                return (true, Create(type, size, itemType, randomizer));
+            }
+            else
+            {
+                return (false, null);
+            }
+        });
     }
 
     /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>

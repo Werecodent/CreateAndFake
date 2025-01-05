@@ -42,7 +42,7 @@ public static class ExceptionGuarderTests
             Behavior.None(Times.Once));
 
         new ExceptionGuarder(Tools.Tester.Options with { Asserter = asserter })
-            .CallAllMethods(new MethodThrowsSample(), null);
+            .CallAllMethods(new MethodThrowsSample());
 
         asserter.Assert().Called();
     }

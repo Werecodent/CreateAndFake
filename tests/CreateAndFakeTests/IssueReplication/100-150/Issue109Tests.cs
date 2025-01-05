@@ -53,11 +53,10 @@ public static class Issue109Tests
     internal static void Issue109_BinarySerializationRemovedSample(IContainer sample)
     {
         sample.CreateDeepClone().Assert().Is(sample);
-        new Duplicator(new DuplicatorOptions
-        {
-            Asserter = Tools.Asserter,
-            Hints = [new SerializableCopyHint()]
-        }).Copy(sample).Assert().Is(sample);
+        new Duplicator(Tools.Duplicator.Options with { Hints = [new SerializableCopyHint()] })
+            .Copy(sample)
+            .Assert()
+            .Is(sample);
     }
 }
 

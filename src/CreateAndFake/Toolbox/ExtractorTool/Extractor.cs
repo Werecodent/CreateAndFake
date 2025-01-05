@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Frozen;
 using System.Reflection;
 
 namespace CreateAndFake.Toolbox.ExtractorTool;
@@ -8,11 +9,13 @@ namespace CreateAndFake.Toolbox.ExtractorTool;
 /// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
-    /// <summary>Scope used to search for inner types.</summary>
-    private const BindingFlags _Scope
-        = BindingFlags.Public
-        | BindingFlags.NonPublic
-        | BindingFlags.Instance;
+    /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
+    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet([
+        Assembly.GetExecutingAssembly().GetType(),
+        typeof(Type).GetType(),
+        typeof(Assembly),
+        typeof(string),
+        typeof(Type)]);
 
     /// <inheritdoc/>
     public ExtractorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
@@ -40,16 +43,26 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         if (source != null)
         {
             Type keyType = memberType ?? source.GetType();
-
-            if (!foundData.TryGetValue(keyType, out ISet<object>? data))
+            try
             {
-                data = new HashSet<object>();
-                foundData.Add(keyType, data);
+                if (!foundData.TryGetValue(keyType, out ISet<object>? data))
+                {
+                    data = new HashSet<object>(options.Valuer);
+                    foundData.Add(keyType, data);
+                }
+
+                if (data.Add(source)
+                    && !keyType.Inherits<Delegate>()
+                    && !options.ContentEndTypes.Contains(keyType)
+                    && !_ContentEndTypes.Contains(keyType))
+                {
+                    FlattenComplexData(source, foundData, options);
+                }
             }
-
-            if (data.Add(source) && !options.ContentEndTypes.Contains(memberType ?? source.GetType()))
+            catch (InsufficientExecutionStackException e)
             {
-                FlattenComplexData(source, foundData, options);
+                throw new InsufficientExecutionStackException(
+                    $"Ran into infinite generation trying to extract type '{keyType}'.", e);
             }
         }
     }
@@ -124,12 +137,16 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     {
         Type type = source.GetType();
 
-        foreach (PropertyInfo property in type.GetProperties(_Scope).Where(p => p.CanRead))
+        BindingFlags scope = options.ExtractPrivateMembers
+            ? BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic
+            : BindingFlags.Public | BindingFlags.Instance;
+
+        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
         {
             FlattenData(property.PropertyType, property.GetValue(source), foundData, options);
         }
 
-        foreach (FieldInfo field in type.GetFields(_Scope))
+        foreach (FieldInfo field in type.GetFields(scope))
         {
             FlattenData(field.FieldType, field.GetValue(source), foundData, options);
         }

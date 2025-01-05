@@ -18,6 +18,9 @@ public record ExtractorOptions : IToolOptions
     /// <summary>Limits attempts at creating variants.</summary>
     public Limiter Limiter { get; init; } = Limiter.Score;
 
+    /// <summary>If private properties/fields should be extracted as well.</summary>
+    public bool ExtractPrivateMembers { get; init; } = false;
+
     /// <summary>Types with too small of range for unique randomization.</summary>
     public FrozenSet<Type> UniqueIgnoredTypes { get; init; } = FrozenSet.ToFrozenSet([
         typeof(bool),
@@ -25,8 +28,5 @@ public record ExtractorOptions : IToolOptions
         typeof(char)]);
 
     /// <summary>Types that need no further inspection when creating a <see cref="ContentMap"/>.</summary>
-    public FrozenSet<Type> ContentEndTypes { get; init; } = FrozenSet.ToFrozenSet([
-        typeof(Type).GetType(),
-        typeof(string),
-        typeof(Type)]);
+    public FrozenSet<Type> ContentEndTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 }

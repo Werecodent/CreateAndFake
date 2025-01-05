@@ -81,10 +81,10 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         {
             return GetHashCode(item, new ValuerChainer(localOptions, this, GetHashCode, Compare));
         }
-        catch (InsufficientExecutionStackException)
+        catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to hash type '{typeName}'.");
+                $"Ran into infinite generation trying to hash type '{typeName}'.", e);
         }
     }
 
@@ -118,10 +118,10 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         {
             return Compare(expected, actual, new ValuerChainer(localOptions, this, GetHashCode, Compare));
         }
-        catch (InsufficientExecutionStackException)
+        catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to compare type '{typeName}'.");
+                $"Ran into infinite generation trying to compare type '{typeName}'.", e);
         }
     }
 

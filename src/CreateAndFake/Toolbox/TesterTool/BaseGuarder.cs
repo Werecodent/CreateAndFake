@@ -47,9 +47,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="instance">Instance whose methods to test.</param>
-    /// <param name="injectionValues">Values to inject into the method.</param>
-    protected void CallAllMethods(MethodBase? testOrigin,
-        ParameterInfo? testParam, object instance, ICollection<object?>? injectionValues)
+    protected void CallAllMethods(MethodBase? testOrigin, ParameterInfo? testParam, object instance)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
@@ -58,14 +56,14 @@ internal abstract class BaseGuarder(TesterOptions options)
                 .Where(m => !m.IsFamily)
                 .Select(m => GenericFixer.FixMethod(m, options)))
         {
-            object?[] data = options.Randomizer.CreateFor(method, injectionValues).Args.ToArray();
+            object?[] data = options.Randomizer.CreateFor(method, Options.InjectionValues).Args.ToArray();
             try
             {
                 Disposer.Cleanup(RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!));
             }
             finally
             {
-                DisposeAllButInjected(injectionValues, data);
+                DisposeAllButInjected(data);
             }
         }
     }
@@ -121,23 +119,22 @@ internal abstract class BaseGuarder(TesterOptions options)
 
     /// <summary>Checks data for disposables and disposes them.</summary>
     /// <param name="data">Data to check and dispose.</param>
-    /// <param name="injectedValues">Injected values to ignore.</param>
-    protected void DisposeAllButInjected(object? data, IEnumerable<object?>? injectedValues)
+    protected void DisposeAllButInjected(object? data)
     {
         if (data is IDictionary asDict)
         {
-            DisposeAllButInjected(asDict.Keys, injectedValues);
-            DisposeAllButInjected(asDict.Values, injectedValues);
+            DisposeAllButInjected(asDict.Keys);
+            DisposeAllButInjected(asDict.Values);
         }
         else if (data is IEnumerable asEnum && asEnum is not string)
         {
             IEnumerator gen = asEnum.GetEnumerator();
             while (gen.MoveNext())
             {
-                DisposeAllButInjected(gen.Current, injectedValues);
+                DisposeAllButInjected(gen.Current);
             }
         }
-        else if (!(injectedValues?.Any(v => ReferenceEquals(data, v)) ?? false))
+        else if (!Options.InjectionValues.Any(v => ReferenceEquals(data, v)))
         {
             Disposer.Cleanup(data);
         }

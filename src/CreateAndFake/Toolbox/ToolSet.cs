@@ -46,7 +46,7 @@ public sealed class ToolSet(
         IExtractor extractor = new Extractor(new ExtractorOptions { Randomizer = randomizer, Valuer = valuer });
         IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer, Extractor = extractor });
         IAsserter asserter = new Asserter(new AsserterOptions { Gen = gen, Extractor = extractor, Valuer = valuer });
-        IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter });
+        IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter, Extractor = extractor });
         Tester tester = new(new TesterOptions { Gen = gen, Randomizer = randomizer, Duplicator = duplicator, Asserter = asserter });
 
         return new ToolSet(gen, valuer, faker, randomizer, extractor, mutator, asserter, duplicator, tester);

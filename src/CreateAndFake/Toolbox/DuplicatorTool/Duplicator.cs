@@ -66,10 +66,10 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
                 "Verify/create a hint to generate the type and pass it to the duplicator.");
             return result;
         }
-        catch (InsufficientExecutionStackException)
+        catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to duplicate type '{source!.GetType().Name}'.");
+                $"Ran into infinite generation trying to duplicate type '{source!.GetType().Name}'.", e);
         }
     }
 

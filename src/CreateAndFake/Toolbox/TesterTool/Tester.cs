@@ -28,27 +28,14 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsNullRefExceptionOnConstructors(type, true, localOptions.InjectionValues);
+            checker.PreventsNullRefExceptionOnConstructors(type, true);
         }
 
-        if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
-        {
-            object? instance = (localOptions.InjectionValues.Length > 0)
-                ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
-                : Options.Randomizer.Create(type);
-            try
-            {
-                checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues);
-            }
-            finally
-            {
-                Disposer.Cleanup(instance);
-            }
-        }
+        CreateInstanceAndTestMethods(type, localOptions, checker.PreventsNullRefExceptionOnMethods);
 
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsNullRefExceptionOnStatics(type, true, localOptions.InjectionValues);
+            checker.PreventsNullRefExceptionOnStatics(type, true);
         }
     }
 
@@ -60,15 +47,15 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsNullRefExceptionOnConstructors(typeof(T), false, localOptions.InjectionValues);
+            checker.PreventsNullRefExceptionOnConstructors(typeof(T), false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            checker.PreventsNullRefExceptionOnMethods(instance!, localOptions.InjectionValues);
+            checker.PreventsNullRefExceptionOnMethods(instance!);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsNullRefExceptionOnStatics(typeof(T), false, localOptions.InjectionValues);
+            checker.PreventsNullRefExceptionOnStatics(typeof(T), false);
         }
     }
 
@@ -88,54 +75,46 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsMutationOnConstructors(type, true, localOptions.InjectionValues);
+            checker.PreventsMutationOnConstructors(type, true);
         }
 
-        if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
-        {
-            object? instance = (localOptions.InjectionValues.Length > 0)
-                ? Options.Randomizer.Inject(type, localOptions.InjectionValues)
-                : Options.Randomizer.Create(type);
-            try
-            {
-                checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues);
-            }
-            finally
-            {
-                Disposer.Cleanup(instance);
-            }
-        }
+        CreateInstanceAndTestMethods(type, localOptions, checker.PreventsMutationOnMethods);
 
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsMutationOnStatics(type, true, localOptions.InjectionValues);
+            checker.PreventsMutationOnStatics(type, true);
         }
     }
 
     /// <inheritdoc/>
     public virtual void PreventsParameterMutation<T>(T instance, TesterMod? optionConfiguration = null)
     {
+        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         MutationGuarder checker = new(localOptions);
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsMutationOnConstructors(typeof(T), false, localOptions.InjectionValues);
+            checker.PreventsMutationOnConstructors(typeof(T), false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            checker.PreventsMutationOnMethods(instance!, localOptions.InjectionValues);
+            checker.PreventsMutationOnMethods(instance);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsMutationOnStatics(typeof(T), false, localOptions.InjectionValues);
+            checker.PreventsMutationOnStatics(typeof(T), false);
         }
     }
 
     /// <inheritdoc/>
     public virtual void PassthroughWithNoExceptions<T>(TesterMod? optionConfiguration = null)
     {
-        PassthroughWithNoExceptions(Options.Randomizer.Create<Injected<T>>()!.Dummy!, optionConfiguration);
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        object instance = localOptions.Randomizer.Create<Injected<T>>()!.Dummy!;
+
+        new ExceptionGuarder(localOptions).CallAllMethods(instance);
     }
 
     /// <inheritdoc/>
@@ -143,6 +122,28 @@ public class Tester(TesterOptions options) : ITester
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        new ExceptionGuarder(localOptions).CallAllMethods(instance, localOptions.InjectionValues);
+        new ExceptionGuarder(localOptions).CallAllMethods(instance);
+    }
+
+    /// <summary>Attempts to test all methods.</summary>
+    /// <param name="type">Type being tested.</param>
+    /// <param name="localOptions">Configured options to use.</param>
+    /// <param name="checker">Test to run.</param>
+    private static void CreateInstanceAndTestMethods(Type type, TesterOptions localOptions, Action<object> checker)
+    {
+        if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
+        {
+            object instance = (localOptions.InjectionValues.Length > 0)
+                ? localOptions.Randomizer.Inject(type, localOptions.InjectionValues)
+                : localOptions.Randomizer.Create(type);
+            try
+            {
+                checker.Invoke(instance);
+            }
+            finally
+            {
+                Disposer.Cleanup(instance);
+            }
+        }
     }
 }

@@ -94,28 +94,37 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         }
         catch (Exception e)
         {
-            Exception error = (e is AggregateException agg) ? agg.InnerException ?? e : e;
+            throw WrapCreateError(type, e);
+        }
+    }
 
-            if (error is InsufficientExecutionStackException)
-            {
-                throw new InsufficientExecutionStackException(
-                    $"Ran into infinite generation trying to randomize type '{type}'.");
-            }
-            else if (error is TimeoutException)
-            {
-                throw new TimeoutException(
-                    $"Could not create instance of type '{type}' matching condition.", error);
-            }
-            else if (error is NotSupportedException)
-            {
-                throw new NotSupportedException(
-                    $"Encountered issue creating instance of type '{type}'.", error);
-            }
-            else
-            {
-                throw new InvalidOperationException(
-                    $"Encountered issue creating instance of type '{type}'.", error);
-            }
+    /// <summary>Adds details to encountered exceptions during randomization.</summary>
+    /// <param name="type">Type attempted to be created.</param>
+    /// <param name="e">Encountered exception.</param>
+    /// <returns>Exception to throw.</returns>
+    private static Exception WrapCreateError(Type type, Exception e)
+    {
+        Exception error = (e is AggregateException agg) ? agg.InnerException ?? e : e;
+
+        if (error is InsufficientExecutionStackException)
+        {
+            return new InsufficientExecutionStackException(
+                $"Ran into infinite generation trying to randomize type '{type}'.", error);
+        }
+        else if (error is TimeoutException)
+        {
+            return new TimeoutException(
+                $"Could not create instance of type '{type}' matching condition.", error);
+        }
+        else if (error is NotSupportedException)
+        {
+            return new NotSupportedException(
+                $"Encountered issue creating instance of type '{type}'.", error);
+        }
+        else
+        {
+            return new InvalidOperationException(
+                $"Encountered issue creating instance of type '{type}'.", error);
         }
     }
 
