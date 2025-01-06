@@ -13,6 +13,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     private static readonly CompareHint[] _DefaultHints =
     [
         new EarlyFailCompareHint(),
+        new FallbackCompareHint(),
         new FakedCompareHint(),
         new TaskCompareHint(),
         new ValueEquatableCompareHint(),

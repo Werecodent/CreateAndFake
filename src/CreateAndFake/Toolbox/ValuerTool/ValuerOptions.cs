@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design.Content;
 
@@ -18,4 +19,7 @@ public record ValuerOptions : IToolOptions
     /// <summary>Triggers type checking for collections.</summary>
     /// <remarks>By default, collections are compared by contents and not the container type.</remarks>
     public bool CheckCollectionType { get; init; } = false;
+
+    /// <summary>Types to use default equality/hashing.</summary>
+    public FrozenSet<Type> FallbackTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 }
