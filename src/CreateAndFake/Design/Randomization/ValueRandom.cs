@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Frozen;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -7,7 +8,8 @@ namespace CreateAndFake.Design.Randomization;
 public abstract class ValueRandom(bool onlyValidValues) : IRandom
 {
     /// <summary>Supported types paired with the method used to generate them.</summary>
-    private static readonly Dictionary<Type, Func<ValueRandom, object>> _Gens = new()
+    private static readonly FrozenDictionary<Type, Func<ValueRandom, object>> _Gens
+        = new Dictionary<Type, Func<ValueRandom, object>>()
         {
             { typeof(double), gen => Create(gen, BitConverter.ToDouble, 8,
                 double.NaN, double.NegativeInfinity, double.PositiveInfinity) },
@@ -28,7 +30,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
 
             { typeof(decimal), gen => new decimal(
                 gen.Next<int>(), gen.Next<int>(), gen.Next<int>(), gen.Next<bool>(), gen.Next<byte>(29)) }
-        };
+        }.ToFrozenDictionary();
 
     /// <summary>Generates a random <typeparamref name="T"/> value using random bytes.</summary>
     /// <typeparam name="T">Type to create.</typeparam>
@@ -48,7 +50,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     }
 
     /// <summary>All supported value types.</summary>
-    public static IReadOnlyCollection<Type> ValueTypes => _Gens.Keys;
+    public static IEnumerable<Type> ValueTypes { get; } = _Gens.Keys.ToFrozenSet();
 
     /// <summary>Flag to prevent generating invalid values (NaN, -∞ and +∞).</summary>
     public bool OnlyValidValues { get; set; } = onlyValidValues;

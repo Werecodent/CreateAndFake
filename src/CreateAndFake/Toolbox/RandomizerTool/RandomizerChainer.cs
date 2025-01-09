@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace CreateAndFake.Toolbox.RandomizerTool;
 
@@ -9,7 +10,7 @@ public sealed class RandomizerChainer
     private readonly Func<Type, RandomizerChainer, object> _randomizer;
 
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
-    private readonly IDictionary<Type, object> _history;
+    private readonly ImmutableDictionary<Type, object> _history;
 
     /// <summary>Container of the instance to create.</summary>
     public object? Parent { get; }
@@ -25,7 +26,7 @@ public sealed class RandomizerChainer
         _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
         Options = options ?? throw new ArgumentNullException(nameof(options));
 
-        _history = new Dictionary<Type, object>();
+        _history = ImmutableDictionary<Type, object>.Empty;
         Parent = null;
     }
 
@@ -41,9 +42,7 @@ public sealed class RandomizerChainer
 
         if (parent != null)
         {
-            _history = prevChainer._history
-                .Append(new KeyValuePair<Type, object>(parent.GetType(), parent))
-                .ToDictionary(p => p.Key, p => p.Value);
+            _history = prevChainer._history.Add(parent.GetType(), parent);
         }
         else
         {

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
@@ -9,7 +10,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class ImmutableCollectionCreateHint : CreateHint
 {
     /// <summary>Collections able to be randomized.</summary>
-    private static readonly (Type, MethodInfo)[] _Collections =
+    private static readonly ImmutableArray<(Type, MethodInfo)> _Collections =
     [
         (typeof(ImmutableList<>), FindCreateRangeBuilder(typeof(ImmutableList))),
         (typeof(ImmutableArray<>), FindCreateRangeBuilder(typeof(ImmutableArray))),
@@ -32,7 +33,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     }
 
     /// <summary>Collections that the hint can create.</summary>
-    internal static IEnumerable<Type> PotentialCollections => _Collections.Select(i => i.Item1);
+    internal static IEnumerable<Type> PotentialCollections { get; } = _Collections.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)

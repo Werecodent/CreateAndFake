@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Text;
 using CreateAndFake.Design.Context;
 
@@ -7,17 +8,18 @@ namespace CreateAndFake.Design.Randomization;
 public sealed class DataRandom
 {
     /// <summary>Supported searchable property names for values.</summary>
-    private static readonly Dictionary<string, Func<DataRandom, string>> _Matcher = new()
-    {
-        { "FIRSTNAME", gen => gen.Person.FirstName },
-        { "MIDDLENAME", gen => gen.Person.MiddleName },
-        { "LASTNAME", gen => gen.Person.LastName },
-        { "FULLNAME", gen => gen.Person.FullName },
-        { "INITIALS", gen => gen.Person.Initials }
-    };
+    private static readonly FrozenDictionary<string, Func<DataRandom, string>> _Matcher
+        = new Dictionary<string, Func<DataRandom, string>>()
+        {
+            { "FIRSTNAME", gen => gen.Person.FirstName },
+            { "MIDDLENAME", gen => gen.Person.MiddleName },
+            { "LASTNAME", gen => gen.Person.LastName },
+            { "FULLNAME", gen => gen.Person.FullName },
+            { "INITIALS", gen => gen.Person.Initials }
+        }.ToFrozenDictionary();
 
     /// <summary>All searchable names.</summary>
-    internal static IReadOnlyCollection<string> SupportedProperties => _Matcher.Keys;
+    internal static IEnumerable<string> SupportedProperties { get; } = _Matcher.Keys.ToFrozenSet();
 
     /// <inheritdoc cref="IRandom"/>
     private readonly IRandom _gen;

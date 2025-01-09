@@ -10,7 +10,7 @@ namespace CreateAndFake.Toolbox.ValuerTool;
 public sealed class Valuer(ValuerOptions options) : IValuer
 {
     /// <summary>Default set of hints to use for comparisons.</summary>
-    private static readonly CompareHint[] _DefaultHints =
+    private static readonly ImmutableArray<CompareHint> _DefaultHints =
     [
         new EarlyFailCompareHint(),
         new FallbackCompareHint(),

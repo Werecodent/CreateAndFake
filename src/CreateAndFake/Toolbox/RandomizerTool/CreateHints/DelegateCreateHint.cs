@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
@@ -9,10 +10,10 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class DelegateCreateHint : CreateHint
 {
     /// <summary>Methods used to match delegates.</summary>
-    private static readonly MethodInfo[] _Delegators = typeof(Delegator)
+    private static readonly ImmutableArray<MethodInfo> _Delegators = typeof(Delegator)
         .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
         .Where(m => m.Name == "AutoDelegate")
-        .ToArray();
+        .ToImmutableArray();
 
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)

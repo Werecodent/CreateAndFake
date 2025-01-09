@@ -28,8 +28,8 @@ public static class CreateExtensions
     }
 
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>
-    public static object CreateRandomInstance(this Type type)
+    public static object CreateRandomInstance(this Type type, RandomizerMod? optionConfiguration = null)
     {
-        return Tools.Randomizer.Create(type);
+        return Tools.Randomizer.Create(type, optionConfiguration);
     }
 }

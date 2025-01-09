@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Frozen;
+using System.Globalization;
 using System.Reflection;
 using CreateAndFake.Design;
 
@@ -8,7 +9,8 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class CommonSystemCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly Dictionary<Type, Func<RandomizerChainer, object>> _Gens = new()
+    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens
+        = new Dictionary<Type, Func<RandomizerChainer, object>>()
         {
             { typeof(CultureInfo), rand => rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures)) },
             { typeof(TimeSpan), rand => new TimeSpan(rand.Options.Gen.Next<long>()) },
@@ -34,7 +36,7 @@ public sealed class CommonSystemCreateHint : CreateHint
                 t => t.GetMethods().SelectMany(m => m.GetParameters()).ToArray()) },
             { typeof(MethodBase), rand => FindTypeInfo(rand,
                 t => t.GetConstructors().Cast<MethodBase>().Concat(t.GetMethods()).ToArray()) },
-        };
+        }.ToFrozenDictionary();
 
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)

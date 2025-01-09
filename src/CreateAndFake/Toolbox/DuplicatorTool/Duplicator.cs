@@ -10,7 +10,7 @@ namespace CreateAndFake.Toolbox.DuplicatorTool;
 public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
 {
     /// <summary>Default set of hints to use for copying.</summary>
-    private static readonly CopyHint[] _DefaultHints =
+    private static readonly ImmutableArray<CopyHint> _DefaultHints =
     [
         new CommonSystemCopyHint(),
         new TaskCopyHint(),

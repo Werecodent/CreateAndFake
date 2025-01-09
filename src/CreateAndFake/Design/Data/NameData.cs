@@ -1,10 +1,12 @@
+using System.Collections.Immutable;
+
 namespace CreateAndFake.Design.Data;
 
 /// <summary>Provides a pool of names.</summary>
 public static class NameData
 {
     /// <summary>Possible names for randomization.</summary>
-    public static IReadOnlyCollection<string> Values { get; } =
+    public static ImmutableArray<string> Values { get; } =
     [
         // Aa
         "Aaron",

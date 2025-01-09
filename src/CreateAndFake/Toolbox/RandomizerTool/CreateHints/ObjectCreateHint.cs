@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
@@ -10,9 +11,9 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class ObjectCreateHint : CreateHint
 {
     /// <summary>Caches found subclasses for types.</summary>
-    private static readonly Dictionary<Type, Type[]> _SubclassCache = new()
+    private static readonly Dictionary<Type, ImmutableArray<Type>> _SubclassCache = new()
     {
-        { typeof(object), new[] { typeof(object) } }
+        { typeof(object), [ typeof(object) ] }
     };
 
     /// <inheritdoc/>
@@ -180,7 +181,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <returns><c>Type</c> to use.</returns>
     private static Type FindTypeToCreate(Type type, RandomizerChainer randomizer)
     {
-        Type[]? subclasses;
+        ImmutableArray<Type> subclasses;
         lock (_SubclassCache)
         {
             if (!_SubclassCache.TryGetValue(type, out subclasses))
@@ -196,15 +197,15 @@ public sealed class ObjectCreateHint : CreateHint
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>
     /// <param name="type">Parent <c>Type</c>.</param>
     /// <returns>Found subclasses.</returns>
-    private static Type[] FindSelfAndSubclasses(Type type)
+    private static ImmutableArray<Type> FindSelfAndSubclasses(Type type)
     {
         BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
 
-        Type[] subclasses = type.FindLocalSubclasses()
+        ImmutableArray<Type> subclasses = type.FindLocalSubclasses()
             .Prepend(type)
             .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())
             .Where(t => !t.IsNestedPrivate)
-            .ToArray();
+            .ToImmutableArray();
 
         if (subclasses.Length != 0)
         {
@@ -216,7 +217,7 @@ public sealed class ObjectCreateHint : CreateHint
                 .Prepend(type)
                 .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())
                 .Where(t => !t.IsNestedPrivate)
-                .ToArray();
+                .ToImmutableArray();
         }
     }
 

@@ -37,7 +37,7 @@ public sealed class Arg : IDeepCloneable
     /// <returns>Previously created args and associated values.</returns>
     internal static Tuple<Arg, object>[] CaptureSetArgs()
     {
-        Tuple<Arg, object>[] result = [.. _ArgCache.Value];
+        Tuple<Arg, object>[] result = [.. _ArgCache.Value!];
         _ArgCache.Value!.Clear();
         return result;
     }

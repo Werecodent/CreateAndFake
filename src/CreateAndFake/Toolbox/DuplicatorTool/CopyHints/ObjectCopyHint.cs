@@ -7,8 +7,10 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class ObjectCopyHint : CopyHint
 {
     /// <summary>Flags used to identify members.</summary>
-    private const BindingFlags _MemberFlags = BindingFlags.Public
-        | BindingFlags.NonPublic | BindingFlags.Instance;
+    private const BindingFlags _MemberFlags
+        = BindingFlags.Public
+        | BindingFlags.NonPublic
+        | BindingFlags.Instance;
 
     /// <inheritdoc/>
     protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)

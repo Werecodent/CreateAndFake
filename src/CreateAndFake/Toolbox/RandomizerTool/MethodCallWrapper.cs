@@ -14,7 +14,7 @@ public sealed class MethodCallWrapper
     private readonly OrderedDictionary _args;
 
     /// <summary>Parameter data for the method.</summary>
-    public IEnumerable<object?> Args => _args.Values.Cast<object>().ToArray();
+    public IEnumerable<object?> Args => _args.Values.Cast<object>();
 
     /// <inheritdoc cref="MethodCallWrapper"/>
     /// <param name="method"><inheritdoc cref="_method" path="/summary"/></param>

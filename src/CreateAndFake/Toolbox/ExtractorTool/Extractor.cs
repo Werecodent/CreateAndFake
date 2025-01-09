@@ -13,6 +13,11 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet([
         Assembly.GetExecutingAssembly().GetType(),
         typeof(Type).GetType(),
+        typeof(ParameterInfo),
+        typeof(PropertyInfo),
+        typeof(MemberInfo),
+        typeof(MethodInfo),
+        typeof(FieldInfo),
         typeof(Assembly),
         typeof(string),
         typeof(Type)]);

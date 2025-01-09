@@ -11,14 +11,14 @@ using CreateAndFake.Toolbox.ValuerTool;
 namespace CreateAndFake;
 
 /// <summary>Holds implementations of all reflection tools.</summary>
-/// <param name="gen"><inheritdoc cref="IRandom" path="/summary"/></param>
-/// <param name="valuer"><inheritdoc cref="IValuer" path="/summary"/></param>
-/// <param name="faker"><inheritdoc cref="IFaker" path="/summary"/></param>
-/// <param name="randomizer"><inheritdoc cref="IRandomizer" path="/summary"/></param>
-/// <param name="extractor"><inheritdoc cref="IExtractor" path="/summary"/></param>
-/// <param name="mutator"><inheritdoc cref="IMutator" path="/summary"/></param>
+/// <param name="gen"><inheritdoc cref="Gen" path="/summary"/></param>
+/// <param name="valuer"><inheritdoc cref="Valuer" path="/summary"/></param>
+/// <param name="faker"><inheritdoc cref="Faker" path="/summary"/></param>
+/// <param name="randomizer"><inheritdoc cref="Randomizer" path="/summary"/></param>
+/// <param name="extractor"><inheritdoc cref="Extractor" path="/summary"/></param>
+/// <param name="mutator"><inheritdoc cref="Mutator" path="/summary"/></param>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
-/// <param name="duplicator"><inheritdoc cref="IDuplicator" path="/summary"/></param>
+/// <param name="duplicator"><inheritdoc cref="Duplicator" path="/summary"/></param>
 /// <param name="tester"><inheritdoc cref="Tester" path="/summary"/></param>
 public sealed class ToolSet(
     IRandom gen,
@@ -29,7 +29,7 @@ public sealed class ToolSet(
     IMutator mutator,
     IAsserter asserter,
     IDuplicator duplicator,
-    Tester tester)
+    ITester tester)
 {
     /// <summary>Default tools to use.</summary>
     public static ToolSet DefaultSet { get; } = CreateViaSeed(Environment.TickCount);
@@ -40,13 +40,13 @@ public sealed class ToolSet(
     public static ToolSet CreateViaSeed(int seed)
     {
         IRandom gen = new SeededRandom(seed);
-        IValuer valuer = new Valuer(new ValuerOptions());
-        IFaker faker = new Faker(new FakerOptions { Valuer = valuer });
-        IRandomizer randomizer = new Randomizer(new RandomizerOptions { Gen = gen, Faker = faker });
-        IExtractor extractor = new Extractor(new ExtractorOptions { Randomizer = randomizer, Valuer = valuer });
-        IMutator mutator = new Mutator(new MutatorOptions { Randomizer = randomizer, Valuer = valuer, Extractor = extractor });
-        IAsserter asserter = new Asserter(new AsserterOptions { Gen = gen, Extractor = extractor, Valuer = valuer });
-        IDuplicator duplicator = new Duplicator(new DuplicatorOptions { Asserter = asserter, Extractor = extractor });
+        Valuer valuer = new(new ValuerOptions());
+        Faker faker = new(new FakerOptions { Valuer = valuer });
+        Randomizer randomizer = new(new RandomizerOptions { Gen = gen, Faker = faker });
+        Extractor extractor = new(new ExtractorOptions { Randomizer = randomizer, Valuer = valuer });
+        Mutator mutator = new(new MutatorOptions { Randomizer = randomizer, Valuer = valuer, Extractor = extractor });
+        Asserter asserter = new(new AsserterOptions { Gen = gen, Extractor = extractor, Valuer = valuer });
+        Duplicator duplicator = new(new DuplicatorOptions { Asserter = asserter, Extractor = extractor });
         Tester tester = new(new TesterOptions { Gen = gen, Randomizer = randomizer, Duplicator = duplicator, Asserter = asserter });
 
         return new ToolSet(gen, valuer, faker, randomizer, extractor, mutator, asserter, duplicator, tester);
@@ -76,6 +76,6 @@ public sealed class ToolSet(
     /// <inheritdoc cref="IDuplicator"/>
     public IDuplicator Duplicator { get; } = duplicator;
 
-    /// <inheritdoc cref="Toolbox.TesterTool.Tester"/>
-    public Tester Tester { get; } = tester;
+    /// <inheritdoc cref="ITester"/>
+    public ITester Tester { get; } = tester;
 }

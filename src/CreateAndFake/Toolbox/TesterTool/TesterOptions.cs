@@ -52,6 +52,7 @@ public record TesterOptions : IToolOptions
         typeof(InvalidOperationException),
         typeof(TargetInvocationException),
         typeof(IndexOutOfRangeException),
+        typeof(BadImageFormatException),
         typeof(NotImplementedException),
         typeof(MissingMethodException),
         typeof(NullReferenceException),

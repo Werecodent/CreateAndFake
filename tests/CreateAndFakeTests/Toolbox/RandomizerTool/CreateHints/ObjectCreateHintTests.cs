@@ -34,7 +34,10 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
     [Fact]
     public void Create_RetriesUntilGoodSample()
     {
-        Limiter.Dozen.Repeat("",
-            () => typeof(IIsGoodOrBadSample).CreateRandomInstance().Assert().IsNot(null));
+        Limiter.Dozen.Repeat("Retries until using a concrete class that works.",
+            () => typeof(IIsGoodOrBadSample)
+                .CreateRandomInstance(opt => opt with { Limiter = Limiter.Hundred })
+                .Assert()
+                .IsNot(null));
     }
 }

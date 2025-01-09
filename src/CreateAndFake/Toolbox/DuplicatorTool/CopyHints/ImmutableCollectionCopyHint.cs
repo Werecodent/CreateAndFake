@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
@@ -9,17 +10,18 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public class ImmutableCollectionCopyHint : CopyHint
 {
     /// <summary>Collections able to be randomized.</summary>
-    private static readonly Dictionary<Type, MethodInfo> _Collections = new()
-    {
-        {typeof(ImmutableList<>), FindCreateRangeBuilder(typeof(ImmutableList))},
-        {typeof(ImmutableArray<>), FindCreateRangeBuilder(typeof(ImmutableArray))},
-        {typeof(ImmutableQueue<>), FindCreateRangeBuilder(typeof(ImmutableQueue))},
-        {typeof(ImmutableStack<>), FindCreateRangeBuilder(typeof(ImmutableStack))},
-        {typeof(ImmutableHashSet<>), FindCreateRangeBuilder(typeof(ImmutableHashSet))},
-        {typeof(ImmutableSortedSet<>), FindCreateRangeBuilder(typeof(ImmutableSortedSet))},
-        {typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary))},
-        {typeof(ImmutableSortedDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableSortedDictionary))}
-    };
+    private static readonly FrozenDictionary<Type, MethodInfo> _Collections
+        = new Dictionary<Type, MethodInfo>()
+        {
+            { typeof(ImmutableList<>), FindCreateRangeBuilder(typeof(ImmutableList)) },
+            { typeof(ImmutableArray<>), FindCreateRangeBuilder(typeof(ImmutableArray)) },
+            { typeof(ImmutableQueue<>), FindCreateRangeBuilder(typeof(ImmutableQueue)) },
+            { typeof(ImmutableStack<>), FindCreateRangeBuilder(typeof(ImmutableStack)) },
+            { typeof(ImmutableHashSet<>), FindCreateRangeBuilder(typeof(ImmutableHashSet)) },
+            { typeof(ImmutableSortedSet<>), FindCreateRangeBuilder(typeof(ImmutableSortedSet)) },
+            { typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary)) },
+            { typeof(ImmutableSortedDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableSortedDictionary)) }
+        }.ToFrozenDictionary();
 
     /// <summary>Finds the static <c>CreateRange</c> method for a collection.</summary>
     /// <param name="type">Collection type to create.</param>

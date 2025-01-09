@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Collections.Specialized;
 using CreateAndFake.Design;
 
@@ -10,7 +12,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class LegacyCollectionCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly (Type, Func<string[], RandomizerChainer, object>)[] _Creators =
+    private static readonly ImmutableArray<(Type, Func<string[], RandomizerChainer, object>)> _Creators =
         [
             (typeof(Hashtable), CreateDict<Hashtable>),
             (typeof(SortedList), CreateDict<SortedList>),
@@ -35,7 +37,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         ];
 
     /// <summary>Collections that the hint will create.</summary>
-    internal static IEnumerable<Type> PotentialCollections => _Creators.Select(i => i.Item1);
+    internal static IEnumerable<Type> PotentialCollections { get; } = _Creators.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
     protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)

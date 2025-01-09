@@ -42,5 +42,5 @@ public static class Tools
     public static IDuplicator Duplicator => Source.Duplicator;
 
     /// <inheritdoc cref="ToolSet.Tester"/>
-    public static Tester Tester => Source.Tester;
+    public static ITester Tester => Source.Tester;
 }

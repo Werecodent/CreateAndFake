@@ -15,7 +15,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool;
 public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 {
     /// <summary>Default set of hints to use for randomization.</summary>
-    private static readonly CreateHint[] _DefaultHints =
+    private static readonly ImmutableArray<CreateHint> _DefaultHints =
     [
         new ValueCreateHint(),
         new EnumCreateHint(),

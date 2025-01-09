@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Frozen;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
@@ -9,7 +10,7 @@ namespace CreateAndFake.Toolbox;
 public static class TypeExtensions
 {
     /// <summary>Keeps track of type inheritance.</summary>
-    private static readonly Dictionary<Type, HashSet<Type>> _InheritCache = [];
+    private static readonly Dictionary<Type, FrozenSet<Type>> _InheritCache = [];
 
     /// <summary>Finds subclasses of <paramref name="type"/> in the <paramref name="type"/>'s assembly.</summary>
     /// <param name="type"><see cref="Type"/> to locate subclasses for.</param>
@@ -126,12 +127,12 @@ public static class TypeExtensions
             return false;
         }
 
-        HashSet<Type>? children;
+        FrozenSet<Type>? children;
         lock (_InheritCache)
         {
             if (!_InheritCache.TryGetValue(parent, out children))
             {
-                _InheritCache[parent] = children = [.. FindInheritance(parent).Distinct()];
+                _InheritCache[parent] = children = FindInheritance(parent).ToFrozenSet();
             }
         }
 

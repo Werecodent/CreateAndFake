@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
@@ -9,7 +10,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class FakeCreateHint : CreateHint
 {
     /// <summary>Possible action types to use.</summary>
-    private static readonly Type[] _ActionTypes =
+    private static readonly ImmutableArray<Type> _ActionTypes =
     [
         typeof(Action),
         typeof(Action<>),
@@ -31,7 +32,7 @@ public sealed class FakeCreateHint : CreateHint
     ];
 
     /// <summary>Possible func types to use.</summary>
-    private static readonly Type?[] _FuncTypes =
+    private static readonly ImmutableArray<Type?> _FuncTypes =
     [
         null,
         typeof(Func<>),

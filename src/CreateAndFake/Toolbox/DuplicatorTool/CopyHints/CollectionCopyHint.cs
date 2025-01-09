@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using CreateAndFake.Design;
 
 namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
@@ -9,12 +10,13 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class CollectionCopyHint : CopyHint<IEnumerable>
 {
     /// <summary>Special cases where the data needs to be reversed.</summary>
-    private static readonly Type[] _ReverseCases =
-    [
-        typeof(ConcurrentStack<>),
-        typeof(Stack<>),
-        typeof(Stack)
-    ];
+    private static readonly FrozenSet<Type> _ReverseCases
+        = FrozenSet.ToFrozenSet(
+        [
+            typeof(ConcurrentStack<>),
+            typeof(Stack<>),
+            typeof(Stack)
+        ]);
 
     /// <inheritdoc/>
     protected override IEnumerable Copy(IEnumerable source, DuplicatorChainer duplicator)

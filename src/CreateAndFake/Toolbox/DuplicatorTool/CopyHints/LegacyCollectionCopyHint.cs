@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Specialized;
 using CreateAndFake.Design;
 
@@ -10,7 +11,8 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class LegacyCollectionCopyHint : CopyHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly Dictionary<Type, Func<object, DuplicatorChainer, object>> _Copiers = new()
+    private static readonly FrozenDictionary<Type, Func<object, DuplicatorChainer, object>> _Copiers
+        = new Dictionary<Type, Func<object, DuplicatorChainer, object>>()
         {
             { typeof(Hashtable), CreateAndCopy<Hashtable> },
             { typeof(SortedList), CreateAndCopy<SortedList> },
@@ -37,7 +39,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
                     return result;
                 }
             }
-        };
+        }.ToFrozenDictionary();
 
     /// <inheritdoc/>
     protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
