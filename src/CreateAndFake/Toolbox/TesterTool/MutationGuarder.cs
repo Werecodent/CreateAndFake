@@ -26,8 +26,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
-        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
-            .Where(m => m.Name is not "Finalize" and not "Dispose"))
+        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
             PreventsMutation(instance, GenericFixer.FixMethod(method, Options), false);
         }

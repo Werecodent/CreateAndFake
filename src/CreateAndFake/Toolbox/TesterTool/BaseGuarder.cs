@@ -22,10 +22,15 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <summary>Gets all testable constructors on a type.</summary>
     /// <param name="type">Type with the constructors to test.</param>
     /// <returns>Found constructors.</returns>
-    protected static IEnumerable<ConstructorInfo> FindAllConstructors(Type type)
+    protected IEnumerable<ConstructorInfo> FindAllConstructors(Type type)
     {
+        ArgumentGuard.ThrowIfNull(type, nameof(type));
+
+        BindingFlags scope = Options.IncludeInternals
+            ? BindingFlags.Public | BindingFlags.NonPublic
+            : BindingFlags.Public;
         return type
-            .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .GetConstructors(BindingFlags.Instance | scope)
             .Where(c => c.IsPublic || c.IsAssembly || c.IsFamilyOrAssembly)
             .Where(c => !c.IsPrivate);
     }
@@ -34,13 +39,19 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="type">Type with the methods to test.</param>
     /// <param name="kind">Instance, static, or both.</param>
     /// <returns>Found methods.</returns>
-    protected static IEnumerable<MethodInfo> FindAllMethods(Type type, BindingFlags kind)
+    protected IEnumerable<MethodInfo> FindAllMethods(Type type, BindingFlags kind)
     {
+        ArgumentGuard.ThrowIfNull(type, nameof(type));
+
+        BindingFlags scope = Options.IncludeInternals
+            ? BindingFlags.Public | BindingFlags.NonPublic
+            : BindingFlags.Public;
         return type
-            .GetMethods(kind | BindingFlags.Public | BindingFlags.NonPublic)
+            .GetMethods(kind | scope)
             .Where(m => m.IsPublic || m.IsAssembly || m.IsFamily || m.IsFamilyOrAssembly)
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
-            .Where(m => !m.IsPrivate);
+            .Where(m => !m.IsPrivate)
+            .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
     }
 
     /// <summary>Calls all methods to test parameter being set to null.</summary>
@@ -52,7 +63,6 @@ internal abstract class BaseGuarder(TesterOptions options)
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
-                .Where(m => m.Name is not "Finalize" and not "Dispose")
                 .Where(m => !m.IsFamily)
                 .Select(m => GenericFixer.FixMethod(m, options)))
         {

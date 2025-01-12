@@ -28,56 +28,56 @@ public static class Issue094Tests
     internal static void Issue094_AsserterOptionsWorks()
     {
         TestToolBehavior<AsserterOptions>();
-        TestToolBehavior<Func<AsserterOptions, AsserterOptions>>();
+        TestToolBehavior<AsserterMod>();
     }
 
     [Fact]
     internal static void Issue094_DuplicatorOptionsWorks()
     {
         TestToolBehavior<DuplicatorOptions>();
-        TestToolBehavior<Func<DuplicatorOptions, DuplicatorOptions>>();
+        TestToolBehavior<DuplicatorMod>();
     }
 
     [Fact]
     internal static void Issue094_FakerOptionsWorks()
     {
         TestToolBehavior<FakerOptions>();
-        TestToolBehavior<Func<FakerOptions, FakerOptions>>();
+        TestToolBehavior<FakerMod>();
     }
 
     [Fact]
     internal static void Issue094_MutatorOptionsWorks()
     {
         TestToolBehavior<MutatorOptions>();
-        TestToolBehavior<Func<MutatorOptions, MutatorOptions>>();
+        TestToolBehavior<MutatorMod>();
     }
 
     [Fact]
     internal static void Issue094_ExtractorOptionsWorks()
     {
         TestToolBehavior<ExtractorOptions>();
-        TestToolBehavior<Func<ExtractorOptions, ExtractorOptions>>();
+        TestToolBehavior<ExtractorMod>();
     }
 
     [Fact]
     internal static void Issue094_RandomizerOptionsWorks()
     {
         TestToolBehavior<RandomizerOptions>();
-        TestToolBehavior<Func<RandomizerOptions, RandomizerOptions>>();
+        TestToolBehavior<RandomizerMod>();
     }
 
     [Fact]
     internal static void Issue094_TesterOptionsWorks()
     {
         TestToolBehavior<TesterOptions>();
-        TestToolBehavior<Func<TesterOptions, TesterOptions>>();
+        TestToolBehavior<TesterMod>();
     }
 
     [Fact]
     internal static void Issue094_ValuerOptionsWorks()
     {
         TestToolBehavior<ValuerOptions>();
-        TestToolBehavior<Func<ValuerOptions, ValuerOptions>>();
+        TestToolBehavior<ValuerMod>();
     }
 
     [Fact]

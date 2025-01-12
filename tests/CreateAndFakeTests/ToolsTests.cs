@@ -1,14 +1,8 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Context;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Toolbox;
-using CreateAndFake.Toolbox.AsserterTool.Fluent;
-using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.FakerTool;
-using CreateAndFake.Toolbox.FakerTool.Proxy;
 using CreateAndFake.Toolbox.TesterTool;
-using CreateAndFake.Toolbox.ValuerTool;
 using CreateAndFakeTests.TestSamples;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
@@ -46,29 +40,14 @@ public static class ToolsTests
     internal static void Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore = [
-            typeof(Arg),
-            typeof(Fake),
             typeof(Fake<>),
             typeof(VoidType),
             typeof(AnyGeneric),
             typeof(Injected<>),
-            typeof(DuplicatorChainer),
-            typeof(ValuerChainer),
-            typeof(Emitter),
-            typeof(Behavior),
             typeof(Behavior<>),
-            typeof(AssertObjectBase<>),
-            typeof(AssertEnumerableBase<>),
-            typeof(AssertStringBase<>),
-            typeof(AssertBehaviorBase<>),
-            typeof(AssertComparableBase<>),
-            typeof(DataRandom),
-            typeof(BaseDataContext),
-            typeof(PersonContext),
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),
-            typeof(ITester)
         ];
 
         foreach (Type type in typeof(Tools).Assembly.GetTypes()

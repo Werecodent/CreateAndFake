@@ -27,6 +27,12 @@ public static class AssertTypeTests
         typeof(IParentType).Assert().Inherits<IChildType>().And.Inherits(typeof(IChildType));
     }
 
+    [Theory, RandomData]
+    internal static void Inherits_ParentToChildWithOptions(AsserterMod mod)
+    {
+        typeof(IParentType).Assert().Inherits<IChildType>(mod).And.Inherits(typeof(IChildType), mod);
+    }
+
     [Fact]
     internal static void Inherits_ChildToParent()
     {

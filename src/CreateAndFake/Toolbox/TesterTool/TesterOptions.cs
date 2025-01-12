@@ -44,6 +44,15 @@ public record TesterOptions : IToolOptions
     /// <summary>If static methods are included when running tests on classes.</summary>
     public bool IncludeStaticMethods { get; init; } = true;
 
+    /// <summary>If internal members are included when running tests on classes.</summary>
+    public bool IncludeInternals { get; init; } = true;
+
+    /// <summary>Names of methods to skip when running tests on classes.</summary>
+    public FrozenSet<string> MethodsToIgnore { get; init; } = FrozenSet.ToFrozenSet([
+        "Finalize",
+        "Dispose",
+        "PrintMembers"]);
+
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet([
         typeof(TargetParameterCountException),

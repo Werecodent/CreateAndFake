@@ -19,6 +19,7 @@ internal static class Program
         Target("test", DependsOn("compile"), Test);
         Target("coverage", DependsOn("compile"), Coverage);
         Target("pack", DependsOn("compile"), Pack);
+        Target("debugCrash", DependsOn("compile"), DebugCrash);
         await RunTargetsAndExitAsync(args);
     }
 
@@ -42,6 +43,18 @@ internal static class Program
 
         await RunAsync("dotnet", testArgs + "--configuration Debug");
         await RunAsync("dotnet", testArgs + "--configuration Release");
+    }
+
+    /// <summary>Uses extended logging for tests to check on harness crash.</summary>
+    private static async Task DebugCrash()
+    {
+        string logDir = Path.Combine(_ArtifactDir, "logs");
+        EnsureEmpty(logDir);
+
+        string logFile = Path.Combine(logDir, "test.txt");
+        string testArgs = $"test --no-restore --no-build --diag:{logFile} ";
+
+        await RunAsync("dotnet", testArgs + "--configuration Debug");
     }
 
     /// <summary>Tests and analyzes test code coverage.</summary>

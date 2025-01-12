@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection;
+using System.Text;
 using CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 using CreateAndFakeTests.TestBases;
 
@@ -29,7 +30,8 @@ public sealed class CommonSystemCreateHintTests : CreateHintTestBase<CommonSyste
         typeof(MethodBase),
         typeof(DateTimeOffset),
         typeof(Uri),
-        typeof(UriBuilder)
+        typeof(UriBuilder),
+        typeof(StringBuilder)
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];

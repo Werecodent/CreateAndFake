@@ -30,10 +30,15 @@ public class FrozenCollectionCopyHint : CopyHint
 
         if (type.Inherits(typeof(FrozenSet<>)))
         {
+            Type itemType = type.GetInterfaces()
+                .Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .GetGenericArguments()
+                .Single();
+
             return (true, _SetMaker
-                .MakeGenericMethod(type.GetGenericArguments())
+                .MakeGenericMethod(itemType)
                 .Invoke(null, [_CopyContentsHelper
-                    .MakeGenericMethod(type.GetGenericArguments())
+                    .MakeGenericMethod(itemType)
                     .Invoke(null, [source, duplicator]),
                     null]));
         }

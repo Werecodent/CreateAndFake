@@ -1,6 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 using CreateAndFake.Design;
 
 namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
@@ -26,6 +27,8 @@ public sealed class CommonSystemCreateHint : CreateHint
             { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
             { typeof(UriBuilder), rand => new UriBuilder(
                 rand.Create<bool>() ? "http" : "https", rand.Create<string>(), rand.Options.Gen.Next(-1, 65535)) },
+
+            { typeof(StringBuilder), rand => new StringBuilder(rand.Create<string>()) },
 
             { typeof(ConstructorInfo), rand => FindTypeInfo(rand, t => t.GetConstructors()) },
             { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },

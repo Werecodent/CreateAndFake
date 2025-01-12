@@ -34,8 +34,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
-        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
-            .Where(m => m.Name is not "Finalize" and not "Dispose"))
+        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
             PreventsNullRefException(instance, GenericFixer.FixMethod(method, Options), false);
         }

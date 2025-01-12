@@ -64,6 +64,7 @@
         "nupkg",
         "omnisharp",
         "outofbounds",
+        "Randomizable",
         "Randomizer",
         "Reflectable",
         "reportgenerator",
