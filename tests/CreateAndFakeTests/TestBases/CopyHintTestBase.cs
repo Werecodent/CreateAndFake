@@ -26,14 +26,14 @@ public abstract class CopyHintTestBase<T>(
     /// <summary>If the hint copies by reference instead for value types.</summary>
     private readonly bool _copiesByRef = copiesByRef;
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(TesterMod)"/>
     [Fact]
     public void CopyHint_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException(TestInstance);
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(TesterMod)"/>
     [Fact]
     public void CopyHint_NoParameterMutation()
     {

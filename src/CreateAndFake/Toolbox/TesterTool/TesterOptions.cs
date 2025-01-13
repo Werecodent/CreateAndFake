@@ -71,6 +71,7 @@ public record TesterOptions : IToolOptions
         typeof(NotSupportedException),
         typeof(KeyNotFoundException),
         typeof(InvalidCastException),
+        typeof(PathTooLongException),
         typeof(FakeVerifyException),
         typeof(AggregateException),
         typeof(ArgumentException),

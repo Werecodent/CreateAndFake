@@ -19,6 +19,12 @@ public static class RandomizerTests
     }
 
     [Fact]
+    internal static void Randomizer_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<Randomizer>(opt => opt with { IncludeConstructors = false });
+    }
+
+    [Fact]
     internal static void Create_NoRulesThrows()
     {
         new Randomizer(_ToolOptions with { IncludeDefaultHints = false })

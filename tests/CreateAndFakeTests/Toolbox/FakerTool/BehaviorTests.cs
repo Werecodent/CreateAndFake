@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.Toolbox;
 using CreateAndFake.Toolbox.FakerTool;
 
@@ -6,6 +7,20 @@ namespace CreateAndFakeTests.Toolbox.FakerTool;
 
 public static class BehaviorTests
 {
+    [Fact]
+    internal static void Behavior_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException(typeof(Behavior),
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) });
+    }
+
+    [Fact]
+    internal static void Behavior_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation(typeof(Behavior),
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) });
+    }
+
     [Fact]
     internal static void Set_BehaviorWorks()
     {

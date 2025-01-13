@@ -8,14 +8,14 @@ namespace CreateAndFakeTests.TestBases;
 /// <typeparam name="T">Exception type to test.</typeparam>
 public abstract class ExceptionTestBase<T> where T : Exception
 {
-    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(TesterMod)"/>
     [Fact]
     public void Exception_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException<T>();
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(TesterMod)"/>
     [Fact]
     public void Exception_NoParameterMutation()
     {

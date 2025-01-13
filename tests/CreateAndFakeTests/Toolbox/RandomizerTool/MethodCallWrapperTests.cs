@@ -14,6 +14,12 @@ public static class MethodCallWrapperTests
     }
 
     [Fact]
+    internal static void MethodCallWrapper_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<MethodCallWrapper>();
+    }
+
+    [Fact]
     internal static void MethodCallWrapper_CanRandomize()
     {
         Tools.Randomizer.Create<MethodCallWrapper>().Assert().IsNot(null);

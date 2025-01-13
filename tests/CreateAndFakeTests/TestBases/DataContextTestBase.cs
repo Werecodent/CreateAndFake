@@ -9,14 +9,14 @@ namespace CreateAndFakeTests.TestBases;
 /// <typeparam name="T">Type to test.</typeparam>
 public abstract class DataContextTestBase<T> where T : BaseDataContext
 {
-    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(TesterMod)"/>
     [Fact]
     public void DataContext_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException<T>();
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(TesterMod)"/>
     [Fact]
     public void DataContext_NoParameterMutation()
     {

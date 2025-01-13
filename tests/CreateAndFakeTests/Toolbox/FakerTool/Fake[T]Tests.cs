@@ -10,7 +10,7 @@ namespace CreateAndFakeTests.Toolbox.FakerTool;
 public static class Fake_T_Tests
 {
     [Fact]
-    internal static void Fake_GuardsNulls()
+    internal static void Fake_T_GuardsNulls()
     {
         ((IFaked)null).Assert(v => new Fake<object>(v)).Throws<ArgumentNullException>();
         ((Fake)null).Assert(v => new Fake<object>(v)).Throws<ArgumentNullException>();

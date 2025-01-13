@@ -12,6 +12,12 @@ public static class ValuerTests
     }
 
     [Fact]
+    internal static void Valuer_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<Valuer>();
+    }
+
+    [Fact]
     internal static void GetHashCode_MissingMatchThrows()
     {
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })

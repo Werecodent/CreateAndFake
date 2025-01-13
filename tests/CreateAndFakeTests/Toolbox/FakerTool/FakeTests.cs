@@ -7,6 +7,12 @@ namespace CreateAndFakeTests.Toolbox.FakerTool;
 public static class FakeTests
 {
     [Fact]
+    internal static void Fake_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException<Fake>();
+    }
+
+    [Fact]
     internal static void Verify_NoTotalValid()
     {
         Tools.Faker.Mock<object>().VerifyAll();

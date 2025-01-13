@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Toolbox.FakerTool;
@@ -39,6 +40,8 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <returns>Result of the call.</returns>
     internal object? Invoke(Delegate implementation, object[] args)
     {
+        ArgumentGuard.ThrowIfNull(implementation, nameof(implementation));
+
         Calls++;
         try
         {

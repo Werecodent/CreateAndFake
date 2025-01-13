@@ -6,6 +6,18 @@ namespace CreateAndFakeTests.Toolbox.FakerTool;
 public static class ArgTests
 {
     [Fact]
+    internal static void Arg_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException<Arg>();
+    }
+
+    [Fact]
+    internal static void Arg_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<Arg>();
+    }
+
+    [Fact]
     internal static void Arg_PairsWithLambda()
     {
         string[] methods = typeof(Arg)

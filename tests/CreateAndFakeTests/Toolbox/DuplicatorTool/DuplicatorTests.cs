@@ -12,6 +12,12 @@ public static class DuplicatorTests
     }
 
     [Fact]
+    internal static void Duplicator_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<Duplicator>();
+    }
+
+    [Fact]
     internal static void Copy_MissingMatchThrows()
     {
         new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })

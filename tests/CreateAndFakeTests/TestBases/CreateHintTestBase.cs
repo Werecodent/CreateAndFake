@@ -25,14 +25,14 @@ public abstract class CreateHintTestBase<T>(
     /// <summary>Types that can't be created by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(TesterMod)"/>
     [Fact]
     public void CreateHint_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException(TestInstance);
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(TesterMod)"/>
     [Fact]
     public void CreateHint_NoParameterMutation()
     {

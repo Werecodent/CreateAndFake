@@ -12,14 +12,14 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
     /// <summary>Instance to test with.</summary>
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefException{T}(TesterMod)"/>
     [Fact]
     public void ValueRandom_GuardsNulls()
     {
         Tools.Tester.PreventsNullRefException<T>();
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(Func{TesterOptions,TesterOptions})"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutation{T}(TesterMod)"/>
     [Fact]
     public void ValueRandom_NoParameterMutation()
     {
