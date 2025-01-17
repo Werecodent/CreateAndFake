@@ -1,8 +1,12 @@
-﻿using CreateAndFake.Design;
+﻿using System.Collections.Frozen;
+using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Toolbox.FakerTool;
 
 namespace CreateAndFake.Toolbox.TesterTool;
+
+#pragma warning disable CA1865 // Use 'string.IndexOf(char)' instead: Not available for all versions.
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
@@ -146,4 +150,44 @@ public class Tester(TesterOptions options) : ITester
             }
         }
     }
+
+    /// <inheritdoc/>
+    public virtual void ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null)
+    {
+        ArgumentGuard.ThrowIfNull(codeAssembly, nameof(codeAssembly));
+
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        Assembly testAssembly = Assembly.GetCallingAssembly();
+        BindingFlags scope = localOptions.IncludeInternals
+            ? BindingFlags.Public | BindingFlags.NonPublic
+            : BindingFlags.Public;
+
+        FrozenSet<string> testClasses = testAssembly
+            .GetTypes()
+            .Select(t => t.Name)
+            .ToFrozenSet();
+
+        localOptions.Asserter.IsEmpty(
+            TypeExtensions.FindLoadedClassTypes(codeAssembly)
+                .Where(t => !t.IsAbstract)
+                .Where(t => t.IsVisibleTo(testAssembly.GetName()))
+                .Where(t =>
+                {
+                    IEnumerable<string> possibleTestNames;
+                    if (t.IsGenericTypeDefinition)
+                    {
+                        string baseName = t.Name.Substring(0, t.Name.IndexOf("`", StringComparison.InvariantCulture));
+                        possibleTestNames = localOptions.TestClassNameGenericSubstitutes.Select(sub => baseName + sub);
+                    }
+                    else
+                    {
+                        possibleTestNames = [t.Name];
+                    }
+                    return possibleTestNames.All(name => !testClasses.Contains(name + localOptions.TestClassNameSuffix));
+                })
+                .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
+            "Missing tests for classes.");
+    }
 }
+
+#pragma warning restore CA2249 // Use 'string.IndexOf(char)' instead

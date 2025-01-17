@@ -49,14 +49,12 @@ internal static class Emitter
 
         MethodInfo metaGetter = SetupFakeMetaProvider(newType, SetupConstructor(newType, parent));
 
-        (PropertyInfo, PropertyBuilder)[] props =
-            FindImplementableProperties(interfaces.Prepend(parent))
+        (PropertyInfo, PropertyBuilder)[] props = [.. FindImplementableProperties(interfaces.Prepend(parent))
             .Select(p => (p, newType.DefineProperty(
                 p.DeclaringType!.Name + "." + p.Name,
                 p.Attributes,
                 p.PropertyType,
-                Type.EmptyTypes)))
-            .ToArray();
+                Type.EmptyTypes)))];
 
         foreach (MethodInfo method in FindImplementableMethods(interfaces.Prepend(parent)))
         {
@@ -64,11 +62,11 @@ internal static class Emitter
                     method.DeclaringType!.Name + "." + method.Name,
                     method.Attributes & ~MethodAttributes.Abstract,
                     method.ReturnType,
-                    method.GetParameters().Select(p => p.ParameterType).ToArray());
+                    [.. method.GetParameters().Select(p => p.ParameterType)]);
 
             if (method.IsGenericMethod)
             {
-                _ = fakedMethod.DefineGenericParameters(method.GetGenericArguments().Select(a => a.Name).ToArray());
+                _ = fakedMethod.DefineGenericParameters([.. method.GetGenericArguments().Select(a => a.Name)]);
             }
             ImplementFakeBehavior(fakedMethod.GetILGenerator(), method, metaGetter);
             newType.DefineMethodOverride(fakedMethod, method);

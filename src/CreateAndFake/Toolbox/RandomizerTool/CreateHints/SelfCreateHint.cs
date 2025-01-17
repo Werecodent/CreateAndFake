@@ -20,17 +20,17 @@ public sealed class SelfCreateHint : CreateHint
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type != null && _Gens.TryGetValue(type, out Func<RandomizerChainer, object?>? gen))
         {
-            return (true, gen.Invoke(randomizer));
+            return new(gen.Invoke(randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 }

@@ -134,13 +134,13 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        (bool, object?) result = SelectHints(chainer.Options)
+        CreateHintResult? result = SelectHints(chainer.Options)
             .Select(h => h.TryCreate(type, chainer))
-            .FirstOrDefault(r => r.Item1);
+            .FirstOrDefault(r => r.HasData);
 
-        if (!result.Equals(default))
+        if (result != null)
         {
-            return result.Item2!;
+            return result.Data!;
         }
         else
         {
@@ -155,12 +155,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
 
-        List<Tuple<Type, object>> data = (values ?? [])
+        List<Tuple<Type, object>> data = [.. (values ?? [])
             .Where(v => v != null)
             .Select(v => (v is Fake fake) ? fake.Dummy : v)
             .Where(v => v != null)
-            .Select(v => Tuple.Create(v!.GetType(), v))
-            .ToList();
+            .Select(v => Tuple.Create(v!.GetType(), v))];
 
         OrderedDictionary args = new(method.GetParameters().Length);
 
@@ -211,12 +210,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         }
         else
         {
-            return Inject(param.ParameterType, args
+            return Inject(param.ParameterType, [.. args
                 .Values
                 .Cast<object>()
                 .Where(a => a is Fake or IFaked)
-                .Reverse()
-                .ToArray());
+                .Reverse()]);
         }
     }
 
@@ -231,12 +229,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        List<Tuple<Type, object>> data = (values ?? [])
+        List<Tuple<Type, object>> data = [.. (values ?? [])
             .Where(v => v != null)
             .Select(v => (v is Fake fake) ? fake.Dummy : v)
             .Where(v => v != null)
-            .Select(v => Tuple.Create(v!.GetType(), v))
-            .ToList();
+            .Select(v => Tuple.Create(v!.GetType(), v))];
 
         ConstructorInfo? maker = FindConstructor(type, data, BindingFlags.Public)
             ?? FindConstructor(type, data, BindingFlags.NonPublic);

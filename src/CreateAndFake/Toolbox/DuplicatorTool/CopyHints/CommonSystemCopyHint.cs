@@ -7,33 +7,33 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class CommonSystemCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         if (source is TimeSpan span)
         {
-            return (true, new TimeSpan(duplicator.Copy(span.Ticks)));
+            return new(new TimeSpan(duplicator.Copy(span.Ticks)));
         }
         else if (source is Uri link)
         {
-            return (true, new Uri(link.OriginalString));
+            return new(new Uri(link.OriginalString));
         }
         else if (source is Guid guid)
         {
-            return (true, new Guid(guid.ToByteArray()));
+            return new(new Guid(guid.ToByteArray()));
         }
         else if (source is WeakReference reference)
         {
-            return (true, new WeakReference(reference.Target, reference.TrackResurrection));
+            return new(new WeakReference(reference.Target, reference.TrackResurrection));
         }
         else if (source is MemberInfo member)
         {
-            return (true, member);
+            return new(member);
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 }

@@ -42,18 +42,18 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         if (_Copiers.TryGetValue(source.GetType(), out Func<object, DuplicatorChainer, object>? copier))
         {
-            return (true, copier.Invoke(source, duplicator));
+            return new(copier.Invoke(source, duplicator));
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 

@@ -6,17 +6,17 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class TaskCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type.Inherits<Task>() || typeof(TaskCompletionSource<>).IsInheritedBy(type))
         {
-            return (true, Create(type, randomizer));
+            return new(Create(type, randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 

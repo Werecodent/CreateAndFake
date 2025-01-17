@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CreateAndFake.Design;
 
@@ -9,6 +10,7 @@ internal static class ArgumentGuard
     /// <param name="value">Passed parameter value.</param>
     /// <param name="name">Name of the parameter.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="value"/> is null.</exception>
+    [DebuggerStepperBoundary]
     internal static void ThrowIfNull([NotNull] object? value, string name)
     {
         if (value is null)

@@ -17,12 +17,12 @@ public sealed class CommonSystemCreateHint : CreateHint
             { typeof(TimeSpan), rand => new TimeSpan(rand.Options.Gen.Next<long>()) },
             { typeof(DateTime), rand => new DateTime(rand.Options.Gen.Next(DateTime.MinValue.Ticks, DateTime.MaxValue.Ticks)) },
             { typeof(DateTimeOffset), rand => new DateTimeOffset(rand.Create<DateTime>()) },
-            { typeof(Guid), rand => new Guid(Enumerable.Range(0, 16).Select(i => rand.Create<byte>()).ToArray()) },
+            { typeof(Guid), rand => new Guid([.. Enumerable.Range(0, 16).Select(i => rand.Create<byte>())]) },
 
             { typeof(Assembly), rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
             { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },
             { typeof(Type).GetType(), rand => rand.Create<Type>()! },
-            { typeof(Type), rand => rand.Options.Gen.NextItem(Assembly.GetExecutingAssembly().GetTypes()) },
+            { typeof(Type), rand => rand.Options.Gen.NextItem(TypeExtensions.FindLoadedClassTypes(Assembly.GetExecutingAssembly())) },
 
             { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
             { typeof(UriBuilder), rand => new UriBuilder(
@@ -42,17 +42,17 @@ public sealed class CommonSystemCreateHint : CreateHint
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type != null && _Gens.TryGetValue(type, out Func<RandomizerChainer, object?>? gen))
         {
-            return (true, gen.Invoke(randomizer));
+            return new(gen.Invoke(randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 

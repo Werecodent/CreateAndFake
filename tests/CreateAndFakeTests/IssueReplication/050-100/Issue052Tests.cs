@@ -20,7 +20,7 @@ public static class Issue052Tests
 
         hint.Setup(
             d => d.TryCreate(typeof(Data), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns((true, (object)testItem), Times.Once));
+            Behavior.Returns(new CreateHintResult(testItem), Times.Once));
 
         randomizer.Create<Data>(opt => opt with { Hints = [hint.Dummy] }).Assert().ReferenceEqual(testItem);
         hint.VerifyAll();
@@ -33,7 +33,7 @@ public static class Issue052Tests
 
         hint.Setup(
             d => d.TryCopy(item, Arg.Any<DuplicatorChainer>()),
-            Behavior.Returns((true, (object)item), Times.Once));
+            Behavior.Returns(new CopyHintResult(item), Times.Once));
 
         duplicator.Copy(item, opt => opt with { Hints = [hint.Dummy] }).Assert().ReferenceEqual(item);
         hint.VerifyAll();

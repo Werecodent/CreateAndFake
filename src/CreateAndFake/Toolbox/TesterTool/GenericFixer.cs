@@ -17,10 +17,9 @@ internal static class GenericFixer
         ArgumentGuard.ThrowIfNull(options, nameof(options));
 
         return method.IsGenericMethodDefinition
-            ? method.MakeGenericMethod(method
+            ? method.MakeGenericMethod([.. method
                 .GetGenericArguments()
-                .Select(arg => CreateArg(arg, method, options))
-                .ToArray())
+                .Select(arg => CreateArg(arg, method, options))])
             : method;
     }
 
@@ -50,10 +49,9 @@ internal static class GenericFixer
             arg = typeof(string);
         }
 
-        Type[] constraints = type
+        Type[] constraints = [.. type
             .GetGenericParameterConstraints()
-            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)
-            .ToArray();
+            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)];
 
         bool isValidArg()
         {

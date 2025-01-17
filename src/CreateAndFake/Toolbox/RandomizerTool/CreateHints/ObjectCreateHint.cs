@@ -17,7 +17,7 @@ public sealed class ObjectCreateHint : CreateHint
     };
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -26,7 +26,9 @@ public sealed class ObjectCreateHint : CreateHint
             .Attempt($"Create object of type '{type}'",
                 () => Create(FindTypeToCreate(type, randomizer), type, randomizer));
 
-        return (result != null, result);
+        return result != null
+            ? new(result)
+            : CreateHintResult.None;
     }
 
     /// <param name="rootType">Original <c>Type</c> being generated.</param>
@@ -158,21 +160,20 @@ public sealed class ObjectCreateHint : CreateHint
 
         if (creator is MethodInfo method && method.IsGenericMethodDefinition)
         {
-            creator = (T)(object)method.MakeGenericMethod(method
+            creator = (T)(object)method.MakeGenericMethod([.. method
                 .GetGenericArguments()
-                .Select(a => GenericCreateHint.CreateArg(a, method.ReturnType, randomizer))
-                .ToArray());
+                .Select(a => GenericCreateHint.CreateArg(a, method.ReturnType, randomizer))]);
         }
 
-        return invoker.Invoke(creator, creator.GetParameters()
+        return invoker.Invoke(creator, [.. creator
+            .GetParameters()
             .Select(p =>
             {
                 string? smartValue = (p.ParameterType == typeof(string))
                     ? smartData.Find(p.Name)
                     : null;
                 return smartValue ?? randomizer.Create(p.ParameterType, randomizer.Parent);
-            })
-            .ToArray());
+            })]);
     }
 
     /// <summary>Finds a creatable <c>Type</c> of <paramref name="type"/>.</summary>
@@ -201,11 +202,10 @@ public sealed class ObjectCreateHint : CreateHint
     {
         BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
 
-        ImmutableArray<Type> subclasses = type.FindLocalSubclasses()
+        ImmutableArray<Type> subclasses = [.. type
+            .FindLocalSubclasses()
             .Prepend(type)
-            .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())
-            .Where(t => !t.IsNestedPrivate)
-            .ToImmutableArray();
+            .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())];
 
         if (subclasses.Length != 0)
         {
@@ -213,11 +213,10 @@ public sealed class ObjectCreateHint : CreateHint
         }
         else
         {
-            return type.FindLoadedSubclasses()
+            return [.. type
+                .FindLoadedSubclasses()
                 .Prepend(type)
-                .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())
-                .Where(t => !t.IsNestedPrivate)
-                .ToImmutableArray();
+                .Where(t => FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any())];
         }
     }
 
@@ -244,15 +243,14 @@ public sealed class ObjectCreateHint : CreateHint
     private static IEnumerable<MethodInfo> FindFactories(Type type,
         BindingFlags scope, RandomizerChainer? randomizer = null)
     {
-        MethodInfo[] factories = type
+        MethodInfo[] factories = [.. type
             .GetMethods(BindingFlags.Static | scope)
             .Where(m => m.IsPublic || m.IsAssembly)
             .Where(m => m.ReturnType.Inherits(type))
             .Where(c => randomizer == null
-                || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType)))
-            .ToArray();
+                || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType)))];
 
-        IEnumerable<MethodInfo> nonGenericFactories = factories.Where(m => !m.ContainsGenericParameters).ToArray();
+        IEnumerable<MethodInfo> nonGenericFactories = [.. factories.Where(m => !m.ContainsGenericParameters)];
         if (nonGenericFactories.Any())
         {
             return nonGenericFactories;

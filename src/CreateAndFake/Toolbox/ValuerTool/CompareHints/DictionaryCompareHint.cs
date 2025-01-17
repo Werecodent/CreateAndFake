@@ -27,8 +27,8 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        object[] expectedKeys = expected.Keys.Cast<object>().ToArray();
-        object[] actualKeys = actual.Keys.Cast<object>().ToArray();
+        object[] expectedKeys = [.. expected.Keys.Cast<object>()];
+        object[] actualKeys = [.. actual.Keys.Cast<object>()];
 
         foreach (object key in expectedKeys)
         {

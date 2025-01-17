@@ -7,7 +7,7 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class SerializableCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         if (source is ISerializable)
         {
@@ -23,7 +23,7 @@ public sealed class SerializableCopyHint : CopyHint
             {
                 serializer.WriteObject(stream, source);
                 _ = stream.Seek(0, SeekOrigin.Begin);
-                return (true, serializer.ReadObject(stream));
+                return new(serializer.ReadObject(stream));
             }
             catch (InvalidDataContractException e)
             {
@@ -33,7 +33,7 @@ public sealed class SerializableCopyHint : CopyHint
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 }

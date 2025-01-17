@@ -21,7 +21,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
-        object?[] values = (extraInstances ?? []).Prepend(instance).ToArray();
+        object?[] values = [.. (extraInstances ?? []).Prepend(instance)];
         try
         {
             return Options.Limiter.StallUntil(
@@ -55,11 +55,10 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
-        ContentMap[] maps = (extraInstances ?? [])
+        ContentMap[] maps = [.. (extraInstances ?? [])
             .Prepend(instance)
             .Where(e => e != null)
-            .Select(e => Options.Extractor.Extract(e))
-            .ToArray();
+            .Select(e => Options.Extractor.Extract(e))];
 
         try
         {

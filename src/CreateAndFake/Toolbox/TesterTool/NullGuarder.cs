@@ -68,7 +68,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         object? result = null;
         try
         {
-            data = Options.Randomizer.CreateFor(method, Options.InjectionValues).Args.ToArray();
+            data = [.. Options.Randomizer.CreateFor(method, Options.InjectionValues).Args];
 
             for (int i = 0; i < data.Length; i++)
             {

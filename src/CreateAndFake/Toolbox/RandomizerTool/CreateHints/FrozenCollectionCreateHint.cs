@@ -16,13 +16,13 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         .Single(m => m.Name == nameof(FrozenDictionary.ToFrozenDictionary) && m.GetParameters().Length == 2);
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         Type? asGeneric = type.AsGenericType();
 
         if (asGeneric == typeof(FrozenSet<>))
         {
-            return (true, _SetMaker
+            return new(_SetMaker
                 .MakeGenericMethod(type.GetGenericArguments())
                 .Invoke(null, [randomizer.Create(typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments())), null]));
         }
@@ -30,13 +30,13 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         {
             Type itemType = typeof(KeyValuePair<,>).MakeGenericType(type.GetGenericArguments());
 
-            return (true, _DictionaryMaker
+            return new(_DictionaryMaker
                 .MakeGenericMethod(type.GetGenericArguments())
                 .Invoke(null, [randomizer.Create(typeof(IEnumerable<>).MakeGenericType(itemType), randomizer.Options), null]));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 }

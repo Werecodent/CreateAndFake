@@ -20,10 +20,9 @@ public static class ArgTests
     [Fact]
     internal static void Arg_PairsWithLambda()
     {
-        string[] methods = typeof(Arg)
+        string[] methods = [.. typeof(Arg)
             .GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Select(m => m.Name)
-            .ToArray();
+            .Select(m => m.Name)];
 
         methods
             .Where(m => !m.StartsWith("Lambda", StringComparison.InvariantCulture))

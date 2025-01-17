@@ -57,7 +57,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         object? result = null;
         try
         {
-            data = Options.Randomizer.CreateFor(method, Options.InjectionValues).Args.ToArray();
+            data = [.. Options.Randomizer.CreateFor(method, Options.InjectionValues).Args];
             copy = Options.Duplicator.Copy(data);
 
             result = (instance == null && method is ConstructorInfo builder)

@@ -30,14 +30,14 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
         List<string> variant = original.CreateDeepClone();
         variant.RemoveAt(variant.Count - 1);
 
-        (bool, IEnumerable<Difference>) result = TestInstance.TryCompare(original, variant, CreateChainer());
-        result.Item1.Assert().Is(true);
-        result.Item2.Assert().HasCount(1);
-        result.Item2.Single().ToString().Assert().Contains("outofbounds");
+        DifferenceHintResult result = TestInstance.TryCompare(original, variant, CreateChainer());
+        result.HasData.Assert().Is(true);
+        result.Data.Assert().HasCount(1);
+        result.Data.Single().ToString().Assert().Contains("outofbounds");
 
         result = TestInstance.TryCompare(variant, original, CreateChainer());
-        result.Item1.Assert().Is(true);
-        result.Item2.Assert().HasCount(1);
-        result.Item2.Single().ToString().Assert().Contains("outofbounds");
+        result.HasData.Assert().Is(true);
+        result.Data.Assert().HasCount(1);
+        result.Data.Single().ToString().Assert().Contains("outofbounds");
     }
 }

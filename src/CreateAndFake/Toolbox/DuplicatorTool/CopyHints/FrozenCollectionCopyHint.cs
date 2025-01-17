@@ -22,7 +22,7 @@ public class FrozenCollectionCopyHint : CopyHint
         .GetMethod(nameof(CopyContentsHelper), BindingFlags.NonPublic | BindingFlags.Static)!;
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 
@@ -35,7 +35,7 @@ public class FrozenCollectionCopyHint : CopyHint
                 .GetGenericArguments()
                 .Single();
 
-            return (true, _SetMaker
+            return new(_SetMaker
                 .MakeGenericMethod(itemType)
                 .Invoke(null, [_CopyContentsHelper
                     .MakeGenericMethod(itemType)
@@ -49,7 +49,7 @@ public class FrozenCollectionCopyHint : CopyHint
                 .GetGenericArguments()
                 .Single();
 
-            return (true, _DictionaryMaker
+            return new(_DictionaryMaker
                 .MakeGenericMethod(itemType.GetGenericArguments())
                 .Invoke(null, [_CopyContentsHelper
                     .MakeGenericMethod(itemType)
@@ -58,7 +58,7 @@ public class FrozenCollectionCopyHint : CopyHint
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 

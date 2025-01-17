@@ -122,20 +122,19 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The created instance with its fakes.</returns>
     private Injected<T> Inject<T>(ICollection<object> values, Func<Type, Fake> subclasser)
     {
-        Type[] startingTypes = values
+        Type[] startingTypes = [.. values
             .Where(v => v != null)
             .Select(v => (v is Fake fake) ? fake.Dummy : v)
-            .Select(v => v.GetType())
-            .ToArray();
+            .Select(v => v.GetType())];
 
         ConstructorInfo? maker = FindBestConstructor<T>(startingTypes);
         if (maker != null)
         {
             object?[] args = CreateInjectArgs(maker, values, subclasser);
 
-            return new Injected<T>((T)maker.Invoke(args
-                .Select(v => (v is Fake fake) ? fake.Dummy : v)
-                .ToArray()), args.OfType<Fake>());
+            return new Injected<T>(
+                (T)maker.Invoke([.. args.Select(v => (v is Fake fake) ? fake.Dummy : v)]),
+                args.OfType<Fake>());
         }
         else
         {
@@ -150,10 +149,9 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The created args to inject an instance with.</returns>
     private object?[] CreateInjectArgs(ConstructorInfo maker, IEnumerable<object> values, Func<Type, Fake> subclasser)
     {
-        List<Tuple<Type, object>> data = values
+        List<Tuple<Type, object>> data = [.. values
             .Where(v => v != null)
-            .Select(v => Tuple.Create((v is Fake fake) ? fake.Dummy.GetType() : v.GetType(), v))
-            .ToList();
+            .Select(v => Tuple.Create((v is Fake fake) ? fake.Dummy.GetType() : v.GetType(), v))];
 
         ParameterInfo[] info = maker.GetParameters();
         object?[] args = new object[info.Length];

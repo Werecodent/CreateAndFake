@@ -22,10 +22,10 @@ public sealed class ObjectCompareHintTests : CompareHintTestBase<ObjectCompareHi
         var expected = new { Value = value1 };
         var actual = new { Value = value2 };
 
-        (bool, IEnumerable<Difference>) result = TestInstance
+        DifferenceHintResult result = TestInstance
             .TryCompare(expected, actual, CreateChainer());
 
-        result.Item1.Assert().Is(true);
-        result.Item2.Assert().IsNotEmpty();
+        result.HasData.Assert().Is(true);
+        result.Data.Assert().IsNotEmpty();
     }
 }

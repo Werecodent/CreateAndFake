@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 using CreateAndFakeTests.TestBases;
 
@@ -15,10 +16,10 @@ public sealed class CommonSystemCopyHintTests : CopyHintTestBase<CommonSystemCop
     [Theory, RandomData]
     internal static void TryCopy_HandlesMemberInfo(MemberInfo data)
     {
-        (bool, object) result = new CommonSystemCopyHint().TryCopy(data, CreateChainer());
+        CopyHintResult result = new CommonSystemCopyHint().TryCopy(data, CreateChainer());
 
-        result.Item1.Assert().Is(true);
-        result.Item2.Assert().ReferenceEqual(data);
+        result.HasData.Assert().Is(true);
+        result.Data.Assert().ReferenceEqual(data);
     }
 
     [Theory, RandomData]
@@ -26,9 +27,9 @@ public sealed class CommonSystemCopyHintTests : CopyHintTestBase<CommonSystemCop
     {
         WeakReference original = new(data);
 
-        (bool, object) result = new CommonSystemCopyHint().TryCopy(original, CreateChainer());
+        CopyHintResult result = new CommonSystemCopyHint().TryCopy(original, CreateChainer());
 
-        result.Item1.Assert().Is(true);
-        result.Item2.Assert().Is(original);
+        result.HasData.Assert().Is(true);
+        result.Data.Assert().Is(original);
     }
 }

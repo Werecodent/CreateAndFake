@@ -7,7 +7,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool;
 public abstract class CreateHint<T> : CreateHint
 {
     /// <inheritdoc/>
-    protected internal sealed override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal sealed override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -15,11 +15,11 @@ public abstract class CreateHint<T> : CreateHint
             && (type != typeof(object) || typeof(T) == typeof(object))
             && !randomizer.AlreadyCreated<T>())
         {
-            return (true, Create(randomizer));
+            return new(Create(randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 

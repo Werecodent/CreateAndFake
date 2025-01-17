@@ -31,7 +31,7 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
         string key = data.First().Key;
         dupe[key] = data[key].CreateVariant();
 
-        TestInstance.TryCompare(data, dupe, CreateChainer()).Item2.ToArray()
+        TestInstance.TryCompare(data, dupe, CreateChainer()).Data.ToArray()
             .Assert().IsNotEmpty("Hint didn't find differences with a modified key on '" + data.GetType().Name + "'.");
     }
 }

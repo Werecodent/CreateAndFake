@@ -26,7 +26,7 @@ public sealed class AsyncEnumerableCompareHintTests : CompareHintTestBase<AsyncE
     [Theory, RandomData]
     internal void Supports_NullTest(IAsyncEnumerable<string> data)
     {
-        TestInstance.TryCompare(null, data, CreateChainer()).Item1.Assert().Is(false);
-        TestInstance.TryCompare(data, null, CreateChainer()).Item1.Assert().Is(false);
+        TestInstance.TryCompare(null, data, CreateChainer()).HasData.Assert().Is(false);
+        TestInstance.TryCompare(data, null, CreateChainer()).HasData.Assert().Is(false);
     }
 }

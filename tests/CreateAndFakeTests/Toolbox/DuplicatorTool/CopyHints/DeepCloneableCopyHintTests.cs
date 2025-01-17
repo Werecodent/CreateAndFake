@@ -6,7 +6,7 @@ namespace CreateAndFakeTests.Toolbox.DuplicatorTool.CopyHints;
 
 public sealed class DeepCloneableCopyHintTests : CopyHintTestBase<DeepCloneableCopyHint>
 {
-    private static readonly Type[] _ValidTypes = Enumerable.Repeat(typeof(IDeepCloneable), 10).ToArray();
+    private static readonly Type[] _ValidTypes = [.. Enumerable.Repeat(typeof(IDeepCloneable), 10)];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 

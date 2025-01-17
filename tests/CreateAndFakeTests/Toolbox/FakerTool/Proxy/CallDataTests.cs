@@ -29,7 +29,7 @@ public static class CallDataTests
     [Theory, RandomData]
     internal static void MatchesCall_GenericsMismatch(DataHolderSample[] data, string name)
     {
-        Type[] generics1 = Tools.Randomizer.Create<Type[]>().Except([typeof(AnyGeneric)]).ToArray();
+        Type[] generics1 = [.. Tools.Randomizer.Create<Type[]>().Except([typeof(AnyGeneric)])];
         Type[] generics2 = Tools.Mutator.Variant(generics1);
 
         new CallData(name, generics1, data, Tools.Faker.Options)
@@ -40,7 +40,7 @@ public static class CallDataTests
     [Theory, RandomData]
     internal static void MatchesCall_AnyGenericMatchesAll(DataHolderSample[] data, string name, Type[] generics1)
     {
-        Type[] generics2 = generics1.Select(t => typeof(AnyGeneric)).ToArray();
+        Type[] generics2 = [.. generics1.Select(t => typeof(AnyGeneric))];
 
         new CallData(name, generics2, data, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics1, data, null))
@@ -50,7 +50,7 @@ public static class CallDataTests
     [Theory, RandomData]
     internal static void MatchesCall_DataMatchBehavior(string name, Type[] generics, DataHolderSample[] data1)
     {
-        DataHolderSample[] data2 = data1.Select(d => d.CreateDeepClone()).ToArray();
+        DataHolderSample[] data2 = [.. data1.Select(d => d.CreateDeepClone())];
 
         new CallData(name, generics, data1, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics, data2, null))

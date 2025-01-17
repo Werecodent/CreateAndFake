@@ -40,7 +40,7 @@ public class ImmutableCollectionCopyHint : CopyHint
         .GetMethod(nameof(CopyContentsHelper), BindingFlags.NonPublic | BindingFlags.Static)!;
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 
@@ -54,7 +54,7 @@ public class ImmutableCollectionCopyHint : CopyHint
                 ? typeof(KeyValuePair<,>).MakeGenericType(args)
                 : args.Single();
 
-            return (true, match
+            return new(match
                 .MakeGenericMethod(args)
                 .Invoke(null, [_CopyContentsHelper
                     .MakeGenericMethod(itemType)
@@ -62,7 +62,7 @@ public class ImmutableCollectionCopyHint : CopyHint
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 

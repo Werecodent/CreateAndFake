@@ -47,29 +47,29 @@ public abstract class CopyHintTestBase<T>(
         foreach (Type type in _validTypes)
         {
             object data = null;
-            (bool, object) result = (false, null);
+            CopyHintResult result = CopyHintResult.None;
             try
             {
                 data = Tools.Randomizer.Create(type);
                 result = TestInstance.TryCopy(data, CreateChainer());
 
-                result.Assert().Is((true, data),
+                result.Assert().Is(new CopyHintResult(data),
                     "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'.");
 
                 if (_copiesByRef || data is string)
                 {
-                    result.Item2.Assert().ReferenceEqual(data,
+                    result.Data.Assert().ReferenceEqual(data,
                         "Hint '" + typeof(T).Name + "' expected to copy value types by ref of type '" + type.Name + "'.");
                 }
                 else
                 {
-                    result.Item2.Assert().ReferenceNotEqual(data,
+                    result.Data.Assert().ReferenceNotEqual(data,
                         "Hint '" + typeof(T).Name + "' copied by ref instead of a deep clone of type '" + type.Name + "'.");
                 }
             }
             finally
             {
-                Disposer.Cleanup(data, result.Item2);
+                Disposer.Cleanup(data, result.Data);
             }
         }
     }
@@ -83,7 +83,7 @@ public abstract class CopyHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance.TryCopy(data, CreateChainer()).Assert().Is((false, (object)null),
+                TestInstance.TryCopy(data, CreateChainer()).Assert().Is(CopyHintResult.None,
                     "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'.");
             }
             finally

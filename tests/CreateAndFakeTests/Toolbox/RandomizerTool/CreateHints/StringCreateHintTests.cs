@@ -27,7 +27,7 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
 
         for (int i = 0; i < 1000; i++)
         {
-            string result = (string)hint.TryCreate(typeof(string), CreateChainer(options)).Item2;
+            string result = (string)hint.TryCreate(typeof(string), CreateChainer(options)).Data;
 
             result.Length.Assert().GreaterThanOrEqualTo(options.StringMinSize, "Result was too small.");
             result.Length.Assert().LessThanOrEqualTo(options.StringMaxSize, "Result was too big.");
@@ -47,16 +47,16 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
         object value = "aaa";
         for (int i = 0; i < 100; i++)
         {
-            hint.TryCreate(typeof(string), CreateChainer(options)).Assert().Is((true, value));
+            hint.TryCreate(typeof(string), CreateChainer(options)).Assert().Is(new CreateHintResult(value));
         }
 
         RandomizerOptions options2 = options with { StringCharacterSet = FrozenSet.ToFrozenSet("ab") };
         for (int i = 0; i < 100; i++)
         {
-            (bool, object) result = hint.TryCreate(typeof(string), CreateChainer(options2));
+            CreateHintResult result = hint.TryCreate(typeof(string), CreateChainer(options2));
 
-            result.Item1.Assert().Is(true);
-            ((string)result.Item2).Trim('a', 'b').Length.Assert().Is(0);
+            result.HasData.Assert().Is(true);
+            ((string)result.Data).Trim('a', 'b').Length.Assert().Is(0);
         }
     }
 }

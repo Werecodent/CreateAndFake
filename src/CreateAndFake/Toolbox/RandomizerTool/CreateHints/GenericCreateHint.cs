@@ -9,17 +9,17 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class GenericCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type?.IsGenericTypeDefinition ?? false)
         {
-            return (true, Create(type, randomizer));
+            return new(Create(type, randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 
@@ -27,10 +27,9 @@ public sealed class GenericCreateHint : CreateHint
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object Create(Type type, RandomizerChainer randomizer)
     {
-        return randomizer.Create(type.MakeGenericType(type
+        return randomizer.Create(type.MakeGenericType([.. type
             .GetGenericArguments()
-            .Select(a => CreateArg(a, type, randomizer))
-            .ToArray()), type);
+            .Select(a => CreateArg(a, type, randomizer))]), type);
     }
 
     /// <summary>Creates a concrete arg type from the given generic arg.</summary>
@@ -61,10 +60,9 @@ public sealed class GenericCreateHint : CreateHint
             arg = typeof(string);
         }
 
-        Type[] constraints = type
+        Type[] constraints = [.. type
             .GetGenericParameterConstraints()
-            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)
-            .ToArray();
+            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)];
 
         bool isValidArg()
         {

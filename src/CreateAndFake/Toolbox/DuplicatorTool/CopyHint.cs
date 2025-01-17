@@ -6,9 +6,6 @@ public abstract class CopyHint
     /// <summary>Tries to deep clone <paramref name="source"/>.</summary>
     /// <param name="source">Object to clone.</param>
     /// <param name="duplicator">Handles cloning child values.</param>
-    /// <returns>
-    ///     (<c>true</c>, clone of <paramref name="source"/>) if successful;
-    ///     (<c>false</c>, <c>null</c>) otherwise.
-    /// </returns>
-    protected internal abstract (bool, object?) TryCopy(object source, DuplicatorChainer duplicator);
+    /// <returns>Possible result.</returns>
+    protected internal abstract CopyHintResult TryCopy(object source, DuplicatorChainer duplicator);
 }

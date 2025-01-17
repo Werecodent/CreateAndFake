@@ -177,6 +177,6 @@ public sealed class Fake<T> : Fake
         return typeof(Arg)
             .GetMethod("Lambda" + call.Method.Name)!
             .MakeGenericMethod(innerType)
-            .Invoke(null, call.Arguments.Select(x => ConvertArg(x)).ToArray())!;
+            .Invoke(null, [.. call.Arguments.Select(x => ConvertArg(x))])!;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
+using CreateAndFake.Toolbox.RandomizerTool;
 using CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 using CreateAndFakeTests.TestBases;
 
@@ -75,10 +76,10 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     [Fact]
     internal static void Create_HandlesOutRef()
     {
-        (bool, object) result = _TestInstance.TryCreate(typeof(Action<IOutRef>), CreateChainer());
-        result.Item1.Assert().Is(true);
+        CreateHintResult result = _TestInstance.TryCreate(typeof(Action<IOutRef>), CreateChainer());
+        result.HasData.Assert().Is(true);
 
-        Action<IOutRef> action = (Action<IOutRef>)result.Item2;
+        Action<IOutRef> action = (Action<IOutRef>)result.Data;
 
         OutRef<int> sampleInt = new();
         action.Invoke(sampleInt);

@@ -8,9 +8,11 @@ public sealed class LegacyCollectionCreateHintTests : CreateHintTestBase<LegacyC
 {
     private static readonly LegacyCollectionCreateHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = LegacyCollectionCreateHint.PotentialCollections
-        .Concat([typeof(IEnumerable), typeof(IList), typeof(IDictionary)])
-        .ToArray();
+    private static readonly Type[] _ValidTypes = [
+        .. LegacyCollectionCreateHint.PotentialCollections,
+        typeof(IEnumerable),
+        typeof(IList),
+        typeof(IDictionary)];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 

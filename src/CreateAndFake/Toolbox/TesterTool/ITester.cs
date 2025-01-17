@@ -1,6 +1,8 @@
 global using TesterMod = System.Func<
     CreateAndFake.Toolbox.TesterTool.TesterOptions,
     CreateAndFake.Toolbox.TesterTool.TesterOptions>;
+using System.Reflection;
+
 namespace CreateAndFake.Toolbox.TesterTool;
 
 /// <summary>Automates common tests.</summary>
@@ -54,4 +56,11 @@ public interface ITester
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     void PassthroughWithNoExceptions(object instance, TesterMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Verifies the executing assembly has a test class for all classes in <paramref name="codeAssembly"/>.
+    /// </summary>
+    /// <param name="codeAssembly">Assembly being tested.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    void ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null);
 }

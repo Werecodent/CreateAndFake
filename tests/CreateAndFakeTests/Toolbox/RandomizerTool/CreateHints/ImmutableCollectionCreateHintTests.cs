@@ -19,14 +19,14 @@ public sealed class ImmutableCollectionCreateHintTests : CreateHintTestBase<Immu
         typeof(KeyValuePair<string, int>)
     ];
 
-    private static readonly Type[] _ValidTypes = ImmutableCollectionCreateHint.PotentialCollections
+    private static readonly Type[] _ValidTypes = [
+        .. ImmutableCollectionCreateHint.PotentialCollections
         .Concat([
             typeof(IImmutableList<>),
             typeof(IImmutableQueue<>),
             typeof(IImmutableStack<>),
             typeof(IImmutableDictionary<,>)])
-        .Select(MakeDefined)
-        .ToArray();
+        .Select(MakeDefined)];
 
     private static readonly Type[] _InvalidTypes =
     [
@@ -42,8 +42,7 @@ public sealed class ImmutableCollectionCreateHintTests : CreateHintTestBase<Immu
         if (type.IsGenericTypeDefinition)
         {
             FastRandom random = new();
-            return type.MakeGenericType(type.GetGenericArguments().Select(
-                t => random.NextItem(_ItemTypes)).ToArray());
+            return type.MakeGenericType([.. type.GetGenericArguments().Select(t => random.NextItem(_ItemTypes))]);
         }
         else
         {

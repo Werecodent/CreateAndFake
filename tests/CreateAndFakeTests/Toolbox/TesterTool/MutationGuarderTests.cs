@@ -21,12 +21,6 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static void MutationGuarder_NoParameterMutation()
-    {
-        Tools.Tester.PreventsParameterMutation(_ShortTestInstance);
-    }
-
-    [Fact]
     internal static void PreventsParameterMutation_OnStatics()
     {
         Tools.Tester

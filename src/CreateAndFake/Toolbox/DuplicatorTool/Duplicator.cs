@@ -82,13 +82,13 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         {
             return default!;
         }
-        (bool, object?) result = SelectHints(chainer.Options)
+        CopyHintResult? result = SelectHints(chainer.Options)
             .Select(h => h.TryCopy(source, chainer))
-            .FirstOrDefault(r => r.Item1);
+            .FirstOrDefault(r => r.HasData);
 
-        if (!result.Equals(default))
+        if (result != null)
         {
-            return (T)result.Item2!;
+            return (T)result.Data!;
         }
         else
         {

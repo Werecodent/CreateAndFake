@@ -43,19 +43,19 @@ public static class BehaviorTests
             Type setupType = caller.GetParameters().First().ParameterType;
 
             Type[] args = type.Name.StartsWith("Func", StringComparison.InvariantCulture)
-                ? generics.Skip(1).ToArray()
+                ? [.. generics.Skip(1)]
                 : generics;
 
             Behavior noTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), null]);
 
             noTimes.HasExpectedCalls().Assert().Is(false);
-            noTimes.Invoke(args.Select(a => Tools.Randomizer.Create(a)).ToArray());
+            noTimes.Invoke([.. args.Select(a => Tools.Randomizer.Create(a))]);
             noTimes.HasExpectedCalls().Assert().Is(true);
 
             Behavior withTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), Times.Never]);
 
             withTimes.HasExpectedCalls().Assert().Is(true);
-            withTimes.Invoke(args.Select(a => Tools.Randomizer.Create(a)).ToArray());
+            withTimes.Invoke([.. args.Select(a => Tools.Randomizer.Create(a))]);
             withTimes.HasExpectedCalls().Assert().Is(false);
         }
     }

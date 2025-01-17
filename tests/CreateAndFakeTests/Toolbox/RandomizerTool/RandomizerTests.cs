@@ -38,7 +38,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake().Setup(
             m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns((false, (object)null), Times.Once));
+            Behavior.Returns(CreateHintResult.None, Times.Once));
 
         new Randomizer(_ToolOptions with { IncludeDefaultHints = false, Hints = [hint] })
             .Assert(r => r.Create<string>())
@@ -53,7 +53,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake().Setup(
             m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns((true, (object)data), Times.Once));
+            Behavior.Returns(new CreateHintResult(data), Times.Once));
 
         new Randomizer(_ToolOptions with { IncludeDefaultHints = false, Hints = [hint] })
             .Create<string>()

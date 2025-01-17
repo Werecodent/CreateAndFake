@@ -7,21 +7,21 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class AsyncCollectionCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         if (source.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {
-            return (true, typeof(AsyncCollectionCopyHint)
+            return new(typeof(AsyncCollectionCopyHint)
                 .GetMethod(nameof(CopyAsync), BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(source.GetType().GetGenericArguments().Single())
                 .Invoke(null, [source, duplicator]));
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 

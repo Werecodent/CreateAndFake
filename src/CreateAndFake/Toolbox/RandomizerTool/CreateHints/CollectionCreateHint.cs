@@ -29,12 +29,12 @@ public sealed class CollectionCreateHint : CreateHint
     internal static IEnumerable<Type> PotentialCollections { get; } = _Collections.Select(i => i).ToFrozenSet();
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
         if (type == null)
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
 
         return randomizer.Options.CollectionAttempts.Retry($"Generating '{type}' collection.", () =>
@@ -44,11 +44,11 @@ public sealed class CollectionCreateHint : CreateHint
             Type? itemType = GetItemType(type);
             if (itemType != null && FindMatches(type, itemType).Any())
             {
-                return (true, Create(type, size, itemType, randomizer));
+                return new(Create(type, size, itemType, randomizer));
             }
             else
             {
-                return (false, null);
+                return CreateHintResult.None;
             }
         });
     }

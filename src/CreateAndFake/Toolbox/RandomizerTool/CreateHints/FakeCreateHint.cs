@@ -55,17 +55,17 @@ public sealed class FakeCreateHint : CreateHint
     ];
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type.Inherits(typeof(Fake<>)))
         {
-            return (true, Create(type, randomizer));
+            return new(Create(type, randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 
@@ -88,11 +88,11 @@ public sealed class FakeCreateHint : CreateHint
             .Where(m => m.Name != "Finalize"))
         {
             Type[] generics = method.IsGenericMethod
-                ? method.GetGenericArguments().Select(a => typeof(AnyGeneric)).ToArray()
+                ? [.. method.GetGenericArguments().Select(a => typeof(AnyGeneric))]
                 : [];
 
             mock.Setup(method.Name, generics,
-                method.GetParameters().Select(a => SetupMatch(a.ParameterType)).ToArray(),
+                [.. method.GetParameters().Select(a => SetupMatch(a.ParameterType))],
                 MakeBehavior(method, randomizer));
         }
 
@@ -105,7 +105,7 @@ public sealed class FakeCreateHint : CreateHint
     /// <returns>Behavior for the fake.</returns>
     private static Behavior MakeBehavior(MethodInfo method, RandomizerChainer randomizer)
     {
-        Type[] args = method.GetParameters().Select(p => SetupArg(p.ParameterType)).ToArray();
+        Type[] args = [.. method.GetParameters().Select(p => SetupArg(p.ParameterType))];
 
         if (method.ReturnType != typeof(void))
         {

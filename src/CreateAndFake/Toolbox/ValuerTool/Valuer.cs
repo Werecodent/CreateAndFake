@@ -93,13 +93,13 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc cref="GetHashCode(object)"/>
     private int GetHashCode(object? item, ValuerChainer chainer)
     {
-        (bool, int) result = SelectHints(chainer.Options)
+        HashCodeHintResult? result = SelectHints(chainer.Options)
             .Select(h => h.TryGetHashCode(item, chainer))
-            .FirstOrDefault(r => r.Item1);
+            .FirstOrDefault(r => r.HasData);
 
-        if (!result.Equals(default))
+        if (result != null)
         {
-            return result.Item2;
+            return result.Data;
         }
         else
         {
@@ -135,13 +135,13 @@ public sealed class Valuer(ValuerOptions options) : IValuer
             return [];
         }
 
-        (bool, IEnumerable<Difference>?) result = SelectHints(chainer.Options)
+        DifferenceHintResult? result = SelectHints(chainer.Options)
             .Select(h => h.TryCompare(expected, actual, chainer))
-            .FirstOrDefault(r => r.Item1);
+            .FirstOrDefault(r => r.HasData);
 
-        if (!result.Equals(default))
+        if (result != null)
         {
-            return result.Item2!;
+            return result.Data!;
         }
         else
         {

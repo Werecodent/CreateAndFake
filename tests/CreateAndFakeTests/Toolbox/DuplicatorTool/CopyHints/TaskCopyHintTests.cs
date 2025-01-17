@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
+﻿using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 using CreateAndFakeTests.TestBases;
 using CreateAndFakeTests.TestSamples;
 
@@ -22,6 +23,6 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
     [Fact]
     internal void TryCopy_NonGenericTaskFalse()
     {
-        TestInstance.TryCopy(new Task(() => { }), CreateChainer()).Assert().Is((false, (object)null));
+        TestInstance.TryCopy(new Task(() => { }), CreateChainer()).Assert().Is(CopyHintResult.None);
     }
 }

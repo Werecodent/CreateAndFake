@@ -47,6 +47,6 @@ public sealed class MethodCallWrapper
     /// <returns>Results from the call.</returns>
     public object? InvokeOn(object instance)
     {
-        return _method.Invoke(instance, _args.Values.Cast<object>().ToArray());
+        return _method.Invoke(instance, [.. _args.Values.Cast<object>()]);
     }
 }

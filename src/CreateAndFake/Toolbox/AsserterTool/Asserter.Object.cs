@@ -79,7 +79,7 @@ public partial class Asserter : IObjectAsserter
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Difference[] differences = localOptions.Valuer.Compare(expected, actual).ToArray();
+        Difference[] differences = [.. localOptions.Valuer.Compare(expected, actual)];
         if (differences.Length > 0)
         {
             throw new AssertException($"Value equality failed for type '{GetTypeName(expected, actual)}'.",

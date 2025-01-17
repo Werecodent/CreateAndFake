@@ -29,10 +29,10 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
         {
             yield return new Difference($".{nameof(IValuerEquatable.ValuesEqual)}", new Difference(true, false));
 
-            (bool, IEnumerable<Difference>?) byValues = _NestedHint.TryCompare(expected, actual, valuer);
-            if (byValues.Item1)
+            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, valuer);
+            if (byValues.HasData)
             {
-                foreach (Difference difference in byValues.Item2!)
+                foreach (Difference difference in byValues.Data!)
                 {
                     yield return difference;
                 }

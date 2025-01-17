@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,9 @@ namespace CreateAndFake.Toolbox;
 /// <summary>Extensions for types.</summary>
 public static class TypeExtensions
 {
+    /// <summary>Keeps track of available classes.</summary>
+    private static readonly Dictionary<Assembly, ImmutableArray<Type>> _ClassTypeCache = [];
+
     /// <summary>Keeps track of type inheritance.</summary>
     private static readonly Dictionary<Type, FrozenSet<Type>> _InheritCache = [];
 
@@ -19,7 +23,7 @@ public static class TypeExtensions
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        return type.Assembly.GetTypes()
+        return FindLoadedClassTypes(type.Assembly)
             .Where(t => !t.IsAbstract)
             .Where(t => t.Inherits(type))
             .Where(t => IsVisibleTo(t, Assembly.GetCallingAssembly().GetName()));
@@ -35,7 +39,7 @@ public static class TypeExtensions
         return AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.ReflectionOnly)
             .Where(a => !a.IsDynamic)
-            .SelectMany(FindLoadedTypes)
+            .SelectMany(FindLoadedClassTypes)
             .Where(t => !t.IsAbstract)
             .Where(t => t.Inherits(type))
             .Where(t => IsVisibleTo(t, Assembly.GetCallingAssembly().GetName()));
@@ -44,7 +48,31 @@ public static class TypeExtensions
     /// <summary>Finds all types in <paramref name="assembly"/>.</summary>
     /// <param name="assembly"><see cref="Assembly"/> to load types from.</param>
     /// <returns>The found types if <paramref name="assembly"/> can load; none otherwise.</returns>
-    internal static Type[] FindLoadedTypes(Assembly? assembly)
+    internal static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    {
+        if (assembly == null)
+        {
+            return [];
+        }
+
+        ImmutableArray<Type> classTypes;
+        lock (_ClassTypeCache)
+        {
+            if (!_ClassTypeCache.TryGetValue(assembly, out classTypes))
+            {
+                _ClassTypeCache[assembly] = classTypes = [.. FindLoadedTypes(assembly)
+                    .Where(t => t.IsClass)
+                    .Where(t => !t.IsNestedPrivate)
+                    .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false))];
+            }
+        }
+        return classTypes;
+    }
+
+    /// <summary>Finds all types in <paramref name="assembly"/>.</summary>
+    /// <param name="assembly"><see cref="Assembly"/> to load types from.</param>
+    /// <returns>The found types if <paramref name="assembly"/> can load; none otherwise.</returns>
+    internal static IEnumerable<Type> FindLoadedTypes(Assembly? assembly)
     {
         try
         {

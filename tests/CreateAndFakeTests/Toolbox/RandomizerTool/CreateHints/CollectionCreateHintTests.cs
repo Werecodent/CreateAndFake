@@ -17,7 +17,8 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
         typeof(KeyValuePair<string, int>)
     ];
 
-    private static readonly Type[] _ValidTypes = CollectionCreateHint.PotentialCollections
+    private static readonly Type[] _ValidTypes = [
+        .. CollectionCreateHint.PotentialCollections
         .Concat([
             typeof(IEnumerable<>),
             typeof(IList<>),
@@ -29,8 +30,7 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
             typeof(int[]),
             typeof(string[]),
             typeof(object[])])
-        .Select(MakeDefined)
-        .ToArray();
+        .Select(MakeDefined)];
 
     private static readonly Type[] _InvalidTypes =
     [
@@ -54,8 +54,7 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     {
         if (type.IsGenericTypeDefinition)
         {
-            return type.MakeGenericType(type.GetGenericArguments().Select(
-                t => Tools.Gen.NextItem(_ItemTypes)).ToArray());
+            return type.MakeGenericType([.. type.GetGenericArguments().Select(t => Tools.Gen.NextItem(_ItemTypes))]);
         }
         else
         {

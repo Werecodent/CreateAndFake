@@ -37,7 +37,7 @@ public static class DuplicatorTests
     [Theory, RandomData]
     internal static void Copy_ValidHintWorks(object data, [Stub] CopyHint hint)
     {
-        hint.TryCopy(data, Arg.Any<DuplicatorChainer>()).SetupReturn((true, data), Times.Once);
+        hint.TryCopy(data, Arg.Any<DuplicatorChainer>()).SetupReturn(new CopyHintResult(data), Times.Once);
 
         new Duplicator(
             Tools.Duplicator.Options with

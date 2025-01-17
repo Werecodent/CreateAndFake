@@ -40,7 +40,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     internal static IEnumerable<Type> PotentialCollections { get; } = _Creators.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer? randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -48,12 +48,12 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         {
             int size = randomizer.Options.NextCollectionSize();
 
-            return (true, randomizer.Options.Gen.NextItem(FindMatches(type)).Item2
+            return new(randomizer.Options.Gen.NextItem(FindMatches(type)).Item2
                 .Invoke(CreateInternalData(size, randomizer), randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 

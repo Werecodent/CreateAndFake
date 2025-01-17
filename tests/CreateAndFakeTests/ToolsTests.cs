@@ -6,12 +6,32 @@ using CreateAndFake.Toolbox.TesterTool;
 using CreateAndFakeTests.TestSamples;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Frozen;
 
 namespace CreateAndFakeTests;
 
 public static class ToolsTests
 {
     private const BindingFlags _Mutable = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+    [Fact]
+    internal static void CreateAndFakeTests_TestClassCoverage()
+    {
+        Tools.Tester.ProvidesTestClassCoverage(Assembly.GetAssembly(typeof(ToolSet)), opt => opt with
+        {
+            TestClassCoverageExceptions = FrozenSet.ToFrozenSet([
+                "CompilerFeatureRequiredAttribute",
+                "IsExternalInit",
+                "RequiredMemberAttribute",
+                "DoesNotReturnAttribute",
+                "MaybeNullAttribute",
+                "NotNullAttribute",
+                "NotNullIfNotNullAttribute",
+                "NotNullWhenAttribute",
+                "SetsRequiredMembersAttribute"
+            ])
+        });
+    }
 
     [Theory, RandomData]
     internal static void Tools_IntegrationWorks(DataHolderSample original, [Fake] DataHolderSample faked)
@@ -45,6 +65,7 @@ public static class ToolsTests
             typeof(AnyGeneric),
             typeof(Injected<>),
             typeof(Behavior<>),
+            typeof(HintResult<>),
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),

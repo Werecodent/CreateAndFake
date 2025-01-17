@@ -6,17 +6,17 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class ValueCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (randomizer.Options.Gen.Supports(type))
         {
-            return (true, randomizer.Options.Gen.Next(type));
+            return new(randomizer.Options.Gen.Next(type));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 }

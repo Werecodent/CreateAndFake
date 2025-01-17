@@ -13,13 +13,15 @@ public sealed class ObjectCopyHint : CopyHint
         | BindingFlags.Instance;
 
     /// <inheritdoc/>
-    protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         object? result = Copy(source, duplicator);
-        return (result != null, result);
+        return (result != null)
+            ? new(result)
+            : CopyHintResult.None;
     }
 
     /// <inheritdoc cref="CopyHint{T}.CopyHint"/>
@@ -63,7 +65,7 @@ public sealed class ObjectCopyHint : CopyHint
         }
         else
         {
-            PropertyInfo[] props = type.GetProperties(_MemberFlags).Where(p => p.CanRead).ToArray();
+            PropertyInfo[] props = [.. type.GetProperties(_MemberFlags).Where(p => p.CanRead)];
             FieldInfo[] fields = [.. type.GetFields(_MemberFlags)];
 
             return type.GetConstructors(_MemberFlags)
@@ -84,16 +86,14 @@ public sealed class ObjectCopyHint : CopyHint
     private static object? TryCreate(object source, DuplicatorChainer duplicator,
         ConstructorInfo constructor, IEnumerable<PropertyInfo> props, IEnumerable<FieldInfo> fields)
     {
-        List<PropertyInfo> propList = props.ToList();
-        List<FieldInfo> fieldList = fields.ToList();
+        List<PropertyInfo> propList = [.. props];
+        List<FieldInfo> fieldList = [.. fields];
 
         // Attempts to match members with parameters in the constructor.
         List<MemberInfo> matchedMembers = [];
         foreach (ParameterInfo param in constructor.GetParameters())
         {
-            PropertyInfo[] potentialProps = propList
-                .Where(p => p.PropertyType.Inherits(param.ParameterType))
-                .ToArray();
+            PropertyInfo[] potentialProps = [.. propList.Where(p => p.PropertyType.Inherits(param.ParameterType))];
             if (potentialProps.Length != 0)
             {
                 PropertyInfo? directPropMatch = potentialProps.FirstOrDefault(
@@ -111,9 +111,7 @@ public sealed class ObjectCopyHint : CopyHint
                 continue;
             }
 
-            FieldInfo[] potentialFields = fieldList
-                .Where(f => f.FieldType.Inherits(param.ParameterType))
-                .ToArray();
+            FieldInfo[] potentialFields = [.. fieldList.Where(f => f.FieldType.Inherits(param.ParameterType))];
             if (potentialFields.Length != 0)
             {
                 FieldInfo? directFieldMatch = potentialFields.FirstOrDefault(
@@ -134,7 +132,7 @@ public sealed class ObjectCopyHint : CopyHint
             return null;
         }
 
-        return constructor.Invoke(matchedMembers.Select(m => CopyMember(m, source, duplicator)).ToArray());
+        return constructor.Invoke([.. matchedMembers.Select(m => CopyMember(m, source, duplicator))]);
     }
 
     /// <summary>Copies the value of <paramref name="member"/> on <paramref name="source"/>.</summary>

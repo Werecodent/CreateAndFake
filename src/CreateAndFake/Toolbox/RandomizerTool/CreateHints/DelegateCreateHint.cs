@@ -10,27 +10,26 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class DelegateCreateHint : CreateHint
 {
     /// <summary>Methods used to match delegates.</summary>
-    private static readonly ImmutableArray<MethodInfo> _Delegators = typeof(Delegator)
+    private static readonly ImmutableArray<MethodInfo> _Delegators = [.. typeof(Delegator)
         .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-        .Where(m => m.Name == "AutoDelegate")
-        .ToImmutableArray();
+        .Where(m => m.Name == "AutoDelegate")];
 
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type == typeof(Delegate))
         {
-            return (true, Create(typeof(Action), randomizer));
+            return new(Create(typeof(Action), randomizer));
         }
         else if (type.Inherits<Delegate>())
         {
-            return (true, Create(type, randomizer));
+            return new(Create(type, randomizer));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 
@@ -54,13 +53,11 @@ public sealed class DelegateCreateHint : CreateHint
         }
         else if (hasReturn)
         {
-            return Delegate.CreateDelegate(type, delegator,
-                match.MakeGenericMethod(generics.Append(info.ReturnType).ToArray()));
+            return Delegate.CreateDelegate(type, delegator, match.MakeGenericMethod([.. generics, info.ReturnType]));
         }
         else
         {
-            return Delegate.CreateDelegate(type, delegator,
-                match.MakeGenericMethod(generics.ToArray()));
+            return Delegate.CreateDelegate(type, delegator, match.MakeGenericMethod([.. generics]));
         }
     }
 

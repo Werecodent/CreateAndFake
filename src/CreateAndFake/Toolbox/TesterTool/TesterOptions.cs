@@ -47,6 +47,15 @@ public record TesterOptions : IToolOptions
     /// <summary>If internal members are included when running tests on classes.</summary>
     public bool IncludeInternals { get; init; } = true;
 
+    /// <summary>Common suffix attached to class names to name the test classes.</summary>
+    public string TestClassNameSuffix { get; init; } = "Tests";
+
+    /// <summary>Possible strings replacing generics in a type name for coverage tests.</summary>
+    public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
+
+    /// <summary>Types to ignore for test class coverage tests.</summary>
+    public FrozenSet<string> TestClassCoverageExceptions { get; init; } = FrozenSet.ToFrozenSet<string>([]);
+
     /// <summary>Names of methods to skip when running tests on classes.</summary>
     public FrozenSet<string> MethodsToIgnore { get; init; } = FrozenSet.ToFrozenSet([
         "Finalize",

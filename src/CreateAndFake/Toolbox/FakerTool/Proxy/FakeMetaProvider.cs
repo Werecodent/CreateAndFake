@@ -98,7 +98,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <summary>Verifies behavior with associated times were called as expected.</summary>
     internal void Verify()
     {
-        (CallData, Behavior)[] invalids = _behavior.Where(t => !t.Item2.HasExpectedCalls()).ToArray();
+        (CallData, Behavior)[] invalids = [.. _behavior.Where(t => !t.Item2.HasExpectedCalls())];
         if (invalids.Length != 0)
         {
             throw new FakeVerifyException(invalids, _log);
@@ -113,7 +113,7 @@ public sealed class FakeMetaProvider : IDuplicatable
         ArgumentGuard.ThrowIfNull(times, nameof(times));
         ArgumentGuard.ThrowIfNull(callData, nameof(callData));
 
-        IEnumerable<CallData> calls = _log.Where(callData.MatchesCall).ToArray();
+        IEnumerable<CallData> calls = [.. _log.Where(callData.MatchesCall)];
         if (!times.IsInRange(calls.Count()))
         {
             throw new FakeVerifyException(callData, times, calls.Count(), _log);
@@ -219,7 +219,7 @@ public sealed class FakeMetaProvider : IDuplicatable
         IEnumerable<Type> args = methodInfo.GetParameters().Select(p => p.ParameterType);
 
         return (methodInfo.ReturnType == typeof(void))
-            ? Expression.GetActionType(args.ToArray())
-            : Expression.GetFuncType(args.Concat([methodInfo.ReturnType]).ToArray());
+            ? Expression.GetActionType([.. args])
+            : Expression.GetFuncType([.. args, methodInfo.ReturnType]);
     }
 }

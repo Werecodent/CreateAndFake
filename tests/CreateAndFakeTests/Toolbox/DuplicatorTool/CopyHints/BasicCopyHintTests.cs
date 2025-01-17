@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Toolbox.DuplicatorTool;
 using CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 using CreateAndFakeTests.TestBases;
 using CreateAndFakeTests.TestSamples;
@@ -23,9 +24,9 @@ public sealed class BasicCopyHintTests : CopyHintTestBase<BasicCopyHint>
     internal static void TryCopy_HandlesBaseObject()
     {
         object data = new();
-        (bool, object) result = new BasicCopyHint().TryCopy(data, CreateChainer());
+        CopyHintResult result = new BasicCopyHint().TryCopy(data, CreateChainer());
 
-        result.Assert().Is((true, data));
-        result.Item2.Assert().ReferenceEqual(data);
+        result.Assert().Is(new CopyHintResult(data));
+        result.Data.Assert().ReferenceEqual(data);
     }
 }

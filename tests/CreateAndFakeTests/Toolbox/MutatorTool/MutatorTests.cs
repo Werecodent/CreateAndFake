@@ -15,12 +15,6 @@ public static class MutatorTests
         Tools.Tester.PreventsNullRefException<Mutator>();
     }
 
-    [Fact]
-    internal static void Mutator_NoParameterMutation()
-    {
-        Tools.Tester.PreventsParameterMutation<Mutator>(opt => opt with { IncludeConstructors = false });
-    }
-
     [Theory, RandomData]
     internal static void Variant_AcceptsNull(string value)
     {

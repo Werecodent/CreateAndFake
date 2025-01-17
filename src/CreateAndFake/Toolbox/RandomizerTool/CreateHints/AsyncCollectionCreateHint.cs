@@ -9,7 +9,7 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class AsyncCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -18,7 +18,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
                 || (type.FullName?.Contains($"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItems)}>") ?? false)))
         {
             Type itemType = type.GetGenericArguments().Single();
-            return (true, GetType()
+            return new(GetType()
                 .GetMethod(nameof(GetItems), BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(itemType)
                 .Invoke(null, [randomizer
@@ -27,7 +27,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 

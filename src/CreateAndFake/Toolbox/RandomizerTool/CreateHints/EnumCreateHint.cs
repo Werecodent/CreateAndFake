@@ -6,17 +6,17 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class EnumCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (type?.IsEnum ?? false)
         {
-            return (true, randomizer.Options.Gen.NextItem(Enum.GetValues(type).Cast<object>()));
+            return new(randomizer.Options.Gen.NextItem(Enum.GetValues(type).Cast<object>()));
         }
         else
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
     }
 }

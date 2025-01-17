@@ -6,7 +6,7 @@ namespace CreateAndFakeTests.Toolbox.DuplicatorTool.CopyHints;
 
 public sealed class ImmutableCollectionCopyHintTests : CopyHintTestBase<ImmutableCollectionCopyHint>
 {
-    private static readonly Type[] _ValidTypes = ImmutableCollectionCreateHint.PotentialCollections.ToArray();
+    private static readonly Type[] _ValidTypes = [.. ImmutableCollectionCreateHint.PotentialCollections];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 

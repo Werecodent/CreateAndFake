@@ -16,8 +16,10 @@ public static class TypeExtensionsTests
     [Fact]
     internal static void Inherits_RaceConditionPrevented()
     {
-        Type testType = Tools.Faker.Stub<object>(Assembly.GetExecutingAssembly()
-            .GetTypes().Where(t => t.IsInterface).Where(t => t.IsVisible).ToArray()).GetType();
+        Type testType = Tools.Faker.Stub<object>([.. Assembly
+            .GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => t.IsInterface).Where(t => t.IsVisible)]).GetType();
 
         Parallel.For(0, 10, i => testType.Inherits<object>()).IsCompleted.Assert().Is(true);
     }

@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design;
+﻿using System.Collections.Immutable;
+using CreateAndFake.Design;
 
 namespace CreateAndFake.Toolbox.FakerTool;
 
@@ -10,7 +11,7 @@ public sealed class Injected<T>
     public T Dummy { get; }
 
     /// <summary>Fakes injected into the dummy.</summary>
-    public IEnumerable<Fake> Fakes { get; }
+    public ImmutableArray<Fake> Fakes { get; }
 
     /// <inheritdoc cref="Injected{T}"/>
     /// <param name="dummy">Faked implementation.</param>
@@ -21,7 +22,7 @@ public sealed class Injected<T>
         ArgumentGuard.ThrowIfNull(fakes, nameof(fakes));
 
         Dummy = dummy;
-        Fakes = fakes.ToArray();
+        Fakes = [.. fakes];
     }
 
     /// <summary>Finds the <typeparamref name="TInject"/> fake.</summary>

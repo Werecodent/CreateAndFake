@@ -76,7 +76,7 @@ public static class Subclasser
                 string.Join("', '", invalidInterfaces.Select(t => t.Name)) + "'.");
         }
 
-        return FindOrBuildType(realParent, allInterfaces.Distinct().ToArray());
+        return FindOrBuildType(realParent, [.. allInterfaces.Distinct()]);
     }
 
     /// <summary>Determines if type can be subclassed.</summary>

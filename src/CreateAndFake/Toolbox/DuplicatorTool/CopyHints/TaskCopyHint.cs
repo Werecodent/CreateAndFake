@@ -7,17 +7,17 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class TaskCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal sealed override (bool, object?) TryCopy(object source, DuplicatorChainer duplicator)
+    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         if (source is Task task && task.GetType().IsGenericType)
         {
-            return (true, Copy(task, duplicator));
+            return new(Copy(task, duplicator));
         }
         else
         {
-            return (false, null);
+            return CopyHintResult.None;
         }
     }
 

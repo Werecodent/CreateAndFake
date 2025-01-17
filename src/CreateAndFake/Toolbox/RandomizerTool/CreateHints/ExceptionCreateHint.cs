@@ -9,16 +9,17 @@ namespace CreateAndFake.Toolbox.RandomizerTool.CreateHints;
 public sealed class ExceptionCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    protected internal override (bool, object?) TryCreate(Type type, RandomizerChainer randomizer)
+    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         if (!type.Inherits<Exception>())
         {
-            return (false, null);
+            return CreateHintResult.None;
         }
 
-        ConstructorInfo[] options = type.FindLocalSubclasses()
+        ConstructorInfo[] options = [.. type
+            .FindLocalSubclasses()
             .Where(t => t.IsVisible)
             .Where(t => t.IsSerializable)
 #if LEGACY // Security exceptions don't work with default serialization in .NET full.
@@ -26,12 +27,11 @@ public sealed class ExceptionCreateHint : CreateHint
 #endif
             .Select(t => t.GetConstructor([typeof(string)]))
             .Where(c => c != null)
-            .Select(c => c!)
-            .ToArray();
+            .Select(c => c!)];
 
         return (options.Length != 0)
-            ? (true, randomizer.Options.Gen.NextItem(options).Invoke([randomizer.Create<string>()]))
-            : (false, null);
+            ? new(randomizer.Options.Gen.NextItem(options).Invoke([randomizer.Create<string>()]))
+            : CreateHintResult.None;
     }
 }
 
