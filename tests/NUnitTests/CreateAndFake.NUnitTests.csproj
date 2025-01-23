@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Condition="'$(OS)'=='Windows_NT'">
+    <TargetFrameworks>net9.0;net8.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)'!='Windows_NT'">
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="4.3.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" PrivateAssets="All" />
+    <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\CreateAndFake.csproj" />
+    <ProjectReference Include="..\..\src\NUnit\CreateAndFake.NUnit.csproj" />
+    <Using Include="CreateAndFake" />
+    <Using Include="CreateAndFake.Fluent" />
+    <Using Include="CreateAndFake.NUnit" />
+  </ItemGroup>
+
+</Project>

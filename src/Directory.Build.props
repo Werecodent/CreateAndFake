@@ -2,12 +2,33 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisMode>All</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artifacts\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <OutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\</OutputPath>
-    <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artifacts\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)</BaseOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>CreateAndFake Contributors</Authors>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://createandfake.github.io/CreateAndFake/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CreateAndFake/CreateAndFake</RepositoryUrl>
+    <ReleaseNotes>https://github.com/CreateAndFake/CreateAndFake/releases/</ReleaseNotes>
+    <RepositoryType>Github</RepositoryType>
+    <PackageTags>create, fake, tdd, agile, testing, tests, stubs, mocking, mocks, mock, data, random, cloning, clones, clone</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="6.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.12.0" PrivateAssets="All" />
+  </ItemGroup>
 </Project>

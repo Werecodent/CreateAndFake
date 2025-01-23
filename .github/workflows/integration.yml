@@ -17,7 +17,6 @@ jobs:
         dotnet-version: | 
           9.0.x
           8.0.x
-          7.0.x
     - name: Build & Test
       run: ./build/run.sh test
 
@@ -31,7 +30,6 @@ jobs:
         dotnet-version: | 
           9.0.x
           8.0.x
-          7.0.x
     - name: Build & Test
       run: bash build/run.sh test
 
@@ -45,7 +43,6 @@ jobs:
         dotnet-version: | 
           9.0.x
           8.0.x
-          7.0.x
     - name: Build & Test & Coverage
       run: ./build/run.cmd test coverage
     - name: Upload coverage

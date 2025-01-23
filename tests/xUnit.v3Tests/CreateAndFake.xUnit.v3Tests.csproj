@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Condition="'$(OS)'=='Windows_NT'">
+    <TargetFrameworks>net9.0;net8.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)'!='Windows_NT'">
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="1.0.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1" PrivateAssets="All" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\CreateAndFake.csproj" />
+    <ProjectReference Include="..\..\src\xUnit.v3\CreateAndFake.xUnit.v3.csproj" />
+    <Using Include="CreateAndFake" />
+    <Using Include="CreateAndFake.Fluent" />
+    <Using Include="CreateAndFake.xUnit.v3" />
+  </ItemGroup>
+
+</Project>

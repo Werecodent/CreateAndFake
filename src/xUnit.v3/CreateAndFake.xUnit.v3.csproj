@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>A C# class library that handles mocking, test data generation, and validation.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Core/CreateAndFake.csproj" />
+    <PackageReference Include="xunit.v3.extensibility.core" Version="[1.0.0,)" />
+  </ItemGroup>
+
+</Project>
