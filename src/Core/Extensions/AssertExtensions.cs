@@ -72,7 +72,6 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert(this Func<Task>? behavior)
@@ -90,12 +89,11 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert(this Task? behavior)
     {
-        return new AssertAsync(Tools.Asserter, async () => await behavior);
+        return new AssertAsync(Tools.Asserter, () => behavior);
     }
 
     /// <inheritdoc cref="AssertAsync"/>
@@ -104,7 +102,7 @@ public static class AssertExtensions
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert<T>(this Task<T?>? behavior)
     {
-        return new AssertAsync(Tools.Asserter, async () => await behavior);
+        return new AssertAsync(Tools.Asserter, () => behavior);
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>

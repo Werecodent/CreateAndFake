@@ -68,6 +68,8 @@ public partial class Asserter : IDelegateAsserter
         return Throws<T>(behavior, Unconfigured, details);
     }
 
+#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+
     /// <inheritdoc/>
     public virtual T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
     {
@@ -92,6 +94,8 @@ public partial class Asserter : IDelegateAsserter
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
+
+#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
 
     private static T UnwrapException<T>(
         Exception e, string errorMessage, AsserterOptions localOptions, string? details) where T : Exception

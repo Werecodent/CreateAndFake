@@ -32,6 +32,8 @@ public partial class Asserter : IAsyncAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
+#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Task<object?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
@@ -54,6 +56,8 @@ public partial class Asserter : IAsyncAsserter
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
+#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
+
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null) where T : Exception
     {
@@ -66,9 +70,10 @@ public partial class Asserter : IAsyncAsserter
     {
         return ThrowsAsync<T>(async () =>
         {
-            if (behavior != null)
+            Task? task = behavior?.Invoke();
+            if (task != null)
             {
-                await behavior().ConfigureAwait(false);
+                await task.ConfigureAwait(false);
             }
             return null;
         }, optionConfiguration, details);
@@ -80,6 +85,8 @@ public partial class Asserter : IAsyncAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
+#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Func<Task<object?>?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
@@ -87,11 +94,13 @@ public partial class Asserter : IAsyncAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage = $"Expected exception of type '{typeof(T).FullName}' but received: ";
-        if (behavior != null)
+
+        Task<object?>? task = behavior?.Invoke();
+        if (task != null)
         {
             try
             {
-                Disposer.Cleanup(await behavior().ConfigureAwait(false));
+                Disposer.Cleanup(await task.ConfigureAwait(false));
             }
             catch (Exception e)
             {
@@ -101,6 +110,8 @@ public partial class Asserter : IAsyncAsserter
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
+
+#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details) where T : Exception
@@ -162,9 +173,10 @@ public partial class Asserter : IAsyncAsserter
     {
         return ThrowsNoAsync<T>(async () =>
         {
-            if (behavior != null)
+            Task? task = behavior?.Invoke();
+            if (task != null)
             {
-                await behavior().ConfigureAwait(false);
+                await task.ConfigureAwait(false);
             }
             return null;
         }, optionConfiguration, details);
@@ -181,11 +193,12 @@ public partial class Asserter : IAsyncAsserter
         Func<Task<object?>?>? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (behavior != null)
+        Task<object?>? task = behavior?.Invoke();
+        if (task != null)
         {
             try
             {
-                Disposer.Cleanup(await behavior().ConfigureAwait(false));
+                Disposer.Cleanup(await task.ConfigureAwait(false));
             }
             catch (Exception e)
             {

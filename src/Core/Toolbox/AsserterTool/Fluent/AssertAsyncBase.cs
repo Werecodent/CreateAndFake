@@ -5,11 +5,11 @@ namespace CreateAndFake.Toolbox.AsserterTool.Fluent;
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertAsyncBase<T>(IAsserter asserter, Func<Task>? behavior)
+public abstract class AssertAsyncBase<T>(IAsserter asserter, Func<Task?>? behavior)
     : AssertObjectBase<T>(asserter, behavior) where T : AssertAsyncBase<T>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Func<Task>? Behavior { get; } = behavior;
+    protected Func<Task?>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsyncAsserter.ThrowsAsync{T}(Func{Task},string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
