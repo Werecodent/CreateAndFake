@@ -13,7 +13,7 @@ public sealed class BasicCopyHint : CopyHint
     private static readonly HashSet<Type> _SupportedTypes = [typeof(string), typeof(object)];
 
     /// <inheritdoc/>
-    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 

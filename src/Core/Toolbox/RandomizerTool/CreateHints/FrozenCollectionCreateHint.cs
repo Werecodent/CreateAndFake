@@ -16,7 +16,7 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         .Single(m => m.Name == nameof(FrozenDictionary.ToFrozenDictionary) && m.GetParameters().Length == 2);
 
     /// <inheritdoc/>
-    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         Type? asGeneric = type.AsGenericType();
 

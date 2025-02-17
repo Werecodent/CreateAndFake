@@ -28,7 +28,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     public virtual void Pass(AsserterMod? optionConfiguration) { }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public virtual void Fail(string? details = null, string? content = null)
     {
         Fail(Unconfigured, details, content);
@@ -43,7 +43,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public virtual void Fail(Exception? exception, string? details = null)
     {
         Fail(exception, Unconfigured, details);

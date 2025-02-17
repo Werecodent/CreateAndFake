@@ -18,6 +18,9 @@ public record DuplicatorOptions : IToolOptions
     /// <summary>If the default set of hints should be used in duplication.</summary>
     public bool IncludeDefaultHints { get; init; } = true;
 
+    /// <summary>If results are verified via the <see cref="Asserter"/>.</summary>
+    public bool VerifyCloneResult { get; init; } = true;
+
     /// <summary>Custom duplicators used to deep copy specific types.</summary>
     public ImmutableArray<CopyHint> Hints { get; init; } = [];
 

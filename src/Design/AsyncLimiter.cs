@@ -104,6 +104,8 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     public Task<IReadOnlyCollection<T>> StallUntil<T>(
         string message, Func<T> behavior, Func<bool> checkState, CancellationToken? canceler = null)
     {
+        ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
+
         return StallUntil(message, behavior, (T _) => checkState.Invoke(), canceler);
     }
 
@@ -372,7 +374,7 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
         catch (OperationCanceledException e)
         {
             string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
-            throw new OperationCanceledException($"Operation canceled via token{details}", e, token);
+            throw new TimeoutException($"Operation canceled via token{details}", e);
         }
     }
 

@@ -5,7 +5,7 @@
 public abstract class CopyHint<T> : CopyHint
 {
     /// <inheritdoc/>
-    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         if (source is T data)
         {

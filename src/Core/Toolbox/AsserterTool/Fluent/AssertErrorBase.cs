@@ -12,7 +12,7 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
     protected Exception? Error { get; } = error;
 
     /// <inheritdoc/>
-    [DoesNotReturn]
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public override void Fail(string? details = null)
     {
         Asserter.Fail(Error, details);

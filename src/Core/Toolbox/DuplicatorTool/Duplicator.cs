@@ -61,9 +61,12 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         try
         {
             T result = Copy(source, new DuplicatorChainer(localOptions, this, Copy));
-            Options.Asserter.ValuesEqual(source, result,
-                $"Type '{source?.GetType()}' did not clone properly. " +
-                "Verify/create a hint to generate the type and pass it to the duplicator.");
+            if (localOptions.VerifyCloneResult)
+            {
+                Options.Asserter.ValuesEqual(source, result,
+                    $"Type '{source?.GetType()}' did not clone properly. " +
+                    "Verify/create a hint to generate the type and pass it to the duplicator.");
+            }
             return result;
         }
         catch (InsufficientExecutionStackException e)

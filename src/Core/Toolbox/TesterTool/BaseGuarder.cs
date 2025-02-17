@@ -89,19 +89,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         ArgumentGuard.ThrowIfNull(call, nameof(call));
         try
         {
-            Task<object> task = Task.Run(() =>
-            {
-                object result = call.Invoke();
-                if (result is IEnumerable collection)
-                {
-                    // Required to execute yield return methods.
-                    return collection.OfType<object>().ToArray();
-                }
-                else
-                {
-                    return result;
-                }
-            });
+            Task<object?> task = Task.Run(() => UnwrapTaskResult(call.Invoke()));
             if (!task.Wait(Timeout))
             {
                 throw new TimeoutException($"Attempting to run method '{testOrigin.Name}' timed out.");
@@ -124,6 +112,28 @@ internal abstract class BaseGuarder(TesterOptions options)
             {
                 throw actual;
             }
+        }
+    }
+
+    /// <summary>Ensures the result is completed.</summary>
+    /// <param name="result">Potentially wrapped data.</param>
+    /// <returns>The unwrapped result.</returns>
+    private object? UnwrapTaskResult(object? result)
+    {
+        while (result is ValueTask or Task)
+        {
+            PropertyInfo? prop = result.GetType().GetProperty("Result");
+            result = prop?.GetValue(result);
+        }
+
+        if (result is IEnumerable collection)
+        {
+            // Required to execute yield return methods.
+            return collection.OfType<object>().ToArray();
+        }
+        else
+        {
+            return result;
         }
     }
 

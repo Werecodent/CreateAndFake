@@ -10,7 +10,7 @@ public abstract class CompareHint
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="valuer">Handles comparing child values.</param>
     /// <returns>Possible result.</returns>
-    internal DifferenceHintResult TryCompare(object? expected, object? actual, ValuerChainer valuer)
+    public DifferenceHintResult TryCompare(object? expected, object? actual, ValuerChainer valuer)
     {
         if (Supports(expected, actual, valuer))
         {
@@ -26,7 +26,7 @@ public abstract class CompareHint
     /// <param name="item">Object to generate a hash code for.</param>
     /// <param name="valuer">Handles hashing behavior for child values.</param>
     /// <returns>Possible result.</returns>
-    internal HashCodeHintResult TryGetHashCode(object? item, ValuerChainer valuer)
+    public HashCodeHintResult TryGetHashCode(object? item, ValuerChainer valuer)
     {
         if (Supports(item, item, valuer))
         {

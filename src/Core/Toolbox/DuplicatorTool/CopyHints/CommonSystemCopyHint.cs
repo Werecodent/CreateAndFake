@@ -7,7 +7,7 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class CommonSystemCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 

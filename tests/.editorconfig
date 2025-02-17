@@ -39,6 +39,10 @@ dotnet_diagnostic.CA1805.severity = none
 # Needed for testing and cleaner tests.
 dotnet_diagnostic.CA1812.severity = none
 
+# CA2007: Do not directly await a Task
+# Default of true for tests is proper.
+dotnet_diagnostic.CA2007.severity = none
+
 # CA2263: Prefer the generic overload
 # Needed for testing non-generic methods.
 dotnet_diagnostic.CA2263.severity = none

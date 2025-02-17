@@ -55,7 +55,7 @@ public sealed class FakeCreateHint : CreateHint
     ];
 
     /// <inheritdoc/>
-    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 

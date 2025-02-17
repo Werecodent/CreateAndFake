@@ -7,25 +7,34 @@ public static class RandomDataAttributeTests
     [Fact]
     internal static void RandomDataAttribute_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<RandomDataAttribute>();
+        Tools.Tester.PreventsNullRefException(new RandomDataAttribute() { Trials = 3 }, opt => opt with
+        {
+            InjectionValues = [3, GetGeneratableMethod()]
+        });
     }
 
     [Fact]
     internal static void RandomDataAttribute_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<RandomDataAttribute>(opt => opt with { InjectionValues = [3] });
+        Tools.Tester.PreventsParameterMutation(new RandomDataAttribute() { Trials = 3 }, opt => opt with
+        {
+            InjectionValues = [3, GetGeneratableMethod()]
+        });
     }
 
     [Fact]
     internal static void GetData_UsesTrials()
     {
-        MethodInfo method = Tools.Randomizer.Create<MethodInfo>(opt => opt with
+        new RandomDataAttribute() { Trials = 0 }.GetData(GetGeneratableMethod()).Assert().HasCount(0);
+        new RandomDataAttribute() { Trials = 1 }.GetData(GetGeneratableMethod()).Assert().HasCount(1);
+        new RandomDataAttribute() { Trials = 2 }.GetData(GetGeneratableMethod()).Assert().HasCount(2);
+    }
+
+    private static MethodInfo GetGeneratableMethod()
+    {
+        return Tools.Randomizer.Create<MethodInfo>(opt => opt with
         {
             FinalCondition = m => m is MethodInfo info && !info.IsGenericMethod && !info.IsGenericMethodDefinition
         });
-
-        Tools.Asserter.HasCount(0, new RandomDataAttribute() { Trials = 0 }.GetData(method));
-        Tools.Asserter.HasCount(1, new RandomDataAttribute() { Trials = 1 }.GetData(method));
-        Tools.Asserter.HasCount(2, new RandomDataAttribute() { Trials = 2 }.GetData(method));
     }
 }

@@ -6,7 +6,7 @@ namespace CreateAndFake.DesignTests;
 
 #pragma warning disable xUnit1031 // Test methods should not use blocking code: Ensures blocking code works for library.
 
-public static class AsyncAsyncLimiterTests
+public static class AsyncLimiterTests
 {
     private const int _WaitAccuracy = 5;
 
@@ -246,15 +246,15 @@ public static class AsyncAsyncLimiterTests
         {
             AsyncLimiter.Few
                 .Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token).Wait())
-                .Throws<TaskCanceledException>();
+                .Throws<TimeoutException>();
         }
         AsyncLimiter.Few
             .Assert(l => l.Repeat("Test", () => { }, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
 
         AsyncLimiter.Quick
             .Assert(l => l.Repeat("", () => { }, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
     }
 
     [Fact]
@@ -264,15 +264,15 @@ public static class AsyncAsyncLimiterTests
         {
             AsyncLimiter.Few
                 .Assert(l => l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token).Wait())
-                .Throws<TaskCanceledException>();
+                .Throws<TimeoutException>();
         }
         AsyncLimiter.Few
             .Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
 
-        AsyncLimiter.Quick
+        AsyncLimiter.Fast
             .Assert(l => l.StallUntil("", () => false, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
     }
 
     [Theory, RandomData]
@@ -282,15 +282,15 @@ public static class AsyncAsyncLimiterTests
         {
             AsyncLimiter.Few
                 .Assert(l => l.Retry("", () => throw exception, () => tokenSource.Cancel(), tokenSource.Token).Wait())
-                .Throws<TaskCanceledException>();
+                .Throws<TimeoutException>();
         }
         AsyncLimiter.Few
             .Assert(l => l.Retry("Test", () => throw exception, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
 
         AsyncLimiter.Quick
             .Assert(l => l.Retry("", () => throw exception, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
     }
 
     [Theory, RandomData]
@@ -300,15 +300,15 @@ public static class AsyncAsyncLimiterTests
         {
             AsyncLimiter.Few
                 .Assert(l => l.Attempt("", () => throw exception, () => tokenSource.Cancel(), tokenSource.Token).Wait())
-                .Throws<TaskCanceledException>();
+                .Throws<TimeoutException>();
         }
         AsyncLimiter.Few
             .Assert(l => l.Attempt(null, () => throw exception, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
 
         AsyncLimiter.Quick
             .Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)).Wait())
-            .Throws<TaskCanceledException>();
+            .Throws<TimeoutException>();
     }
 
     [Theory, RandomData]
@@ -457,7 +457,7 @@ public static class AsyncAsyncLimiterTests
 
         new AsyncLimiter(3)
             .Assert(l => l.Retry<DirectoryNotFoundException, bool>("", () => throw exception2).Wait())
-            .Throws<AggregateException>().InnerExceptions.Single().Assert().Is(exception2);
+            .Throws<IOException>().Assert().Is(exception2);
     }
 
     [Theory,
@@ -510,7 +510,7 @@ public static class AsyncAsyncLimiterTests
 
         new AsyncLimiter(3)
             .Assert(l => l.Attempt<DirectoryNotFoundException, bool>("", () => throw exception2).Wait())
-            .Throws<AggregateException>().InnerExceptions.Single().Assert().Is(exception2);
+            .Throws<IOException>().Assert().Is(exception2);
     }
 
     [Fact]

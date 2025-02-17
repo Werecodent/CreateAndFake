@@ -47,7 +47,7 @@ public static class Issue089Tests
         Func<object> func = () => throw error;
         func.Assert().Throws<InvalidOperationException>().Assert().Is(error);
 
-        item.Assert(o => throw error).Throws<InvalidOperationException>().Assert().Is(error);
+        item.Assert(o => false ? "" : throw error).Throws<InvalidOperationException>().Assert().Is(error);
 
         item.Assert(o => o.Assert().Fail()).Throws<AssertException>().Assert().IsNot(error);
     }

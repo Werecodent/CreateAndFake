@@ -85,27 +85,28 @@ public partial class Asserter : IDelegateAsserter
                 Disposer.Cleanup([((dynamic?)behavior)?.Invoke()]);
             }
         }
-        catch (T e)
-        {
-            return e;
-        }
-        catch (AggregateException e)
-        {
-            if (e.InnerExceptions.Count == 1 && e.InnerExceptions[0] is T actual)
-            {
-                return actual;
-            }
-            else
-            {
-                throw new AssertException(errorMessage + e.GetType().Name, details, localOptions.Gen.InitialSeed, e);
-            }
-        }
         catch (Exception e)
         {
-            throw new AssertException(errorMessage + e.GetType().Name, details, localOptions.Gen.InitialSeed, e);
+            return UnwrapException<T>(e, errorMessage, localOptions, details);
         }
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
+    }
+
+    private static T UnwrapException<T>(
+        Exception e, string errorMessage, AsserterOptions localOptions, string? details) where T : Exception
+    {
+        if (e is T noWrap)
+        {
+            return noWrap;
+        }
+
+        Exception error = (e is AggregateException agg && agg.InnerExceptions.Count == 1)
+            ? agg.InnerExceptions[0]
+            : e;
+
+        return error as T
+            ?? throw new AssertException(errorMessage + e.GetType().Name, details, localOptions.Gen.InitialSeed, e);
     }
 
     /// <inheritdoc/>
@@ -157,7 +158,8 @@ public partial class Asserter : IDelegateAsserter
         {
             if (e is T)
             {
-                throw new AssertException("Expected no exception.", details, localOptions.Gen.InitialSeed, e);
+                throw new AssertException(
+                    $"Expected no exception of type '{typeof(T).Name}'.", details, localOptions.Gen.InitialSeed, e);
             }
         }
     }

@@ -13,7 +13,7 @@ public sealed class ObjectCopyHint : CopyHint
         | BindingFlags.Instance;
 
     /// <inheritdoc/>
-    protected internal sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));

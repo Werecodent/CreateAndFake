@@ -10,9 +10,9 @@ public static class CreateExtensions
 {
     /// <inheritdoc cref="IDuplicator.Copy{T}(T,DuplicatorMod)"/>
     [return: NotNullIfNotNull(nameof(source))]
-    public static T CreateDeepClone<T>(this T source)
+    public static T CreateDeepClone<T>(this T source, DuplicatorMod? optionConfiguration = null)
     {
-        return Tools.Duplicator.Copy(source);
+        return Tools.Duplicator.Copy(source, optionConfiguration);
     }
 
     /// <inheritdoc cref="IMutator.Variant{T}"/>

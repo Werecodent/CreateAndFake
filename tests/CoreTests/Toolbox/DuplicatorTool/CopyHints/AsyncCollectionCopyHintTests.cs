@@ -31,10 +31,10 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
     {
         IAsyncEnumerable<int> items = original.CreateDeepClone();
 
-        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync().ConfigureAwait(true);
+        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 
         int count = 0;
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             count++;
             if (count == 3)
@@ -44,7 +44,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         }
 
         count = 0;
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             count++;
         }

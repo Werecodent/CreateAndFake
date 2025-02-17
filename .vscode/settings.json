@@ -1,7 +1,7 @@
 // Extension: EditorConfig for VS Code
 {
     "omnisharp.enableEditorConfigSupport": true,
-    "omnisharp.organizeImportsOnFormat": true,
+    "dotnet.formatting.organizeImportsOnFormat": true,
     "git.enableSmartCommit": true,
     "git.enableCommitSigning": true,
     "editor.formatOnSave": true,
@@ -40,6 +40,7 @@
         "finalizer",
         "FIRSTNAME",
         "FULLNAME",
+        "Generatable",
         "globaltool",
         "gpgsign",
         "hasher",

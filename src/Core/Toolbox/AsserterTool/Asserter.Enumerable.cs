@@ -9,7 +9,7 @@ namespace CreateAndFake.Toolbox.AsserterTool;
 public partial class Asserter : IEnumerableAsserter
 {
     /// <inheritdoc/>
-    [DoesNotReturn]
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public virtual void Fail(IEnumerable? collection, string? details = null)
     {
         Fail(collection, Unconfigured, details);

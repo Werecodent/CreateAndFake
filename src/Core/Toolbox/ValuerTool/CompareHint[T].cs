@@ -1,6 +1,4 @@
-﻿using CreateAndFake.Design;
-
-namespace CreateAndFake.Toolbox.ValuerTool;
+﻿namespace CreateAndFake.Toolbox.ValuerTool;
 
 /// <typeparam name="T"><c>Type</c> being supported for comparisons.</typeparam>
 /// <inheritdoc/>
@@ -9,8 +7,6 @@ public abstract class CompareHint<T> : CompareHint
     /// <inheritdoc/>
     protected sealed override bool Supports(object? expected, object? actual, ValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
-
         return expected is T && actual is T;
     }
 

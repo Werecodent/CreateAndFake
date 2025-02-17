@@ -7,7 +7,7 @@ namespace CreateAndFake.Toolbox.DuplicatorTool.CopyHints;
 public sealed class AsyncCollectionCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    protected internal override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));

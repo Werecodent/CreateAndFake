@@ -36,7 +36,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     internal static IEnumerable<Type> PotentialCollections { get; } = _Collections.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
-    protected internal override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
+    public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
         if (type == null)

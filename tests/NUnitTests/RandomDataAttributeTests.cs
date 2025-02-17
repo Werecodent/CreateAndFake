@@ -1,33 +1,53 @@
-﻿using NUnit.Framework.Internal;
+﻿using System.Reflection;
+using CreateAndFake.Toolbox.DuplicatorTool;
+using CreateAndFake.Toolbox.FakerTool;
+using NUnit.Framework.Internal;
 
 namespace CreateAndFake.NUnitTests;
 
 [TestFixture]
 public class RandomDataAttributeTests
 {
-    [Test]
-    public void RandomDataAttribute_GuardsNulls()
+    [RandomData]
+    public void RandomDataAttribute_GuardsNulls([Stub] Test testStub)
     {
-        Tools.Tester.PreventsNullRefException<RandomDataAttribute>();
+        Tools.Tester.PreventsNullRefException(new RandomDataAttribute() { Trials = 3 }, opt => opt with
+        {
+            InjectionValues = [3, GetGeneratableMethod(), testStub]
+        });
     }
 
-    /*[Test]
-    public void RandomDataAttribute_NoParameterMutation()
+    [RandomData]
+    public void RandomDataAttribute_NoParameterMutation([Stub] Test testStub, [Stub] CopyHint<MethodWrapper> copyStub)
     {
-        Tools.Tester.PreventsParameterMutation<RandomDataAttribute>(opt => opt with { InjectionValues = [3] });
+        copyStub.ToFake().Setup("Copy",
+            [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
+            Behavior.Set<MethodWrapper, DuplicatorChainer, MethodWrapper>(
+                (w, c) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)));
+
+        Tools.Tester.PreventsParameterMutation(new RandomDataAttribute() { Trials = 3 }, opt => opt with
+        {
+            InjectionValues = [3, GetGeneratableMethod(), testStub],
+            Duplicator = new Duplicator(Tools.Duplicator.Options with { Hints = [copyStub] })
+        });
     }
 
-    [Test]
-    public void GetData_UsesTrials()
+    [RandomData]
+    public void GetData_UsesTrials([Stub] Test testStub)
     {
-        MethodInfo method = Tools.Randomizer.Create<MethodInfo>(opt => opt with
+        MethodInfo method = GetGeneratableMethod();
+        MethodWrapper wrapper = new(method.DeclaringType, method);
+
+        new RandomDataAttribute() { Trials = 0 }.BuildFrom(wrapper, testStub).Assert().HasCount(0);
+        new RandomDataAttribute() { Trials = 1 }.BuildFrom(wrapper, testStub).Assert().HasCount(1);
+        new RandomDataAttribute() { Trials = 2 }.BuildFrom(wrapper, testStub).Assert().HasCount(2);
+    }
+
+    private static MethodInfo GetGeneratableMethod()
+    {
+        return Tools.Randomizer.Create<MethodInfo>(opt => opt with
         {
             FinalCondition = m => m is MethodInfo info && !info.IsGenericMethod && !info.IsGenericMethodDefinition
         });
-        MethodWrapper wrapper = new(method.DeclaringType, method);
-
-        Tools.Asserter.HasCount(0, new RandomDataAttribute() { Trials = 0 }.BuildFrom(wrapper));
-        Tools.Asserter.HasCount(1, new RandomDataAttribute() { Trials = 1 }.BuildFrom(wrapper));
-        Tools.Asserter.HasCount(2, new RandomDataAttribute() { Trials = 2 }.BuildFrom(wrapper));
-    }*/
+    }
 }

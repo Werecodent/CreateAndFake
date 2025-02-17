@@ -8,6 +8,7 @@ namespace CreateAndFake.Toolbox.AsserterTool;
 
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter :
+    IAsyncAsserter,
     IComparableAsserter,
     IDelegateAsserter,
     IEnumerableAsserter,

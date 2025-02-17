@@ -180,10 +180,11 @@ public abstract class CompareHintTestBase<T>(
     }
 
     /// <returns>Chainer to use for testing.</returns>
-    protected static ValuerChainer CreateChainer()
+    /// <param name="options">Options to pass via the chainer.</param>
+    protected static ValuerChainer CreateChainer(ValuerOptions options = null)
     {
         return new ValuerChainer(
-            Tools.Valuer.Options,
+            options ?? Tools.Valuer.Options,
             Tools.Valuer,
             (o, c) => Tools.Valuer.GetHashCode(o),
             (e, a, c) => Tools.Valuer.Compare(e, a));

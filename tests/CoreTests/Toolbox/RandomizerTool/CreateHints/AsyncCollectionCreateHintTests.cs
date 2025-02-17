@@ -26,9 +26,9 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     internal static async Task GetItems_Empty([Size(0)] IAsyncEnumerable<int> items)
     {
         IAsyncEnumerator<int> gen = items.GetAsyncEnumerator(TestContext.Current.CancellationToken);
-        await using (gen.ConfigureAwait(true))
+        await using (gen)
         {
-            (await gen.MoveNextAsync().ConfigureAwait(true)).Assert().Is(false);
+            (await gen.MoveNextAsync()).Assert().Is(false);
         }
     }
 
@@ -36,13 +36,13 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     internal static async Task GetItems_Repeatable(IAsyncEnumerable<int> items)
     {
         List<int> first = [];
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             first.Add(item);
         }
 
         List<int> second = [];
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             second.Add(item);
         }
@@ -53,16 +53,16 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     [Theory, RandomData]
     internal static async Task GetItems_Cancel(IAsyncEnumerable<int> items)
     {
-        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync().ConfigureAwait(true);
+        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
     }
 
     [Theory, RandomData]
     internal static async Task GetItems_Interrupt([Size(5)] IAsyncEnumerable<int> items)
     {
-        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync().ConfigureAwait(true);
+        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 
         int count = 0;
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             count++;
             if (count == 3)
@@ -72,7 +72,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
         }
 
         count = 0;
-        await foreach (int item in items.ConfigureAwait(true))
+        await foreach (int item in items)
         {
             count++;
         }
