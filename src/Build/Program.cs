@@ -13,10 +13,11 @@ internal static class Program
     /// <param name="args">Command-line arguments.</param>
     public static async Task Main(string[] args)
     {
+        string[] configurations = ["Debug", "Release"];
         Target("default", DependsOn("coverage"));
         Target("restore", Restore);
-        Target("compile", DependsOn("restore"), Compile);
-        Target("test", DependsOn("compile"), Test);
+        Target("compile", DependsOn("restore"), ForEach(configurations), Compile);
+        Target("test", DependsOn("compile"), ForEach(configurations), Test);
         Target("coverage", DependsOn("compile"), Coverage);
         Target("pack", DependsOn("compile"), Pack);
         Target("debugCrash", DependsOn("compile"), DebugCrash);
@@ -30,19 +31,17 @@ internal static class Program
     }
 
     /// <summary>Builds the solution.</summary>
-    private static async Task Compile()
+    /// <param name="configuration">Build configuration to use.</param>
+    private static async Task Compile(string configuration)
     {
-        await RunAsync($"dotnet", $"build --no-restore --configuration Debug");
-        await RunAsync($"dotnet", $"build --no-restore --configuration Release");
+        await RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
-    private static async Task Test()
+    /// <param name="configuration">Build configuration to use.</param>
+    private static async Task Test(string configuration)
     {
-        string testArgs = "test --no-restore --no-build ";
-
-        await RunAsync("dotnet", testArgs + "--configuration Debug");
-        await RunAsync("dotnet", testArgs + "--configuration Release");
+        await RunAsync("dotnet", $"test --no-restore --no-build --configuration {configuration}");
     }
 
     /// <summary>Uses extended logging for tests to check on harness crash.</summary>

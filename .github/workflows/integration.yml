@@ -46,6 +46,7 @@ jobs:
     - name: Build & Test & Coverage
       run: ./build/run.cmd test coverage
     - name: Upload coverage
+      if: success()
       uses: codecov/codecov-action@v4
       with:
         directory: ./artifacts/coverage
