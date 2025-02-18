@@ -30,6 +30,11 @@ public sealed class SerializableCopyHint : CopyHint
                 throw new InvalidDataContractException(
                     $"Ran into problem trying to serialize type '{source.GetType()}'.", e);
             }
+            catch (SerializationException e)
+            {
+                throw new SerializationException(
+                    $"Ran into problem trying to serialize type '{source.GetType()}'.", e);
+            }
         }
         else
         {
