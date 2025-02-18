@@ -37,6 +37,7 @@
         "duplicatables",
         "enumerables",
         "equatables",
+        "ERRORLEVEL",
         "finalizer",
         "FIRSTNAME",
         "FULLNAME",
