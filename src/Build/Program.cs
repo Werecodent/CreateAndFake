@@ -11,7 +11,7 @@ internal static class Program
 
     /// <summary>Console application entry point.</summary>
     /// <param name="args">Command-line arguments.</param>
-    public static async Task Main(string[] args)
+    public static Task Main(string[] args)
     {
         string[] configurations = ["Debug", "Release"];
         Target("default", DependsOn("coverage"));
@@ -21,7 +21,7 @@ internal static class Program
         Target("coverage", DependsOn("compile"), Coverage);
         Target("pack", DependsOn("compile"), Pack);
         Target("debugCrash", DependsOn("compile"), DebugCrash);
-        await RunTargetsAndExitAsync(args);
+        return RunTargetsAndExitAsync(args);
     }
 
     /// <summary>Downloads all packages for the solution.</summary>
@@ -32,20 +32,20 @@ internal static class Program
 
     /// <summary>Builds the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
-    private static async Task Compile(string configuration)
+    private static Task Compile(string configuration)
     {
-        await RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
+        return RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
-    private static async Task Test(string configuration)
+    private static Task Test(string configuration)
     {
-        await RunAsync("dotnet", $"test --no-restore --no-build --configuration {configuration}");
+        return RunAsync("dotnet", $"test --no-restore --no-build --configuration {configuration}");
     }
 
     /// <summary>Uses extended logging for tests to check on harness crash.</summary>
-    private static async Task DebugCrash()
+    private static Task DebugCrash()
     {
         string logDir = Path.Combine(_ArtifactDir, "logs");
         EnsureEmpty(logDir);
@@ -53,7 +53,7 @@ internal static class Program
         string logFile = Path.Combine(logDir, "test.txt");
         string testArgs = $"test --no-restore --no-build --diag:{logFile} ";
 
-        await RunAsync("dotnet", testArgs + "--configuration Debug");
+        return RunAsync("dotnet", testArgs + "--configuration Debug");
     }
 
     /// <summary>Tests and analyzes test code coverage.</summary>

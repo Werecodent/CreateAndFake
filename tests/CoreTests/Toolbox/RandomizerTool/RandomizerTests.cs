@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Toolbox.FakerTool;
+﻿using System.Reflection;
+using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.RandomizerTool;
 using CreateAndFakeTests.TestSamples;
 
@@ -15,13 +16,28 @@ public static class RandomizerTests
     [Fact]
     internal static void Randomizer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Randomizer>();
+        Tools.Tester.PreventsNullRefException<Randomizer>(opt => opt with
+        {
+            InjectionValues = [GetGeneratableMethod()]
+        });
     }
 
     [Fact]
     internal static void Randomizer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Randomizer>(opt => opt with { IncludeConstructors = false });
+        Tools.Tester.PreventsParameterMutation<Randomizer>(opt => opt with
+        {
+            InjectionValues = [GetGeneratableMethod()],
+            IncludeConstructors = false
+        });
+    }
+
+    private static MethodInfo GetGeneratableMethod()
+    {
+        return Tools.Randomizer.Create<MethodInfo>(opt => opt with
+        {
+            FinalCondition = m => m is MethodInfo info && !info.IsGenericMethod && !info.IsGenericMethodDefinition
+        });
     }
 
     [Fact]
