@@ -44,6 +44,7 @@ jobs:
           9.0.x
           8.0.x
     - name: Build & Test & Coverage
+      shell: cmd
       run: ./build/run.cmd test coverage
     - name: Upload coverage
       uses: codecov/codecov-action@v4
