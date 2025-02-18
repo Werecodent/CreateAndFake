@@ -15,7 +15,8 @@ internal static class Program
     {
         string[] configurations = ["Debug", "Release"];
         Target("default", DependsOn("coverage"));
-        Target("compile", ForEach(configurations), Compile);
+        Target("restore", Restore);
+        Target("compile", DependsOn("restore"), ForEach(configurations), Compile);
         Target("test", DependsOn("compile"), ForEach(configurations), Test);
         Target("coverage", DependsOn("compile"), Coverage);
         Target("pack", DependsOn("compile"), Pack);
@@ -23,11 +24,17 @@ internal static class Program
         return RunTargetsAndExitAsync(args);
     }
 
+    /// <summary>Downloads all packages for the solution.</summary>
+    private static Task Restore()
+    {
+        return RunAsync("dotnet", "restore");
+    }
+
     /// <summary>Builds the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
     private static Task Compile(string configuration)
     {
-        return RunAsync($"dotnet", $"build --configuration {configuration}");
+        return RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
