@@ -34,7 +34,7 @@ internal static class Program
     /// <param name="configuration">Build configuration to use.</param>
     private static Task Compile(string configuration)
     {
-        return RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
+        return RunAsync($"dotnet", $"build --no-restore --disable-build-servers --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
