@@ -1,12 +1,12 @@
-﻿using System.Reflection;
+﻿using System.Collections.Frozen;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Toolbox;
 using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.TesterTool;
 using CreateAndFakeTests.TestSamples;
-using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
-using System.Collections.Frozen;
 
 namespace CreateAndFakeTests;
 
@@ -60,6 +60,7 @@ public static class ToolsTests
     internal static void Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore = [
+            typeof(Arg),
             typeof(Fake<>),
             typeof(VoidType),
             typeof(AnyGeneric),
