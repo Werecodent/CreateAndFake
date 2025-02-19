@@ -36,8 +36,7 @@ public class RandomDataAttributeTests
     public void GetData_UsesTrials([Stub] Test testStub)
     {
         MethodInfo method = GetGeneratableMethod();
-        MethodWrapper wrapper = new(method.DeclaringType, method);
-
+        MethodWrapper wrapper = new(method.ReflectedType, method);
         new RandomDataAttribute() { Trials = 0 }.BuildFrom(wrapper, testStub).Assert().HasCount(0);
         new RandomDataAttribute() { Trials = 1 }.BuildFrom(wrapper, testStub).Assert().HasCount(1);
         new RandomDataAttribute() { Trials = 2 }.BuildFrom(wrapper, testStub).Assert().HasCount(2);

@@ -11,11 +11,12 @@ public sealed class SerializableCopyHint : CopyHint
     {
         if (source is ISerializable)
         {
-            ContentMap contents = duplicator.Options.Extractor.Extract(source, opt => opt with { ExtractPrivateMembers = true });
+            ContentMap contents = duplicator.Options.Extractor.Extract(source);
 
             DataContractSerializer serializer = new(source.GetType(), contents
                 .AllContent()
                 .Select(d => d.GetType())
+                .Concat(FindExtraKnownTypes(source))
                 .Distinct());
 
             using MemoryStream stream = new();
@@ -39,6 +40,17 @@ public sealed class SerializableCopyHint : CopyHint
         else
         {
             return CopyHintResult.None;
+        }
+    }
+
+    /// <summary>Finds known types needed for specific types.</summary>
+    /// <param name="source">Object being serialized.</param>
+    /// <returns>Known types to add.</returns>
+    private static IEnumerable<Type> FindExtraKnownTypes(object source)
+    {
+        if (source is AggregateException)
+        {
+            yield return typeof(Exception[]);
         }
     }
 }
