@@ -11,7 +11,7 @@ public sealed class PersonContext : BaseDataContext
 
     /// <inheritdoc cref="PersonContext"/>
     /// <inheritdoc/>
-    internal PersonContext(IRandom gen) : base(gen)
+    public PersonContext(IRandom gen) : base(gen)
     {
         _firstName = new(() => Gen.NextItem(NameData.Values));
         _middleName = new(() => Gen.NextItem(NameData.Values));

@@ -4,6 +4,7 @@ using static SimpleExec.Command;
 namespace Build;
 
 /// <summary>Manages build behavior for the solution.</summary>
+/// <remarks>Do not add to this project to the solution file.</remarks>
 internal static class Program
 {
     /// <summary>Base directory for all output.</summary>
@@ -44,7 +45,8 @@ internal static class Program
         return RunAsync("dotnet", $"test --no-restore --no-build --configuration {configuration}");
     }
 
-    /// <summary>Uses extended logging for tests to check on harness crash.</summary>
+    /// <summary>Tests the solution with file logging.</summary>
+    /// <remarks>For debugging test harness crashes.</remarks>
     private static Task DebugCrash()
     {
         string logDir = Path.Combine(_ArtifactDir, "logs");
@@ -101,8 +103,9 @@ internal static class Program
             $"--output \"{releaseDir}\""));
     }
 
-    /// <summary>Deletes and creates a directory.</summary>
-    /// <param name="dir">Directory to empty.</param>
+    /// <summary>Enforces that <paramref name="dir"/> exists and is empty.</summary>
+    /// <param name="dir">Directory to empty/create.</param>
+    /// <remarks>Any existing contents are deleted.</remarks>
     private static void EnsureEmpty(string dir)
     {
         if (Directory.Exists(dir))

@@ -32,7 +32,7 @@ public sealed class DataRandom
 
     /// <inheritdoc cref="DataRandom"/>
     /// <param name="gen"><inheritdoc cref="_gen" path="/summary"/></param>
-    internal DataRandom(IRandom gen)
+    public DataRandom(IRandom gen)
     {
         _gen = gen ?? throw new ArgumentNullException(nameof(gen));
         _person = new(() => new PersonContext(_gen));

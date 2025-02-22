@@ -1,19 +1,35 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CreateAndFake.MSTest;
 
-/// <summary>Populates method data with random values.</summary>
-/// <seealso cref="Toolbox.RandomizerTool.IRandomizer.CreateFor"/>
+/// <summary>Populates <seealso cref="TestMethodAttribute"/> methods with random values for testing.</summary>
+/// <remarks>
+///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
+///     Use with Parameter attributes to control randomization behavior:
+///     <list type="bullet"><item>
+///         <seealso cref="SizeAttribute"/>,
+///         <seealso cref="FakeAttribute"/> &amp;
+///         <seealso cref="StubAttribute"/>
+///     </item></list>
+///     <example>
+///         Example test:<code>
+///         [TestMethod, RandomData]
+///         public void Test([Size(2)] string data)
+///         {
+///             data.Length.Assert().Is(2);
+///         }</code>
+///     </example>
+/// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class RandomDataAttribute : Attribute, ITestDataSource
 {
-    /// <summary>Number of times to test the method.</summary>
+    /// <summary>Number of times to test the associated method.</summary>
+    /// <remarks>Default:<c>1</c></remarks>
     public int Trials { get; set; } = 1;
 
-    /// <summary>Generates data for a test.</summary>
-    /// <param name="methodInfo">Method details <c>this</c> is attached to.</param>
-    /// <returns>The generated data to run the test with.</returns>
+    /// <inheritdoc/>
     public IEnumerable<object?[]> GetData(MethodInfo methodInfo)
     {
         return Enumerable
@@ -24,6 +40,8 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
     /// <inheritdoc/>
     public string? GetDisplayName(MethodInfo methodInfo, object?[]? data)
     {
-        return methodInfo?.Name;
+        ArgumentGuard.ThrowIfNull(methodInfo, nameof(methodInfo));
+
+        return $"{methodInfo.Name}({string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType))})";
     }
 }

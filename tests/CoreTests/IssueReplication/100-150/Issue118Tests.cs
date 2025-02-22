@@ -16,7 +16,7 @@ public static class Issue118Tests
         type.Assert().IsNot(null);
     }
 
-#if !LEGACY // Xunit needs Type parameters to inherit IReflectableType, which cannot be faked in legacy .NET.
+#if !LEGACY // xUnit needs Type parameters to inherit IReflectableType, which cannot be faked in legacy .NET.
     [Theory, RandomData]
     internal static void Issue118_FixesStubTypeRandomData([Stub] Type type)
     {

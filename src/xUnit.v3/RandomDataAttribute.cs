@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Fluent;
+using CreateAndFake.Toolbox.FakerTool;
 using CreateAndFake.Toolbox.FakerTool.Proxy;
 using Xunit;
 using Xunit.Sdk;
@@ -7,12 +8,29 @@ using Xunit.v3;
 
 namespace CreateAndFake.xUnit.v3;
 
-/// <summary>Populates <see cref="TheoryAttribute"/> data with random values.</summary>
-/// <seealso cref="Toolbox.RandomizerTool.IRandomizer.CreateFor"/>
+/// <summary>Populates <seealso cref="TheoryAttribute"/> methods with random values for testing.</summary>
+/// <remarks>
+///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
+///     Use with Parameter attributes to control randomization behavior:
+///     <list type="bullet"><item>
+///         <seealso cref="SizeAttribute"/>,
+///         <seealso cref="FakeAttribute"/> &amp;
+///         <seealso cref="StubAttribute"/>
+///     </item></list>
+///     <example>
+///         Example test:<code>
+///         [Theory, RandomData]
+///         internal static void Test([Size(2)] string data)
+///         {
+///             data.Length.Assert().Is(2);
+///         }</code>
+///     </example>
+/// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class RandomDataAttribute : DataAttribute
 {
-    /// <summary>Number of times to test the method.</summary>
+    /// <summary>Number of times to test the associated method.</summary>
+    /// <remarks>Default:<c>1</c></remarks>
     public int Trials { get; set; } = 1;
 
     /// <inheritdoc/>
@@ -42,9 +60,10 @@ public sealed class RandomDataAttribute : DataAttribute
         return false;
     }
 
-    /// <summary>Fixes <paramref name="arg"/> to be suitable for Xunit.</summary>
-    /// <param name="arg">Instance to fix.</param>
-    /// <returns><paramref name="arg"/> modified (if necessary) for Xunit.</returns>
+    /// <summary>Fixes <paramref name="arg"/> to be compatible with xUnit.</summary>
+    /// <param name="arg">Generated Parameter argument to fix.</param>
+    /// <returns><paramref name="arg"/>, modified if necessary.</returns>
+    /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
     private object? FixArg(object? arg)
     {
         if (arg is IFaked and Type type)

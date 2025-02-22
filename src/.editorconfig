@@ -8,16 +8,12 @@ dotnet_analyzer_diagnostic.severity = warning
 dotnet_diagnostic.CA1000.severity = none
 
 # CA1032: Implement standard exception constructors
-# Message based constructors unnecessary and hurts design.
+# Message based constructors are unnecessary and hurts design.
 dotnet_diagnostic.CA1032.severity = none
 
 # CA1805: Do not initialize unnecessarily
 # Important for clarity and understanding intention.
 dotnet_diagnostic.CA1805.severity = none
-
-# CA1812:AvoidUninstantiatedInternalClasses
-# For testing, called via Activator/library dynamically.
-dotnet_diagnostic.CA1812.severity = none
 
 # IDE0045: 'if' statement can be simplified
 # IDE0046: Convert to conditional expression

@@ -6,10 +6,10 @@ using NUnit.Framework.Internal;
 namespace CreateAndFake.NUnitTests;
 
 [TestFixture]
-public class RandomDataAttributeTests
+public static class RandomDataAttributeTests
 {
     [RandomData]
-    public void RandomDataAttribute_GuardsNulls([Stub] Test testStub)
+    public static void RandomDataAttribute_GuardsNulls([Stub] Test testStub)
     {
         Tools.Tester.PreventsNullRefException(new RandomDataAttribute() { Trials = 3 }, opt => opt with
         {
@@ -18,7 +18,8 @@ public class RandomDataAttributeTests
     }
 
     [RandomData]
-    public void RandomDataAttribute_NoParameterMutation([Stub] Test testStub, [Stub] CopyHint<MethodWrapper> copyStub)
+    public static void RandomDataAttribute_NoParameterMutation(
+        [Stub] Test testStub, [Stub] CopyHint<MethodWrapper> copyStub)
     {
         copyStub.ToFake().Setup("Copy",
             [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
@@ -33,7 +34,7 @@ public class RandomDataAttributeTests
     }
 
     [RandomData]
-    public void GetData_UsesTrials([Stub] Test testStub)
+    public static void GetData_UsesTrials([Stub] Test testStub)
     {
         MethodInfo method = GetGeneratableMethod();
         MethodWrapper wrapper = new(method.ReflectedType, method);
