@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
@@ -46,6 +47,9 @@ public record RandomizerOptions : IToolOptions
 
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;
+
+    /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
+    public bool InheritIReflectableTypeOnFakedType { get; init; } = false;
 
     /// <summary>Options to use when randomizing child values.</summary>
     public RandomizerOptions? NestedOptions { get; init; } = null;

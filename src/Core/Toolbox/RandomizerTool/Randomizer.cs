@@ -153,7 +153,16 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values)
     {
+        return CreateFor(method, opt => opt, values);
+    }
+
+    /// <inheritdoc/>
+    public MethodCallWrapper CreateFor(MethodBase method,
+        RandomizerMod optionConfiguration, params IEnumerable<object?>? values)
+    {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
+
+        RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         List<Tuple<Type, object>> data = [.. (values ?? [])
             .Where(v => v != null)
@@ -165,7 +174,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 
         foreach (ParameterInfo param in method.GetParameters())
         {
-            args.Add(param.Name ?? $"{args.Count}", ExtractArg(param, data, args));
+            args.Add(param.Name ?? $"{args.Count}", ExtractArg(param, data, args, localOptions));
         }
 
         return new MethodCallWrapper(method, args);
@@ -175,8 +184,10 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <param name="param">Parameter to fill.</param>
     /// <param name="data">Canned data to prefer.</param>
     /// <param name="args">Already created parameter data.</param>
+    /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <returns>The created arg to fill the parameter with.</returns>
-    private object? ExtractArg(ParameterInfo param, List<Tuple<Type, object>> data, OrderedDictionary args)
+    private object? ExtractArg(ParameterInfo param,
+        List<Tuple<Type, object>> data, OrderedDictionary args, RandomizerOptions localOptions)
     {
         Tuple<Type, object> match = data.FirstOrDefault(t => t.Item1.Inherits(param.ParameterType))!;
         if (param.IsOut)
@@ -189,12 +200,19 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         }
         else if (param.GetCustomAttributes<StubAttribute>().Any())
         {
-            return Options.Faker.Stub(param.ParameterType).Dummy;
+            if (localOptions.InheritIReflectableTypeOnFakedType && param.ParameterType.Inherits<Type>())
+            {
+                return localOptions.Faker.Stub(param.ParameterType, typeof(IReflectableType)).Dummy;
+            }
+            else
+            {
+                return localOptions.Faker.Stub(param.ParameterType).Dummy;
+            }
         }
         else if (param.GetCustomAttributes<SizeAttribute>().Any())
         {
             int size = param.GetCustomAttribute<SizeAttribute>()!.Count;
-            return Create(param.ParameterType, opt => opt with
+            return Create(param.ParameterType, opt => localOptions with
             {
                 CollectionMinSize = size,
                 CollectionMaxSize = size,

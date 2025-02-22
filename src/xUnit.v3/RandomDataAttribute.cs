@@ -39,7 +39,10 @@ public sealed class RandomDataAttribute : DataAttribute
     {
         IReadOnlyCollection<ITheoryDataRow> data = [.. Enumerable
             .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Randomizer.CreateFor(testMethod).Args.Select(FixArg).ToArray())
+            .Select(_ => Tools.Randomizer.CreateFor(testMethod, opt => opt with
+            {
+                InheritIReflectableTypeOnFakedType = true
+            }).Args.Select(FixArg).ToArray())
             .Select(data => new TheoryDataRow(data))];
 
         foreach (IDisposable disposable in data.SelectMany(row => row.GetData()).OfType<IDisposable>())
@@ -66,11 +69,15 @@ public sealed class RandomDataAttribute : DataAttribute
     /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
     private object? FixArg(object? arg)
     {
-        if (arg is IFaked and Type type)
+        /*if (arg is IFaked and Type type)
         {
             type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType);
             type.FullName.SetupReturn(typeof(Type).FullName);
             type.IsArray.SetupReturn(typeof(Type).IsArray);
+        }*/
+        if (arg is IFaked and IReflectableType reflectable)
+        {
+            reflectable.GetTypeInfo().SetupReturn(typeof(Type));
         }
         return arg;
     }

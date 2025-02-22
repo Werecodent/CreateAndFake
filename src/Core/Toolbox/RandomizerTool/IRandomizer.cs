@@ -37,6 +37,18 @@ public interface IRandomizer
     MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values);
 
     /// <summary>
+    ///     Constructs the parameters for <paramref name="method"/>.
+    ///     Randomizes types by default.
+    ///     Earlier types will be used to construct later types if possible.
+    /// </summary>
+    /// <param name="method">Method to create parameters for.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="values">Starting values to inject into instances.</param>
+    /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
+    MethodCallWrapper CreateFor(MethodBase method,
+        RandomizerMod optionConfiguration, params IEnumerable<object?>? values);
+
+    /// <summary>
     ///     Creates a <typeparamref name="T"/> instance using <paramref name="values"/> or random data as needed.
     /// </summary>
     /// <typeparam name="T">Type to create.</typeparam>
