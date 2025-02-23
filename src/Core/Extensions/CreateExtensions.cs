@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Toolbox.DuplicatorTool;
-using CreateAndFake.Toolbox.MutatorTool;
-using CreateAndFake.Toolbox.RandomizerTool;
+using CreateAndFake.DuplicatorTool;
+using CreateAndFake.MutatorTool;
+using CreateAndFake.RandomizerTool;
 
 namespace CreateAndFake.Fluent;
 

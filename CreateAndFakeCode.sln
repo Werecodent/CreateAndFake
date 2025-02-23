@@ -9,27 +9,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v2", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2C249A9C-59D8-4469-BEA5-8FFE4EC7D682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFakeTests", "tests\CoreTests\CreateAndFakeTests.csproj", "{D1B935DB-DB2F-4DD7-9A01-E5DCDBD790A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.Tests", "tests\Core.Tests\CreateAndFake.Tests.csproj", "{D1B935DB-DB2F-4DD7-9A01-E5DCDBD790A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake", "src\Core\CreateAndFake.csproj", "{C64D1DBA-4539-41AC-ADC6-5A602D15D2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v2Tests", "tests\xUnit.v2Tests\CreateAndFake.xUnit.v2Tests.csproj", "{240A3A37-FAAF-4AFD-9157-713543FE0F4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v2.Tests", "tests\xUnit.v2.Tests\CreateAndFake.xUnit.v2.Tests.csproj", "{240A3A37-FAAF-4AFD-9157-713543FE0F4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v3", "src\xUnit.v3\CreateAndFake.xUnit.v3.csproj", "{AC44434A-30B5-4F5B-A8EF-D14544DA01FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v3Tests", "tests\xUnit.v3Tests\CreateAndFake.xUnit.v3Tests.csproj", "{A1E5804E-6D42-4547-8336-38736345F565}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.xUnit.v3.Tests", "tests\xUnit.v3.Tests\CreateAndFake.xUnit.v3.Tests.csproj", "{A1E5804E-6D42-4547-8336-38736345F565}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.MSTest", "src\MSTest\CreateAndFake.MSTest.csproj", "{00125200-BC27-4C46-937F-F5A4066246B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.MSTestTests", "tests\MSTestTests\CreateAndFake.MSTestTests.csproj", "{BE3B9E4A-719D-4AB6-82CC-9B692A59A069}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.MSTest.Tests", "tests\MSTest.Tests\CreateAndFake.MSTest.Tests.csproj", "{BE3B9E4A-719D-4AB6-82CC-9B692A59A069}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.NUnit", "src\NUnit\CreateAndFake.NUnit.csproj", "{607732CA-AC60-430D-9BB9-269F5F1E6303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.NUnitTests", "tests\NUnitTests\CreateAndFake.NUnitTests.csproj", "{7D95EE16-95A3-4048-AA22-797ADA93762A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.NUnit.Tests", "tests\NUnit.Tests\CreateAndFake.NUnit.Tests.csproj", "{7D95EE16-95A3-4048-AA22-797ADA93762A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.Design", "src\Design\CreateAndFake.Design.csproj", "{E02453E4-9D50-46D6-A802-253EE6095AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.DesignTests", "tests\DesignTests\CreateAndFake.DesignTests.csproj", "{570CA8DC-A26A-499F-AAB5-D0EA765C5C0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateAndFake.Design.Tests", "tests\Design.Tests\CreateAndFake.Design.Tests.csproj", "{570CA8DC-A26A-499F-AAB5-D0EA765C5C0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

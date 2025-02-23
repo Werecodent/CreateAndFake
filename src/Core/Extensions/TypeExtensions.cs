@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 
-namespace CreateAndFake.Toolbox;
+namespace CreateAndFake;
 
 /// <summary>Extensions for types.</summary>
 public static class TypeExtensions

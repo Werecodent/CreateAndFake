@@ -1,0 +1,38 @@
+﻿using System.Reflection;
+using CreateAndFake.Design;
+
+#pragma warning disable SYSLIB0050 // 'Type.IsSerializable' is obsolete: Needed for backwards compatibility.
+
+namespace CreateAndFake.RandomizerTool.CreateHints;
+
+/// <summary>Handles randomizing <see cref="Exception"/> instances for <see cref="IRandomizer"/>.</summary>
+public sealed class ExceptionCreateHint : CreateHint
+{
+    /// <inheritdoc/>
+    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    {
+        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+
+        if (!type.Inherits<Exception>())
+        {
+            return CreateHintResult.None;
+        }
+
+        ConstructorInfo[] options = [.. type
+            .FindLocalSubclasses()
+            .Where(t => t.IsVisible)
+            .Where(t => t.IsSerializable)
+#if LEGACY // Security exceptions don't work with default serialization in .NET full.
+            .Where(t => !t.Namespace.StartsWith("System.Security", StringComparison.Ordinal))
+#endif
+            .Select(t => t.GetConstructor([typeof(string)]))
+            .Where(c => c != null)
+            .Select(c => c!)];
+
+        return (options.Length != 0)
+            ? new(randomizer.Options.Gen.NextItem(options).Invoke([randomizer.Create<string>()]))
+            : CreateHintResult.None;
+    }
+}
+
+#pragma warning restore SYSLIB0050 // 'Type.IsSerializable' is obsolete

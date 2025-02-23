@@ -1,0 +1,4 @@
+namespace CreateAndFake.xUnit.v3;
+
+/// <inheritdoc/>
+public sealed class StubAttribute : BaseStubAttribute { }

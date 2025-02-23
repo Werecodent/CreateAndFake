@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CreateAndFake.Toolbox.AsserterTool.Fluent;
+using CreateAndFake.AsserterTool.Fluent;
 
 namespace CreateAndFake.Fluent;
 

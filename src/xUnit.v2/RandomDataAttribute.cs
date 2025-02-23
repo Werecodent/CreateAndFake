@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
-using CreateAndFake.Toolbox.FakerTool.Proxy;
 using Xunit.Sdk;
 
 namespace CreateAndFake.xUnit.v2;

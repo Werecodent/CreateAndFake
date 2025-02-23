@@ -1,5 +1,5 @@
-using CreateAndFake.Toolbox.FakerTool;
-using CreateAndFake.Toolbox.FakerTool.Proxy;
+using CreateAndFake.FakerTool;
+using CreateAndFake.FakerTool.Proxy;
 
 #pragma warning disable IDE0060 // Remove unused parameter: Provides fluent attachment.
 

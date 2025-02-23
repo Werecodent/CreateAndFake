@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
-[assembly: InternalsVisibleTo("FakerTypes")]
-[assembly: InternalsVisibleTo("CreateAndFakeTests")]
+[assembly: InternalsVisibleTo("CreateAndFake.FakerTypes")]
+[assembly: InternalsVisibleTo("CreateAndFake.Tests")]

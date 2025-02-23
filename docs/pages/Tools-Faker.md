@@ -67,7 +67,7 @@ There are two special useful types provided:
 The assembly containing the internals to fake needs to grant visibility to the dynamic assembly by adding somewhere (typically AssemblyInfo.cs):
 
 ```c#
-[assembly: InternalsVisibleTo("FakerTypes")]
+[assembly: InternalsVisibleTo("CreateAndFake.FakerTypes")]
 ```
 
 ## Faking Protected
