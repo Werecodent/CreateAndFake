@@ -38,7 +38,7 @@ public sealed class RandomDataAttribute : DataAttribute
     {
         IReadOnlyCollection<ITheoryDataRow> data = [.. Enumerable
             .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Randomizer.CreateFor(testMethod, opt => opt with
+            .Select(_ => Tools.Runner.CreateFor(testMethod, opt => opt with
             {
                 InheritIReflectableTypeOnFakedType = true
             }).Args.Select(FixArg).ToArray())

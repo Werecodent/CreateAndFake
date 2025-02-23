@@ -66,7 +66,7 @@ internal abstract class BaseGuarder(TesterOptions options)
                 .Where(m => !m.IsFamily)
                 .Select(m => GenericFixer.FixMethod(m, options)))
         {
-            object?[] data = [.. options.Randomizer.CreateFor(method, Options.InjectionValues).Args];
+            object?[] data = [.. options.Runner.CreateFor(method, Options.InjectionValues).Args];
             try
             {
                 Disposer.Cleanup(RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!));

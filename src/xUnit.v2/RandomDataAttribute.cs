@@ -35,7 +35,7 @@ public sealed class RandomDataAttribute : DataAttribute
     {
         return Enumerable
             .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Randomizer.CreateFor(testMethod).Args.Select(FixArg).ToArray());
+            .Select(_ => Tools.Runner.CreateFor(testMethod).Args.Select(FixArg).ToArray());
     }
 
     /// <summary>Fixes <paramref name="arg"/> to be compatible with xUnit.</summary>

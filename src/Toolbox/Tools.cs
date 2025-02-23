@@ -5,6 +5,7 @@ using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 
@@ -40,6 +41,9 @@ public static class Tools
 
     /// <inheritdoc cref="ToolSet.Duplicator"/>
     public static IDuplicator Duplicator => Source.Duplicator;
+
+    /// <inheritdoc cref="ToolSet.Runner"/>
+    public static IRunner Runner => Source.Runner;
 
     /// <inheritdoc cref="ToolSet.Tester"/>
     public static ITester Tester => Source.Tester;

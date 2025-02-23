@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.Tests.TestSamples;
 
-namespace CreateAndFake.Tests.RandomizerTool;
+namespace CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {
@@ -27,10 +27,10 @@ public static class MethodCallWrapperTests
 
     [Theory, RandomData]
     internal static void MethodCallWrapper_WorksInFake(
-        [Stub] IRandomizer rand, MethodCallWrapper wrapper, MethodBase method)
+        [Stub] IRunner runner, MethodCallWrapper wrapper, MethodBase method)
     {
-        rand.CreateFor(Arg.Any<MethodBase>(), Arg.Any<object[]>()).SetupReturn(wrapper);
-        rand.CreateFor(method).Assert().Is(wrapper);
+        runner.CreateFor(Arg.Any<MethodBase>(), Arg.Any<object[]>()).SetupReturn(wrapper);
+        runner.CreateFor(method).Assert().Is(wrapper);
     }
 
     [Theory, RandomData]
@@ -42,7 +42,7 @@ public static class MethodCallWrapperTests
     [Theory, RandomData]
     internal static void ModifyArg_CanMutate(DataSample sample)
     {
-        MethodCallWrapper wrapper = Tools.Randomizer.CreateFor(
+        MethodCallWrapper wrapper = Tools.Runner.CreateFor(
             typeof(DataHolderSample).GetMethod(nameof(DataHolderSample.HasNested)));
 
         wrapper.ModifyArg("value", sample);
@@ -52,7 +52,7 @@ public static class MethodCallWrapperTests
     [Theory, RandomData]
     internal static void InvokeOn_UsesArgs(DataSample sample)
     {
-        MethodCallWrapper wrapper = Tools.Randomizer.CreateFor(
+        MethodCallWrapper wrapper = Tools.Runner.CreateFor(
             typeof(DataSample).GetMethod(nameof(Equals)));
 
         wrapper.InvokeOn(sample).Assert().Is(false);

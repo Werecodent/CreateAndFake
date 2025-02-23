@@ -2,7 +2,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
 
-namespace CreateAndFake.RandomizerTool;
+namespace CreateAndFake.RunnerTool;
 
 /// <summary>Holds parameter data for a method.</summary>
 public sealed class MethodCallWrapper

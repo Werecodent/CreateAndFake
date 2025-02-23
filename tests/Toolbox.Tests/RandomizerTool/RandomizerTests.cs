@@ -7,12 +7,6 @@ namespace CreateAndFake.Tests.RandomizerTool;
 
 public static class RandomizerTests
 {
-    private static readonly RandomizerOptions _ToolOptions = new()
-    {
-        Gen = Tools.Gen,
-        Faker = Tools.Faker
-    };
-
     [Fact]
     internal static void Randomizer_GuardsNulls()
     {
@@ -43,7 +37,7 @@ public static class RandomizerTests
     [Fact]
     internal static void Create_NoRulesThrows()
     {
-        new Randomizer(_ToolOptions with { IncludeDefaultHints = false })
+        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false })
             .Assert(r => r.Create<object>())
             .Throws<NotSupportedException>();
     }
@@ -56,7 +50,7 @@ public static class RandomizerTests
             m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
             Behavior.Returns(CreateHintResult.None, Times.Once));
 
-        new Randomizer(_ToolOptions with { IncludeDefaultHints = false, Hints = [hint] })
+        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false, Hints = [hint] })
             .Assert(r => r.Create<string>())
             .Throws<NotSupportedException>();
 
@@ -71,7 +65,7 @@ public static class RandomizerTests
             m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
             Behavior.Returns(new CreateHintResult(data), Times.Once));
 
-        new Randomizer(_ToolOptions with { IncludeDefaultHints = false, Hints = [hint] })
+        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false, Hints = [hint] })
             .Create<string>()
             .Assert()
             .Is(data);
@@ -141,31 +135,5 @@ public static class RandomizerTests
         holder.TestIfMockedSeparately();
         fake.Verify(Times.Once, f => f.FailIfNotMocked());
         fake2.Verify(Times.Once, f => f.FailIfNotMocked());
-    }
-
-    [Theory, RandomData]
-    internal static void CreateFor_InterfaceFakesInjected(Fake<IOnlyMockSample> fake, Fake<IOnlyMockSample> fake2)
-    {
-        Tools.Randomizer
-            .CreateFor(typeof(InjectMockSample).GetConstructors().Single(), fake, fake2).Args.ToArray()
-            .Assert()
-            .Is(new object[] { fake.Dummy, fake2.Dummy });
-    }
-
-    [Theory, RandomData]
-    internal static void CreateFor_InjectedWorks(Injected<InjectMockSample> injected)
-    {
-        injected.Dummy.TestIfMockedSeparately();
-    }
-
-    [Theory, RandomData]
-    internal static void CreateFor_InjectedNotManuallyInjected(Fake<IOnlyMockSample> inner1,
-        Fake<IOnlyMockSample> inner2, InjectMockSample sample, Injected<InjectMockSample> injected)
-    {
-        injected.Dummy.Assert().IsNot(sample);
-        injected.Fakes.Contains(inner1).Assert().Is(false);
-        injected.Fakes.Contains(inner2).Assert().Is(false);
-
-        injected.Dummy.TestIfMockedSeparately();
     }
 }

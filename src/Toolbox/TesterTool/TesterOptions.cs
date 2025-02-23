@@ -8,6 +8,7 @@ using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool;
+using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool;
 
@@ -25,6 +26,9 @@ public record TesterOptions : IToolOptions
 
     /// <summary>Handles common test scenarios.</summary>
     public required IAsserter Asserter { get; init; }
+
+    /// <summary>Handles method generation.</summary>
+    public required IRunner Runner { get; init; }
 
     /// <summary>Retries tests if timeout is reached.</summary>
     public Limiter Limiter { get; init; } = Limiter.Few;

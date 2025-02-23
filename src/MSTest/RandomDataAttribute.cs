@@ -34,7 +34,7 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
     {
         return Enumerable
             .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Randomizer.CreateFor(methodInfo).Args.ToArray());
+            .Select(_ => Tools.Runner.CreateFor(methodInfo).Args.ToArray());
     }
 
     /// <inheritdoc/>

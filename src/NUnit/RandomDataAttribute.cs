@@ -40,7 +40,7 @@ public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder
         for (int i = 0; i < Trials; i++)
         {
             yield return new NUnitTestCaseBuilder().BuildTestMethod(method, suite, new TestCaseParameters(
-                new TestCaseAttribute([.. Tools.Randomizer.CreateFor(method.MethodInfo).Args])
+                new TestCaseAttribute([.. Tools.Runner.CreateFor(method.MethodInfo).Args])
                 {
                     TestName = $"{method.Name}({string.Join(",", method.GetParameters().Select(p => p.ParameterType))})"
                 }));

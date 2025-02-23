@@ -1,7 +1,7 @@
-// Extension: EditorConfig for VS Code
 {
     "omnisharp.enableEditorConfigSupport": true,
     "dotnet.formatting.organizeImportsOnFormat": true,
+    "dotnet.testWindow.enableTestExplorerDiff": false,
     "git.enableSmartCommit": true,
     "git.enableCommitSigning": true,
     "editor.formatOnSave": true,
@@ -15,7 +15,6 @@
     "[csharp]": {
         "editor.defaultFormatter": "ms-dotnettools.csharp"
     },
-    // Extension: Code Spell Checker
     "cSpell.words": [
         "accessibilities",
         "Assem",
