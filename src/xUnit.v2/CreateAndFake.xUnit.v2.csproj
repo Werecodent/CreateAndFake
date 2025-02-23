@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Core/CreateAndFake.csproj" />
+    <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
     <PackageReference Include="xunit.core" Version="[2.2.0,)" />
   </ItemGroup>
 

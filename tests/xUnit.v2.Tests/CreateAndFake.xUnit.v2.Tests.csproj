@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core\CreateAndFake.csproj" />
+    <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
     <ProjectReference Include="..\..\src\xUnit.v2\CreateAndFake.xUnit.v2.csproj" />
     <Using Include="CreateAndFake" />
     <Using Include="CreateAndFake.Fluent" />
