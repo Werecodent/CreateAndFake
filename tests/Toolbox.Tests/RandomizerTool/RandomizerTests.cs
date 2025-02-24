@@ -21,8 +21,7 @@ public static class RandomizerTests
     {
         Tools.Tester.PreventsParameterMutation<Randomizer>(opt => opt with
         {
-            InjectionValues = [GetGeneratableMethod()],
-            IncludeConstructors = false
+            InjectionValues = [GetGeneratableMethod()]
         });
     }
 

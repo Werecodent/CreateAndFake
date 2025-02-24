@@ -9,6 +9,7 @@ on:
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
+    environment: staging
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
@@ -23,6 +24,7 @@ jobs:
 
   mac:
     runs-on: macOS-latest
+    environment: staging
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
@@ -37,6 +39,7 @@ jobs:
 
   windows:
     runs-on: windows-2022
+    environment: staging
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4

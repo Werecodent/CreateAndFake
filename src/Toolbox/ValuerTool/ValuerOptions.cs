@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.ValuerTool;
 
@@ -19,6 +20,9 @@ public record ValuerOptions : IToolOptions
     /// <summary>Triggers type checking for collections.</summary>
     /// <remarks>By default, collections are compared by contents and not the container type.</remarks>
     public bool CheckCollectionType { get; init; } = false;
+
+    /// <summary>Excludes <see cref="SeededRandom.Seed"/> from comparison checks.</summary>
+    public bool IgnoreCurrentRandomSeed { get; init; } = true;
 
     /// <summary>Types to use default equality/hashing.</summary>
     public FrozenSet<Type> FallbackTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);

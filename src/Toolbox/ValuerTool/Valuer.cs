@@ -23,6 +23,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new StringDictionaryCompareHint(),
         new DictionaryCompareHint(),
         new EnumerableCompareHint(),
+        new SeededRandomCompareHint(),
         new ObjectCompareHint(BindingFlags.Public | BindingFlags.Instance),
         new ObjectCompareHint(BindingFlags.NonPublic | BindingFlags.Instance),
         new StatelessCompareHint()
