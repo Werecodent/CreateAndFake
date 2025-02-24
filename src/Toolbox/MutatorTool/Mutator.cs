@@ -40,7 +40,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                     }
                 }).Last();
         }
-        catch (AggregateException e)
+        catch (TimeoutException e)
         {
             throw new TimeoutException($"Could not create different instance of type '{type}'.", e);
         }
@@ -78,7 +78,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                     }
                 }).Last();
         }
-        catch (AggregateException e)
+        catch (TimeoutException e)
         {
             throw new TimeoutException($"Could not create unique instance of type '{type}'.", e);
         }

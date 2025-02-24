@@ -1,7 +1,21 @@
+using CreateAndFake.AsserterTool.Fluent;
+
 namespace CreateAndFake.Tests.AsserterTool.Fluent;
 
 public sealed class AssertAsyncTests
 {
+    [Fact]
+    internal static void AssertAsync_GuardsNulls()
+    {
+        Tools.Tester.PreventsNullRefException<AssertAsync>();
+    }
+
+    [Fact]
+    internal static void AssertAsync_NoParameterMutation()
+    {
+        Tools.Tester.PreventsParameterMutation<AssertAsync>();
+    }
+
     [Theory, RandomData]
     internal async Task Throws_HandlesAsyncNoError(InvalidDataException error)
     {

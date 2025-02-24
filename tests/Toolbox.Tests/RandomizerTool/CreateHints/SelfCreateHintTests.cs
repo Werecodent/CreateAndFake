@@ -8,7 +8,13 @@ public sealed class SelfCreateHintTests : CreateHintTestBase<SelfCreateHint>
 {
     private static readonly SelfCreateHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(IRandom), typeof(Limiter), typeof(ToolSet)];
+    private static readonly Type[] _ValidTypes =
+    [
+        typeof(IRandom),
+        typeof(ValueRandom),
+        typeof(Limiter),
+        typeof(ToolSet)
+    ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 

@@ -1,31 +1,21 @@
 ﻿using System.Collections.Specialized;
 using System.Reflection;
-using CreateAndFake.Design;
 
 namespace CreateAndFake.RunnerTool;
 
 /// <summary>Holds parameter data for a method.</summary>
-public sealed class MethodCallWrapper
+/// <param name="method"><inheritdoc cref="_method" path="/summary"/></param>
+/// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
+public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
 {
     /// <summary>Associated method.</summary>
-    private readonly MethodBase _method;
+    private readonly MethodBase _method = method ?? throw new ArgumentNullException(nameof(method));
 
     /// <summary>Parameter names with associated data to pass.</summary>
-    private readonly OrderedDictionary _args;
+    private readonly OrderedDictionary _args = args ?? throw new ArgumentNullException(nameof(args));
 
     /// <summary>Parameter data for the method.</summary>
     public IEnumerable<object?> Args => _args.Values.Cast<object>();
-
-    /// <inheritdoc cref="MethodCallWrapper"/>
-    /// <param name="method"><inheritdoc cref="_method" path="/summary"/></param>
-    /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
-    public MethodCallWrapper(MethodBase method, OrderedDictionary args)
-    {
-        ArgumentGuard.ThrowIfNull(args, nameof(args));
-
-        _method = method ?? throw new ArgumentNullException(nameof(method));
-        _args = args ?? throw new ArgumentNullException(nameof(method));
-    }
 
     /// <summary>Sets parameter named <paramref name="name"/> to <paramref name="value"/>.</summary>
     /// <param name="name">Name for the parameter to modify.</param>

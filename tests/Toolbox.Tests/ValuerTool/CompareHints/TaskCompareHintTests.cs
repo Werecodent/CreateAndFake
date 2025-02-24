@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.CompareHints;
 
 #pragma warning disable CA1849 // Task await synchronously blocks: For testing.
@@ -32,11 +33,23 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
     [Theory, RandomData]
     internal void Compare_NonGenericTasksCompareByException(Exception ex)
     {
-        BuildTask(ex)
-            .Assert()
-            .IsNot(BuildTask(Tools.Mutator.Variant(ex)))
-            .And
-            .IsNot(BuildTask(null));
+        Task taskA = BuildTask(ex);
+        Task taskB = BuildTask(ex);
+        Task taskC = BuildTask(Tools.Mutator.Variant(ex));
+        Task taskD = BuildTask(null);
+        ValuerChainer chainer = CreateChainer();
+        TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
+        TestInstance.TryCompare(taskA, taskC, chainer).Assert().IsNot(new DifferenceHintResult([]));
+        TestInstance.TryCompare(taskA, taskD, chainer).Assert().IsNot(new DifferenceHintResult([]));
+    }
+
+    [Fact]
+    internal void Compare_NonGenericTasksCompareByStatus()
+    {
+        Task taskA = BuildTask(null);
+        Task taskB = BuildTask(null);
+        ValuerChainer chainer = CreateChainer();
+        TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
     }
 
     private static Task BuildTask(Exception ex)

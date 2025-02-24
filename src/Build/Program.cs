@@ -15,7 +15,7 @@ internal static class Program
     public static Task Main(string[] args)
     {
         string[] configurations = ["Debug", "Release"];
-        Target("default", DependsOn("coverage"));
+        Target("default", DependsOn("test"));
         Target("restore", Restore);
         Target("compile", DependsOn("restore"), ForEach(configurations), Compile);
         Target("test", DependsOn("compile"), ForEach(configurations), Test);

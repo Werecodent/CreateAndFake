@@ -15,7 +15,8 @@ public class FrozenCollectionCopyHint : CopyHint
     /// <summary>Constructs frozen dictionaries.</summary>
     private static readonly MethodInfo _DictionaryMaker = typeof(FrozenDictionary)
         .GetMethods(BindingFlags.Public | BindingFlags.Static)
-        .Single(m => m.Name == nameof(FrozenDictionary.ToFrozenDictionary) && m.GetParameters().Length == 2);
+        .Where(m => m.Name == nameof(FrozenDictionary.ToFrozenDictionary))
+        .Single(m => m.GetParameters().Length == 2);
 
     /// <summary>Copies generic item data.</summary>
     private static readonly MethodInfo _CopyContentsHelper = typeof(FrozenCollectionCopyHint)

@@ -25,4 +25,14 @@ public static class RandomizerOptionsTests
     {
         typeof(RandomizerMod).CreateRandomInstance().Assert().IsNot(null);
     }
+
+    [Fact]
+    internal static void NextStringSize_PreventsOverflow()
+    {
+        (Tools.Randomizer.Options with
+        {
+            StringMinSize = int.MaxValue,
+            StringMaxSize = int.MaxValue
+        }).NextStringSize().Assert().Is(int.MaxValue);
+    }
 }

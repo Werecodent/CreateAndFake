@@ -26,12 +26,7 @@ public sealed class SerializableCopyHint : CopyHint
                 _ = stream.Seek(0, SeekOrigin.Begin);
                 return new(serializer.ReadObject(stream));
             }
-            catch (InvalidDataContractException e)
-            {
-                throw new InvalidDataContractException(
-                    $"Ran into problem trying to serialize type '{source.GetType()}'.", e);
-            }
-            catch (SerializationException e)
+            catch (Exception e) when (e is SerializationException or InvalidDataContractException)
             {
                 throw new SerializationException(
                     $"Ran into problem trying to serialize type '{source.GetType()}'.", e);
