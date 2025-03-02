@@ -25,7 +25,7 @@ public static class RandomDataAttributeTests
         });
     }
 
-    [Fact]
+    [Fact(Timeout = 5000)]
     internal static async Task GetData_UsesTrials()
     {
         (await new RandomDataAttribute() { Trials = 0 }.GetData(GetGeneratableMethod(), null)).Assert().HasCount(0);

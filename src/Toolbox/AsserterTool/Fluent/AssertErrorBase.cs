@@ -17,4 +17,11 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
     {
         Asserter.Fail(Error, details);
     }
+
+    /// <inheritdoc/>
+    [DoesNotReturn, ExcludeFromCodeCoverage]
+    public override void Fail(AsserterMod? optionConfiguration, string? details = null)
+    {
+        Asserter.Fail(Error, optionConfiguration, details);
+    }
 }

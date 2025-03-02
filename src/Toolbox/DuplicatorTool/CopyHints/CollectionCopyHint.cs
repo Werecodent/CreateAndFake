@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.Design;
 
 namespace CreateAndFake.DuplicatorTool.CopyHints;
 
 /// <summary>Handles cloning collections for <see cref="IDuplicator"/> .</summary>
 
-public sealed class CollectionCopyHint : CopyHint<IEnumerable>
+public sealed class CollectionCopyHint : CopyHint
 {
     /// <summary>Special cases where the data needs to be reversed.</summary>
     private static readonly FrozenSet<Type> _ReverseCases
@@ -19,74 +20,98 @@ public sealed class CollectionCopyHint : CopyHint<IEnumerable>
         ]);
 
     /// <inheritdoc/>
-    protected override IEnumerable Copy(IEnumerable source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
-        if (source.GetType().IsArray)
+        if (source is IEnumerable collection)
         {
-            return CopyContents(source, duplicator);
+            IEnumerable? result = Copy(collection, duplicator);
+            if (result != null)
+            {
+                return new(result);
+            }
+            else
+            {
+                throw new NotSupportedException(
+                    $"Collection '{source.GetType().FullName}' not supported by the duplicator. " +
+                    "Create a hint to generate the type and pass it to the duplicator.");
+            }
         }
-#if LEGACY // Constructor missing in .NET full.
-        else if (source.GetType().AsGenericType() == typeof(Dictionary<,>))
+        return CopyHintResult.None;
+    }
+
+    /// <inheritdoc/>
+    private static IEnumerable? Copy(IEnumerable source, DuplicatorChainer duplicator)
+    {
+        Type type = source.GetType();
+        Type? itemType = FindItemType(type);
+        if (itemType == null)
         {
-            dynamic result = Activator.CreateInstance(source.GetType());
-            foreach (dynamic item in CopyContents(source, duplicator))
+            return null;
+        }
+
+        Array contents = CopyContents(source, itemType, duplicator,
+            _ReverseCases.Contains(type.AsGenericType() ?? type));
+
+        return MakeCollection(contents, type, itemType, duplicator);
+    }
+
+    private static IEnumerable? MakeCollection(Array contents,
+        Type collectionType, Type itemType, DuplicatorChainer duplicator)
+    {
+        if (collectionType.IsArray)
+        {
+            return contents;
+        }
+        else if (collectionType.AsGenericType() == typeof(Dictionary<,>))
+        {
+            dynamic result = Activator.CreateInstance(collectionType)!;
+            foreach (dynamic item in contents)
             {
                 result.Add(item.Key, item.Value);
             }
             return result;
         }
-#endif
-        else
+
+        ConstructorInfo? constructor = collectionType
+            .GetConstructors()
+            .Where(c => c.GetParameters().Length == 1)
+            .FirstOrDefault(c => c.GetParameters().First().ParameterType.Inherits<IEnumerable>());
+
+        if (constructor != null)
         {
-            return (IEnumerable)Activator.CreateInstance(source.GetType(), CopyContents(source, duplicator))!;
+            Type requiredArg = constructor.GetParameters().First().ParameterType;
+
+            object? wrapped = requiredArg.IsInheritedBy(contents.GetType())
+                ? contents
+                : MakeCollection(contents, requiredArg, itemType, duplicator);
+
+            if (wrapped != null)
+            {
+                return (IEnumerable)constructor.Invoke([wrapped]);
+            }
         }
+        return null;
     }
 
-    /// <summary>Copies the contents of <paramref name="source"/>.</summary>
-    /// <param name="source">Collection with contents to copy.</param>
-    /// <param name="duplicator">Handles callback behavior for child values.</param>
-    /// <returns>Clone of <paramref name="source"/>'s elements.</returns>
-    private static IEnumerable CopyContents(IEnumerable source, DuplicatorChainer duplicator)
+    private static Type? FindItemType(Type type)
     {
-        Type type = source.GetType();
-        Type? genericType = type.AsGenericType();
-
-        object?[] data = CopyContentsHelper(source, duplicator, _ReverseCases.Contains(genericType ?? type));
-
-        if (genericType != null)
+        Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
+        switch (args.Length)
         {
-            Type[] args = type.GetGenericArguments();
-            Type itemType = (args.Length != 1)
-                ? typeof(KeyValuePair<,>).MakeGenericType(args)
-                : args.Single();
-
-            return ArrayCast(itemType, data);
+            case 2:
+                Type pair = typeof(KeyValuePair<,>).MakeGenericType(args);
+                return type.Inherits(typeof(IEnumerable<>).MakeGenericType(pair))
+                    ? pair
+                    : null;
+            case 1:
+                return args.ElementAt(0);
+            case 0:
+                return type.GetElementType() ?? typeof(object);
+            default:
+                return null;
         }
-        else if (type.IsArray)
-        {
-            return ArrayCast(type.GetElementType()!, data);
-        }
-        else
-        {
-            return data;
-        }
-    }
-
-    /// <summary>Convert <paramref name="data"/> to <paramref name="elementType"/> array.</summary>
-    /// <param name="elementType">Array type to create.</param>
-    /// <param name="data">Array to convert.</param>
-    /// <returns>The converted array.</returns>
-    private static Array ArrayCast(Type elementType, object?[] data)
-    {
-        Array result = Array.CreateInstance(elementType, data.Length);
-        for (int i = 0; i < data.Length; i++)
-        {
-            result.SetValue(data[i], i);
-        }
-        return result;
     }
 
     /// <summary>Copies the contents of <paramref name="source"/>.</summary>
@@ -94,7 +119,7 @@ public sealed class CollectionCopyHint : CopyHint<IEnumerable>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>
     /// <returns>The duplicate object.</returns>
-    private static object?[] CopyContentsHelper(IEnumerable source, DuplicatorChainer duplicator, bool reverse)
+    private static Array CopyContents(IEnumerable source, Type itemType, DuplicatorChainer duplicator, bool reverse)
     {
         List<object?> copy = [];
 
@@ -109,6 +134,11 @@ public sealed class CollectionCopyHint : CopyHint<IEnumerable>
             copy.Reverse();
         }
 
-        return [.. copy];
+        Array result = Array.CreateInstance(itemType, copy.Count);
+        for (int i = 0; i < copy.Count; i++)
+        {
+            result.SetValue(copy[i], i);
+        }
+        return result;
     }
 }

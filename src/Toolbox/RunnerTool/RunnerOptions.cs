@@ -24,4 +24,16 @@ public record RunnerOptions : IToolOptions
 
     /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
     public bool InheritIReflectableTypeOnFakedType { get; init; } = false;
+
+    /// <summary>Option for which methods to include.</summary>
+    public bool IncludeFinalize { get; init; } = false;
+
+    /// <summary>Option for which methods to include.</summary>
+    public bool IncludeDispose { get; init; } = false;
+
+    /// <summary>Option for which methods to include.</summary>
+    public bool IncludeStaticMethods { get; init; } = true;
+
+    /// <summary>Option for which methods to include.</summary>
+    public bool IncludeInstanceMethods { get; init; } = true;
 }

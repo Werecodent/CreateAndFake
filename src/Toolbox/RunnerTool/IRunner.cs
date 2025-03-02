@@ -11,6 +11,12 @@ public interface IRunner
     /// <summary>Configured options for <c>this</c>.</summary>
     RunnerOptions Options { get; }
 
+    /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
+    /// <param name="instance">Instance whose methods to call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <returns>Results of the method calls.</returns>
+    RunResults CallMethodsOn(object instance, RunnerMod? optionConfiguration = null);
+
     /// <summary>
     ///     Constructs the parameters for <paramref name="method"/>.
     ///     Randomizes types by default.

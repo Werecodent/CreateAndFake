@@ -65,7 +65,6 @@ public static class ToolsTests
             typeof(AnyGeneric),
             typeof(Injected<>),
             typeof(Behavior<>),
-            typeof(HintResult<>),
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),
@@ -76,9 +75,7 @@ public static class ToolsTests
             .Where(t => !t.Inherits<Attribute>())
             .Where(t => !ignore.Contains(t))
             .Where(t => !t.IsNestedPrivate)
-            .Where(t => t.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
-            .Where(t => !t.FullName.Contains("<PrivateImplementationDetails>"))
-            .Where(t => !t.FullName.Contains("<>z__ReadOnly")))
+            .Where(t => t.GetCustomAttribute<CompilerGeneratedAttribute>() == null))
         {
             try
             {

@@ -25,7 +25,10 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     public virtual void Pass() { }
 
     /// <inheritdoc/>
-    public virtual void Pass(AsserterMod? optionConfiguration) { }
+    public virtual void Pass(AsserterMod? optionConfiguration)
+    {
+        _ = ApplyConfiguration(optionConfiguration);
+    }
 
     /// <inheritdoc/>
     [DoesNotReturn, ExcludeFromCodeCoverage]

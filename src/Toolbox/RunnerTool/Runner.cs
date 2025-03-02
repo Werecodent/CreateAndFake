@@ -14,6 +14,37 @@ public sealed class Runner(RunnerOptions options) : IRunner
     /// <inheritdoc/>
     public RunnerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
 
+#pragma warning disable CA1031 // Do not catch general exception types: Required for testing any exception.
+    /// <inheritdoc/>
+    public RunResults CallMethodsOn(object instance, RunnerMod? optionConfiguration = null)
+    {
+        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+
+        List<RunResult> results = [];
+        foreach (MethodInfo method in instance
+            .GetType()
+            .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+            .Where(m => m.DeclaringType != typeof(object)))
+        {
+            MethodCallWrapper data = optionConfiguration != null
+                ? CreateFor(method, optionConfiguration)
+                : CreateFor(method);
+
+            object? result;
+            try
+            {
+                result = data.InvokeOn(instance);
+            }
+            catch (Exception e)
+            {
+                result = e;
+            }
+            results.Add(new RunResult(method, data.Args, result));
+        }
+        return new(results);
+    }
+#pragma warning restore CA1031 // Do not catch general exception types
+
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values)
     {

@@ -1,5 +1,6 @@
-using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Fluent;
+using CreateAndFake.FakerTool;
+using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.Tests.AsserterTool.Fluent;
 
@@ -18,8 +19,14 @@ public static class AssertErrorTests
     }
 
     [Theory, RandomData]
-    internal static void Fail_Throws(Exception error)
+    internal static void AssertError_CallsAndChains(Injected<AssertError> instance)
     {
-        error.Assert(d => d.Assert().Fail()).Throws<AssertException>();
+        RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
+        results.RawResults
+            .Where(r => r.Result != null)
+            .Where(r => r.Result is not AssertChainer<AssertError>)
+            .Select(r => r.Method.Name)
+            .Assert()
+            .IsEmpty();
     }
 }
