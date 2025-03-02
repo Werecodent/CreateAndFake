@@ -69,6 +69,7 @@ public record TesterOptions : IToolOptions
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet([
         typeof(InsufficientExecutionStackException),
+        typeof(InvalidFilterCriteriaException),
         typeof(TargetParameterCountException),
         typeof(ArgumentOutOfRangeException),
         typeof(ArrayTypeMismatchException),

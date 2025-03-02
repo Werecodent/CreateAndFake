@@ -11,6 +11,11 @@ namespace CreateAndFake.Tests.IssueReplication;
 
 public static class Issue094Tests
 {
+    public sealed class Wrapped(IEnumerable<object> data)
+    {
+        public IEnumerable<object> Data { get; } = [.. data];
+    }
+
     [Theory, RandomData]
     internal static void Issue094_StringSizeModifiedBySizeAttribute([Size(20)] string data)
     {
@@ -140,6 +145,12 @@ public static class Issue094Tests
     internal static void Issue094_IntPtrWorks()
     {
         TestToolBehavior<IntPtr>();
+    }
+
+    [Fact]
+    internal static void Issue094_RuntimeArrayWorks()
+    {
+        TestToolBehavior<Wrapped>();
     }
 
     private static void TestToolBehavior<T>()
