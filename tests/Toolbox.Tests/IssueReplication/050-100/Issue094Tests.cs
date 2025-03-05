@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.DuplicatorTool;
@@ -170,6 +171,13 @@ public static class Issue094Tests
     internal static void Issue094_ValueTupleWorks()
     {
         TestToolBehavior(typeof(ValueTuple<,>));
+    }
+
+    [Fact]
+    internal static void Issue094_FormatProviderWorks()
+    {
+        TestToolBehavior<CultureInfo>();
+        TestToolBehavior<IFormatProvider>();
     }
 
     private static void TestToolBehavior<T>()

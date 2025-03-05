@@ -19,6 +19,7 @@ public sealed class CommonSystemCreateHint : CreateHint
             { typeof(DateTimeOffset), rand => new DateTimeOffset(rand.Create<DateTime>()) },
             { typeof(Guid), rand => new Guid([.. Enumerable.Range(0, 16).Select(i => rand.Create<byte>())]) },
             { typeof(IntPtr), rand => new IntPtr(rand.Options.Gen.Next<int>()) },
+            { typeof(IFormatProvider), rand => rand.Create<CultureInfo>() },
 
             { typeof(Assembly), rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
             { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },

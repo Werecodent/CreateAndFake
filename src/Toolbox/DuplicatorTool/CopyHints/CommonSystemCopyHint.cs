@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using CreateAndFake.Design;
 
 namespace CreateAndFake.DuplicatorTool.CopyHints;
@@ -14,6 +15,12 @@ public sealed class CommonSystemCopyHint : CopyHint
         if (source is TimeSpan span)
         {
             return new(new TimeSpan(duplicator.Copy(span.Ticks)));
+        }
+        else if (source is CultureInfo info)
+        {
+            return new(info.IsReadOnly
+                ? CultureInfo.ReadOnly(new CultureInfo(info.Name, info.UseUserOverride))
+                : new CultureInfo(info.Name, info.UseUserOverride));
         }
         else if (source is Uri link)
         {
