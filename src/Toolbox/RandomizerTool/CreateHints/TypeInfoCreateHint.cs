@@ -17,7 +17,6 @@ public sealed class TypeInfoCreateHint : CreateHint
         typeof(long),
         typeof(long?),
         typeof(int[]),
-        typeof(Point),
         typeof(double),
         typeof(string),
         typeof(object),
