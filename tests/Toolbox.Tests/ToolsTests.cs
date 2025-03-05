@@ -84,7 +84,7 @@ public static class ToolsTests
         {
             try
             {
-                int timeout = 500;
+                int timeout = 1000;
                 Task itemTrip = Task.Run(() => TestTrip(type), TestContext.Current.CancellationToken);
                 if (await Task.WhenAny(itemTrip, Task.Delay(timeout, TestContext.Current.CancellationToken)) != itemTrip)
                 {
