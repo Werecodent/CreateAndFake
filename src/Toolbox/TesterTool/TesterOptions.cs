@@ -94,6 +94,7 @@ public record TesterOptions : IToolOptions
         typeof(OverflowException),
         typeof(TypeLoadException),
         typeof(TimeoutException),
+        typeof(FormatException),
         typeof(AssertException),
         typeof(TargetException)]);
 }

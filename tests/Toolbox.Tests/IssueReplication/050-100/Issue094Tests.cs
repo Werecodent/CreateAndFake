@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
@@ -153,18 +154,41 @@ public static class Issue094Tests
         TestToolBehavior<Wrapped>();
     }
 
+    [Fact]
+    internal static void Issue094_MemberInfoWorks()
+    {
+        TestToolBehavior<MemberInfo>();
+    }
+
+    [Fact]
+    internal static void Issue094_SpanWorks()
+    {
+        TestToolBehavior(typeof(Span<>));
+    }
+
+    [Fact]
+    internal static void Issue094_ValueTupleWorks()
+    {
+        TestToolBehavior(typeof(ValueTuple<,>));
+    }
+
     private static void TestToolBehavior<T>()
+    {
+        TestToolBehavior(typeof(T));
+    }
+
+    private static void TestToolBehavior(Type type)
     {
         for (int i = 0; i < 10; i++)
         {
-            T sample = Tools.Randomizer.Create<T>();
+            object sample = Tools.Randomizer.Create(type);
             Tools.Asserter.IsNot(null, sample);
             Tools.Asserter.IsNot(sample, Tools.Mutator.Variant(sample));
 
-            T dupe = Tools.Duplicator.Copy(sample);
+            object dupe = Tools.Duplicator.Copy(sample);
 
             Tools.Asserter.Is(sample, dupe);
-            Tools.Asserter.Is(Tools.Valuer.GetHashCode(sample), Tools.Valuer.GetHashCode(dupe));
+            Tools.Asserter.Is(Tools.Valuer.GetHashCode(sample), Tools.Valuer.GetHashCode(dupe), $"{sample}");
         }
     }
 }

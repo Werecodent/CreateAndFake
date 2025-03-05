@@ -19,7 +19,6 @@ public sealed class CollectionCreateHint : CreateHint
         typeof(Stack<>),
         typeof(HashSet<>),
         typeof(LinkedList<>),
-        typeof(ArraySegment<>),
         typeof(ConcurrentQueue<>),
         typeof(ConcurrentStack<>),
         typeof(ConcurrentDictionary<,>),

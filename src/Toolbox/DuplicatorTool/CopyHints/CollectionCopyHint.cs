@@ -83,6 +83,11 @@ public sealed class CollectionCopyHint : CopyHint
         {
             Type requiredArg = constructor.GetParameters().First().ParameterType;
 
+            if (requiredArg == collectionType)
+            {
+                return null;
+            }
+
             object? wrapped = requiredArg.IsInheritedBy(contents.GetType())
                 ? contents
                 : MakeCollection(contents, requiredArg, itemType, duplicator);

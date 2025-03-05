@@ -6,8 +6,11 @@ using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TestSamples;
+using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
+
+#pragma warning disable CA1031 // Do not catch general exception types
 
 public static class ToolsTests
 {
@@ -56,7 +59,7 @@ public static class ToolsTests
     }
 
     [Fact, ExcludeFromCodeCoverage]
-    internal static void Tools_AllCreateAndFakeTypesWork()
+    internal static async Task Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore = [
             typeof(Arg),
@@ -70,6 +73,8 @@ public static class ToolsTests
             typeof(BaseGuarder),
         ];
 
+        Dictionary<Type, Exception> failures = [];
+
         foreach (Type type in typeof(Tools).Assembly.GetTypes()
             .Where(t => !(t.IsAbstract && t.IsSealed))
             .Where(t => !t.Inherits<Attribute>())
@@ -79,14 +84,19 @@ public static class ToolsTests
         {
             try
             {
-                TestTrip(type);
+                int timeout = 500;
+                Task itemTrip = Task.Run(() => TestTrip(type), TestContext.Current.CancellationToken);
+                if (await Task.WhenAny(itemTrip, Task.Delay(timeout, TestContext.Current.CancellationToken)) != itemTrip)
+                {
+                    failures.Add(type, new TimeoutException($"Hit test timeout: {timeout}"));
+                }
             }
             catch (Exception e)
             {
-                e.Assert().Fail($"Failed testing type '{type}'.");
-                throw;
+                failures.Add(type, e.Unwrap());
             }
         }
+        failures.Assert().IsEmpty();
     }
 
     [Fact]
@@ -145,3 +155,5 @@ public static class ToolsTests
         }
     }
 }
+
+#pragma warning restore CA1031 // Do not catch general exception types

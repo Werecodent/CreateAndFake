@@ -22,24 +22,12 @@ public sealed class CommonSystemCreateHint : CreateHint
 
             { typeof(Assembly), rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
             { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },
-            { typeof(Type).GetType(), rand => rand.Create<Type>()! },
-            { typeof(Type), rand => rand.Options.Gen.NextItem(TypeExtensions.FindLoadedClassTypes(Assembly.GetExecutingAssembly())) },
 
             { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
             { typeof(UriBuilder), rand => new UriBuilder(
                 rand.Create<bool>() ? "http" : "https", rand.Create<string>(), rand.Options.Gen.Next(-1, 65535)) },
 
             { typeof(StringBuilder), rand => new StringBuilder(rand.Create<string>()) },
-
-            { typeof(ConstructorInfo), rand => FindTypeInfo(rand, t => t.GetConstructors()) },
-            { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
-            { typeof(MethodInfo), rand => FindTypeInfo(rand, t => t.GetMethods()) },
-            { typeof(MemberInfo), rand => FindTypeInfo(rand, t => t.GetMembers()) },
-            { typeof(FieldInfo), rand => FindTypeInfo(rand, t => t.GetFields()) },
-            { typeof(ParameterInfo), rand => FindTypeInfo(rand,
-                t => t.GetMethods().SelectMany(m => m.GetParameters()).ToArray()) },
-            { typeof(MethodBase), rand => FindTypeInfo(rand,
-                t => t.GetConstructors().Cast<MethodBase>().Concat(t.GetMethods()).ToArray()) },
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
@@ -55,21 +43,5 @@ public sealed class CommonSystemCreateHint : CreateHint
         {
             return CreateHintResult.None;
         }
-    }
-
-    /// <summary>Finds a random member info.</summary>
-    /// <typeparam name="T"><c>Type</c> being found.</typeparam>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <param name="grabber">How members are found on a <c>Type</c>.</param>
-    /// <returns>The found member.</returns>
-    private static T FindTypeInfo<T>(RandomizerChainer randomizer, Func<Type, T[]> grabber)
-    {
-        T[] result;
-        do
-        {
-            result = grabber.Invoke((Type)_Gens[typeof(Type)].Invoke(randomizer));
-        } while (result.Length == 0);
-
-        return randomizer.Options.Gen.NextItem(result);
     }
 }
