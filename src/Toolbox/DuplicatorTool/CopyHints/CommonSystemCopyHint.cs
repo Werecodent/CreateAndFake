@@ -18,9 +18,11 @@ public sealed class CommonSystemCopyHint : CopyHint
         }
         else if (source is CultureInfo info)
         {
-            return new(info.IsReadOnly
-                ? CultureInfo.ReadOnly(new CultureInfo(info.Name, info.UseUserOverride))
-                : new CultureInfo(info.Name, info.UseUserOverride));
+            return new(
+                info.IsReadOnly
+                    ? CultureInfo.ReadOnly(new CultureInfo(info.Name, info.UseUserOverride))
+                    : new CultureInfo(info.Name, info.UseUserOverride)
+            );
         }
         else if (source is Uri link)
         {

@@ -7,10 +7,8 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 public sealed class ObjectCopyHint : CopyHint
 {
     /// <summary>Flags used to identify members.</summary>
-    private const BindingFlags _MemberFlags
-        = BindingFlags.Public
-        | BindingFlags.NonPublic
-        | BindingFlags.Instance;
+    private const BindingFlags _MemberFlags =
+        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
@@ -19,9 +17,7 @@ public sealed class ObjectCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         object? result = Copy(source, duplicator);
-        return (result != null)
-            ? new(result)
-            : CopyHintResult.None;
+        return (result != null) ? new(result) : CopyHintResult.None;
     }
 
     /// <inheritdoc cref="CopyHint{T}.CopyHint"/>
@@ -34,16 +30,22 @@ public sealed class ObjectCopyHint : CopyHint
         }
         duplicator.AddToHistory(source, dupe);
 
-        foreach (FieldInfo field in source.GetType()
-            .GetFields(BindingFlags.Instance | BindingFlags.Public)
-            .Where(f => !f.IsInitOnly && !f.IsLiteral))
+        foreach (
+            FieldInfo field in source
+                .GetType()
+                .GetFields(BindingFlags.Instance | BindingFlags.Public)
+                .Where(f => !f.IsInitOnly && !f.IsLiteral)
+        )
         {
             field.SetValue(dupe, duplicator.Copy(field.GetValue(source)));
         }
 
-        foreach (PropertyInfo property in source.GetType()
-            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .Where(p => p.CanRead && p.CanWrite))
+        foreach (
+            PropertyInfo property in source
+                .GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => p.CanRead && p.CanWrite)
+        )
         {
             property.SetValue(dupe, duplicator.Copy(property.GetValue(source)));
         }
@@ -83,8 +85,13 @@ public sealed class ObjectCopyHint : CopyHint
     /// <param name="props">Properties on <paramref name="source"/>.</param>
     /// <param name="fields">Fields on <paramref name="source"/>.</param>
     /// <returns>Null if failed; created instance otherwise.</returns>
-    private static object? TryCreate(object source, DuplicatorChainer duplicator,
-        ConstructorInfo constructor, IEnumerable<PropertyInfo> props, IEnumerable<FieldInfo> fields)
+    private static object? TryCreate(
+        object source,
+        DuplicatorChainer duplicator,
+        ConstructorInfo constructor,
+        IEnumerable<PropertyInfo> props,
+        IEnumerable<FieldInfo> fields
+    )
     {
         List<PropertyInfo> propList = [.. props];
         List<FieldInfo> fieldList = [.. fields];
@@ -93,11 +100,15 @@ public sealed class ObjectCopyHint : CopyHint
         List<MemberInfo> matchedMembers = [];
         foreach (ParameterInfo param in constructor.GetParameters())
         {
-            PropertyInfo[] potentialProps = [.. propList.Where(p => p.PropertyType.Inherits(param.ParameterType))];
+            PropertyInfo[] potentialProps =
+            [
+                .. propList.Where(p => p.PropertyType.Inherits(param.ParameterType)),
+            ];
             if (potentialProps.Length != 0)
             {
-                PropertyInfo? directPropMatch = potentialProps.FirstOrDefault(
-                    p => p.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase));
+                PropertyInfo? directPropMatch = potentialProps.FirstOrDefault(p =>
+                    p.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase)
+                );
                 if (directPropMatch != null)
                 {
                     _ = propList.Remove(directPropMatch);
@@ -111,11 +122,15 @@ public sealed class ObjectCopyHint : CopyHint
                 continue;
             }
 
-            FieldInfo[] potentialFields = [.. fieldList.Where(f => f.FieldType.Inherits(param.ParameterType))];
+            FieldInfo[] potentialFields =
+            [
+                .. fieldList.Where(f => f.FieldType.Inherits(param.ParameterType)),
+            ];
             if (potentialFields.Length != 0)
             {
-                FieldInfo? directFieldMatch = potentialFields.FirstOrDefault(
-                    f => f.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase));
+                FieldInfo? directFieldMatch = potentialFields.FirstOrDefault(f =>
+                    f.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase)
+                );
                 if (directFieldMatch != null)
                 {
                     _ = fieldList.Remove(directFieldMatch);
@@ -132,7 +147,9 @@ public sealed class ObjectCopyHint : CopyHint
             return null;
         }
 
-        return constructor.Invoke([.. matchedMembers.Select(m => CopyMember(m, source, duplicator))]);
+        return constructor.Invoke(
+            [.. matchedMembers.Select(m => CopyMember(m, source, duplicator))]
+        );
     }
 
     /// <summary>Copies the value of <paramref name="member"/> on <paramref name="source"/>.</summary>
@@ -140,7 +157,11 @@ public sealed class ObjectCopyHint : CopyHint
     /// <param name="source">Instance containing the member.</param>
     /// <param name="duplicator">Duplicator handling the cloning.</param>
     /// <returns>The duplicate object.</returns>
-    private static object? CopyMember(MemberInfo member, object source, DuplicatorChainer duplicator)
+    private static object? CopyMember(
+        MemberInfo member,
+        object source,
+        DuplicatorChainer duplicator
+    )
     {
         if (member is PropertyInfo prop)
         {

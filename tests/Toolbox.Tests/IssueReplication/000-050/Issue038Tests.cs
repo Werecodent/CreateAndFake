@@ -38,7 +38,11 @@ public static class Issue038Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue038_FluentArgsByValue([Stub] ISample sample, InnerSample item, int result)
+    internal static void Issue038_FluentArgsByValue(
+        [Stub] ISample sample,
+        InnerSample item,
+        int result
+    )
     {
         sample.Check(item).SetupReturn(result);
         sample.Check(Tools.Duplicator.Copy(item)).Assert().Is(result);
@@ -46,7 +50,12 @@ public static class Issue038Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue038_FluentArgWorks([Stub] ISample sample, string item1, string item2, int result)
+    internal static void Issue038_FluentArgWorks(
+        [Stub] ISample sample,
+        string item1,
+        string item2,
+        int result
+    )
     {
         sample.Check(Arg.Any<string>(), Arg.Where<string>(s => s == item2)).SetupReturn(result);
         sample.Check(item2, item1).Assert().Is(0);
@@ -65,7 +74,11 @@ public static class Issue038Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue038_FluentFakeCastWorks([Stub] ISample sample, string value, string identity)
+    internal static void Issue038_FluentFakeCastWorks(
+        [Stub] ISample sample,
+        string value,
+        string identity
+    )
     {
         sample.ToFake().Setup(d => d.Value, Behavior.Returns(value));
         sample.ToFake<object>().Setup(d => d.ToString(), Behavior.Returns(identity));

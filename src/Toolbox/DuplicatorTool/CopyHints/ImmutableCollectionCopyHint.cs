@@ -10,34 +10,43 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 public class ImmutableCollectionCopyHint : CopyHint
 {
     /// <summary>Collections able to be randomized.</summary>
-    private static readonly FrozenDictionary<Type, MethodInfo> _Collections
-        = new Dictionary<Type, MethodInfo>()
+    private static readonly FrozenDictionary<Type, MethodInfo> _Collections = new Dictionary<
+        Type,
+        MethodInfo
+    >()
+    {
+        { typeof(ImmutableList<>), FindCreateRangeBuilder(typeof(ImmutableList)) },
+        { typeof(ImmutableArray<>), FindCreateRangeBuilder(typeof(ImmutableArray)) },
+        { typeof(ImmutableQueue<>), FindCreateRangeBuilder(typeof(ImmutableQueue)) },
+        { typeof(ImmutableStack<>), FindCreateRangeBuilder(typeof(ImmutableStack)) },
+        { typeof(ImmutableHashSet<>), FindCreateRangeBuilder(typeof(ImmutableHashSet)) },
+        { typeof(ImmutableSortedSet<>), FindCreateRangeBuilder(typeof(ImmutableSortedSet)) },
+        { typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary)) },
         {
-            { typeof(ImmutableList<>), FindCreateRangeBuilder(typeof(ImmutableList)) },
-            { typeof(ImmutableArray<>), FindCreateRangeBuilder(typeof(ImmutableArray)) },
-            { typeof(ImmutableQueue<>), FindCreateRangeBuilder(typeof(ImmutableQueue)) },
-            { typeof(ImmutableStack<>), FindCreateRangeBuilder(typeof(ImmutableStack)) },
-            { typeof(ImmutableHashSet<>), FindCreateRangeBuilder(typeof(ImmutableHashSet)) },
-            { typeof(ImmutableSortedSet<>), FindCreateRangeBuilder(typeof(ImmutableSortedSet)) },
-            { typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary)) },
-            { typeof(ImmutableSortedDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableSortedDictionary)) }
-        }.ToFrozenDictionary();
+            typeof(ImmutableSortedDictionary<,>),
+            FindCreateRangeBuilder(typeof(ImmutableSortedDictionary))
+        },
+    }.ToFrozenDictionary();
 
     /// <summary>Finds the static <c>CreateRange</c> method for a collection.</summary>
     /// <param name="type">Collection type to create.</param>
     /// <returns>Found create method.</returns>
     private static MethodInfo FindCreateRangeBuilder(Type type)
     {
-        return type
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Single(m => m.Name == "CreateRange"
+        return type.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Single(m =>
+                m.Name == "CreateRange"
                 && m.GetParameters().Length == 1
-                && m.GetParameters()[0].ParameterType.Inherits(typeof(IEnumerable<>)));
+                && m.GetParameters()[0].ParameterType.Inherits(typeof(IEnumerable<>))
+            );
     }
 
     /// <summary>Copies generic item data.</summary>
-    private static readonly MethodInfo _CopyContentsHelper = typeof(ImmutableCollectionCopyHint)
-        .GetMethod(nameof(CopyContentsHelper), BindingFlags.NonPublic | BindingFlags.Static)!;
+    private static readonly MethodInfo _CopyContentsHelper =
+        typeof(ImmutableCollectionCopyHint).GetMethod(
+            nameof(CopyContentsHelper),
+            BindingFlags.NonPublic | BindingFlags.Static
+        )!;
 
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
@@ -50,15 +59,24 @@ public class ImmutableCollectionCopyHint : CopyHint
         if (genericType != null && _Collections.TryGetValue(genericType, out MethodInfo? match))
         {
             Type[] args = type.GetGenericArguments();
-            Type itemType = (args.Length != 1)
-                ? typeof(KeyValuePair<,>).MakeGenericType(args)
-                : args.Single();
+            Type itemType =
+                (args.Length != 1) ? typeof(KeyValuePair<,>).MakeGenericType(args) : args.Single();
 
-            return new(match
-                .MakeGenericMethod(args)
-                .Invoke(null, [_CopyContentsHelper
-                    .MakeGenericMethod(itemType)
-                    .Invoke(null, [source, duplicator, genericType == typeof(ImmutableStack<>)])]));
+            return new(
+                match
+                    .MakeGenericMethod(args)
+                    .Invoke(
+                        null,
+                        [
+                            _CopyContentsHelper
+                                .MakeGenericMethod(itemType)
+                                .Invoke(
+                                    null,
+                                    [source, duplicator, genericType == typeof(ImmutableStack<>)]
+                                ),
+                        ]
+                    )
+            );
         }
         else
         {
@@ -71,7 +89,11 @@ public class ImmutableCollectionCopyHint : CopyHint
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>
     /// <returns>The duplicate object.</returns>
-    private static T?[] CopyContentsHelper<T>(IEnumerable<T?> source, DuplicatorChainer duplicator, bool reverse)
+    private static T?[] CopyContentsHelper<T>(
+        IEnumerable<T?> source,
+        DuplicatorChainer duplicator,
+        bool reverse
+    )
     {
         List<T?> copy = [];
 

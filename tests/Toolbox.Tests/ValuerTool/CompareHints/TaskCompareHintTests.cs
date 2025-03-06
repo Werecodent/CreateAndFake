@@ -18,17 +18,18 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
         typeof(Task<string>),
         typeof(Task<int>),
         typeof(Task<bool>),
-        typeof(Task)
+        typeof(Task),
     ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(IEnumerable),
         typeof(string),
-        typeof(int)
+        typeof(int),
     ];
 
-    public TaskCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public TaskCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void Compare_NonGenericTasksCompareByException(Exception ex)

@@ -6,7 +6,11 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class TaskCompareHint : CompareHint<Task>
 {
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(Task? expected, Task? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        Task? expected,
+        Task? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
@@ -32,10 +36,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
         }
         else if (item.GetType().IsGenericType)
         {
-            return item
-                .GetType()
-                .GetProperty(nameof(Task<object>.Result))!
-                .GetValue(item);
+            return item.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(item);
         }
         else
         {

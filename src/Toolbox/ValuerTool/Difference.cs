@@ -16,7 +16,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     public Difference(Type expectedType, Type actualType)
     {
         _message = new Lazy<string>(
-            () => $" -> Expected type:<{expectedType}>, Actual type:<{actualType}>");
+            () => $" -> Expected type:<{expectedType}>, Actual type:<{actualType}>"
+        );
     }
 
     /// <inheritdoc cref="Difference"/>

@@ -29,20 +29,21 @@ public static class ExceptionGuarderTests
     [Fact]
     internal static void CallAllMethods_FailsWithException()
     {
-        Tools.Tester
-            .Assert(t => t.PassthroughWithNoExceptions<MethodThrowsSample>())
+        Tools
+            .Tester.Assert(t => t.PassthroughWithNoExceptions<MethodThrowsSample>())
             .Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal static void HandleCheckException_UsesAsserterFail([Fake] IAsserter asserter)
     {
-        asserter.ToFake().Setup(
-            d => d.Fail(Arg.Any<Exception>(), Arg.Any<string>()),
-            Behavior.None(Times.Once));
+        asserter
+            .ToFake()
+            .Setup(d => d.Fail(Arg.Any<Exception>(), Arg.Any<string>()), Behavior.None(Times.Once));
 
-        new ExceptionGuarder(Tools.Tester.Options with { Asserter = asserter })
-            .CallAllMethods(new MethodThrowsSample());
+        new ExceptionGuarder(Tools.Tester.Options with { Asserter = asserter }).CallAllMethods(
+            new MethodThrowsSample()
+        );
 
         asserter.Assert().Called();
     }

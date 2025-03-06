@@ -12,12 +12,13 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
         typeof(Task<object>),
         typeof(Task<string>),
         typeof(Task<int>),
-        typeof(Task<bool>)
+        typeof(Task<bool>),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public TaskCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public TaskCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal void TryCopy_NonGenericTaskFalse()

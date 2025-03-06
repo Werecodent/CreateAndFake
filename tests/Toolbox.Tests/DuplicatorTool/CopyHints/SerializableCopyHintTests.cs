@@ -9,13 +9,12 @@ public sealed class SerializableCopyHintTests : CopyHintTestBase<SerializableCop
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public SerializableCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public SerializableCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void TryCopy_InvalidDataContractExceptionRethrown([Stub] ISerializable data)
     {
-        TestInstance
-            .Assert(t => t.TryCopy(data, CreateChainer()))
-            .Throws<SerializationException>();
+        TestInstance.Assert(t => t.TryCopy(data, CreateChainer())).Throws<SerializationException>();
     }
 }

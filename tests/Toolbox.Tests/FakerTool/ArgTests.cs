@@ -20,14 +20,18 @@ public static class ArgTests
     [Fact]
     internal static void Arg_PairsWithLambda()
     {
-        string[] methods = [.. typeof(Arg)
-            .GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Select(m => m.Name)];
+        string[] methods =
+        [
+            .. typeof(Arg)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Select(m => m.Name),
+        ];
 
         methods
             .Where(m => !m.StartsWith("Lambda", StringComparison.InvariantCulture))
             .Where(m => !methods.Contains("Lambda" + m))
-            .Assert().IsEmpty("Methods should have a lambda version to convert to.");
+            .Assert()
+            .IsEmpty("Methods should have a lambda version to convert to.");
     }
 
     [Fact]

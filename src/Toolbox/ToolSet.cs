@@ -31,7 +31,8 @@ public sealed class ToolSet(
     IAsserter asserter,
     IDuplicator duplicator,
     IRunner runner,
-    ITester tester)
+    ITester tester
+)
 {
     /// <summary>Default tools to use.</summary>
     public static ToolSet DefaultSet { get; } = CreateViaSeed(Environment.TickCount);
@@ -43,54 +44,62 @@ public sealed class ToolSet(
     {
         IRandom gen = new SeededRandom(seed);
         Valuer valuer = new(new ValuerOptions());
-        Faker faker = new(new FakerOptions
-        {
-            Valuer = valuer
-        });
-        Randomizer randomizer = new(new RandomizerOptions
-        {
-            Gen = gen,
-            Faker = faker
-        });
-        Extractor extractor = new(new ExtractorOptions
-        {
-            Randomizer = randomizer,
-            Valuer = valuer
-        });
-        Mutator mutator = new(new MutatorOptions
-        {
-            Randomizer = randomizer,
-            Valuer = valuer,
-            Extractor = extractor
-        });
-        Asserter asserter = new(new AsserterOptions
-        {
-            Gen = gen,
-            Extractor = extractor,
-            Valuer = valuer
-        });
-        Duplicator duplicator = new(new DuplicatorOptions
-        {
-            Asserter = asserter,
-            Extractor = extractor
-        });
-        Runner runner = new(new RunnerOptions
-        {
-            Faker = faker,
-            Randomizer = randomizer,
-            Mutator = mutator,
-            Duplicator = duplicator
-        });
-        Tester tester = new(new TesterOptions
-        {
-            Gen = gen,
-            Randomizer = randomizer,
-            Duplicator = duplicator,
-            Asserter = asserter,
-            Runner = runner
-        });
+        Faker faker = new(new FakerOptions { Valuer = valuer });
+        Randomizer randomizer = new(new RandomizerOptions { Gen = gen, Faker = faker });
+        Extractor extractor = new(
+            new ExtractorOptions { Randomizer = randomizer, Valuer = valuer }
+        );
+        Mutator mutator = new(
+            new MutatorOptions
+            {
+                Randomizer = randomizer,
+                Valuer = valuer,
+                Extractor = extractor,
+            }
+        );
+        Asserter asserter = new(
+            new AsserterOptions
+            {
+                Gen = gen,
+                Extractor = extractor,
+                Valuer = valuer,
+            }
+        );
+        Duplicator duplicator = new(
+            new DuplicatorOptions { Asserter = asserter, Extractor = extractor }
+        );
+        Runner runner = new(
+            new RunnerOptions
+            {
+                Faker = faker,
+                Randomizer = randomizer,
+                Mutator = mutator,
+                Duplicator = duplicator,
+            }
+        );
+        Tester tester = new(
+            new TesterOptions
+            {
+                Gen = gen,
+                Randomizer = randomizer,
+                Duplicator = duplicator,
+                Asserter = asserter,
+                Runner = runner,
+            }
+        );
 
-        return new ToolSet(gen, valuer, faker, randomizer, extractor, mutator, asserter, duplicator, runner, tester);
+        return new ToolSet(
+            gen,
+            valuer,
+            faker,
+            randomizer,
+            extractor,
+            mutator,
+            asserter,
+            duplicator,
+            runner,
+            tester
+        );
     }
 
     /// <inheritdoc cref="IRandom"/>

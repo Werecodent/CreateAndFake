@@ -13,17 +13,33 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (type.Inherits(typeof(IAsyncEnumerable<>))
-            && (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>)
-                || (type.FullName?.Contains($"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItems)}>") ?? false)))
+        if (
+            type.Inherits(typeof(IAsyncEnumerable<>))
+            && (
+                type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>)
+                || (
+                    type.FullName?.Contains(
+                        $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItems)}>"
+                    ) ?? false
+                )
+            )
+        )
         {
             Type itemType = type.GetGenericArguments().Single();
-            return new(GetType()
-                .GetMethod(nameof(GetItems), BindingFlags.Static | BindingFlags.NonPublic)!
-                .MakeGenericMethod(itemType)
-                .Invoke(null, [randomizer
-                    .Create(typeof(List<>)
-                    .MakeGenericType(itemType), randomizer.Options)]));
+            return new(
+                GetType()
+                    .GetMethod(nameof(GetItems), BindingFlags.Static | BindingFlags.NonPublic)!
+                    .MakeGenericMethod(itemType)
+                    .Invoke(
+                        null,
+                        [
+                            randomizer.Create(
+                                typeof(List<>).MakeGenericType(itemType),
+                                randomizer.Options
+                            ),
+                        ]
+                    )
+            );
         }
         else
         {

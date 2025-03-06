@@ -32,19 +32,20 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void GetHashCode_ValidHint(object data, int result, [Fake] CompareHint hint)
     {
-        hint.ToFake().Setup("Supports",
-            [data, data, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(true, Times.Once));
-        hint.ToFake().Setup("GetHashCode",
-            [data, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(result, Times.Once));
+        hint.ToFake()
+            .Setup(
+                "Supports",
+                [data, data, Arg.LambdaAny<ValuerChainer>()],
+                Behavior.Returns(true, Times.Once)
+            );
+        hint.ToFake()
+            .Setup(
+                "GetHashCode",
+                [data, Arg.LambdaAny<ValuerChainer>()],
+                Behavior.Returns(result, Times.Once)
+            );
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeDefaultHints = false,
-                Hints = [hint]
-            })
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint] })
             .GetHashCode(data)
             .Assert()
             .Is(result);
@@ -55,19 +56,11 @@ public static class ValuerTests
     [Fact]
     internal static void Compare_MissingMatchThrows()
     {
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeDefaultHints = false
-            })
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(null, new object()))
             .Throws<NotSupportedException>();
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeDefaultHints = false
-            })
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(new object(), new object()))
             .Throws<NotSupportedException>();
     }
@@ -75,7 +68,10 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void Compare_ReferenceNoDifferences(object data)
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false }).Compare(data, data).Assert().IsEmpty();
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+            .Compare(data, data)
+            .Assert()
+            .IsEmpty();
     }
 
     [Theory, RandomData]
@@ -91,21 +87,24 @@ public static class ValuerTests
     }
 
     [Theory, RandomData]
-    internal static void Equals_NoDifferencesTrue(object data1, object data2, Fake<CompareHint> hint)
+    internal static void Equals_NoDifferencesTrue(
+        object data1,
+        object data2,
+        Fake<CompareHint> hint
+    )
     {
-        hint.Setup("Supports",
+        hint.Setup(
+            "Supports",
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(true, Times.Once));
-        hint.Setup("Compare",
+            Behavior.Returns(true, Times.Once)
+        );
+        hint.Setup(
+            "Compare",
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once));
+            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
+        );
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeDefaultHints = false,
-                Hints = [hint.Dummy]
-            })
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Equals(data1, data2)
             .Assert()
             .Is(true);
@@ -116,19 +115,18 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void Equals_DifferencesFalse(object data1, object data2, Fake<CompareHint> hint)
     {
-        hint.Setup("Supports",
+        hint.Setup(
+            "Supports",
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(true, Times.Once));
-        hint.Setup("Compare",
+            Behavior.Returns(true, Times.Once)
+        );
+        hint.Setup(
+            "Compare",
             [data1, data2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once));
+            Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once)
+        );
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeDefaultHints = false,
-                Hints = [hint.Dummy]
-            })
+        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Equals(data1, data2)
             .Assert()
             .Is(false);
@@ -137,30 +135,38 @@ public static class ValuerTests
     }
 
     [Theory, RandomData]
-    internal static void Compare_InfiniteLoopDetails(object item1, object item2, Fake<CompareHint> hint)
+    internal static void Compare_InfiniteLoopDetails(
+        object item1,
+        object item2,
+        Fake<CompareHint> hint
+    )
     {
-        hint.Setup("Supports",
+        hint.Setup(
+            "Supports",
             [item1, item2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
+            Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
+        );
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.Compare(item1, item2))
-            .Throws<InsufficientExecutionStackException>().Message
-            .Assert()
+            .Throws<InsufficientExecutionStackException>()
+            .Message.Assert()
             .Contains(item1.GetType().Name);
     }
 
     [Theory, RandomData]
     internal static void GetHashCode_InfiniteLoopDetails(object item, Fake<CompareHint> hint)
     {
-        hint.Setup("Supports",
+        hint.Setup(
+            "Supports",
             [item, item, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
+            Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
+        );
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.GetHashCode(item))
-            .Throws<InsufficientExecutionStackException>().Message
-            .Assert()
+            .Throws<InsufficientExecutionStackException>()
+            .Message.Assert()
             .Contains(item.GetType().Name);
     }
 

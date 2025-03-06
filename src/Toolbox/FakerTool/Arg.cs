@@ -66,7 +66,8 @@ public sealed class Arg : IDeepCloneable
     /// <typeparam name="T">Type to match.</typeparam>
     /// <returns>Random instance of <typeparamref name="T"/> for the fake setup.</returns>
     /// <remarks>Use <see cref="LambdaNotNull{T}"/> when matching via method names.</remarks>
-    public static T? NotNull<T>() where T : class
+    public static T? NotNull<T>()
+        where T : class
     {
         T? value = Tools.Randomizer.Create<T>();
         _ArgCache.Value!.Add(Tuple.Create(LambdaNotNull<T>(), (object?)value));
@@ -92,8 +93,11 @@ public sealed class Arg : IDeepCloneable
     /// <param name="condition">Condition to verify.</param>
     /// <returns>Container for the reference.</returns>
     /// <remarks>Use <see cref="LambdaWhereRef{T}"/> when matching via method names.</remarks>
-    [SuppressMessage("IDE", "IDE0060:RemoveUnusedParameters",
-        Justification = "Taken and used through lambdas for setup replacement behavior.")]
+    [SuppressMessage(
+        "IDE",
+        "IDE0060:RemoveUnusedParameters",
+        Justification = "Taken and used through lambdas for setup replacement behavior."
+    )]
     public static OutRef<T> WhereRef<T>(Func<T, bool> condition)
     {
         return new OutRef<T>();
@@ -118,7 +122,8 @@ public sealed class Arg : IDeepCloneable
     /// <summary>Matches any <typeparamref name="T"/> instance except <c>null</c>.</summary>
     /// <typeparam name="T">Type to match.</typeparam>
     /// <returns>Arg for the fake provider to match with.</returns>
-    public static Arg LambdaNotNull<T>() where T : class
+    public static Arg LambdaNotNull<T>()
+        where T : class
     {
         return LambdaWhere<T>(o => o != null);
     }

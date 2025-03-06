@@ -4,5 +4,6 @@ namespace CreateAndFake.AsserterTool.Fluent;
 public sealed class AssertString : AssertStringBase<AssertString>
 {
     /// <inheritdoc/>
-    internal AssertString(IAsserter asserter, string? text) : base(asserter, text) { }
+    internal AssertString(IAsserter asserter, string? text)
+        : base(asserter, text) { }
 }

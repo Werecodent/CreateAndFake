@@ -9,8 +9,10 @@ public sealed class HashCodeHintResult : HintResult<int>
     public static HashCodeHintResult None { get; } = new(false, default);
 
     /// <inheritdoc/>
-    private HashCodeHintResult(bool hasData, int data) : base(hasData, data) { }
+    private HashCodeHintResult(bool hasData, int data)
+        : base(hasData, data) { }
 
     /// <inheritdoc cref="HashCodeHintResult(bool,int)"/>
-    public HashCodeHintResult(int data) : this(true, data) { }
+    public HashCodeHintResult(int data)
+        : this(true, data) { }
 }

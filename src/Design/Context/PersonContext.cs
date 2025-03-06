@@ -7,11 +7,14 @@ namespace CreateAndFake.Design.Context;
 public sealed class PersonContext : BaseDataContext
 {
     /// <summary>Name fragment.</summary>
-    private readonly Lazy<string> _firstName, _middleName, _lastName;
+    private readonly Lazy<string> _firstName,
+        _middleName,
+        _lastName;
 
     /// <inheritdoc cref="PersonContext"/>
     /// <inheritdoc/>
-    public PersonContext(IRandom gen) : base(gen)
+    public PersonContext(IRandom gen)
+        : base(gen)
     {
         _firstName = new(() => Gen.NextItem(NameData.Values));
         _middleName = new(() => Gen.NextItem(NameData.Values));

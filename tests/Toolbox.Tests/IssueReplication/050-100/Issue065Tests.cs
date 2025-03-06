@@ -35,12 +35,10 @@ public static class Issue065Tests
         TestInfiniteSample(sample);
     }
 
-    private static void TestInfiniteSample<T>(T sample) where T : new()
+    private static void TestInfiniteSample<T>(T sample)
+        where T : new()
     {
-        sample.Assert()
-            .IsNot(null).And
-            .IsNot(new T()).And
-            .IsNot(sample.CreateVariant());
+        sample.Assert().IsNot(null).And.IsNot(new T()).And.IsNot(sample.CreateVariant());
 
         T dupe = sample.CreateDeepClone();
 

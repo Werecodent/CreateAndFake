@@ -22,8 +22,8 @@ public static class AssertTypeTests
     internal static void AssertType_CallsAndChains(Injected<AssertType> instance)
     {
         RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
-        results.RawResults
-            .Where(r => r.Result != null)
+        results
+            .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not Exception)
             .Where(r => r.Result is not AssertChainer<AssertType>)
             .Select(r => r.Method.Name)

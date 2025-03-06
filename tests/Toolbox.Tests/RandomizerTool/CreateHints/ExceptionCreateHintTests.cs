@@ -11,5 +11,6 @@ public sealed class ExceptionCreateHintTests : CreateHintTestBase<ExceptionCreat
 
     private static readonly Type[] _InvalidTypes = [typeof(object), typeof(FakeVerifyException)];
 
-    public ExceptionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public ExceptionCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

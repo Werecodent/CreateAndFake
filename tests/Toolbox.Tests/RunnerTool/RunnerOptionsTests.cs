@@ -1,7 +1,7 @@
 global using RunnerMod = System.Func<
     CreateAndFake.RunnerTool.RunnerOptions,
-    CreateAndFake.RunnerTool.RunnerOptions>;
-
+    CreateAndFake.RunnerTool.RunnerOptions
+>;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.Tests.RunnerTool;

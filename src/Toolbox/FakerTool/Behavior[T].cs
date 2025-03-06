@@ -7,10 +7,12 @@ namespace CreateAndFake.FakerTool;
 public sealed class Behavior<T> : Behavior
 {
     /// <inheritdoc/>>
-    public Behavior(Delegate implementation, Times? times = null) : base(implementation, times, 0) { }
+    public Behavior(Delegate implementation, Times? times = null)
+        : base(implementation, times, 0) { }
 
     /// <inheritdoc/>
-    private Behavior(Delegate implementation, Times times, int calls) : base(implementation, times, calls) { }
+    private Behavior(Delegate implementation, Times times, int calls)
+        : base(implementation, times, calls) { }
 
     /// <inheritdoc/>
     public override IDeepCloneable DeepClone()
@@ -26,7 +28,8 @@ public sealed class Behavior<T> : Behavior
     }
 
     /// <inheritdoc cref="Throw{T}(T,Times)"/>
-    public static new Behavior<T> Throw<TException>(Times? times = null) where TException : Exception, new()
+    public static new Behavior<T> Throw<TException>(Times? times = null)
+        where TException : Exception, new()
     {
         return Throw(new TException(), times);
     }
@@ -36,7 +39,8 @@ public sealed class Behavior<T> : Behavior
     /// <param name="exception">Exception to throw.</param>
     /// <param name="times">Behavior call limit.</param>
     /// <returns>Instance to set up the mock with.</returns>
-    public static new Behavior<T> Throw<TException>(TException exception, Times? times = null) where TException : Exception
+    public static new Behavior<T> Throw<TException>(TException exception, Times? times = null)
+        where TException : Exception
     {
         return Set<T>(() => throw exception, times);
     }

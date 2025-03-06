@@ -26,11 +26,12 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new SeededRandomCompareHint(),
         new ObjectCompareHint(BindingFlags.Public | BindingFlags.Instance),
         new ObjectCompareHint(BindingFlags.NonPublic | BindingFlags.Instance),
-        new StatelessCompareHint()
+        new StatelessCompareHint(),
     ];
 
     /// <inheritdoc/>
-    public ValuerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public ValuerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Generators used to copy specific types.</summary>
     private readonly ImmutableArray<CompareHint> _hints = BuildHints(options);
@@ -50,7 +51,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
     private ImmutableArray<CompareHint> SelectHints(ValuerOptions localOptions)
     {
-        return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
+        return
+            Options.IncludeDefaultHints == localOptions.IncludeDefaultHints
+            && Options.Hints == localOptions.Hints
             ? _hints
             : BuildHints(localOptions);
     }
@@ -86,7 +89,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to hash type '{typeName}'.", e);
+                $"Ran into infinite generation trying to hash type '{typeName}'.",
+                e
+            );
         }
     }
 
@@ -105,25 +110,36 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         else
         {
             throw new NotSupportedException(
-                $"Type '{item?.GetType().FullName}' not supported by the valuer. " +
-                "Create a hint to generate the type and pass it to the valuer.");
+                $"Type '{item?.GetType().FullName}' not supported by the valuer. "
+                    + "Create a hint to generate the type and pass it to the valuer."
+            );
         }
     }
 
     /// <inheritdoc/>
-    public IEnumerable<Difference> Compare(object? expected, object? actual, ValuerMod? optionConfiguration = null)
+    public IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration = null
+    )
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return Compare(expected, actual, new ValuerChainer(localOptions, this, GetHashCode, Compare));
+            return Compare(
+                expected,
+                actual,
+                new ValuerChainer(localOptions, this, GetHashCode, Compare)
+            );
         }
         catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to compare type '{typeName}'.", e);
+                $"Ran into infinite generation trying to compare type '{typeName}'.",
+                e
+            );
         }
     }
 
@@ -147,8 +163,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         else
         {
             throw new NotSupportedException(
-                $"Type '{expected?.GetType().FullName}' not supported by the valuer. " +
-                "Create a hint to generate the type and pass it to the valuer.");
+                $"Type '{expected?.GetType().FullName}' not supported by the valuer. "
+                    + "Create a hint to generate the type and pass it to the valuer."
+            );
         }
     }
 }

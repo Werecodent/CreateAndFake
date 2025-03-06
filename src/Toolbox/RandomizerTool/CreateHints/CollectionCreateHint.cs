@@ -14,7 +14,6 @@ public sealed class CollectionCreateHint : CreateHint
     [
         typeof(List<>),
         typeof(Dictionary<,>),
-
         typeof(Queue<>),
         typeof(Stack<>),
         typeof(HashSet<>),
@@ -25,7 +24,8 @@ public sealed class CollectionCreateHint : CreateHint
     ];
 
     /// <summary>Collections that the hint can create.</summary>
-    internal static IEnumerable<Type> PotentialCollections { get; } = _Collections.Select(i => i).ToFrozenSet();
+    internal static IEnumerable<Type> PotentialCollections { get; } =
+        _Collections.Select(i => i).ToFrozenSet();
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
@@ -36,20 +36,23 @@ public sealed class CollectionCreateHint : CreateHint
             return CreateHintResult.None;
         }
 
-        return randomizer.Options.CollectionAttempts.Retry($"Generating '{type}' collection.", () =>
-        {
-            int size = randomizer.Options.NextCollectionSize();
+        return randomizer.Options.CollectionAttempts.Retry(
+            $"Generating '{type}' collection.",
+            () =>
+            {
+                int size = randomizer.Options.NextCollectionSize();
 
-            Type? itemType = GetItemType(type);
-            if (itemType != null && FindMatches(type, itemType).Any())
-            {
-                return new(Create(type, size, itemType, randomizer));
+                Type? itemType = GetItemType(type);
+                if (itemType != null && FindMatches(type, itemType).Any())
+                {
+                    return new(Create(type, size, itemType, randomizer));
+                }
+                else
+                {
+                    return CreateHintResult.None;
+                }
             }
-            else
-            {
-                return CreateHintResult.None;
-            }
-        });
+        );
     }
 
     /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>
@@ -61,8 +64,11 @@ public sealed class CollectionCreateHint : CreateHint
         Type collection = randomizer.Options.Gen.NextItem(FindMatches(type, itemType));
         Type newType = MakeNewType(collection, itemType);
 
-        Array internalData = CreateInternalData(itemType, size,
-            t => randomizer.Create(t, randomizer.Parent));
+        Array internalData = CreateInternalData(
+            itemType,
+            size,
+            t => randomizer.Create(t, randomizer.Parent)
+        );
 
         if (newType == typeof(Array) || newType == internalData.GetType())
         {
@@ -90,9 +96,7 @@ public sealed class CollectionCreateHint : CreateHint
     /// <returns><c>null</c> if not logical; <c>Type</c> for the collection otherwise.</returns>
     private static Type? GetItemType(Type type)
     {
-        Type[] args = type.IsGenericType
-            ? type.GetGenericArguments()
-            : [];
+        Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
 
         if (type.IsArray)
         {
@@ -122,13 +126,13 @@ public sealed class CollectionCreateHint : CreateHint
     /// <returns>All possible matches.</returns>
     private static IEnumerable<Type> FindMatches(Type type, Type itemType)
     {
-        Type typeAsGeneric = type.IsGenericType
-            ? type.GetGenericTypeDefinition()
-            : type;
+        Type typeAsGeneric = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-        if (type.IsArray
+        if (
+            type.IsArray
             || typeAsGeneric.IsInheritedBy(typeof(IList<>))
-            || typeAsGeneric.IsInheritedBy<IList>())
+            || typeAsGeneric.IsInheritedBy<IList>()
+        )
         {
             yield return typeof(Array);
         }

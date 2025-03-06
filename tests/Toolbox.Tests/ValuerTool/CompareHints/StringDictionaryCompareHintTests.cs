@@ -4,7 +4,8 @@ using CreateAndFake.ValuerTool.CompareHints;
 
 namespace CreateAndFake.Tests.ValuerTool.CompareHints;
 
-public sealed class StringDictionaryCompareHintTests : CompareHintTestBase<StringDictionaryCompareHint>
+public sealed class StringDictionaryCompareHintTests
+    : CompareHintTestBase<StringDictionaryCompareHint>
 {
     private static readonly StringDictionaryCompareHint _TestInstance = new();
 
@@ -12,5 +13,6 @@ public sealed class StringDictionaryCompareHintTests : CompareHintTestBase<Strin
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
 
-    public StringDictionaryCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public StringDictionaryCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

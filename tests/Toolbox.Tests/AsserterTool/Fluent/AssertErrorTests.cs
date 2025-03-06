@@ -22,8 +22,8 @@ public static class AssertErrorTests
     internal static void AssertError_CallsAndChains(Injected<AssertError> instance)
     {
         RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
-        results.RawResults
-            .Where(r => r.Result != null)
+        results
+            .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertError>)
             .Select(r => r.Method.Name)
             .Assert()

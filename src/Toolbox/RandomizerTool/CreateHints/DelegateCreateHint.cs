@@ -10,9 +10,12 @@ namespace CreateAndFake.RandomizerTool.CreateHints;
 public sealed class DelegateCreateHint : CreateHint
 {
     /// <summary>Methods used to match delegates.</summary>
-    private static readonly ImmutableArray<MethodInfo> _Delegators = [.. typeof(Delegator)
-        .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
-        .Where(m => m.Name == "AutoDelegate")];
+    private static readonly ImmutableArray<MethodInfo> _Delegators =
+    [
+        .. typeof(Delegator)
+            .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+            .Where(m => m.Name == "AutoDelegate"),
+    ];
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
@@ -53,7 +56,11 @@ public sealed class DelegateCreateHint : CreateHint
         }
         else if (hasReturn)
         {
-            return Delegate.CreateDelegate(type, delegator, match.MakeGenericMethod([.. generics, info.ReturnType]));
+            return Delegate.CreateDelegate(
+                type,
+                delegator,
+                match.MakeGenericMethod([.. generics, info.ReturnType])
+            );
         }
         else
         {
@@ -86,7 +93,10 @@ public sealed class DelegateCreateHint : CreateHint
                     if (inputType.Inherits<IOutRef>())
                     {
                         FieldInfo valueField = inputType.GetField(nameof(OutRef<object>.Var))!;
-                        valueField.SetValue(outRef, _randomizer.Create(valueField.FieldType, _randomizer.Parent));
+                        valueField.SetValue(
+                            outRef,
+                            _randomizer.Create(valueField.FieldType, _randomizer.Parent)
+                        );
                     }
                 }
             }
@@ -133,94 +143,273 @@ public sealed class DelegateCreateHint : CreateHint
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-        internal void AutoDelegate<T1, T2, T3, T4, T5>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5)
+        internal void AutoDelegate<T1, T2, T3, T4, T5>(T1? in1, T2? in2, T3? in3, T4? in4, T5? in5)
         {
             HandleIn(in1, in2, in3, in4, in5);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14
+        )
         {
             HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-        internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14, T15? in15)
+        internal void AutoDelegate<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15
+        >(
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14,
+            T15? in15
+        )
         {
-            HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15);
+            HandleIn(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13,
+                in14,
+                in15
+            );
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-        internal void AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14, T15? in15, T16? in16)
+        internal void AutoDelegate<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15,
+            T16
+        >(
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14,
+            T15? in15,
+            T16? in16
+        )
         {
-            HandleIn(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15, in16);
+            HandleIn(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13,
+                in14,
+                in15,
+                in16
+            );
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
@@ -255,85 +444,280 @@ public sealed class DelegateCreateHint : CreateHint
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11
+        )
         {
             return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12
+        )
         {
-            return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+            return HandleInAndOut<TOut>(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12
+            );
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
         internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13)
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13
+        )
         {
-            return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13);
+            return HandleInAndOut<TOut>(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13
+            );
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-        internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14)
+        internal TOut? AutoDelegate<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            TOut
+        >(
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14
+        )
         {
-            return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14);
+            return HandleInAndOut<TOut>(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13,
+                in14
+            );
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-        internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14, T15? in15)
+        internal TOut? AutoDelegate<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15,
+            TOut
+        >(
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14,
+            T15? in15
+        )
         {
-            return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15);
+            return HandleInAndOut<TOut>(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13,
+                in14,
+                in15
+            );
         }
 
         /// <summary>Matches to delegate with same number of inputs and output.</summary>
@@ -371,11 +755,61 @@ public sealed class DelegateCreateHint : CreateHint
         /// <param name="in15">Matches input parameter 15.</param>
         /// <param name="in16">Matches input parameter 16.</param>
         /// <returns>Nothing if <c>void</c>; otherwise random data.</returns>
-        internal TOut? AutoDelegate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TOut>(
-            T1? in1, T2? in2, T3? in3, T4? in4, T5? in5, T6? in6, T7? in7, T8? in8, T9? in9,
-            T10? in10, T11? in11, T12? in12, T13? in13, T14? in14, T15? in15, T16? in16)
+        internal TOut? AutoDelegate<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15,
+            T16,
+            TOut
+        >(
+            T1? in1,
+            T2? in2,
+            T3? in3,
+            T4? in4,
+            T5? in5,
+            T6? in6,
+            T7? in7,
+            T8? in8,
+            T9? in9,
+            T10? in10,
+            T11? in11,
+            T12? in12,
+            T13? in13,
+            T14? in14,
+            T15? in15,
+            T16? in16
+        )
         {
-            return HandleInAndOut<TOut>(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15, in16);
+            return HandleInAndOut<TOut>(
+                in1,
+                in2,
+                in3,
+                in4,
+                in5,
+                in6,
+                in7,
+                in8,
+                in9,
+                in10,
+                in11,
+                in12,
+                in13,
+                in14,
+                in15,
+                in16
+            );
         }
     }
 }

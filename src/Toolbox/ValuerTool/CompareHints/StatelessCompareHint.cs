@@ -7,7 +7,8 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class StatelessCompareHint : CompareHint
 {
     /// <summary>Flags used to find properties and fields.</summary>
-    private const BindingFlags _Scope = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+    private const BindingFlags _Scope =
+        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
@@ -23,7 +24,11 @@ public sealed class StatelessCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         return [];
     }

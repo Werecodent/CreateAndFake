@@ -8,17 +8,21 @@ using System.Diagnostics.CodeAnalysis;
 namespace System.Runtime.CompilerServices;
 
 /// <summary>
-///     Indicates that compiler support for a particular feature is required for the location where this attribute is applied.
+///     Indicates that compiler support for a particular feature
+///     is required for the location where this attribute is applied.
 /// </summary>
 /// <param name="featureName"><inheritdoc cref="FeatureName" path="/summary"/></param>
-[ExcludeFromCodeCoverage, AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+[
+    ExcludeFromCodeCoverage,
+    AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)
+]
 internal sealed class CompilerFeatureRequiredAttribute(string featureName) : Attribute
 {
     /// <summary>The name of the compiler feature.</summary>
     public string FeatureName { get; } = featureName;
 
     /// <summary>
-    ///     If true, the compiler can choose to allow access to the location where 
+    ///     If true, the compiler can choose to allow access to the location where
     ///     this attribute is applied if it does not understand <see cref="FeatureName"/>.
     /// </summary>
     public bool IsOptional { get; init; }

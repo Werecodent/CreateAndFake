@@ -19,11 +19,16 @@ public static class CallDataTests
     }
 
     [Theory, RandomData]
-    internal static void MatchesCall_MethodNameMismatch(DataHolderSample[] data, Type[] generics, string name)
+    internal static void MatchesCall_MethodNameMismatch(
+        DataHolderSample[] data,
+        Type[] generics,
+        string name
+    )
     {
         new CallData(name, generics, data, Tools.Faker.Options)
             .MatchesCall(new CallData(name.CreateVariant(), generics, data, null))
-            .Assert().Is(false);
+            .Assert()
+            .Is(false);
     }
 
     [Theory, RandomData]
@@ -34,30 +39,42 @@ public static class CallDataTests
 
         new CallData(name, generics1, data, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics2, data, null))
-            .Assert().Is(false);
+            .Assert()
+            .Is(false);
     }
 
     [Theory, RandomData]
-    internal static void MatchesCall_AnyGenericMatchesAll(DataHolderSample[] data, string name, Type[] generics1)
+    internal static void MatchesCall_AnyGenericMatchesAll(
+        DataHolderSample[] data,
+        string name,
+        Type[] generics1
+    )
     {
         Type[] generics2 = [.. generics1.Select(t => typeof(AnyGeneric))];
 
         new CallData(name, generics2, data, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics1, data, null))
-            .Assert().Is(true);
+            .Assert()
+            .Is(true);
     }
 
     [Theory, RandomData]
-    internal static void MatchesCall_DataMatchBehavior(string name, Type[] generics, DataHolderSample[] data1)
+    internal static void MatchesCall_DataMatchBehavior(
+        string name,
+        Type[] generics,
+        DataHolderSample[] data1
+    )
     {
         DataHolderSample[] data2 = [.. data1.Select(d => d.CreateDeepClone())];
 
         new CallData(name, generics, data1, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics, data2, null))
-            .Assert().Is(true);
+            .Assert()
+            .Is(true);
 
         new CallData(name, generics, data1, null)
             .MatchesCall(new CallData(name, generics, data2, null))
-            .Assert().Is(false);
+            .Assert()
+            .Is(false);
     }
 }

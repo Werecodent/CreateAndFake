@@ -14,7 +14,11 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Inherits<TChild>(Type? type, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void Inherits<TChild>(
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.Inherits<TChild>())
@@ -22,7 +26,8 @@ public partial class Asserter : ITypeAsserter
             throw new AssertException(
                 $"'{ExpandTypeName(type)}' does not inherit '{ExpandTypeName(typeof(TChild))}'.",
                 details,
-                localOptions.Gen.InitialSeed);
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -33,7 +38,12 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Inherits(Type? child, Type? type, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void Inherits(
+        Type? child,
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.Inherits(child))
@@ -41,7 +51,8 @@ public partial class Asserter : ITypeAsserter
             throw new AssertException(
                 $"'{ExpandTypeName(type)}' does not inherit '{ExpandTypeName(child)}'.",
                 details,
-                localOptions.Gen.InitialSeed);
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -54,7 +65,11 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void InheritedBy<TParent>(Type? type, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void InheritedBy<TParent>(
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.IsInheritedBy<TParent>())
@@ -62,7 +77,8 @@ public partial class Asserter : ITypeAsserter
             throw new AssertException(
                 $"'{ExpandTypeName(typeof(TParent))}' does not inherit '{ExpandTypeName(type)}'.",
                 details,
-                localOptions.Gen.InitialSeed);
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -73,8 +89,12 @@ public partial class Asserter : ITypeAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void InheritedBy(Type? parent, Type? type,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void InheritedBy(
+        Type? parent,
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!type.IsInheritedBy(parent))
@@ -82,7 +102,8 @@ public partial class Asserter : ITypeAsserter
             throw new AssertException(
                 $"'{ExpandTypeName(parent)}' does not inherit '{ExpandTypeName(type)}'.",
                 details,
-                localOptions.Gen.InitialSeed);
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 }

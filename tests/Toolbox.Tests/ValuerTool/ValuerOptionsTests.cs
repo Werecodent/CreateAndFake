@@ -1,7 +1,7 @@
 global using ValuerMod = System.Func<
     CreateAndFake.ValuerTool.ValuerOptions,
-    CreateAndFake.ValuerTool.ValuerOptions>;
-
+    CreateAndFake.ValuerTool.ValuerOptions
+>;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Tests.ValuerTool;

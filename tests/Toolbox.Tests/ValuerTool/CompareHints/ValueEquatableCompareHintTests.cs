@@ -9,9 +9,14 @@ public sealed class ValueEquatableCompareHintTests : CompareHintTestBase<ValueEq
 {
     private static readonly ValueEquatableCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(IValueEquatable), typeof(ValueEquatableSample)];
+    private static readonly Type[] _ValidTypes =
+    [
+        typeof(IValueEquatable),
+        typeof(ValueEquatableSample),
+    ];
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
 
-    public ValueEquatableCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public ValueEquatableCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

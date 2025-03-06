@@ -12,7 +12,9 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 public abstract class CopyHintTestBase<T>(
     IEnumerable<Type> validTypes,
     IEnumerable<Type> invalidTypes,
-    bool copiesByRef = false) where T : CopyHint, new()
+    bool copiesByRef = false
+)
+    where T : CopyHint, new()
 {
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = new T();
@@ -53,18 +55,38 @@ public abstract class CopyHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 result = TestInstance.TryCopy(data, CreateChainer());
 
-                result.Assert().Is(new CopyHintResult(data),
-                    "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'.");
+                result
+                    .Assert()
+                    .Is(
+                        new CopyHintResult(data),
+                        "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."
+                    );
 
                 if (_copiesByRef || data is string)
                 {
-                    result.Data.Assert().ReferenceEqual(data,
-                        "Hint '" + typeof(T).Name + "' expected to copy value types by ref of type '" + type.Name + "'.");
+                    result
+                        .Data.Assert()
+                        .ReferenceEqual(
+                            data,
+                            "Hint '"
+                                + typeof(T).Name
+                                + "' expected to copy value types by ref of type '"
+                                + type.Name
+                                + "'."
+                        );
                 }
                 else
                 {
-                    result.Data.Assert().ReferenceNotEqual(data,
-                        "Hint '" + typeof(T).Name + "' copied by ref instead of a deep clone of type '" + type.Name + "'.");
+                    result
+                        .Data.Assert()
+                        .ReferenceNotEqual(
+                            data,
+                            "Hint '"
+                                + typeof(T).Name
+                                + "' copied by ref instead of a deep clone of type '"
+                                + type.Name
+                                + "'."
+                        );
                 }
             }
             finally
@@ -83,8 +105,13 @@ public abstract class CopyHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance.TryCopy(data, CreateChainer()).Assert().Is(CopyHintResult.None,
-                    "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'.");
+                TestInstance
+                    .TryCopy(data, CreateChainer())
+                    .Assert()
+                    .Is(
+                        CopyHintResult.None,
+                        "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
+                    );
             }
             finally
             {
@@ -93,13 +120,14 @@ public abstract class CopyHintTestBase<T>(
         }
     }
 
-    /// <param name="optionConfiguration">Modifications of options to apply for this call.</param> 
+    /// <param name="optionConfiguration">Modifications of options to apply for this call.</param>
     /// <returns>Chainer to use for testing.</returns>
     protected static DuplicatorChainer CreateChainer(DuplicatorMod optionConfiguration = null)
     {
         return new DuplicatorChainer(
             optionConfiguration?.Invoke(Tools.Duplicator.Options) ?? Tools.Duplicator.Options,
             Tools.Duplicator,
-            (o, c) => Tools.Duplicator.Copy(o));
+            (o, c) => Tools.Duplicator.Copy(o)
+        );
     }
 }

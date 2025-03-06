@@ -30,11 +30,14 @@ public static class Issue089Tests
         string startSample = text.Substring(0, 2);
         string endSample = text.Substring(text.Length - 2, 2);
 
-        text.Assert(t => t.Assert().Contains(Tools.Mutator.Variant(text))).Throws<AssertException>();
+        text.Assert(t => t.Assert().Contains(Tools.Mutator.Variant(text)))
+            .Throws<AssertException>();
         text.Assert(t => t.Assert().ContainsNot(text.Substring(2, 2))).Throws<AssertException>();
-        text.Assert(t => t.Assert().StartsWith(Tools.Mutator.Variant(startSample))).Throws<AssertException>();
+        text.Assert(t => t.Assert().StartsWith(Tools.Mutator.Variant(startSample)))
+            .Throws<AssertException>();
         text.Assert(t => t.Assert().StartsNotWith(startSample)).Throws<AssertException>();
-        text.Assert(t => t.Assert().EndsWith(Tools.Mutator.Variant(endSample))).Throws<AssertException>();
+        text.Assert(t => t.Assert().EndsWith(Tools.Mutator.Variant(endSample)))
+            .Throws<AssertException>();
         text.Assert(t => t.Assert().EndsNotWith(endSample)).Throws<AssertException>();
     }
 
@@ -47,7 +50,10 @@ public static class Issue089Tests
         Func<object> func = () => throw error;
         func.Assert().Throws<InvalidOperationException>().Assert().Is(error);
 
-        item.Assert(o => false ? "" : throw error).Throws<InvalidOperationException>().Assert().Is(error);
+        item.Assert(o => false ? "" : throw error)
+            .Throws<InvalidOperationException>()
+            .Assert()
+            .Is(error);
 
         item.Assert(o => o.Assert().Fail()).Throws<AssertException>().Assert().IsNot(error);
     }

@@ -13,32 +13,38 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
         typeof(object),
         typeof(int),
         typeof(double),
-        typeof(KeyValuePair<string, int>)
+        typeof(KeyValuePair<string, int>),
     ];
 
-    private static readonly Type[] _ValidTypes = [
-        .. CollectionCreateHint.PotentialCollections
-        .Concat([
-            typeof(IEnumerable<>),
-            typeof(IList<>),
-            typeof(ISet<>),
-            typeof(IDictionary<,>),
-            typeof(IReadOnlyCollection<>),
-            typeof(IReadOnlyList<>),
-            typeof(IReadOnlyDictionary<,>),
-            typeof(int[]),
-            typeof(string[]),
-            typeof(object[])])
-        .Select(MakeDefined)];
+    private static readonly Type[] _ValidTypes =
+    [
+        .. CollectionCreateHint
+            .PotentialCollections.Concat(
+                [
+                    typeof(IEnumerable<>),
+                    typeof(IList<>),
+                    typeof(ISet<>),
+                    typeof(IDictionary<,>),
+                    typeof(IReadOnlyCollection<>),
+                    typeof(IReadOnlyList<>),
+                    typeof(IReadOnlyDictionary<,>),
+                    typeof(int[]),
+                    typeof(string[]),
+                    typeof(object[]),
+                ]
+            )
+            .Select(MakeDefined),
+    ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(object),
         typeof(IEnumerable),
-        typeof(IEnumerable<>)
+        typeof(IEnumerable<>),
     ];
 
-    public CollectionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public CollectionCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
     public void TryCreate_RetriesSetsWithDuplicates()
@@ -53,7 +59,9 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     {
         if (type.IsGenericTypeDefinition)
         {
-            return type.MakeGenericType([.. type.GetGenericArguments().Select(t => Tools.Gen.NextItem(_ItemTypes))]);
+            return type.MakeGenericType(
+                [.. type.GetGenericArguments().Select(t => Tools.Gen.NextItem(_ItemTypes))]
+            );
         }
         else
         {

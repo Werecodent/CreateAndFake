@@ -16,11 +16,14 @@ public static class Issue003Tests
     {
         sample.Setup(
             d => d.TestMethodA(out Arg.AnyRef<int>().Var),
-            Behavior.Set((OutRef<int> v) =>
-            {
-                v.Var = testValue;
-                return result;
-            }));
+            Behavior.Set(
+                (OutRef<int> v) =>
+                {
+                    v.Var = testValue;
+                    return result;
+                }
+            )
+        );
 
         sample.Dummy.TestMethodA(out int newValue).Assert().Is(result);
         sample.VerifyAll();
@@ -33,11 +36,14 @@ public static class Issue003Tests
         int testValue = 0;
         sample.Setup(
             d => d.TestMethodB(ref Arg.AnyRef<int>().Var),
-            Behavior.Set((OutRef<int> v) =>
-            {
-                v.Var -= 5;
-                return result;
-            }));
+            Behavior.Set(
+                (OutRef<int> v) =>
+                {
+                    v.Var -= 5;
+                    return result;
+                }
+            )
+        );
 
         sample.Dummy.TestMethodB(ref testValue).Assert().Is(result);
         sample.VerifyAll();

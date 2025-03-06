@@ -1,6 +1,8 @@
 ﻿global using FakerMod = System.Func<
     CreateAndFake.FakerTool.FakerOptions,
-    CreateAndFake.FakerTool.FakerOptions>;
+    CreateAndFake.FakerTool.FakerOptions
+>;
+
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Creates fake objects.</summary>

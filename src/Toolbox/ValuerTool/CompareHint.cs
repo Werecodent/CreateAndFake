@@ -48,7 +48,11 @@ public abstract class CompareHint
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <returns>The found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
     /// <inheritdoc cref="TryCompare"/>
-    protected abstract IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer);
+    protected abstract IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    );
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>

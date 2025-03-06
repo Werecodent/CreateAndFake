@@ -8,7 +8,8 @@ public sealed class AssertException : Exception
 {
     /// <inheritdoc cref="AssertException"/>
     /// <remarks>Serialization constructor.</remarks>
-    private AssertException() : base() { }
+    private AssertException()
+        : base() { }
 
     /// <inheritdoc cref="AssertException"/>
     /// <param name="message">Reason for the exception.</param>
@@ -32,7 +33,13 @@ public sealed class AssertException : Exception
     /// <param name="seed">Seed used for data generation.</param>
     /// <param name="content">Optional related content.</param>
     /// <param name="innerException">Inner exception that occurred.</param>
-    public AssertException(string? message, string? details, int? seed, string? content, Exception? innerException)
+    public AssertException(
+        string? message,
+        string? details,
+        int? seed,
+        string? content,
+        Exception? innerException
+    )
         : base(BuildMessage(message, details, seed, content), innerException) { }
 
     /// <inheritdoc cref="AssertException"/>
@@ -42,7 +49,8 @@ public sealed class AssertException : Exception
 #if NET5_0_OR_GREATER
     [Obsolete(DiagnosticId = "SYSLIB0051")]
 #endif
-    private AssertException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    private AssertException(SerializationInfo info, StreamingContext context)
+        : base(info, context) { }
 
     /// <summary>Integrates the details into the message.</summary>
     /// <param name="message">Starting message.</param>
@@ -50,13 +58,18 @@ public sealed class AssertException : Exception
     /// <param name="seed">Seed used for data generation.</param>
     /// <param name="content">Content to integrate.</param>
     /// <returns>Message to use for the exception.</returns>
-    private static string BuildMessage(string? message, string? details, int? seed, string? content = null)
+    private static string BuildMessage(
+        string? message,
+        string? details,
+        int? seed,
+        string? content = null
+    )
     {
         string nl = Environment.NewLine;
 
-        return (message ?? "Unknown assert failure.") +
-            ((details != null) ? $"{nl}Details: {details}" : "") +
-            (seed.HasValue ? $"{nl}Seed: {seed.Value}" : "") +
-            ((content != null) ? $"{nl}Content: {nl}{content}" : "");
+        return (message ?? "Unknown assert failure.")
+            + ((details != null) ? $"{nl}Details: {details}" : "")
+            + (seed.HasValue ? $"{nl}Seed: {seed.Value}" : "")
+            + ((content != null) ? $"{nl}Content: {nl}{content}" : "");
     }
 }

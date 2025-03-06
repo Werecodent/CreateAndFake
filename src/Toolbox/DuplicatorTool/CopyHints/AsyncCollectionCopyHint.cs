@@ -14,10 +14,12 @@ public sealed class AsyncCollectionCopyHint : CopyHint
 
         if (source.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {
-            return new(typeof(AsyncCollectionCopyHint)
-                .GetMethod(nameof(CopyAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-                .MakeGenericMethod(source.GetType().GetGenericArguments().Single())
-                .Invoke(null, [source, duplicator]));
+            return new(
+                typeof(AsyncCollectionCopyHint)
+                    .GetMethod(nameof(CopyAsync), BindingFlags.Static | BindingFlags.NonPublic)!
+                    .MakeGenericMethod(source.GetType().GetGenericArguments().Single())
+                    .Invoke(null, [source, duplicator])
+            );
         }
         else
         {
@@ -30,7 +32,10 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     /// <param name="source">Object to clone.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>
-    private static async IAsyncEnumerable<T?> CopyAsync<T>(IAsyncEnumerable<T> source, DuplicatorChainer duplicator)
+    private static async IAsyncEnumerable<T?> CopyAsync<T>(
+        IAsyncEnumerable<T> source,
+        DuplicatorChainer duplicator
+    )
     {
         await foreach (T item in source.ConfigureAwait(false))
         {

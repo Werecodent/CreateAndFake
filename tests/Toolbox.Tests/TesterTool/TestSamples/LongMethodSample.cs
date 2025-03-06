@@ -5,7 +5,8 @@ namespace CreateAndFake.Tests.TesterTool.TestSamples;
 public static class LongMethodSample
 {
     [ExcludeFromCodeCoverage]
-    public static void BeSlow<T>(string data, out T output) where T : new()
+    public static void BeSlow<T>(string data, out T output)
+        where T : new()
     {
         Thread.Sleep(new TimeSpan(0, 0, 2));
 

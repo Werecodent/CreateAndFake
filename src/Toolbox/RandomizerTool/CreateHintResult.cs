@@ -9,8 +9,10 @@ public sealed class CreateHintResult : HintResult<object?>
     public static CreateHintResult None { get; } = new(false, null);
 
     /// <inheritdoc/>
-    private CreateHintResult(bool hasData, object? data) : base(hasData, data) { }
+    private CreateHintResult(bool hasData, object? data)
+        : base(hasData, data) { }
 
     /// <inheritdoc cref="CreateHintResult(bool,object)"/>
-    public CreateHintResult(object? data) : this(true, data) { }
+    public CreateHintResult(object? data)
+        : this(true, data) { }
 }

@@ -29,7 +29,10 @@ public static class AssertChainerTests
     }
 
     [Theory, RandomData]
-    internal static void Also_HandlesCollection(AssertChainer<object> chainer, IEnumerable<int> data)
+    internal static void Also_HandlesCollection(
+        AssertChainer<object> chainer,
+        IEnumerable<int> data
+    )
     {
         chainer.Also(data).GetType().Assert().Inherits<AssertEnumerable>();
     }

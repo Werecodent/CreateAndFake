@@ -35,8 +35,8 @@ public record RandomizerOptions : IToolOptions
     public int StringMaxSize { get; init; } = 12;
 
     /// <summary>Characters to include in random strings.</summary>
-    public FrozenSet<char> StringCharacterSet { get; init; } = FrozenSet.ToFrozenSet(
-        @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+    public FrozenSet<char> StringCharacterSet { get; init; } =
+        FrozenSet.ToFrozenSet(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
     /// <summary>If the default set of hints should be used in randomization.</summary>
     public bool IncludeDefaultHints { get; init; } = true;
@@ -51,16 +51,16 @@ public record RandomizerOptions : IToolOptions
     public RandomizerOptions? NestedOptions { get; init; } = null;
 
     /// <inheritdoc cref="NextSize"/>
-    /// <seealso cref="CollectionMinSize"/> 
-    /// <seealso cref="CollectionMaxSize"/> 
+    /// <seealso cref="CollectionMinSize"/>
+    /// <seealso cref="CollectionMaxSize"/>
     public int NextCollectionSize()
     {
         return NextSize(CollectionMinSize, CollectionMaxSize);
     }
 
     /// <inheritdoc cref="NextSize"/>
-    /// <seealso cref="StringMinSize"/> 
-    /// <seealso cref="StringMaxSize"/> 
+    /// <seealso cref="StringMinSize"/>
+    /// <seealso cref="StringMaxSize"/>
     public int NextStringSize()
     {
         return NextSize(StringMinSize, StringMaxSize);
@@ -72,7 +72,8 @@ public record RandomizerOptions : IToolOptions
     /// <returns>The next size to use.</returns>
     private int NextSize(int setMin, int setMax)
     {
-        int min, max;
+        int min,
+            max;
         if (setMin <= setMax)
         {
             min = setMin;

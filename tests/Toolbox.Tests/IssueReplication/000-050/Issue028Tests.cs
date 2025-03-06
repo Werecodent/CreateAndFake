@@ -10,9 +10,14 @@ public static class Issue028Tests
     [Fact]
     internal static void Issue028_ConditionalCreation()
     {
-        Tools.Randomizer.Create<Sample>(opt => opt with
-        {
-            FinalCondition = r => r is Sample s && s.Value > 0
-        }).Value.Assert().GreaterThan(0);
+        Tools
+            .Randomizer.Create<Sample>(opt =>
+                opt with
+                {
+                    FinalCondition = r => r is Sample s && s.Value > 0,
+                }
+            )
+            .Value.Assert()
+            .GreaterThan(0);
     }
 }

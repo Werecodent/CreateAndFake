@@ -10,24 +10,41 @@ namespace CreateAndFake.RandomizerTool.CreateHints;
 public sealed class CommonSystemCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens
-        = new Dictionary<Type, Func<RandomizerChainer, object>>()
+    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens =
+        new Dictionary<Type, Func<RandomizerChainer, object>>()
         {
-            { typeof(CultureInfo), rand => rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures)) },
+            {
+                typeof(CultureInfo),
+                rand => rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures))
+            },
             { typeof(TimeSpan), rand => new TimeSpan(rand.Options.Gen.Next<long>()) },
-            { typeof(DateTime), rand => new DateTime(rand.Options.Gen.Next(DateTime.MinValue.Ticks, DateTime.MaxValue.Ticks)) },
+            {
+                typeof(DateTime),
+                rand => new DateTime(
+                    rand.Options.Gen.Next(DateTime.MinValue.Ticks, DateTime.MaxValue.Ticks)
+                )
+            },
             { typeof(DateTimeOffset), rand => new DateTimeOffset(rand.Create<DateTime>()) },
-            { typeof(Guid), rand => new Guid([.. Enumerable.Range(0, 16).Select(i => rand.Create<byte>())]) },
+            {
+                typeof(Guid),
+                rand => new Guid([.. Enumerable.Range(0, 16).Select(i => rand.Create<byte>())])
+            },
             { typeof(IntPtr), rand => new IntPtr(rand.Options.Gen.Next<int>()) },
             { typeof(IFormatProvider), rand => rand.Create<CultureInfo>() },
-
-            { typeof(Assembly), rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies()) },
+            {
+                typeof(Assembly),
+                rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies())
+            },
             { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },
-
             { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
-            { typeof(UriBuilder), rand => new UriBuilder(
-                rand.Create<bool>() ? "http" : "https", rand.Create<string>(), rand.Options.Gen.Next(-1, 65535)) },
-
+            {
+                typeof(UriBuilder),
+                rand => new UriBuilder(
+                    rand.Create<bool>() ? "http" : "https",
+                    rand.Create<string>(),
+                    rand.Options.Gen.Next(-1, 65535)
+                )
+            },
             { typeof(StringBuilder), rand => new StringBuilder(rand.Create<string>()) },
         }.ToFrozenDictionary();
 

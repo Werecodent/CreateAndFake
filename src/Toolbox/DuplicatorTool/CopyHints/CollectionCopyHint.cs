@@ -11,13 +11,9 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 public sealed class CollectionCopyHint : CopyHint
 {
     /// <summary>Special cases where the data needs to be reversed.</summary>
-    private static readonly FrozenSet<Type> _ReverseCases
-        = FrozenSet.ToFrozenSet(
-        [
-            typeof(ConcurrentStack<>),
-            typeof(Stack<>),
-            typeof(Stack)
-        ]);
+    private static readonly FrozenSet<Type> _ReverseCases = FrozenSet.ToFrozenSet(
+        [typeof(ConcurrentStack<>), typeof(Stack<>), typeof(Stack)]
+    );
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
@@ -34,8 +30,9 @@ public sealed class CollectionCopyHint : CopyHint
             else
             {
                 throw new NotSupportedException(
-                    $"Collection '{source.GetType().FullName}' not supported by the duplicator. " +
-                    "Create a hint to generate the type and pass it to the duplicator.");
+                    $"Collection '{source.GetType().FullName}' not supported by the duplicator. "
+                        + "Create a hint to generate the type and pass it to the duplicator."
+                );
             }
         }
         return CopyHintResult.None;
@@ -51,14 +48,22 @@ public sealed class CollectionCopyHint : CopyHint
             return null;
         }
 
-        Array contents = CopyContents(source, itemType, duplicator,
-            _ReverseCases.Contains(type.AsGenericType() ?? type));
+        Array contents = CopyContents(
+            source,
+            itemType,
+            duplicator,
+            _ReverseCases.Contains(type.AsGenericType() ?? type)
+        );
 
         return MakeCollection(contents, type, itemType, duplicator);
     }
 
-    private static IEnumerable? MakeCollection(Array contents,
-        Type collectionType, Type itemType, DuplicatorChainer duplicator)
+    private static IEnumerable? MakeCollection(
+        Array contents,
+        Type collectionType,
+        Type itemType,
+        DuplicatorChainer duplicator
+    )
     {
         if (collectionType.IsArray)
         {
@@ -107,9 +112,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             case 2:
                 Type pair = typeof(KeyValuePair<,>).MakeGenericType(args);
-                return type.Inherits(typeof(IEnumerable<>).MakeGenericType(pair))
-                    ? pair
-                    : null;
+                return type.Inherits(typeof(IEnumerable<>).MakeGenericType(pair)) ? pair : null;
             case 1:
                 return args.ElementAt(0);
             case 0:
@@ -124,7 +127,12 @@ public sealed class CollectionCopyHint : CopyHint
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>
     /// <returns>The duplicate object.</returns>
-    private static Array CopyContents(IEnumerable source, Type itemType, DuplicatorChainer duplicator, bool reverse)
+    private static Array CopyContents(
+        IEnumerable source,
+        Type itemType,
+        DuplicatorChainer duplicator,
+        bool reverse
+    )
     {
         List<object?> copy = [];
 

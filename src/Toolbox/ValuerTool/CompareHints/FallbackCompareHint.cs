@@ -7,7 +7,11 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class FallbackCompareHint : CompareHint
 {
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         if (expected != actual)
         {
@@ -34,5 +38,4 @@ public sealed class FallbackCompareHint : CompareHint
 
         return type != null && valuer.Options.FallbackTypes.Contains(type);
     }
-
 }

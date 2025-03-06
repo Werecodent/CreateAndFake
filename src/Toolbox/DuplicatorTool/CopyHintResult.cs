@@ -9,8 +9,10 @@ public sealed class CopyHintResult : HintResult<object?>
     public static CopyHintResult None { get; } = new(false, null);
 
     /// <inheritdoc/>
-    private CopyHintResult(bool hasData, object? data) : base(hasData, data) { }
+    private CopyHintResult(bool hasData, object? data)
+        : base(hasData, data) { }
 
     /// <inheritdoc cref="CopyHintResult(bool,object)"/>
-    public CopyHintResult(object? data) : this(true, data) { }
+    public CopyHintResult(object? data)
+        : this(true, data) { }
 }

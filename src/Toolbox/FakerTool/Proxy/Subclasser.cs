@@ -42,9 +42,11 @@ public static class Subclasser
     /// <returns>An instance of the created child type.</returns>
     public static IFaked Create(Type parent, params IEnumerable<Type> interfaces)
     {
-        return (IFaked)CreateInfo(parent, interfaces).AsType()
-            .GetConstructor([Emitter.MetaType])!
-            .Invoke([new FakeMetaProvider()]);
+        return (IFaked)
+            CreateInfo(parent, interfaces)
+                .AsType()
+                .GetConstructor([Emitter.MetaType])!
+                .Invoke([new FakeMetaProvider()]);
     }
 
     /// <summary>Creates a subclass of the given type.</summary>
@@ -72,8 +74,11 @@ public static class Subclasser
         IEnumerable<Type> invalidInterfaces = allInterfaces.Where(t => !t.IsInterface);
         if (invalidInterfaces.Any())
         {
-            throw new ArgumentException("Given interfaces not actually interfaces: '" +
-                string.Join("', '", invalidInterfaces.Select(t => t.Name)) + "'.");
+            throw new ArgumentException(
+                "Given interfaces not actually interfaces: '"
+                    + string.Join("', '", invalidInterfaces.Select(t => t.Name))
+                    + "'."
+            );
         }
 
         return FindOrBuildType(realParent, [.. allInterfaces.Distinct()]);
@@ -90,7 +95,10 @@ public static class Subclasser
         }
         else if (parent.IsSealed)
         {
-            return (false, new ArgumentException($"Cannot subclass the sealed type '{parent.Name}'."));
+            return (
+                false,
+                new ArgumentException($"Cannot subclass the sealed type '{parent.Name}'.")
+            );
         }
         else if (parent.IsPointer)
         {
@@ -98,16 +106,27 @@ public static class Subclasser
         }
         else if (parent.ContainsGenericParameters)
         {
-            return (false, new ArgumentException($"Cannot subclass with unspecified generics '{parent.Name}'."));
+            return (
+                false,
+                new ArgumentException($"Cannot subclass with unspecified generics '{parent.Name}'.")
+            );
         }
         else if (!parent.IsVisibleTo(AssemblyName))
         {
-            return (false, new ArgumentException($"Cannot subclass with nonpublic type '{parent.Name}'. "
-                + $"Think about adding 'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly."));
+            return (
+                false,
+                new ArgumentException(
+                    $"Cannot subclass with nonpublic type '{parent.Name}'. "
+                        + $"Think about adding 'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly."
+                )
+            );
         }
         else if (parent == typeof(Array))
         {
-            return (false, new ArgumentException($"Cannot subclass system reserved '{nameof(Array)}' type."));
+            return (
+                false,
+                new ArgumentException($"Cannot subclass system reserved '{nameof(Array)}' type.")
+            );
         }
         else
         {
@@ -125,11 +144,10 @@ public static class Subclasser
         {
             TypeInfo cachedType = _TypeCache
                 .Where(t => t.Key.BaseType == parent)
-                .SingleOrDefault(t => !t.Value
-                    .Except(interfaces)
-                    .Union(interfaces
-                        .Except(t.Value))
-                    .Any()).Key;
+                .SingleOrDefault(t =>
+                    !t.Value.Except(interfaces).Union(interfaces.Except(t.Value)).Any()
+                )
+                .Key;
 
             if (cachedType != null)
             {

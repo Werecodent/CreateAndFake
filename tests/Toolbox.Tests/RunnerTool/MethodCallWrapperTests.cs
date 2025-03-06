@@ -27,14 +27,21 @@ public static class MethodCallWrapperTests
 
     [Theory, RandomData]
     internal static void MethodCallWrapper_WorksInFake(
-        [Stub] IRunner runner, MethodCallWrapper wrapper, MethodBase method)
+        [Stub] IRunner runner,
+        MethodCallWrapper wrapper,
+        MethodBase method
+    )
     {
         runner.CreateFor(Arg.Any<MethodBase>(), Arg.Any<object[]>()).SetupReturn(wrapper);
         runner.CreateFor(method).Assert().Is(wrapper);
     }
 
     [Theory, RandomData]
-    internal static void ModifyArg_ThrowsWithUnknownParameter(MethodCallWrapper method, string parameter, object value)
+    internal static void ModifyArg_ThrowsWithUnknownParameter(
+        MethodCallWrapper method,
+        string parameter,
+        object value
+    )
     {
         method.Assert(m => m.ModifyArg(parameter, value)).Throws<KeyNotFoundException>();
     }
@@ -43,7 +50,8 @@ public static class MethodCallWrapperTests
     internal static void ModifyArg_CanMutate(DataSample sample)
     {
         MethodCallWrapper wrapper = Tools.Runner.CreateFor(
-            typeof(DataHolderSample).GetMethod(nameof(DataHolderSample.HasNested)));
+            typeof(DataHolderSample).GetMethod(nameof(DataHolderSample.HasNested))
+        );
 
         wrapper.ModifyArg("value", sample);
         wrapper.Args.Assert().Contains(sample);
@@ -53,7 +61,8 @@ public static class MethodCallWrapperTests
     internal static void InvokeOn_UsesArgs(DataSample sample)
     {
         MethodCallWrapper wrapper = Tools.Runner.CreateFor(
-            typeof(DataSample).GetMethod(nameof(Equals)));
+            typeof(DataSample).GetMethod(nameof(Equals))
+        );
 
         wrapper.InvokeOn(sample).Assert().Is(false);
         wrapper.ModifyArg("obj", sample);

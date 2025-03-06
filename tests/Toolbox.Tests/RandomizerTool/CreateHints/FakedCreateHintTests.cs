@@ -11,5 +11,6 @@ public sealed class FakedCreateHintTests : CreateHintTestBase<FakedCreateHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public FakedCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public FakedCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

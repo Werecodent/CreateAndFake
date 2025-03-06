@@ -1,6 +1,7 @@
 ﻿global using RandomizerMod = System.Func<
     CreateAndFake.RandomizerTool.RandomizerOptions,
-    CreateAndFake.RandomizerTool.RandomizerOptions>;
+    CreateAndFake.RandomizerTool.RandomizerOptions
+>;
 
 namespace CreateAndFake.RandomizerTool;
 

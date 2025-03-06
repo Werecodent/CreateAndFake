@@ -10,27 +10,36 @@ public static class RandomizerTests
     [Fact]
     internal static void Randomizer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Randomizer>(opt => opt with
-        {
-            InjectionValues = [GetGeneratableMethod()]
-        });
+        Tools.Tester.PreventsNullRefException<Randomizer>(opt =>
+            opt with
+            {
+                InjectionValues = [GetGeneratableMethod()],
+            }
+        );
     }
 
     [Fact]
     internal static void Randomizer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Randomizer>(opt => opt with
-        {
-            InjectionValues = [GetGeneratableMethod()]
-        });
+        Tools.Tester.PreventsParameterMutation<Randomizer>(opt =>
+            opt with
+            {
+                InjectionValues = [GetGeneratableMethod()],
+            }
+        );
     }
 
     private static MethodInfo GetGeneratableMethod()
     {
-        return Tools.Randomizer.Create<MethodInfo>(opt => opt with
-        {
-            FinalCondition = m => m is MethodInfo info && !info.IsGenericMethod && !info.IsGenericMethodDefinition
-        });
+        return Tools.Randomizer.Create<MethodInfo>(opt =>
+            opt with
+            {
+                FinalCondition = m =>
+                    m is MethodInfo info
+                    && !info.IsGenericMethod
+                    && !info.IsGenericMethodDefinition,
+            }
+        );
     }
 
     [Fact]
@@ -45,11 +54,19 @@ public static class RandomizerTests
     internal static void Create_MissingMatchThrows([Stub] CreateHint hint, string data)
     {
         hint.ToFake().ThrowByDefault = true;
-        hint.ToFake().Setup(
-            m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns(CreateHintResult.None, Times.Once));
+        hint.ToFake()
+            .Setup(
+                m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
+                Behavior.Returns(CreateHintResult.None, Times.Once)
+            );
 
-        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false, Hints = [hint] })
+        new Randomizer(
+            Tools.Randomizer.Options with
+            {
+                IncludeDefaultHints = false,
+                Hints = [hint],
+            }
+        )
             .Assert(r => r.Create<string>())
             .Throws<NotSupportedException>();
 
@@ -60,11 +77,19 @@ public static class RandomizerTests
     internal static void Create_ValidHintWorks([Stub] CreateHint hint, string data)
     {
         hint.ToFake().ThrowByDefault = true;
-        hint.ToFake().Setup(
-            m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns(new CreateHintResult(data), Times.Once));
+        hint.ToFake()
+            .Setup(
+                m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
+                Behavior.Returns(new CreateHintResult(data), Times.Once)
+            );
 
-        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false, Hints = [hint] })
+        new Randomizer(
+            Tools.Randomizer.Options with
+            {
+                IncludeDefaultHints = false,
+                Hints = [hint],
+            }
+        )
             .Create<string>()
             .Assert()
             .Is(data);
@@ -75,27 +100,30 @@ public static class RandomizerTests
     [Theory, RandomData]
     internal static void Create_InfiniteLoopDetails(Type type, [Fake] CreateHint hint)
     {
-        hint.ToFake().Setup(
-            m => m.TryCreate(type, Arg.Any<RandomizerChainer>()),
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
+        hint.ToFake()
+            .Setup(
+                m => m.TryCreate(type, Arg.Any<RandomizerChainer>()),
+                Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
+            );
 
         new Randomizer(
             Tools.Randomizer.Options with
             {
                 IncludeDefaultHints = false,
-                Hints = [hint]
-            })
+                Hints = [hint],
+            }
+        )
             .Assert(r => r.Create(type))
-            .Throws<InsufficientExecutionStackException>().Message
-            .Assert()
+            .Throws<InsufficientExecutionStackException>()
+            .Message.Assert()
             .Contains(type.Name);
     }
 
     [Fact]
     internal static void Create_ConditionMatchReturned()
     {
-        Tools.Randomizer
-            .Create<int>(opt => opt with { FinalCondition = r => r is int v && v < 0 })
+        Tools
+            .Randomizer.Create<int>(opt => opt with { FinalCondition = r => r is int v && v < 0 })
             .Assert()
             .LessThan(0);
     }
@@ -103,11 +131,15 @@ public static class RandomizerTests
     [Fact]
     internal static void Create_ConditionTimesOut()
     {
-        Tools.Randomizer
-            .Assert(r => r.Create<DateTime>(opt => opt with
-            {
-                FinalCondition = r => r is DateTime d && d < DateTime.MinValue
-            }))
+        Tools
+            .Randomizer.Assert(r =>
+                r.Create<DateTime>(opt =>
+                    opt with
+                    {
+                        FinalCondition = r => r is DateTime d && d < DateTime.MinValue,
+                    }
+                )
+            )
             .Throws<TimeoutException>();
     }
 
@@ -119,7 +151,11 @@ public static class RandomizerTests
     }
 
     [Theory, RandomData]
-    internal static void Inject_DoubleFakeInjected(Fake<DataSample> fake, [Fake] DataSample fake2, InjectSample holder)
+    internal static void Inject_DoubleFakeInjected(
+        Fake<DataSample> fake,
+        [Fake] DataSample fake2,
+        InjectSample holder
+    )
     {
         holder.Data2.Assert().ReferenceEqual(fake.Dummy);
         holder.Data.Assert().ReferenceEqual(fake2);
@@ -127,7 +163,10 @@ public static class RandomizerTests
 
     [Theory, RandomData]
     internal static void Inject_InterfaceFakesInjected(
-        Fake<IOnlyMockSample> fake, Fake<IOnlyMockSample> fake2, InjectMockSample holder)
+        Fake<IOnlyMockSample> fake,
+        Fake<IOnlyMockSample> fake2,
+        InjectMockSample holder
+    )
     {
         fake.Verify(Times.Never, f => f.FailIfNotMocked());
         fake2.Verify(Times.Never, f => f.FailIfNotMocked());

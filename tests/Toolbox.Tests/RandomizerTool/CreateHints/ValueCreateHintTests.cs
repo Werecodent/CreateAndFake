@@ -11,5 +11,6 @@ public sealed class ValueCreateHintTests : CreateHintTestBase<ValueCreateHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public ValueCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public ValueCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

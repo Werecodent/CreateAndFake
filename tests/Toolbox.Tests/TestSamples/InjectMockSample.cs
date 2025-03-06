@@ -2,8 +2,8 @@
 
 public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sample2)
 {
-    private readonly IOnlyMockSample
-        _sample1 = sample1 ?? throw new ArgumentNullException(nameof(sample1)),
+    private readonly IOnlyMockSample _sample1 =
+            sample1 ?? throw new ArgumentNullException(nameof(sample1)),
         _sample2 = sample2 ?? throw new ArgumentNullException(nameof(sample2));
 
     public void TestIfMockedSeparately()

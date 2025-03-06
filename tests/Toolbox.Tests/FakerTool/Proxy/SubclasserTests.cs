@@ -38,7 +38,10 @@ public static class SubclasserTests
     internal static void Create_BothWork()
     {
         Subclasser.Create<AbstractFakeSample>(typeof(IFakeSample)).Assert().IsNot(null);
-        Subclasser.Create<VirtualFakeSample>(typeof(IFakeSample), typeof(IClashingFakeSample)).Assert().IsNot(null);
+        Subclasser
+            .Create<VirtualFakeSample>(typeof(IFakeSample), typeof(IClashingFakeSample))
+            .Assert()
+            .IsNot(null);
     }
 
     [Fact]
@@ -69,15 +72,21 @@ public static class SubclasserTests
     [Fact]
     internal static void CreateInfo_NoDuplicatesCreated()
     {
-        Subclasser.CreateInfo(typeof(IFakeSample), typeof(IClashingFakeSample)).Assert().ReferenceEqual(
-            Subclasser.CreateInfo(typeof(IClashingFakeSample), typeof(IFakeSample)));
+        Subclasser
+            .CreateInfo(typeof(IFakeSample), typeof(IClashingFakeSample))
+            .Assert()
+            .ReferenceEqual(
+                Subclasser.CreateInfo(typeof(IClashingFakeSample), typeof(IFakeSample))
+            );
     }
 
     [Fact]
     internal static void CreateInfo_IgnoreDupeInterfaces()
     {
-        Subclasser.CreateInfo(typeof(IFakeSample)).Assert().ReferenceEqual(
-            Subclasser.CreateInfo(typeof(IFakeSample), typeof(IFakeSample)));
+        Subclasser
+            .CreateInfo(typeof(IFakeSample))
+            .Assert()
+            .ReferenceEqual(Subclasser.CreateInfo(typeof(IFakeSample), typeof(IFakeSample)));
     }
 
     [Fact]
@@ -108,9 +117,7 @@ public static class SubclasserTests
     [Fact]
     internal static void Supports_FalseWithWithNonVisibleTypes()
     {
-        TypeAttributes invisibleAttributes
-            = TypeAttributes.NotPublic
-            | TypeAttributes.Class;
+        TypeAttributes invisibleAttributes = TypeAttributes.NotPublic | TypeAttributes.Class;
 
         Type type = Tools.Faker.Stub<Type>().Dummy;
 
@@ -121,7 +128,8 @@ public static class SubclasserTests
         type.Name.SetupReturn("TestInvisibleType");
 
         type.Assert(t => Subclasser.Create(t))
-            .Throws<ArgumentException>().Message
-            .Assert().Contains("InternalsVisibleTo");
+            .Throws<ArgumentException>()
+            .Message.Assert()
+            .Contains("InternalsVisibleTo");
     }
 }

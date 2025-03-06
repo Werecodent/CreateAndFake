@@ -7,8 +7,10 @@ namespace CreateAndFake.RandomizerTool.CreateHints;
 public sealed class FrozenCollectionCreateHint : CreateHint
 {
     /// <summary>Constructs frozen sets.</summary>
-    private static readonly MethodInfo _SetMaker = typeof(FrozenSet)
-        .GetMethod(nameof(FrozenSet.ToFrozenSet), BindingFlags.Public | BindingFlags.Static)!;
+    private static readonly MethodInfo _SetMaker = typeof(FrozenSet).GetMethod(
+        nameof(FrozenSet.ToFrozenSet),
+        BindingFlags.Public | BindingFlags.Static
+    )!;
 
     /// <summary>Constructs frozen dictionaries.</summary>
     private static readonly MethodInfo _DictionaryMaker = typeof(FrozenDictionary)
@@ -23,17 +25,38 @@ public sealed class FrozenCollectionCreateHint : CreateHint
 
         if (asGeneric == typeof(FrozenSet<>))
         {
-            return new(_SetMaker
-                .MakeGenericMethod(type.GetGenericArguments())
-                .Invoke(null, [randomizer.Create(typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments())), null]));
+            return new(
+                _SetMaker
+                    .MakeGenericMethod(type.GetGenericArguments())
+                    .Invoke(
+                        null,
+                        [
+                            randomizer.Create(
+                                typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments())
+                            ),
+                            null,
+                        ]
+                    )
+            );
         }
         else if (asGeneric == typeof(FrozenDictionary<,>))
         {
             Type itemType = typeof(KeyValuePair<,>).MakeGenericType(type.GetGenericArguments());
 
-            return new(_DictionaryMaker
-                .MakeGenericMethod(type.GetGenericArguments())
-                .Invoke(null, [randomizer.Create(typeof(IEnumerable<>).MakeGenericType(itemType), randomizer.Options), null]));
+            return new(
+                _DictionaryMaker
+                    .MakeGenericMethod(type.GetGenericArguments())
+                    .Invoke(
+                        null,
+                        [
+                            randomizer.Create(
+                                typeof(IEnumerable<>).MakeGenericType(itemType),
+                                randomizer.Options
+                            ),
+                            null,
+                        ]
+                    )
+            );
         }
         else
         {

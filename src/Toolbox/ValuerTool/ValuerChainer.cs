@@ -13,15 +13,16 @@ public sealed class ValuerChainer(
     ValuerOptions options,
     IValuer valuer,
     Func<object?, ValuerChainer, int> hasher,
-    Func<object?, object?, ValuerChainer, IEnumerable<Difference>> comparer)
+    Func<object?, object?, ValuerChainer, IEnumerable<Difference>> comparer
+)
 {
     /// <summary>Callback to <see cref="IValuer"/> to handle child hashes.</summary>
-    private readonly Func<object?, ValuerChainer, int> _hasher
-        = hasher ?? throw new ArgumentNullException(nameof(hasher));
+    private readonly Func<object?, ValuerChainer, int> _hasher =
+        hasher ?? throw new ArgumentNullException(nameof(hasher));
 
     /// <summary>Callback to <see cref="IValuer"/> to handle child comparisons.</summary>
-    private readonly Func<object?, object?, ValuerChainer, IEnumerable<Difference>> _comparer
-        = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    private readonly Func<object?, object?, ValuerChainer, IEnumerable<Difference>> _comparer =
+        comparer ?? throw new ArgumentNullException(nameof(comparer));
 
     /// <summary>History of hashes to match up references.</summary>
     private readonly Dictionary<int, object?> _hashHistory = [];
@@ -41,11 +42,12 @@ public sealed class ValuerChainer(
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (CanTrack(expected) && CanTrack(actual))
         {
-            (int, int) refHash = (RuntimeHelpers.GetHashCode(expected), RuntimeHelpers.GetHashCode(actual));
+            (int, int) refHash = (
+                RuntimeHelpers.GetHashCode(expected),
+                RuntimeHelpers.GetHashCode(actual)
+            );
 
-            return _compareHistory.Add(refHash)
-                ? _comparer.Invoke(expected, actual, this)
-                : [];
+            return _compareHistory.Add(refHash) ? _comparer.Invoke(expected, actual, this) : [];
         }
         else
         {

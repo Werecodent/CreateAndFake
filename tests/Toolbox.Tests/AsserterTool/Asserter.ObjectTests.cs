@@ -54,7 +54,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ValuesEqual_UnequalInvalid(string value)
     {
-        _testInstance.Assert(t => t.ValuesEqual(value, value.CreateVariant())).Throws<AssertException>();
+        _testInstance
+            .Assert(t => t.ValuesEqual(value, value.CreateVariant()))
+            .Throws<AssertException>();
         _testInstance.Assert(t => t.ValuesEqual(null, value)).Throws<AssertException>();
     }
 
@@ -76,7 +78,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ValuesNotEqual_EqualInvalid(string value)
     {
-        _testInstance.Assert(t => t.ValuesNotEqual(value, value.CreateDeepClone())).Throws<AssertException>();
+        _testInstance
+            .Assert(t => t.ValuesNotEqual(value, value.CreateDeepClone()))
+            .Throws<AssertException>();
         _testInstance.Assert(t => t.ValuesNotEqual(value, value)).Throws<AssertException>();
         _testInstance.Assert(t => t.ValuesNotEqual(null, null)).Throws<AssertException>();
     }
@@ -92,7 +96,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void AreUnique_EqualInvalid(string value)
     {
-        _testInstance.Assert(t => t.AreUnique(value, value.CreateDeepClone())).Throws<AssertException>();
+        _testInstance
+            .Assert(t => t.AreUnique(value, value.CreateDeepClone()))
+            .Throws<AssertException>();
         _testInstance.Assert(t => t.AreUnique(value, value)).Throws<AssertException>();
         _testInstance.Assert(t => t.AreUnique(null, null)).Throws<AssertException>();
     }
@@ -125,7 +131,9 @@ public sealed class AsserterObjectTests
     internal void IsNot_UsesValueQualityFail(DataSample sample)
     {
         sample.Assert(s => s.Assert().IsNot(sample.CreateDeepClone())).Throws<AssertException>();
-        sample.Assert(s => s.Assert().IsNot(sample.CreateDeepClone())).Throws<AssertException>(_config);
+        sample
+            .Assert(s => s.Assert().IsNot(sample.CreateDeepClone()))
+            .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -140,8 +148,12 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ReferenceEqual_DifferentObject(DataSample sample)
     {
-        sample.Assert(s => s.Assert().ReferenceEqual(sample.CreateDeepClone())).Throws<AssertException>();
-        sample.Assert(s => s.Assert().ReferenceEqual(sample.CreateDeepClone())).Throws<AssertException>(_config);
+        sample
+            .Assert(s => s.Assert().ReferenceEqual(sample.CreateDeepClone()))
+            .Throws<AssertException>();
+        sample
+            .Assert(s => s.Assert().ReferenceEqual(sample.CreateDeepClone()))
+            .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -172,8 +184,12 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ValuesEqual_UsesValueQualityFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().ValuesEqual(sample.CreateVariant())).Throws<AssertException>();
-        sample.Assert(s => s.Assert().ValuesEqual(sample.CreateVariant())).Throws<AssertException>(_config);
+        sample
+            .Assert(s => s.Assert().ValuesEqual(sample.CreateVariant()))
+            .Throws<AssertException>();
+        sample
+            .Assert(s => s.Assert().ValuesEqual(sample.CreateVariant()))
+            .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -188,8 +204,12 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ValuesNotEqual_UsesValueQualityFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().ValuesNotEqual(sample.CreateDeepClone())).Throws<AssertException>();
-        sample.Assert(s => s.Assert().ValuesNotEqual(sample.CreateDeepClone())).Throws<AssertException>(_config);
+        sample
+            .Assert(s => s.Assert().ValuesNotEqual(sample.CreateDeepClone()))
+            .Throws<AssertException>();
+        sample
+            .Assert(s => s.Assert().ValuesNotEqual(sample.CreateDeepClone()))
+            .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -204,8 +224,12 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void UniqueFrom_SharedFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone())).Throws<AssertException>();
-        sample.Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone())).Throws<AssertException>(_config);
+        sample
+            .Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone()))
+            .Throws<AssertException>();
+        sample
+            .Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone()))
+            .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 

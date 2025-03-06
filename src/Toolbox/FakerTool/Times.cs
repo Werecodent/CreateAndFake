@@ -6,12 +6,14 @@ namespace CreateAndFake.FakerTool;
 public sealed class Times : IEquatable<Times>, IDeepCloneable
 {
     /// <summary>Expected bounds.</summary>
-    private readonly int _min, _max;
+    private readonly int _min,
+        _max;
 
     /// <inheritdoc cref="Times"/>
     /// <param name="count">Upper and lower bound.</param>
     /// <remarks>Sets the expected bounds to a single value.</remarks>
-    private Times(int count) : this(count, count) { }
+    private Times(int count)
+        : this(count, count) { }
 
     /// <inheritdoc cref="Times"/>
     /// <param name="min">Lower bound.</param>
@@ -49,9 +51,7 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     /// <inheritdoc cref="IValueEquatable.ValuesEqual"/>
     public bool Equals(Times? other)
     {
-        return other != null
-            && _min == other._min
-            && _max == other._max;
+        return other != null && _min == other._min && _max == other._max;
     }
 
     /// <summary>Computes an identifying hash code based upon value.</summary>
@@ -65,12 +65,8 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     /// <returns><c>string</c> representation of <c>this</c>.</returns>
     public override string ToString()
     {
-        string maxValue = (_max != int.MaxValue)
-            ? $"{_max}"
-            : "*";
-        return (_min != _max)
-            ? $"[{_min}-{maxValue}]"
-            : maxValue;
+        string maxValue = (_max != int.MaxValue) ? $"{_max}" : "*";
+        return (_min != _max) ? $"[{_min}-{maxValue}]" : maxValue;
     }
 
     /// <summary>Sets the expected bounds to a single value.</summary>

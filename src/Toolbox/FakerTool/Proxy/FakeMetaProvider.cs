@@ -59,12 +59,13 @@ public sealed class FakeMetaProvider : IDuplicatable
 
         return new FakeMetaProvider(
             _behavior.Reverse().Select(t => duplicator.Copy(t)),
-            _log.Select(t => duplicator.Copy(t)!))
+            _log.Select(t => duplicator.Copy(t)!)
+        )
         {
             Options = duplicator.Copy(Options),
             Identifier = Identifier,
             ThrowByDefault = ThrowByDefault,
-            _defaultCalls = _defaultCalls
+            _defaultCalls = _defaultCalls,
         };
     }
 
@@ -75,7 +76,8 @@ public sealed class FakeMetaProvider : IDuplicatable
         if (_LastCall == null)
         {
             throw new InvalidOperationException(
-                "Faked method never called to set behavior for. Verify instance is a [Fake] stub, and method is abstract.");
+                "Faked method never called to set behavior for. Verify instance is a [Fake] stub, and method is abstract."
+            );
         }
 
         _ = _LastCall.Item1._log.Remove(_LastCall.Item2);
@@ -143,7 +145,8 @@ public sealed class FakeMetaProvider : IDuplicatable
         if (result != null)
         {
             throw new InvalidOperationException(
-                $"Method '{name}' expected void but instead returned '{result}'.");
+                $"Method '{name}' expected void but instead returned '{result}'."
+            );
         }
     }
 
@@ -191,12 +194,19 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <param name="match">Behavior details.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <returns>Base method result.</returns>
-    private static T? CallBase<T>(object instance, string name, (CallData, Behavior) match, object[] args)
+    private static T? CallBase<T>(
+        object instance,
+        string name,
+        (CallData, Behavior) match,
+        object[] args
+    )
     {
         MethodInfo? method = match.Item2.BaseCallType!.GetMethod(name);
         if (method == null)
         {
-            throw new MissingMethodException($"Method '{name}' does not exist on '{match.Item2.BaseCallType}'");
+            throw new MissingMethodException(
+                $"Method '{name}' does not exist on '{match.Item2.BaseCallType}'"
+            );
         }
         else if (method.IsAbstract)
         {
@@ -204,8 +214,12 @@ public sealed class FakeMetaProvider : IDuplicatable
         }
         else
         {
-            Delegate caller = (Delegate)Activator.CreateInstance(
-                FindDelegateType(method), instance, method.MethodHandle.GetFunctionPointer())!;
+            Delegate caller = (Delegate)
+                Activator.CreateInstance(
+                    FindDelegateType(method),
+                    instance,
+                    method.MethodHandle.GetFunctionPointer()
+                )!;
 
             return (T?)match.Item2.Invoke(caller, args);
         }

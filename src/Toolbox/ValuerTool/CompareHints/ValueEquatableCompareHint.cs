@@ -8,25 +8,35 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 {
     /// <summary>Compares equatables by value as well.</summary>
-    private static readonly ObjectCompareHint _NestedHint
-        = new(BindingFlags.Public | BindingFlags.Instance);
+    private static readonly ObjectCompareHint _NestedHint = new(
+        BindingFlags.Public | BindingFlags.Instance
+    );
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IValueEquatable? expected, IValueEquatable? actual, ValuerChainer valuer)
+        IValueEquatable? expected,
+        IValueEquatable? actual,
+        ValuerChainer valuer
+    )
     {
         return LazyCompare(expected, actual, valuer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
-        IValueEquatable? expected, IValueEquatable? actual, ValuerChainer valuer)
+        IValueEquatable? expected,
+        IValueEquatable? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
 
         if (!expected.ValuesEqual(actual))
         {
-            yield return new Difference($".{nameof(IValuerEquatable.ValuesEqual)}", new Difference(true, false));
+            yield return new Difference(
+                $".{nameof(IValuerEquatable.ValuesEqual)}",
+                new Difference(true, false)
+            );
 
             DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, valuer);
             if (byValues.HasData)

@@ -6,5 +6,6 @@ namespace CreateAndFake.AsserterTool.Fluent;
 public sealed class AssertEnumerable : AssertEnumerableBase<AssertEnumerable>
 {
     /// <inheritdoc/>
-    internal AssertEnumerable(IAsserter asserter, IEnumerable? collection) : base(asserter, collection) { }
+    internal AssertEnumerable(IAsserter asserter, IEnumerable? collection)
+        : base(asserter, collection) { }
 }

@@ -6,7 +6,11 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.TesterTool.TestSamples;
 
-[SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "For testing.")]
+[SuppressMessage(
+    "Microsoft.Performance",
+    "CA1822:MarkMembersAsStatic",
+    Justification = "For testing."
+)]
 public sealed class MockDisposableSample(object value) : IDisposable
 {
     internal static readonly object _Lock = new();
@@ -17,7 +21,11 @@ public sealed class MockDisposableSample(object value) : IDisposable
 
     internal static int _FinalizerDisposes = 0;
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Must ignore in finalizer.")]
+    [SuppressMessage(
+        "Design",
+        "CA1031:Do not catch general exception types",
+        Justification = "Must ignore in finalizer."
+    )]
     [ExcludeFromCodeCoverage]
     ~MockDisposableSample()
     {

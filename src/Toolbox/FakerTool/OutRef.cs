@@ -8,8 +8,10 @@ namespace CreateAndFake.FakerTool;
 public sealed class OutRef<T> : IOutRef
 {
     /// <summary>Used as the out/ref argument.</summary>
-    [SuppressMessage("Microsoft.Design",
+    [SuppressMessage(
+        "Microsoft.Design",
         "CA1051:DoNotDeclareVisibleInstanceFields",
-        Justification = "Required to match out/ref.")]
+        Justification = "Required to match out/ref."
+    )]
     public T? Var = default;
 }

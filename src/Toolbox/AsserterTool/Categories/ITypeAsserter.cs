@@ -20,7 +20,12 @@ public interface ITypeAsserter
     /// <summary>Verifies <c>type</c> inherits <paramref name="child"/>.</summary>
     /// <param name="child">Expected child of <c>Type</c>.</param>
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
-    void Inherits(Type? child, Type? type, AsserterMod? optionConfiguration, string? details = null);
+    void Inherits(
+        Type? child,
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 
 #pragma warning restore CA1716 // Identifiers should not match keywords.
 
@@ -38,5 +43,10 @@ public interface ITypeAsserter
     /// <summary>Verifies <paramref name="parent"/> inherits <c>type</c>.</summary>
     /// <param name="parent">Expected parent of <c>type</c>.</param>
     /// <inheritdoc cref="InheritedBy{T}(Type,AsserterMod,string)"/>
-    void InheritedBy(Type? parent, Type? type, AsserterMod? optionConfiguration, string? details = null);
+    void InheritedBy(
+        Type? parent,
+        Type? type,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 }

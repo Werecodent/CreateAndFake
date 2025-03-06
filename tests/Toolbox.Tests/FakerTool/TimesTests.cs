@@ -43,7 +43,8 @@ public static class TimesTests
     [Fact]
     internal static void Between_Works()
     {
-        int min, max;
+        int min,
+            max;
         do
         {
             min = Tools.Randomizer.Create<int>();
@@ -95,7 +96,8 @@ public static class TimesTests
     [Fact]
     internal static void Equality_MatchesValue()
     {
-        int min, max;
+        int min,
+            max;
         do
         {
             min = Tools.Randomizer.Create<int>();

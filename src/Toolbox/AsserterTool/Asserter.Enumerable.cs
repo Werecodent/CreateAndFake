@@ -17,12 +17,21 @@ public partial class Asserter : IEnumerableAsserter
 
     /// <inheritdoc/>
     [DoesNotReturn]
-    public virtual void Fail(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void Fail(
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
-            throw new AssertException($"Test failed.", details, localOptions.Gen.InitialSeed, (string?)null);
+            throw new AssertException(
+                $"Test failed.",
+                details,
+                localOptions.Gen.InitialSeed,
+                (string?)null
+            );
         }
 
         int i = 0;
@@ -32,7 +41,12 @@ public partial class Asserter : IEnumerableAsserter
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
 
-        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, contents.ToString());
+        throw new AssertException(
+            "Test failed.",
+            details,
+            localOptions.Gen.InitialSeed,
+            contents.ToString()
+        );
     }
 
     /// <inheritdoc/>
@@ -42,7 +56,11 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void IsEmpty(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void IsEmpty(
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         HasCount(0, collection, optionConfiguration, details);
     }
@@ -54,18 +72,28 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void IsNotEmpty(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void IsNotEmpty(
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection with elements, but was 'null'.", details, localOptions.Gen.InitialSeed);
+                $"Expected collection with elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
         else if (!collection.GetEnumerator().MoveNext())
         {
             throw new AssertException(
-                "Expected collection with elements, but was empty.", details, localOptions.Gen.InitialSeed);
+                "Expected collection with elements, but was empty.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -76,14 +104,21 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void HasCount(int count, IEnumerable? collection,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void HasCount(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection of '{count}' elements, but was 'null'.", details, localOptions.Gen.InitialSeed);
+                $"Expected collection of '{count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
 
         int i = 0;
@@ -97,7 +132,10 @@ public partial class Asserter : IEnumerableAsserter
         {
             throw new AssertException(
                 $"Expected collection of '{count}' elements, but was '{i}'.",
-                details, localOptions.Gen.InitialSeed, contents.ToString());
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
         }
     }
 
@@ -108,14 +146,21 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void Contains(object? content, IEnumerable? collection,
-        AsserterMod? optionConfiguration, string? details)
+    public virtual void Contains(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection to contain '{content}', but was 'null'.", details, localOptions.Gen.InitialSeed);
+                $"Expected collection to contain '{content}', but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
 
         int i = 0;
@@ -132,25 +177,39 @@ public partial class Asserter : IEnumerableAsserter
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",
-                details, localOptions.Gen.InitialSeed, contents.ToString());
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
         }
     }
 
     /// <inheritdoc/>
-    public virtual void ContainsNot(object? content, IEnumerable? collection, string? details = null)
+    public virtual void ContainsNot(
+        object? content,
+        IEnumerable? collection,
+        string? details = null
+    )
     {
         ContainsNot(content, collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual void ContainsNot(object? content, IEnumerable? collection,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void ContainsNot(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection to contain '{content}', but was 'null'.", details, localOptions.Gen.InitialSeed);
+                $"Expected collection to contain '{content}', but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
 
         int i = 0;
@@ -167,7 +226,10 @@ public partial class Asserter : IEnumerableAsserter
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",
-                details, localOptions.Gen.InitialSeed, contents.ToString());
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
         }
     }
 }

@@ -10,7 +10,8 @@ public sealed class CommonSystemCopyHintTests : CopyHintTestBase<CommonSystemCop
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public CommonSystemCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public CommonSystemCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static void TryCopy_HandlesMemberInfo(MemberInfo data)

@@ -23,7 +23,11 @@ public static class Issue093Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue093_AssertFakeCallIntegration([Fake] Provider faked, Api sample, string value)
+    internal static void Issue093_AssertFakeCallIntegration(
+        [Fake] Provider faked,
+        Api sample,
+        string value
+    )
     {
         faked.Value.SetupReturn(value);
 

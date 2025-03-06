@@ -12,15 +12,16 @@ public sealed class GenericCreateHintTests : CreateHintTestBase<GenericCreateHin
         typeof(IList<>),
         typeof(KeyValuePair<,>),
         typeof(GenericSample<>),
-        typeof(ConstraintSample<,>)
+        typeof(ConstraintSample<,>),
     ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(object),
         typeof(IList<string>),
-        typeof(KeyValuePair<int, int>)
+        typeof(KeyValuePair<int, int>),
     ];
 
-    public GenericCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public GenericCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

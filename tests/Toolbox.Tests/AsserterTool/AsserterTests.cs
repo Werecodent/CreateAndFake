@@ -22,12 +22,14 @@ public static class AsserterTests
     [Fact]
     internal static void Asserter_AllMethodsVirtual()
     {
-        Tools.Asserter.IsEmpty(typeof(Asserter)
-            .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-            .Where(m => !m.IsVirtual)
-            .Select(m => m.Name)
-            .Where(n => n is not nameof(Asserter.Is) and not nameof(Asserter.IsNot))
-            .Where(n => n is not $"get_{nameof(Asserter.Options)}"));
+        Tools.Asserter.IsEmpty(
+            typeof(Asserter)
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Where(m => !m.IsVirtual)
+                .Select(m => m.Name)
+                .Where(n => n is not nameof(Asserter.Is) and not nameof(Asserter.IsNot))
+                .Where(n => n is not $"get_{nameof(Asserter.Options)}")
+        );
     }
 
     [Fact]
@@ -41,7 +43,8 @@ public static class AsserterTests
     {
         _testInstance
             .Assert(t => t.Fail(error))
-            .Throws<AssertException>().InnerException.Assert()
+            .Throws<AssertException>()
+            .InnerException.Assert()
             .Is(error);
     }
 }

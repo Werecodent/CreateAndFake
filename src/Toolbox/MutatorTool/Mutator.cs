@@ -10,7 +10,8 @@ namespace CreateAndFake.MutatorTool;
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
     /// <inheritdoc/>
-    public MutatorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public MutatorOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public T Variant<T>(T instance, params IEnumerable<T?>? extraInstances)
@@ -24,21 +25,24 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         object?[] values = [.. (extraInstances ?? []).Prepend(instance)];
         try
         {
-            return Options.Limiter.StallUntil(
-                $"Create variant of type '{type}'",
-                () => Options.Randomizer.Create(type),
-                result =>
-                {
-                    if (values.All(o => !Options.Valuer.Equals(result, o)))
+            return Options
+                .Limiter.StallUntil(
+                    $"Create variant of type '{type}'",
+                    () => Options.Randomizer.Create(type),
+                    result =>
                     {
-                        return true;
+                        if (values.All(o => !Options.Valuer.Equals(result, o)))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Disposer.Cleanup(result);
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        Disposer.Cleanup(result);
-                        return false;
-                    }
-                }).Last();
+                )
+                .Last();
         }
         catch (TimeoutException e)
         {
@@ -55,28 +59,34 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
-        ContentMap[] maps = [.. (extraInstances ?? [])
-            .Prepend(instance)
-            .Where(e => e != null)
-            .Select(e => Options.Extractor.Extract(e))];
+        ContentMap[] maps =
+        [
+            .. (extraInstances ?? [])
+                .Prepend(instance)
+                .Where(e => e != null)
+                .Select(e => Options.Extractor.Extract(e)),
+        ];
 
         try
         {
-            return Options.Limiter.StallUntil(
-                $"Create unique of type '{type}'",
-                () => Options.Randomizer.Create(type),
-                result =>
-                {
-                    if (!Options.Extractor.Extract(result).HasSharedContent(maps))
+            return Options
+                .Limiter.StallUntil(
+                    $"Create unique of type '{type}'",
+                    () => Options.Randomizer.Create(type),
+                    result =>
                     {
-                        return true;
+                        if (!Options.Extractor.Extract(result).HasSharedContent(maps))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Disposer.Cleanup(result);
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        Disposer.Cleanup(result);
-                        return false;
-                    }
-                }).Last();
+                )
+                .Last();
         }
         catch (TimeoutException e)
         {
@@ -100,13 +110,17 @@ public sealed class Mutator(MutatorOptions options) : IMutator
             field.SetValue(instance, Variant(field.FieldType, field.GetValue(instance)));
             modified = true;
         }
-        foreach (PropertyInfo property in type
-            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .Where(p => p.CanWrite && p.CanRead)
-            .Where(p => p.GetGetMethod() != null)
-            .Where(p => p.GetSetMethod() != null))
+        foreach (
+            PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => p.CanWrite && p.CanRead)
+                .Where(p => p.GetGetMethod() != null)
+                .Where(p => p.GetSetMethod() != null)
+        )
         {
-            property.SetValue(instance, Variant(property.PropertyType, property.GetValue(instance)));
+            property.SetValue(
+                instance,
+                Variant(property.PropertyType, property.GetValue(instance))
+            );
             modified = true;
         }
 

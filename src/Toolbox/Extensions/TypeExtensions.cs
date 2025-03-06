@@ -16,7 +16,9 @@ public static class TypeExtensions
     /// <summary>Keeps track of type inheritance.</summary>
     private static readonly Dictionary<Type, FrozenSet<Type>> _InheritCache = [];
 
-    /// <summary>Finds subclasses of <paramref name="type"/> in the <paramref name="type"/>'s assembly.</summary>
+    /// <summary>
+    ///     Finds subclasses of <paramref name="type"/> in the <paramref name="type"/>'s assembly.
+    /// </summary>
     /// <param name="type"><see cref="Type"/> to locate subclasses for.</param>
     /// <returns>The found creatable subclasses for <paramref name="type"/>.</returns>
     public static IEnumerable<Type> FindLocalSubclasses(this Type type)
@@ -36,7 +38,8 @@ public static class TypeExtensions
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        return AppDomain.CurrentDomain.GetAssemblies()
+        return AppDomain
+            .CurrentDomain.GetAssemblies()
             .Where(a => !a.ReflectionOnly)
             .Where(a => !a.IsDynamic)
             .SelectMany(FindLoadedClassTypes)
@@ -60,10 +63,12 @@ public static class TypeExtensions
         {
             if (!_ClassTypeCache.TryGetValue(assembly, out classTypes))
             {
-                _ClassTypeCache[assembly] = classTypes = [.. FindLoadedTypes(assembly)
-                    .Where(t => t.IsClass)
-                    .Where(t => !t.IsNestedPrivate)
-                    .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false))];
+                _ClassTypeCache[assembly] = classTypes = [
+                    .. FindLoadedTypes(assembly)
+                        .Where(t => t.IsClass)
+                        .Where(t => !t.IsNestedPrivate)
+                        .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false)),
+                ];
             }
         }
         return classTypes;
@@ -99,9 +104,12 @@ public static class TypeExtensions
     {
         ArgumentGuard.ThrowIfNull(assembly, nameof(assembly));
 
-        return type != null && (type.IsVisible || type.Assembly
-            .GetCustomAttributes<InternalsVisibleToAttribute>()
-            .Any(a => a.AssemblyName == assembly.Name));
+        return type != null
+            && (
+                type.IsVisible
+                || type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
+                    .Any(a => a.AssemblyName == assembly.Name)
+            );
     }
 
     /// <summary>Attempts to get the root generic type of <paramref name="type"/>.</summary>
@@ -109,9 +117,7 @@ public static class TypeExtensions
     /// <returns>The casted <paramref name="type"/> if generic; null otherwise.</returns>
     public static Type? AsGenericType(this Type? type)
     {
-        return type != null && type.IsGenericType
-            ? type.GetGenericTypeDefinition()
-            : null;
+        return type != null && type.IsGenericType ? type.GetGenericTypeDefinition() : null;
     }
 
     /// <summary>Checks if <paramref name="parent"/> inherits <typeparamref name="T"/>.</summary>
@@ -131,7 +137,10 @@ public static class TypeExtensions
     /// <returns>
     ///     <c>true</c> if <paramref name="parent"/> inherits <paramref name="child"/>; <c>false</c> otherwise.
     /// </returns>
-    public static bool Inherits([NotNullWhen(true)] this Type? parent, [NotNullWhen(true)] Type? child)
+    public static bool Inherits(
+        [NotNullWhen(true)] this Type? parent,
+        [NotNullWhen(true)] Type? child
+    )
     {
         return IsInheritedBy(child, parent);
     }
@@ -148,7 +157,10 @@ public static class TypeExtensions
     }
 
     /// <inheritdoc cref="Inherits"/>
-    public static bool IsInheritedBy([NotNullWhen(true)] this Type? child, [NotNullWhen(true)] Type? parent)
+    public static bool IsInheritedBy(
+        [NotNullWhen(true)] this Type? child,
+        [NotNullWhen(true)] Type? parent
+    )
     {
         if (child == null || parent == null)
         {

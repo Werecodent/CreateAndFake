@@ -3,7 +3,8 @@ root = true
 
 # C# files
 [*.cs]
-guidelines = 120, 140
+guidelines = 100
+max_line_length = 100
 
 #### Core EditorConfig Options ####
 

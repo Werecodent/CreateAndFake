@@ -7,7 +7,11 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class FakedCompareHint : CompareHint<IFaked>
 {
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(IFaked? expected, IFaked? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        IFaked? expected,
+        IFaked? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

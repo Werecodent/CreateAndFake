@@ -16,7 +16,12 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public void Is(object? expected, object? actual, AsserterMod? optionConfiguration, string? details = null)
+    public void Is(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         ValuesEqual(expected, actual, optionConfiguration, details);
     }
@@ -28,7 +33,12 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public void IsNot(object? expected, object? actual, AsserterMod? optionConfiguration, string? details = null)
+    public void IsNot(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         ValuesNotEqual(expected, actual, optionConfiguration, details);
     }
@@ -40,13 +50,21 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ReferenceEqual(object? expected, object? actual,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void ReferenceEqual(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!ReferenceEquals(expected, actual))
         {
-            throw new AssertException("References failed to equal.", details, localOptions.Gen.InitialSeed);
+            throw new AssertException(
+                "References failed to equal.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -57,13 +75,21 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ReferenceNotEqual(object? expected, object? actual,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void ReferenceNotEqual(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (ReferenceEquals(expected, actual))
         {
-            throw new AssertException("References failed to not equal.", details, localOptions.Gen.InitialSeed);
+            throw new AssertException(
+                "References failed to not equal.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
         }
     }
 
@@ -74,16 +100,24 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ValuesEqual(object? expected, object? actual,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void ValuesEqual(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         Difference[] differences = [.. localOptions.Valuer.Compare(expected, actual)];
         if (differences.Length > 0)
         {
-            throw new AssertException($"Value equality failed for type '{GetTypeName(expected, actual)}'.",
-                details, localOptions.Gen.InitialSeed, string.Join<Difference>(Environment.NewLine, differences));
+            throw new AssertException(
+                $"Value equality failed for type '{GetTypeName(expected, actual)}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                string.Join<Difference>(Environment.NewLine, differences)
+            );
         }
     }
 
@@ -94,27 +128,38 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ValuesNotEqual(object? expected, object? actual,
-        AsserterMod? optionConfiguration, string? details = null)
+    public virtual void ValuesNotEqual(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Compare(expected, actual).Any())
         {
             throw new AssertException(
                 $"Value inequality failed for type '{GetTypeName(expected, actual)}'.",
-                details, localOptions.Gen.InitialSeed, expected?.ToString());
+                details,
+                localOptions.Gen.InitialSeed,
+                expected?.ToString()
+            );
         }
     }
 
-    /// <inheritdoc/>  
+    /// <inheritdoc/>
     public virtual void AreUnique(object? expected, object? actual, string? details = null)
     {
         AreUnique(expected, actual, Unconfigured, details);
     }
 
-    /// <inheritdoc/>  
-    public virtual void AreUnique(object? expected, object? actual,
-        AsserterMod? optionConfiguration, string? details = null)
+    /// <inheritdoc/>
+    public virtual void AreUnique(
+        object? expected,
+        object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -122,9 +167,11 @@ public partial class Asserter : IObjectAsserter
 
         int i = 0;
         StringBuilder contents = new();
-        foreach (object value in localOptions.Extractor
-            .Extract(actual)
-            .FindSharedContent(localOptions.Extractor.Extract(expected)))
+        foreach (
+            object value in localOptions
+                .Extractor.Extract(actual)
+                .FindSharedContent(localOptions.Extractor.Extract(expected))
+        )
         {
             _ = contents.Append('#').Append(i++).Append(':').Append(value).AppendLine();
         }
@@ -133,7 +180,10 @@ public partial class Asserter : IObjectAsserter
         {
             throw new AssertException(
                 $"Expected no shared content, but had '{i}' shared items.",
-                details, localOptions.Gen.InitialSeed, contents.ToString());
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
         }
     }
 

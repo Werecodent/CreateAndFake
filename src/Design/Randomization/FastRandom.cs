@@ -1,4 +1,4 @@
-﻿#pragma warning disable CA5394 // Do not use insecure randomness: Valid option and secure alternative provided.
+﻿#pragma warning disable CA5394 // Do not use insecure randomness: Secure alternative provided.
 
 namespace CreateAndFake.Design.Randomization;
 

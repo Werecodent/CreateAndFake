@@ -12,5 +12,6 @@ public sealed class EquatableCompareHintTests : CompareHintTestBase<EquatableCom
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
 
-    public EquatableCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public EquatableCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

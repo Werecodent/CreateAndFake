@@ -37,7 +37,11 @@ public static class Issue055Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue055_TestGetMovieDirectors([Fake] IStorage db, Endpoint api, [Size(2)] Details[] movies)
+    internal static void Issue055_TestGetMovieDirectors(
+        [Fake] IStorage db,
+        Endpoint api,
+        [Size(2)] Details[] movies
+    )
     {
         db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
         api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);

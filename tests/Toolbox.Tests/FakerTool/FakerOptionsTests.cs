@@ -1,7 +1,7 @@
 global using FakerMod = System.Func<
     CreateAndFake.FakerTool.FakerOptions,
-    CreateAndFake.FakerTool.FakerOptions>;
-
+    CreateAndFake.FakerTool.FakerOptions
+>;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.FakerTool;

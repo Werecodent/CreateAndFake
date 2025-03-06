@@ -13,15 +13,16 @@ namespace CreateAndFake.DuplicatorTool;
 public sealed class DuplicatorChainer(
     DuplicatorOptions options,
     IDuplicator duplicator,
-    Func<object?, DuplicatorChainer, object?> callback)
+    Func<object?, DuplicatorChainer, object?> callback
+)
 {
     /// <summary>Reference to the actual duplicator.</summary>
-    internal IDuplicator Duplicator { get; } = duplicator
-        ?? throw new ArgumentNullException(nameof(duplicator));
+    internal IDuplicator Duplicator { get; } =
+        duplicator ?? throw new ArgumentNullException(nameof(duplicator));
 
     /// <summary>Callback to the duplicator to handle child values.</summary>
-    private readonly Func<object?, DuplicatorChainer, object?> _callback = callback
-        ?? throw new ArgumentNullException(nameof(callback));
+    private readonly Func<object?, DuplicatorChainer, object?> _callback =
+        callback ?? throw new ArgumentNullException(nameof(callback));
 
     /// <summary>History of clones to match up references.</summary>
     private readonly ConditionalWeakTable<object, object?> _history = new();

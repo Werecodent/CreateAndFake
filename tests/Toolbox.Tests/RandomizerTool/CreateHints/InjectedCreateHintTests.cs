@@ -15,24 +15,27 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
         typeof(Injected<InjectSample>),
         typeof(Injected<InjectMockSample>),
         typeof(Injected<MismatchDataSample>),
-        typeof(Injected<StructSample>)
+        typeof(Injected<StructSample>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(object),
-        typeof(IUnimplementedSample)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(IUnimplementedSample)];
 
-    public InjectedCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public InjectedCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void Create_ValidInjections(Injected<InjectMockSample> sample)
     {
         sample.Fake<IOnlyMockSample>().Assert().IsNot(null);
-        sample.Fake<IOnlyMockSample>(1).Assert().IsNot(null).And.IsNot(sample.Fake<IOnlyMockSample>());
+        sample
+            .Fake<IOnlyMockSample>(1)
+            .Assert()
+            .IsNot(null)
+            .And.IsNot(sample.Fake<IOnlyMockSample>());
 
-        sample.Fake<IOnlyMockSample>().Setup(m => m.FailIfNotMocked(), Behavior.Returns(false, Times.Once));
+        sample
+            .Fake<IOnlyMockSample>()
+            .Setup(m => m.FailIfNotMocked(), Behavior.Returns(false, Times.Once));
         sample.Dummy.TestIfMockedSeparately();
         sample.Fake<IOnlyMockSample>().VerifyAll(Times.Once);
         sample.VerifyAll();
@@ -41,8 +44,8 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     [Fact]
     internal void Create_NoConstructorThrows()
     {
-        Tools.Randomizer
-            .Assert(t => t.Create<Injected<IUnimplementedSample>>())
+        Tools
+            .Randomizer.Assert(t => t.Create<Injected<IUnimplementedSample>>())
             .Throws<InvalidOperationException>();
     }
 

@@ -9,16 +9,13 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
     [
         typeof(IAsyncEnumerable<int>),
         typeof(IAsyncEnumerable<string>),
-        typeof(IAsyncEnumerable<object>)
+        typeof(IAsyncEnumerable<object>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(object),
-        typeof(IEnumerable)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(IEnumerable)];
 
-    public AsyncCollectionCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public AsyncCollectionCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static void TryCopy_Empty([Size(0)] IAsyncEnumerable<int> items)

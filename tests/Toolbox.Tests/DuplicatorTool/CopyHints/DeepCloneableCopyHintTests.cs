@@ -9,5 +9,6 @@ public sealed class DeepCloneableCopyHintTests : CopyHintTestBase<DeepCloneableC
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public DeepCloneableCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public DeepCloneableCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 }

@@ -51,13 +51,38 @@ public static class LimiterTests
         int attempts = 0;
 
         new Limiter(0)
-            .Assert(l => l.Retry("", () => { attempts++; throw exception; }))
-            .Throws<TimeoutException>().InnerException.Assert().Is(exception)
-            .Also(attempts).Is(1);
+            .Assert(l =>
+                l.Retry(
+                    "",
+                    () =>
+                    {
+                        attempts++;
+                        throw exception;
+                    }
+                )
+            )
+            .Throws<TimeoutException>()
+            .InnerException.Assert()
+            .Is(exception)
+            .Also(attempts)
+            .Is(1);
 
-        new Limiter(TimeSpan.MinValue).Assert(l => l.Retry("", () => { attempts++; throw exception; }))
-            .Throws<TimeoutException>().InnerException.Assert().Is(exception)
-            .Also(attempts).Is(2);
+        new Limiter(TimeSpan.MinValue)
+            .Assert(l =>
+                l.Retry(
+                    "",
+                    () =>
+                    {
+                        attempts++;
+                        throw exception;
+                    }
+                )
+            )
+            .Throws<TimeoutException>()
+            .InnerException.Assert()
+            .Is(exception)
+            .Also(attempts)
+            .Is(2);
     }
 
     [Theory, RandomData]
@@ -65,16 +90,28 @@ public static class LimiterTests
     {
         int attempts = 0;
 
-        new Limiter(0).Attempt("", () => { attempts++; throw exception; });
+        new Limiter(0).Attempt(
+            "",
+            () =>
+            {
+                attempts++;
+                throw exception;
+            }
+        );
         attempts.Assert().Is(1);
 
-        new Limiter(TimeSpan.MinValue).Attempt("", () => { attempts++; throw exception; });
+        new Limiter(TimeSpan.MinValue).Attempt(
+            "",
+            () =>
+            {
+                attempts++;
+                throw exception;
+            }
+        );
         attempts.Assert().Is(2);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Repeat_TryLimited(int tries)
     {
         int attempts = 0;
@@ -82,9 +119,7 @@ public static class LimiterTests
         attempts.Assert().Is(tries);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void StallUntil_TryLimited(int tries)
     {
         int attempts = 0;
@@ -95,29 +130,44 @@ public static class LimiterTests
         attempts.Assert().Is(tries);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Retry_TryLimited(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempts = 0;
 
         new Limiter(tries)
-            .Assert(l => l.Retry("", () => { attempts++; throw exception; }))
-            .Throws<TimeoutException>().InnerException.Assert().Is(exception)
-            .Also(attempts).Is(tries);
+            .Assert(l =>
+                l.Retry(
+                    "",
+                    () =>
+                    {
+                        attempts++;
+                        throw exception;
+                    }
+                )
+            )
+            .Throws<TimeoutException>()
+            .InnerException.Assert()
+            .Is(exception)
+            .Also(attempts)
+            .Is(tries);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Attempt_TryLimited(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempts = 0;
 
-        new Limiter(tries).Attempt("", () => { attempts++; throw exception; });
+        new Limiter(tries).Attempt(
+            "",
+            () =>
+            {
+                attempts++;
+                throw exception;
+            }
+        );
         attempts.Assert().Is(tries);
     }
 
@@ -126,7 +176,9 @@ public static class LimiterTests
     {
         Stopwatch watch = Stopwatch.StartNew();
         new Limiter(_SmallDelay).Repeat("", () => { });
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
     }
 
     [Fact]
@@ -138,7 +190,9 @@ public static class LimiterTests
             .Assert(l => l.StallUntil("", () => { }, () => false))
             .Throws<TimeoutException>();
 
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
     }
 
     [Theory, RandomData]
@@ -147,9 +201,17 @@ public static class LimiterTests
         Stopwatch watch = Stopwatch.StartNew();
 
         new Limiter(_SmallDelay)
-            .Assert(l => l.Retry("", () => { throw exception; }))
-            .Throws<TimeoutException>().InnerException
-            .Assert()
+            .Assert(l =>
+                l.Retry(
+                    "",
+                    () =>
+                    {
+                        throw exception;
+                    }
+                )
+            )
+            .Throws<TimeoutException>()
+            .InnerException.Assert()
             .Is(exception)
             .Also(watch.Elapsed.TotalMilliseconds)
             .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
@@ -168,23 +230,18 @@ public static class LimiterTests
             .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(2),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(2), InlineData(3)]
     internal static void Repeat_DelayOccurs(int tries)
     {
         Stopwatch watch = Stopwatch.StartNew();
         new Limiter(tries, _SmallDelay).Repeat("", () => { });
 
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(
-            (_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(2),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(2), InlineData(3)]
     internal static void StallUntil_DelayOccurs(int tries)
     {
         int attempts = 0;
@@ -192,48 +249,55 @@ public static class LimiterTests
         Stopwatch watch = Stopwatch.StartNew();
         new Limiter(tries, _SmallDelay).StallUntil("", () => ++attempts == tries);
 
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(
-            (_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(2),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(2), InlineData(3)]
     internal static void Retry_DelayOccurs(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempts = 0;
 
         Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay)
-            .Retry("", () =>
+        new Limiter(tries, _SmallDelay).Retry(
+            "",
+            () =>
             {
-                if (++attempts != tries) { throw exception; }
-            });
+                if (++attempts != tries)
+                {
+                    throw exception;
+                }
+            }
+        );
 
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(
-            (_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(2),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(2), InlineData(3)]
     internal static void Attempt_DelayOccurs(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempts = 0;
 
         Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay)
-            .Attempt("", () =>
+        new Limiter(tries, _SmallDelay).Attempt(
+            "",
+            () =>
             {
-                if (++attempts != tries) { throw exception; }
-            });
+                if (++attempts != tries)
+                {
+                    throw exception;
+                }
+            }
+        );
 
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(
-            (_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
+        watch
+            .Elapsed.TotalMilliseconds.Assert()
+            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
     [Fact]
@@ -241,16 +305,16 @@ public static class LimiterTests
     {
         using (CancellationTokenSource tokenSource = new())
         {
-            Limiter.Few
-                .Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token))
+            Limiter
+                .Few.Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token))
                 .Throws<TimeoutException>();
         }
-        Limiter.Few
-            .Assert(l => l.Repeat("Test", () => { }, new CancellationToken(true)))
+        Limiter
+            .Few.Assert(l => l.Repeat("Test", () => { }, new CancellationToken(true)))
             .Throws<TimeoutException>();
 
-        Limiter.Quick
-            .Assert(l => l.Repeat("", () => { }, new CancellationToken(true)))
+        Limiter
+            .Quick.Assert(l => l.Repeat("", () => { }, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }
 
@@ -259,16 +323,18 @@ public static class LimiterTests
     {
         using (CancellationTokenSource tokenSource = new())
         {
-            Limiter.Few
-                .Assert(l => l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token))
+            Limiter
+                .Few.Assert(l =>
+                    l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token)
+                )
                 .Throws<TimeoutException>();
         }
-        Limiter.Few
-            .Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)))
+        Limiter
+            .Few.Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)))
             .Throws<TimeoutException>();
 
-        Limiter.Fast
-            .Assert(l => l.StallUntil("", () => false, new CancellationToken(true)))
+        Limiter
+            .Fast.Assert(l => l.StallUntil("", () => false, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }
 
@@ -277,16 +343,23 @@ public static class LimiterTests
     {
         using (CancellationTokenSource tokenSource = new())
         {
-            Limiter.Few
-                .Assert(l => l.Retry("", () => throw exception, () => tokenSource.Cancel(), tokenSource.Token))
+            Limiter
+                .Few.Assert(l =>
+                    l.Retry(
+                        "",
+                        () => throw exception,
+                        () => tokenSource.Cancel(),
+                        tokenSource.Token
+                    )
+                )
                 .Throws<TimeoutException>();
         }
-        Limiter.Few
-            .Assert(l => l.Retry("Test", () => throw exception, new CancellationToken(true)))
+        Limiter
+            .Few.Assert(l => l.Retry("Test", () => throw exception, new CancellationToken(true)))
             .Throws<TimeoutException>();
 
-        Limiter.Quick
-            .Assert(l => l.Retry("", () => throw exception, new CancellationToken(true)))
+        Limiter
+            .Quick.Assert(l => l.Retry("", () => throw exception, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }
 
@@ -295,16 +368,23 @@ public static class LimiterTests
     {
         using (CancellationTokenSource tokenSource = new())
         {
-            Limiter.Few
-                .Assert(l => l.Attempt("", () => throw exception, () => tokenSource.Cancel(), tokenSource.Token))
+            Limiter
+                .Few.Assert(l =>
+                    l.Attempt(
+                        "",
+                        () => throw exception,
+                        () => tokenSource.Cancel(),
+                        tokenSource.Token
+                    )
+                )
                 .Throws<TimeoutException>();
         }
-        Limiter.Few
-            .Assert(l => l.Attempt(null, () => throw exception, new CancellationToken(true)))
+        Limiter
+            .Few.Assert(l => l.Attempt(null, () => throw exception, new CancellationToken(true)))
             .Throws<TimeoutException>();
 
-        Limiter.Quick
-            .Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)))
+        Limiter
+            .Quick.Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }
 
@@ -337,24 +417,30 @@ public static class LimiterTests
     {
         int calls = 0;
 
-        new Limiter(2).Retry<ArithmeticException>("", () =>
-        {
-            calls++;
-            if (calls == 1)
+        new Limiter(2).Retry<ArithmeticException>(
+            "",
+            () =>
             {
-                throw new ArithmeticException();
+                calls++;
+                if (calls == 1)
+                {
+                    throw new ArithmeticException();
+                }
             }
-        });
+        );
         calls.Assert().Is(2);
 
-        new Limiter(2).Retry<SystemException>("", () =>
-        {
-            calls++;
-            if (calls == 3)
+        new Limiter(2).Retry<SystemException>(
+            "",
+            () =>
             {
-                throw new ArithmeticException();
+                calls++;
+                if (calls == 3)
+                {
+                    throw new ArithmeticException();
+                }
             }
-        });
+        );
         calls.Assert().Is(4);
     }
 
@@ -370,30 +456,34 @@ public static class LimiterTests
     {
         int calls = 0;
 
-        new Limiter(2).Attempt<ArithmeticException>("", () =>
-        {
-            calls++;
-            if (calls == 1)
+        new Limiter(2).Attempt<ArithmeticException>(
+            "",
+            () =>
             {
-                throw new ArithmeticException();
+                calls++;
+                if (calls == 1)
+                {
+                    throw new ArithmeticException();
+                }
             }
-        });
+        );
         calls.Assert().Is(2);
 
-        new Limiter(2).Attempt<SystemException>("", () =>
-        {
-            calls++;
-            if (calls == 3)
+        new Limiter(2).Attempt<SystemException>(
+            "",
+            () =>
             {
-                throw new ArithmeticException();
+                calls++;
+                if (calls == 3)
+                {
+                    throw new ArithmeticException();
+                }
             }
-        });
+        );
         calls.Assert().Is(4);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void StallUntil_CheckStateBehavior(int tries)
     {
         int attempt = 0;
@@ -403,27 +493,29 @@ public static class LimiterTests
         tries.Assert().Is(attempt).And.Is(checkAttempt);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Retry_ResetStateBehavior(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempt = 0;
         int resetAttempt = 0;
 
-        new Limiter(tries)
-            .Retry("", () =>
+        new Limiter(tries).Retry(
+            "",
+            () =>
             {
-                if (++attempt != tries) { throw exception; }
-            }, () => resetAttempt++);
+                if (++attempt != tries)
+                {
+                    throw exception;
+                }
+            },
+            () => resetAttempt++
+        );
 
         attempt.Assert().Is(tries).Also(resetAttempt).Is(tries - 1);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Retry_ReturnResetStateBehavior(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
@@ -436,10 +528,14 @@ public static class LimiterTests
             return (++attempt == tries) ? result : throw exception;
         }
 
-        new Limiter(tries).Retry("", ResetBehavior, () => resetAttempt++)
-            .Assert().Is(result)
-            .Also(attempt).Is(tries)
-            .Also(resetAttempt).Is(tries - 1);
+        new Limiter(tries)
+            .Retry("", ResetBehavior, () => resetAttempt++)
+            .Assert()
+            .Is(result)
+            .Also(attempt)
+            .Is(tries)
+            .Also(resetAttempt)
+            .Is(tries - 1);
     }
 
     [Theory, RandomData]
@@ -448,36 +544,41 @@ public static class LimiterTests
         new Limiter(3)
             .Assert(l => l.Retry<InvalidOperationException>("", (Action)(() => throw exception)))
             .Throws<NotSupportedException>()
-            .Assert().Is(exception);
+            .Assert()
+            .Is(exception);
 
         IOException exception2 = new();
 
         new Limiter(3)
             .Assert(l => l.Retry<DirectoryNotFoundException, bool>("", () => throw exception2))
-            .Throws<IOException>().Assert().Is(exception2);
+            .Throws<IOException>()
+            .Assert()
+            .Is(exception2);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Attempt_ResetStateBehavior(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attempt = 0;
         int resetAttempt = 0;
 
-        new Limiter(tries)
-            .Attempt("", () =>
+        new Limiter(tries).Attempt(
+            "",
+            () =>
             {
-                if (++attempt != tries) { throw exception; }
-            }, () => resetAttempt++);
+                if (++attempt != tries)
+                {
+                    throw exception;
+                }
+            },
+            () => resetAttempt++
+        );
 
         attempt.Assert().Is(tries).Also(resetAttempt).Is(tries - 1);
     }
 
-    [Theory,
-        InlineData(1),
-        InlineData(3)]
+    [Theory, InlineData(1), InlineData(3)]
     internal static void Attempt_ReturnResetStateBehavior(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
@@ -490,32 +591,44 @@ public static class LimiterTests
             return (++attempt == tries) ? result : throw exception;
         }
 
-        new Limiter(tries).Attempt("", ResetBehavior, () => resetAttempt++)
-            .Assert().Is(result)
-            .Also(attempt).Is(tries)
-            .Also(resetAttempt).Is(tries - 1);
+        new Limiter(tries)
+            .Attempt("", ResetBehavior, () => resetAttempt++)
+            .Assert()
+            .Is(result)
+            .Also(attempt)
+            .Is(tries)
+            .Also(resetAttempt)
+            .Is(tries - 1);
     }
 
     [Theory, RandomData]
     internal static void Attempt_WrongExceptionThrows(NotSupportedException exception)
     {
         new Limiter(3)
-            .Assert(l => l.Attempt<InvalidOperationException>(null, (Action)(() => throw exception)))
-            .Throws<NotSupportedException>().Assert().Is(exception);
+            .Assert(l =>
+                l.Attempt<InvalidOperationException>(null, (Action)(() => throw exception))
+            )
+            .Throws<NotSupportedException>()
+            .Assert()
+            .Is(exception);
 
         IOException exception2 = new();
 
         new Limiter(3)
             .Assert(l => l.Attempt<DirectoryNotFoundException, bool>("", () => throw exception2))
-            .Throws<IOException>().Assert().Is(exception2);
+            .Throws<IOException>()
+            .Assert()
+            .Is(exception2);
     }
 
     [Fact]
     internal static void Limiter_DefaultsSet()
     {
-        foreach (PropertyInfo info in typeof(Limiter)
-            .GetProperties(BindingFlags.Static | BindingFlags.Public)
-            .Where(p => p.PropertyType == typeof(Limiter)))
+        foreach (
+            PropertyInfo info in typeof(Limiter)
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .Where(p => p.PropertyType == typeof(Limiter))
+        )
         {
             info.GetValue(null).Assert().IsNot(null);
         }
@@ -529,7 +642,8 @@ public static class LimiterTests
         Limiter variant1 = new(tries.CreateVariant(), elapsed);
         Limiter variant2 = new(tries, elapsed.CreateVariant());
 
-        true.Assert()
+        true
+            .Assert()
             .Is(original.Equals(original))
             .And.Is(original.Equals(dupe))
             .And.IsNot(original.Equals(variant1))

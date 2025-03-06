@@ -8,7 +8,8 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter(AsserterOptions options) : IAsserter
 {
     /// <inheritdoc/>
-    public AsserterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public AsserterOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Default option configuration to use.</summary>
     protected AsserterMod? Unconfigured { get; } = null;
@@ -39,7 +40,11 @@ public partial class Asserter(AsserterOptions options) : IAsserter
 
     /// <inheritdoc/>
     [DoesNotReturn]
-    public virtual void Fail(AsserterMod? optionConfiguration, string? details = null, string? content = null)
+    public virtual void Fail(
+        AsserterMod? optionConfiguration,
+        string? details = null,
+        string? content = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, content);
@@ -54,7 +59,11 @@ public partial class Asserter(AsserterOptions options) : IAsserter
 
     /// <inheritdoc/>
     [DoesNotReturn]
-    public virtual void Fail(Exception? exception, AsserterMod? optionConfiguration, string? details = null)
+    public virtual void Fail(
+        Exception? exception,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, exception);
@@ -82,7 +91,8 @@ public partial class Asserter(AsserterOptions options) : IAsserter
                 type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
                 "<",
                 string.Join(",", type.GetGenericArguments().Select(ExpandTypeName)),
-                ">");
+                ">"
+            );
         }
         else
         {

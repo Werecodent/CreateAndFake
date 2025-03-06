@@ -44,7 +44,10 @@ public static class DataRandomTests
     [Theory, RandomData]
     internal static void Find_IgnoresSpecialChars(DataRandom testInstance)
     {
-        testInstance.Find("_" + Tools.Gen.NextItem(DataRandom.SupportedProperties)).Assert().IsNot(null);
+        testInstance
+            .Find("_" + Tools.Gen.NextItem(DataRandom.SupportedProperties))
+            .Assert()
+            .IsNot(null);
     }
 
     [Theory, RandomData]

@@ -17,7 +17,7 @@ public sealed class OptionsCreateHint : CreateHint<RandomizerOptions>
             CollectionMinSize = randomizer.Options.Gen.Next(0, 2),
             CollectionMaxSize = randomizer.Options.Gen.Next(0, 5),
             StringMinSize = randomizer.Options.Gen.Next(0, 4),
-            StringMaxSize = randomizer.Options.Gen.Next(0, 10)
+            StringMaxSize = randomizer.Options.Gen.Next(0, 10),
         };
     }
 }

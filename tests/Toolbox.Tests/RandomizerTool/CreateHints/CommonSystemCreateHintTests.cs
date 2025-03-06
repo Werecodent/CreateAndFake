@@ -20,12 +20,13 @@ public sealed class CommonSystemCreateHintTests : CreateHintTestBase<CommonSyste
         typeof(DateTimeOffset),
         typeof(Uri),
         typeof(UriBuilder),
-        typeof(StringBuilder)
+        typeof(StringBuilder),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public CommonSystemCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public CommonSystemCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void TryCreate_ContinuesUntilMemberFound()

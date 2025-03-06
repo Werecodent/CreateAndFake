@@ -1,7 +1,7 @@
 global using MutatorMod = System.Func<
     CreateAndFake.MutatorTool.MutatorOptions,
-    CreateAndFake.MutatorTool.MutatorOptions>;
-
+    CreateAndFake.MutatorTool.MutatorOptions
+>;
 using CreateAndFake.MutatorTool;
 
 namespace CreateAndFake.Tests.MutatorTool;

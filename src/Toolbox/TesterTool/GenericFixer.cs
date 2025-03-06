@@ -17,9 +17,9 @@ internal static class GenericFixer
         ArgumentGuard.ThrowIfNull(options, nameof(options));
 
         return method.IsGenericMethodDefinition
-            ? method.MakeGenericMethod([.. method
-                .GetGenericArguments()
-                .Select(arg => CreateArg(arg, method, options))])
+            ? method.MakeGenericMethod(
+                [.. method.GetGenericArguments().Select(arg => CreateArg(arg, method, options))]
+            )
             : method;
     }
 
@@ -32,11 +32,15 @@ internal static class GenericFixer
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         bool newNeeded = type.GenericParameterAttributes.HasFlag(
-            GenericParameterAttributes.DefaultConstructorConstraint);
+            GenericParameterAttributes.DefaultConstructorConstraint
+        );
 
         Type arg;
-        if (type.GenericParameterAttributes.HasFlag(
-            GenericParameterAttributes.NotNullableValueTypeConstraint))
+        if (
+            type.GenericParameterAttributes.HasFlag(
+                GenericParameterAttributes.NotNullableValueTypeConstraint
+            )
+        )
         {
             arg = options.Gen.NextItem(ValueRandom.ValueTypes);
         }
@@ -49,26 +53,33 @@ internal static class GenericFixer
             arg = typeof(string);
         }
 
-        Type[] constraints = [.. type
-            .GetGenericParameterConstraints()
-            .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t)];
+        Type[] constraints =
+        [
+            .. type.GetGenericParameterConstraints()
+                .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t),
+        ];
 
         bool isValidArg()
         {
-            return constraints.All(c => arg.Inherits(c) || (arg.IsValueType && c == typeof(ValueType)))
-                && (!newNeeded || arg.GetConstructor(Type.EmptyTypes) != null || arg.IsValueType);
+            return constraints.All(c =>
+                    arg.Inherits(c) || (arg.IsValueType && c == typeof(ValueType))
+                ) && (!newNeeded || arg.GetConstructor(Type.EmptyTypes) != null || arg.IsValueType);
         }
 
         if (!isValidArg())
         {
             Limiter.Few.Retry(
                 $"Creating generic arguments of type '{type}' for method '{method}' [Retry]",
-                () => Limiter.Few.StallUntil(
-                    $"Trying arguments of type '{type}' for method '{method}' [Stall]",
-                    () =>
-                    {
-                        arg = CreateArgViaConstraint(constraints, options);
-                    }, isValidArg));
+                () =>
+                    Limiter.Few.StallUntil(
+                        $"Trying arguments of type '{type}' for method '{method}' [Stall]",
+                        () =>
+                        {
+                            arg = CreateArgViaConstraint(constraints, options);
+                        },
+                        isValidArg
+                    )
+            );
         }
 
         return arg;

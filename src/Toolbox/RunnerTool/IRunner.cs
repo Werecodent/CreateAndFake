@@ -1,6 +1,7 @@
 global using RunnerMod = System.Func<
     CreateAndFake.RunnerTool.RunnerOptions,
-    CreateAndFake.RunnerTool.RunnerOptions>;
+    CreateAndFake.RunnerTool.RunnerOptions
+>;
 using System.Reflection;
 
 namespace CreateAndFake.RunnerTool;
@@ -36,6 +37,9 @@ public interface IRunner
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     /// <param name="values">Starting values to inject into instances.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
-    MethodCallWrapper CreateFor(MethodBase method,
-        RunnerMod optionConfiguration, params IEnumerable<object?>? values);
+    MethodCallWrapper CreateFor(
+        MethodBase method,
+        RunnerMod optionConfiguration,
+        params IEnumerable<object?>? values
+    );
 }

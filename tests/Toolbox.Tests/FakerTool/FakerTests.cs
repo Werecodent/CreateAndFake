@@ -62,14 +62,17 @@ public static class FakerTests
     [Fact]
     internal static void Inject_ConstructorRequired()
     {
-        Tools.Faker.Assert(f => f.InjectStubs<IOnlyMockSample>()).Throws<InvalidOperationException>();
+        Tools
+            .Faker.Assert(f => f.InjectStubs<IOnlyMockSample>())
+            .Throws<InvalidOperationException>();
     }
 
     [Theory, RandomData]
     internal static void Inject_UsesValues(int num, string text)
     {
         Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>(
-            [null, Tools.Faker.Stub<AbstractFakeSample>(), num, text]);
+            [null, Tools.Faker.Stub<AbstractFakeSample>(), num, text]
+        );
 
         sample.Dummy.Sample1.Text.Assert().Is(null);
         sample.Dummy.Sample2.Assert(s => s.Calc()).Throws<FakeCallException>();

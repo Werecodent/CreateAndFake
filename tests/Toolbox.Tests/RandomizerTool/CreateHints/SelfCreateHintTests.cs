@@ -13,10 +13,11 @@ public sealed class SelfCreateHintTests : CreateHintTestBase<SelfCreateHint>
         typeof(IRandom),
         typeof(ValueRandom),
         typeof(Limiter),
-        typeof(ToolSet)
+        typeof(ToolSet),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public SelfCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public SelfCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

@@ -16,22 +16,35 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected, object? actual, ValuerChainer valuer)
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return Task.Run(() => (Task<IEnumerable<Difference>>)GetType()
-            .GetMethod(nameof(CompareAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-            .MakeGenericMethod(expected.GetType().GetGenericArguments().Single())
-            .Invoke(null, [expected, actual, valuer])!).Result;
+        return Task.Run(
+            () =>
+                (Task<IEnumerable<Difference>>)
+                    GetType()
+                        .GetMethod(
+                            nameof(CompareAsync),
+                            BindingFlags.Static | BindingFlags.NonPublic
+                        )!
+                        .MakeGenericMethod(expected.GetType().GetGenericArguments().Single())
+                        .Invoke(null, [expected, actual, valuer])!
+        ).Result;
     }
 
     /// <inheritdoc cref="Compare"/>
     /// <typeparam name="T">Item <c>Type</c> being compared.</typeparam>
     private static async Task<IEnumerable<Difference>> CompareAsync<T>(
-        IAsyncEnumerable<T> expected, IAsyncEnumerable<T> actual, ValuerChainer valuer)
+        IAsyncEnumerable<T> expected,
+        IAsyncEnumerable<T> actual,
+        ValuerChainer valuer
+    )
     {
         List<Difference> differences = [];
 
@@ -50,19 +63,31 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             {
                 if (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
                 {
-                    differences.AddRange(valuer
-                        .Compare(expectedEnumerator.Current, actualEnumerator.Current)
-                        .Select(diff => new Difference(index, diff)));
+                    differences.AddRange(
+                        valuer
+                            .Compare(expectedEnumerator.Current, actualEnumerator.Current)
+                            .Select(diff => new Difference(index, diff))
+                    );
                 }
                 else
                 {
-                    differences.Add(new Difference(index, new Difference(expectedEnumerator.Current, "'outofbounds'")));
+                    differences.Add(
+                        new Difference(
+                            index,
+                            new Difference(expectedEnumerator.Current, "'outofbounds'")
+                        )
+                    );
                 }
                 index++;
             }
             while (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
-                differences.Add(new Difference(index++, new Difference("'outofbounds'", actualEnumerator.Current)));
+                differences.Add(
+                    new Difference(
+                        index++,
+                        new Difference("'outofbounds'", actualEnumerator.Current)
+                    )
+                );
             }
         }
 
@@ -75,15 +100,25 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return Task.Run(() => (Task<int>)GetType()
-            .GetMethod(nameof(GetHashCodeAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-            .MakeGenericMethod(item.GetType().GetGenericArguments().Single())
-            .Invoke(null, [item, valuer])!).Result;
+        return Task.Run(
+            () =>
+                (Task<int>)
+                    GetType()
+                        .GetMethod(
+                            nameof(GetHashCodeAsync),
+                            BindingFlags.Static | BindingFlags.NonPublic
+                        )!
+                        .MakeGenericMethod(item.GetType().GetGenericArguments().Single())
+                        .Invoke(null, [item, valuer])!
+        ).Result;
     }
 
     /// <inheritdoc cref="GetHashCode"/>
     /// <typeparam name="T">Item <c>Type</c> being compared.</typeparam>
-    private static async Task<int> GetHashCodeAsync<T>(IAsyncEnumerable<T> item, ValuerChainer valuer)
+    private static async Task<int> GetHashCodeAsync<T>(
+        IAsyncEnumerable<T> item,
+        ValuerChainer valuer
+    )
     {
         int hash = ValueComparer.BaseHash;
         await foreach (T current in item.ConfigureAwait(false))

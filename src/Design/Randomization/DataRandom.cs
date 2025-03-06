@@ -8,14 +8,14 @@ namespace CreateAndFake.Design.Randomization;
 public sealed class DataRandom
 {
     /// <summary>Supported searchable property names for values.</summary>
-    private static readonly FrozenDictionary<string, Func<DataRandom, string>> _Matcher
-        = new Dictionary<string, Func<DataRandom, string>>()
+    private static readonly FrozenDictionary<string, Func<DataRandom, string>> _Matcher =
+        new Dictionary<string, Func<DataRandom, string>>()
         {
             { "FIRSTNAME", gen => gen.Person.FirstName },
             { "MIDDLENAME", gen => gen.Person.MiddleName },
             { "LASTNAME", gen => gen.Person.LastName },
             { "FULLNAME", gen => gen.Person.FullName },
-            { "INITIALS", gen => gen.Person.Initials }
+            { "INITIALS", gen => gen.Person.Initials },
         }.ToFrozenDictionary();
 
     /// <summary>All searchable names.</summary>
@@ -38,9 +38,13 @@ public sealed class DataRandom
         _person = new(() => new PersonContext(_gen));
     }
 
-    /// <summary>Searches for a value representing the identifying <paramref name="name"/>.</summary>
+    /// <summary>
+    ///     Searches for a value representing the identifying <paramref name="name"/>.
+    /// </summary>
     /// <param name="name">Name to match a value with.</param>
-    /// <returns>The value representing <paramref name="name"/> if found; <c>null</c> otherwise.</returns>
+    /// <returns>
+    ///     The value representing <paramref name="name"/> if found; <c>null</c> otherwise.
+    /// </returns>
     public string? Find(string? name)
     {
         return _Matcher.TryGetValue(ToUpperOnly(name), out Func<DataRandom, string>? finder)

@@ -54,7 +54,9 @@ public static class AssertBehaviorTests
     [Theory, RandomData]
     internal static void Throws_WrongException(ArgumentNullException error)
     {
-        error.Assert(e => e.Assert(ex => throw ex).Throws<InvalidOperationException>()).Throws<AssertException>();
+        error
+            .Assert(e => e.Assert(ex => throw ex).Throws<InvalidOperationException>())
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -67,15 +69,24 @@ public static class AssertBehaviorTests
     internal static void Throws_WrongAggregate(InvalidOperationException error)
     {
         error
-            .Assert(e => e.Assert(ex => throw new AggregateException(ex)).Throws<ArgumentNullException>())
+            .Assert(e =>
+                e.Assert(ex => throw new AggregateException(ex)).Throws<ArgumentNullException>()
+            )
             .Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static void Throws_TooManyAggregate(ArgumentNullException error, InvalidOperationException error2)
+    internal static void Throws_TooManyAggregate(
+        ArgumentNullException error,
+        InvalidOperationException error2
+    )
     {
         error
-            .Assert(e => error2.Assert(ex => throw new AggregateException(e, ex)).Throws<ArgumentNullException>())
+            .Assert(e =>
+                error2
+                    .Assert(ex => throw new AggregateException(e, ex))
+                    .Throws<ArgumentNullException>()
+            )
             .Throws<AssertException>();
     }
 
@@ -100,6 +111,8 @@ public static class AssertBehaviorTests
     [Theory, RandomData]
     internal static void ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
     {
-        error.Assert(e => e.Assert(ex => throw ex).ThrowsNo<IOException>()).ThrowsNo<AssertException>();
+        error
+            .Assert(e => e.Assert(ex => throw ex).ThrowsNo<IOException>())
+            .ThrowsNo<AssertException>();
     }
 }

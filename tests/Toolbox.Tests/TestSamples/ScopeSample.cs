@@ -29,13 +29,25 @@ public class ScopeSample
 
     public virtual string PrivateSet { get; private set; }
 
-    public virtual string PublicMethod() { return "Value"; }
+    public virtual string PublicMethod()
+    {
+        return "Value";
+    }
 
-    internal virtual string InternalMethod() { return "Value"; }
+    internal virtual string InternalMethod()
+    {
+        return "Value";
+    }
 
-    protected internal virtual string ProIntMethod() { return "Value"; }
+    protected internal virtual string ProIntMethod()
+    {
+        return "Value";
+    }
 
-    protected virtual string ProtectMethod() { return "Value"; }
+    protected virtual string ProtectMethod()
+    {
+        return "Value";
+    }
 
     public string CallProtectProp()
     {

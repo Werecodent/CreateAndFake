@@ -16,15 +16,19 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
         typeof(DataHolderSample),
         typeof(IUnimplementedSample),
         typeof(FieldSample),
-        typeof(FactorySample)
+        typeof(FactorySample),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(VoidType)];
 
-    public ObjectCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public ObjectCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    public void ObjectCreateHint_CanHandleInfinites(InfiniteSample sample1, ParentLoopSample sample2)
+    public void ObjectCreateHint_CanHandleInfinites(
+        InfiniteSample sample1,
+        ParentLoopSample sample2
+    )
     {
         sample1.Assert().IsNot(null);
         sample2.Assert().IsNot(null);
@@ -33,10 +37,13 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
     [Fact]
     public void Create_RetriesUntilGoodSample()
     {
-        Limiter.Dozen.Repeat("Retries until using a concrete class that works.",
-            () => typeof(IIsGoodOrBadSample)
-                .CreateRandomInstance(opt => opt with { Limiter = Limiter.Hundred })
-                .Assert()
-                .IsNot(null));
+        Limiter.Dozen.Repeat(
+            "Retries until using a concrete class that works.",
+            () =>
+                typeof(IIsGoodOrBadSample)
+                    .CreateRandomInstance(opt => opt with { Limiter = Limiter.Hundred })
+                    .Assert()
+                    .IsNot(null)
+        );
     }
 }

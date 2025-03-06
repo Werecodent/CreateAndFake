@@ -14,29 +14,39 @@ namespace CreateAndFake.Tests;
 
 public static class ToolsTests
 {
-    private const BindingFlags _Mutable = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+    private const BindingFlags _Mutable =
+        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
     [Fact]
     internal static void CreateAndFake_Tests_TestClassCoverage()
     {
-        Tools.Tester.ProvidesTestClassCoverage(Assembly.GetAssembly(typeof(ToolSet)), opt => opt with
-        {
-            TestClassCoverageExceptions = FrozenSet.ToFrozenSet([
-                "CompilerFeatureRequiredAttribute",
-                "IsExternalInit",
-                "RequiredMemberAttribute",
-                "DoesNotReturnAttribute",
-                "MaybeNullAttribute",
-                "NotNullAttribute",
-                "NotNullIfNotNullAttribute",
-                "NotNullWhenAttribute",
-                "SetsRequiredMembersAttribute"
-            ])
-        });
+        Tools.Tester.ProvidesTestClassCoverage(
+            Assembly.GetAssembly(typeof(ToolSet)),
+            opt =>
+                opt with
+                {
+                    TestClassCoverageExceptions = FrozenSet.ToFrozenSet(
+                        [
+                            "CompilerFeatureRequiredAttribute",
+                            "IsExternalInit",
+                            "RequiredMemberAttribute",
+                            "DoesNotReturnAttribute",
+                            "MaybeNullAttribute",
+                            "NotNullAttribute",
+                            "NotNullIfNotNullAttribute",
+                            "NotNullWhenAttribute",
+                            "SetsRequiredMembersAttribute",
+                        ]
+                    ),
+                }
+        );
     }
 
     [Theory, RandomData]
-    internal static void Tools_IntegrationWorks(DataHolderSample original, [Fake] DataHolderSample faked)
+    internal static void Tools_IntegrationWorks(
+        DataHolderSample original,
+        [Fake] DataHolderSample faked
+    )
     {
         DataHolderSample dupe = original.CreateDeepClone();
 
@@ -61,7 +71,8 @@ public static class ToolsTests
     [Fact, ExcludeFromCodeCoverage]
     internal static void Tools_AllCreateAndFakeTypesWork()
     {
-        Type[] ignore = [
+        Type[] ignore =
+        [
             typeof(Arg),
             typeof(Fake<>),
             typeof(VoidType),
@@ -75,12 +86,15 @@ public static class ToolsTests
 
         Dictionary<Type, Exception> failures = [];
 
-        foreach (Type type in typeof(Tools).Assembly.GetTypes()
-            .Where(t => !(t.IsAbstract && t.IsSealed))
-            .Where(t => !t.Inherits<Attribute>())
-            .Where(t => !ignore.Contains(t))
-            .Where(t => !t.IsNestedPrivate)
-            .Where(t => t.GetCustomAttribute<CompilerGeneratedAttribute>() == null))
+        foreach (
+            Type type in typeof(Tools)
+                .Assembly.GetTypes()
+                .Where(t => !(t.IsAbstract && t.IsSealed))
+                .Where(t => !t.Inherits<Attribute>())
+                .Where(t => !ignore.Contains(t))
+                .Where(t => !t.IsNestedPrivate)
+                .Where(t => t.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
+        )
         {
             try
             {
@@ -110,8 +124,7 @@ public static class ToolsTests
     private static void TestTrip(Type type)
     {
         string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
-        object
-            original = null,
+        object original = null,
             variant = null,
             dupe = null;
         try
@@ -122,7 +135,9 @@ public static class ToolsTests
             Tools.Asserter.ValuesEqual(original, dupe, failMessage);
             Tools.Asserter.ValuesEqual(
                 Tools.Valuer.GetHashCode(original),
-                Tools.Valuer.GetHashCode(dupe), $"HashCode {failMessage}");
+                Tools.Valuer.GetHashCode(dupe),
+                $"HashCode {failMessage}"
+            );
 
             if (type.GetProperties(_Mutable).Length != 0 || type.GetFields(_Mutable).Length != 0)
             {
@@ -131,7 +146,9 @@ public static class ToolsTests
                 Tools.Asserter.ValuesNotEqual(original, variant, failMessage);
                 Tools.Asserter.ValuesNotEqual(
                     Tools.Valuer.GetHashCode(original),
-                    Tools.Valuer.GetHashCode(variant), failMessage);
+                    Tools.Valuer.GetHashCode(variant),
+                    failMessage
+                );
 
                 if (Tools.Mutator.Modify(original))
                 {

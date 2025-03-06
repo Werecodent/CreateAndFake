@@ -7,7 +7,11 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
 {
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(SeededRandom? expected, SeededRandom? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        SeededRandom? expected,
+        SeededRandom? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

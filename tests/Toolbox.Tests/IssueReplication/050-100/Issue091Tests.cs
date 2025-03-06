@@ -37,7 +37,12 @@ public static class Issue091Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue091_FluentArgMatchesInt([Fake] ILayer layer, Api api, Item sample, int key)
+    internal static void Issue091_FluentArgMatchesInt(
+        [Fake] ILayer layer,
+        Api api,
+        Item sample,
+        int key
+    )
     {
         layer.GetItem(Arg.Any<int>()).SetupReturn(sample, Times.Once);
 
@@ -57,7 +62,12 @@ public static class Issue091Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue091_FluentArgMatchesObject([Fake] ILayer layer, Api api, Item sample, object key)
+    internal static void Issue091_FluentArgMatchesObject(
+        [Fake] ILayer layer,
+        Api api,
+        Item sample,
+        object key
+    )
     {
         layer.GetItem(Arg.Any<object>()).SetupReturn(sample, Times.Once);
 

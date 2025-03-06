@@ -12,32 +12,39 @@ namespace CreateAndFake.RandomizerTool.CreateHints;
 public sealed class LegacyCollectionCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly ImmutableArray<(Type, Func<string[], RandomizerChainer, object>)> _Creators =
-        [
-            (typeof(Hashtable), CreateDict<Hashtable>),
-            (typeof(SortedList), CreateDict<SortedList>),
-            (typeof(ListDictionary), CreateDict<ListDictionary>),
-            (typeof(HybridDictionary), CreateDict<HybridDictionary>),
-            (typeof(StringDictionary), CreateDict<StringDictionary>),
-            (typeof(OrderedDictionary), CreateDict<OrderedDictionary>),
-            (typeof(NameValueCollection), CreateDict<NameValueCollection>),
-
-            (typeof(Array), (data, gen) => data),
-            (typeof(Stack), (data, gen) => new Stack(data)),
-            (typeof(Queue), (data, gen) => new Queue(data)),
-            (typeof(ArrayList), (data, gen) => new ArrayList(data)),
-            (typeof(BitArray), (data, gen) => new BitArray(data.Select(d => gen.Create<bool>()).ToArray())),
-
-            (typeof(StringCollection), (data, gen) =>
+    private static readonly ImmutableArray<(
+        Type,
+        Func<string[], RandomizerChainer, object>
+    )> _Creators =
+    [
+        (typeof(Hashtable), CreateDict<Hashtable>),
+        (typeof(SortedList), CreateDict<SortedList>),
+        (typeof(ListDictionary), CreateDict<ListDictionary>),
+        (typeof(HybridDictionary), CreateDict<HybridDictionary>),
+        (typeof(StringDictionary), CreateDict<StringDictionary>),
+        (typeof(OrderedDictionary), CreateDict<OrderedDictionary>),
+        (typeof(NameValueCollection), CreateDict<NameValueCollection>),
+        (typeof(Array), (data, gen) => data),
+        (typeof(Stack), (data, gen) => new Stack(data)),
+        (typeof(Queue), (data, gen) => new Queue(data)),
+        (typeof(ArrayList), (data, gen) => new ArrayList(data)),
+        (
+            typeof(BitArray),
+            (data, gen) => new BitArray(data.Select(d => gen.Create<bool>()).ToArray())
+        ),
+        (
+            typeof(StringCollection),
+            (data, gen) =>
             {
                 StringCollection result = [.. data];
                 return result;
             }
-            ),
-        ];
+        ),
+    ];
 
     /// <summary>Collections that the hint will create.</summary>
-    internal static IEnumerable<Type> PotentialCollections { get; } = _Creators.Select(i => i.Item1).ToFrozenSet();
+    internal static IEnumerable<Type> PotentialCollections { get; } =
+        _Creators.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
@@ -48,8 +55,11 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         {
             int size = randomizer.Options.NextCollectionSize();
 
-            return new(randomizer.Options.Gen.NextItem(FindMatches(type)).Item2
-                .Invoke(CreateInternalData(size, randomizer), randomizer));
+            return new(
+                randomizer
+                    .Options.Gen.NextItem(FindMatches(type))
+                    .Item2.Invoke(CreateInternalData(size, randomizer), randomizer)
+            );
         }
         else
         {
@@ -60,7 +70,9 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
     /// <param name="type"><c>Type</c> to find matches for.</param>
     /// <returns>All possible matches.</returns>
-    private static IEnumerable<(Type, Func<string[], RandomizerChainer, object>)> FindMatches(Type type)
+    private static IEnumerable<(Type, Func<string[], RandomizerChainer, object>)> FindMatches(
+        Type type
+    )
     {
         return _Creators.Where(m => type.IsInheritedBy(m.Item1));
     }

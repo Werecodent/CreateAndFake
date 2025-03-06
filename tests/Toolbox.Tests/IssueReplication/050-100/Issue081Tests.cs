@@ -13,10 +13,10 @@ public static class Issue081Tests
     [Fact]
     internal static void Issue081_AssertionsContainSeed()
     {
-        Tools.Asserter
-            .Assert(a => a.Fail())
-            .Throws<AssertException>().Message
-            .Assert()
+        Tools
+            .Asserter.Assert(a => a.Fail())
+            .Throws<AssertException>()
+            .Message.Assert()
             .Contains($"{Tools.Gen.InitialSeed}");
     }
 }

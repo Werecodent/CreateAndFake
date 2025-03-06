@@ -11,26 +11,42 @@ public static class RandomDataAttributeTests
     [RandomData]
     public static void RandomDataAttribute_GuardsNulls([Stub] Test testStub)
     {
-        Tools.Tester.PreventsNullRefException(new RandomDataAttribute() { Trials = 3 }, opt => opt with
-        {
-            InjectionValues = [3, GetGeneratableMethod(), testStub]
-        });
+        Tools.Tester.PreventsNullRefException(
+            new RandomDataAttribute() { Trials = 3 },
+            opt => opt with { InjectionValues = [3, GetGeneratableMethod(), testStub] }
+        );
     }
 
     [RandomData]
     public static void RandomDataAttribute_NoParameterMutation(
-        [Stub] Test testStub, [Stub] CopyHint<MethodWrapper> copyStub)
+        [Stub] Test testStub,
+        [Stub] CopyHint<MethodWrapper> copyStub
+    )
     {
-        copyStub.ToFake().Setup("Copy",
-            [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
-            Behavior.Set<MethodWrapper, DuplicatorChainer, MethodWrapper>(
-                (w, c) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)));
+        copyStub
+            .ToFake()
+            .Setup(
+                "Copy",
+                [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
+                Behavior.Set<MethodWrapper, DuplicatorChainer, MethodWrapper>(
+                    (w, c) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)
+                )
+            );
 
-        Tools.Tester.PreventsParameterMutation(new RandomDataAttribute() { Trials = 3 }, opt => opt with
-        {
-            InjectionValues = [3, GetGeneratableMethod(), testStub],
-            Duplicator = new Duplicator(Tools.Duplicator.Options with { Hints = [copyStub] })
-        });
+        Tools.Tester.PreventsParameterMutation(
+            new RandomDataAttribute() { Trials = 3 },
+            opt =>
+                opt with
+                {
+                    InjectionValues = [3, GetGeneratableMethod(), testStub],
+                    Duplicator = new Duplicator(
+                        Tools.Duplicator.Options with
+                        {
+                            Hints = [copyStub],
+                        }
+                    ),
+                }
+        );
     }
 
     [RandomData]
@@ -38,16 +54,30 @@ public static class RandomDataAttributeTests
     {
         MethodInfo method = GetGeneratableMethod();
         MethodWrapper wrapper = new(method.ReflectedType, method);
-        new RandomDataAttribute() { Trials = 0 }.BuildFrom(wrapper, testStub).Assert().HasCount(0);
-        new RandomDataAttribute() { Trials = 1 }.BuildFrom(wrapper, testStub).Assert().HasCount(1);
-        new RandomDataAttribute() { Trials = 2 }.BuildFrom(wrapper, testStub).Assert().HasCount(2);
+        new RandomDataAttribute() { Trials = 0 }
+            .BuildFrom(wrapper, testStub)
+            .Assert()
+            .HasCount(0);
+        new RandomDataAttribute() { Trials = 1 }
+            .BuildFrom(wrapper, testStub)
+            .Assert()
+            .HasCount(1);
+        new RandomDataAttribute() { Trials = 2 }
+            .BuildFrom(wrapper, testStub)
+            .Assert()
+            .HasCount(2);
     }
 
     private static MethodInfo GetGeneratableMethod()
     {
-        return Tools.Randomizer.Create<MethodInfo>(opt => opt with
-        {
-            FinalCondition = m => m is MethodInfo info && !info.IsGenericMethod && !info.IsGenericMethodDefinition
-        });
+        return Tools.Randomizer.Create<MethodInfo>(opt =>
+            opt with
+            {
+                FinalCondition = m =>
+                    m is MethodInfo info
+                    && !info.IsGenericMethod
+                    && !info.IsGenericMethodDefinition,
+            }
+        );
     }
 }

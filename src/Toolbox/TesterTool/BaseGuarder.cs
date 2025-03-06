@@ -12,10 +12,12 @@ namespace CreateAndFake.TesterTool;
 internal abstract class BaseGuarder(TesterOptions options)
 {
     /// <summary>Configured options for testing.</summary>
-    protected TesterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    protected TesterOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>How long to wait for methods to complete.</summary>
-    protected TimeSpan Timeout { get; } = (options.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+    protected TimeSpan Timeout { get; } =
+        (options.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
             ? options.Timeout
             : TimeSpan.FromMilliseconds(-1);
 
@@ -29,8 +31,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         BindingFlags scope = Options.IncludeInternals
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
-        return type
-            .GetConstructors(BindingFlags.Instance | scope)
+        return type.GetConstructors(BindingFlags.Instance | scope)
             .Where(c => c.IsPublic || c.IsAssembly || c.IsFamilyOrAssembly)
             .Where(c => !c.IsPrivate);
     }
@@ -46,8 +47,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         BindingFlags scope = Options.IncludeInternals
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
-        return type
-            .GetMethods(kind | scope)
+        return type.GetMethods(kind | scope)
             .Where(m => m.IsPublic || m.IsAssembly || m.IsFamily || m.IsFamilyOrAssembly)
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
             .Where(m => !m.IsPrivate)
@@ -62,14 +62,18 @@ internal abstract class BaseGuarder(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
-        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
+        foreach (
+            MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
                 .Where(m => !m.IsFamily)
-                .Select(m => GenericFixer.FixMethod(m, options)))
+                .Select(m => GenericFixer.FixMethod(m, options))
+        )
         {
             object?[] data = [.. options.Runner.CreateFor(method, Options.InjectionValues).Args];
             try
             {
-                Disposer.Cleanup(RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!));
+                Disposer.Cleanup(
+                    RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!)
+                );
             }
             finally
             {
@@ -92,7 +96,9 @@ internal abstract class BaseGuarder(TesterOptions options)
             Task<object?> task = Task.Run(() => UnwrapTaskResult(call.Invoke()));
             if (!task.Wait(Timeout))
             {
-                throw new TimeoutException($"Attempting to run method '{testOrigin.Name}' timed out.");
+                throw new TimeoutException(
+                    $"Attempting to run method '{testOrigin.Name}' timed out."
+                );
             }
             return task.Result;
         }
@@ -165,8 +171,11 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="taskException">Exception encountered.</param>
     /// <returns>If the exception is handled and should not be rethrown.</returns>
-    protected abstract bool HandleCheckException(MethodBase testOrigin,
-        ParameterInfo? testParam, Exception taskException);
+    protected abstract bool HandleCheckException(
+        MethodBase testOrigin,
+        ParameterInfo? testParam,
+        Exception taskException
+    );
 }
 
 #pragma warning restore CA1822 // Member does not access instance data and can be marked static

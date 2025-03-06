@@ -1,7 +1,7 @@
 global using RandomizerMod = System.Func<
     CreateAndFake.RandomizerTool.RandomizerOptions,
-    CreateAndFake.RandomizerTool.RandomizerOptions>;
-
+    CreateAndFake.RandomizerTool.RandomizerOptions
+>;
 using CreateAndFake.RandomizerTool;
 
 namespace CreateAndFake.Tests.RandomizerTool;
@@ -29,10 +29,15 @@ public static class RandomizerOptionsTests
     [Fact]
     internal static void NextStringSize_PreventsOverflow()
     {
-        (Tools.Randomizer.Options with
-        {
-            StringMinSize = int.MaxValue,
-            StringMaxSize = int.MaxValue
-        }).NextStringSize().Assert().Is(int.MaxValue);
+        (
+            Tools.Randomizer.Options with
+            {
+                StringMinSize = int.MaxValue,
+                StringMaxSize = int.MaxValue,
+            }
+        )
+            .NextStringSize()
+            .Assert()
+            .Is(int.MaxValue);
     }
 }

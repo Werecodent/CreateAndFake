@@ -8,15 +8,20 @@ namespace CreateAndFake.RandomizerTool.CreateHints;
 public sealed class SelfCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens
-        = new Dictionary<Type, Func<RandomizerChainer, object>>()
+    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens =
+        new Dictionary<Type, Func<RandomizerChainer, object>>()
         {
             { typeof(SeededRandom), rand => new SeededRandom(rand.Options.Gen.Next<int>()) },
             { typeof(ValueRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IRandom), rand => rand.Create<SeededRandom>() },
             { typeof(ToolSet), rand => ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>()) },
-            { typeof(Limiter), rand => rand.Options.Gen.NextItem(
-                [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score, Limiter.Quick]) },
+            {
+                typeof(Limiter),
+                rand =>
+                    rand.Options.Gen.NextItem(
+                        [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score, Limiter.Quick]
+                    )
+            },
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>

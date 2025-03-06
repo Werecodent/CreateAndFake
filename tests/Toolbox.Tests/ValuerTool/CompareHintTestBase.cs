@@ -12,7 +12,9 @@ namespace CreateAndFake.Tests.ValuerTool;
 public abstract class CompareHintTestBase<T>(
     T testInstance,
     IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes) where T : CompareHint
+    IEnumerable<Type> invalidTypes
+)
+    where T : CompareHint
 {
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = testInstance;
@@ -48,10 +50,14 @@ public abstract class CompareHintTestBase<T>(
             {
                 DifferenceHintResult result = TestInstance.TryCompare(data, data, CreateChainer());
 
-                result.HasData.Assert().Is(true,
-                    $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                result.Data.Assert().IsEmpty(
-                    $"Hint '{typeof(T).Name}' found differences with same '{type.Name}' of '{data.GetType()}'.");
+                result
+                    .HasData.Assert()
+                    .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
+                result
+                    .Data.Assert()
+                    .IsEmpty(
+                        $"Hint '{typeof(T).Name}' found differences with same '{type.Name}' of '{data.GetType()}'."
+                    );
             }
             finally
             {
@@ -66,7 +72,8 @@ public abstract class CompareHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
-            object one = null, two = null;
+            object one = null,
+                two = null;
             try
             {
                 one = Tools.Randomizer.Create(type);
@@ -74,10 +81,15 @@ public abstract class CompareHintTestBase<T>(
 
                 DifferenceHintResult result = TestInstance.TryCompare(one, two, CreateChainer());
 
-                result.HasData.Assert().Is(true,
-                    $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                result.Data.ToArray().Assert().IsNotEmpty(
-                    $"Hint '{typeof(T).Name}' didn't find differences with two random '{type.Name}'.");
+                result
+                    .HasData.Assert()
+                    .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
+                result
+                    .Data.ToArray()
+                    .Assert()
+                    .IsNotEmpty(
+                        $"Hint '{typeof(T).Name}' didn't find differences with two random '{type.Name}'."
+                    );
             }
             finally
             {
@@ -92,14 +104,20 @@ public abstract class CompareHintTestBase<T>(
     {
         foreach (Type type in _invalidTypes)
         {
-            object one = null, two = null;
+            object one = null,
+                two = null;
             try
             {
                 one = Tools.Randomizer.Create(type);
                 two = Tools.Randomizer.Create(one.GetType());
 
-                TestInstance.TryCompare(one, two, CreateChainer()).Assert().Is(DifferenceHintResult.None,
-                    $"Hint '{typeof(T).Name}' should not support type '{type.Name}'.");
+                TestInstance
+                    .TryCompare(one, two, CreateChainer())
+                    .Assert()
+                    .Is(
+                        DifferenceHintResult.None,
+                        $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
+                    );
             }
             finally
             {
@@ -114,19 +132,31 @@ public abstract class CompareHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
-            object data = null, dataCopy = null;
+            object data = null,
+                dataCopy = null;
             try
             {
                 data = Tools.Randomizer.Create(type);
                 dataCopy = Tools.Duplicator.Copy(data);
 
                 HashCodeHintResult dataHash = TestInstance.TryGetHashCode(data, CreateChainer());
-                dataHash.HasData.Assert().Is(true,
-                    $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                TestInstance.TryGetHashCode(data, CreateChainer()).Assert().Is(dataHash,
-                    $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'.");
-                TestInstance.TryGetHashCode(dataCopy, CreateChainer()).Assert().Is(dataHash,
-                    $"Hint '{typeof(T).Name}' generated different hash for dupe '{type.Name}'.");
+                dataHash
+                    .HasData.Assert()
+                    .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
+                TestInstance
+                    .TryGetHashCode(data, CreateChainer())
+                    .Assert()
+                    .Is(
+                        dataHash,
+                        $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'."
+                    );
+                TestInstance
+                    .TryGetHashCode(dataCopy, CreateChainer())
+                    .Assert()
+                    .Is(
+                        dataHash,
+                        $"Hint '{typeof(T).Name}' generated different hash for dupe '{type.Name}'."
+                    );
             }
             finally
             {
@@ -141,17 +171,24 @@ public abstract class CompareHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
-            object data = null, dataDiffer = null;
+            object data = null,
+                dataDiffer = null;
             try
             {
                 data = Tools.Randomizer.Create(type);
                 dataDiffer = Tools.Mutator.Variant(data);
 
                 HashCodeHintResult dataHash = TestInstance.TryGetHashCode(data, CreateChainer());
-                dataHash.HasData.Assert().Is(true,
-                    $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                TestInstance.TryGetHashCode(dataDiffer, CreateChainer()).Assert().IsNot(dataHash,
-                    $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'.");
+                dataHash
+                    .HasData.Assert()
+                    .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
+                TestInstance
+                    .TryGetHashCode(dataDiffer, CreateChainer())
+                    .Assert()
+                    .IsNot(
+                        dataHash,
+                        $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
+                    );
             }
             finally
             {
@@ -169,8 +206,13 @@ public abstract class CompareHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance.TryGetHashCode(data, CreateChainer()).Assert().Is(HashCodeHintResult.None,
-                    $"Hint '{typeof(T).Name}' should not support type '{type.Name}'.");
+                TestInstance
+                    .TryGetHashCode(data, CreateChainer())
+                    .Assert()
+                    .Is(
+                        HashCodeHintResult.None,
+                        $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
+                    );
             }
             finally
             {
@@ -187,6 +229,7 @@ public abstract class CompareHintTestBase<T>(
             options ?? Tools.Valuer.Options,
             Tools.Valuer,
             (o, c) => Tools.Valuer.GetHashCode(o),
-            (e, a, c) => Tools.Valuer.Compare(e, a));
+            (e, a, c) => Tools.Valuer.Compare(e, a)
+        );
     }
 }

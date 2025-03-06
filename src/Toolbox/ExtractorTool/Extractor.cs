@@ -10,20 +10,24 @@ namespace CreateAndFake.ExtractorTool;
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
     /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
-    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet([
-        Assembly.GetExecutingAssembly().GetType(),
-        typeof(Type).GetType(),
-        typeof(ParameterInfo),
-        typeof(PropertyInfo),
-        typeof(MemberInfo),
-        typeof(MethodInfo),
-        typeof(FieldInfo),
-        typeof(Assembly),
-        typeof(string),
-        typeof(Type)]);
+    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet(
+        [
+            Assembly.GetExecutingAssembly().GetType(),
+            typeof(Type).GetType(),
+            typeof(ParameterInfo),
+            typeof(PropertyInfo),
+            typeof(MemberInfo),
+            typeof(MethodInfo),
+            typeof(FieldInfo),
+            typeof(Assembly),
+            typeof(string),
+            typeof(Type),
+        ]
+    );
 
     /// <inheritdoc/>
-    public ExtractorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public ExtractorOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public ContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
@@ -43,7 +47,8 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         Type? memberType,
         object? source,
         IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options)
+        ExtractorOptions options
+    )
     {
         if (source != null)
         {
@@ -56,10 +61,12 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
                     foundData.Add(keyType, data);
                 }
 
-                if (data.Add(source)
+                if (
+                    data.Add(source)
                     && !keyType.Inherits<Delegate>()
                     && !options.ContentEndTypes.Contains(keyType)
-                    && !_ContentEndTypes.Contains(keyType))
+                    && !_ContentEndTypes.Contains(keyType)
+                )
                 {
                     FlattenComplexData(source, foundData, options);
                 }
@@ -67,7 +74,9 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
             catch (InsufficientExecutionStackException e)
             {
                 throw new InsufficientExecutionStackException(
-                    $"Ran into infinite generation trying to extract type '{keyType}'.", e);
+                    $"Ran into infinite generation trying to extract type '{keyType}'.",
+                    e
+                );
             }
         }
     }
@@ -77,7 +86,8 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     private static void FlattenComplexData(
         object source,
         IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options)
+        ExtractorOptions options
+    )
     {
         if (source is IDictionary map)
         {
@@ -97,13 +107,14 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     private static void FlattenDictionaryData(
         IDictionary source,
         IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options)
+        ExtractorOptions options
+    )
     {
         Type type = source.GetType();
 
         Type[] mapArgs = type.IsGenericType
-                ? type.GetGenericArguments()
-                : [typeof(object), typeof(object)];
+            ? type.GetGenericArguments()
+            : [typeof(object), typeof(object)];
 
         foreach (DictionaryEntry item in source)
         {
@@ -116,15 +127,15 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     private static void FlattenEnumerableData(
         IEnumerable source,
         IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options)
+        ExtractorOptions options
+    )
     {
         Type type = source.GetType();
 
-        Type? arrayType = type.IsArray
-                ? type.GetElementType()
-                : type.IsGenericType
-                ? type.GetGenericArguments()[0]
-                : typeof(object);
+        Type? arrayType =
+            type.IsArray ? type.GetElementType()
+            : type.IsGenericType ? type.GetGenericArguments()[0]
+            : typeof(object);
 
         IEnumerator gen = source.GetEnumerator();
         while (gen.MoveNext())
@@ -138,7 +149,8 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     private static void FlattenInnerData(
         object source,
         IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options)
+        ExtractorOptions options
+    )
     {
         Type type = source.GetType();
 

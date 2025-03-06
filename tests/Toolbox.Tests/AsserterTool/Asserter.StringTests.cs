@@ -13,7 +13,9 @@ public static class AsserterStringTests
     [Theory, RandomData]
     internal static void Contains_RandomOther(string sample)
     {
-        sample.Assert(d => d.Assert().Contains(Tools.Mutator.Variant(sample))).Throws<AssertException>();
+        sample
+            .Assert(d => d.Assert().Contains(Tools.Mutator.Variant(sample)))
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]

@@ -10,7 +10,13 @@ public sealed class FakedCompareHintTests : CompareHintTestBase<FakedCompareHint
 
     private static readonly Type[] _ValidTypes = [typeof(IFaked)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(string), typeof(int)];
+    private static readonly Type[] _InvalidTypes =
+    [
+        typeof(IEnumerable),
+        typeof(string),
+        typeof(int),
+    ];
 
-    public FakedCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public FakedCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

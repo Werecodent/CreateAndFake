@@ -8,12 +8,14 @@ public sealed class FakeCallException : Exception
 {
     /// <inheritdoc cref="FakeCallException"/>
     /// <remarks>Serialization constructor.</remarks>
-    private FakeCallException() : base() { }
+    private FakeCallException()
+        : base() { }
 
     /// <inheritdoc cref="FakeCallException"/>
     /// <param name="data">Associated call data.</param>
     /// <param name="setup">Call data with behavior.</param>
-    internal FakeCallException(CallData data, IEnumerable<CallData> setup) : base(BuildMessage(data, setup)) { }
+    internal FakeCallException(CallData data, IEnumerable<CallData> setup)
+        : base(BuildMessage(data, setup)) { }
 
     /// <inheritdoc cref="FakeCallException"/>
     /// <param name="info">Object data.</param>
@@ -22,7 +24,8 @@ public sealed class FakeCallException : Exception
 #if NET5_0_OR_GREATER
     [Obsolete(DiagnosticId = "SYSLIB0051")]
 #endif
-    private FakeCallException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    private FakeCallException(SerializationInfo info, StreamingContext context)
+        : base(info, context) { }
 
     /// <summary>Integrates the details into the message.</summary>
     /// <param name="data">Associated call data.</param>
@@ -32,9 +35,9 @@ public sealed class FakeCallException : Exception
     {
         string nl = Environment.NewLine;
 
-        return "Method called without matched behavior." +
-            ((data == null) ? "" : $"{nl}Call: {data}") +
-            ((setup == null) ? "" : $"{nl}Calls with behavior set: {BuildMessage(setup)}");
+        return "Method called without matched behavior."
+            + ((data == null) ? "" : $"{nl}Call: {data}")
+            + ((setup == null) ? "" : $"{nl}Calls with behavior set: {BuildMessage(setup)}");
     }
 
     /// <inheritdoc cref="BuildMessage(CallData,IEnumerable{CallData})"/>

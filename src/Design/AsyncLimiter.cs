@@ -7,7 +7,8 @@ namespace CreateAndFake.Design;
 /// <param name="timeout"><inheritdoc cref="_timeout" path="/summary"/></param>
 /// <param name="tries"><inheritdoc cref="_tries" path="/summary"/></param>
 /// <param name="delay"><inheritdoc cref="_delay" path="/summary"/></param>
-public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = null) : IEquatable<AsyncLimiter>
+public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
+    : IEquatable<AsyncLimiter>
 {
     /// <summary>Instance that defaults to a single attempt.</summary>
     public static AsyncLimiter Once { get; } = new AsyncLimiter(1);
@@ -28,16 +29,16 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     public static AsyncLimiter Myriad { get; } = new AsyncLimiter(1000);
 
     /// <summary>Instance that defaults to 25 ms with a minimal delay.</summary>
-    public static AsyncLimiter Quick { get; } = new AsyncLimiter(
-        new TimeSpan(0, 0, 0, 0, 25), new TimeSpan(0, 0, 0, 0, 1));
+    public static AsyncLimiter Quick { get; } =
+        new AsyncLimiter(new TimeSpan(0, 0, 0, 0, 25), new TimeSpan(0, 0, 0, 0, 1));
 
     /// <summary>Instance that defaults to half a second with a small delay.</summary>
-    public static AsyncLimiter Fast { get; } = new AsyncLimiter(
-        new TimeSpan(0, 0, 0, 0, 500), new TimeSpan(0, 0, 0, 0, 20));
+    public static AsyncLimiter Fast { get; } =
+        new AsyncLimiter(new TimeSpan(0, 0, 0, 0, 500), new TimeSpan(0, 0, 0, 0, 20));
 
     /// <summary>Instance that defaults to five seconds with a large delay.</summary>
-    public static AsyncLimiter Slow { get; } = new AsyncLimiter(
-        new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 0, 0, 200));
+    public static AsyncLimiter Slow { get; } =
+        new AsyncLimiter(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 0, 0, 200));
 
     /// <summary>Maximum attempts to try.</summary>
     private readonly int _tries = tries;
@@ -60,7 +61,15 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <inheritdoc cref="Repeat{T}(string,Func{T},CancellationToken?)"/>
     public Task Repeat(string message, Action? behavior, CancellationToken? canceler = null)
     {
-        return Repeat(message, () => { behavior?.Invoke(); return true; }, canceler);
+        return Repeat(
+            message,
+            () =>
+            {
+                behavior?.Invoke();
+                return true;
+            },
+            canceler
+        );
     }
 
     /// <summary>Repeats <paramref name="behavior"/>.</summary>
@@ -70,7 +79,10 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
     /// <returns>Results from all calls.</returns>
     public async Task<IReadOnlyCollection<T>> Repeat<T>(
-        string message, Func<T> behavior, CancellationToken? canceler = null)
+        string message,
+        Func<T> behavior,
+        CancellationToken? canceler = null
+    )
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
 
@@ -81,7 +93,9 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
         do
         {
             results.Add(behavior.Invoke());
-        } while (await DelayIfNotDone(message, watch.Elapsed, ++attempt, canceler).ConfigureAwait(false));
+        } while (
+            await DelayIfNotDone(message, watch.Elapsed, ++attempt, canceler).ConfigureAwait(false)
+        );
 
         return results.AsReadOnly();
     }
@@ -95,22 +109,42 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
 
     /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
     /// <inheritdoc cref="StallUntil{T}(string,Func{T},Func{bool},CancellationToken?)"/>
-    public Task StallUntil(string message, Action? behavior, Func<bool> checkState, CancellationToken? canceler = null)
+    public Task StallUntil(
+        string message,
+        Action? behavior,
+        Func<bool> checkState,
+        CancellationToken? canceler = null
+    )
     {
-        return StallUntil(message, () => { behavior?.Invoke(); return true; }, checkState, canceler);
+        return StallUntil(
+            message,
+            () =>
+            {
+                behavior?.Invoke();
+                return true;
+            },
+            checkState,
+            canceler
+        );
     }
 
     /// <inheritdoc cref="StallUntil{T}(string,Func{T},Func{T,bool},CancellationToken?)"/>
     public Task<IReadOnlyCollection<T>> StallUntil<T>(
-        string message, Func<T> behavior, Func<bool> checkState, CancellationToken? canceler = null)
+        string message,
+        Func<T> behavior,
+        Func<bool> checkState,
+        CancellationToken? canceler = null
+    )
     {
         ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
 
-        return StallUntil(message, behavior, (T _) => checkState.Invoke(), canceler);
+        return StallUntil(message, behavior, _ => checkState.Invoke(), canceler);
     }
 
     /// <summary>Retries <paramref name="behavior"/> until <paramref name="checkState"/>.</summary>
-    /// <typeparam name="T">Result <c>Type</c> returned from <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="T">
+    ///     Result <c>Type</c> returned from <paramref name="behavior"/>.
+    /// </typeparam>
     /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="behavior">Behavior to repeatably attempt.</param>
     /// <param name="checkState">Polls if the behavior was successful.</param>
@@ -119,7 +153,11 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <exception cref="TimeoutException">If an attempt limit is reached.</exception>
     /// <remarks>Beware infinite loops in <paramref name="behavior"/>.</remarks>
     public async Task<IReadOnlyCollection<T>> StallUntil<T>(
-        string message, Func<T> behavior, Func<T, bool> checkState, CancellationToken? canceler = null)
+        string message,
+        Func<T> behavior,
+        Func<T, bool> checkState,
+        CancellationToken? canceler = null
+    )
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
         ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
@@ -152,13 +190,22 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     }
 
     /// <inheritdoc cref="Retry{T}(string,Action,Action,CancellationToken?)"/>
-    public Task Retry(string message, Action behavior, Action resetState, CancellationToken? canceler = null)
+    public Task Retry(
+        string message,
+        Action behavior,
+        Action resetState,
+        CancellationToken? canceler = null
+    )
     {
         return Retry<Exception>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc cref="Retry{T}(string,Action,Action,CancellationToken?)"/>
-    public Task Retry<TException>(string message, Action behavior, CancellationToken? canceler = null)
+    public Task Retry<TException>(
+        string message,
+        Action behavior,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         return Retry<TException>(message, behavior, null, canceler);
@@ -167,28 +214,52 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
     /// <inheritdoc cref="Retry{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task Retry<TException>(
-        string message, Action behavior, Action? resetState, CancellationToken? canceler = null)
+        string message,
+        Action behavior,
+        Action? resetState,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
-        return Retry<TException, bool>(message, () => { behavior?.Invoke(); return true; }, resetState, canceler);
+        return Retry<TException, bool>(
+            message,
+            () =>
+            {
+                behavior?.Invoke();
+                return true;
+            },
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc cref="Retry{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
-    public Task<TResult> Retry<TResult>(string message, Func<TResult> behavior, CancellationToken? canceler = null)
+    public Task<TResult> Retry<TResult>(
+        string message,
+        Func<TResult> behavior,
+        CancellationToken? canceler = null
+    )
     {
         return Retry<Exception, TResult>(message, behavior, null, canceler);
     }
 
     /// <inheritdoc cref="Retry{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task<TResult> Retry<TResult>(
-        string message, Func<TResult> behavior, Action resetState, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        Action resetState,
+        CancellationToken? canceler = null
+    )
     {
         return Retry<Exception, TResult>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc cref="Retry{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task<TResult> Retry<TException, TResult>(
-        string message, Func<TResult> behavior, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         return Retry<TException, TResult>(message, behavior, null, canceler);
@@ -198,7 +269,11 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <exception cref="TimeoutException">If an attempt limit is reached.</exception>
     /// <inheritdoc cref="Attempt{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public async Task<TResult> Retry<TException, TResult>(
-        string message, Func<TResult> behavior, Action? resetState, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        Action? resetState,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
@@ -216,7 +291,8 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
                 lastError = error;
             }
             resetState?.Invoke();
-            await DelayOrFault(message, watch.Elapsed, i, canceler, lastError).ConfigureAwait(false);
+            await DelayOrFault(message, watch.Elapsed, i, canceler, lastError)
+                .ConfigureAwait(false);
         }
     }
 
@@ -227,13 +303,22 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     }
 
     /// <inheritdoc cref="Attempt{T}(string,Action,Action,CancellationToken?)"/>
-    public Task Attempt(string message, Action behavior, Action resetState, CancellationToken? canceler = null)
+    public Task Attempt(
+        string message,
+        Action behavior,
+        Action resetState,
+        CancellationToken? canceler = null
+    )
     {
         return Attempt<Exception>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc cref="Attempt{T}(string,Action,Action,CancellationToken?)"/>
-    public Task Attempt<TException>(string message, Action behavior, CancellationToken? canceler = null)
+    public Task Attempt<TException>(
+        string message,
+        Action behavior,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         return Attempt<TException>(message, behavior, null, canceler);
@@ -242,52 +327,83 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <returns>Awaitable task handling the repetitions.</returns>
     /// <inheritdoc cref="Attempt{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task Attempt<TException>(
-        string message, Action? behavior, Action? resetState, CancellationToken? canceler = null)
+        string message,
+        Action? behavior,
+        Action? resetState,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
-        return Attempt<TException, bool>(message, () => { behavior?.Invoke(); return true; }, resetState, canceler);
+        return Attempt<TException, bool>(
+            message,
+            () =>
+            {
+                behavior?.Invoke();
+                return true;
+            },
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc cref="Attempt{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
-    public Task<TResult?> Attempt<TResult>(string message, Func<TResult> behavior, CancellationToken? canceler = null)
+    public Task<TResult?> Attempt<TResult>(
+        string message,
+        Func<TResult> behavior,
+        CancellationToken? canceler = null
+    )
     {
         return Attempt<Exception, TResult>(message, behavior, null, canceler);
     }
 
     /// <inheritdoc cref="Attempt{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task<TResult?> Attempt<TResult>(
-        string message, Func<TResult> behavior, Action resetState, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        Action resetState,
+        CancellationToken? canceler = null
+    )
     {
         return Attempt<Exception, TResult>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc cref="Attempt{TException,TResult}(string,Func{TResult},Action,CancellationToken?)"/>
     public Task<TResult?> Attempt<TException, TResult>(
-        string message, Func<TResult> behavior, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         return Attempt<TException, TResult>(message, behavior, null, canceler);
     }
 
     /// <summary>
-    ///     Retries <paramref name="behavior"/> when encountering 
+    ///     Retries <paramref name="behavior"/> when encountering
     ///     exceptions of <c>Type</c> <typeparamref name="TException"/>.
     /// </summary>
     /// <typeparam name="TException">
     ///     Exception <c>Type</c> to ignore and retry <paramref name="behavior"/> if encountered.
     /// </typeparam>
-    /// <typeparam name="TResult">Result <c>Type</c> returned from <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="TResult">
+    ///     Result <c>Type</c> returned from <paramref name="behavior"/>.
+    /// </typeparam>
     /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="behavior">Behavior to repeatably attempt.</param>
     /// <param name="resetState">Behavior to reset state before next attempt.</param>
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
     /// <returns>
-    ///     Result of the successful <paramref name="behavior"/> attempt or <c>default</c> if limit reached.
+    ///     Result of the successful <paramref name="behavior"/>
+    ///     attempt or <c>default</c> if limit reached.
     /// </returns>
     /// <exception cref="TimeoutException">If an attempt limit is reached.</exception>
     /// <remarks>Beware infinite loops in <paramref name="behavior"/>.</remarks>
     public async Task<TResult?> Attempt<TException, TResult>(
-        string message, Func<TResult> behavior, Action? resetState, CancellationToken? canceler = null)
+        string message,
+        Func<TResult> behavior,
+        Action? resetState,
+        CancellationToken? canceler = null
+    )
         where TException : Exception
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
@@ -314,7 +430,12 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <param name="tries">Current number of attempts.</param>
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
     /// <returns><c>true</c> if terminal condition not reached; <c>false</c> otherwise.</returns>
-    private async Task<bool> DelayIfNotDone(string message, TimeSpan elapsed, int tries, CancellationToken? canceler)
+    private async Task<bool> DelayIfNotDone(
+        string message,
+        TimeSpan elapsed,
+        int tries,
+        CancellationToken? canceler
+    )
     {
         if (tries < _tries && elapsed < _timeout)
         {
@@ -336,7 +457,12 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <returns>Awaitable <c>Task</c> handling the delay.</returns>
     /// <exception cref="TimeoutException">If an attempt limit is reached.</exception>
     private async Task DelayOrFault(
-        string message, TimeSpan elapsed, int tries, CancellationToken? canceler, Exception? ex = null)
+        string message,
+        TimeSpan elapsed,
+        int tries,
+        CancellationToken? canceler,
+        Exception? ex = null
+    )
     {
         string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
         if (tries >= _tries)
@@ -381,7 +507,8 @@ public sealed class AsyncLimiter(TimeSpan timeout, int tries, TimeSpan? delay = 
     /// <summary>Compares <c>this</c> to <paramref name="obj"/> by value.</summary>
     /// <param name="obj">Instance to compare <c>this</c> with.</param>
     /// <returns>
-    ///     <c>true</c> if <c>this</c> is equal to <paramref name="obj"/> by value; <c>false</c> otherwise.
+    ///     <c>true</c> if <c>this</c> is equal to
+    ///     <paramref name="obj"/> by value; <c>false</c> otherwise.
     /// </returns>
     public override bool Equals(object? obj)
     {

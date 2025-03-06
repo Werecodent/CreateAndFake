@@ -22,8 +22,8 @@ public static class AssertEnumerableTests
     internal static void AssertEnumerable_CallsAndChains(Injected<AssertEnumerable> instance)
     {
         RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
-        results.RawResults
-            .Where(r => r.Result != null)
+        results
+            .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertEnumerable>)
             .Select(r => r.Method.Name)
             .Assert()

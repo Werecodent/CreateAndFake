@@ -1,6 +1,8 @@
 ﻿global using MutatorMod = System.Func<
     CreateAndFake.MutatorTool.MutatorOptions,
-    CreateAndFake.MutatorTool.MutatorOptions>;
+    CreateAndFake.MutatorTool.MutatorOptions
+>;
+
 namespace CreateAndFake.MutatorTool;
 
 /// <summary>Changes the value of objects or creates alternatives.</summary>

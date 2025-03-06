@@ -86,8 +86,9 @@ View the [license](LICENSE.txt) file for more details.
 
 ## Acknowledgments
 
-* [xUnit](https://xunit.github.io/): For running tests.
-* [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator/) + [CodeCov](https://codecov.io/): For test coverage.
+* [xUnit](https://xunit.github.io): For running tests.
+* [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator) + [CodeCov](https://codecov.io): For test coverage.
 * [Bullseye](https://github.com/adamralph/bullseye) + [SimpleExec](https://github.com/adamralph/simple-exec) + [MinVer](https://github.com/adamralph/minver): For project building.
-* [GitHub](https://github.com/): For hosting code.
-* [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development/): For C# and editors.
+* [CSharpier](https://github.com/belav/csharpier): For formatting code.
+* [GitHub](https://github.com): For hosting code.
+* [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development): For C# and editors.

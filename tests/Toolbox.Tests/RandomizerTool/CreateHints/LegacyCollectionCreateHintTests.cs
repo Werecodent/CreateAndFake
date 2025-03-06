@@ -7,13 +7,16 @@ public sealed class LegacyCollectionCreateHintTests : CreateHintTestBase<LegacyC
 {
     private static readonly LegacyCollectionCreateHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [
+    private static readonly Type[] _ValidTypes =
+    [
         .. LegacyCollectionCreateHint.PotentialCollections,
         typeof(IEnumerable),
         typeof(IList),
-        typeof(IDictionary)];
+        typeof(IDictionary),
+    ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public LegacyCollectionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public LegacyCollectionCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

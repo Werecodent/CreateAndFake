@@ -8,11 +8,12 @@ namespace CreateAndFake.ExtractorTool;
 public sealed class ContentMap(IDictionary<Type, ISet<object>> content, ExtractorOptions options)
 {
     /// <summary>Flattened object data.</summary>
-    private readonly IDictionary<Type, ISet<object>> _content = content
-        ?? throw new ArgumentNullException(nameof(content));
+    private readonly IDictionary<Type, ISet<object>> _content =
+        content ?? throw new ArgumentNullException(nameof(content));
 
     /// <summary>Configured options used to extract the contents.</summary>
-    private readonly ExtractorOptions _options = options ?? throw new ArgumentNullException(nameof(options));
+    private readonly ExtractorOptions _options =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Iterates all the extracted contents.</summary>
     /// <returns>The extracted contents.</returns>
@@ -34,10 +35,9 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
         Type itemType = item.GetType();
 
         return itemType.IsValueType || itemType == typeof(string)
-            ? _content.Values
-                .Any(p => p.Contains(item))
-            : _content.Keys
-                .Where(k => k.Inherits(itemType))
+            ? _content.Values.Any(p => p.Contains(item))
+            : _content
+                .Keys.Where(k => k.Inherits(itemType))
                 .SelectMany(k => _content[k])
                 .Any(i => _options.Valuer.Equals(item, i));
     }
@@ -57,8 +57,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
     public IEnumerable<object> FindSharedContent(params IEnumerable<ContentMap> maps)
     {
-        return maps
-            .SelectMany(m => m.AllContent())
+        return maps.SelectMany(m => m.AllContent())
             .Intersect(AllContent(), _options.Valuer)
             .Where(d => !_options.UniqueIgnoredTypes.Contains(d.GetType()))
             .Where(d => !d.GetType().IsEnum)
@@ -70,10 +69,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     /// <returns>All <typeparamref name="T"/> instances (including subclasses).</returns>
     public IEnumerable<T> FindAll<T>()
     {
-        return _content.Keys
-            .Where(t => t.Inherits<T>())
-            .SelectMany(t => _content[t])
-            .OfType<T>();
+        return _content.Keys.Where(t => t.Inherits<T>()).SelectMany(t => _content[t]).OfType<T>();
     }
 
     /// <summary>Returns all possible <paramref name="type"/> instances.</summary>
@@ -81,8 +77,8 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     /// <returns>All <paramref name="type"/> instances (including subclasses).</returns>
     public IEnumerable<object> FindAll(Type type)
     {
-        return _content.Keys
-            .Where(t => t.Inherits(type))
+        return _content
+            .Keys.Where(t => t.Inherits(type))
             .SelectMany(t => _content[t])
             .Where(t => t.GetType().Inherits(type));
     }

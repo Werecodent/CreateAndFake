@@ -4,5 +4,6 @@ namespace CreateAndFake.AsserterTool.Fluent;
 public sealed class AssertComparable : AssertComparableBase<AssertComparable>
 {
     /// <inheritdoc/>
-    internal AssertComparable(IAsserter asserter, IComparable? value) : base(asserter, value) { }
+    internal AssertComparable(IAsserter asserter, IComparable? value)
+        : base(asserter, value) { }
 }

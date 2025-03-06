@@ -22,12 +22,11 @@ public static class AssertComparableTests
     internal static void AssertComparable_CallsAndChains(Injected<AssertComparable> instance)
     {
         RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
-        results.RawResults
-            .Where(r => r.Result != null)
+        results
+            .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertComparable>)
             .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();
     }
 }
-

@@ -44,7 +44,9 @@ public static class MutatorTests
     [Theory, RandomData]
     internal static void Variant_RepeatsUntilUnequal([Fake] IValuer fakeValuer, DataSample sample)
     {
-        fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(Behavior.Series(true, true, true, false));
+        fakeValuer
+            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .SetupCall(Behavior.Series(true, true, true, false));
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Variant(sample)
@@ -56,10 +58,14 @@ public static class MutatorTests
 
     [Theory, RandomData]
     internal static void Variant_RepeatsUntilBothUnequal(
-        [Fake] IValuer fakeValuer, DataSample sample1, DataSample sample2)
+        [Fake] IValuer fakeValuer,
+        DataSample sample1,
+        DataSample sample2
+    )
     {
-        fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(
-            Behavior.Series(false, true, true, false, true, true, false, false));
+        fakeValuer
+            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
             .Variant(sample1, sample2)
@@ -93,12 +99,15 @@ public static class MutatorTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                Extractor = new Extractor(Tools.Extractor.Options with
-                {
-                    Valuer = fakeValuer,
-                    Limiter = new Limiter(3)
-                })
-            })
+                Extractor = new Extractor(
+                    Tools.Extractor.Options with
+                    {
+                        Valuer = fakeValuer,
+                        Limiter = new Limiter(3),
+                    }
+                ),
+            }
+        )
             .Assert(t => t.Unique(sample))
             .Throws<TimeoutException>();
     }
@@ -106,7 +115,9 @@ public static class MutatorTests
     [Theory, RandomData]
     internal static void Unique_RepeatsUntilUnequal([Fake] IValuer fakeValuer, string sample)
     {
-        fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(Behavior.Series(true, true, true, false));
+        fakeValuer
+            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .SetupCall(Behavior.Series(true, true, true, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
@@ -117,10 +128,14 @@ public static class MutatorTests
 
     [Theory, RandomData]
     internal static void Unique_RepeatsUntilBothUnequal(
-        [Fake] IValuer fakeValuer, string sample1, string sample2)
+        [Fake] IValuer fakeValuer,
+        string sample1,
+        string sample2
+    )
     {
-        fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupCall(
-            Behavior.Series(false, true, true, false, true, true, false, false));
+        fakeValuer
+            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })

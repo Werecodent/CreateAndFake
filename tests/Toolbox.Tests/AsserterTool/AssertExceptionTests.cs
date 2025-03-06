@@ -12,7 +12,12 @@ public sealed class AssertExceptionTests : ExceptionTestBase<AssertException>
 
     [Theory, RandomData]
     internal static void AssertException_MessageFormat(
-        string message, string details, string content, int seed, Exception ex)
+        string message,
+        string details,
+        string content,
+        int seed,
+        Exception ex
+    )
     {
         new AssertException(message, null, null).Message.Assert().Contains(message);
         new AssertException(message, null, seed).Message.Assert().Contains($"{seed}");
@@ -34,7 +39,11 @@ public sealed class AssertExceptionTests : ExceptionTestBase<AssertException>
         new AssertException(message, details, seed, content, ex).Message.Assert().Contains(message);
         new AssertException(message, details, seed, content, ex).Message.Assert().Contains(details);
         new AssertException(message, details, seed, content, ex).Message.Assert().Contains(content);
-        new AssertException(message, details, seed, content, ex).Message.Assert().Contains($"{seed}");
-        new AssertException(message, details, seed, content, ex).Message.Assert().ContainsNot(ex.ToString());
+        new AssertException(message, details, seed, content, ex)
+            .Message.Assert()
+            .Contains($"{seed}");
+        new AssertException(message, details, seed, content, ex)
+            .Message.Assert()
+            .ContainsNot(ex.ToString());
     }
 }

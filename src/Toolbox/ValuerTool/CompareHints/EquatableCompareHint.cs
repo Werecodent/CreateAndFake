@@ -20,7 +20,11 @@ public sealed class EquatableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
 

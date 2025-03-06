@@ -11,5 +11,6 @@ public sealed class EnumCreateHintTests : CreateHintTestBase<EnumCreateHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public EnumCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public EnumCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

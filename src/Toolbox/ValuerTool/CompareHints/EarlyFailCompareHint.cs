@@ -8,9 +8,9 @@ namespace CreateAndFake.ValuerTool.CompareHints;
 public sealed class EarlyFailCompareHint : CompareHint
 {
     /// <summary>Specific types to control via this hint.</summary>
-    private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet([
-        typeof(string),
-        typeof(object)]);
+    private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet(
+        [typeof(string), typeof(object)]
+    );
 
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
@@ -25,16 +25,25 @@ public sealed class EarlyFailCompareHint : CompareHint
     /// <inheritdoc cref="CompareHint.Supports"/>
     private static bool Supports(Type expected, Type actual)
     {
-        return (expected != actual
-                && !(expected.Inherits(typeof(IAsyncEnumerable<>)) && actual.Inherits(typeof(IAsyncEnumerable<>)))
-                && !(expected.Inherits<IEnumerable>() && actual.Inherits<IEnumerable>()))
+        return (
+                expected != actual
+                && !(
+                    expected.Inherits(typeof(IAsyncEnumerable<>))
+                    && actual.Inherits(typeof(IAsyncEnumerable<>))
+                )
+                && !(expected.Inherits<IEnumerable>() && actual.Inherits<IEnumerable>())
+            )
             || expected.IsPrimitive
             || expected.IsEnum
             || _SupportedTypes.Contains(expected);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         if (expected == null && actual == null)
         {

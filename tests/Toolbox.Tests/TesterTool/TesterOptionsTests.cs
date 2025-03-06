@@ -1,7 +1,7 @@
 global using TesterMod = System.Func<
     CreateAndFake.TesterTool.TesterOptions,
-    CreateAndFake.TesterTool.TesterOptions>;
-
+    CreateAndFake.TesterTool.TesterOptions
+>;
 using CreateAndFake.TesterTool;
 
 namespace CreateAndFake.Tests.TesterTool;

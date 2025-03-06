@@ -2,18 +2,20 @@
 
 namespace CreateAndFake.Design.Content;
 
-/// <summary>Compares objects/collections by value via <see cref="IValueEquatable"/> if possible.</summary>
-public sealed class ValueComparer :
-    IComparer,
-    IComparer<object>,
-    IComparer<IValueEquatable>,
-    IComparer<IEnumerable>,
-    IComparer<IDictionary>,
-    IEqualityComparer,
-    IEqualityComparer<object>,
-    IEqualityComparer<IValueEquatable>,
-    IEqualityComparer<IEnumerable>,
-    IEqualityComparer<IDictionary>
+/// <summary>
+///     Compares objects/collections by value via <see cref="IValueEquatable"/> if possible.
+/// </summary>
+public sealed class ValueComparer
+    : IComparer,
+        IComparer<object>,
+        IComparer<IValueEquatable>,
+        IComparer<IEnumerable>,
+        IComparer<IDictionary>,
+        IEqualityComparer,
+        IEqualityComparer<object>,
+        IEqualityComparer<IValueEquatable>,
+        IEqualityComparer<IEnumerable>,
+        IEqualityComparer<IDictionary>
 {
     /// <summary>Hash used for <c>null</c> values.</summary>
     public static int NullHash { get; } = 0;
@@ -31,7 +33,8 @@ public sealed class ValueComparer :
     /// <param name="x">Object to compare with <paramref name="y"/>.</param>
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="x"/> equals <paramref name="y"/> by value; <c>false</c> otherwise.
+    ///     <c>true</c> if <paramref name="x"/> equals
+    ///     <paramref name="y"/> by value; <c>false</c> otherwise.
     /// </returns>
     public new bool Equals(object? x, object? y)
     {
@@ -135,7 +138,9 @@ public sealed class ValueComparer :
         }
     }
 
-    /// <summary>Computes an identifying hash code for <paramref name="items"/> based upon value.</summary>
+    /// <summary>
+    ///     Computes an identifying hash code for <paramref name="items"/> based upon value.
+    /// </summary>
     /// <param name="items">Bundled objects to generate a single value hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="items"/>.</returns>
     public int GetHashCode(params IEnumerable<object?>? items)
@@ -143,7 +148,9 @@ public sealed class ValueComparer :
         return GetHashCode((IEnumerable?)items);
     }
 
-    /// <summary>Computes an identifying hash code for <paramref name="obj"/> based upon value.</summary>
+    /// <summary>
+    ///     Computes an identifying hash code for <paramref name="obj"/> based upon value.
+    /// </summary>
     /// <param name="obj">Object to generate a hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="obj"/>.</returns>
     public int GetHashCode(object? obj)

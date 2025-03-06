@@ -14,10 +14,11 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
         typeof(Task<string>),
         typeof(Task<int>),
         typeof(Task<bool>),
-        typeof(Task)
+        typeof(Task),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public TaskCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public TaskCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

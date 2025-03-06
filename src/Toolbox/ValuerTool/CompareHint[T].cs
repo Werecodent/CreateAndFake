@@ -11,13 +11,21 @@ public abstract class CompareHint<T> : CompareHint
     }
 
     /// <inheritdoc/>
-    protected sealed override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected sealed override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         return Compare((T?)expected, (T?)actual, valuer);
     }
 
     /// <inheritdoc cref="Compare(object,object,ValuerChainer)"/>
-    protected abstract IEnumerable<Difference> Compare(T? expected, T? actual, ValuerChainer valuer);
+    protected abstract IEnumerable<Difference> Compare(
+        T? expected,
+        T? actual,
+        ValuerChainer valuer
+    );
 
     /// <inheritdoc/>
     protected sealed override int GetHashCode(object? item, ValuerChainer valuer)

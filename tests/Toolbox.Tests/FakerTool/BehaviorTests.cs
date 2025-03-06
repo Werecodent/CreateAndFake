@@ -9,35 +9,37 @@ public static class BehaviorTests
     [Fact]
     internal static void Behavior_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(Behavior),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) });
+        Tools.Tester.PreventsNullRefException(
+            typeof(Behavior),
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
+        );
     }
 
     [Fact]
     internal static void Behavior_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(Behavior),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) });
+        Tools.Tester.PreventsParameterMutation(
+            typeof(Behavior),
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
+        );
     }
 
     [Fact]
     internal static void Set_BehaviorWorks()
     {
-        foreach (MethodInfo info in typeof(Behavior)
-            .GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Where(m => m.Name == nameof(Behavior.Set)))
+        foreach (
+            MethodInfo info in typeof(Behavior)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(m => m.Name == nameof(Behavior.Set))
+        )
         {
             Type type = info.GetParameters().First().ParameterType;
 
-            Type[] generics = type
-                .AsGenericType()
-                ?.GetGenericArguments()
-                .Select(a => typeof(string))
-                .ToArray() ?? Type.EmptyTypes;
+            Type[] generics =
+                type.AsGenericType()?.GetGenericArguments().Select(a => typeof(string)).ToArray()
+                ?? Type.EmptyTypes;
 
-            MethodInfo caller = (generics.Length != 0)
-                ? info.MakeGenericMethod(generics)
-                : info;
+            MethodInfo caller = (generics.Length != 0) ? info.MakeGenericMethod(generics) : info;
 
             Type setupType = caller.GetParameters().First().ParameterType;
 
@@ -45,13 +47,15 @@ public static class BehaviorTests
                 ? [.. generics.Skip(1)]
                 : generics;
 
-            Behavior noTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), null]);
+            Behavior noTimes = (Behavior)
+                caller.Invoke(null, [Tools.Randomizer.Create(setupType), null]);
 
             noTimes.HasExpectedCalls().Assert().Is(false);
             noTimes.Invoke([.. args.Select(a => Tools.Randomizer.Create(a))]);
             noTimes.HasExpectedCalls().Assert().Is(true);
 
-            Behavior withTimes = (Behavior)caller.Invoke(null, [Tools.Randomizer.Create(setupType), Times.Never]);
+            Behavior withTimes = (Behavior)
+                caller.Invoke(null, [Tools.Randomizer.Create(setupType), Times.Never]);
 
             withTimes.HasExpectedCalls().Assert().Is(true);
             withTimes.Invoke([.. args.Select(a => Tools.Randomizer.Create(a))]);
@@ -86,7 +90,10 @@ public static class BehaviorTests
     [Fact]
     internal static void Throw_BehaviorWorks()
     {
-        Behavior.Throw<InvalidOperationException>().Assert(b => b.Invoke([])).Throws<InvalidOperationException>();
+        Behavior
+            .Throw<InvalidOperationException>()
+            .Assert(b => b.Invoke([]))
+            .Throws<InvalidOperationException>();
     }
 
     [Theory, RandomData]
@@ -125,6 +132,9 @@ public static class BehaviorTests
     [Fact]
     internal static void Invoke_ThrowsWithWrongArgs()
     {
-        Behavior.Set((int _) => { }).Assert(b => b.Invoke([])).Throws<TargetParameterCountException>();
+        Behavior
+            .Set((int _) => { })
+            .Assert(b => b.Invoke([]))
+            .Throws<TargetParameterCountException>();
     }
 }

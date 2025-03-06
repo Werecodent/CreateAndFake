@@ -1,6 +1,7 @@
 ﻿global using DuplicatorMod = System.Func<
     CreateAndFake.DuplicatorTool.DuplicatorOptions,
-    CreateAndFake.DuplicatorTool.DuplicatorOptions>;
+    CreateAndFake.DuplicatorTool.DuplicatorOptions
+>;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CreateAndFake.DuplicatorTool;

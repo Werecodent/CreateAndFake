@@ -12,12 +12,13 @@ public sealed class BasicCopyHintTests : CopyHintTestBase<BasicCopyHint>
         typeof(BindingFlags),
         typeof(string),
         typeof(int),
-        typeof(decimal)
+        typeof(decimal),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
-    public BasicCopyHintTests() : base(_ValidTypes, _InvalidTypes, true) { }
+    public BasicCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes, true) { }
 
     [Fact]
     internal static void TryCopy_HandlesBaseObject()

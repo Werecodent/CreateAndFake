@@ -7,31 +7,41 @@ namespace CreateAndFake.Tests.TesterTool;
 
 public static class TesterTests
 {
-    private static readonly Tester _ShortTestInstance = new(Tools.Tester.Options with
-    {
-        Timeout = new TimeSpan(0, 0, 0, 0, 100)
-    });
+    private static readonly Tester _ShortTestInstance = new(
+        Tools.Tester.Options with
+        {
+            Timeout = new TimeSpan(0, 0, 0, 0, 100),
+        }
+    );
 
-    private static readonly Tester _LongTestInstance = new(Tools.Tester.Options with
-    {
-        Timeout = new TimeSpan(0, 0, 10)
-    });
+    private static readonly Tester _LongTestInstance = new(
+        Tools.Tester.Options with
+        {
+            Timeout = new TimeSpan(0, 0, 10),
+        }
+    );
 
     [Fact]
     internal static void Tester_AllMethodsVirtual()
     {
-        Tools.Asserter.IsEmpty(typeof(Tester)
-            .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-            .Where(m => !m.IsVirtual)
-            .Select(m => m.Name)
-            .Where(n => n != $"get_{nameof(Tester.Options)}"));
+        Tools.Asserter.IsEmpty(
+            typeof(Tester)
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Where(m => !m.IsVirtual)
+                .Select(m => m.Name)
+                .Where(n => n != $"get_{nameof(Tester.Options)}")
+        );
     }
 
     [Fact]
     internal static void Tester_GuardsNulls()
     {
-        Tools.Asserter.Throws<ArgumentNullException>(() => _ShortTestInstance.PreventsNullRefException(null));
-        Tools.Asserter.Throws<ArgumentNullException>(() => _ShortTestInstance.PreventsParameterMutation(null));
+        Tools.Asserter.Throws<ArgumentNullException>(
+            () => _ShortTestInstance.PreventsNullRefException(null)
+        );
+        Tools.Asserter.Throws<ArgumentNullException>(
+            () => _ShortTestInstance.PreventsParameterMutation(null)
+        );
     }
 
     [Fact]

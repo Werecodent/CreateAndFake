@@ -7,7 +7,8 @@ namespace CreateAndFake.Design.Tests.Context;
 
 /// <summary>Handles testing data context classes.</summary>
 /// <typeparam name="T">Type to test.</typeparam>
-public abstract class DataContextTestBase<T> where T : BaseDataContext
+public abstract class DataContextTestBase<T>
+    where T : BaseDataContext
 {
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
@@ -20,7 +21,12 @@ public abstract class DataContextTestBase<T> where T : BaseDataContext
     [Fact]
     public void DataContext_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<T>(opt => opt with { InjectionValues = [new FastRandom()] });
+        Tools.Tester.PreventsParameterMutation<T>(opt =>
+            opt with
+            {
+                InjectionValues = [new FastRandom()],
+            }
+        );
     }
 
     /// <summary>Verifies data remains consistent on instance.</summary>

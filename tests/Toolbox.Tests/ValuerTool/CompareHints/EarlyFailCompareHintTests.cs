@@ -16,17 +16,18 @@ public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCom
         typeof(string),
         typeof(BindingFlags),
         typeof(Type),
-        typeof(Delegate)
+        typeof(Delegate),
     ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(IDictionary),
         typeof(IEnumerable),
-        typeof(IAsyncEnumerable<int>)
+        typeof(IAsyncEnumerable<int>),
     ];
 
-    public EarlyFailCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public EarlyFailCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal void TryCompare_NullBehaviorCheck()
@@ -44,7 +45,10 @@ public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCom
     [Fact]
     internal void TryGetHashCode_NullBehaviorCheck()
     {
-        TestInstance.TryGetHashCode(null, CreateChainer()).Assert().Is(new HashCodeHintResult(ValueComparer.NullHash));
+        TestInstance
+            .TryGetHashCode(null, CreateChainer())
+            .Assert()
+            .Is(new HashCodeHintResult(ValueComparer.NullHash));
     }
 
     [Theory, RandomData]

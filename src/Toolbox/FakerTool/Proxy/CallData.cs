@@ -7,13 +7,20 @@ namespace CreateAndFake.FakerTool.Proxy;
 /// <param name="generics"><inheritdoc cref="_generics" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
 /// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
-internal sealed class CallData(string methodName, Type[] generics, object?[] args, FakerOptions? options)
+internal sealed class CallData(
+    string methodName,
+    Type[] generics,
+    object?[] args,
+    FakerOptions? options
+)
 {
     /// <summary>Name tied to the call.</summary>
-    private readonly string _methodName = methodName ?? throw new ArgumentNullException(nameof(methodName));
+    private readonly string _methodName =
+        methodName ?? throw new ArgumentNullException(nameof(methodName));
 
     /// <summary>Generics tied to the call.</summary>
-    private readonly Type[] _generics = generics ?? throw new ArgumentNullException(nameof(generics));
+    private readonly Type[] _generics =
+        generics ?? throw new ArgumentNullException(nameof(generics));
 
     /// <summary>Args tied to the call.</summary>
     private readonly object?[] _args = args ?? throw new ArgumentNullException(nameof(args));
@@ -97,9 +104,10 @@ internal sealed class CallData(string methodName, Type[] generics, object?[] arg
     /// <returns><c>string</c> representation of <c>this</c>.</returns>
     public override string ToString()
     {
-        string gen = _generics.Length != 0
-            ? "<" + string.Join(", ", _generics.Select(g => g.Name)) + ">"
-            : "";
+        string gen =
+            _generics.Length != 0
+                ? "<" + string.Join(", ", _generics.Select(g => g.Name)) + ">"
+                : "";
         return _methodName + gen + "(" + string.Join(", ", _args.Select(i => i ?? "'null'")) + ")";
     }
 }

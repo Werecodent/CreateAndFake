@@ -18,11 +18,13 @@ public sealed class BasicCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 
         Type type = source.GetType();
-        if (type.IsPrimitive
+        if (
+            type.IsPrimitive
             || type.IsEnum
             || ValueRandom.ValueTypes.Contains(type)
             || _SupportedTypes.Contains(type)
-            || type.Inherits<IObjectReference>())
+            || type.Inherits<IObjectReference>()
+        )
         {
             return new(source);
         }

@@ -9,8 +9,10 @@ public sealed class DifferenceHintResult : HintResult<IEnumerable<Difference>?>
     public static DifferenceHintResult None { get; } = new(false, null);
 
     /// <inheritdoc/>
-    private DifferenceHintResult(bool hasData, IEnumerable<Difference>? data) : base(hasData, data) { }
+    private DifferenceHintResult(bool hasData, IEnumerable<Difference>? data)
+        : base(hasData, data) { }
 
     /// <inheritdoc cref="DifferenceHintResult(bool,IEnumerable{Difference})"/>
-    public DifferenceHintResult(IEnumerable<Difference>? data) : this(true, data) { }
+    public DifferenceHintResult(IEnumerable<Difference>? data)
+        : this(true, data) { }
 }

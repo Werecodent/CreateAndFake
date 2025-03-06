@@ -58,43 +58,46 @@ public record TesterOptions : IToolOptions
     public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
 
     /// <summary>Types to ignore for test class coverage tests.</summary>
-    public FrozenSet<string> TestClassCoverageExceptions { get; init; } = FrozenSet.ToFrozenSet<string>([]);
+    public FrozenSet<string> TestClassCoverageExceptions { get; init; } =
+        FrozenSet.ToFrozenSet<string>([]);
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
-    public FrozenSet<string> MethodsToIgnore { get; init; } = FrozenSet.ToFrozenSet([
-        "Finalize",
-        "Dispose",
-        "PrintMembers"]);
+    public FrozenSet<string> MethodsToIgnore { get; init; } =
+        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "PrintMembers"]);
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
-    public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet([
-        typeof(InsufficientExecutionStackException),
-        typeof(InvalidFilterCriteriaException),
-        typeof(TargetParameterCountException),
-        typeof(ArgumentOutOfRangeException),
-        typeof(ArrayTypeMismatchException),
-        typeof(InvalidOperationException),
-        typeof(TargetInvocationException),
-        typeof(IndexOutOfRangeException),
-        typeof(BadImageFormatException),
-        typeof(NotImplementedException),
-        typeof(MissingMethodException),
-        typeof(NullReferenceException),
-        typeof(TaskSchedulerException),
-        typeof(ArgumentNullException),
-        typeof(MemberAccessException),
-        typeof(NotSupportedException),
-        typeof(KeyNotFoundException),
-        typeof(InvalidCastException),
-        typeof(PathTooLongException),
-        typeof(FakeVerifyException),
-        typeof(AggregateException),
-        typeof(ArgumentException),
-        typeof(FakeCallException),
-        typeof(OverflowException),
-        typeof(TypeLoadException),
-        typeof(TimeoutException),
-        typeof(FormatException),
-        typeof(AssertException),
-        typeof(TargetException)]);
+    public FrozenSet<Type> IgnorableExceptions { get; init; } =
+        FrozenSet.ToFrozenSet(
+            [
+                typeof(InsufficientExecutionStackException),
+                typeof(InvalidFilterCriteriaException),
+                typeof(TargetParameterCountException),
+                typeof(ArgumentOutOfRangeException),
+                typeof(ArrayTypeMismatchException),
+                typeof(InvalidOperationException),
+                typeof(TargetInvocationException),
+                typeof(IndexOutOfRangeException),
+                typeof(BadImageFormatException),
+                typeof(NotImplementedException),
+                typeof(MissingMethodException),
+                typeof(NullReferenceException),
+                typeof(TaskSchedulerException),
+                typeof(ArgumentNullException),
+                typeof(MemberAccessException),
+                typeof(NotSupportedException),
+                typeof(KeyNotFoundException),
+                typeof(InvalidCastException),
+                typeof(PathTooLongException),
+                typeof(FakeVerifyException),
+                typeof(AggregateException),
+                typeof(ArgumentException),
+                typeof(FakeCallException),
+                typeof(OverflowException),
+                typeof(TypeLoadException),
+                typeof(TimeoutException),
+                typeof(FormatException),
+                typeof(AssertException),
+                typeof(TargetException),
+            ]
+        );
 }

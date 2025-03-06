@@ -6,7 +6,8 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-///     Specifies the attached data will not be <c>null</c> when the call returns with <paramref name="returnValue"/>.
+///     Specifies the attached data will not be <c>null</c>
+///     when the call returns with <paramref name="returnValue"/>.
 /// </summary>
 /// <param name="returnValue"><inheritdoc cref="ReturnValue" path="/summary"/></param>
 [ExcludeFromCodeCoverage, AttributeUsage(AttributeTargets.Parameter, Inherited = false)]

@@ -1,6 +1,7 @@
 ﻿global using ValuerMod = System.Func<
     CreateAndFake.ValuerTool.ValuerOptions,
-    CreateAndFake.ValuerTool.ValuerOptions>;
+    CreateAndFake.ValuerTool.ValuerOptions
+>;
 using System.Collections;
 
 namespace CreateAndFake.ValuerTool;
@@ -18,7 +19,11 @@ public interface IValuer : IEqualityComparer<object>, IEqualityComparer
     /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
     /// <exception cref="NotSupportedException">If no hint supports comparing the objects.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
-    IEnumerable<Difference> Compare(object? expected, object? actual, ValuerMod? optionConfiguration = null);
+    IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration = null
+    );
 
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
     new bool Equals(object? x, object? y);

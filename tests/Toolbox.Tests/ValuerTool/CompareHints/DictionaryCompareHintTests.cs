@@ -10,7 +10,7 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
     private static readonly Type[] _ValidTypes =
     [
         typeof(IDictionary),
-        typeof(Dictionary<string, int>)
+        typeof(Dictionary<string, int>),
     ];
 
     private static readonly Type[] _InvalidTypes =
@@ -18,10 +18,11 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
         typeof(object),
         typeof(string),
         typeof(IList),
-        typeof(int)
+        typeof(int),
     ];
 
-    public DictionaryCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public DictionaryCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void TryCompare_SameKeyDifferentValuesWorks(Dictionary<string, int> data)
@@ -30,7 +31,12 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
         string key = data.First().Key;
         dupe[key] = data[key].CreateVariant();
 
-        TestInstance.TryCompare(data, dupe, CreateChainer()).Data.ToArray()
-            .Assert().IsNotEmpty("Hint didn't find differences with a modified key on '" + data.GetType().Name + "'.");
+        TestInstance
+            .TryCompare(data, dupe, CreateChainer())
+            .Data.ToArray()
+            .Assert()
+            .IsNotEmpty(
+                "Hint didn't find differences with a modified key on '" + data.GetType().Name + "'."
+            );
     }
 }

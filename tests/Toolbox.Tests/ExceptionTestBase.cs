@@ -6,7 +6,8 @@ namespace CreateAndFake.Tests;
 
 /// <summary>Handles testing exceptions.</summary>
 /// <typeparam name="T">Exception type to test.</typeparam>
-public abstract class ExceptionTestBase<T> where T : Exception
+public abstract class ExceptionTestBase<T>
+    where T : Exception
 {
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
@@ -34,8 +35,10 @@ public abstract class ExceptionTestBase<T> where T : Exception
     [Theory, RandomData]
     public void Exception_XmlSerializes(T original)
     {
-        DataContractSerializer formatter = new(typeof(T),
-            new[] { original.InnerException }.Where(t => t != null).Select(t => t.GetType()));
+        DataContractSerializer formatter = new(
+            typeof(T),
+            new[] { original.InnerException }.Where(t => t != null).Select(t => t.GetType())
+        );
 
         using MemoryStream stream = new();
 

@@ -34,21 +34,36 @@ public sealed class RandomDataAttribute : DataAttribute
 
     /// <inheritdoc/>
     public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
-        MethodInfo testMethod, DisposalTracker disposalTracker)
+        MethodInfo testMethod,
+        DisposalTracker disposalTracker
+    )
     {
-        IReadOnlyCollection<ITheoryDataRow> data = [.. Enumerable
-            .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Runner.CreateFor(testMethod, opt => opt with
-            {
-                InheritIReflectableTypeOnFakedType = true
-            }).Args.Select(FixArg).ToArray())
-            .Select(data => new TheoryDataRow(data))];
+        IReadOnlyCollection<ITheoryDataRow> data =
+        [
+            .. Enumerable
+                .Range(0, Math.Max(0, Trials))
+                .Select(_ =>
+                    Tools
+                        .Runner.CreateFor(
+                            testMethod,
+                            opt => opt with { InheritIReflectableTypeOnFakedType = true }
+                        )
+                        .Args.Select(FixArg)
+                        .ToArray()
+                )
+                .Select(data => new TheoryDataRow(data)),
+        ];
 
-        foreach (IDisposable disposable in data.SelectMany(row => row.GetData()).OfType<IDisposable>())
+        foreach (
+            IDisposable disposable in data.SelectMany(row => row.GetData()).OfType<IDisposable>()
+        )
         {
             disposalTracker?.Add(disposable);
         }
-        foreach (IAsyncDisposable disposable in data.SelectMany(row => row.GetData()).OfType<IAsyncDisposable>())
+        foreach (
+            IAsyncDisposable disposable in data.SelectMany(row => row.GetData())
+                .OfType<IAsyncDisposable>()
+        )
         {
             disposalTracker?.Add(disposable);
         }

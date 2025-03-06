@@ -1,20 +1,21 @@
 global using AsserterMod = System.Func<
     CreateAndFake.AsserterTool.AsserterOptions,
-    CreateAndFake.AsserterTool.AsserterOptions>;
+    CreateAndFake.AsserterTool.AsserterOptions
+>;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsserterTool;
 
 /// <summary>Handles common test scenarios.</summary>
-public interface IAsserter :
-    IAsyncAsserter,
-    IComparableAsserter,
-    IDelegateAsserter,
-    IEnumerableAsserter,
-    IObjectAsserter,
-    IStringAsserter,
-    ITypeAsserter
+public interface IAsserter
+    : IAsyncAsserter,
+        IComparableAsserter,
+        IDelegateAsserter,
+        IEnumerableAsserter,
+        IObjectAsserter,
+        IStringAsserter,
+        ITypeAsserter
 {
     /// <summary>Configured options for <c>this</c>.</summary>
     AsserterOptions Options { get; }

@@ -8,5 +8,6 @@ public sealed class CloneableCopyHintTests : CopyHintTestBase<CloneableCopyHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public CloneableCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public CloneableCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 }

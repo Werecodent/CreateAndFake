@@ -9,8 +9,10 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 public class FrozenCollectionCopyHint : CopyHint
 {
     /// <summary>Constructs frozen sets.</summary>
-    private static readonly MethodInfo _SetMaker = typeof(FrozenSet)
-        .GetMethod(nameof(FrozenSet.ToFrozenSet), BindingFlags.Public | BindingFlags.Static)!;
+    private static readonly MethodInfo _SetMaker = typeof(FrozenSet).GetMethod(
+        nameof(FrozenSet.ToFrozenSet),
+        BindingFlags.Public | BindingFlags.Static
+    )!;
 
     /// <summary>Constructs frozen dictionaries.</summary>
     private static readonly MethodInfo _DictionaryMaker = typeof(FrozenDictionary)
@@ -19,8 +21,11 @@ public class FrozenCollectionCopyHint : CopyHint
         .Single(m => m.GetParameters().Length == 2);
 
     /// <summary>Copies generic item data.</summary>
-    private static readonly MethodInfo _CopyContentsHelper = typeof(FrozenCollectionCopyHint)
-        .GetMethod(nameof(CopyContentsHelper), BindingFlags.NonPublic | BindingFlags.Static)!;
+    private static readonly MethodInfo _CopyContentsHelper =
+        typeof(FrozenCollectionCopyHint).GetMethod(
+            nameof(CopyContentsHelper),
+            BindingFlags.NonPublic | BindingFlags.Static
+        )!;
 
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
@@ -32,30 +37,48 @@ public class FrozenCollectionCopyHint : CopyHint
         if (type.Inherits(typeof(FrozenSet<>)))
         {
             Type itemType = type.GetInterfaces()
-                .Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Single(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                )
                 .GetGenericArguments()
                 .Single();
 
-            return new(_SetMaker
-                .MakeGenericMethod(itemType)
-                .Invoke(null, [_CopyContentsHelper
+            return new(
+                _SetMaker
                     .MakeGenericMethod(itemType)
-                    .Invoke(null, [source, duplicator]),
-                    null]));
+                    .Invoke(
+                        null,
+                        [
+                            _CopyContentsHelper
+                                .MakeGenericMethod(itemType)
+                                .Invoke(null, [source, duplicator]),
+                            null,
+                        ]
+                    )
+            );
         }
         else if (type.Inherits(typeof(FrozenDictionary<,>)))
         {
             Type itemType = type.GetInterfaces()
-                .Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Single(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                )
                 .GetGenericArguments()
                 .Single();
 
-            return new(_DictionaryMaker
-                .MakeGenericMethod(itemType.GetGenericArguments())
-                .Invoke(null, [_CopyContentsHelper
-                    .MakeGenericMethod(itemType)
-                    .Invoke(null, [source, duplicator]),
-                    null]));
+            return new(
+                _DictionaryMaker
+                    .MakeGenericMethod(itemType.GetGenericArguments())
+                    .Invoke(
+                        null,
+                        [
+                            _CopyContentsHelper
+                                .MakeGenericMethod(itemType)
+                                .Invoke(null, [source, duplicator]),
+                            null,
+                        ]
+                    )
+            );
         }
         else
         {
@@ -80,4 +103,3 @@ public class FrozenCollectionCopyHint : CopyHint
         return [.. copy];
     }
 }
-

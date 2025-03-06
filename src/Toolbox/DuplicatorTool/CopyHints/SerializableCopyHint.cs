@@ -13,11 +13,14 @@ public sealed class SerializableCopyHint : CopyHint
         {
             ContentMap contents = duplicator.Options.Extractor.Extract(source);
 
-            DataContractSerializer serializer = new(source.GetType(), contents
-                .AllContent()
-                .Select(d => d.GetType())
-                .Concat(FindExtraKnownTypes(source))
-                .Distinct());
+            DataContractSerializer serializer = new(
+                source.GetType(),
+                contents
+                    .AllContent()
+                    .Select(d => d.GetType())
+                    .Concat(FindExtraKnownTypes(source))
+                    .Distinct()
+            );
 
             using MemoryStream stream = new();
             try
@@ -29,7 +32,9 @@ public sealed class SerializableCopyHint : CopyHint
             catch (Exception e) when (e is SerializationException or InvalidDataContractException)
             {
                 throw new SerializationException(
-                    $"Ran into problem trying to serialize type '{source.GetType()}'.", e);
+                    $"Ran into problem trying to serialize type '{source.GetType()}'.",
+                    e
+                );
             }
         }
         else

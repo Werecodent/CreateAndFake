@@ -11,16 +11,13 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     [
         typeof(IAsyncEnumerable<int>),
         typeof(IAsyncEnumerable<string>),
-        typeof(IAsyncEnumerable<object>)
+        typeof(IAsyncEnumerable<object>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(object),
-        typeof(IEnumerable)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(IEnumerable)];
 
-    public AsyncCollectionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public AsyncCollectionCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static async Task GetItems_Empty([Size(0)] IAsyncEnumerable<int> items)

@@ -5,7 +5,8 @@ using CreateAndFake.ValuerTool.CompareHints;
 
 namespace CreateAndFake.Tests.ValuerTool.CompareHints;
 
-public sealed class ValuerEquatableCompareHintTests : CompareHintTestBase<ValuerEquatableCompareHint>
+public sealed class ValuerEquatableCompareHintTests
+    : CompareHintTestBase<ValuerEquatableCompareHint>
 {
     private static readonly ValuerEquatableCompareHint _TestInstance = new();
 
@@ -13,14 +14,11 @@ public sealed class ValuerEquatableCompareHintTests : CompareHintTestBase<Valuer
     [
         typeof(IValuerEquatable),
         typeof(ValuerEquatableSample),
-        typeof(PrivateValuerEquatableSample)
+        typeof(PrivateValuerEquatableSample),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(IDictionary),
-        typeof(object)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
 
-    public ValuerEquatableCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public ValuerEquatableCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 }

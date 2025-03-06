@@ -5,7 +5,11 @@ namespace CreateAndFake.Tests.TesterTool.TestSamples;
 
 public sealed class MockMethodPassOnly
 {
-    [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "For testing.")]
+    [SuppressMessage(
+        "Microsoft.Performance",
+        "CA1822:MarkMembersAsStatic",
+        Justification = "For testing."
+    )]
     public bool MockPassOnly(IOnlyMockSample sample)
     {
         sample?.FailIfNotMocked();

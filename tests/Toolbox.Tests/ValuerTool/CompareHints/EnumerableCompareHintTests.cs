@@ -12,16 +12,13 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
     [
         typeof(IList),
         typeof(List<string>),
-        typeof(List<KeyValuePair<int, int>>)
+        typeof(List<KeyValuePair<int, int>>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(object),
-        typeof(int)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(int)];
 
-    public EnumerableCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public EnumerableCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void Compare_SizeMismatchOutOfBounds(List<string> original)

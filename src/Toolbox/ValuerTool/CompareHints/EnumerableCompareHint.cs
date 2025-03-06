@@ -9,7 +9,10 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 {
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IEnumerable? expected, IEnumerable? actual, ValuerChainer valuer)
+        IEnumerable? expected,
+        IEnumerable? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
@@ -20,7 +23,10 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
-        IEnumerable expected, IEnumerable actual, ValuerChainer valuer)
+        IEnumerable expected,
+        IEnumerable actual,
+        ValuerChainer valuer
+    )
     {
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
@@ -35,20 +41,31 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         {
             if (actualEnumerator.MoveNext())
             {
-                foreach (Difference diff in valuer.Compare(expectedEnumerator.Current, actualEnumerator.Current))
+                foreach (
+                    Difference diff in valuer.Compare(
+                        expectedEnumerator.Current,
+                        actualEnumerator.Current
+                    )
+                )
                 {
                     yield return new Difference(index, diff);
                 }
             }
             else
             {
-                yield return new Difference(index, new Difference(expectedEnumerator.Current, "'outofbounds'"));
+                yield return new Difference(
+                    index,
+                    new Difference(expectedEnumerator.Current, "'outofbounds'")
+                );
             }
             index++;
         }
         while (actualEnumerator.MoveNext())
         {
-            yield return new Difference(index++, new Difference("'outofbounds'", actualEnumerator.Current));
+            yield return new Difference(
+                index++,
+                new Difference("'outofbounds'", actualEnumerator.Current)
+            );
         }
     }
 

@@ -25,7 +25,6 @@ public record DuplicatorOptions : IToolOptions
     public ImmutableArray<CopyHint> Hints { get; init; } = [];
 
     /// <summary>Types that need no further inspection for serialization/deserialization.</summary>
-    public FrozenSet<Type> SerializableTypes { get; init; } = FrozenSet.ToFrozenSet([
-        typeof(string),
-        typeof(Type)]);
+    public FrozenSet<Type> SerializableTypes { get; init; } =
+        FrozenSet.ToFrozenSet([typeof(string), typeof(Type)]);
 }

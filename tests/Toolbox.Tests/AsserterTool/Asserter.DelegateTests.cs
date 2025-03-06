@@ -24,36 +24,39 @@ public sealed class AsserterDelegateTests
         bool ran2 = false;
 
         _testInstance
-            .Assert(t => t.CheckAll(
-                () => throw error,
-                () => ran2 = true))
-            .Throws<AggregateException>().InnerExceptions
-            .Assert().Is(new[] { error })
-            .Also(ran2).Is(true);
+            .Assert(t => t.CheckAll(() => throw error, () => ran2 = true))
+            .Throws<AggregateException>()
+            .InnerExceptions.Assert()
+            .Is(new[] { error })
+            .Also(ran2)
+            .Is(true);
     }
 
     [Theory, RandomData]
     internal void CheckAll_RunsEachErrorCase(Exception error1, Exception error2)
     {
         _testInstance
-            .Assert(t => t.CheckAll(
-                () => throw error1,
-                () => throw error2))
-            .Throws<AggregateException>().InnerExceptions
-            .Assert().Is(new[] { error1, error2 });
+            .Assert(t => t.CheckAll(() => throw error1, () => throw error2))
+            .Throws<AggregateException>()
+            .InnerExceptions.Assert()
+            .Is(new[] { error1, error2 });
     }
 
     [Fact]
     internal void Throws_ActionThrows()
     {
-        _testInstance.Throws<InvalidOperationException>((Action)(() => throw new InvalidOperationException()));
+        _testInstance.Throws<InvalidOperationException>(
+            (Action)(() => throw new InvalidOperationException())
+        );
     }
 
     [Fact]
     internal void Throws_ActionTypeMismatch()
     {
         _testInstance
-            .Assert(t => t.Throws<ArgumentException>((Action)(() => throw new NotImplementedException())))
+            .Assert(t =>
+                t.Throws<ArgumentException>((Action)(() => throw new NotImplementedException()))
+            )
             .Throws<AssertException>();
     }
 
@@ -68,8 +71,7 @@ public sealed class AsserterDelegateTests
     [Fact]
     internal async Task Throws_HandlesAsyncNoError()
     {
-        await _testInstance
-            .ThrowsAsync<InvalidDataException>(async () => await WaitTest());
+        await _testInstance.ThrowsAsync<InvalidDataException>(async () => await WaitTest());
     }
 
     private static async Task<bool> WaitTest()
@@ -89,7 +91,9 @@ public sealed class AsserterDelegateTests
     [Fact]
     internal void Throws_FuncThrows()
     {
-        _testInstance.Throws<InvalidOperationException>(() => throw new InvalidOperationException());
+        _testInstance.Throws<InvalidOperationException>(
+            () => throw new InvalidOperationException()
+        );
     }
 
     [Fact]
@@ -121,9 +125,7 @@ public sealed class AsserterDelegateTests
     {
         disposable.ToFake().Setup(m => m.Dispose(), Behavior.None(Times.Once));
 
-        _testInstance
-            .Assert(t => t.Throws<Exception>(() => disposable))
-            .Throws<AssertException>();
+        _testInstance.Assert(t => t.Throws<Exception>(() => disposable)).Throws<AssertException>();
 
         disposable.Assert().Called();
     }
@@ -144,8 +146,9 @@ public sealed class AsserterDelegateTests
 
         _testInstance
             .Assert(t => t.Throws<InvalidOperationException>(() => throw ex))
-            .Throws<AssertException>().InnerException
-            .Assert().Is(ex);
+            .Throws<AssertException>()
+            .InnerException.Assert()
+            .Is(ex);
     }
 
     [Theory, RandomData]
@@ -155,7 +158,8 @@ public sealed class AsserterDelegateTests
 
         _testInstance
             .Assert(t => t.Throws<InvalidCastException>(() => throw ex))
-            .Throws<AssertException>().InnerException
-            .Assert().Is(ex);
+            .Throws<AssertException>()
+            .InnerException.Assert()
+            .Is(ex);
     }
 }

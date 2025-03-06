@@ -12,7 +12,8 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
 
     private static readonly Type[] _InvalidTypes = [typeof(FastRandom), typeof(object)];
 
-    public SeededRandomCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public SeededRandomCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static void Compare_CanIgnoreSeed(SeededRandom gen)
@@ -20,10 +21,11 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
         SeededRandom copy = gen.CreateDeepClone();
         _ = copy.Next<int>();
         _TestInstance
-            .TryCompare(gen, copy, CreateChainer(Tools.Valuer.Options with
-            {
-                IgnoreCurrentRandomSeed = true
-            }))
+            .TryCompare(
+                gen,
+                copy,
+                CreateChainer(Tools.Valuer.Options with { IgnoreCurrentRandomSeed = true })
+            )
             .Assert()
             .Is(new DifferenceHintResult([]));
     }
@@ -34,10 +36,11 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
         SeededRandom copy = gen.CreateDeepClone();
         _ = copy.Next<int>();
         _TestInstance
-            .TryCompare(gen, copy, CreateChainer(Tools.Valuer.Options with
-            {
-                IgnoreCurrentRandomSeed = false
-            }))
+            .TryCompare(
+                gen,
+                copy,
+                CreateChainer(Tools.Valuer.Options with { IgnoreCurrentRandomSeed = false })
+            )
             .Assert()
             .IsNot(new DifferenceHintResult([]));
     }
@@ -45,10 +48,12 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
     [Theory, RandomData]
     internal static void GetHashCode_CanIgnoreSeed(SeededRandom gen)
     {
-        ValuerChainer chainer = CreateChainer(Tools.Valuer.Options with
-        {
-            IgnoreCurrentRandomSeed = true
-        });
+        ValuerChainer chainer = CreateChainer(
+            Tools.Valuer.Options with
+            {
+                IgnoreCurrentRandomSeed = true,
+            }
+        );
         _TestInstance
             .TryGetHashCode(gen, chainer)
             .Assert()
@@ -58,10 +63,12 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
     [Theory, RandomData]
     internal static void GetHashCode_CanIncludeSeed(SeededRandom gen)
     {
-        ValuerChainer chainer = CreateChainer(Tools.Valuer.Options with
-        {
-            IgnoreCurrentRandomSeed = false
-        });
+        ValuerChainer chainer = CreateChainer(
+            Tools.Valuer.Options with
+            {
+                IgnoreCurrentRandomSeed = false,
+            }
+        );
         _TestInstance
             .TryGetHashCode(gen, chainer)
             .Assert()

@@ -8,7 +8,8 @@ namespace CreateAndFake.FakerTool.Proxy;
 internal static class Emitter
 {
     /// <summary>Assembly used to contain the dynamic types.</summary>
-    internal static AssemblyName AssemblyName { get; } = new AssemblyName("CreateAndFake.FakerTypes");
+    internal static AssemblyName AssemblyName { get; } =
+        new AssemblyName("CreateAndFake.FakerTypes");
 
     /// <summary>Underlying type managing implementation details.</summary>
     internal static Type FakeType { get; } = typeof(IFaked);
@@ -17,20 +18,28 @@ internal static class Emitter
     internal static Type MetaType { get; } = typeof(FakeMetaProvider);
 
     /// <summary>Flags used to find members to implement.</summary>
-    private const BindingFlags _MemberFinder = BindingFlags.FlattenHierarchy |
-        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+    private const BindingFlags _MemberFinder =
+        BindingFlags.FlattenHierarchy
+        | BindingFlags.Public
+        | BindingFlags.NonPublic
+        | BindingFlags.Instance;
 
     /// <summary>Methods called to chain fake calls.</summary>
-    private static readonly MethodInfo
-        _VoidChainer = MetaType.GetMethod(
-            nameof(FakeMetaProvider.CallVoid),
-            BindingFlags.Instance | BindingFlags.NonPublic)!,
-        _ResultChainer = MetaType.GetMethod(
-            nameof(FakeMetaProvider.CallRet),
-            BindingFlags.Instance | BindingFlags.NonPublic)!,
-        _TypeResolver = typeof(Type).GetMethod(
-            nameof(Type.GetTypeFromHandle),
-            BindingFlags.Static | BindingFlags.Public)!;
+    private static readonly MethodInfo _VoidChainer =
+            MetaType.GetMethod(
+                nameof(FakeMetaProvider.CallVoid),
+                BindingFlags.Instance | BindingFlags.NonPublic
+            )!,
+        _ResultChainer =
+            MetaType.GetMethod(
+                nameof(FakeMetaProvider.CallRet),
+                BindingFlags.Instance | BindingFlags.NonPublic
+            )!,
+        _TypeResolver =
+            typeof(Type).GetMethod(
+                nameof(Type.GetTypeFromHandle),
+                BindingFlags.Static | BindingFlags.Public
+            )!;
 
     /// <summary>Module storing the faked types.</summary>
     private static readonly ModuleBuilder _Module = AssemblyBuilder
@@ -44,29 +53,47 @@ internal static class Emitter
     internal static TypeInfo BuildType(Type parent, Type[] interfaces)
     {
         TypeBuilder newType = _Module.DefineType(
-            "Fake_" + string.Join("|", interfaces.Prepend(parent).Select(i => i.Name)) + "_" + Guid.NewGuid(),
-            TypeAttributes.NotPublic | TypeAttributes.Sealed, parent, interfaces);
+            "Fake_"
+                + string.Join("|", interfaces.Prepend(parent).Select(i => i.Name))
+                + "_"
+                + Guid.NewGuid(),
+            TypeAttributes.NotPublic | TypeAttributes.Sealed,
+            parent,
+            interfaces
+        );
 
         MethodInfo metaGetter = SetupFakeMetaProvider(newType, SetupConstructor(newType, parent));
 
-        (PropertyInfo, PropertyBuilder)[] props = [.. FindImplementableProperties(interfaces.Prepend(parent))
-            .Select(p => (p, newType.DefineProperty(
-                p.DeclaringType!.Name + "." + p.Name,
-                p.Attributes,
-                p.PropertyType,
-                Type.EmptyTypes)))];
+        (PropertyInfo, PropertyBuilder)[] props =
+        [
+            .. FindImplementableProperties(interfaces.Prepend(parent))
+                .Select(p =>
+                    (
+                        p,
+                        newType.DefineProperty(
+                            p.DeclaringType!.Name + "." + p.Name,
+                            p.Attributes,
+                            p.PropertyType,
+                            Type.EmptyTypes
+                        )
+                    )
+                ),
+        ];
 
         foreach (MethodInfo method in FindImplementableMethods(interfaces.Prepend(parent)))
         {
             MethodBuilder fakedMethod = newType.DefineMethod(
-                    method.DeclaringType!.Name + "." + method.Name,
-                    method.Attributes & ~MethodAttributes.Abstract,
-                    method.ReturnType,
-                    [.. method.GetParameters().Select(p => p.ParameterType)]);
+                method.DeclaringType!.Name + "." + method.Name,
+                method.Attributes & ~MethodAttributes.Abstract,
+                method.ReturnType,
+                [.. method.GetParameters().Select(p => p.ParameterType)]
+            );
 
             if (method.IsGenericMethod)
             {
-                _ = fakedMethod.DefineGenericParameters([.. method.GetGenericArguments().Select(a => a.Name)]);
+                _ = fakedMethod.DefineGenericParameters(
+                    [.. method.GetGenericArguments().Select(a => a.Name)]
+                );
             }
             ImplementFakeBehavior(fakedMethod.GetILGenerator(), method, metaGetter);
             newType.DefineMethodOverride(fakedMethod, method);
@@ -90,14 +117,17 @@ internal static class Emitter
     /// <summary>Finds all properties to generate for a type implementing the given interfaces.</summary>
     /// <param name="interfaces">Interfaces to inherit.</param>
     /// <returns>Properties to implement for the faked type.</returns>
-    private static IEnumerable<PropertyInfo> FindImplementableProperties(IEnumerable<Type> interfaces)
+    private static IEnumerable<PropertyInfo> FindImplementableProperties(
+        IEnumerable<Type> interfaces
+    )
     {
         return interfaces
             .Where(t => t != typeof(IFaked))
-            .SelectMany(i => i
-                .GetProperties(_MemberFinder)
-                .Where(p => IsVisible(p.GetMethod))
-                .Concat(FindImplementableProperties(i.GetInterfaces())))
+            .SelectMany(i =>
+                i.GetProperties(_MemberFinder)
+                    .Where(p => IsVisible(p.GetMethod))
+                    .Concat(FindImplementableProperties(i.GetInterfaces()))
+            )
             .Distinct();
     }
 
@@ -108,12 +138,13 @@ internal static class Emitter
     {
         return interfaces
             .Where(t => t != typeof(IFaked))
-            .SelectMany(i => i
-                .GetMethods(_MemberFinder)
-                .Where(m => m.IsAbstract || (m.IsVirtual && !m.IsFinal))
-                .Where(m => IsVisible(m))
-                .Where(m => m.Name != "Finalize")
-                .Concat(FindImplementableMethods(i.GetInterfaces())))
+            .SelectMany(i =>
+                i.GetMethods(_MemberFinder)
+                    .Where(m => m.IsAbstract || (m.IsVirtual && !m.IsFinal))
+                    .Where(m => IsVisible(m))
+                    .Where(m => m.Name != "Finalize")
+                    .Concat(FindImplementableMethods(i.GetInterfaces()))
+            )
             .Distinct();
     }
 
@@ -128,16 +159,23 @@ internal static class Emitter
         }
 
         return !method.IsPrivate
-            && (!(method.IsAssembly || method.IsFamilyAndAssembly)
-                || method.Module.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                    .Any(a => a.AssemblyName == AssemblyName.Name));
+            && (
+                !(method.IsAssembly || method.IsFamilyAndAssembly)
+                || method
+                    .Module.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
+                    .Any(a => a.AssemblyName == AssemblyName.Name)
+            );
     }
 
     /// <summary>Chains the call for a method.</summary>
     /// <param name="gen">Generator for the fake method.</param>
     /// <param name="method">Method being implemented.</param>
     /// <param name="metaGetter">Hook for the meta provider to chain with.</param>
-    private static void ImplementFakeBehavior(ILGenerator gen, MethodInfo method, MethodInfo metaGetter)
+    private static void ImplementFakeBehavior(
+        ILGenerator gen,
+        MethodInfo method,
+        MethodInfo metaGetter
+    )
     {
         ParameterInfo[] argInfos = method.GetParameters();
         Type[] generics = method.GetGenericArguments();
@@ -162,7 +200,9 @@ internal static class Emitter
             else
             {
                 // args[i] = new OutRef<T>();
-                Type outRef = typeof(OutRef<>).MakeGenericType(argInfos[i].ParameterType.GetElementType()!);
+                Type outRef = typeof(OutRef<>).MakeGenericType(
+                    argInfos[i].ParameterType.GetElementType()!
+                );
                 gen.Emit(OpCodes.Newobj, outRef.GetConstructor(Type.EmptyTypes)!);
                 gen.Emit(OpCodes.Stelem_Ref);
                 if (!argInfos[i].IsOut)
@@ -216,7 +256,9 @@ internal static class Emitter
         {
             if (argInfos[i].ParameterType.IsByRef)
             {
-                Type outRef = typeof(OutRef<>).MakeGenericType(argInfos[i].ParameterType.GetElementType()!);
+                Type outRef = typeof(OutRef<>).MakeGenericType(
+                    argInfos[i].ParameterType.GetElementType()!
+                );
 
                 gen.Emit(OpCodes.Ldarg, i + 1);
                 gen.Emit(OpCodes.Ldloc, args);
@@ -242,13 +284,16 @@ internal static class Emitter
             .SingleOrDefault(c => c.GetParameters().Length == 0);
 
         FieldBuilder backingField = newType.DefineField(
-            "_" + nameof(IFaked.FakeMeta), MetaType,
-            FieldAttributes.Private | FieldAttributes.InitOnly);
+            "_" + nameof(IFaked.FakeMeta),
+            MetaType,
+            FieldAttributes.Private | FieldAttributes.InitOnly
+        );
 
         ConstructorBuilder constructor = newType.DefineConstructor(
             MethodAttributes.Public,
             CallingConventions.HasThis,
-            [MetaType]);
+            [MetaType]
+        );
         {
             // base();
             ILGenerator gen = constructor.GetILGenerator();
@@ -281,7 +326,8 @@ internal static class Emitter
             nameof(IFaked) + "." + getterInfo.Name,
             getterInfo.Attributes & ~MethodAttributes.Abstract,
             MetaType,
-            Type.EmptyTypes);
+            Type.EmptyTypes
+        );
         {
             // return this._FakeMeta;
             ILGenerator gen = getMetaMethod.GetILGenerator();
@@ -290,8 +336,14 @@ internal static class Emitter
             gen.Emit(OpCodes.Ret);
         }
 
-        newType.DefineProperty(nameof(IFaked) + "." + propInfo.Name,
-            propInfo.Attributes, MetaType, Type.EmptyTypes).SetGetMethod(getMetaMethod);
+        newType
+            .DefineProperty(
+                nameof(IFaked) + "." + propInfo.Name,
+                propInfo.Attributes,
+                MetaType,
+                Type.EmptyTypes
+            )
+            .SetGetMethod(getMetaMethod);
 
         newType.DefineMethodOverride(getMetaMethod, getterInfo);
         return getterInfo;

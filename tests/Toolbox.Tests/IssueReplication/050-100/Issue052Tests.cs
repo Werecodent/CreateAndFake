@@ -20,9 +20,13 @@ public static class Issue052Tests
 
         hint.Setup(
             d => d.TryCreate(typeof(Data), Arg.Any<RandomizerChainer>()),
-            Behavior.Returns(new CreateHintResult(testItem), Times.Once));
+            Behavior.Returns(new CreateHintResult(testItem), Times.Once)
+        );
 
-        randomizer.Create<Data>(opt => opt with { Hints = [hint.Dummy] }).Assert().ReferenceEqual(testItem);
+        randomizer
+            .Create<Data>(opt => opt with { Hints = [hint.Dummy] })
+            .Assert()
+            .ReferenceEqual(testItem);
         hint.VerifyAll();
     }
 
@@ -33,23 +37,35 @@ public static class Issue052Tests
 
         hint.Setup(
             d => d.TryCopy(item, Arg.Any<DuplicatorChainer>()),
-            Behavior.Returns(new CopyHintResult(item), Times.Once));
+            Behavior.Returns(new CopyHintResult(item), Times.Once)
+        );
 
-        duplicator.Copy(item, opt => opt with { Hints = [hint.Dummy] }).Assert().ReferenceEqual(item);
+        duplicator
+            .Copy(item, opt => opt with { Hints = [hint.Dummy] })
+            .Assert()
+            .ReferenceEqual(item);
         hint.VerifyAll();
     }
 
     [Theory, RandomData]
-    internal static void Issue052_ValuerPostCustomizable(Fake<CompareHint> hint, Data item1, Data item2)
+    internal static void Issue052_ValuerPostCustomizable(
+        Fake<CompareHint> hint,
+        Data item1,
+        Data item2
+    )
     {
         Valuer valuer = new(Tools.Valuer.Options with { IncludeDefaultHints = false });
 
-        hint.Setup("Supports",
+        hint.Setup(
+            "Supports",
             [item1, item2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(true, Times.Once));
-        hint.Setup("Compare",
+            Behavior.Returns(true, Times.Once)
+        );
+        hint.Setup(
+            "Compare",
             [item1, item2, Arg.LambdaAny<ValuerChainer>()],
-            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once));
+            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
+        );
 
         valuer.Equals(item1, item2, opt => opt with { Hints = [hint.Dummy] }).Assert().Is(true);
         hint.VerifyAll();

@@ -36,12 +36,16 @@ public static class ValueComparerTests
     {
         Tools.Asserter.Is(
             ValueComparer.Use.GetHashCode(new List<int> { item1, item2, item3 }),
-            ValueComparer.Use.GetHashCode(item1, item2, item3));
+            ValueComparer.Use.GetHashCode(item1, item2, item3)
+        );
     }
 
     [Theory, RandomData]
     internal static void Equals_SupportsValueEquatable(
-        [Fake] IValueEquatable stub1, [Fake] IValueEquatable stub2, bool result)
+        [Fake] IValueEquatable stub1,
+        [Fake] IValueEquatable stub2,
+        bool result
+    )
     {
         stub1.ValuesEqual(stub2).SetupReturn(result);
         stub2.ValuesEqual(stub1).SetupReturn(result);
@@ -51,7 +55,10 @@ public static class ValueComparerTests
     }
 
     [Theory, RandomData]
-    internal static void Equals_SupportsValueEquatableNulls([Fake] IValueEquatable stub, bool result)
+    internal static void Equals_SupportsValueEquatableNulls(
+        [Fake] IValueEquatable stub,
+        bool result
+    )
     {
         stub.ValuesEqual(null).SetupReturn(result, 2);
         ValueComparer.Use.Equals(stub, null).Assert().Is(result);
@@ -102,12 +109,18 @@ public static class ValueComparerTests
         TestBehavior<Dictionary<int, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
 
         TestBehavior<IDictionary<string, string>, object>(ValueComparer.Use, ValueComparer.Use);
-        TestBehavior<IDictionary<string, string>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<string, string>, IEnumerable>(
+            ValueComparer.Use,
+            ValueComparer.Use
+        );
         TestBehavior<Dictionary<string, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
     }
 
     private static void TestBehavior<TActual, TComparer>(
-        IComparer<TComparer> comparer, IEqualityComparer<TComparer> equalityComparer) where TActual : TComparer
+        IComparer<TComparer> comparer,
+        IEqualityComparer<TComparer> equalityComparer
+    )
+        where TActual : TComparer
     {
         TActual baseObject = Tools.Randomizer.Create<TActual>();
         TActual equalObject = Tools.Duplicator.Copy(baseObject);

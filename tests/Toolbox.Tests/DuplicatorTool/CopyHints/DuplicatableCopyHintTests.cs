@@ -9,5 +9,6 @@ public sealed class DuplicatableCopyHintTests : CopyHintTestBase<DuplicatableCop
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public DuplicatableCopyHintTests() : base(_ValidTypes, _InvalidTypes) { }
+    public DuplicatableCopyHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
 }

@@ -8,7 +8,10 @@ namespace Build;
 internal static class Program
 {
     /// <summary>Base directory for all output.</summary>
-    private static readonly string _ArtifactDir = Path.Combine(Directory.GetCurrentDirectory(), "artifacts");
+    private static readonly string _ArtifactDir = Path.Combine(
+        Directory.GetCurrentDirectory(),
+        "artifacts"
+    );
 
     /// <summary>Console application entry point.</summary>
     /// <param name="args">Command-line arguments.</param>
@@ -71,22 +74,39 @@ internal static class Program
 
         EnsureEmpty(coverageDir);
 
-        await RunAsync("dotnet", string.Join(' ',
-            "test",
-            "--no-build",
-            "--no-restore",
-            "--configuration Debug",
-            "--collect:\"XPlat Code Coverage\"",
-            $"--results-directory \"{testDir}\""));
+        await RunAsync(
+            "dotnet",
+            string.Join(
+                ' ',
+                "test",
+                "--no-build",
+                "--no-restore",
+                "--configuration Debug",
+                "--collect:\"XPlat Code Coverage\"",
+                $"--results-directory \"{testDir}\""
+            )
+        );
 
         int count = 0;
-        foreach (string result in Directory.GetFiles(testDir, $"{prefix}{postfix}", SearchOption.AllDirectories))
+        foreach (
+            string result in Directory.GetFiles(
+                testDir,
+                $"{prefix}{postfix}",
+                SearchOption.AllDirectories
+            )
+        )
         {
             File.Copy(result, Path.Combine(coverageDir, $"{prefix}{count++}{postfix}"));
         }
 
-        await RunAsync("dotnet", $"tool update dotnet-reportgenerator-globaltool --tool-path {toolsDir}");
-        await RunAsync($"{toolsDir}/reportgenerator", $"-reports:{coverageDir}/*.xml -targetdir:{reportDir}");
+        await RunAsync(
+            "dotnet",
+            $"tool update dotnet-reportgenerator-globaltool --tool-path {toolsDir}"
+        );
+        await RunAsync(
+            $"{toolsDir}/reportgenerator",
+            $"-reports:{coverageDir}/*.xml -targetdir:{reportDir}"
+        );
     }
 
     /// <summary>Packs the solution.</summary>
@@ -95,12 +115,17 @@ internal static class Program
         string releaseDir = Path.Combine(_ArtifactDir, "releases");
         EnsureEmpty(releaseDir);
 
-        return RunAsync("dotnet", string.Join(' ',
-            "pack",
-            "--no-build",
-            "--no-restore",
-            "--configuration Release",
-            $"--output \"{releaseDir}\""));
+        return RunAsync(
+            "dotnet",
+            string.Join(
+                ' ',
+                "pack",
+                "--no-build",
+                "--no-restore",
+                "--configuration Release",
+                $"--output \"{releaseDir}\""
+            )
+        );
     }
 
     /// <summary>Enforces that <paramref name="dir"/> exists and is empty.</summary>

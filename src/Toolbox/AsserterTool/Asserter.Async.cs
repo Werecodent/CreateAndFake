@@ -7,27 +7,37 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsyncAsserter
 {
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Task? behavior, string? details = null) where T : Exception
+    public virtual Task<T> ThrowsAsync<T>(Task? behavior, string? details = null)
+        where T : Exception
     {
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
-        Task? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
+        Task? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : Exception
     {
-        return ThrowsAsync<T>(async () =>
-        {
-            if (behavior != null)
+        return ThrowsAsync<T>(
+            async () =>
             {
-                await behavior.ConfigureAwait(false);
-            }
-            return null;
-        }, optionConfiguration, details);
+                if (behavior != null)
+                {
+                    await behavior.ConfigureAwait(false);
+                }
+                return null;
+            },
+            optionConfiguration,
+            details
+        );
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Task<object?>? behavior, string? details = null) where T : Exception
+    public virtual Task<T> ThrowsAsync<T>(Task<object?>? behavior, string? details = null)
+        where T : Exception
     {
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
@@ -36,7 +46,11 @@ public partial class Asserter : IAsyncAsserter
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
-        Task<object?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
+        Task<object?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -59,28 +73,38 @@ public partial class Asserter : IAsyncAsserter
 #pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null) where T : Exception
+    public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null)
+        where T : Exception
     {
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
-        Func<Task?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
+        Func<Task?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : Exception
     {
-        return ThrowsAsync<T>(async () =>
-        {
-            Task? task = behavior?.Invoke();
-            if (task != null)
+        return ThrowsAsync<T>(
+            async () =>
             {
-                await task.ConfigureAwait(false);
-            }
-            return null;
-        }, optionConfiguration, details);
+                Task? task = behavior?.Invoke();
+                if (task != null)
+                {
+                    await task.ConfigureAwait(false);
+                }
+                return null;
+            },
+            optionConfiguration,
+            details
+        );
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Func<Task<object?>?>? behavior, string? details = null) where T : Exception
+    public virtual Task<T> ThrowsAsync<T>(Func<Task<object?>?>? behavior, string? details = null)
+        where T : Exception
     {
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
@@ -89,7 +113,11 @@ public partial class Asserter : IAsyncAsserter
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
-        Func<Task<object?>?>? behavior, AsserterMod? optionConfiguration, string? details = null) where T : Exception
+        Func<Task<object?>?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
@@ -114,34 +142,48 @@ public partial class Asserter : IAsyncAsserter
 #pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details) where T : Exception
+    public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details)
+        where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
-        Task? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
+        Task? behavior,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+        where T : Exception
     {
-        return ThrowsNoAsync<T>(async () =>
-        {
-            if (behavior != null)
+        return ThrowsNoAsync<T>(
+            async () =>
             {
-                await behavior.ConfigureAwait(false);
-            }
-            return null;
-        }, optionConfiguration, details);
+                if (behavior != null)
+                {
+                    await behavior.ConfigureAwait(false);
+                }
+                return null;
+            },
+            optionConfiguration,
+            details
+        );
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task<object?>? behavior, string? details) where T : Exception
+    public virtual Task ThrowsNoAsync<T>(Task<object?>? behavior, string? details)
+        where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
-        Task<object?>? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
+        Task<object?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+        where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (behavior != null)
@@ -155,42 +197,60 @@ public partial class Asserter : IAsyncAsserter
                 if (e is T)
                 {
                     throw new AssertException(
-                        $"Expected no exception of type '{typeof(T).Name}'.", details, localOptions.Gen.InitialSeed, e);
+                        $"Expected no exception of type '{typeof(T).Name}'.",
+                        details,
+                        localOptions.Gen.InitialSeed,
+                        e
+                    );
                 }
             }
         }
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task?>? behavior, string? details) where T : Exception
+    public virtual Task ThrowsNoAsync<T>(Func<Task?>? behavior, string? details)
+        where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
-        Func<Task?>? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
+        Func<Task?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+        where T : Exception
     {
-        return ThrowsNoAsync<T>(async () =>
-        {
-            Task? task = behavior?.Invoke();
-            if (task != null)
+        return ThrowsNoAsync<T>(
+            async () =>
             {
-                await task.ConfigureAwait(false);
-            }
-            return null;
-        }, optionConfiguration, details);
+                Task? task = behavior?.Invoke();
+                if (task != null)
+                {
+                    await task.ConfigureAwait(false);
+                }
+                return null;
+            },
+            optionConfiguration,
+            details
+        );
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task<object?>?>? behavior, string? details) where T : Exception
+    public virtual Task ThrowsNoAsync<T>(Func<Task<object?>?>? behavior, string? details)
+        where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
-        Func<Task<object?>?>? behavior, AsserterMod? optionConfiguration, string? details) where T : Exception
+        Func<Task<object?>?>? behavior,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+        where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         Task<object?>? task = behavior?.Invoke();
@@ -205,7 +265,11 @@ public partial class Asserter : IAsyncAsserter
                 if (e is T)
                 {
                     throw new AssertException(
-                        $"Expected no exception of type '{typeof(T).Name}'.", details, localOptions.Gen.InitialSeed, e);
+                        $"Expected no exception of type '{typeof(T).Name}'.",
+                        details,
+                        localOptions.Gen.InitialSeed,
+                        e
+                    );
                 }
             }
         }

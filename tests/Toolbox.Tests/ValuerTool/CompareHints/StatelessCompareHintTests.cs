@@ -10,9 +10,16 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
 
     private static readonly Type[] _ValidTypes = [typeof(StatelessSample)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(string), typeof(IList), typeof(int)];
+    private static readonly Type[] _InvalidTypes =
+    [
+        typeof(object),
+        typeof(string),
+        typeof(IList),
+        typeof(int),
+    ];
 
-    public StatelessCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public StatelessCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     public override void TryCompare_SupportsDifferentValidTypes()
     {

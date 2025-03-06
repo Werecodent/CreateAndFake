@@ -1,7 +1,7 @@
 global using ExtractorMod = System.Func<
     CreateAndFake.ExtractorTool.ExtractorOptions,
-    CreateAndFake.ExtractorTool.ExtractorOptions>;
-
+    CreateAndFake.ExtractorTool.ExtractorOptions
+>;
 using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.Tests.ExtractorTool;

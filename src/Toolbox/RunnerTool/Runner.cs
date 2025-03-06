@@ -12,7 +12,8 @@ namespace CreateAndFake.RunnerTool;
 public sealed class Runner(RunnerOptions options) : IRunner
 {
     /// <inheritdoc/>
-    public RunnerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public RunnerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
 #pragma warning disable CA1031 // Do not catch general exception types: Required for testing any exception.
     /// <inheritdoc/>
@@ -21,14 +22,17 @@ public sealed class Runner(RunnerOptions options) : IRunner
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         List<RunResult> results = [];
-        foreach (MethodInfo method in instance
-            .GetType()
-            .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-            .Where(m => m.DeclaringType != typeof(object)))
+        foreach (
+            MethodInfo method in instance
+                .GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(m => m.DeclaringType != typeof(object))
+        )
         {
-            MethodCallWrapper data = optionConfiguration != null
-                ? CreateFor(method, optionConfiguration)
-                : CreateFor(method);
+            MethodCallWrapper data =
+                optionConfiguration != null
+                    ? CreateFor(method, optionConfiguration)
+                    : CreateFor(method);
 
             object? result;
             try
@@ -52,18 +56,24 @@ public sealed class Runner(RunnerOptions options) : IRunner
     }
 
     /// <inheritdoc/>
-    public MethodCallWrapper CreateFor(MethodBase method,
-        RunnerMod optionConfiguration, params IEnumerable<object?>? values)
+    public MethodCallWrapper CreateFor(
+        MethodBase method,
+        RunnerMod optionConfiguration,
+        params IEnumerable<object?>? values
+    )
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
 
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        List<Tuple<Type, object>> data = [.. (values ?? [])
-            .Where(v => v != null)
-            .Select(v => (v is Fake fake) ? fake.Dummy : v)
-            .Where(v => v != null)
-            .Select(v => Tuple.Create(v!.GetType(), v))];
+        List<Tuple<Type, object>> data =
+        [
+            .. (values ?? [])
+                .Where(v => v != null)
+                .Select(v => (v is Fake fake) ? fake.Dummy : v)
+                .Where(v => v != null)
+                .Select(v => Tuple.Create(v!.GetType(), v)),
+        ];
 
         OrderedDictionary args = new(method.GetParameters().Length);
 
@@ -81,21 +91,35 @@ public sealed class Runner(RunnerOptions options) : IRunner
     /// <param name="args">Already created parameter data.</param>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <returns>The created arg to fill the parameter with.</returns>
-    private static object? ExtractArg(ParameterInfo param,
-        List<Tuple<Type, object>> data, OrderedDictionary args, RunnerOptions localOptions)
+    private static object? ExtractArg(
+        ParameterInfo param,
+        List<Tuple<Type, object>> data,
+        OrderedDictionary args,
+        RunnerOptions localOptions
+    )
     {
-        Tuple<Type, object> match = data.FirstOrDefault(t => t.Item1.Inherits(param.ParameterType))!;
+        Tuple<Type, object> match = data.FirstOrDefault(t =>
+            t.Item1.Inherits(param.ParameterType)
+        )!;
         if (param.IsOut)
         {
             return null;
         }
         else if (param.GetCustomAttributes<BaseFakeAttribute>().Any())
         {
-            return ((Fake)localOptions.Randomizer.Create(typeof(Fake<>).MakeGenericType(param.ParameterType))!).Dummy;
+            return (
+                (Fake)
+                    localOptions.Randomizer.Create(
+                        typeof(Fake<>).MakeGenericType(param.ParameterType)
+                    )!
+            ).Dummy;
         }
         else if (param.GetCustomAttributes<BaseStubAttribute>().Any())
         {
-            if (localOptions.InheritIReflectableTypeOnFakedType && param.ParameterType.Inherits<Type>())
+            if (
+                localOptions.InheritIReflectableTypeOnFakedType
+                && param.ParameterType.Inherits<Type>()
+            )
             {
                 return localOptions.Faker.Stub(param.ParameterType, typeof(IReflectableType)).Dummy;
             }
@@ -107,14 +131,18 @@ public sealed class Runner(RunnerOptions options) : IRunner
         else if (param.GetCustomAttributes<BaseSizeAttribute>().Any())
         {
             int size = param.GetCustomAttribute<BaseSizeAttribute>()!.Count;
-            return localOptions.Randomizer.Create(param.ParameterType, opt => opt with
-            {
-                CollectionMinSize = size,
-                CollectionMaxSize = size,
-                StringMinSize = size,
-                StringMaxSize = size,
-                NestedOptions = opt
-            });
+            return localOptions.Randomizer.Create(
+                param.ParameterType,
+                opt =>
+                    opt with
+                    {
+                        CollectionMinSize = size,
+                        CollectionMaxSize = size,
+                        StringMinSize = size,
+                        StringMaxSize = size,
+                        NestedOptions = opt,
+                    }
+            );
         }
         else if (match != default)
         {
@@ -123,11 +151,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
         }
         else
         {
-            return localOptions.Randomizer.Inject(param.ParameterType, [.. args
-                .Values
-                .Cast<object>()
-                .Where(a => a is Fake or IFaked)
-                .Reverse()]);
+            return localOptions.Randomizer.Inject(
+                param.ParameterType,
+                [.. args.Values.Cast<object>().Where(a => a is Fake or IFaked).Reverse()]
+            );
         }
     }
 }

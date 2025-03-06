@@ -19,7 +19,8 @@ public static class Fake_T_Tests
     [Fact]
     internal static void Setup_GuardsNulls()
     {
-        Tools.Faker.Stub<IFakeSample>()
+        Tools
+            .Faker.Stub<IFakeSample>()
             .Assert(s => s.Setup(null, Behavior.None()))
             .Throws<ArgumentNullException>();
     }
@@ -73,7 +74,14 @@ public static class Fake_T_Tests
         Fake<OutSample> fake = Tools.Faker.Mock<OutSample>();
         fake.Setup(
             d => d.ReturnVoid(out Arg.AnyRef<string>().Var),
-            Behavior.Set((OutRef<string> d) => { d.Var = data; }, Times.Once));
+            Behavior.Set(
+                (OutRef<string> d) =>
+                {
+                    d.Var = data;
+                },
+                Times.Once
+            )
+        );
 
         fake.Dummy.ReturnVoid(out string value);
 
@@ -87,11 +95,15 @@ public static class Fake_T_Tests
         Fake<OutSample> fake = Tools.Faker.Mock<OutSample>();
         fake.Setup(
             d => d.ReturnValue(out Arg.AnyRef<int>().Var),
-            Behavior.Set((OutRef<int> d) =>
-            {
-                d.Var = data;
-                return plain;
-            }, Times.Once));
+            Behavior.Set(
+                (OutRef<int> d) =>
+                {
+                    d.Var = data;
+                    return plain;
+                },
+                Times.Once
+            )
+        );
 
         fake.Dummy.ReturnValue(out int value).Assert().Is(plain);
 
@@ -105,7 +117,14 @@ public static class Fake_T_Tests
         Fake<RefSample> fake = Tools.Faker.Mock<RefSample>();
         fake.Setup(
             d => d.ReturnVoid(ref Arg.WhereRef<string>(v => v == start).Var),
-            Behavior.Set((OutRef<string> d) => { d.Var = data; }, Times.Once));
+            Behavior.Set(
+                (OutRef<string> d) =>
+                {
+                    d.Var = data;
+                },
+                Times.Once
+            )
+        );
 
         string value = start;
         fake.Dummy.ReturnVoid(ref value);
@@ -119,12 +138,8 @@ public static class Fake_T_Tests
     {
         Fake<GenericSample<string>> fake = Tools.Faker.Mock<GenericSample<string>>();
 
-        fake.Setup(
-            m => m.Run<DataSample, bool>(text, sample),
-            Behavior.Returns(true, Times.Once));
-        fake.Setup(
-            m => m.Run<DataSample, int>(text, sample),
-            Behavior.Returns(5, Times.Once));
+        fake.Setup(m => m.Run<DataSample, bool>(text, sample), Behavior.Returns(true, Times.Once));
+        fake.Setup(m => m.Run<DataSample, int>(text, sample), Behavior.Returns(5, Times.Once));
 
         fake.Dummy.Run<DataSample, bool>(text, sample).Assert().Is(true);
         fake.Dummy.Run<DataSample, int>(text, sample).Assert().Is(5);
@@ -136,7 +151,8 @@ public static class Fake_T_Tests
     [Fact]
     internal static void Setup_InvalidExpressionThrows()
     {
-        Tools.Faker.Mock<object>()
+        Tools
+            .Faker.Mock<object>()
             .Assert(f => f.Setup(d => new object(), Behavior.Returns(new object())))
             .Throws<InvalidOperationException>();
     }
@@ -144,17 +160,20 @@ public static class Fake_T_Tests
     [Theory, RandomData]
     internal static void ConvertArg_ConvertExpression([Stub] IValuer valuer, string[] data)
     {
-        valuer.ToFake().Setup(
-            m => m.Equals(true, true),
-            Behavior.Returns(true));
-        valuer.ToFake().Setup(
-            m => m.Compare(true, Arg.Any<bool?>(), null),
-            Behavior.Set((object o1, object o2) =>
-            {
-                return (!o1.Equals(o2))
-                    ? Tools.Randomizer.Create<IEnumerable<Difference>>()
-                    : [];
-            }));
+        valuer.ToFake().Setup(m => m.Equals(true, true), Behavior.Returns(true));
+        valuer
+            .ToFake()
+            .Setup(
+                m => m.Compare(true, Arg.Any<bool?>(), null),
+                Behavior.Set(
+                    (object o1, object o2) =>
+                    {
+                        return (!o1.Equals(o2))
+                            ? Tools.Randomizer.Create<IEnumerable<Difference>>()
+                            : [];
+                    }
+                )
+            );
 
         Asserter tester = new(Tools.Asserter.Options with { Valuer = valuer });
         tester.IsNotEmpty(data);
@@ -162,7 +181,8 @@ public static class Fake_T_Tests
         tester.Assert(t => t.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();
     }
 
-    private static void FakeTester<T>() where T : IFakeSample
+    private static void FakeTester<T>()
+        where T : IFakeSample
     {
         Fake<T> fake = Tools.Faker.Mock<T>(typeof(IClashingFakeSample));
 

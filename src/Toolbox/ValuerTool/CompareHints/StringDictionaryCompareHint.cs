@@ -9,7 +9,10 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
 {
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        StringDictionary? expected, StringDictionary? actual, ValuerChainer valuer)
+        StringDictionary? expected,
+        StringDictionary? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

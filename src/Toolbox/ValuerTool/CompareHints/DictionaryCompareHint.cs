@@ -9,7 +9,10 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 {
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IDictionary? expected, IDictionary? actual, ValuerChainer valuer)
+        IDictionary? expected,
+        IDictionary? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
@@ -20,7 +23,10 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
-        IDictionary expected, IDictionary actual, ValuerChainer valuer)
+        IDictionary expected,
+        IDictionary actual,
+        ValuerChainer valuer
+    )
     {
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {

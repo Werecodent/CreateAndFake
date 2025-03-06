@@ -14,7 +14,9 @@ namespace CreateAndFake.Tests.RandomizerTool;
 public abstract class CreateHintTestBase<T>(
     T testInstance,
     IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes) where T : CreateHint
+    IEnumerable<Type> invalidTypes
+)
+    where T : CreateHint
 {
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = testInstance;
@@ -36,13 +38,22 @@ public abstract class CreateHintTestBase<T>(
     [Fact]
     public void CreateHint_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(TestInstance, opt => opt with
-        {
-            InjectionValues = [CreateChainer(Tools.Randomizer.Options with
-            {
-                Gen = Tools.Randomizer.Create<FastRandom>()
-            })]
-        });
+        Tools.Tester.PreventsParameterMutation(
+            TestInstance,
+            opt =>
+                opt with
+                {
+                    InjectionValues =
+                    [
+                        CreateChainer(
+                            Tools.Randomizer.Options with
+                            {
+                                Gen = Tools.Randomizer.Create<FastRandom>(),
+                            }
+                        ),
+                    ],
+                }
+        );
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
@@ -54,15 +65,33 @@ public abstract class CreateHintTestBase<T>(
             CreateHintResult result = TestInstance.TryCreate(type, CreateChainer());
             try
             {
-                result.HasData.Assert().Is(true,
-                    "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'.");
-                result.Data.Assert().IsNot(null,
-                    "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'.");
+                result
+                    .HasData.Assert()
+                    .Is(
+                        true,
+                        "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'."
+                    );
+                result
+                    .Data.Assert()
+                    .IsNot(
+                        null,
+                        "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
+                    );
 
                 if (result.Data is IEnumerable collection)
                 {
-                    collection.GetEnumerator().MoveNext().Assert().Is(true,
-                        "Hint '" + typeof(T).Name + "' failed to create populated '" + type + "'.");
+                    collection
+                        .GetEnumerator()
+                        .MoveNext()
+                        .Assert()
+                        .Is(
+                            true,
+                            "Hint '"
+                                + typeof(T).Name
+                                + "' failed to create populated '"
+                                + type
+                                + "'."
+                        );
                 }
             }
             finally
@@ -78,8 +107,13 @@ public abstract class CreateHintTestBase<T>(
     {
         foreach (Type type in _invalidTypes)
         {
-            TestInstance.TryCreate(type, CreateChainer()).Assert().Is(CreateHintResult.None,
-                "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'.");
+            TestInstance
+                .TryCreate(type, CreateChainer())
+                .Assert()
+                .Is(
+                    CreateHintResult.None,
+                    "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
+                );
         }
     }
 
@@ -87,6 +121,9 @@ public abstract class CreateHintTestBase<T>(
     /// <param name="options">Options to pass via the chainer.</param>
     protected static RandomizerChainer CreateChainer(RandomizerOptions options = null)
     {
-        return new RandomizerChainer(options ?? Tools.Randomizer.Options, (t, c) => Tools.Randomizer.Create(t));
+        return new RandomizerChainer(
+            options ?? Tools.Randomizer.Options,
+            (t, c) => Tools.Randomizer.Create(t)
+        );
     }
 }

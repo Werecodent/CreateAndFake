@@ -1,6 +1,11 @@
 ﻿namespace CreateAndFake.Tests.FakerTool.TestSamples;
 
-public sealed class FakeHolderSample(IFakeSample sample1, AbstractFakeSample sample2, int value1, string value2)
+public sealed class FakeHolderSample(
+    IFakeSample sample1,
+    AbstractFakeSample sample2,
+    int value1,
+    string value2
+)
 {
     public IFakeSample Sample1 { get; } = sample1;
 

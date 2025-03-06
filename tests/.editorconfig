@@ -61,6 +61,10 @@ dotnet_diagnostic.IDE0046.severity = none
 # Unneeded parentheses can hurt readability.
 dotnet_diagnostic.IDE0048.severity = none
 
+# IDE0055: Fix formatting
+# Controlled by csharpier.
+dotnet_diagnostic.IDE0055.severity = none
+
 # IDE0057 Substring can be simplified
 # No support in legacy frameworks.
 dotnet_diagnostic.IDE0057.severity = none

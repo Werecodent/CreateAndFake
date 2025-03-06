@@ -11,9 +11,11 @@ public abstract class CreateHint<T> : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (type.IsInheritedBy<T>()
+        if (
+            type.IsInheritedBy<T>()
             && (type != typeof(object) || typeof(T) == typeof(object))
-            && !randomizer.AlreadyCreated<T>())
+            && !randomizer.AlreadyCreated<T>()
+        )
         {
             return new(Create(randomizer));
         }

@@ -21,8 +21,10 @@ public static class FakeTests
     [Fact]
     internal static void SetupVerify_WorksProtectedMethods()
     {
-        MethodInfo method = typeof(ProtectedSample)
-            .GetMethod("ChildMethod", BindingFlags.Instance | BindingFlags.NonPublic);
+        MethodInfo method = typeof(ProtectedSample).GetMethod(
+            "ChildMethod",
+            BindingFlags.Instance | BindingFlags.NonPublic
+        );
         object[] args = [];
 
         Fake fake = Tools.Faker.Mock<ProtectedSample>();

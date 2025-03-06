@@ -35,11 +35,12 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         new ExceptionCreateHint(),
         new SelfCreateHint(),
         new OptionsCreateHint(),
-        new ObjectCreateHint()
+        new ObjectCreateHint(),
     ];
 
     /// <inheritdoc/>
-    public RandomizerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public RandomizerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Generators used to randomize specific types.</summary>
     private readonly ImmutableArray<CreateHint> _hints = BuildHints(options);
@@ -59,7 +60,9 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
     private ImmutableArray<CreateHint> SelectHints(RandomizerOptions localOptions)
     {
-        return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
+        return
+            Options.IncludeDefaultHints == localOptions.IncludeDefaultHints
+            && Options.Hints == localOptions.Hints
             ? _hints
             : BuildHints(localOptions);
     }
@@ -76,21 +79,28 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
-            return localOptions.Limiter.StallUntil(
-                $"Trying to create instance of '{type}'",
-                () => CreateByHint(type, new RandomizerChainer(localOptions, (t, c) => CreateByHint(t, c))),
-                result =>
-                {
-                    if (localOptions.FinalCondition?.Invoke(result!) ?? true)
+            return localOptions
+                .Limiter.StallUntil(
+                    $"Trying to create instance of '{type}'",
+                    () =>
+                        CreateByHint(
+                            type,
+                            new RandomizerChainer(localOptions, (t, c) => CreateByHint(t, c))
+                        ),
+                    result =>
                     {
-                        return true;
+                        if (localOptions.FinalCondition?.Invoke(result!) ?? true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Disposer.Cleanup(result);
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        Disposer.Cleanup(result);
-                        return false;
-                    }
-                }).Last()!;
+                )
+                .Last()!;
         }
         catch (Exception e)
         {
@@ -109,22 +119,30 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         if (error is InsufficientExecutionStackException)
         {
             return new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to randomize type '{type}'.", error);
+                $"Ran into infinite generation trying to randomize type '{type}'.",
+                error
+            );
         }
         else if (error is TimeoutException)
         {
             return new TimeoutException(
-                $"Could not create instance of type '{type}' matching condition.", error);
+                $"Could not create instance of type '{type}' matching condition.",
+                error
+            );
         }
         else if (error is NotSupportedException)
         {
             return new NotSupportedException(
-                $"Encountered issue creating instance of type '{type}'.", error);
+                $"Encountered issue creating instance of type '{type}'.",
+                error
+            );
         }
         else
         {
             return new InvalidOperationException(
-                $"Encountered issue creating instance of type '{type}'.", error);
+                $"Encountered issue creating instance of type '{type}'.",
+                error
+            );
         }
     }
 
@@ -145,8 +163,9 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         else
         {
             throw new NotSupportedException(
-                $"Type '{type}' not supported by the randomizer. " +
-                "Create a hint to generate the type and pass it to the randomizer.");
+                $"Type '{type}' not supported by the randomizer. "
+                    + "Create a hint to generate the type and pass it to the randomizer."
+            );
         }
     }
 
@@ -161,19 +180,25 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
-        List<Tuple<Type, object>> data = [.. (values ?? [])
-            .Where(v => v != null)
-            .Select(v => (v is Fake fake) ? fake.Dummy : v)
-            .Where(v => v != null)
-            .Select(v => Tuple.Create(v!.GetType(), v))];
+        List<Tuple<Type, object>> data =
+        [
+            .. (values ?? [])
+                .Where(v => v != null)
+                .Select(v => (v is Fake fake) ? fake.Dummy : v)
+                .Where(v => v != null)
+                .Select(v => Tuple.Create(v!.GetType(), v)),
+        ];
 
-        ConstructorInfo? maker = FindConstructor(type, data, BindingFlags.Public)
+        ConstructorInfo? maker =
+            FindConstructor(type, data, BindingFlags.Public)
             ?? FindConstructor(type, data, BindingFlags.NonPublic);
 
-        if (maker == null
+        if (
+            maker == null
             || type.Inherits<Fake>()
             || type.Inherits(typeof(Injected<>))
-            || type.Inherits<Delegate>())
+            || type.Inherits<Delegate>()
+        )
         {
             return Create(type);
         }
@@ -194,7 +219,9 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 
         for (int i = 0; i < args.Length; i++)
         {
-            Tuple<Type, object>? match = data.FirstOrDefault(t => t.Item1.Inherits(info[i].ParameterType));
+            Tuple<Type, object>? match = data.FirstOrDefault(t =>
+                t.Item1.Inherits(info[i].ParameterType)
+            );
             if (match != default)
             {
                 args[i] = match.Item2;
@@ -213,10 +240,16 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <param name="data">Injection data to use.</param>
     /// <param name="scope">Scope of constructors to find.</param>
     /// <returns>Constructor if found; null otherwise.</returns>
-    private static ConstructorInfo? FindConstructor(Type type, List<Tuple<Type, object>> data, BindingFlags scope)
+    private static ConstructorInfo? FindConstructor(
+        Type type,
+        List<Tuple<Type, object>> data,
+        BindingFlags scope
+    )
     {
         return type.GetConstructors(BindingFlags.Instance | scope)
-            .GroupBy(c => c.GetParameters().Count(p => data.Any(t => t.Item1.Inherits(p.ParameterType))))
+            .GroupBy(c =>
+                c.GetParameters().Count(p => data.Any(t => t.Item1.Inherits(p.ParameterType)))
+            )
             .Where(g => g.Key > 0)
             .OrderByDescending(g => g.Key)
             .FirstOrDefault()

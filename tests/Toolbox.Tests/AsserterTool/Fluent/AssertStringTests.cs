@@ -22,8 +22,8 @@ public static class AssertStringTests
     internal static void AssertString_CallsAndChains(Injected<AssertString> instance)
     {
         RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
-        results.RawResults
-            .Where(r => r.Result != null)
+        results
+            .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertString>)
             .Select(r => r.Method.Name)
             .Assert()

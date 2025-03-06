@@ -25,7 +25,9 @@ public static class Issue094Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue094_SizeAttributeOnlyTopCollection([Size(20)] IEnumerable<string> data)
+    internal static void Issue094_SizeAttributeOnlyTopCollection(
+        [Size(20)] IEnumerable<string> data
+    )
     {
         data.Assert().HasCount(20);
         data.First().Length.Assert().IsNot(20);
@@ -196,7 +198,11 @@ public static class Issue094Tests
             object dupe = Tools.Duplicator.Copy(sample);
 
             Tools.Asserter.Is(sample, dupe);
-            Tools.Asserter.Is(Tools.Valuer.GetHashCode(sample), Tools.Valuer.GetHashCode(dupe), $"{sample}");
+            Tools.Asserter.Is(
+                Tools.Valuer.GetHashCode(sample),
+                Tools.Valuer.GetHashCode(dupe),
+                $"{sample}"
+            );
         }
     }
 }

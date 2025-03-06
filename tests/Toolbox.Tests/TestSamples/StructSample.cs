@@ -7,7 +7,10 @@ using CreateAndFake.Design.Content;
 namespace CreateAndFake.Tests.TestSamples;
 
 [ExcludeFromCodeCoverage]
-public struct StructSample(string stringValue) : IEquatable<StructSample>, IComparable<StructSample>, IComparable
+public struct StructSample(string stringValue)
+    : IEquatable<StructSample>,
+        IComparable<StructSample>,
+        IComparable
 {
     public string StringValue { get; } = stringValue;
 

@@ -29,19 +29,29 @@ public static class ValueComparer_T_Tests
 
     [Theory, RandomData]
     internal static void Equals_UsesValuesEqual(
-        [Fake] IValueEquatable stub1, [Fake] IValueEquatable stub2, bool result)
+        [Fake] IValueEquatable stub1,
+        [Fake] IValueEquatable stub2,
+        bool result
+    )
     {
         stub1.ValuesEqual(stub2).SetupReturn(result);
         stub2.ValuesEqual(stub1).SetupReturn(result);
 
         ValueComparer<IValueEquatable>.Use.Equals(stub1, stub2).Assert().Is(result);
         ValueComparer<IValueEquatable>.Use.Equals([stub1], [stub2]).Assert().Is(result);
-        ValueComparer<IValueEquatable>.Use.Equals(MapByIndex([stub1]), MapByIndex([stub2])).Assert().Is(result);
+        ValueComparer<IValueEquatable>
+            .Use.Equals(MapByIndex([stub1]), MapByIndex([stub2]))
+            .Assert()
+            .Is(result);
     }
 
     [Theory, RandomData]
     internal static void Equals_UsesGetValueHash(
-        [Fake] IValueEquatable stub, [Fake] IValueEquatable equalStub, [Fake] IValueEquatable unequalStub, int hash)
+        [Fake] IValueEquatable stub,
+        [Fake] IValueEquatable equalStub,
+        [Fake] IValueEquatable unequalStub,
+        int hash
+    )
     {
         stub.GetValueHash().SetupReturn(hash);
         equalStub.GetValueHash().SetupReturn(hash);

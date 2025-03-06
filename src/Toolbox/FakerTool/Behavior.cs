@@ -56,9 +56,10 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
         }
         catch (Exception e)
         {
-            ExceptionDispatchInfo? info = (e is TargetInvocationException)
-                ? ExceptionDispatchInfo.Capture(e.InnerException!)
-                : null;
+            ExceptionDispatchInfo? info =
+                (e is TargetInvocationException)
+                    ? ExceptionDispatchInfo.Capture(e.InnerException!)
+                    : null;
 
             info?.Throw();
             throw;
@@ -129,7 +130,8 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     }
 
     /// <inheritdoc cref="Throw{T}(T,Times)"/>
-    public static Behavior<VoidType> Throw<T>(Times? times = null) where T : Exception, new()
+    public static Behavior<VoidType> Throw<T>(Times? times = null)
+        where T : Exception, new()
     {
         return Throw(new T(), times);
     }
@@ -139,7 +141,8 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <param name="exception">Exception to throw.</param>
     /// <param name="times">Behavior call limit.</param>
     /// <returns>Instance to set up the mock with.</returns>
-    public static Behavior<VoidType> Throw<T>(T exception, Times? times = null) where T : Exception
+    public static Behavior<VoidType> Throw<T>(T exception, Times? times = null)
+        where T : Exception
     {
         return Set(() => throw exception, times);
     }
@@ -175,232 +178,381 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set(
-        Action implementation, Times? times = null)
+    public static Behavior<VoidType> Set(Action implementation, Times? times = null)
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set<T>(
-        Action<T> implementation, Times? times = null)
+    public static Behavior<VoidType> Set<T>(Action<T> implementation, Times? times = null)
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set<T1, T2>(
-        Action<T1, T2> implementation, Times? times = null)
+    public static Behavior<VoidType> Set<T1, T2>(Action<T1, T2> implementation, Times? times = null)
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3>(
-        Action<T1, T2, T3> implementation, Times? times = null)
+        Action<T1, T2, T3> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4>(
-        Action<T1, T2, T3, T4> implementation, Times? times = null)
+        Action<T1, T2, T3, T4> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5>(
-        Action<T1, T2, T3, T4, T5> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6>(
-        Action<T1, T2, T3, T4, T5, T6> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7>(
-        Action<T1, T2, T3, T4, T5, T6, T7> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> implementation, Times? times = null)
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> implementation, Times? times = null)
+    public static Behavior<VoidType> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14
+    >(
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> implementation, Times? times = null)
+    public static Behavior<VoidType> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14,
+        T15
+    >(
+        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<VoidType> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(
-        Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> implementation, Times? times = null)
+    public static Behavior<VoidType> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14,
+        T15,
+        T16
+    >(
+        Action<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15,
+            T16
+        > implementation,
+        Times? times = null
+    )
     {
         return new Behavior<VoidType>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<TOut> Set<TOut>(
-        Func<TOut?> implementation, Times? times = null)
+    public static Behavior<TOut> Set<TOut>(Func<TOut?> implementation, Times? times = null)
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<TOut> Set<T, TOut>(
-        Func<T, TOut> implementation, Times? times = null)
+    public static Behavior<TOut> Set<T, TOut>(Func<T, TOut> implementation, Times? times = null)
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, TOut>(
-        Func<T1, T2, TOut> implementation, Times? times = null)
+        Func<T1, T2, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, TOut>(
-        Func<T1, T2, T3, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, TOut>(
-        Func<T1, T2, T3, T4, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, TOut>(
-        Func<T1, T2, T3, T4, T5, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
     public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TOut> implementation, Times? times = null)
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TOut> implementation, Times? times = null)
+    public static Behavior<TOut> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14,
+        TOut
+    >(
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
 
     /// <inheritdoc cref="Set{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>
-    public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TOut> implementation, Times? times = null)
+    public static Behavior<TOut> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14,
+        T15,
+        TOut
+    >(
+        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TOut> implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }
@@ -426,8 +578,46 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <param name="implementation">Behavior to invoke for calls.</param>
     /// <param name="times">Behavior call limit.</param>
     /// <returns>Instance to set up the mock with.</returns>
-    public static Behavior<TOut> Set<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TOut>(
-        Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TOut> implementation, Times? times = null)
+    public static Behavior<TOut> Set<
+        T1,
+        T2,
+        T3,
+        T4,
+        T5,
+        T6,
+        T7,
+        T8,
+        T9,
+        T10,
+        T11,
+        T12,
+        T13,
+        T14,
+        T15,
+        T16,
+        TOut
+    >(
+        Func<
+            T1,
+            T2,
+            T3,
+            T4,
+            T5,
+            T6,
+            T7,
+            T8,
+            T9,
+            T10,
+            T11,
+            T12,
+            T13,
+            T14,
+            T15,
+            T16,
+            TOut
+        > implementation,
+        Times? times = null
+    )
     {
         return new Behavior<TOut>(implementation, times);
     }

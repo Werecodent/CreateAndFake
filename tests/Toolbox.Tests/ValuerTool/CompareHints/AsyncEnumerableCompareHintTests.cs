@@ -3,7 +3,8 @@ using CreateAndFake.ValuerTool.CompareHints;
 
 namespace CreateAndFake.Tests.ValuerTool.CompareHints;
 
-public sealed class AsyncEnumerableCompareHintTests : CompareHintTestBase<AsyncEnumerableCompareHint>
+public sealed class AsyncEnumerableCompareHintTests
+    : CompareHintTestBase<AsyncEnumerableCompareHint>
 {
     private static readonly AsyncEnumerableCompareHint _TestInstance = new();
 
@@ -11,16 +12,13 @@ public sealed class AsyncEnumerableCompareHintTests : CompareHintTestBase<AsyncE
     [
         typeof(IAsyncEnumerable<int>),
         typeof(IAsyncEnumerable<string>),
-        typeof(IAsyncEnumerable<object>)
+        typeof(IAsyncEnumerable<object>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(IEnumerable),
-        typeof(object)
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(object)];
 
-    public AsyncEnumerableCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public AsyncEnumerableCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void Supports_NullTest(IAsyncEnumerable<string> data)

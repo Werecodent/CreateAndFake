@@ -15,30 +15,33 @@ public sealed class FrozenCollectionCreateHintTests : CreateHintTestBase<FrozenC
         typeof(object),
         typeof(int),
         typeof(double),
-        typeof(KeyValuePair<string, int>)
+        typeof(KeyValuePair<string, int>),
     ];
 
     private static readonly Type[] _ValidTypes =
     [
         MakeDefined(typeof(FrozenSet<>)),
-        MakeDefined(typeof(FrozenDictionary<,>))
+        MakeDefined(typeof(FrozenDictionary<,>)),
     ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(object),
         typeof(IEnumerable),
-        typeof(IEnumerable<>)
+        typeof(IEnumerable<>),
     ];
 
-    public FrozenCollectionCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public FrozenCollectionCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     private static Type MakeDefined(Type type)
     {
         if (type.IsGenericTypeDefinition)
         {
             FastRandom random = new();
-            return type.MakeGenericType([.. type.GetGenericArguments().Select(t => random.NextItem(_ItemTypes))]);
+            return type.MakeGenericType(
+                [.. type.GetGenericArguments().Select(t => random.NextItem(_ItemTypes))]
+            );
         }
         else
         {

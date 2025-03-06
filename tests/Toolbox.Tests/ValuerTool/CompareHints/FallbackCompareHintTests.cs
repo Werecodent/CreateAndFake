@@ -12,12 +12,21 @@ public sealed class FallbackCompareHintTests : CompareHintTestBase<FallbackCompa
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
 
-    public FallbackCompareHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public FallbackCompareHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static void Throws_OptionsOkay(string value)
     {
-        _TestInstance.TryCompare(value, value,
-            CreateChainer(Tools.Valuer.Options with { FallbackTypes = FrozenSet.ToFrozenSet([typeof(string)]) }));
+        _TestInstance.TryCompare(
+            value,
+            value,
+            CreateChainer(
+                Tools.Valuer.Options with
+                {
+                    FallbackTypes = FrozenSet.ToFrozenSet([typeof(string)]),
+                }
+            )
+        );
     }
 }

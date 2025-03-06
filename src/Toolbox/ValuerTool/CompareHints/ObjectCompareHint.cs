@@ -17,12 +17,15 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         }
 
         Type type = expected.GetType();
-        return type.GetProperties(scope).Any(p => p.CanRead)
-            || type.GetFields(scope).Length != 0;
+        return type.GetProperties(scope).Any(p => p.CanRead) || type.GetFields(scope).Length != 0;
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer valuer)
+    protected override IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
@@ -32,13 +35,22 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc cref="Compare"/>
-    private IEnumerable<Difference> LazyCompare(object expected, object actual, ValuerChainer valuer)
+    private IEnumerable<Difference> LazyCompare(
+        object expected,
+        object actual,
+        ValuerChainer valuer
+    )
     {
         Type type = expected.GetType();
 
         foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
         {
-            foreach (Difference diff in valuer.Compare(property.GetValue(expected), property.GetValue(actual)))
+            foreach (
+                Difference diff in valuer.Compare(
+                    property.GetValue(expected),
+                    property.GetValue(actual)
+                )
+            )
             {
                 yield return new Difference(property, diff);
             }
@@ -46,7 +58,9 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (FieldInfo field in expected.GetType().GetFields(scope))
         {
-            foreach (Difference diff in valuer.Compare(field.GetValue(expected), field.GetValue(actual)))
+            foreach (
+                Difference diff in valuer.Compare(field.GetValue(expected), field.GetValue(actual))
+            )
             {
                 yield return new Difference(field, diff);
             }
@@ -64,7 +78,8 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
         {
-            hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(property.GetValue(item));
+            hash =
+                hash * ValueComparer.HashMultiplier + valuer.GetHashCode(property.GetValue(item));
         }
 
         foreach (FieldInfo field in type.GetFields(scope))

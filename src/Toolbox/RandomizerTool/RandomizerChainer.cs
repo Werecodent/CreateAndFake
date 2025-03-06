@@ -21,7 +21,10 @@ public sealed class RandomizerChainer
     /// <inheritdoc cref="RandomizerChainer"/>
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="randomizer"><inheritdoc cref="_randomizer" path="/summary"/></param>
-    public RandomizerChainer(RandomizerOptions options, Func<Type, RandomizerChainer, object> randomizer)
+    public RandomizerChainer(
+        RandomizerOptions options,
+        Func<Type, RandomizerChainer, object> randomizer
+    )
     {
         _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
         Options = options ?? throw new ArgumentNullException(nameof(options));
@@ -34,7 +37,11 @@ public sealed class RandomizerChainer
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
-    private RandomizerChainer(RandomizerChainer prevChainer, RandomizerOptions? options, object? parent)
+    private RandomizerChainer(
+        RandomizerChainer prevChainer,
+        RandomizerOptions? options,
+        object? parent
+    )
     {
         Parent = parent;
         Options = options ?? prevChainer.Options.NestedOptions ?? prevChainer.Options;
@@ -107,6 +114,9 @@ public sealed class RandomizerChainer
         }
 
         RuntimeHelpers.EnsureSufficientExecutionStack();
-        return _randomizer.Invoke(type, new RandomizerChainer(this, options, (parent != Parent) ? parent : null));
+        return _randomizer.Invoke(
+            type,
+            new RandomizerChainer(this, options, (parent != Parent) ? parent : null)
+        );
     }
 }

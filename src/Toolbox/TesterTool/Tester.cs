@@ -14,7 +14,8 @@ namespace CreateAndFake.TesterTool;
 public class Tester(TesterOptions options) : ITester
 {
     /// <inheritdoc/>
-    public TesterOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public TesterOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public virtual void PreventsNullRefException<T>(TesterMod? optionConfiguration = null)
@@ -44,7 +45,10 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsNullRefException<T>(T instance, TesterMod? optionConfiguration = null)
+    public virtual void PreventsNullRefException<T>(
+        T instance,
+        TesterMod? optionConfiguration = null
+    )
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         NullGuarder checker = new(localOptions);
@@ -91,7 +95,10 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsParameterMutation<T>(T instance, TesterMod? optionConfiguration = null)
+    public virtual void PreventsParameterMutation<T>(
+        T instance,
+        TesterMod? optionConfiguration = null
+    )
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
@@ -122,7 +129,10 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void PassthroughWithNoExceptions(object instance, TesterMod? optionConfiguration = null)
+    public virtual void PassthroughWithNoExceptions(
+        object instance,
+        TesterMod? optionConfiguration = null
+    )
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -133,13 +143,18 @@ public class Tester(TesterOptions options) : ITester
     /// <param name="type">Type being tested.</param>
     /// <param name="localOptions">Configured options to use.</param>
     /// <param name="checker">Test to run.</param>
-    private static void CreateInstanceAndTestMethods(Type type, TesterOptions localOptions, Action<object> checker)
+    private static void CreateInstanceAndTestMethods(
+        Type type,
+        TesterOptions localOptions,
+        Action<object> checker
+    )
     {
         if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
         {
-            object instance = (localOptions.InjectionValues.Length > 0)
-                ? localOptions.Randomizer.Inject(type, localOptions.InjectionValues)
-                : localOptions.Randomizer.Create(type);
+            object instance =
+                (localOptions.InjectionValues.Length > 0)
+                    ? localOptions.Randomizer.Inject(type, localOptions.InjectionValues)
+                    : localOptions.Randomizer.Create(type);
             try
             {
                 checker.Invoke(instance);
@@ -152,7 +167,10 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null)
+    public virtual void ProvidesTestClassCoverage(
+        Assembly codeAssembly,
+        TesterMod? optionConfiguration = null
+    )
     {
         ArgumentGuard.ThrowIfNull(codeAssembly, nameof(codeAssembly));
 
@@ -162,10 +180,7 @@ public class Tester(TesterOptions options) : ITester
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
 
-        FrozenSet<string> testClasses = testAssembly
-            .GetTypes()
-            .Select(t => t.Name)
-            .ToFrozenSet();
+        FrozenSet<string> testClasses = testAssembly.GetTypes().Select(t => t.Name).ToFrozenSet();
 
         localOptions.Asserter.IsEmpty(
             TypeExtensions
@@ -177,17 +192,25 @@ public class Tester(TesterOptions options) : ITester
                     IEnumerable<string> possibleNames;
                     if (t.IsGenericTypeDefinition)
                     {
-                        string baseName = t.Name.Substring(0, t.Name.IndexOf("`", StringComparison.InvariantCulture));
-                        possibleNames = localOptions.TestClassNameGenericSubstitutes.Select(sub => baseName + sub);
+                        string baseName = t.Name.Substring(
+                            0,
+                            t.Name.IndexOf("`", StringComparison.InvariantCulture)
+                        );
+                        possibleNames = localOptions.TestClassNameGenericSubstitutes.Select(sub =>
+                            baseName + sub
+                        );
                     }
                     else
                     {
                         possibleNames = [t.Name];
                     }
-                    return possibleNames.All(name => !testClasses.Contains(name + localOptions.TestClassNameSuffix));
+                    return possibleNames.All(name =>
+                        !testClasses.Contains(name + localOptions.TestClassNameSuffix)
+                    );
                 })
                 .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
-            "Missing tests for classes.");
+            "Missing tests for classes."
+        );
     }
 }
 

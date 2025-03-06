@@ -9,11 +9,13 @@
         "source.organizeImports": "explicit"
     },
     "editor.rulers": [
-        120,
-        140
+        100
     ],
     "[csharp]": {
-        "editor.defaultFormatter": "ms-dotnettools.csharp"
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    },
+    "[xml]": {
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
     },
     "cSpell.words": [
         "accessibilities",

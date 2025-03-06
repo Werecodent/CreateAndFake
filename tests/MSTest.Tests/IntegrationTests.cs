@@ -12,7 +12,11 @@ public class IntegrationTests
     }
 
     [TestMethod, RandomData]
-    public void RandomData_UsesAttributes([Stub] IRandom gen, Wrapper context, [Size(2)] string name)
+    public void RandomData_UsesAttributes(
+        [Stub] IRandom gen,
+        Wrapper context,
+        [Size(2)] string name
+    )
     {
         name.Length.Assert().Is(2);
         gen.NextItem(Arg.Any<string[]>()).SetupReturn(name);

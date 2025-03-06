@@ -14,11 +14,13 @@ public sealed class Fake<T> : Fake
     public new T Dummy => (T)base.Dummy;
 
     /// <inheritdoc/>
-    public Fake(IFaked fake) : base(fake) { }
+    public Fake(IFaked fake)
+        : base(fake) { }
 
     /// <inheritdoc/>
     /// <remarks>Switches the fake to a different type.</remarks>
-    public Fake(Fake baseFake) : base(baseFake?.Dummy ?? throw new ArgumentNullException(nameof(baseFake)))
+    public Fake(Fake baseFake)
+        : base(baseFake?.Dummy ?? throw new ArgumentNullException(nameof(baseFake)))
     {
         _ = (T)base.Dummy;
     }
@@ -29,7 +31,11 @@ public sealed class Fake<T> : Fake
     /// <param name="value">Set value to match from the call.</param>
     /// <param name="callback">Fake behavior to invoke.</param>
     /// <returns>Representation of the call.</returns>
-    public void SetupSet<TResult>(Expression<Func<T, TResult>> method, TResult value, Behavior<VoidType> callback)
+    public void SetupSet<TResult>(
+        Expression<Func<T, TResult>> method,
+        TResult value,
+        Behavior<VoidType> callback
+    )
     {
         (MethodInfo, Type[], object?[]) call = ExtractCall(method, true);
         Setup(call.Item1.Name, call.Item2, [value], callback);
@@ -41,7 +47,11 @@ public sealed class Fake<T> : Fake
     /// <param name="value">Arg expression to match from the call.</param>
     /// <param name="callback">Fake behavior to invoke.</param>
     /// <returns>Representation of the call.</returns>
-    public void SetupSet<TResult>(Expression<Func<T, TResult>> method, Arg value, Behavior<VoidType> callback)
+    public void SetupSet<TResult>(
+        Expression<Func<T, TResult>> method,
+        Arg value,
+        Behavior<VoidType> callback
+    )
     {
         (MethodInfo, Type[], object?[]) call = ExtractCall(method, true);
         Setup(call.Item1.Name, call.Item2, [value], callback);
@@ -110,7 +120,10 @@ public sealed class Fake<T> : Fake
     /// <param name="method">Expression to convert.</param>
     /// <param name="onlySetter">If only setter is allowed.</param>
     /// <returns>Method name, generics, and args.</returns>
-    private static (MethodInfo, Type[], object?[]) ExtractCall(LambdaExpression method, bool onlySetter)
+    private static (MethodInfo, Type[], object?[]) ExtractCall(
+        LambdaExpression method,
+        bool onlySetter
+    )
     {
         ArgumentGuard.ThrowIfNull(method, nameof(method));
 
@@ -119,7 +132,8 @@ public sealed class Fake<T> : Fake
             if (methodCall.Method.IsStatic)
             {
                 throw new NotSupportedException(
-                    $"Method '{methodCall.Method.Name}' is static and not an actual member of '{typeof(T).Name}'.");
+                    $"Method '{methodCall.Method.Name}' is static and not an actual member of '{typeof(T).Name}'."
+                );
             }
 
             Type[] generics = methodCall.Method.IsGenericMethod
@@ -146,13 +160,16 @@ public sealed class Fake<T> : Fake
     /// <returns>Value to pass to the call.</returns>
     private static object? ConvertArg(Expression arg)
     {
-        if (arg is MemberExpression memberExpression
-            && memberExpression.Member.Name == nameof(OutRef<Type>.Var))
+        if (
+            arg is MemberExpression memberExpression
+            && memberExpression.Member.Name == nameof(OutRef<Type>.Var)
+        )
         {
             return ConvertArg(memberExpression.Expression!);
         }
 
-        MethodCallExpression? call = arg as MethodCallExpression
+        MethodCallExpression? call =
+            arg as MethodCallExpression
             ?? (arg as UnaryExpression)?.Operand as MethodCallExpression;
         if (call?.Method.DeclaringType == typeof(Arg) && call.Method.ReturnType != typeof(Arg))
         {
@@ -167,10 +184,15 @@ public sealed class Fake<T> : Fake
     /// <summary>Converts an lambda arg expression to its actual value.</summary>
     /// <param name="call">Expression of the arg to convert.</param>
     /// <returns>Value to pass to the call.</returns>
-    [SuppressMessage("Microsoft.Style", "IDE0200:PreferMethodGroupConversion", Justification = "Code coverage issue.")]
+    [SuppressMessage(
+        "Microsoft.Style",
+        "IDE0200:PreferMethodGroupConversion",
+        Justification = "Code coverage issue."
+    )]
     private static object ResolveArgLambda(MethodCallExpression call)
     {
-        Type innerType = (call.Method.ReturnType.AsGenericType() == typeof(OutRef<>))
+        Type innerType =
+            (call.Method.ReturnType.AsGenericType() == typeof(OutRef<>))
                 ? call.Method.ReturnType.GetGenericArguments().Single()
                 : call.Method.ReturnType;
 

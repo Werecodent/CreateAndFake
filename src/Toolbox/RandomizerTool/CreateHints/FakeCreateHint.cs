@@ -28,7 +28,7 @@ public sealed class FakeCreateHint : CreateHint
         typeof(Action<,,,,,,,,,,,,>),
         typeof(Action<,,,,,,,,,,,,,>),
         typeof(Action<,,,,,,,,,,,,,,>),
-        typeof(Action<,,,,,,,,,,,,,,,>)
+        typeof(Action<,,,,,,,,,,,,,,,>),
     ];
 
     /// <summary>Possible func types to use.</summary>
@@ -51,7 +51,7 @@ public sealed class FakeCreateHint : CreateHint
         typeof(Func<,,,,,,,,,,,,,>),
         typeof(Func<,,,,,,,,,,,,,,>),
         typeof(Func<,,,,,,,,,,,,,,,>),
-        typeof(Func<,,,,,,,,,,,,,,,,>)
+        typeof(Func<,,,,,,,,,,,,,,,,>),
     ];
 
     /// <inheritdoc/>
@@ -79,21 +79,26 @@ public sealed class FakeCreateHint : CreateHint
         mock.Dummy.FakeMeta.Identifier = randomizer.Create<int>();
 
         // Generic returns have to just use stub behavior.
-        foreach (MethodInfo method in target
-            .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-            .Where(m => m.IsAbstract || (m.IsVirtual && !m.IsFinal))
-            .Where(m => !m.IsPrivate)
-            .Where(m => !m.ReturnType.IsGenericParameter)
-            .Where(m => !m.ReturnType.ContainsGenericParameters)
-            .Where(m => m.Name != "Finalize"))
+        foreach (
+            MethodInfo method in target
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.IsAbstract || (m.IsVirtual && !m.IsFinal))
+                .Where(m => !m.IsPrivate)
+                .Where(m => !m.ReturnType.IsGenericParameter)
+                .Where(m => !m.ReturnType.ContainsGenericParameters)
+                .Where(m => m.Name != "Finalize")
+        )
         {
             Type[] generics = method.IsGenericMethod
                 ? [.. method.GetGenericArguments().Select(a => typeof(AnyGeneric))]
                 : [];
 
-            mock.Setup(method.Name, generics,
+            mock.Setup(
+                method.Name,
+                generics,
                 [.. method.GetParameters().Select(a => SetupMatch(a.ParameterType))],
-                MakeBehavior(method, randomizer));
+                MakeBehavior(method, randomizer)
+            );
         }
 
         return (Fake)type.GetConstructor([typeof(Fake)])!.Invoke([mock]);
@@ -111,15 +116,23 @@ public sealed class FakeCreateHint : CreateHint
         {
             Type[] withOut = [.. args, .. new[] { method.ReturnType }];
 
-            return (Behavior)typeof(Behavior<>)
-                .MakeGenericType(method.ReturnType)
-                .GetConstructor([typeof(Delegate), typeof(Times)])!
-                .Invoke([randomizer.Create(_FuncTypes[withOut.Length]!.MakeGenericType(withOut)), Times.Any()]);
+            return (Behavior)
+                typeof(Behavior<>)
+                    .MakeGenericType(method.ReturnType)
+                    .GetConstructor([typeof(Delegate), typeof(Times)])!
+                    .Invoke(
+                        [
+                            randomizer.Create(_FuncTypes[withOut.Length]!.MakeGenericType(withOut)),
+                            Times.Any(),
+                        ]
+                    );
         }
         else if (args.Length != 0)
         {
-            return new Behavior<VoidType>((Delegate)randomizer
-                .Create(_ActionTypes[args.Length].MakeGenericType(args))!, Times.Any());
+            return new Behavior<VoidType>(
+                (Delegate)randomizer.Create(_ActionTypes[args.Length].MakeGenericType(args))!,
+                Times.Any()
+            );
         }
         else
         {

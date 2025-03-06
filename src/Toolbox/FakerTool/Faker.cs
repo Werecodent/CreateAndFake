@@ -9,7 +9,8 @@ namespace CreateAndFake.FakerTool;
 public sealed class Faker(FakerOptions options) : IFaker
 {
     /// <inheritdoc/>
-    public FakerOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public FakerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public bool Supports<T>(FakerMod? optionConfiguration = null)
@@ -86,7 +87,10 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Injected<T> InjectMocks<T>(IEnumerable<object> values, FakerMod? optionConfiguration = null)
+    public Injected<T> InjectMocks<T>(
+        IEnumerable<object> values,
+        FakerMod? optionConfiguration = null
+    )
     {
         return Inject<T>(values?.ToArray() ?? [], t => Mock(t));
     }
@@ -98,7 +102,10 @@ public sealed class Faker(FakerOptions options) : IFaker
     }
 
     /// <inheritdoc/>
-    public Injected<T> InjectStubs<T>(IEnumerable<object> values, FakerMod? optionConfiguration = null)
+    public Injected<T> InjectStubs<T>(
+        IEnumerable<object> values,
+        FakerMod? optionConfiguration = null
+    )
     {
         return Inject<T>(values?.ToArray() ?? [], t => Stub(t));
     }
@@ -110,10 +117,13 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The created instance with its fakes.</returns>
     private Injected<T> Inject<T>(ICollection<object> values, Func<Type, Fake> subclasser)
     {
-        Type[] startingTypes = [.. values
-            .Where(v => v != null)
-            .Select(v => (v is Fake fake) ? fake.Dummy : v)
-            .Select(v => v.GetType())];
+        Type[] startingTypes =
+        [
+            .. values
+                .Where(v => v != null)
+                .Select(v => (v is Fake fake) ? fake.Dummy : v)
+                .Select(v => v.GetType()),
+        ];
 
         ConstructorInfo? maker = FindBestConstructor<T>(startingTypes);
         if (maker != null)
@@ -122,11 +132,14 @@ public sealed class Faker(FakerOptions options) : IFaker
 
             return new Injected<T>(
                 (T)maker.Invoke([.. args.Select(v => (v is Fake fake) ? fake.Dummy : v)]),
-                args.OfType<Fake>());
+                args.OfType<Fake>()
+            );
         }
         else
         {
-            throw new InvalidOperationException($"No constructors found on type '{typeof(T).Name}'.");
+            throw new InvalidOperationException(
+                $"No constructors found on type '{typeof(T).Name}'."
+            );
         }
     }
 
@@ -135,18 +148,29 @@ public sealed class Faker(FakerOptions options) : IFaker
     ///  <param name="values">Values to inject instead where possible.</param>
     /// <param name="subclasser">Fake creation method to use.</param>
     /// <returns>The created args to inject an instance with.</returns>
-    private object?[] CreateInjectArgs(ConstructorInfo maker, IEnumerable<object> values, Func<Type, Fake> subclasser)
+    private object?[] CreateInjectArgs(
+        ConstructorInfo maker,
+        IEnumerable<object> values,
+        Func<Type, Fake> subclasser
+    )
     {
-        List<Tuple<Type, object>> data = [.. values
-            .Where(v => v != null)
-            .Select(v => Tuple.Create((v is Fake fake) ? fake.Dummy.GetType() : v.GetType(), v))];
+        List<Tuple<Type, object>> data =
+        [
+            .. values
+                .Where(v => v != null)
+                .Select(v =>
+                    Tuple.Create((v is Fake fake) ? fake.Dummy.GetType() : v.GetType(), v)
+                ),
+        ];
 
         ParameterInfo[] info = maker.GetParameters();
         object?[] args = new object[info.Length];
 
         for (int i = 0; i < args.Length; i++)
         {
-            Tuple<Type, object>? match = data.FirstOrDefault(t => t.Item1.Inherits(info[i].ParameterType));
+            Tuple<Type, object>? match = data.FirstOrDefault(t =>
+                t.Item1.Inherits(info[i].ParameterType)
+            );
             if (match != default)
             {
                 args[i] = match.Item2;
@@ -170,8 +194,11 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The constructor best fitted to the types.</returns>
     private static ConstructorInfo? FindBestConstructor<T>(Type[] startingTypes)
     {
-        return typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.Public)
-            .GroupBy(c => c.GetParameters().Count(p => startingTypes.Any(t => t.Inherits(p.ParameterType))))
+        return typeof(T)
+            .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
+            .GroupBy(c =>
+                c.GetParameters().Count(p => startingTypes.Any(t => t.Inherits(p.ParameterType)))
+            )
             .OrderByDescending(g => g.Key)
             .FirstOrDefault()
             ?.OrderByDescending(c => c.GetParameters())

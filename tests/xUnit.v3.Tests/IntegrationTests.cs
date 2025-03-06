@@ -11,7 +11,11 @@ public static class IntegrationTests
     }
 
     [Theory, RandomData]
-    internal static void RandomData_UsesAttributes([Stub] IRandom gen, Wrapper context, [Size(2)] string name)
+    internal static void RandomData_UsesAttributes(
+        [Stub] IRandom gen,
+        Wrapper context,
+        [Size(2)] string name
+    )
     {
         name.Length.Assert().Is(2);
         gen.NextItem(Arg.Any<string[]>()).SetupReturn(name);

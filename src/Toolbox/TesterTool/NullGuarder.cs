@@ -53,8 +53,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
-            PreventsNullRefException(null, GenericFixer.FixMethod(method, Options),
-                callAllMethods && method.ReturnType.Inherits(type));
+            PreventsNullRefException(
+                null,
+                GenericFixer.FixMethod(method, Options),
+                callAllMethods && method.ReturnType.Inherits(type)
+            );
         }
     }
 
@@ -73,8 +76,10 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
             for (int i = 0; i < data.Length; i++)
             {
                 ParameterInfo param = method.GetParameters()[i];
-                if (param.ParameterType.IsValueType
-                    && Nullable.GetUnderlyingType(param.ParameterType) == null)
+                if (
+                    param.ParameterType.IsValueType
+                    && Nullable.GetUnderlyingType(param.ParameterType) == null
+                )
                 {
                     continue;
                 }
@@ -83,9 +88,10 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                 data[i] = null;
                 try
                 {
-                    result = (instance == null && method is ConstructorInfo builder)
-                        ? RunCheck(method, param, () => builder.Invoke(data))
-                        : RunCheck(method, param, () => method.Invoke(instance, data)!);
+                    result =
+                        (instance == null && method is ConstructorInfo builder)
+                            ? RunCheck(method, param, () => builder.Invoke(data))
+                            : RunCheck(method, param, () => method.Invoke(instance, data)!);
 
                     if (result != null && callAllMethods)
                     {
@@ -106,8 +112,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     }
 
     /// <inheritdoc/>
-    protected override bool HandleCheckException(MethodBase testOrigin,
-        ParameterInfo? testParam, Exception taskException)
+    protected override bool HandleCheckException(
+        MethodBase testOrigin,
+        ParameterInfo? testParam,
+        Exception taskException
+    )
     {
         ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
         ArgumentGuard.ThrowIfNull(testParam, nameof(testParam));
@@ -117,7 +126,10 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 
         if (taskException is NullReferenceException)
         {
-            Options.Asserter.Fail(taskException, $"Null reference exception encountered {details}.");
+            Options.Asserter.Fail(
+                taskException,
+                $"Null reference exception encountered {details}."
+            );
         }
 
         return Options.IgnorableExceptions.Contains(taskException.GetType());

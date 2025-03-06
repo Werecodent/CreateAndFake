@@ -25,7 +25,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Action<,,,,,,,,,,,,>),
         typeof(Action<,,,,,,,,,,,,,>),
         typeof(Action<,,,,,,,,,,,,,,>),
-        typeof(Action<,,,,,,,,,,,,,,,>)
+        typeof(Action<,,,,,,,,,,,,,,,>),
     ];
 
     private static readonly Type[] _FuncTypes =
@@ -46,7 +46,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Func<,,,,,,,,,,,,,>),
         typeof(Func<,,,,,,,,,,,,,,>),
         typeof(Func<,,,,,,,,,,,,,,,>),
-        typeof(Func<,,,,,,,,,,,,,,,,>)
+        typeof(Func<,,,,,,,,,,,,,,,,>),
     ];
 
     private static readonly DelegateCreateHint _TestInstance = new();
@@ -56,12 +56,13 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Action<string, object, int>),
         typeof(Func<int, string, object>),
         typeof(Delegate),
-        typeof(Action)
+        typeof(Action),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public DelegateCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public DelegateCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void Create_HandlesAllDelegates()

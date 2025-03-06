@@ -1,7 +1,7 @@
 global using AsserterMod = System.Func<
     CreateAndFake.AsserterTool.AsserterOptions,
-    CreateAndFake.AsserterTool.AsserterOptions>;
-
+    CreateAndFake.AsserterTool.AsserterOptions
+>;
 using CreateAndFake.AsserterTool;
 
 namespace CreateAndFake.Tests.AsserterTool;

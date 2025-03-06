@@ -12,7 +12,8 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public StringCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public StringCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void TryCreate_SizeConstraintsWork()
@@ -20,7 +21,7 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
         RandomizerOptions options = Tools.Randomizer.Options with
         {
             StringMinSize = 2,
-            StringMaxSize = 5
+            StringMaxSize = 5,
         };
         StringCreateHint hint = new();
 
@@ -28,7 +29,9 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
         {
             string result = (string)hint.TryCreate(typeof(string), CreateChainer(options)).Data;
 
-            result.Length.Assert().GreaterThanOrEqualTo(options.StringMinSize, "Result was too small.");
+            result
+                .Length.Assert()
+                .GreaterThanOrEqualTo(options.StringMinSize, "Result was too small.");
             result.Length.Assert().LessThanOrEqualTo(options.StringMaxSize, "Result was too big.");
         }
     }
@@ -40,16 +43,21 @@ public sealed class StringCreateHintTests : CreateHintTestBase<StringCreateHint>
         {
             StringMinSize = 3,
             StringMaxSize = 3,
-            StringCharacterSet = FrozenSet.ToFrozenSet("a")
+            StringCharacterSet = FrozenSet.ToFrozenSet("a"),
         };
         StringCreateHint hint = new();
         object value = "aaa";
         for (int i = 0; i < 100; i++)
         {
-            hint.TryCreate(typeof(string), CreateChainer(options)).Assert().Is(new CreateHintResult(value));
+            hint.TryCreate(typeof(string), CreateChainer(options))
+                .Assert()
+                .Is(new CreateHintResult(value));
         }
 
-        RandomizerOptions options2 = options with { StringCharacterSet = FrozenSet.ToFrozenSet("ab") };
+        RandomizerOptions options2 = options with
+        {
+            StringCharacterSet = FrozenSet.ToFrozenSet("ab"),
+        };
         for (int i = 0; i < 100; i++)
         {
             CreateHintResult result = hint.TryCreate(typeof(string), CreateChainer(options2));

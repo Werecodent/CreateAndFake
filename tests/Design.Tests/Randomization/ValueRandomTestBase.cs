@@ -6,7 +6,8 @@ namespace CreateAndFake.Design.Tests.Randomization;
 
 /// <summary>Handles testing value random classes.</summary>
 /// <typeparam name="T">Value random type to test.</typeparam>
-public abstract class ValueRandomTestBase<T> where T : ValueRandom
+public abstract class ValueRandomTestBase<T>
+    where T : ValueRandom
 {
     /// <summary>Instance to test with.</summary>
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
@@ -115,10 +116,13 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
         int min = int.MinValue / 2 - 1;
         int max = int.MaxValue / 2 + 1;
 
-        Limiter.Myriad.Repeat("Testing stumble behavior.", () =>
-        {
-            _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
-        });
+        Limiter.Myriad.Repeat(
+            "Testing stumble behavior.",
+            () =>
+            {
+                _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
+            }
+        );
     }
 
     /// <summary>Verifies that an invalid type throws.</summary>
@@ -211,7 +215,9 @@ public abstract class ValueRandomTestBase<T> where T : ValueRandom
     public void NextItem_EmptyThrows()
     {
         _TestInstance.Assert(t => t.NextItem(CreateEnum(0))).Throws<InvalidOperationException>();
-        _TestInstance.Assert(t => t.NextItem(Array.Empty<object>())).Throws<InvalidOperationException>();
+        _TestInstance
+            .Assert(t => t.NextItem(Array.Empty<object>()))
+            .Throws<InvalidOperationException>();
     }
 
     /// <summary>Verifies empty enumerables give default values.</summary>

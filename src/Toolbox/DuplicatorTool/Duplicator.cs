@@ -24,11 +24,12 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         new CollectionCopyHint(),
         new CloneableCopyHint(),
         new SerializableCopyHint(),
-        new ObjectCopyHint()
+        new ObjectCopyHint(),
     ];
 
     /// <inheritdoc/>
-    public DuplicatorOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public DuplicatorOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Generators used to copy specific types.</summary>
     private readonly ImmutableArray<CopyHint> _hints = BuildHints(options);
@@ -48,7 +49,9 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     /// <returns>Cached hints if possible; built hints otherwise.</returns>
     private ImmutableArray<CopyHint> SelectHints(DuplicatorOptions localOptions)
     {
-        return Options.IncludeDefaultHints == localOptions.IncludeDefaultHints && Options.Hints == localOptions.Hints
+        return
+            Options.IncludeDefaultHints == localOptions.IncludeDefaultHints
+            && Options.Hints == localOptions.Hints
             ? _hints
             : BuildHints(localOptions);
     }
@@ -63,16 +66,21 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
             T result = Copy(source, new DuplicatorChainer(localOptions, this, Copy));
             if (localOptions.VerifyCloneResult)
             {
-                Options.Asserter.ValuesEqual(source, result,
-                    $"Type '{source?.GetType()}' did not clone properly. " +
-                    "Verify/create a hint to generate the type and pass it to the duplicator.");
+                Options.Asserter.ValuesEqual(
+                    source,
+                    result,
+                    $"Type '{source?.GetType()}' did not clone properly. "
+                        + "Verify/create a hint to generate the type and pass it to the duplicator."
+                );
             }
             return result;
         }
         catch (InsufficientExecutionStackException e)
         {
             throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to duplicate type '{source!.GetType().Name}'.", e);
+                $"Ran into infinite generation trying to duplicate type '{source!.GetType().Name}'.",
+                e
+            );
         }
     }
 
@@ -96,8 +104,9 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         else
         {
             throw new NotSupportedException(
-                $"Type '{source.GetType().FullName}' not supported by the duplicator. " +
-                "Create a hint to generate the type and pass it to the duplicator.");
+                $"Type '{source.GetType().FullName}' not supported by the duplicator. "
+                    + "Create a hint to generate the type and pass it to the duplicator."
+            );
         }
     }
 }

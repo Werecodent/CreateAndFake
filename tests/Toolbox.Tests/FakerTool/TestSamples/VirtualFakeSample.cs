@@ -2,8 +2,11 @@
 
 namespace CreateAndFake.Tests.FakerTool.TestSamples;
 
-[SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations",
-    Justification = "For testing.")]
+[SuppressMessage(
+    "Microsoft.Design",
+    "CA1065:DoNotRaiseExceptionsInUnexpectedLocations",
+    Justification = "For testing."
+)]
 [ExcludeFromCodeCoverage]
 public class VirtualFakeSample : AbstractFakeSample
 {

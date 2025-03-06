@@ -22,7 +22,11 @@ public static class ExtractorTests
     {
         foreach (Type type in CollectionCreateHint.PotentialCollections)
         {
-            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).AllContent().Assert().IsNotEmpty();
+            Tools
+                .Extractor.Extract(Tools.Randomizer.Create(type))
+                .AllContent()
+                .Assert()
+                .IsNotEmpty();
         }
     }
 
@@ -31,7 +35,11 @@ public static class ExtractorTests
     {
         foreach (Type type in LegacyCollectionCreateHint.PotentialCollections)
         {
-            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).AllContent().Assert().IsNotEmpty();
+            Tools
+                .Extractor.Extract(Tools.Randomizer.Create(type))
+                .AllContent()
+                .Assert()
+                .IsNotEmpty();
         }
     }
 }

@@ -13,28 +13,32 @@ public sealed class SpanCreateHintTests : CreateHintTestBase<SpanCreateHint>
         typeof(object),
         typeof(int),
         typeof(double),
-        typeof(KeyValuePair<string, int>)
+        typeof(KeyValuePair<string, int>),
     ];
 
-    private static readonly Type[] _ValidTypes = [
+    private static readonly Type[] _ValidTypes =
+    [
         MakeDefined(typeof(Span<>)),
-        MakeDefined(typeof(ReadOnlySpan<>))
+        MakeDefined(typeof(ReadOnlySpan<>)),
     ];
 
     private static readonly Type[] _InvalidTypes =
     [
         typeof(object),
         typeof(IEnumerable),
-        typeof(IEnumerable<>)
+        typeof(IEnumerable<>),
     ];
 
-    public SpanCreateHintTests() : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+    public SpanCreateHintTests()
+        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     private static Type MakeDefined(Type type)
     {
         if (type.IsGenericTypeDefinition)
         {
-            return type.MakeGenericType([.. type.GetGenericArguments().Select(t => Tools.Gen.NextItem(_ItemTypes))]);
+            return type.MakeGenericType(
+                [.. type.GetGenericArguments().Select(t => Tools.Gen.NextItem(_ItemTypes))]
+            );
         }
         else
         {

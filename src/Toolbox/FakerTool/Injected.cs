@@ -31,16 +31,14 @@ public sealed class Injected<T>
     /// <returns>The found <typeparamref name="TInject"/> fake.</returns>
     public Fake<TInject> Fake<TInject>(int skip = 0)
     {
-        Fake<TInject>? direct = Fakes
-            .OfType<Fake<TInject>>()
-            .Skip(skip)
-            .FirstOrDefault();
+        Fake<TInject>? direct = Fakes.OfType<Fake<TInject>>().Skip(skip).FirstOrDefault();
 
-        return direct ?? Fakes
-            .Where(f => f.Dummy.GetType().Inherits<TInject>())
-            .Skip(skip)
-            .First()
-            .ToFake<TInject>();
+        return direct
+            ?? Fakes
+                .Where(f => f.Dummy.GetType().Inherits<TInject>())
+                .Skip(skip)
+                .First()
+                .ToFake<TInject>();
     }
 
     /// <summary>Finds the fake owner of the given dummy.</summary>

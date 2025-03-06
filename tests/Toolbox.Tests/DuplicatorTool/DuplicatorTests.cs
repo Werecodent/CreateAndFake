@@ -37,14 +37,16 @@ public static class DuplicatorTests
     [Theory, RandomData]
     internal static void Copy_ValidHintWorks(object data, [Stub] CopyHint hint)
     {
-        hint.TryCopy(data, Arg.Any<DuplicatorChainer>()).SetupReturn(new CopyHintResult(data), Times.Once);
+        hint.TryCopy(data, Arg.Any<DuplicatorChainer>())
+            .SetupReturn(new CopyHintResult(data), Times.Once);
 
         new Duplicator(
             Tools.Duplicator.Options with
             {
                 IncludeDefaultHints = false,
-                Hints = [hint]
-            })
+                Hints = [hint],
+            }
+        )
             .Copy(data)
             .Assert()
             .Is(data);
@@ -55,18 +57,22 @@ public static class DuplicatorTests
     [Theory, RandomData]
     internal static void Copy_InfiniteLoopDetails(object instance, [Stub] CopyHint hint)
     {
-        hint.ToFake().Setup(
-            m => m.TryCopy(instance, Arg.Any<DuplicatorChainer>()),
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once));
+        hint.ToFake()
+            .Setup(
+                m => m.TryCopy(instance, Arg.Any<DuplicatorChainer>()),
+                Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
+            );
 
         new Duplicator(
             Tools.Duplicator.Options with
             {
                 IncludeDefaultHints = false,
-                Hints = [hint]
-            })
+                Hints = [hint],
+            }
+        )
             .Assert(d => d.Copy(instance))
-            .Throws<InsufficientExecutionStackException>().Message
-            .Assert().Contains(instance.GetType().Name);
+            .Throws<InsufficientExecutionStackException>()
+            .Message.Assert()
+            .Contains(instance.GetType().Name);
     }
 }

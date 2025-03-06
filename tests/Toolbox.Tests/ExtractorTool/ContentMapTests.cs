@@ -93,22 +93,26 @@ public static class ContentMapTests
     }
 
     [Theory, RandomData]
-    internal static void HasSharedContent_IgnoresSimpleTypes(char sample1, bool sample2, BindingFlags sample3)
+    internal static void HasSharedContent_IgnoresSimpleTypes(
+        char sample1,
+        bool sample2,
+        BindingFlags sample3
+    )
     {
-        Tools.Extractor
-            .Extract(sample1)
+        Tools
+            .Extractor.Extract(sample1)
             .HasSharedContent(Tools.Extractor.Extract(sample1.CreateDeepClone()))
             .Assert()
             .Is(false);
 
-        Tools.Extractor
-            .Extract(sample2)
+        Tools
+            .Extractor.Extract(sample2)
             .HasSharedContent(Tools.Extractor.Extract(sample2.CreateDeepClone()))
             .Assert()
             .Is(false);
 
-        Tools.Extractor
-            .Extract(sample3)
+        Tools
+            .Extractor.Extract(sample3)
             .HasSharedContent(Tools.Extractor.Extract(sample3.CreateDeepClone()))
             .Assert()
             .Is(false);
@@ -117,8 +121,8 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void FindSharedContent_EmptyCollectionsIgnored([Size(0)] object[] sample)
     {
-        Tools.Extractor
-            .Extract(sample)
+        Tools
+            .Extractor.Extract(sample)
             .FindSharedContent(Tools.Extractor.Extract(Array.Empty<object>()))
             .Assert()
             .IsEmpty();

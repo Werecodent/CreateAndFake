@@ -1,5 +1,4 @@
-﻿
-namespace CreateAndFake.FakerTool;
+﻿namespace CreateAndFake.FakerTool;
 
 /// <summary>Represents any generic for mock matching.</summary>
 public sealed class AnyGeneric

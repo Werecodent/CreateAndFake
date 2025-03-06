@@ -2,7 +2,8 @@
 
 public static class Issue108Tests
 {
-    public abstract class InnerStuff<T> where T : InnerStuff<T>
+    public abstract class InnerStuff<T>
+        where T : InnerStuff<T>
     {
         public string Message { get; set; }
     }
@@ -12,7 +13,8 @@ public static class Issue108Tests
         public int Value { get; set; }
     }
 
-    public class Container<T> where T : InnerStuff<T>
+    public class Container<T>
+        where T : InnerStuff<T>
     {
         public T Content { get; set; }
     }
@@ -38,7 +40,9 @@ public static class Issue108Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue108_SupportsContainerWithWrappedSelfReference(Container<Wrapper> instance)
+    internal static void Issue108_SupportsContainerWithWrappedSelfReference(
+        Container<Wrapper> instance
+    )
     {
         instance.Assert().IsNot(null);
     }

@@ -41,8 +41,11 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
-            PreventsMutation(null, GenericFixer.FixMethod(method, Options),
-                callAllMethods && method.ReturnType.Inherits(type));
+            PreventsMutation(
+                null,
+                GenericFixer.FixMethod(method, Options),
+                callAllMethods && method.ReturnType.Inherits(type)
+            );
         }
     }
 
@@ -60,16 +63,21 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
             data = [.. Options.Runner.CreateFor(method, Options.InjectionValues).Args];
             copy = Options.Duplicator.Copy(data);
 
-            result = (instance == null && method is ConstructorInfo builder)
-                ? RunCheck(method, null, () => builder.Invoke(data))
-                : RunCheck(method, null, () => method.Invoke(instance, data!)!);
+            result =
+                (instance == null && method is ConstructorInfo builder)
+                    ? RunCheck(method, null, () => builder.Invoke(data))
+                    : RunCheck(method, null, () => method.Invoke(instance, data!)!);
 
             if (result != null && callAllMethods)
             {
                 CallAllMethods(method, null, result);
             }
 
-            Options.Asserter.ValuesEqual(copy, data, $"Parameter data was mutated when testing '{method.Name}'.");
+            Options.Asserter.ValuesEqual(
+                copy,
+                data,
+                $"Parameter data was mutated when testing '{method.Name}'."
+            );
         }
         finally
         {
@@ -81,7 +89,10 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
 
     /// <inheritdoc/>
     protected override bool HandleCheckException(
-        MethodBase testOrigin, ParameterInfo? testParam, Exception taskException)
+        MethodBase testOrigin,
+        ParameterInfo? testParam,
+        Exception taskException
+    )
     {
         ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
 

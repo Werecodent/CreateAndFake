@@ -17,7 +17,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
         (typeof(ImmutableQueue<>), FindCreateRangeBuilder(typeof(ImmutableQueue))),
         (typeof(ImmutableStack<>), FindCreateRangeBuilder(typeof(ImmutableStack))),
         (typeof(ImmutableHashSet<>), FindCreateRangeBuilder(typeof(ImmutableHashSet))),
-        (typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary)))
+        (typeof(ImmutableDictionary<,>), FindCreateRangeBuilder(typeof(ImmutableDictionary))),
     ];
 
     /// <summary>Finds the static <c>CreateRange</c> method for a collection.</summary>
@@ -25,15 +25,17 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     /// <returns>Found create method.</returns>
     private static MethodInfo FindCreateRangeBuilder(Type type)
     {
-        return type
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Single(m => m.Name == "CreateRange"
+        return type.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .Single(m =>
+                m.Name == "CreateRange"
                 && m.GetParameters().Length == 1
-                && m.GetParameters()[0].ParameterType.Inherits(typeof(IEnumerable<>)));
+                && m.GetParameters()[0].ParameterType.Inherits(typeof(IEnumerable<>))
+            );
     }
 
     /// <summary>Collections that the hint can create.</summary>
-    internal static IEnumerable<Type> PotentialCollections { get; } = _Collections.Select(i => i.Item1).ToFrozenSet();
+    internal static IEnumerable<Type> PotentialCollections { get; } =
+        _Collections.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
@@ -61,9 +63,17 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     private static object? Create(Type type, Type itemType, RandomizerChainer randomizer)
     {
         (Type, MethodInfo) chosen = randomizer.Options.Gen.NextItem(FindMatches(type, itemType));
-        return chosen.Item2
-            .MakeGenericMethod(type.GetGenericArguments())
-            .Invoke(null, [randomizer.Create(typeof(IEnumerable<>).MakeGenericType(itemType), randomizer.Options)]);
+        return chosen
+            .Item2.MakeGenericMethod(type.GetGenericArguments())
+            .Invoke(
+                null,
+                [
+                    randomizer.Create(
+                        typeof(IEnumerable<>).MakeGenericType(itemType),
+                        randomizer.Options
+                    ),
+                ]
+            );
     }
 
     /// <summary>Finds the <c>Type</c> to be contained by a created collection.</summary>
@@ -71,9 +81,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     /// <returns><c>null</c> if not logical; <c>Type</c> for the collection otherwise.</returns>
     private static Type? GetItemType(Type type)
     {
-        Type[] args = type.IsGenericType
-            ? type.GetGenericArguments()
-            : [];
+        Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
 
         if (type.IsGenericTypeDefinition)
         {
@@ -99,11 +107,13 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     /// <returns>All possible matches.</returns>
     private static IEnumerable<(Type, MethodInfo)> FindMatches(Type type, Type itemType)
     {
-        Type typeAsGeneric = type.IsGenericType
-            ? type.GetGenericTypeDefinition()
-            : type;
+        Type typeAsGeneric = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-        foreach ((Type, MethodInfo) match in _Collections.Where(c => typeAsGeneric.IsInheritedBy(c.Item1)))
+        foreach (
+            (Type, MethodInfo) match in _Collections.Where(c =>
+                typeAsGeneric.IsInheritedBy(c.Item1)
+            )
+        )
         {
             if (!match.Item1.Inherits<IDictionary>() || itemType.Inherits(typeof(KeyValuePair<,>)))
             {
