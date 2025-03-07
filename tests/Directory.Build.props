@@ -11,9 +11,10 @@
 
   <PropertyGroup>  
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artifacts\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <OutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\</OutputPath>
     <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)</BaseOutputPath>
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)TestSettings.runsettings</RunSettingsFilePath>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>

@@ -24,6 +24,7 @@ internal static class Program
         Target("test", DependsOn("compile"), ForEach(configurations), Test);
         Target("coverage", DependsOn("compile"), Coverage);
         Target("pack", DependsOn("compile"), Pack);
+        Target("freshCompile", ForEach(configurations), FreshCompile);
         Target("debugCrash", DependsOn("compile"), DebugCrash);
         return RunTargetsAndExitAsync(args);
     }
@@ -39,6 +40,16 @@ internal static class Program
     private static Task Compile(string configuration)
     {
         return RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
+    }
+
+    /// <summary>Builds the solution.</summary>
+    /// <param name="configuration">Build configuration to use.</param>
+    private static Task FreshCompile(string configuration)
+    {
+        return RunAsync(
+            $"dotnet",
+            $"build --disable-build-servers --configuration {configuration}"
+        );
     }
 
     /// <summary>Tests the solution.</summary>

@@ -1,6 +1,7 @@
 #pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
 #pragma warning disable CA1310 // Specify StringComparison for correctness: Not available for all versions.
 
+using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsserterTool.Fluent;
@@ -133,6 +134,20 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     {
         Asserter.EndsNotWith(content, Text, optionConfiguration, details);
         return ToChainer();
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    public override void Fail(string? details = null)
+    {
+        Asserter.Fail(details, Text);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    public override void Fail(AsserterMod? optionConfiguration, string? details = null)
+    {
+        Asserter.Fail(optionConfiguration, details, Text);
     }
 }
 

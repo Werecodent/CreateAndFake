@@ -44,14 +44,7 @@ public sealed class TypeInfoCreateHint : CreateHint
             { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
             {
                 typeof(MethodInfo),
-                rand =>
-                    FindTypeInfo(
-                        rand,
-                        t =>
-                            t.GetMethods()
-                                .Where(m => m.IsPublic)
-                                .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                    )
+                rand => FindTypeInfo(rand, t => t.GetMethods().Where(m => m.IsPublic))
             },
             {
                 typeof(FieldInfo),
@@ -69,10 +62,7 @@ public sealed class TypeInfoCreateHint : CreateHint
                         t =>
                             t.GetConstructors()
                                 .Cast<MethodBase>()
-                                .Concat(
-                                    t.GetMethods()
-                                        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                                )
+                                .Concat(t.GetMethods())
                                 .Where(m => m.IsPublic)
                     )
             },

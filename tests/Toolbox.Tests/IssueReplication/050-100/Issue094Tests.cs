@@ -182,6 +182,17 @@ public static class Issue094Tests
         TestToolBehavior<IFormatProvider>();
     }
 
+    [Fact]
+    internal static void Issue094_LookAtMember()
+    {
+        MemberInfo test = Tools.Randomizer.Create<MemberInfo>();
+        object what = test;
+        MemberInfo back = (MemberInfo)what;
+        Tools.Valuer.GetHashCode(back);
+        MemberInfo test2 = Tools.Mutator.Variant(back);
+        Tools.Valuer.Compare(back, test2);
+    }
+
     private static void TestToolBehavior<T>()
     {
         TestToolBehavior(typeof(T));
