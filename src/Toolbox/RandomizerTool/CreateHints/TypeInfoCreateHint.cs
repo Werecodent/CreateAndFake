@@ -34,7 +34,7 @@ public sealed class TypeInfoCreateHint : CreateHint
     private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens =
         new Dictionary<Type, Func<RandomizerChainer, object>>()
         {
-            { typeof(Type).GetType(), rand => rand.Create<Type>() },
+            { typeof(Type).GetType(), rand => rand.Options.Gen.NextItem(_PossibleTypes) },
             { typeof(Type), rand => rand.Options.Gen.NextItem(_PossibleTypes) },
             { typeof(MemberInfo), rand => rand.Create<MethodBase>() },
             {
@@ -44,7 +44,14 @@ public sealed class TypeInfoCreateHint : CreateHint
             { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
             {
                 typeof(MethodInfo),
-                rand => FindTypeInfo(rand, t => t.GetMethods().Where(m => m.IsPublic))
+                rand =>
+                    FindTypeInfo(
+                        rand,
+                        t =>
+                            t.GetMethods()
+                                .Where(m => m.IsPublic)
+                                .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+                    )
             },
             {
                 typeof(FieldInfo),
@@ -62,7 +69,10 @@ public sealed class TypeInfoCreateHint : CreateHint
                         t =>
                             t.GetConstructors()
                                 .Cast<MethodBase>()
-                                .Concat(t.GetMethods())
+                                .Concat(
+                                    t.GetMethods()
+                                        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+                                )
                                 .Where(m => m.IsPublic)
                     )
             },

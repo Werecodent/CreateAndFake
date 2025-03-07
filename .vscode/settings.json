@@ -78,6 +78,7 @@
         "Xunit"
     ],
     "cSpell.ignorePaths": [
+        "**/usr/local/share/dotnet",
         "**/var/folders/",
         ".gitignore",
         ".editorconfig",
