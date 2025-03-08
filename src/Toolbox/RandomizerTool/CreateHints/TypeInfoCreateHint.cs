@@ -38,30 +38,6 @@ public sealed class TypeInfoCreateHint : CreateHint
             { typeof(Type), rand => rand.Options.Gen.NextItem(_PossibleTypes) },
             { typeof(MemberInfo), rand => rand.Create<MethodBase>() },
             {
-                typeof(ConstructorInfo),
-                rand => FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
-            },
-            { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
-            {
-                typeof(MethodInfo),
-                rand =>
-                    FindTypeInfo(
-                        rand,
-                        t =>
-                            t.GetMethods()
-                                .Where(m => m.IsPublic)
-                                .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                    )
-            },
-            {
-                typeof(FieldInfo),
-                rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
-            },
-            {
-                typeof(ParameterInfo),
-                rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
-            },
-            {
                 typeof(MethodBase),
                 rand =>
                     FindTypeInfo(
@@ -75,6 +51,44 @@ public sealed class TypeInfoCreateHint : CreateHint
                                 )
                                 .Where(m => m.IsPublic)
                     )
+            },
+            {
+                typeof(ConstructorInfo),
+                rand => FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
+            },
+            {
+                typeof(MethodInfo),
+                rand =>
+                    FindTypeInfo(
+                        rand,
+                        t =>
+                            t.GetMethods()
+                                .Where(m => m.IsPublic)
+                                .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+                    )
+            },
+            { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
+            {
+                typeof(FieldInfo),
+                rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
+            },
+            {
+                typeof(ParameterInfo),
+                rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
+            },
+            {
+                typeof(string).GetConstructors().First().GetType(),
+                rand => rand.Create<ConstructorInfo>()
+            },
+            { typeof(string).GetMethods().First().GetType(), rand => rand.Create<MethodInfo>() },
+            {
+                typeof(string).GetProperties().First().GetType(),
+                rand => rand.Create<PropertyInfo>()
+            },
+            { typeof(string).GetFields().First().GetType(), rand => rand.Create<FieldInfo>() },
+            {
+                typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
+                rand => rand.Create<ParameterInfo>()
             },
         }.ToFrozenDictionary();
 
