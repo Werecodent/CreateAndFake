@@ -34,13 +34,13 @@ public sealed class TaskCompareHint : CompareHint<Task>
         {
             return null;
         }
-        else if (item.GetType().IsGenericType)
+        else if (item.Status != TaskStatus.RanToCompletion || !item.GetType().IsGenericType)
         {
-            return item.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(item);
+            return (item.Status, item.Exception);
         }
         else
         {
-            return (item.Status, item.Exception);
+            return item.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(item);
         }
     }
 }

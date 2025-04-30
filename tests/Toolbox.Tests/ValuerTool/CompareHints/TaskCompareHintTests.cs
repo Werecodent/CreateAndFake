@@ -3,8 +3,6 @@ using CreateAndFake.Tests.TestSamples;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.CompareHints;
 
-#pragma warning disable CA1849 // Task await synchronously blocks: For testing.
-
 namespace CreateAndFake.Tests.ValuerTool.CompareHints;
 
 public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
@@ -34,10 +32,10 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
     [Theory, RandomData]
     internal void Compare_NonGenericTasksCompareByException(Exception ex)
     {
-        Task taskA = BuildTask(ex);
-        Task taskB = BuildTask(ex);
-        Task taskC = BuildTask(Tools.Mutator.Variant(ex));
-        Task taskD = BuildTask(null);
+        Task taskA = Task.FromException(ex);
+        Task taskB = Task.FromException(ex);
+        Task taskC = Task.FromException(Tools.Mutator.Variant(ex));
+        Task taskD = Task.CompletedTask;
         ValuerChainer chainer = CreateChainer();
         TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
         TestInstance.TryCompare(taskA, taskC, chainer).Assert().IsNot(new DifferenceHintResult([]));
@@ -47,32 +45,9 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
     [Fact]
     internal void Compare_NonGenericTasksCompareByStatus()
     {
-        Task taskA = BuildTask(null);
-        Task taskB = BuildTask(null);
+        Task taskA = Task.CompletedTask;
+        Task taskB = Task.CompletedTask;
         ValuerChainer chainer = CreateChainer();
         TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
     }
-
-    private static Task BuildTask(Exception ex)
-    {
-        Task task = new(() =>
-        {
-            if (ex != null)
-            {
-                throw ex;
-            }
-        });
-        try
-        {
-            task.Start();
-            task.Wait();
-        }
-        catch (AggregateException)
-        {
-            // Throw intentional.
-        }
-        return task;
-    }
 }
-
-#pragma warning restore CA1849 // Task await synchronously blocks

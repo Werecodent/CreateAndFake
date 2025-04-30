@@ -22,6 +22,19 @@ public sealed class SelfCreateHint : CreateHint
                         [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score, Limiter.Quick]
                     )
             },
+            {
+                typeof(AsyncLimiter),
+                rand =>
+                    rand.Options.Gen.NextItem(
+                        [
+                            AsyncLimiter.Once,
+                            AsyncLimiter.Few,
+                            AsyncLimiter.Dozen,
+                            AsyncLimiter.Score,
+                            AsyncLimiter.Quick,
+                        ]
+                    )
+            },
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>

@@ -36,6 +36,10 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return new(new WeakReference(reference.Target, reference.TrackResurrection));
         }
+        else if (source is Type type)
+        {
+            return new(type);
+        }
         else if (source is MemberInfo member)
         {
             return new(member);

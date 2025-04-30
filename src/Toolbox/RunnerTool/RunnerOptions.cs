@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool;
@@ -36,4 +37,10 @@ public record RunnerOptions : IToolOptions
 
     /// <summary>Option for which methods to include.</summary>
     public bool IncludeInstanceMethods { get; init; } = true;
+
+    /// <summary>How long to wait for methods to complete.</summary>
+    public TimeSpan Timeout { get; init; } = new(0, 0, 5);
+
+    /// <summary>Values to inject into called methods.</summary>
+    public ImmutableArray<object?> InjectionValues { get; init; } = [];
 }

@@ -22,10 +22,14 @@ public static class LimiterTests
     {
         int attempts = 0;
 
-        new Limiter(0).Repeat(null, () => attempts++);
+        new Limiter(0).Repeat(null, () => attempts++, TestContext.Current.CancellationToken);
         attempts.Assert().Is(1);
 
-        new Limiter(TimeSpan.MinValue).Repeat("Message", () => attempts++);
+        new Limiter(TimeSpan.MinValue).Repeat(
+            "Message",
+            () => attempts++,
+            TestContext.Current.CancellationToken
+        );
         attempts.Assert().Is(2);
     }
 
@@ -35,12 +39,26 @@ public static class LimiterTests
         int attempts = 0;
 
         new Limiter(0)
-            .Assert(l => l.StallUntil("", () => attempts++, () => false))
+            .Assert(l =>
+                l.StallUntil(
+                    "",
+                    () => attempts++,
+                    () => false,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<TimeoutException>();
         attempts.Assert().Is(1);
 
         new Limiter(TimeSpan.MinValue)
-            .Assert(l => l.StallUntil("", () => attempts++, () => false))
+            .Assert(l =>
+                l.StallUntil(
+                    "",
+                    () => attempts++,
+                    () => false,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<TimeoutException>();
         attempts.Assert().Is(2);
     }
@@ -58,7 +76,8 @@ public static class LimiterTests
                     {
                         attempts++;
                         throw exception;
-                    }
+                    },
+                    TestContext.Current.CancellationToken
                 )
             )
             .Throws<TimeoutException>()
@@ -75,7 +94,8 @@ public static class LimiterTests
                     {
                         attempts++;
                         throw exception;
-                    }
+                    },
+                    TestContext.Current.CancellationToken
                 )
             )
             .Throws<TimeoutException>()
@@ -96,7 +116,8 @@ public static class LimiterTests
             {
                 attempts++;
                 throw exception;
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         attempts.Assert().Is(1);
 
@@ -106,7 +127,8 @@ public static class LimiterTests
             {
                 attempts++;
                 throw exception;
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         attempts.Assert().Is(2);
     }
@@ -115,7 +137,7 @@ public static class LimiterTests
     internal static void Repeat_TryLimited(int tries)
     {
         int attempts = 0;
-        new Limiter(tries).Repeat("", () => attempts++);
+        new Limiter(tries).Repeat("", () => attempts++, TestContext.Current.CancellationToken);
         attempts.Assert().Is(tries);
     }
 
@@ -125,7 +147,14 @@ public static class LimiterTests
         int attempts = 0;
 
         new Limiter(tries)
-            .Assert(l => l.StallUntil("", () => attempts++, () => false))
+            .Assert(l =>
+                l.StallUntil(
+                    "",
+                    () => attempts++,
+                    () => false,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<TimeoutException>();
         attempts.Assert().Is(tries);
     }
@@ -144,7 +173,8 @@ public static class LimiterTests
                     {
                         attempts++;
                         throw exception;
-                    }
+                    },
+                    TestContext.Current.CancellationToken
                 )
             )
             .Throws<TimeoutException>()
@@ -166,7 +196,8 @@ public static class LimiterTests
             {
                 attempts++;
                 throw exception;
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         attempts.Assert().Is(tries);
     }
@@ -175,7 +206,7 @@ public static class LimiterTests
     internal static void Repeat_TimeoutLimited()
     {
         Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(_SmallDelay).Repeat("", () => { });
+        new Limiter(_SmallDelay).Repeat("", () => { }, TestContext.Current.CancellationToken);
         watch
             .Elapsed.TotalMilliseconds.Assert()
             .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
@@ -187,7 +218,9 @@ public static class LimiterTests
         Stopwatch watch = Stopwatch.StartNew();
 
         new Limiter(_SmallDelay)
-            .Assert(l => l.StallUntil("", () => { }, () => false))
+            .Assert(l =>
+                l.StallUntil("", () => { }, () => false, TestContext.Current.CancellationToken)
+            )
             .Throws<TimeoutException>();
 
         watch
@@ -207,7 +240,8 @@ public static class LimiterTests
                     () =>
                     {
                         throw exception;
-                    }
+                    },
+                    TestContext.Current.CancellationToken
                 )
             )
             .Throws<TimeoutException>()
@@ -223,7 +257,11 @@ public static class LimiterTests
         Stopwatch watch = Stopwatch.StartNew();
 
         new Limiter(_SmallDelay)
-            .Attempt("", () => watch.IsRunning ? throw exception : new object())
+            .Attempt(
+                "",
+                () => watch.IsRunning ? throw exception : new object(),
+                TestContext.Current.CancellationToken
+            )
             .Assert()
             .Is(null)
             .Also(watch.Elapsed.TotalMilliseconds)
@@ -234,7 +272,11 @@ public static class LimiterTests
     internal static void Repeat_DelayOccurs(int tries)
     {
         Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).Repeat("", () => { });
+        new Limiter(tries, _SmallDelay).Repeat(
+            "",
+            () => { },
+            TestContext.Current.CancellationToken
+        );
 
         watch
             .Elapsed.TotalMilliseconds.Assert()
@@ -247,7 +289,11 @@ public static class LimiterTests
         int attempts = 0;
 
         Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).StallUntil("", () => ++attempts == tries);
+        new Limiter(tries, _SmallDelay).StallUntil(
+            "",
+            () => ++attempts == tries,
+            TestContext.Current.CancellationToken
+        );
 
         watch
             .Elapsed.TotalMilliseconds.Assert()
@@ -269,7 +315,8 @@ public static class LimiterTests
                 {
                     throw exception;
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         watch
@@ -288,11 +335,12 @@ public static class LimiterTests
             "",
             () =>
             {
-                if (++attempts != tries)
+                if (++attempts < tries)
                 {
                     throw exception;
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         watch
@@ -392,7 +440,10 @@ public static class LimiterTests
     internal static void Repeat_ResultsValid(List<int> data)
     {
         int attempt = 0;
-        new Limiter(data.Count).Repeat("", () => data[attempt++]).Assert().Is(data.AsReadOnly());
+        new Limiter(data.Count)
+            .Repeat("", () => data[attempt++], TestContext.Current.CancellationToken)
+            .Assert()
+            .Is(data.AsReadOnly());
     }
 
     [Theory, RandomData]
@@ -400,7 +451,12 @@ public static class LimiterTests
     {
         int attempt = 0;
         new Limiter(data.Count)
-            .StallUntil("", () => data[attempt++], () => attempt == data.Count)
+            .StallUntil(
+                "",
+                () => data[attempt++],
+                () => attempt == data.Count,
+                TestContext.Current.CancellationToken
+            )
             .Assert()
             .Is(data.AsReadOnly());
     }
@@ -408,8 +464,14 @@ public static class LimiterTests
     [Theory, RandomData]
     internal static void Retry_ResultsValid(int data)
     {
-        new Limiter(1).Retry("", () => data).Assert().Is(data);
-        new Limiter(1).Retry("", () => data).Assert().Is(data);
+        new Limiter(1)
+            .Retry("", () => data, TestContext.Current.CancellationToken)
+            .Assert()
+            .Is(data);
+        new Limiter(1)
+            .Retry("", () => data, TestContext.Current.CancellationToken)
+            .Assert()
+            .Is(data);
     }
 
     [Fact]
@@ -426,7 +488,8 @@ public static class LimiterTests
                 {
                     throw new ArithmeticException();
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         calls.Assert().Is(2);
 
@@ -439,7 +502,8 @@ public static class LimiterTests
                 {
                     throw new ArithmeticException();
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         calls.Assert().Is(4);
     }
@@ -447,8 +511,14 @@ public static class LimiterTests
     [Theory, RandomData]
     internal static void Attempt_ResultsValid(int data)
     {
-        new Limiter(1).Attempt("", () => data).Assert().Is(data);
-        new Limiter(1).Attempt("", () => data).Assert().Is(data);
+        new Limiter(1)
+            .Attempt("", () => data, TestContext.Current.CancellationToken)
+            .Assert()
+            .Is(data);
+        new Limiter(1)
+            .Attempt("", () => data, TestContext.Current.CancellationToken)
+            .Assert()
+            .Is(data);
     }
 
     [Fact]
@@ -465,7 +535,8 @@ public static class LimiterTests
                 {
                     throw new ArithmeticException();
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         calls.Assert().Is(2);
 
@@ -478,7 +549,8 @@ public static class LimiterTests
                 {
                     throw new ArithmeticException();
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         calls.Assert().Is(4);
     }
@@ -489,7 +561,12 @@ public static class LimiterTests
         int attempt = 0;
         int checkAttempt = 0;
 
-        new Limiter(tries).StallUntil("", () => attempt++, () => ++checkAttempt == tries);
+        new Limiter(tries).StallUntil(
+            "",
+            () => attempt++,
+            () => ++checkAttempt == tries,
+            TestContext.Current.CancellationToken
+        );
         tries.Assert().Is(attempt).And.Is(checkAttempt);
     }
 
@@ -504,12 +581,13 @@ public static class LimiterTests
             "",
             () =>
             {
-                if (++attempt != tries)
+                if (++attempt < tries)
                 {
                     throw exception;
                 }
             },
-            () => resetAttempt++
+            () => resetAttempt++,
+            TestContext.Current.CancellationToken
         );
 
         attempt.Assert().Is(tries).Also(resetAttempt).Is(tries - 1);
@@ -529,7 +607,7 @@ public static class LimiterTests
         }
 
         new Limiter(tries)
-            .Retry("", ResetBehavior, () => resetAttempt++)
+            .Retry("", ResetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
             .Assert()
             .Is(result)
             .Also(attempt)
@@ -542,7 +620,13 @@ public static class LimiterTests
     internal static void Retry_WrongExceptionThrows(NotSupportedException exception)
     {
         new Limiter(3)
-            .Assert(l => l.Retry<InvalidOperationException>("", (Action)(() => throw exception)))
+            .Assert(l =>
+                l.Retry<InvalidOperationException>(
+                    "",
+                    (Action)(() => throw exception),
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<NotSupportedException>()
             .Assert()
             .Is(exception);
@@ -550,7 +634,13 @@ public static class LimiterTests
         IOException exception2 = new();
 
         new Limiter(3)
-            .Assert(l => l.Retry<DirectoryNotFoundException, bool>("", () => throw exception2))
+            .Assert(l =>
+                l.Retry<DirectoryNotFoundException, bool>(
+                    "",
+                    () => throw exception2,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<IOException>()
             .Assert()
             .Is(exception2);
@@ -567,12 +657,13 @@ public static class LimiterTests
             "",
             () =>
             {
-                if (++attempt != tries)
+                if (++attempt < tries)
                 {
                     throw exception;
                 }
             },
-            () => resetAttempt++
+            () => resetAttempt++,
+            TestContext.Current.CancellationToken
         );
 
         attempt.Assert().Is(tries).Also(resetAttempt).Is(tries - 1);
@@ -592,7 +683,7 @@ public static class LimiterTests
         }
 
         new Limiter(tries)
-            .Attempt("", ResetBehavior, () => resetAttempt++)
+            .Attempt("", ResetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
             .Assert()
             .Is(result)
             .Also(attempt)
@@ -606,7 +697,11 @@ public static class LimiterTests
     {
         new Limiter(3)
             .Assert(l =>
-                l.Attempt<InvalidOperationException>(null, (Action)(() => throw exception))
+                l.Attempt<InvalidOperationException>(
+                    null,
+                    (Action)(() => throw exception),
+                    TestContext.Current.CancellationToken
+                )
             )
             .Throws<NotSupportedException>()
             .Assert()
@@ -615,7 +710,13 @@ public static class LimiterTests
         IOException exception2 = new();
 
         new Limiter(3)
-            .Assert(l => l.Attempt<DirectoryNotFoundException, bool>("", () => throw exception2))
+            .Assert(l =>
+                l.Attempt<DirectoryNotFoundException, bool>(
+                    "",
+                    () => throw exception2,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<IOException>()
             .Assert()
             .Is(exception2);

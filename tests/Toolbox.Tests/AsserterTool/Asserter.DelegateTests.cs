@@ -76,7 +76,7 @@ public sealed class AsserterDelegateTests
 
     private static async Task<bool> WaitTest()
     {
-        await Task.Delay(0);
+        await Task.Delay(0, TestContext.Current.CancellationToken);
         throw new InvalidDataException();
     }
 

@@ -13,6 +13,7 @@ public sealed class SelfCreateHintTests : CreateHintTestBase<SelfCreateHint>
         typeof(IRandom),
         typeof(ValueRandom),
         typeof(Limiter),
+        typeof(AsyncLimiter),
         typeof(ToolSet),
     ];
 

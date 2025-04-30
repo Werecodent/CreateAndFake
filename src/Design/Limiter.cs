@@ -136,7 +136,7 @@ public sealed class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
     {
         ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
 
-        return StallUntil(message, behavior, (T _) => checkState.Invoke(), canceler);
+        return StallUntil(message, behavior, _ => checkState.Invoke(), canceler);
     }
 
     /// <summary>Retries <paramref name="behavior"/> until <paramref name="checkState"/>.</summary>

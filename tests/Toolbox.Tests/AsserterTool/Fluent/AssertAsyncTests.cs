@@ -24,7 +24,7 @@ public sealed class AssertAsyncTests
 
     private static async Task<bool> WaitTest(InvalidDataException error)
     {
-        await Task.Delay(0);
+        await Task.Delay(0, TestContext.Current.CancellationToken);
         throw error;
     }
 }

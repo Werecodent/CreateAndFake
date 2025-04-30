@@ -34,7 +34,7 @@ public record TesterOptions : IToolOptions
     public Limiter Limiter { get; init; } = Limiter.Few;
 
     /// <summary>How long to wait for tests to complete.</summary>
-    public TimeSpan Timeout { get; init; } = new(0, 0, 30);
+    public TimeSpan Timeout { get; init; } = new(0, 0, 5);
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
