@@ -52,9 +52,9 @@ public static class AssertBehaviorTests
     }
 
     [Theory, RandomData]
-    internal static void Throws_WrongException(ArgumentNullException error)
+    internal static Task Throws_WrongException(ArgumentNullException error)
     {
-        error
+        return error
             .Assert(e => e.Assert(ex => throw ex).Throws<InvalidOperationException>())
             .Throws<AssertException>();
     }
@@ -66,9 +66,9 @@ public static class AssertBehaviorTests
     }
 
     [Theory, RandomData]
-    internal static void Throws_WrongAggregate(InvalidOperationException error)
+    internal static Task Throws_WrongAggregate(InvalidOperationException error)
     {
-        error
+        return error
             .Assert(e =>
                 e.Assert(ex => throw new AggregateException(ex)).Throws<ArgumentNullException>()
             )
@@ -76,12 +76,12 @@ public static class AssertBehaviorTests
     }
 
     [Theory, RandomData]
-    internal static void Throws_TooManyAggregate(
+    internal static Task Throws_TooManyAggregate(
         ArgumentNullException error,
         InvalidOperationException error2
     )
     {
-        error
+        return error
             .Assert(e =>
                 error2
                     .Assert(ex => throw new AggregateException(e, ex))
@@ -103,15 +103,17 @@ public static class AssertBehaviorTests
     }
 
     [Theory, RandomData]
-    internal static void ThrowsNo_Error(Exception error)
+    internal static Task ThrowsNo_Error(Exception error)
     {
-        error.Assert(e => e.Assert(ex => throw ex).ThrowsNo<Exception>()).Throws<AssertException>();
+        return error
+            .Assert(e => e.Assert(ex => throw ex).ThrowsNo<Exception>())
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static void ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
+    internal static Task ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
     {
-        error
+        return error
             .Assert(e => e.Assert(ex => throw ex).ThrowsNo<IOException>())
             .ThrowsNo<AssertException>();
     }

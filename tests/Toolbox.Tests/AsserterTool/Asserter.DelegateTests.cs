@@ -69,9 +69,9 @@ public sealed class AsserterDelegateTests
     }
 
     [Fact]
-    internal async Task Throws_HandlesAsyncNoError()
+    internal Task Throws_HandlesAsyncNoError()
     {
-        await _testInstance.ThrowsAsync<InvalidDataException>(async () => await WaitTest());
+        return _testInstance.ThrowsAsync<InvalidDataException>(async () => await WaitTest());
     }
 
     private static async Task<bool> WaitTest()

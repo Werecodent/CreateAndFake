@@ -362,7 +362,9 @@ public static class AsyncLimiterTests
         using (CancellationTokenSource tokenSource = new())
         {
             await AsyncLimiter
-                .Few.Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token))
+                .Few.Assert(l =>
+                    l.Repeat("", async () => await tokenSource.CancelAsync(), tokenSource.Token)
+                )
                 .Throws<TimeoutException>();
         }
         await AsyncLimiter
@@ -381,7 +383,12 @@ public static class AsyncLimiterTests
         {
             await AsyncLimiter
                 .Few.Assert(l =>
-                    l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token)
+                    l.StallUntil(
+                        "",
+                        async () => await tokenSource.CancelAsync(),
+                        () => false,
+                        tokenSource.Token
+                    )
                 )
                 .Throws<TimeoutException>();
         }

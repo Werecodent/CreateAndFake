@@ -27,9 +27,9 @@ public static class ExceptionGuarderTests
     }
 
     [Fact]
-    internal static void CallAllMethods_FailsWithException()
+    internal static Task CallAllMethods_FailsWithException()
     {
-        Tools
+        return Tools
             .Tester.Assert(t => t.PassthroughWithNoExceptions<MethodThrowsSample>())
             .Throws<AssertException>();
     }

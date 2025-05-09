@@ -35,17 +35,17 @@ public static class NullGuarderTests
     }
 
     [Fact]
-    internal static void NullCheck_TimesOut()
+    internal static Task NullCheck_TimesOut()
     {
-        _ShortTestInstance
+        return _ShortTestInstance
             .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false))
             .Throws<TimeoutException>();
     }
 
     [Fact]
-    internal static void NullCheck_NullReferenceThrows()
+    internal static Task NullCheck_NullReferenceThrows()
     {
-        _ShortTestInstance
+        return _ShortTestInstance
             .Assert(t =>
                 t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true)
             )
