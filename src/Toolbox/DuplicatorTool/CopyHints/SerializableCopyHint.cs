@@ -3,13 +3,18 @@ using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.DuplicatorTool.CopyHints;
 
+#pragma warning disable CS0252 // Possible unintended reference comparison: Intended.
+
 /// <summary>Handles cloning <see cref="ISerializable"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class SerializableCopyHint : CopyHint
 {
+    /// <summary>Reference to System.RuntimeType.</summary>
+    private static readonly Type _RuntimeType = typeof(Type).GetType();
+
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
-        if (source is ISerializable)
+        if (source is ISerializable && source != _RuntimeType)
         {
             IContentMap contents = duplicator.Options.Extractor.Extract(source);
 
@@ -54,3 +59,5 @@ public sealed class SerializableCopyHint : CopyHint
         }
     }
 }
+
+#pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast
