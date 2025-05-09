@@ -63,5 +63,5 @@ public interface ITester
     /// </summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
-    Task ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null);
+    void ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null);
 }

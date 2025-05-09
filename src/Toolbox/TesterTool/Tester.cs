@@ -181,7 +181,7 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual Task ProvidesTestClassCoverage(
+    public virtual void ProvidesTestClassCoverage(
         Assembly codeAssembly,
         TesterMod? optionConfiguration = null
     )
@@ -225,8 +225,6 @@ public class Tester(TesterOptions options) : ITester
                 .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
             $"Missing tests for classes from {codeAssembly} in {testAssembly}."
         );
-
-        return Task.CompletedTask;
     }
 }
 
