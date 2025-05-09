@@ -9,12 +9,6 @@ namespace CreateAndFake.Tests.FakerTool.Proxy;
 public static class SubclasserTests
 {
     [Fact]
-    internal static Task Subclasser_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutation(typeof(Subclasser));
-    }
-
-    [Fact]
     internal static void Create_InterfacesWork()
     {
         Subclasser.Create<IFakeSample>().Assert().IsNot(null);

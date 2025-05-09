@@ -356,15 +356,15 @@ public static class AsyncLimiterTests
             .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
+#pragma warning disable AsyncFixer02 // Long-running or blocking operations inside an async method: CancelAsync not available in legacy .net.
+
     [Fact]
     internal static async Task Repeat_Cancelable()
     {
         using (CancellationTokenSource tokenSource = new())
         {
             await AsyncLimiter
-                .Few.Assert(l =>
-                    l.Repeat("", async () => await tokenSource.CancelAsync(), tokenSource.Token)
-                )
+                .Few.Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token))
                 .Throws<TimeoutException>();
         }
         await AsyncLimiter
@@ -383,12 +383,7 @@ public static class AsyncLimiterTests
         {
             await AsyncLimiter
                 .Few.Assert(l =>
-                    l.StallUntil(
-                        "",
-                        async () => await tokenSource.CancelAsync(),
-                        () => false,
-                        tokenSource.Token
-                    )
+                    l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token)
                 )
                 .Throws<TimeoutException>();
         }
@@ -450,6 +445,8 @@ public static class AsyncLimiterTests
             .Quick.Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)))
             .Throws<TimeoutException>();
     }
+
+#pragma warning restore AsyncFixer02 // Long-running or blocking operations inside an async method
 
     [Theory, RandomData]
     internal static async Task Repeat_ResultsValid(List<int> data)

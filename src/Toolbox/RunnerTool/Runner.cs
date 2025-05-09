@@ -79,7 +79,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         if (isTask)
         {
-            PropertyInfo? prop = result.GetType().GetProperty(nameof(Task<object>.Result));
+            PropertyInfo? prop = result.GetType().GetProperty("Result");
             return (prop != null) ? (true, prop.GetValue(result)) : (false, null);
         }
 
