@@ -18,9 +18,9 @@ public static class ToolsTests
         BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
     [Fact]
-    internal static void CreateAndFake_Tests_TestClassCoverage()
+    internal static Task CreateAndFake_Tests_TestClassCoverage()
     {
-        Tools.Tester.ProvidesTestClassCoverage(
+        return Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(ToolSet)),
             opt =>
                 opt with

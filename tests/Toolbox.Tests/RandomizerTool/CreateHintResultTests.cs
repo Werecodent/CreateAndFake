@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.RandomizerTool;
 public static class CreateHintResultTests
 {
     [Fact]
-    internal static void CreateHintResult_GuardsNulls()
+    internal static Task CreateHintResult_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<CreateHintResult>();
+        return Tools.Tester.PreventsNullRefException<CreateHintResult>();
     }
 
     [Fact]
-    internal static void CreateHintResult_NoParameterMutation()
+    internal static Task CreateHintResult_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<CreateHintResult>();
+        return Tools.Tester.PreventsParameterMutation<CreateHintResult>();
     }
 
     [Fact]

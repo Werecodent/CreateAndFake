@@ -5,14 +5,14 @@ namespace CreateAndFake.Tests.RunnerTool;
 public static class RunResultTests
 {
     [Fact]
-    internal static void RunResult_GuardsNulls()
+    internal static Task RunResult_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<RunResult>();
+        return Tools.Tester.PreventsNullRefException<RunResult>();
     }
 
     [Fact]
-    internal static void RunResult_NoParameterMutation()
+    internal static Task RunResult_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<RunResult>();
+        return Tools.Tester.PreventsParameterMutation<RunResult>();
     }
 }

@@ -5,14 +5,14 @@ namespace CreateAndFake.Design.Tests.Content;
 public static class DisposerTests
 {
     [Fact]
-    internal static void Disposer_GuardsNulls()
+    internal static Task Disposer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(Disposer));
+        return Tools.Tester.PreventsNullRefException(typeof(Disposer));
     }
 
     [Fact]
-    internal static void Disposer_NoParameterMutation()
+    internal static Task Disposer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(Disposer));
+        return Tools.Tester.PreventsParameterMutation(typeof(Disposer));
     }
 }

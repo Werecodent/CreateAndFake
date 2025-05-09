@@ -6,15 +6,15 @@ namespace CreateAndFake.Tests.FakerTool;
 public static class ArgTests
 {
     [Fact]
-    internal static void Arg_GuardsNulls()
+    internal static Task Arg_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Arg>();
+        return Tools.Tester.PreventsNullRefException<Arg>();
     }
 
     [Fact]
-    internal static void Arg_NoParameterMutation()
+    internal static Task Arg_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Arg>();
+        return Tools.Tester.PreventsParameterMutation<Arg>();
     }
 
     [Fact]

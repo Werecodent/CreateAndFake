@@ -30,16 +30,16 @@ public abstract class CopyHintTestBase<T>(
 
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void CopyHint_GuardsNulls()
+    public Task CopyHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void CopyHint_NoParameterMutation()
+    public Task CopyHint_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(TestInstance);
+        return Tools.Tester.PreventsParameterMutation(TestInstance);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

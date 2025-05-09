@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.ExtractorTool;
 public static class ExtractorOptionsTests
 {
     [Fact]
-    internal static void ExtractorOptions_GuardsNulls()
+    internal static Task ExtractorOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ExtractorOptions>();
+        return Tools.Tester.PreventsNullRefException<ExtractorOptions>();
     }
 
     [Fact]
-    internal static void ExtractorOptions_NoParameterMutation()
+    internal static Task ExtractorOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ExtractorOptions>();
+        return Tools.Tester.PreventsParameterMutation<ExtractorOptions>();
     }
 
     [Fact]

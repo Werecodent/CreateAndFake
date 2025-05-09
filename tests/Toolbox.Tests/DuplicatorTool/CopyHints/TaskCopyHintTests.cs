@@ -11,8 +11,6 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
         typeof(Task<DataHolderSample>),
         typeof(Task<object>),
         typeof(Task<string>),
-        typeof(Task<int>),
-        typeof(Task<bool>),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
@@ -21,8 +19,22 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
         : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
-    internal void TryCopy_NonGenericTaskFalse()
+    internal async Task TryCopy_NonGenericTaskSupport()
     {
-        TestInstance.TryCopy(new Task(() => { }), CreateChainer()).Assert().Is(CopyHintResult.None);
+        Task task = Task.Run(() => { }, TestContext.Current.CancellationToken);
+        await task;
+        TestInstance
+            .TryCopy(task, CreateChainer())
+            .Assert()
+            .Is(new CopyHintResult(Task.CompletedTask));
+    }
+
+    [Fact]
+    internal void TryCopy_CompletedTaskSupport()
+    {
+        TestInstance
+            .TryCopy(Task.CompletedTask, CreateChainer())
+            .Assert()
+            .Is(new CopyHintResult(Task.CompletedTask));
     }
 }

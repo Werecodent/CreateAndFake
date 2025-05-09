@@ -3,15 +3,15 @@
 public static class AssertExtensionsTests
 {
     [Fact]
-    internal static void AssertExtensions_GuardsNulls()
+    internal static Task AssertExtensions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(AssertExtensions));
+        return Tools.Tester.PreventsNullRefException(typeof(AssertExtensions));
     }
 
     [Fact]
-    internal static void AssertExtensions_NoParameterMutation()
+    internal static Task AssertExtensions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(AssertExtensions));
+        return Tools.Tester.PreventsParameterMutation(typeof(AssertExtensions));
     }
 
     [Theory, RandomData]

@@ -3,14 +3,14 @@ namespace CreateAndFake.Tests.Attributes;
 public static class FakeAttributeTests
 {
     [Fact]
-    internal static void FakeAttribute_GuardsNulls()
+    internal static Task FakeAttribute_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<FakeAttribute>();
+        return Tools.Tester.PreventsNullRefException<FakeAttribute>();
     }
 
     [Fact]
-    internal static void FakeAttribute_NoParameterMutation()
+    internal static Task FakeAttribute_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<FakeAttribute>();
+        return Tools.Tester.PreventsParameterMutation<FakeAttribute>();
     }
 }

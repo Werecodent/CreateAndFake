@@ -8,9 +8,9 @@ namespace CreateAndFake.Tests.RandomizerTool;
 public static class RandomizerTests
 {
     [Fact]
-    internal static void Randomizer_GuardsNulls()
+    internal static Task Randomizer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Randomizer>(opt =>
+        return Tools.Tester.PreventsNullRefException<Randomizer>(opt =>
             opt with
             {
                 InjectionValues = [GetGeneratableMethod()],
@@ -19,9 +19,9 @@ public static class RandomizerTests
     }
 
     [Fact]
-    internal static void Randomizer_NoParameterMutation()
+    internal static Task Randomizer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Randomizer>(opt =>
+        return Tools.Tester.PreventsParameterMutation<Randomizer>(opt =>
             opt with
             {
                 InjectionValues = [GetGeneratableMethod()],

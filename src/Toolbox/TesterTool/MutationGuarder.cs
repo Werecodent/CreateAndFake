@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool;
 
@@ -10,42 +11,44 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <summary>Verifies mutations are prevented on constructors.</summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
-    internal void PreventsMutationOnConstructors(Type type, bool callAllMethods)
+    internal async Task PreventsMutationOnConstructors(Type type, bool callAllMethods)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         foreach (ConstructorInfo constructor in FindAllConstructors(type))
         {
-            PreventsMutation(null, constructor, callAllMethods);
+            await PreventsMutation(null, constructor, callAllMethods).ConfigureAwait(false);
         }
     }
 
     /// <summary>Verifies mutations are prevented on methods.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
-    internal void PreventsMutationOnMethods(object instance)
+    internal async Task PreventsMutationOnMethods(object instance)
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
-            PreventsMutation(instance, GenericFixer.FixMethod(method, Options), false);
+            await PreventsMutation(instance, GenericFixer.FixMethod(method, Options), false)
+                .ConfigureAwait(false);
         }
     }
 
     /// <summary>Verifies mutations are prevented on methods.</summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
-    internal void PreventsMutationOnStatics(Type type, bool callAllMethods)
+    internal async Task PreventsMutationOnStatics(Type type, bool callAllMethods)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
-            PreventsMutation(
-                null,
-                GenericFixer.FixMethod(method, Options),
-                callAllMethods && method.ReturnType.Inherits(type)
-            );
+            await PreventsMutation(
+                    null,
+                    GenericFixer.FixMethod(method, Options),
+                    callAllMethods && method.ReturnType.Inherits(type)
+                )
+                .ConfigureAwait(false);
         }
     }
 
@@ -53,24 +56,21 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <param name="instance">Instance with the method under test.</param>
     /// <param name="method">Method under test.</param>
     /// <param name="callAllMethods">If all instance methods should be called after the method.</param>
-    private void PreventsMutation(object? instance, MethodBase method, bool callAllMethods)
+    private async Task PreventsMutation(object? instance, MethodBase method, bool callAllMethods)
     {
-        object?[]? data = null;
-        object?[]? copy = null;
+        MethodCallWrapper? data = null;
+        MethodCallWrapper? copy = null;
         object? result = null;
         try
         {
-            data = [.. Options.Runner.CreateFor(method, Options.InjectionValues).Args];
+            data = Options.Runner.CreateFor(method, Options.InjectionValues);
             copy = Options.Duplicator.Copy(data);
 
-            result =
-                (instance == null && method is ConstructorInfo builder)
-                    ? RunCheck(method, null, () => builder.Invoke(data))
-                    : RunCheck(method, null, () => method.Invoke(instance, data!)!);
+            result = await RunCheck(method, null, instance, data).ConfigureAwait(false);
 
             if (result != null && callAllMethods)
             {
-                CallAllMethods(method, null, result);
+                await CallAllMethods(method, null, result).ConfigureAwait(false);
             }
 
             Options.Asserter.ValuesEqual(
@@ -81,8 +81,8 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         }
         finally
         {
-            DisposeAllButInjected(data);
-            DisposeAllButInjected(copy);
+            DisposeAllButInjected(data?.Args);
+            DisposeAllButInjected(copy?.Args);
             DisposeAllButInjected(result);
         }
     }

@@ -14,16 +14,16 @@ public abstract class ValueRandomTestBase<T>
 
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void ValueRandom_GuardsNulls()
+    public Task ValueRandom_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>();
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void ValueRandom_NoParameterMutation()
+    public Task ValueRandom_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<T>();
+        return Tools.Tester.PreventsParameterMutation<T>();
     }
 
     /// <summary>Verifies intended value types work.</summary>

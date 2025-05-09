@@ -5,14 +5,14 @@ namespace CreateAndFake.Tests.ValuerTool;
 public static class DifferenceTests
 {
     [Fact]
-    internal static void Difference_GuardsNulls()
+    internal static Task Difference_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Difference>();
+        return Tools.Tester.PreventsNullRefException<Difference>();
     }
 
     [Fact]
-    internal static void Difference_NoParameterMutation()
+    internal static Task Difference_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Difference>();
+        return Tools.Tester.PreventsParameterMutation<Difference>();
     }
 }

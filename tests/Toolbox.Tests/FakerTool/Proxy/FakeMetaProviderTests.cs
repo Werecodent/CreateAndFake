@@ -6,15 +6,15 @@ namespace CreateAndFake.Tests.FakerTool.Proxy;
 public static class FakeMetaProviderTests
 {
     [Fact]
-    internal static void FakeMetaProvider_GuardsNulls()
+    internal static Task FakeMetaProvider_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<FakeMetaProvider>();
+        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>();
     }
 
     [Fact]
-    internal static void FakeMetaProvider_NoParameterMutation()
+    internal static Task FakeMetaProvider_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<FakeMetaProvider>();
+        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>();
     }
 
     [Theory, RandomData]

@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.MutatorTool;
 public static class MutatorOptionsTests
 {
     [Fact]
-    internal static void MutatorOptions_GuardsNulls()
+    internal static Task MutatorOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<MutatorOptions>();
+        return Tools.Tester.PreventsNullRefException<MutatorOptions>();
     }
 
     [Fact]
-    internal static void MutatorOptions_NoParameterMutation()
+    internal static Task MutatorOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<MutatorOptions>();
+        return Tools.Tester.PreventsParameterMutation<MutatorOptions>();
     }
 
     [Fact]

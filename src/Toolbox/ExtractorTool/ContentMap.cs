@@ -6,6 +6,7 @@ namespace CreateAndFake.ExtractorTool;
 /// <param name="content"><inheritdoc cref="_content" path="/summary"/></param>
 /// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
 public sealed class ContentMap(IDictionary<Type, ISet<object>> content, ExtractorOptions options)
+    : IContentMap
 {
     /// <summary>Flattened object data.</summary>
     private readonly IDictionary<Type, ISet<object>> _content =
@@ -15,16 +16,13 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     private readonly ExtractorOptions _options =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <summary>Iterates all the extracted contents.</summary>
-    /// <returns>The extracted contents.</returns>
+    /// <inheritdoc/>
     public IEnumerable<object> AllContent()
     {
         return _content.Values.SelectMany(x => x);
     }
 
-    /// <summary>Determines if the map has <paramref name="item"/> in it.</summary>
-    /// <param name="item">Content to check for.</param>
-    /// <returns><c>true</c> if <c>this</c> has the item; <c>false</c> otherwise.</returns>
+    /// <inheritdoc/>
     public bool HasContent(object? item)
     {
         if (item == null)
@@ -42,20 +40,14 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
                 .Any(i => _options.Valuer.Equals(item, i));
     }
 
-    /// <summary>Determines if <c>this</c> has any content from <paramref name="maps"/> in it.</summary>
-    /// <param name="maps">Content to compare <c>this</c> with.</param>
-    /// <returns><c>true</c> if <c>this</c> has content from <paramref name="maps"/>; <c>false</c> otherwise.</returns>
-    /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    public bool HasSharedContent(params IEnumerable<ContentMap> maps)
+    /// <inheritdoc/>
+    public bool HasSharedContent(params IEnumerable<IContentMap> maps)
     {
         return FindSharedContent(maps).Any();
     }
 
-    /// <summary>Finds content <c>this</c> shares with <paramref name="maps"/>.</summary>
-    /// <param name="maps">Content to compare <c>this</c> with.</param>
-    /// <returns>All shared content found.</returns>
-    /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    public IEnumerable<object> FindSharedContent(params IEnumerable<ContentMap> maps)
+    /// <inheritdoc/>
+    public IEnumerable<object> FindSharedContent(params IEnumerable<IContentMap> maps)
     {
         return maps.SelectMany(m => m.AllContent())
             .Intersect(AllContent(), _options.Valuer)
@@ -64,17 +56,13 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
             .Where(d => !(d is IEnumerable series && !series.GetEnumerator().MoveNext()));
     }
 
-    /// <summary>Returns all possible <typeparamref name="T"/> instances.</summary>
-    /// <typeparam name="T">Content type to find.</typeparam>
-    /// <returns>All <typeparamref name="T"/> instances (including subclasses).</returns>
+    /// <inheritdoc/>
     public IEnumerable<T> FindAll<T>()
     {
         return _content.Keys.Where(t => t.Inherits<T>()).SelectMany(t => _content[t]).OfType<T>();
     }
 
-    /// <summary>Returns all possible <paramref name="type"/> instances.</summary>
-    /// <param name="type">Content type to find.</param>
-    /// <returns>All <paramref name="type"/> instances (including subclasses).</returns>
+    /// <inheritdoc/>
     public IEnumerable<object> FindAll(Type type)
     {
         return _content

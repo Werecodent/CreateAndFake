@@ -11,16 +11,16 @@ public abstract class ExceptionTestBase<T>
 {
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void Exception_GuardsNulls()
+    public Task Exception_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>();
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void Exception_NoParameterMutation()
+    public Task Exception_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<T>();
+        return Tools.Tester.PreventsParameterMutation<T>();
     }
 
     /// <summary>Verifies the default constructor is present for serialization but private.</summary>

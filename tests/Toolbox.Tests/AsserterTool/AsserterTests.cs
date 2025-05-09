@@ -8,15 +8,15 @@ public static class AsserterTests
     private static readonly Asserter _testInstance = new(Tools.Asserter.Options);
 
     [Fact]
-    internal static void Asserter_GuardsNulls()
+    internal static Task Asserter_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Asserter>();
+        return Tools.Tester.PreventsNullRefException<Asserter>();
     }
 
     [Fact]
-    internal static void Asserter_NoParameterMutation()
+    internal static Task Asserter_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Asserter>();
+        return Tools.Tester.PreventsParameterMutation<Asserter>();
     }
 
     [Fact]

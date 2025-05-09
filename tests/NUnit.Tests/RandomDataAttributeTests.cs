@@ -9,16 +9,16 @@ namespace CreateAndFake.NUnit.Tests;
 public static class RandomDataAttributeTests
 {
     [RandomData]
-    public static void RandomDataAttribute_GuardsNulls([Stub] Test testStub)
+    public static Task RandomDataAttribute_GuardsNulls([Stub] Test testStub)
     {
-        Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), testStub] }
         );
     }
 
     [RandomData]
-    public static void RandomDataAttribute_NoParameterMutation(
+    public static Task RandomDataAttribute_NoParameterMutation(
         [Stub] Test testStub,
         [Stub] CopyHint<MethodWrapper> copyStub
     )
@@ -33,7 +33,7 @@ public static class RandomDataAttributeTests
                 )
             );
 
-        Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
             opt =>
                 opt with

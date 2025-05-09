@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.RunnerTool;
 public static class RunnerOptionsTests
 {
     [Fact]
-    internal static void RunnerOptions_GuardsNulls()
+    internal static Task RunnerOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<RunnerOptions>();
+        return Tools.Tester.PreventsNullRefException<RunnerOptions>();
     }
 
     [Fact]
-    internal static void RunnerOptions_NoParameterMutation()
+    internal static Task RunnerOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<RunnerOptions>();
+        return Tools.Tester.PreventsParameterMutation<RunnerOptions>();
     }
 
     [Fact]

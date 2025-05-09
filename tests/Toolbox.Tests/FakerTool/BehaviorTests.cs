@@ -7,18 +7,18 @@ namespace CreateAndFake.Tests.FakerTool;
 public static class BehaviorTests
 {
     [Fact]
-    internal static void Behavior_GuardsNulls()
+    internal static Task Behavior_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefException(
             typeof(Behavior),
             opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
         );
     }
 
     [Fact]
-    internal static void Behavior_NoParameterMutation()
+    internal static Task Behavior_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutation(
             typeof(Behavior),
             opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
         );

@@ -11,9 +11,25 @@ public sealed class TaskCopyHint : CopyHint
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
-        if (source is Task task && task.GetType().IsGenericType)
+        if (source == Task.CompletedTask)
         {
-            return new(Copy(task, duplicator));
+            return new(Task.CompletedTask);
+        }
+        else if (source is Task task)
+        {
+            if (task.GetType().IsGenericType)
+            {
+                return new(
+                    typeof(TaskCopyHint)
+                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)!
+                        .MakeGenericMethod(task.GetType().GetGenericArguments())
+                        .Invoke(null, [task, duplicator])
+                );
+            }
+            else
+            {
+                return new(WrapPlainTask(task, duplicator));
+            }
         }
         else
         {
@@ -21,25 +37,48 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-    /// <inheritdoc cref="CopyHint{T}.Copy"/>
-    private static object Copy(Task source, DuplicatorChainer duplicator)
+    private static Task WrapPlainTask(Task task, DuplicatorChainer duplicator)
     {
-        PropertyInfo resultHolder = source.GetType().GetProperty(nameof(Task<object>.Result))!;
-
-        return typeof(TaskCopyHint)
-            .GetMethod(nameof(NewInstanceFromResult), BindingFlags.NonPublic | BindingFlags.Static)!
-            .MakeGenericMethod(resultHolder.PropertyType)
-            .Invoke(null, [duplicator.Copy(resultHolder.GetValue(source))])!;
+        if (task.IsCanceled)
+        {
+            return Task.FromCanceled(new CancellationToken(true));
+        }
+        else if (task.IsFaulted)
+        {
+            return Task.FromException(duplicator.Copy(task.Exception)!);
+        }
+        else if (task.IsCompleted)
+        {
+            return Task.CompletedTask;
+        }
+        else
+        {
+            return Task.Run(() => task);
+        }
     }
 
-    /// <summary>Forces a <c>Task</c> instance that isn't cached.</summary>
-    /// <typeparam name="T"><c>Task</c> result type.</typeparam>
-    /// <param name="result"><typeparamref name="T"/> value to return from the <c>Task</c>.</param>
-    /// <returns>The created <c>Task</c>.</returns>
-    private static Task<T> NewInstanceFromResult<T>(T result)
+#pragma warning disable CA1849 // Call async methods when in an async method: Completion verified.
+
+    private static Task<T> WrapTask<T>(Task rawTask, DuplicatorChainer duplicator)
     {
-        TaskCompletionSource<T> wrapper = new();
-        _ = wrapper.TrySetResult(result);
-        return wrapper.Task;
+        Task<T> task = (Task<T>)rawTask;
+        if (task.IsCanceled)
+        {
+            return Task.FromCanceled<T>(new CancellationToken(true));
+        }
+        else if (task.IsFaulted)
+        {
+            return Task.FromException<T>(duplicator.Copy(task.Exception)!);
+        }
+        else if (task.IsCompleted)
+        {
+            return Task.FromResult(duplicator.Copy(task.Result)!);
+        }
+        else
+        {
+            return Task.Run(async () => duplicator.Copy(await task.ConfigureAwait(false))!);
+        }
     }
+
+#pragma warning restore CA1849 // Call async methods when in an async method
 }

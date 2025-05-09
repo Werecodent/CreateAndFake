@@ -3,14 +3,14 @@ namespace CreateAndFake.Tests.Extensions;
 public static class FakeExtensionsTests
 {
     [Fact]
-    internal static void FakeExtensions_GuardsNulls()
+    internal static Task FakeExtensions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(FakeExtensions));
+        return Tools.Tester.PreventsNullRefException(typeof(FakeExtensions));
     }
 
     [Fact]
-    internal static void FakeExtensions_NoParameterMutation()
+    internal static Task FakeExtensions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(FakeExtensions));
+        return Tools.Tester.PreventsParameterMutation(typeof(FakeExtensions));
     }
 }

@@ -6,15 +6,15 @@ namespace CreateAndFake.Design.Tests.Randomization;
 public static class DataRandomTests
 {
     [Fact]
-    internal static void DataRandom_GuardsNulls()
+    internal static Task DataRandom_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<DataRandom>();
+        return Tools.Tester.PreventsNullRefException<DataRandom>();
     }
 
     [Fact]
-    internal static void DataRandom_NoParameterMutation()
+    internal static Task DataRandom_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<DataRandom>();
+        return Tools.Tester.PreventsParameterMutation<DataRandom>();
     }
 
     [Theory, RandomData]

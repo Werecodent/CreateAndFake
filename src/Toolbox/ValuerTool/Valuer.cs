@@ -12,14 +12,14 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <summary>Default set of hints to use for comparisons.</summary>
     private static readonly ImmutableArray<CompareHint> _DefaultHints =
     [
+        new TaskCompareHint(),
+        new AsyncEnumerableCompareHint(),
         new EarlyFailCompareHint(),
         new FallbackCompareHint(),
         new FakedCompareHint(),
-        new TaskCompareHint(),
         new ValueEquatableCompareHint(),
         new ValuerEquatableCompareHint(),
         new EquatableCompareHint(),
-        new AsyncEnumerableCompareHint(),
         new StringDictionaryCompareHint(),
         new DictionaryCompareHint(),
         new EnumerableCompareHint(),

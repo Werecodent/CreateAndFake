@@ -15,5 +15,5 @@ public interface IExtractor
     /// <param name="source">Instance being deconstructed.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     /// <returns>Extracted content of <paramref name="source"/>.</returns>
-    ContentMap Extract(object? source, ExtractorMod? optionConfiguration = null);
+    IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null);
 }

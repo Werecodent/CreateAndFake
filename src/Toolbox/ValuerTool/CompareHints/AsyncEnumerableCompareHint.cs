@@ -25,7 +25,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return Task.Run(
+        Task<IEnumerable<Difference>> task = Task.Run(
             () =>
                 (Task<IEnumerable<Difference>>)
                     GetType()
@@ -35,7 +35,12 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                         )!
                         .MakeGenericMethod(expected.GetType().GetGenericArguments().Single())
                         .Invoke(null, [expected, actual, valuer])!
-        ).Result;
+        );
+        if (!task.Wait(valuer.Options.AsyncTimeout))
+        {
+            throw new TimeoutException($"Attempting to compare async enumerables timed out.");
+        }
+        return task.Result;
     }
 
     /// <inheritdoc cref="Compare"/>
@@ -100,7 +105,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return Task.Run(
+        Task<int> task = Task.Run(
             () =>
                 (Task<int>)
                     GetType()
@@ -110,7 +115,12 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                         )!
                         .MakeGenericMethod(item.GetType().GetGenericArguments().Single())
                         .Invoke(null, [item, valuer])!
-        ).Result;
+        );
+        if (!task.Wait(valuer.Options.AsyncTimeout))
+        {
+            throw new TimeoutException($"Attempting to hash async enumerables timed out.");
+        }
+        return task.Result;
     }
 
     /// <inheritdoc cref="GetHashCode"/>

@@ -3,14 +3,14 @@ namespace CreateAndFake.Tests.Attributes;
 public static class SizeAttributeTests
 {
     [Fact]
-    internal static void SizeAttribute_GuardsNulls()
+    internal static Task SizeAttribute_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<SizeAttribute>();
+        return Tools.Tester.PreventsNullRefException<SizeAttribute>();
     }
 
     [Fact]
-    internal static void SizeAttribute_NoParameterMutation()
+    internal static Task SizeAttribute_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<SizeAttribute>();
+        return Tools.Tester.PreventsParameterMutation<SizeAttribute>();
     }
 }

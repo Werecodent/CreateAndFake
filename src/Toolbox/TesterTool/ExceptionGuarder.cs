@@ -8,9 +8,9 @@ namespace CreateAndFake.TesterTool;
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
     /// <inheritdoc cref="BaseGuarder.CallAllMethods(MethodBase,ParameterInfo,object)"/>
-    internal void CallAllMethods(object instance)
+    internal Task CallAllMethods(object instance)
     {
-        CallAllMethods(null, null, instance);
+        return CallAllMethods(null, null, instance);
     }
 
     /// <inheritdoc/>

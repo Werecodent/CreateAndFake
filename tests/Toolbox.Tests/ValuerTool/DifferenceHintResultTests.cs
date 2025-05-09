@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.ValuerTool;
 public static class DifferenceHintResultTests
 {
     [Fact]
-    internal static void DifferenceHintResult_GuardsNulls()
+    internal static Task DifferenceHintResult_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<DifferenceHintResult>();
+        return Tools.Tester.PreventsNullRefException<DifferenceHintResult>();
     }
 
     [Fact]
-    internal static void DifferenceHintResult_NoParameterMutation()
+    internal static Task DifferenceHintResult_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<DifferenceHintResult>();
+        return Tools.Tester.PreventsParameterMutation<DifferenceHintResult>();
     }
 
     [Fact]

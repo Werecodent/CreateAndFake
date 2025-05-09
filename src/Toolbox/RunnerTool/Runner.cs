@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
@@ -15,11 +16,20 @@ public sealed class Runner(RunnerOptions options) : IRunner
     public RunnerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-#pragma warning disable CA1031 // Do not catch general exception types: Required for testing any exception.
     /// <inheritdoc/>
-    public RunResults CallMethodsOn(object instance, RunnerMod? optionConfiguration = null)
+    public async Task<RunResults> CallMethodsOn(
+        object instance,
+        RunnerMod? optionConfiguration = null
+    )
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+
+        RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        TimeSpan timeout =
+            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+                ? localOptions.Timeout
+                : TimeSpan.FromMilliseconds(-1);
 
         List<RunResult> results = [];
         foreach (
@@ -29,25 +39,164 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 .Where(m => m.DeclaringType != typeof(object))
         )
         {
-            MethodCallWrapper data =
-                optionConfiguration != null
-                    ? CreateFor(method, optionConfiguration)
-                    : CreateFor(method);
-
-            object? result;
-            try
-            {
-                result = data.InvokeOn(instance);
-            }
-            catch (Exception e)
-            {
-                result = e;
-            }
-            results.Add(new RunResult(method, data.Args, result));
+            // Sequentially executed to prevent concurrency issues; do not attempt to parallelize.
+            results.Add(await Run(instance, method, optionConfiguration).ConfigureAwait(false));
         }
         return new(results);
     }
-#pragma warning restore CA1031 // Do not catch general exception types
+
+    /// <summary>Ensures the result is completed.</summary>
+    /// <param name="call">Potentially wrapped data.</param>
+    /// <returns>The unwrapped result.</returns>
+    private static async Task<(bool, object?)> UnwrapTaskResult(Func<object?> call)
+    {
+        object? result = call.Invoke();
+
+        if (result?.GetType().Inherits(typeof(IAsyncEnumerable<>)) ?? false)
+        {
+            result = typeof(Runner)
+                .GetMethod(nameof(EnumerateAsync), BindingFlags.Static | BindingFlags.NonPublic)!
+                .MakeGenericMethod(result.GetType().GetGenericArguments())
+                .Invoke(null, [result]);
+        }
+
+        if (result == null)
+        {
+            return (true, null);
+        }
+
+        bool isTask = false;
+        if (result is ValueTask valueTask)
+        {
+            await valueTask.ConfigureAwait(false);
+            isTask = true;
+        }
+        if (result is Task task)
+        {
+            await task.ConfigureAwait(false);
+            isTask = true;
+        }
+
+        if (isTask)
+        {
+            PropertyInfo? prop = result.GetType().GetProperty(nameof(Task<object>.Result));
+            return (prop != null) ? (true, prop.GetValue(result)) : (false, null);
+        }
+
+        Type resultType = result.GetType();
+        if (resultType.Inherits<ICollection>() || resultType.Inherits(typeof(ICollection<>)))
+        {
+            return (true, result);
+        }
+
+        // Required to execute yield return methods.
+        if (resultType.Inherits(typeof(IEnumerable<>)))
+        {
+            return (
+                true,
+                typeof(Runner)
+                    .GetMethod(nameof(Enumerate), BindingFlags.Static | BindingFlags.NonPublic)!
+                    .MakeGenericMethod(result.GetType().GetGenericArguments())
+                    .Invoke(null, [result])
+            );
+        }
+        if (resultType.Inherits<IEnumerable>())
+        {
+            return (true, ((IEnumerable)result).OfType<object>().ToArray());
+        }
+
+        return (true, result);
+    }
+
+    private static T[] Enumerate<T>(object asyncData)
+    {
+        List<T> results = [];
+        foreach (T item in (IEnumerable<T>)asyncData)
+        {
+            results.Add(item);
+        }
+        return [.. results];
+    }
+
+    private static async Task<T[]> EnumerateAsync<T>(object asyncData)
+    {
+        List<T> results = [];
+        await foreach (T item in ((IAsyncEnumerable<T>)asyncData).ConfigureAwait(false))
+        {
+            results.Add(item);
+        }
+        return [.. results];
+    }
+
+    /// <inheritdoc/>
+    public Task<RunResult> Run(
+        object? instance,
+        MethodInfo method,
+        RunnerMod? optionConfiguration = null
+    )
+    {
+        MethodCallWrapper data =
+            optionConfiguration != null
+                ? CreateFor(method, optionConfiguration)
+                : CreateFor(method);
+
+        return Run(instance, data, optionConfiguration);
+    }
+
+#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Passed.
+
+    /// <inheritdoc/>
+    public async Task<RunResult> Run(
+        object? instance,
+        MethodCallWrapper data,
+        RunnerMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(data, nameof(data));
+
+        RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        TimeSpan timeout =
+            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+                ? localOptions.Timeout
+                : TimeSpan.FromMilliseconds(-1);
+
+        Task<(bool, object?)> task = Task.Run(
+            () => UnwrapTaskResult(() => data.InvokeOn(instance))
+        );
+
+        if ((await Task.WhenAny(task, Task.Delay(timeout)).ConfigureAwait(false)) != task)
+        {
+            throw new TimeoutException($"Attempting to run method '{data.Method.Name}' timed out.");
+        }
+
+        try
+        {
+            (bool, object?) result = await task.ConfigureAwait(false);
+            return new(data.Method, data.Args, result.Item2, result.Item1, false);
+        }
+        catch (Exception taskException)
+        {
+            return new(data.Method, data.Args, UnwrapException(taskException), false, true);
+        }
+    }
+
+#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type.
+
+    private static Exception? UnwrapException(Exception? error)
+    {
+        if (error is AggregateException multi && multi.InnerExceptions.Count == 1)
+        {
+            return UnwrapException(multi.InnerException);
+        }
+
+        if (error is TargetInvocationException ex)
+        {
+            return UnwrapException(ex.InnerException);
+        }
+
+        return error;
+    }
 
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values)

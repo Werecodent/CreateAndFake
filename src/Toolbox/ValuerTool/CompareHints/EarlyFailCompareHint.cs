@@ -27,10 +27,6 @@ public sealed class EarlyFailCompareHint : CompareHint
     {
         return (
                 expected != actual
-                && !(
-                    expected.Inherits(typeof(IAsyncEnumerable<>))
-                    && actual.Inherits(typeof(IAsyncEnumerable<>))
-                )
                 && !(expected.Inherits<IEnumerable>() && actual.Inherits<IEnumerable>())
             )
             || expected.IsPrimitive

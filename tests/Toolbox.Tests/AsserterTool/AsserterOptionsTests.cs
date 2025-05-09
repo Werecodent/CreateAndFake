@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.AsserterTool;
 public static class AsserterOptionsTests
 {
     [Fact]
-    internal static void AsserterOptions_GuardsNulls()
+    internal static Task AsserterOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AsserterOptions>();
+        return Tools.Tester.PreventsNullRefException<AsserterOptions>();
     }
 
     [Fact]
-    internal static void AsserterOptions_NoParameterMutation()
+    internal static Task AsserterOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AsserterOptions>();
+        return Tools.Tester.PreventsParameterMutation<AsserterOptions>();
     }
 
     [Fact]

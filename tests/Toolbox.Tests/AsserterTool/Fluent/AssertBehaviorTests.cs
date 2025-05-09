@@ -6,15 +6,15 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public static class AssertBehaviorTests
 {
     [Fact]
-    internal static void AssertBehavior_GuardsNulls()
+    internal static Task AssertBehavior_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertBehavior>();
+        return Tools.Tester.PreventsNullRefException<AssertBehavior>();
     }
 
     [Fact]
-    internal static void AssertBehavior_NoParameterMutation()
+    internal static Task AssertBehavior_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertBehavior>();
+        return Tools.Tester.PreventsParameterMutation<AssertBehavior>();
     }
 
     [Theory, RandomData]

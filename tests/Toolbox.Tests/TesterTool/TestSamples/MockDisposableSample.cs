@@ -13,7 +13,7 @@ namespace CreateAndFake.Tests.TesterTool.TestSamples;
 )]
 public sealed class MockDisposableSample(object value) : IDisposable
 {
-    internal static readonly object _Lock = new();
+    internal static readonly SemaphoreSlim _Lock = new(1);
 
     internal static Fake<IDisposable> _Fake = Tools.Faker.Stub<IDisposable>();
 

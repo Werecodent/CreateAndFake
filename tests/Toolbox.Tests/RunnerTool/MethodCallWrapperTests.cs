@@ -8,15 +8,15 @@ namespace CreateAndFake.Tests.RunnerTool;
 public static class MethodCallWrapperTests
 {
     [Fact]
-    internal static void MethodCallWrapper_GuardsNulls()
+    internal static Task MethodCallWrapper_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<MethodCallWrapper>();
+        return Tools.Tester.PreventsNullRefException<MethodCallWrapper>();
     }
 
     [Fact]
-    internal static void MethodCallWrapper_NoParameterMutation()
+    internal static Task MethodCallWrapper_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<MethodCallWrapper>();
+        return Tools.Tester.PreventsParameterMutation<MethodCallWrapper>();
     }
 
     [Fact]

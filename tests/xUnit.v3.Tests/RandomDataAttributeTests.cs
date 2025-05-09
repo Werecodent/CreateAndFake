@@ -9,7 +9,7 @@ public static class RandomDataAttributeTests
     internal static async Task RandomDataAttribute_GuardsNulls()
     {
         await using DisposalTracker tracker = new();
-        Tools.Tester.PreventsNullRefException(
+        await Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), tracker] }
         );
@@ -19,7 +19,7 @@ public static class RandomDataAttributeTests
     internal static async Task RandomDataAttribute_NoParameterMutation()
     {
         await using DisposalTracker tracker = new();
-        Tools.Tester.PreventsParameterMutation(
+        await Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), tracker] }
         );

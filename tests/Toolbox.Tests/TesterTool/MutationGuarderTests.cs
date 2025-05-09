@@ -23,32 +23,32 @@ public static class MutationGuarderTests
     );
 
     [Fact]
-    internal static void MutationGuarder_GuardsNulls()
+    internal static Task MutationGuarder_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(_ShortTestInstance);
+        return Tools.Tester.PreventsNullRefException(_ShortTestInstance);
     }
 
     [Fact]
-    internal static void PreventsParameterMutation_OnStatics()
+    internal static Task PreventsParameterMutation_OnStatics()
     {
-        Tools
+        return Tools
             .Tester.Assert(t => t.PreventsParameterMutation(typeof(StaticMutationSample)))
             .Throws<AssertException>();
     }
 
     [Fact]
-    internal static void PreventsParameterMutation_StatelessFine()
+    internal static Task PreventsParameterMutation_StatelessFine()
     {
-        Tools.Tester.PreventsParameterMutation<StatelessSample>();
+        return Tools.Tester.PreventsParameterMutation<StatelessSample>();
     }
 
     [Theory, RandomData]
-    internal static void PreventsParameterMutation_InjectsMultipleValues(
+    internal static Task PreventsParameterMutation_InjectsMultipleValues(
         Fake<IOnlyMockSample> fake1,
         Fake<IOnlyMockSample> fake2
     )
     {
-        Tools.Tester.PreventsParameterMutation<InjectMockSample>(opt =>
+        return Tools.Tester.PreventsParameterMutation<InjectMockSample>(opt =>
             opt with
             {
                 InjectionValues = [fake1, fake2],
@@ -57,9 +57,9 @@ public static class MutationGuarderTests
     }
 
     [Theory, RandomData]
-    internal static void PreventsParameterMutation_InjectsWithMethods(Fake<IOnlyMockSample> fake)
+    internal static Task PreventsParameterMutation_InjectsWithMethods(Fake<IOnlyMockSample> fake)
     {
-        Tools.Tester.PreventsParameterMutation<MockMethodPassOnly>(opt =>
+        return Tools.Tester.PreventsParameterMutation<MockMethodPassOnly>(opt =>
             opt with
             {
                 InjectionValues = [fake],
@@ -68,43 +68,56 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static void CallMethod_TimesOut()
+    internal static Task CallMethod_TimesOut()
     {
-        _ShortTestInstance
+        return _ShortTestInstance
             .Assert(t => t.PreventsMutationOnStatics(typeof(LongMethodSample), false))
             .Throws<TimeoutException>();
     }
 
     [Fact]
-    internal static void PreventsMutationOnConstructors_Disposes()
+    internal static async Task PreventsMutationOnConstructors_Disposes()
     {
-        lock (MockDisposableSample._Lock)
+        await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
+        try
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            _LongTestInstance.PreventsMutationOnConstructors(typeof(MockDisposableSample), true);
+            await _LongTestInstance.PreventsMutationOnConstructors(
+                typeof(MockDisposableSample),
+                true
+            );
             Tools.Asserter.Is(1, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());
         }
+        finally
+        {
+            MockDisposableSample._Lock.Release();
+        }
     }
 
     [Fact]
-    internal static void PreventsMutationOnMethods_Disposes()
+    internal static async Task PreventsMutationOnMethods_Disposes()
     {
-        lock (MockDisposableSample._Lock)
+        await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
+        try
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
             using MockDisposableSample sample = new(null);
-            _LongTestInstance.PreventsMutationOnMethods(sample);
+            await _LongTestInstance.PreventsMutationOnMethods(sample);
             Tools.Asserter.Is(0, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());
+        }
+        finally
+        {
+            MockDisposableSample._Lock.Release();
         }
     }
 }

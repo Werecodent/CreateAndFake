@@ -27,16 +27,16 @@ public abstract class CompareHintTestBase<T>(
 
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void CompareHint_GuardsNulls()
+    public Task CompareHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void CompareHint_NoParameterMutation()
+    public Task CompareHint_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(TestInstance);
+        return Tools.Tester.PreventsParameterMutation(TestInstance);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

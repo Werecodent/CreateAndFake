@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.ValuerTool;
 public static class HashCodeHintResultTests
 {
     [Fact]
-    internal static void HashCodeHintResult_GuardsNulls()
+    internal static Task HashCodeHintResult_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<HashCodeHintResult>();
+        return Tools.Tester.PreventsNullRefException<HashCodeHintResult>();
     }
 
     [Fact]
-    internal static void HashCodeHintResult_NoParameterMutation()
+    internal static Task HashCodeHintResult_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<HashCodeHintResult>();
+        return Tools.Tester.PreventsParameterMutation<HashCodeHintResult>();
     }
 
     [Fact]

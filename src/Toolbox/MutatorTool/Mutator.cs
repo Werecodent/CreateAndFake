@@ -59,7 +59,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances)
     {
-        ContentMap[] maps =
+        IContentMap[] maps =
         [
             .. (extraInstances ?? [])
                 .Prepend(instance)

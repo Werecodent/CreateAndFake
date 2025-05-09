@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 public static class CopyHintResultTests
 {
     [Fact]
-    internal static void CopyHintResult_GuardsNulls()
+    internal static Task CopyHintResult_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<CopyHintResult>();
+        return Tools.Tester.PreventsNullRefException<CopyHintResult>();
     }
 
     [Fact]
-    internal static void CopyHintResult_NoParameterMutation()
+    internal static Task CopyHintResult_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<CopyHintResult>();
+        return Tools.Tester.PreventsParameterMutation<CopyHintResult>();
     }
 
     [Fact]

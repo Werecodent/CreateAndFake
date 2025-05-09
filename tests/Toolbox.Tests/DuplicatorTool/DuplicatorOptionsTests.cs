@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 public static class DuplicatorOptionsTests
 {
     [Fact]
-    internal static void DuplicatorOptions_GuardsNulls()
+    internal static Task DuplicatorOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<DuplicatorOptions>();
+        return Tools.Tester.PreventsNullRefException<DuplicatorOptions>();
     }
 
     [Fact]
-    internal static void DuplicatorOptions_NoParameterMutation()
+    internal static Task DuplicatorOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<DuplicatorOptions>();
+        return Tools.Tester.PreventsParameterMutation<DuplicatorOptions>();
     }
 
     [Fact]

@@ -5,18 +5,18 @@ namespace CreateAndFake.xUnit.v2.Tests;
 public static class RandomDataAttributeTests
 {
     [Fact]
-    internal static void RandomDataAttribute_GuardsNulls()
+    internal static Task RandomDataAttribute_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }
 
     [Fact]
-    internal static void RandomDataAttribute_NoParameterMutation()
+    internal static Task RandomDataAttribute_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );

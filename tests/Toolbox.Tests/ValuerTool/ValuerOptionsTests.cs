@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.ValuerTool;
 public static class ValuerOptionsTests
 {
     [Fact]
-    internal static void ValuerOptions_GuardsNulls()
+    internal static Task ValuerOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ValuerOptions>();
+        return Tools.Tester.PreventsNullRefException<ValuerOptions>();
     }
 
     [Fact]
-    internal static void ValuerOptions_NoParameterMutation()
+    internal static Task ValuerOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ValuerOptions>();
+        return Tools.Tester.PreventsParameterMutation<ValuerOptions>();
     }
 
     [Fact]

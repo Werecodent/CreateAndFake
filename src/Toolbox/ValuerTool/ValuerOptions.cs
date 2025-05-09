@@ -26,4 +26,7 @@ public record ValuerOptions : IToolOptions
 
     /// <summary>Types to use default equality/hashing.</summary>
     public FrozenSet<Type> FallbackTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
+
+    /// <summary>How long to wait for async comparisons to complete.</summary>
+    public TimeSpan AsyncTimeout { get; init; } = new(0, 0, 5);
 }

@@ -7,15 +7,15 @@ namespace CreateAndFake.Tests.FakerTool.Proxy;
 public static class CallDataTests
 {
     [Fact]
-    internal static void CallData_GuardsNulls()
+    internal static Task CallData_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<CallData>();
+        return Tools.Tester.PreventsNullRefException<CallData>();
     }
 
     [Fact]
-    internal static void CallData_NoParameterMutation()
+    internal static Task CallData_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<CallData>();
+        return Tools.Tester.PreventsParameterMutation<CallData>();
     }
 
     [Theory, RandomData]

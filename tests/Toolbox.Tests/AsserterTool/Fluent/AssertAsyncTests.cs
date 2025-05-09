@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public sealed class AssertAsyncTests
 {
     [Fact]
-    internal static void AssertAsync_GuardsNulls()
+    internal static Task AssertAsync_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertAsync>();
+        return Tools.Tester.PreventsNullRefException<AssertAsync>();
     }
 
     [Fact]
-    internal static void AssertAsync_NoParameterMutation()
+    internal static Task AssertAsync_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertAsync>();
+        return Tools.Tester.PreventsParameterMutation<AssertAsync>();
     }
 
     [Theory, RandomData]

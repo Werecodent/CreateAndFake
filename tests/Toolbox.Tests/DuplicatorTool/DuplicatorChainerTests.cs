@@ -5,14 +5,14 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 public static class DuplicatorChainerTests
 {
     [Fact]
-    internal static void DuplicatorChainer_GuardsNulls()
+    internal static Task DuplicatorChainer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<DuplicatorChainer>();
+        return Tools.Tester.PreventsNullRefException<DuplicatorChainer>();
     }
 
     [Fact]
-    internal static void DuplicatorChainer_NoParameterMutation()
+    internal static Task DuplicatorChainer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<DuplicatorChainer>();
+        return Tools.Tester.PreventsParameterMutation<DuplicatorChainer>();
     }
 }

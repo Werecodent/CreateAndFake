@@ -5,8 +5,8 @@ namespace CreateAndFake.Tests.TesterTool;
 public static class GenericFixerTests
 {
     [Fact]
-    internal static void GenericFixer_GuardsNulls()
+    internal static Task GenericFixer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(GenericFixer));
+        return Tools.Tester.PreventsNullRefException(typeof(GenericFixer));
     }
 }

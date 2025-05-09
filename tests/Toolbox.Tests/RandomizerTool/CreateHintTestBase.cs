@@ -29,16 +29,16 @@ public abstract class CreateHintTestBase<T>(
 
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void CreateHint_GuardsNulls()
+    public Task CreateHint_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void CreateHint_NoParameterMutation()
+    public Task CreateHint_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutation(
             TestInstance,
             opt =>
                 opt with

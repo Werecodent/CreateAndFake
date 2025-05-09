@@ -86,5 +86,7 @@
         "nuget.config",
         "artifacts/",
         "src/Design/Data/"
-    ]
+    ],
+    "editor.inlineSuggest.enabled": false,
+    "explorer.autoReveal": "focusNoScroll"
 }

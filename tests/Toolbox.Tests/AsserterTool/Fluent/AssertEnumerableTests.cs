@@ -7,21 +7,21 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public static class AssertEnumerableTests
 {
     [Fact]
-    internal static void AssertEnumerable_GuardsNulls()
+    internal static Task AssertEnumerable_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertEnumerable>();
+        return Tools.Tester.PreventsNullRefException<AssertEnumerable>();
     }
 
     [Fact]
-    internal static void AssertEnumerable_NoParameterMutation()
+    internal static Task AssertEnumerable_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertEnumerable>();
+        return Tools.Tester.PreventsParameterMutation<AssertEnumerable>();
     }
 
     [Theory, RandomData]
-    internal static void AssertEnumerable_CallsAndChains(Injected<AssertEnumerable> instance)
+    internal static async Task AssertEnumerable_CallsAndChains(Injected<AssertEnumerable> instance)
     {
-        RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertEnumerable>)

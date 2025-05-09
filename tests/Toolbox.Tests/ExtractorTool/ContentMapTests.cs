@@ -7,21 +7,21 @@ namespace CreateAndFake.Tests.ExtractorTool;
 public static class ContentMapTests
 {
     [Fact]
-    internal static void ContentMap_GuardsNulls()
+    internal static Task ContentMap_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ContentMap>();
+        return Tools.Tester.PreventsNullRefException<ContentMap>();
     }
 
     [Fact]
-    internal static void ContentMap_NoParameterMutation()
+    internal static Task ContentMap_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ContentMap>();
+        return Tools.Tester.PreventsParameterMutation<ContentMap>();
     }
 
     [Theory, RandomData]
     internal static void HasContent_UsesObjectByValue(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.HasContent(sample.NestedValue.CreateVariant()).Assert().Is(false);
         map.HasContent(sample.NestedValue.CreateDeepClone()).Assert().Is(true);
     }
@@ -29,7 +29,7 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void HasContent_UsesValueByValue(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.HasContent(sample.NestedValue.NumberValue.CreateVariant()).Assert().Is(false);
         map.HasContent(sample.NestedValue.NumberValue.CreateDeepClone()).Assert().Is(true);
     }
@@ -37,7 +37,7 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void HasContent_UsesStringByValue(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.HasContent(sample.NestedValue.StringValue.CreateVariant()).Assert().Is(false);
         map.HasContent(sample.NestedValue.StringValue.CreateDeepClone()).Assert().Is(true);
     }
@@ -45,7 +45,7 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void FindAll_ContainsNestedObjects(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.FindAll<DataSample>().Assert().Contains(sample.NestedValue);
         map.FindAll(typeof(DataSample)).Assert().Contains(sample.NestedValue);
     }
@@ -53,7 +53,7 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void FindAll_ContainsNestedValues(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.FindAll<int>().Assert().Contains(sample.NestedValue.NumberValue);
         map.FindAll(typeof(int)).Assert().Contains(sample.NestedValue.NumberValue);
     }
@@ -61,7 +61,7 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void AllContent_ContainsEverything(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap map = Tools.Extractor.Extract(sample);
         map.AllContent().Assert().Contains(sample.NestedValue);
         map.AllContent().Assert().Contains(sample.NestedValue.NumberValue);
     }
@@ -69,8 +69,8 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void FindSharedContent_ObjectValuesFound(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
-        ContentMap test = Tools.Extractor.Extract(sample.NestedValue);
+        IContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap test = Tools.Extractor.Extract(sample.NestedValue);
         map.FindSharedContent(test).Assert().Contains(sample.NestedValue);
         map.HasSharedContent(test).Assert().Is(true);
     }
@@ -78,8 +78,8 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void FindSharedContent_ValueValuesFound(DataHolderSample sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
-        ContentMap test = Tools.Extractor.Extract(sample.NestedValue.NumberValue);
+        IContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap test = Tools.Extractor.Extract(sample.NestedValue.NumberValue);
         map.FindSharedContent(test).Assert().Contains(sample.NestedValue.NumberValue);
         map.HasSharedContent(test).Assert().Is(true);
     }
@@ -87,8 +87,8 @@ public static class ContentMapTests
     [Theory, RandomData]
     internal static void HasSharedContent_FalseWithNothingShared(string sample)
     {
-        ContentMap map = Tools.Extractor.Extract(sample);
-        ContentMap test = Tools.Extractor.Extract(sample.CreateVariant());
+        IContentMap map = Tools.Extractor.Extract(sample);
+        IContentMap test = Tools.Extractor.Extract(sample.CreateVariant());
         map.HasSharedContent(test).Assert().Is(false);
     }
 

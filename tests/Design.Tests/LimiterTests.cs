@@ -12,9 +12,9 @@ public static class LimiterTests
     private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
 
     [Fact]
-    internal static void Limiter_GuardsNulls()
+    internal static Task Limiter_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(Limiter.Few);
+        return Tools.Tester.PreventsNullRefException(Limiter.Few);
     }
 
     [Fact]

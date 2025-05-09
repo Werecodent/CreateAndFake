@@ -18,13 +18,16 @@ public class Tester(TesterOptions options) : ITester
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public virtual void PreventsNullRefException<T>(TesterMod? optionConfiguration = null)
+    public virtual Task PreventsNullRefException<T>(TesterMod? optionConfiguration = null)
     {
-        PreventsNullRefException(typeof(T), optionConfiguration);
+        return PreventsNullRefException(typeof(T), optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsNullRefException(Type type, TesterMod? optionConfiguration = null)
+    public virtual async Task PreventsNullRefException(
+        Type type,
+        TesterMod? optionConfiguration = null
+    )
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
@@ -33,19 +36,24 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsNullRefExceptionOnConstructors(type, true);
+            await checker.PreventsNullRefExceptionOnConstructors(type, true).ConfigureAwait(false);
         }
 
-        CreateInstanceAndTestMethods(type, localOptions, checker.PreventsNullRefExceptionOnMethods);
+        await CreateInstanceAndTestMethods(
+                type,
+                localOptions,
+                checker.PreventsNullRefExceptionOnMethods
+            )
+            .ConfigureAwait(false);
 
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsNullRefExceptionOnStatics(type, true);
+            await checker.PreventsNullRefExceptionOnStatics(type, true).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsNullRefException<T>(
+    public virtual async Task PreventsNullRefException<T>(
         T instance,
         TesterMod? optionConfiguration = null
     )
@@ -55,26 +63,31 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsNullRefExceptionOnConstructors(typeof(T), false);
+            await checker
+                .PreventsNullRefExceptionOnConstructors(typeof(T), false)
+                .ConfigureAwait(false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            checker.PreventsNullRefExceptionOnMethods(instance!);
+            await checker.PreventsNullRefExceptionOnMethods(instance!).ConfigureAwait(false);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsNullRefExceptionOnStatics(typeof(T), false);
+            await checker.PreventsNullRefExceptionOnStatics(typeof(T), false).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsParameterMutation<T>(TesterMod? optionConfiguration = null)
+    public virtual Task PreventsParameterMutation<T>(TesterMod? optionConfiguration = null)
     {
-        PreventsParameterMutation(typeof(T), optionConfiguration);
+        return PreventsParameterMutation(typeof(T), optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsParameterMutation(Type type, TesterMod? optionConfiguration = null)
+    public virtual async Task PreventsParameterMutation(
+        Type type,
+        TesterMod? optionConfiguration = null
+    )
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
 
@@ -83,19 +96,20 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsMutationOnConstructors(type, true);
+            await checker.PreventsMutationOnConstructors(type, true).ConfigureAwait(false);
         }
 
-        CreateInstanceAndTestMethods(type, localOptions, checker.PreventsMutationOnMethods);
+        await CreateInstanceAndTestMethods(type, localOptions, checker.PreventsMutationOnMethods)
+            .ConfigureAwait(false);
 
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsMutationOnStatics(type, true);
+            await checker.PreventsMutationOnStatics(type, true).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual void PreventsParameterMutation<T>(
+    public virtual async Task PreventsParameterMutation<T>(
         T instance,
         TesterMod? optionConfiguration = null
     )
@@ -107,46 +121,46 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            checker.PreventsMutationOnConstructors(typeof(T), false);
+            await checker.PreventsMutationOnConstructors(typeof(T), false).ConfigureAwait(false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            checker.PreventsMutationOnMethods(instance);
+            await checker.PreventsMutationOnMethods(instance).ConfigureAwait(false);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            checker.PreventsMutationOnStatics(typeof(T), false);
+            await checker.PreventsMutationOnStatics(typeof(T), false).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual void PassthroughWithNoExceptions<T>(TesterMod? optionConfiguration = null)
+    public virtual Task PassthroughWithNoExceptions<T>(TesterMod? optionConfiguration = null)
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         object instance = localOptions.Randomizer.Create<Injected<T>>()!.Dummy!;
 
-        new ExceptionGuarder(localOptions).CallAllMethods(instance);
+        return new ExceptionGuarder(localOptions).CallAllMethods(instance);
     }
 
     /// <inheritdoc/>
-    public virtual void PassthroughWithNoExceptions(
+    public virtual Task PassthroughWithNoExceptions(
         object instance,
         TesterMod? optionConfiguration = null
     )
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        new ExceptionGuarder(localOptions).CallAllMethods(instance);
+        return new ExceptionGuarder(localOptions).CallAllMethods(instance);
     }
 
     /// <summary>Attempts to test all methods.</summary>
     /// <param name="type">Type being tested.</param>
     /// <param name="localOptions">Configured options to use.</param>
     /// <param name="checker">Test to run.</param>
-    private static void CreateInstanceAndTestMethods(
+    private static async Task CreateInstanceAndTestMethods(
         Type type,
         TesterOptions localOptions,
-        Action<object> checker
+        Func<object, Task> checker
     )
     {
         if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
@@ -157,7 +171,7 @@ public class Tester(TesterOptions options) : ITester
                     : localOptions.Randomizer.Create(type);
             try
             {
-                checker.Invoke(instance);
+                await checker.Invoke(instance).ConfigureAwait(false);
             }
             finally
             {
@@ -167,7 +181,7 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void ProvidesTestClassCoverage(
+    public virtual Task ProvidesTestClassCoverage(
         Assembly codeAssembly,
         TesterMod? optionConfiguration = null
     )
@@ -211,6 +225,8 @@ public class Tester(TesterOptions options) : ITester
                 .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
             "Missing tests for classes."
         );
+
+        return Task.CompletedTask;
     }
 }
 

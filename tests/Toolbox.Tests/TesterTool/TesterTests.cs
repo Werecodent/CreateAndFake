@@ -34,45 +34,56 @@ public static class TesterTests
     }
 
     [Fact]
-    internal static void Tester_GuardsNulls()
+    internal static async Task Tester_GuardsNulls()
     {
-        Tools.Asserter.Throws<ArgumentNullException>(
-            () => _ShortTestInstance.PreventsNullRefException(null)
-        );
-        Tools.Asserter.Throws<ArgumentNullException>(
-            () => _ShortTestInstance.PreventsParameterMutation(null)
-        );
+        Type nullType = null;
+        await nullType
+            .Assert(t => _ShortTestInstance.PreventsNullRefException(t))
+            .Throws<ArgumentNullException>();
+        await nullType
+            .Assert(t => _ShortTestInstance.PreventsParameterMutation(t))
+            .Throws<ArgumentNullException>();
     }
 
     [Fact]
-    internal static void PreventsNullRefException_Disposes()
+    internal static async Task PreventsNullRefException_Disposes()
     {
-        lock (MockDisposableSample._Lock)
+        await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
+        try
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            _LongTestInstance.PreventsNullRefException<MockDisposableSample>();
+            await _LongTestInstance.PreventsNullRefException<MockDisposableSample>();
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Exactly(2), d => d.Dispose());
         }
+        finally
+        {
+            MockDisposableSample._Lock.Release();
+        }
     }
 
     [Fact]
-    internal static void PreventsParameterMutation_Disposes()
+    internal static async Task PreventsParameterMutation_Disposes()
     {
-        lock (MockDisposableSample._Lock)
+        await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
+        try
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            _LongTestInstance.PreventsParameterMutation<MockDisposableSample>();
+            await _LongTestInstance.PreventsParameterMutation<MockDisposableSample>();
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Exactly(2), d => d.Dispose());
+        }
+        finally
+        {
+            MockDisposableSample._Lock.Release();
         }
     }
 }

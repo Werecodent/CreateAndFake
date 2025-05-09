@@ -6,18 +6,18 @@ namespace CreateAndFake.MSTest.Tests;
 public class RandomDataAttributeTests
 {
     [TestMethod]
-    public void RandomDataAttribute_GuardsNulls()
+    public Task RandomDataAttribute_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }
 
     [TestMethod]
-    public void RandomDataAttribute_NoParameterMutation()
+    public Task RandomDataAttribute_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );

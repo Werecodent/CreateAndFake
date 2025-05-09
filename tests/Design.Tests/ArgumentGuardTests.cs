@@ -3,15 +3,15 @@
 public static class ArgumentGuardTests
 {
     [Fact]
-    public static void ArgumentGuard_GuardsNulls()
+    public static Task ArgumentGuard_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(ArgumentGuard));
+        return Tools.Tester.PreventsNullRefException(typeof(ArgumentGuard));
     }
 
     [Fact]
-    public static void ArgumentGuard_NoParameterMutation()
+    public static Task ArgumentGuard_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(ArgumentGuard));
+        return Tools.Tester.PreventsParameterMutation(typeof(ArgumentGuard));
     }
 
     [Theory, RandomData]

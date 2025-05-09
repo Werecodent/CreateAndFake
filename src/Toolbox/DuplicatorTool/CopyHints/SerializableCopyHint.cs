@@ -11,7 +11,7 @@ public sealed class SerializableCopyHint : CopyHint
     {
         if (source is ISerializable)
         {
-            ContentMap contents = duplicator.Options.Extractor.Extract(source);
+            IContentMap contents = duplicator.Options.Extractor.Extract(source);
 
             DataContractSerializer serializer = new(
                 source.GetType(),

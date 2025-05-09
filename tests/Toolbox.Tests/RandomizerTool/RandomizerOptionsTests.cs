@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.RandomizerTool;
 public static class RandomizerOptionsTests
 {
     [Fact]
-    internal static void RandomizerOptions_GuardsNulls()
+    internal static Task RandomizerOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<RandomizerOptions>();
+        return Tools.Tester.PreventsNullRefException<RandomizerOptions>();
     }
 
     [Fact]
-    internal static void RandomizerOptions_NoParameterMutation()
+    internal static Task RandomizerOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<RandomizerOptions>();
+        return Tools.Tester.PreventsParameterMutation<RandomizerOptions>();
     }
 
     [Fact]

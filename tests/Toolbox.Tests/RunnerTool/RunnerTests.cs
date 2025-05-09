@@ -8,9 +8,9 @@ namespace CreateAndFake.Tests.RunnerTool;
 public static class RunnerTests
 {
     [Fact]
-    internal static void Runner_GuardsNulls()
+    internal static Task Runner_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Runner>(opt =>
+        return Tools.Tester.PreventsNullRefException<Runner>(opt =>
             opt with
             {
                 InjectionValues = [GetGeneratableMethod()],
@@ -19,9 +19,9 @@ public static class RunnerTests
     }
 
     [Fact]
-    internal static void Runner_NoParameterMutation()
+    internal static Task Runner_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Runner>(opt =>
+        return Tools.Tester.PreventsParameterMutation<Runner>(opt =>
             opt with
             {
                 InjectionValues = [GetGeneratableMethod()],

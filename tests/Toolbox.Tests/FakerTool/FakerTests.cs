@@ -8,15 +8,15 @@ namespace CreateAndFake.Tests.FakerTool;
 public static class FakerTests
 {
     [Fact]
-    internal static void Faker_GuardsNulls()
+    internal static Task Faker_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Faker>();
+        return Tools.Tester.PreventsNullRefException<Faker>();
     }
 
     [Fact]
-    internal static void Faker_NoParameterMutation()
+    internal static Task Faker_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Faker>();
+        return Tools.Tester.PreventsParameterMutation<Faker>();
     }
 
     [Fact]

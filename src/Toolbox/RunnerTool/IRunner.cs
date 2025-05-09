@@ -16,7 +16,7 @@ public interface IRunner
     /// <param name="instance">Instance whose methods to call.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
     /// <returns>Results of the method calls.</returns>
-    RunResults CallMethodsOn(object instance, RunnerMod? optionConfiguration = null);
+    Task<RunResults> CallMethodsOn(object instance, RunnerMod? optionConfiguration = null);
 
     /// <summary>
     ///     Constructs the parameters for <paramref name="method"/>.
@@ -41,5 +41,23 @@ public interface IRunner
         MethodBase method,
         RunnerMod optionConfiguration,
         params IEnumerable<object?>? values
+    );
+
+    /// <summary>Runs the given method on the instance.</summary>
+    /// <param name="instance">Instance to run on.</param>
+    /// <param name="method">Method to run.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <returns>Results of the run.</returns>
+    Task<RunResult> Run(object? instance, MethodInfo method, RunnerMod? optionConfiguration = null);
+
+    // <summary>Runs the given method on the instance.</summary>
+    /// <param name="instance">Instance to run on.</param>
+    /// <param name="data">Method to run.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <returns>Results of the run.</returns>
+    Task<RunResult> Run(
+        object? instance,
+        MethodCallWrapper data,
+        RunnerMod? optionConfiguration = null
     );
 }

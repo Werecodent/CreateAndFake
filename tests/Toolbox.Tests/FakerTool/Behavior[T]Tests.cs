@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.FakerTool;
 public static class Behavior_T_Tests
 {
     [Fact]
-    internal static void Behavior_T_GuardsNulls()
+    internal static Task Behavior_T_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(Behavior<>));
+        return Tools.Tester.PreventsNullRefException(typeof(Behavior<>));
     }
 
     [Fact]
-    internal static void Behavior_T_NoParameterMutation()
+    internal static Task Behavior_T_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(Behavior<>));
+        return Tools.Tester.PreventsParameterMutation(typeof(Behavior<>));
     }
 
     [Fact]

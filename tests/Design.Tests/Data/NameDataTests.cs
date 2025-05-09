@@ -5,15 +5,15 @@ namespace CreateAndFake.Design.Tests.Data;
 public static class NameDataTests
 {
     [Fact]
-    public static void NameData_GuardsNulls()
+    public static Task NameData_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(NameData));
+        return Tools.Tester.PreventsNullRefException(typeof(NameData));
     }
 
     [Fact]
-    public static void NameData_NoParameterMutation()
+    public static Task NameData_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(NameData));
+        return Tools.Tester.PreventsParameterMutation(typeof(NameData));
     }
 
     [Fact]

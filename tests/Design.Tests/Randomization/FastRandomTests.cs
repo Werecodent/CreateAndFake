@@ -19,15 +19,15 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     ];
 
     [Fact]
-    internal static void FastRandom_GuardsNulls()
+    internal static Task FastRandom_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<FastRandom>();
+        return Tools.Tester.PreventsNullRefException<FastRandom>();
     }
 
     [Fact]
-    internal static void FastRandom_NoParameterMutation()
+    internal static Task FastRandom_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<FastRandom>();
+        return Tools.Tester.PreventsParameterMutation<FastRandom>();
     }
 
     [Fact]

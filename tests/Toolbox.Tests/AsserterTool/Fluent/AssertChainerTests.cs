@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public static class AssertChainerTests
 {
     [Fact]
-    internal static void AssertChainer_GuardsNulls()
+    internal static Task AssertChainer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertChainer<object>>();
+        return Tools.Tester.PreventsNullRefException<AssertChainer<object>>();
     }
 
     [Fact]
-    internal static void AssertChainer_NoParameterMutation()
+    internal static Task AssertChainer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertChainer<object>>();
+        return Tools.Tester.PreventsParameterMutation<AssertChainer<object>>();
     }
 
     [Theory, RandomData]

@@ -12,16 +12,16 @@ public abstract class DataContextTestBase<T>
 {
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
-    public void DataContext_GuardsNulls()
+    public Task DataContext_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>();
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public void DataContext_NoParameterMutation()
+    public Task DataContext_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<T>(opt =>
+        return Tools.Tester.PreventsParameterMutation<T>(opt =>
             opt with
             {
                 InjectionValues = [new FastRandom()],

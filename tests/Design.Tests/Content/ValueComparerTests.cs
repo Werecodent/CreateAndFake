@@ -13,15 +13,15 @@ public static class ValueComparerTests
     private static readonly int[] _TwoValues = [0, 0];
 
     [Fact]
-    internal static void ValueComparer_GuardsNulls()
+    internal static Task ValueComparer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ValueComparer>();
+        return Tools.Tester.PreventsNullRefException<ValueComparer>();
     }
 
     [Fact]
-    internal static void ValueComparer_NoParameterMutation()
+    internal static Task ValueComparer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ValueComparer>();
+        return Tools.Tester.PreventsParameterMutation<ValueComparer>();
     }
 
     [Fact]

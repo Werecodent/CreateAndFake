@@ -16,9 +16,9 @@ public static class Issue015Tests
     }
 
     [Fact]
-    internal static void Issue015_GuardsParameterMutation()
+    internal static Task Issue015_GuardsParameterMutation()
     {
-        typeof(Sample)
+        return typeof(Sample)
             .Assert(t => Tools.Tester.PreventsParameterMutation(t))
             .Throws<AssertException>();
     }

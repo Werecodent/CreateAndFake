@@ -9,15 +9,15 @@ namespace CreateAndFake.Tests.TesterTool;
 public static class TesterOptionsTests
 {
     [Fact]
-    internal static void TesterOptions_GuardsNulls()
+    internal static Task TesterOptions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<TesterOptions>();
+        return Tools.Tester.PreventsNullRefException<TesterOptions>();
     }
 
     [Fact]
-    internal static void TesterOptions_NoParameterMutation()
+    internal static Task TesterOptions_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<TesterOptions>();
+        return Tools.Tester.PreventsParameterMutation<TesterOptions>();
     }
 
     [Fact]

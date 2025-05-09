@@ -7,21 +7,21 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public static class AssertComparableTests
 {
     [Fact]
-    internal static void AssertComparable_GuardsNulls()
+    internal static Task AssertComparable_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertComparable>();
+        return Tools.Tester.PreventsNullRefException<AssertComparable>();
     }
 
     [Fact]
-    internal static void AssertComparable_NoParameterMutation()
+    internal static Task AssertComparable_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertComparable>();
+        return Tools.Tester.PreventsParameterMutation<AssertComparable>();
     }
 
     [Theory, RandomData]
-    internal static void AssertComparable_CallsAndChains(Injected<AssertComparable> instance)
+    internal static async Task AssertComparable_CallsAndChains(Injected<AssertComparable> instance)
     {
-        RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertComparable>)

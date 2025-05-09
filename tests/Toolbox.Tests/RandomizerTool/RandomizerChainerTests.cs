@@ -6,15 +6,15 @@ namespace CreateAndFake.Tests.RandomizerTool;
 public static class RandomizerChainerTests
 {
     [Fact]
-    internal static void RandomizerChainer_GuardsNulls()
+    internal static Task RandomizerChainer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<RandomizerChainer>();
+        return Tools.Tester.PreventsNullRefException<RandomizerChainer>();
     }
 
     [Fact]
-    internal static void RandomizerChainer_NoParameterMutation()
+    internal static Task RandomizerChainer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<RandomizerChainer>();
+        return Tools.Tester.PreventsParameterMutation<RandomizerChainer>();
     }
 
     [Fact]

@@ -7,21 +7,21 @@ namespace CreateAndFake.Tests.AsserterTool.Fluent;
 public static class AssertObjectTests
 {
     [Fact]
-    internal static void AssertObject_GuardsNulls()
+    internal static Task AssertObject_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<AssertObject>();
+        return Tools.Tester.PreventsNullRefException<AssertObject>();
     }
 
     [Fact]
-    internal static void AssertObject_NoParameterMutation()
+    internal static Task AssertObject_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<AssertObject>();
+        return Tools.Tester.PreventsParameterMutation<AssertObject>();
     }
 
     [Theory, RandomData]
-    internal static void AssertObject_CallsAndChains(Injected<AssertObject> instance)
+    internal static async Task AssertObject_CallsAndChains(Injected<AssertObject> instance)
     {
-        RunResults results = Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertObject>)

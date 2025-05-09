@@ -3,15 +3,15 @@
 public static class ToolSetTests
 {
     [Fact]
-    internal static void ToolSet_GuardsNulls()
+    internal static Task ToolSet_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<ToolSet>();
+        return Tools.Tester.PreventsNullRefException<ToolSet>();
     }
 
     [Fact]
-    internal static void ToolSet_NoParameterMutation()
+    internal static Task ToolSet_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<ToolSet>();
+        return Tools.Tester.PreventsParameterMutation<ToolSet>();
     }
 
     [Fact]

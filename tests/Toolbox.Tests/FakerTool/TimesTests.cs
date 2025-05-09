@@ -5,15 +5,15 @@ namespace CreateAndFake.Tests.FakerTool;
 public static class TimesTests
 {
     [Fact]
-    internal static void Times_GuardsNulls()
+    internal static Task Times_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException<Times>();
+        return Tools.Tester.PreventsNullRefException<Times>();
     }
 
     [Fact]
-    internal static void Times_NoParameterMutation()
+    internal static Task Times_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation<Times>();
+        return Tools.Tester.PreventsParameterMutation<Times>();
     }
 
     [Fact]

@@ -2,6 +2,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.RunnerTool;
 
 #pragma warning disable CA1822 // Member does not access instance data and can be marked static
 
@@ -58,7 +59,11 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="instance">Instance whose methods to test.</param>
-    protected void CallAllMethods(MethodBase? testOrigin, ParameterInfo? testParam, object instance)
+    protected async Task CallAllMethods(
+        MethodBase? testOrigin,
+        ParameterInfo? testParam,
+        object instance
+    )
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
@@ -68,11 +73,12 @@ internal abstract class BaseGuarder(TesterOptions options)
                 .Select(m => GenericFixer.FixMethod(m, options))
         )
         {
-            object?[] data = [.. options.Runner.CreateFor(method, Options.InjectionValues).Args];
+            MethodCallWrapper data = options.Runner.CreateFor(method, Options.InjectionValues);
             try
             {
                 Disposer.Cleanup(
-                    RunCheck(testOrigin ?? method, testParam, () => method.Invoke(instance, data)!)
+                    await RunCheck(testOrigin ?? method, testParam, instance, data)
+                        .ConfigureAwait(false)
                 );
             }
             finally
@@ -85,61 +91,34 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <summary>Runs the check.</summary>
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
-    /// <param name="call">Call to invoke and test.</param>
+    /// <param name="data">Call to invoke and test.</param>
     /// <returns>Returned result from the call.</returns>
-    protected object? RunCheck(MethodBase testOrigin, ParameterInfo? testParam, Func<object> call)
+    protected async Task<object?> RunCheck(
+        MethodBase testOrigin,
+        ParameterInfo? testParam,
+        object? instance,
+        MethodCallWrapper data
+    )
     {
         ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
-        ArgumentGuard.ThrowIfNull(call, nameof(call));
-        try
-        {
-            Task<object?> task = Task.Run(() => UnwrapTaskResult(call.Invoke()));
-            if (!task.Wait(Timeout))
-            {
-                throw new TimeoutException(
-                    $"Attempting to run method '{testOrigin.Name}' timed out."
-                );
-            }
-            return task.Result;
-        }
-        catch (AggregateException taskException) when (taskException.InnerExceptions.Count == 1)
-        {
-            Exception actual = taskException.InnerExceptions.Single();
-            if (actual is TargetInvocationException ex)
-            {
-                actual = ex.InnerException!;
-            }
 
-            if (HandleCheckException(testOrigin, testParam, actual))
+        RunResult result = await Options
+            .Runner.Run(instance, data, opt => opt with { Timeout = Timeout })
+            .ConfigureAwait(false);
+        if (!result.ThrewException)
+        {
+            return result.Result;
+        }
+        else
+        {
+            if (HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
             {
                 return null;
             }
             else
             {
-                throw actual;
+                throw (Exception)result.Result!;
             }
-        }
-    }
-
-    /// <summary>Ensures the result is completed.</summary>
-    /// <param name="result">Potentially wrapped data.</param>
-    /// <returns>The unwrapped result.</returns>
-    private object? UnwrapTaskResult(object? result)
-    {
-        while (result is ValueTask or Task)
-        {
-            PropertyInfo? prop = result.GetType().GetProperty("Result");
-            result = prop?.GetValue(result);
-        }
-
-        if (result is IEnumerable collection)
-        {
-            // Required to execute yield return methods.
-            return collection.OfType<object>().ToArray();
-        }
-        else
-        {
-            return result;
         }
     }
 

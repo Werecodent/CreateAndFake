@@ -30,7 +30,7 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public ContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
+    public IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
     {
         ExtractorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 

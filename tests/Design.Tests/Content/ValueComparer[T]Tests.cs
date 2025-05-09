@@ -6,15 +6,15 @@ namespace CreateAndFake.Design.Tests.Content;
 public static class ValueComparer_T_Tests
 {
     [Fact]
-    internal static void ValueComparer_GuardsNulls()
+    internal static Task ValueComparer_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(ValueComparer<>));
+        return Tools.Tester.PreventsNullRefException(typeof(ValueComparer<>));
     }
 
     [Fact]
-    internal static void ValueComparer_NoParameterMutation()
+    internal static Task ValueComparer_NoParameterMutation()
     {
-        Tools.Tester.PreventsParameterMutation(typeof(ValueComparer<>));
+        return Tools.Tester.PreventsParameterMutation(typeof(ValueComparer<>));
     }
 
     [Theory, RandomData]

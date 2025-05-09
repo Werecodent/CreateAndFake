@@ -6,9 +6,9 @@ namespace CreateAndFake.Tests.Extensions;
 public static class TypeExtensionsTests
 {
     [Fact]
-    internal static void TypeExtensions_GuardsNulls()
+    internal static Task TypeExtensions_GuardsNulls()
     {
-        Tools.Tester.PreventsNullRefException(typeof(TypeExtensions));
+        return Tools.Tester.PreventsNullRefException(typeof(TypeExtensions));
     }
 
     [Fact]
