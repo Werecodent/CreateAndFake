@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CreateAndFake.AsserterTool;
+﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;

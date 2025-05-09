@@ -18,13 +18,13 @@ internal static class Program
     public static Task Main(string[] args)
     {
         string[] configurations = ["Debug", "Release"];
-        Target("default", DependsOn("test"));
+        Target("default", dependsOn: ["test"]);
         Target("restore", Restore);
-        Target("compile", DependsOn("restore"), ForEach(configurations), Compile);
-        Target("test", DependsOn("compile"), ForEach(configurations), Test);
-        Target("coverage", DependsOn("compile"), Coverage);
-        Target("pack", DependsOn("compile"), Pack);
-        Target("debugCrash", DependsOn("compile"), DebugCrash);
+        Target("compile", dependsOn: ["restore"], forEach: configurations, Compile);
+        Target("test", dependsOn: ["compile"], forEach: configurations, Test);
+        Target("coverage", dependsOn: ["compile"], Coverage);
+        Target("pack", dependsOn: ["compile"], Pack);
+        Target("debugCrash", dependsOn: ["compile"], DebugCrash);
         return RunTargetsAndExitAsync(args);
     }
 
