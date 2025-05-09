@@ -59,9 +59,14 @@ public interface ITester
     Task PassthroughWithNoExceptions(object instance, TesterMod? optionConfiguration = null);
 
     /// <summary>
-    ///     Verifies the executing assembly has a test class for all classes in <paramref name="codeAssembly"/>.
+    ///     Verifies <paramref name="testAssembly"/> has a test class for all classes in <paramref name="codeAssembly"/>.
     /// </summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
+    /// <param name="testAssembly">Assembly with the tests.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
-    void ProvidesTestClassCoverage(Assembly codeAssembly, TesterMod? optionConfiguration = null);
+    void ProvidesTestClassCoverage(
+        Assembly codeAssembly,
+        Assembly testAssembly,
+        TesterMod? optionConfiguration = null
+    );
 }

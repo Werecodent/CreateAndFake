@@ -183,13 +183,13 @@ public class Tester(TesterOptions options) : ITester
     /// <inheritdoc/>
     public virtual void ProvidesTestClassCoverage(
         Assembly codeAssembly,
+        Assembly testAssembly,
         TesterMod? optionConfiguration = null
     )
     {
         ArgumentGuard.ThrowIfNull(codeAssembly, nameof(codeAssembly));
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-        Assembly testAssembly = Assembly.GetCallingAssembly();
         BindingFlags scope = localOptions.IncludeInternals
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
