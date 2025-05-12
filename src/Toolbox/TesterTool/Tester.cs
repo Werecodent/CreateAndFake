@@ -188,6 +188,7 @@ public class Tester(TesterOptions options) : ITester
     )
     {
         ArgumentGuard.ThrowIfNull(codeAssembly, nameof(codeAssembly));
+        ArgumentGuard.ThrowIfNull(testAssembly, nameof(testAssembly));
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         BindingFlags scope = localOptions.IncludeInternals

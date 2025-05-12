@@ -10,7 +10,13 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 public sealed class BasicCopyHint : CopyHint
 {
     /// <summary>Specific types to control via this hint.</summary>
-    private static readonly HashSet<Type> _SupportedTypes = [typeof(string), typeof(object)];
+    private static readonly HashSet<Type> _SupportedTypes =
+    [
+        typeof(string),
+        typeof(object),
+        typeof(Type),
+        typeof(Type).GetType(),
+    ];
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)

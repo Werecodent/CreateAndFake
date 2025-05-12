@@ -8,13 +8,10 @@ namespace CreateAndFake.DuplicatorTool.CopyHints;
 /// <summary>Handles cloning <see cref="ISerializable"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class SerializableCopyHint : CopyHint
 {
-    /// <summary>Reference to System.RuntimeType.</summary>
-    private static readonly Type _RuntimeType = typeof(Type).GetType();
-
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
     {
-        if (source is ISerializable && source != _RuntimeType)
+        if (source is ISerializable)
         {
             IContentMap contents = duplicator.Options.Extractor.Extract(source);
 
