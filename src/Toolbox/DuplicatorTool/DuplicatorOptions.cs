@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.DuplicatorTool;

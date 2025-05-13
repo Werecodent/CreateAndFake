@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using System.Reflection;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;

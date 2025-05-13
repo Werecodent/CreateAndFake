@@ -16,12 +16,6 @@ internal abstract class BaseGuarder(TesterOptions options)
     protected TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <summary>How long to wait for methods to complete.</summary>
-    protected TimeSpan Timeout { get; } =
-        (options.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
-            ? options.Timeout
-            : TimeSpan.FromMilliseconds(-1);
-
     /// <summary>Gets all testable constructors on a type.</summary>
     /// <param name="type">Type with the constructors to test.</param>
     /// <returns>Found constructors.</returns>
@@ -102,9 +96,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
 
-        RunResult result = await Options
-            .Runner.Run(instance, data, opt => opt with { Timeout = Timeout })
-            .ConfigureAwait(false);
+        RunResult result = await Options.Runner.Run(instance, data).ConfigureAwait(false);
         if (!result.ThrewException)
         {
             return result.Result;

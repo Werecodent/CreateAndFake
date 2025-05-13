@@ -3,18 +3,16 @@ global using RunnerMod = System.Func<
     CreateAndFake.RunnerTool.RunnerOptions
 >;
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.RunnerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
-public interface IRunner
+public interface IRunner : ITool<RunnerOptions>
 {
-    /// <summary>Configured options for <c>this</c>.</summary>
-    RunnerOptions Options { get; }
-
     /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
     /// <param name="instance">Instance whose methods to call.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>Results of the method calls.</returns>
     Task<RunResults> CallMethodsOn(object instance, RunnerMod? optionConfiguration = null);
 
@@ -34,7 +32,7 @@ public interface IRunner
     ///     Earlier types will be used to construct later types if possible.
     /// </summary>
     /// <param name="method">Method to create parameters for.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <param name="values">Starting values to inject into instances.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
     MethodCallWrapper CreateFor(
@@ -46,14 +44,14 @@ public interface IRunner
     /// <summary>Runs the given method on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
     /// <param name="method">Method to run.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>Results of the run.</returns>
     Task<RunResult> Run(object? instance, MethodInfo method, RunnerMod? optionConfiguration = null);
 
     // <summary>Runs the given method on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
     /// <param name="data">Method to run.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>Results of the run.</returns>
     Task<RunResult> Run(
         object? instance,

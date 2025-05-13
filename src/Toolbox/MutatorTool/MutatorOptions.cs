@@ -1,5 +1,5 @@
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.CompareHints;
 

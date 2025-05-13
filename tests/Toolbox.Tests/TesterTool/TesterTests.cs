@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 
@@ -10,14 +11,19 @@ public static class TesterTests
     private static readonly Tester _ShortTestInstance = new(
         Tools.Tester.Options with
         {
-            Timeout = new TimeSpan(0, 0, 0, 0, 100),
+            Runner = new Runner(
+                Tools.Runner.Options with
+                {
+                    Timeout = new TimeSpan(0, 0, 0, 0, 100),
+                }
+            ),
         }
     );
 
     private static readonly Tester _LongTestInstance = new(
         Tools.Tester.Options with
         {
-            Timeout = new TimeSpan(0, 0, 10),
+            Runner = new Runner(Tools.Runner.Options with { Timeout = new TimeSpan(0, 0, 10) }),
         }
     );
 

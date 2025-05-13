@@ -3,15 +3,13 @@ global using TesterMod = System.Func<
     CreateAndFake.TesterTool.TesterOptions
 >;
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.TesterTool;
 
 /// <summary>Automates common tests.</summary>
-public interface ITester
+public interface ITester : ITool<TesterOptions>
 {
-    /// <summary>Configured options for <c>this</c>.</summary>
-    TesterOptions Options { get; }
-
     /// <inheritdoc cref="PreventsNullRefException{T}(T,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
     Task PreventsNullRefException<T>(TesterMod? optionConfiguration = null);
@@ -28,7 +26,7 @@ public interface ITester
     /// </summary>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     Task PreventsNullRefException<T>(T instance, TesterMod? optionConfiguration = null);
 
     /// <inheritdoc cref="PreventsParameterMutation{T}(T,TesterMod)"/>
@@ -46,7 +44,7 @@ public interface ITester
     /// </summary>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     Task PreventsParameterMutation<T>(T instance, TesterMod? optionConfiguration = null);
 
     /// <inheritdoc cref="PassthroughWithNoExceptions"/>
@@ -55,7 +53,7 @@ public interface ITester
 
     /// <summary>Verifies no exceptions are thrown on any method when using injection and random data.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     Task PassthroughWithNoExceptions(object instance, TesterMod? optionConfiguration = null);
 
     /// <summary>
@@ -63,7 +61,7 @@ public interface ITester
     /// </summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
     /// <param name="testAssembly">Assembly with the tests.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     void ProvidesTestClassCoverage(
         Assembly codeAssembly,
         Assembly testAssembly,

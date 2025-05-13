@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Possible result from a tool hint.</summary>
 /// <param name="hasData"><inheritdoc cref="HasData" path="/summary"/></param>

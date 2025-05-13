@@ -1,8 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.RandomizerTool;

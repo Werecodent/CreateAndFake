@@ -4,12 +4,14 @@ global using AsserterMod = System.Func<
 >;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.AsserterTool;
 
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter
-    : IAsyncAsserter,
+    : ITool<AsserterOptions>,
+        IAsyncAsserter,
         IComparableAsserter,
         IDelegateAsserter,
         IEnumerableAsserter,
@@ -17,14 +19,11 @@ public interface IAsserter
         IStringAsserter,
         ITypeAsserter
 {
-    /// <summary>Configured options for <c>this</c>.</summary>
-    AsserterOptions Options { get; }
-
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     void Pass();
 
     /// <summary>Specifies the test is successful if it reaches this point.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     void Pass(AsserterMod? optionConfiguration);
 
     /// <inheritdoc cref="Fail(AsserterMod,string,string)"/>

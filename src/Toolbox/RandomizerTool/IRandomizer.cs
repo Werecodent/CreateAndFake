@@ -2,15 +2,13 @@
     CreateAndFake.RandomizerTool.RandomizerOptions,
     CreateAndFake.RandomizerTool.RandomizerOptions
 >;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
-public interface IRandomizer
+public interface IRandomizer : ITool<RandomizerOptions>
 {
-    /// <summary>Configured options for <c>this</c>.</summary>
-    RandomizerOptions Options { get; }
-
     /// <summary>Creates a randomized <typeparamref name="T"/> instance.</summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
@@ -19,7 +17,7 @@ public interface IRandomizer
 
     /// <summary>Creates a randomized instance.</summary>
     /// <param name="type">Type to create.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>The created instance.</returns>
     /// <exception cref="NotSupportedException">If no hint supports generating the type.</exception>
     /// <exception cref="TimeoutException">If an instance couldn't be created to match the condition.</exception>

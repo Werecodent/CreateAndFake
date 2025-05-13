@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 using CreateAndFake.Tests.TestSamples;
@@ -11,14 +12,19 @@ public static class NullGuarderTests
     private static readonly NullGuarder _ShortTestInstance = new(
         Tools.Tester.Options with
         {
-            Timeout = new TimeSpan(0, 0, 0, 0, 100),
+            Runner = new Runner(
+                Tools.Runner.Options with
+                {
+                    Timeout = new TimeSpan(0, 0, 0, 0, 100),
+                }
+            ),
         }
     );
 
     private static readonly NullGuarder _LongTestInstance = new(
         Tools.Tester.Options with
         {
-            Timeout = new TimeSpan(0, 0, 10),
+            Runner = new Runner(Tools.Runner.Options with { Timeout = new TimeSpan(0, 0, 10) }),
         }
     );
 

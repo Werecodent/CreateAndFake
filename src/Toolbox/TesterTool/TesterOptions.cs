@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool;
@@ -32,9 +32,6 @@ public record TesterOptions : IToolOptions
 
     /// <summary>Retries tests if timeout is reached.</summary>
     public Limiter Limiter { get; init; } = Limiter.Few;
-
-    /// <summary>How long to wait for tests to complete.</summary>
-    public TimeSpan Timeout { get; init; } = new(0, 0, 5);
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
@@ -79,6 +76,7 @@ public record TesterOptions : IToolOptions
                 typeof(IndexOutOfRangeException),
                 typeof(BadImageFormatException),
                 typeof(NotImplementedException),
+                typeof(ContextMarshalException),
                 typeof(MissingMethodException),
                 typeof(NullReferenceException),
                 typeof(TaskSchedulerException),
