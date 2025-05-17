@@ -97,6 +97,7 @@ public record TesterOptions : IToolOptions
                 typeof(AssertException),
                 typeof(TargetException),
                 typeof(SystemException),
+                typeof(ToolException),
             ]
         );
 }

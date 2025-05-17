@@ -2,6 +2,7 @@ using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
+using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.IssueReplication;
 

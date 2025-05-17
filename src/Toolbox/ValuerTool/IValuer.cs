@@ -25,6 +25,13 @@ public interface IValuer : IEqualityComparer<object>, IEqualityComparer
         ValuerMod? optionConfiguration = null
     );
 
+    /// <inheritdoc cref="Compare"/>
+    Task<IEnumerable<Difference>> CompareAsync(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration = null
+    );
+
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
     new bool Equals(object? x, object? y);
 
@@ -39,6 +46,9 @@ public interface IValuer : IEqualityComparer<object>, IEqualityComparer
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     bool Equals(object? x, object? y, ValuerMod? optionConfiguration = null);
 
+    /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
+    Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null);
+
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
     new int GetHashCode(object? item);
 
@@ -49,4 +59,7 @@ public interface IValuer : IEqualityComparer<object>, IEqualityComparer
     /// <exception cref="NotSupportedException">If no hint supports hashing the object.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     int GetHashCode(object? item, ValuerMod? optionConfiguration = null);
+
+    /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
+    Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null);
 }

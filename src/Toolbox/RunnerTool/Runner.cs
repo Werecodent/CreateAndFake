@@ -56,7 +56,12 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             result = typeof(Runner)
                 .GetMethod(nameof(EnumerateAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-                .MakeGenericMethod(result.GetType().GetGenericArguments())
+                .MakeGenericMethod(
+                    result
+                        .GetType()
+                        .FindConcreteInterface(typeof(IAsyncEnumerable<>))
+                        .GetGenericArguments()
+                )
                 .Invoke(null, [result]);
         }
 
@@ -96,7 +101,12 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 true,
                 typeof(Runner)
                     .GetMethod(nameof(Enumerate), BindingFlags.Static | BindingFlags.NonPublic)!
-                    .MakeGenericMethod(result.GetType().GetGenericArguments())
+                    .MakeGenericMethod(
+                        result
+                            .GetType()
+                            .FindConcreteInterface(typeof(IEnumerable<>))
+                            .GetGenericArguments()
+                    )
                     .Invoke(null, [result])
             );
         }

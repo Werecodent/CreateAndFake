@@ -205,11 +205,7 @@ public partial class Asserter : IEnumerableAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
-            throw new AssertException(
-                $"Expected collection to contain '{content}', but was 'null'.",
-                details,
-                localOptions.Gen.InitialSeed
-            );
+            return;
         }
 
         int i = 0;

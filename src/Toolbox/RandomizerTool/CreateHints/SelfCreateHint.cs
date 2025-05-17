@@ -19,7 +19,7 @@ public sealed class SelfCreateHint : CreateHint
                 typeof(Limiter),
                 rand =>
                     rand.Options.Gen.NextItem(
-                        [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score, Limiter.Quick]
+                        [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score]
                     )
             },
             {

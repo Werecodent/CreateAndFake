@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
-using CreateAndFake.ValuerTool.CompareHints;
+using CreateAndFake.ValuerTool.Engine;
+using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.ValuerTool;
 
@@ -59,6 +60,98 @@ public sealed class Valuer(ValuerOptions options) : IValuer
             : BuildHints(localOptions);
     }
 
+    internal ValuerChainer CreateChainer(ValuerMod? optionConfiguration)
+    {
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        return new ValuerChainer(localOptions, new ValuerEngine(SelectHints(localOptions)));
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<Difference> Compare(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration = null
+    )
+    {
+        string? typeName = (expected ?? actual)?.GetType().Name;
+        try
+        {
+            return CreateChainer(optionConfiguration).Compare(expected, actual);
+        }
+        catch (InsufficientExecutionStackException e)
+        {
+            throw new InsufficientExecutionStackException(
+                $"Ran into infinite generation trying to compare type '{typeName}'.",
+                e
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<Difference>> CompareAsync(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration = null
+    )
+    {
+        string? typeName = (expected ?? actual)?.GetType().Name;
+        try
+        {
+            return await CreateChainer(optionConfiguration)
+                .CompareAsync(expected, actual)
+                .ConfigureAwait(false);
+        }
+        catch (InsufficientExecutionStackException e)
+        {
+            throw new InsufficientExecutionStackException(
+                $"Ran into infinite generation trying to compare type '{typeName}'.",
+                e
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public int GetHashCode(object? item)
+    {
+        return GetHashCode(item, null);
+    }
+
+    /// <inheritdoc/>
+    public int GetHashCode(object? item, ValuerMod? optionConfiguration = null)
+    {
+        string? typeName = item?.GetType().Name;
+        try
+        {
+            return CreateChainer(optionConfiguration).GetHashCode(item);
+        }
+        catch (InsufficientExecutionStackException e)
+        {
+            throw new InsufficientExecutionStackException(
+                $"Ran into infinite generation trying to hash type '{typeName}'.",
+                e
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null)
+    {
+        string? typeName = item?.GetType().Name;
+        try
+        {
+            return await CreateChainer(optionConfiguration)
+                .GetHashCodeAsync(item)
+                .ConfigureAwait(false);
+        }
+        catch (InsufficientExecutionStackException e)
+        {
+            throw new InsufficientExecutionStackException(
+                $"Ran into infinite generation trying to hash type '{typeName}'.",
+                e
+            );
+        }
+    }
+
     /// <inheritdoc/>
     public new bool Equals(object? x, object? y)
     {
@@ -72,101 +165,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public int GetHashCode(object? item)
+    public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
     {
-        return GetHashCode(item, (ValuerMod?)null);
-    }
-
-    /// <inheritdoc/>
-    public int GetHashCode(object? item, ValuerMod? optionConfiguration = null)
-    {
-        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-
-        string? typeName = item?.GetType().Name;
-        try
-        {
-            return GetHashCode(item, new ValuerChainer(localOptions, this, GetHashCode, Compare));
-        }
-        catch (InsufficientExecutionStackException e)
-        {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to hash type '{typeName}'.",
-                e
-            );
-        }
-    }
-
-    /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="GetHashCode(object)"/>
-    private int GetHashCode(object? item, ValuerChainer chainer)
-    {
-        HashCodeHintResult? result = SelectHints(chainer.Options)
-            .Select(h => h.TryGetHashCode(item, chainer))
-            .FirstOrDefault(r => r.HasData);
-
-        if (result != null)
-        {
-            return result.Data;
-        }
-        else
-        {
-            throw new NotSupportedException(
-                $"Type '{item?.GetType().FullName}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
-            );
-        }
-    }
-
-    /// <inheritdoc/>
-    public IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
-        ValuerMod? optionConfiguration = null
-    )
-    {
-        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-
-        string? typeName = (expected ?? actual)?.GetType().Name;
-        try
-        {
-            return Compare(
-                expected,
-                actual,
-                new ValuerChainer(localOptions, this, GetHashCode, Compare)
-            );
-        }
-        catch (InsufficientExecutionStackException e)
-        {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to compare type '{typeName}'.",
-                e
-            );
-        }
-    }
-
-    /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="Compare(object,object,ValuerMod)"/>
-    private IEnumerable<Difference> Compare(object? expected, object? actual, ValuerChainer chainer)
-    {
-        if (ReferenceEquals(expected, actual))
-        {
-            return [];
-        }
-
-        DifferenceHintResult? result = SelectHints(chainer.Options)
-            .Select(h => h.TryCompare(expected, actual, chainer))
-            .FirstOrDefault(r => r.HasData);
-
-        if (result != null)
-        {
-            return result.Data!;
-        }
-        else
-        {
-            throw new NotSupportedException(
-                $"Type '{expected?.GetType().FullName}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
-            );
-        }
+        return !(await CompareAsync(x, y, optionConfiguration).ConfigureAwait(false)).Any();
     }
 }

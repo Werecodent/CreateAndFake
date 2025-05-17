@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.Design.Content;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
+using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.ValuerTool;
 
@@ -225,11 +226,6 @@ public abstract class CompareHintTestBase<T>(
     /// <param name="options">Options to pass via the chainer.</param>
     protected static ValuerChainer CreateChainer(ValuerOptions options = null)
     {
-        return new ValuerChainer(
-            options ?? Tools.Valuer.Options,
-            Tools.Valuer,
-            (o, c) => Tools.Valuer.GetHashCode(o),
-            (e, a, c) => Tools.Valuer.Compare(e, a)
-        );
+        return ((Valuer)Tools.Valuer).CreateChainer(opt => options ?? Tools.Valuer.Options);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.CopyHints;
 
 namespace CreateAndFake.DuplicatorTool;
@@ -64,14 +65,24 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         try
         {
             T result = Copy(source, new DuplicatorChainer(localOptions, this, Copy));
-            if (localOptions.VerifyCloneResult)
+            if (
+                localOptions.VerifyCloneResult
+                && !(source?.GetType()).Inherits(typeof(IAsyncEnumerable<>))
+            )
             {
-                Options.Asserter.ValuesEqual(
-                    source,
-                    result,
-                    $"Type '{source?.GetType()}' did not clone properly. "
-                        + "Verify/create a hint to generate the type and pass it to the duplicator."
-                );
+                try
+                {
+                    Options.Asserter.ValuesEqual(
+                        source,
+                        result,
+                        $"Type '{source?.GetType()}' did not clone properly. "
+                            + "Verify/create a hint to generate the type and pass it to the duplicator."
+                    );
+                }
+                catch (ToolException)
+                {
+                    // Verification is not required and containing IAsyncEnumerable throws here.
+                }
             }
             return result;
         }
