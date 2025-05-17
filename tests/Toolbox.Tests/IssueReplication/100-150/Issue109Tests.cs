@@ -1,5 +1,5 @@
 ﻿using CreateAndFake.DuplicatorTool;
-using CreateAndFake.DuplicatorTool.CopyHints;
+using CreateAndFake.DuplicatorTool.Hints;
 
 #pragma warning disable CA2227 // Change collection to read-only property setter: For testing.
 

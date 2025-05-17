@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.DuplicatorTool;
+using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.DuplicatorTool;

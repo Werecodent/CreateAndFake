@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool.CopyHints;
+using CreateAndFake.DuplicatorTool.Engine;
+using CreateAndFake.DuplicatorTool.Hints;
 
 namespace CreateAndFake.DuplicatorTool;
 

@@ -4,6 +4,7 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
+using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool;
 

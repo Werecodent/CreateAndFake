@@ -3,7 +3,8 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.CreateHints;
+using CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.RandomizerTool;
 

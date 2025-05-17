@@ -1,5 +1,5 @@
 using CreateAndFake.ExtractorTool;
-using CreateAndFake.RandomizerTool.CreateHints;
+using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.Tests.ExtractorTool;
 

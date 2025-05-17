@@ -2,6 +2,7 @@
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool;
+using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.TesterTool;
 
 namespace CreateAndFake.Tests.RandomizerTool;
