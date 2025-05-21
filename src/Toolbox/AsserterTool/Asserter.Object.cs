@@ -136,7 +136,7 @@ public partial class Asserter : IObjectAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (!localOptions.Valuer.Compare(expected, actual).Any())
+        if (localOptions.Valuer.Equals(expected, actual))
         {
             throw new AssertException(
                 $"Value inequality failed for type '{GetTypeName(expected, actual)}'.",

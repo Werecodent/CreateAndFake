@@ -1,7 +1,7 @@
 namespace CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common async test scenarios.</summary>
-public interface IAsyncAsserter
+public interface ITaskAsserter
 {
     /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,AsserterMod,string)"/>
     Task<T> ThrowsAsync<T>(Task? behavior, string? details = null)

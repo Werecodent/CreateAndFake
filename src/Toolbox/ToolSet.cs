@@ -1,4 +1,5 @@
 using CreateAndFake.AsserterTool;
+using CreateAndFake.AsyncAsserterTool;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
@@ -19,7 +20,9 @@ namespace CreateAndFake;
 /// <param name="extractor"><inheritdoc cref="Extractor" path="/summary"/></param>
 /// <param name="mutator"><inheritdoc cref="Mutator" path="/summary"/></param>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
+/// <param name="asyncAsserter"><inheritdoc cref="AsyncAsserter" path="/summary"/></param>
 /// <param name="duplicator"><inheritdoc cref="Duplicator" path="/summary"/></param>
+/// <param name="runner"><inheritdoc cref="Runner" path="/summary"/></param>
 /// <param name="tester"><inheritdoc cref="Tester" path="/summary"/></param>
 public sealed class ToolSet(
     IRandom gen,
@@ -29,6 +32,7 @@ public sealed class ToolSet(
     IExtractor extractor,
     IMutator mutator,
     IAsserter asserter,
+    IAsyncAsserter asyncAsserter,
     IDuplicator duplicator,
     IRunner runner,
     ITester tester
@@ -65,6 +69,15 @@ public sealed class ToolSet(
                 Valuer = valuer,
             }
         );
+        AsyncAsserter asyncAsserter = new(
+            new AsyncAsserterOptions
+            {
+                Gen = gen,
+                Extractor = extractor,
+                Valuer = valuer,
+                Asserter = asserter,
+            }
+        );
         Duplicator duplicator = new(
             new DuplicatorOptions { Asserter = asserter, Extractor = extractor }
         );
@@ -84,6 +97,7 @@ public sealed class ToolSet(
                 Randomizer = randomizer,
                 Duplicator = duplicator,
                 Asserter = asserter,
+                AsyncAsserter = asyncAsserter,
                 Runner = runner,
             }
         );
@@ -96,6 +110,7 @@ public sealed class ToolSet(
             extractor,
             mutator,
             asserter,
+            asyncAsserter,
             duplicator,
             runner,
             tester
@@ -122,6 +137,9 @@ public sealed class ToolSet(
 
     /// <inheritdoc cref="IAsserter"/>
     public IAsserter Asserter { get; } = asserter;
+
+    /// <inheritdoc cref="IAsyncAsserter"/>
+    public IAsyncAsserter AsyncAsserter { get; } = asyncAsserter;
 
     /// <inheritdoc cref="IDuplicator"/>
     public IDuplicator Duplicator { get; } = duplicator;

@@ -15,6 +15,12 @@ dotnet_diagnostic.CA1032.severity = none
 # Important for clarity and understanding intention.
 dotnet_diagnostic.CA1805.severity = none
 
+# CA1865: Use 'string.IndexOf(char)' instead
+# CA2249: Use "string.Contains" instead of "string.IndexOf"
+# Not available for all .NET versions.
+dotnet_diagnostic.CA1865.severity = none
+dotnet_diagnostic.CA2249.severity = none
+
 # IDE0045: 'if' statement can be simplified
 # IDE0046: Convert to conditional expression
 # Choice should be left to developer to maximize readability.

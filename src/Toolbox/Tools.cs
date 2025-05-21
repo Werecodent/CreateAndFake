@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.AsserterTool;
+using CreateAndFake.AsyncAsserterTool;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
@@ -38,6 +39,9 @@ public static class Tools
 
     /// <inheritdoc cref="ToolSet.Asserter"/>
     public static IAsserter Asserter => Source.Asserter;
+
+    /// <inheritdoc cref="ToolSet.AsyncAsserter"/>
+    public static IAsyncAsserter AsyncAsserter => Source.AsyncAsserter;
 
     /// <inheritdoc cref="ToolSet.Duplicator"/>
     public static IDuplicator Duplicator => Source.Duplicator;

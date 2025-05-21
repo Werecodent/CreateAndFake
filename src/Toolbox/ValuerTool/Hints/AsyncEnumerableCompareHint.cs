@@ -24,10 +24,19 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         ValuerChainer valuer
     )
     {
-        throw new ToolException(
-            $"Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}. "
-                + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
-        );
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        if (valuer.Options.SkipAsyncValues)
+        {
+            return [];
+        }
+        else
+        {
+            throw new ToolException(
+                $"Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}. "
+                    + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -67,10 +76,19 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override int GetHashCode(object? item, ValuerChainer valuer)
     {
-        throw new ToolException(
-            $"Cannot hash IAsyncEnumerable in synchronous context using {nameof(IValuer)}. "
-                + "Collect into a synchronous collection before attempting to hash."
-        );
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        if (valuer.Options.SkipAsyncValues)
+        {
+            return 0;
+        }
+        else
+        {
+            throw new ToolException(
+                $"Cannot hash IAsyncEnumerable in synchronous context using {nameof(IValuer)}. "
+                    + "Collect into a synchronous collection before attempting to hash."
+            );
+        }
     }
 
     /// <inheritdoc/>

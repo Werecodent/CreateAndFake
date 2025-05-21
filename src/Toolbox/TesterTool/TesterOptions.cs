@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
+using CreateAndFake.AsyncAsserterTool;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
@@ -26,6 +27,9 @@ public record TesterOptions : IToolOptions
 
     /// <summary>Handles common test scenarios.</summary>
     public required IAsserter Asserter { get; init; }
+
+    /// <summary>Handles common test scenarios.</summary>
+    public required IAsyncAsserter AsyncAsserter { get; init; }
 
     /// <summary>Handles method generation.</summary>
     public required IRunner Runner { get; init; }

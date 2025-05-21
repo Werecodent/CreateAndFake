@@ -3,11 +3,11 @@ namespace CreateAndFake.Tests.IssueReplication;
 public static class Issue096Tests
 {
     [Fact]
-    internal static void Issue096_SupportsIAsyncEnumerable()
+    internal static async Task Issue096_SupportsIAsyncEnumerable()
     {
-        TestSample<IAsyncEnumerable<int>>();
-        TestSample<IAsyncEnumerable<string>>();
-        TestSample<IAsyncEnumerable<object>>();
+        await TestSample<IAsyncEnumerable<int>>();
+        await TestSample<IAsyncEnumerable<string>>();
+        await TestSample<IAsyncEnumerable<object>>();
     }
 
     [Theory, RandomData]
@@ -23,18 +23,21 @@ public static class Issue096Tests
         count.Assert().Is(5);
     }
 
-    private static void TestSample<T>()
+    private static async Task TestSample<T>()
     {
         for (int i = 0; i < 50; i++)
         {
             T sample = Tools.Randomizer.Create<T>();
-            Tools.Asserter.IsNot(null, sample);
-            Tools.Asserter.IsNot(sample, Tools.Mutator.Variant(sample));
+            await Tools.AsyncAsserter.IsNot(null, sample);
+            await Tools.AsyncAsserter.IsNot(sample, Tools.Mutator.Variant(sample));
 
             T dupe = Tools.Duplicator.Copy(sample);
 
-            Tools.Asserter.Is(sample, dupe);
-            Tools.Asserter.Is(Tools.Valuer.GetHashCode(sample), Tools.Valuer.GetHashCode(dupe));
+            await Tools.AsyncAsserter.Is(sample, dupe);
+            await Tools.AsyncAsserter.Is(
+                await Tools.Valuer.GetHashCodeAsync(sample),
+                await Tools.Valuer.GetHashCodeAsync(dupe)
+            );
         }
     }
 }

@@ -2,8 +2,6 @@ using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsserterTool;
 
-#pragma warning disable CA2249 // Use "string.Contains" instead of "string.IndexOf": Not available for all versions.
-
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IStringAsserter
 {
@@ -163,5 +161,3 @@ public partial class Asserter : IStringAsserter
         }
     }
 }
-
-#pragma warning restore CA2249 // Use "string.Contains" instead of "string.IndexOf"

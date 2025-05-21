@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
     <PackageReference Include="nunit" Version="[3.10.0,)" />
+    <ProjectCapability Remove="TestContainer" />
   </ItemGroup>
 
 </Project>

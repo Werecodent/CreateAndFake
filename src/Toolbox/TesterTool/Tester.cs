@@ -6,8 +6,6 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.TesterTool;
 
-#pragma warning disable CA1865 // Use 'string.IndexOf(char)' instead: Not available for all versions.
-
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
@@ -228,5 +226,3 @@ public class Tester(TesterOptions options) : ITester
         );
     }
 }
-
-#pragma warning restore CA2249 // Use 'string.IndexOf(char)' instead

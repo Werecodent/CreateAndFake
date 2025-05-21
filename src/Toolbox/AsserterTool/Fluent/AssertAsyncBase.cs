@@ -12,7 +12,7 @@ public abstract class AssertAsyncBase<T>(IAsserter asserter, Func<Task?>? behavi
     /// <summary>Delegate to run assertion checks with.</summary>
     protected Func<Task?>? Behavior { get; } = behavior;
 
-    /// <inheritdoc cref="IAsyncAsserter.ThrowsAsync{T}(Func{Task},string)"/>
+    /// <inheritdoc cref="ITaskAsserter.ThrowsAsync{T}(Func{Task},string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual Task<TException> Throws<TException>(string? details = null)
         where TException : Exception
@@ -20,7 +20,7 @@ public abstract class AssertAsyncBase<T>(IAsserter asserter, Func<Task?>? behavi
         return Asserter.ThrowsAsync<TException>(Behavior, details);
     }
 
-    /// <inheritdoc cref="IAsyncAsserter.ThrowsAsync{T}(Func{Task},AsserterMod,string)"/>
+    /// <inheritdoc cref="ITaskAsserter.ThrowsAsync{T}(Func{Task},AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual Task<TException> Throws<TException>(
         AsserterMod? optionConfiguration,

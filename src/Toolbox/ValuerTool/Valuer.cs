@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -76,14 +77,11 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return CreateChainer(optionConfiguration).Compare(expected, actual);
+            return [.. CreateChainer(optionConfiguration).Compare(expected, actual)];
         }
-        catch (InsufficientExecutionStackException e)
+        catch (Exception e)
         {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to compare type '{typeName}'.",
-                e
-            );
+            throw new ToolException($"Issue comparing type '{typeName}'.", e);
         }
     }
 
@@ -97,16 +95,16 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return await CreateChainer(optionConfiguration)
-                .CompareAsync(expected, actual)
-                .ConfigureAwait(false);
+            return
+            [
+                .. await CreateChainer(optionConfiguration)
+                    .CompareAsync(expected, actual)
+                    .ConfigureAwait(false),
+            ];
         }
-        catch (InsufficientExecutionStackException e)
+        catch (Exception e)
         {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to compare type '{typeName}'.",
-                e
-            );
+            throw new ToolException($"Issue comparing type '{typeName}'.", e);
         }
     }
 
@@ -124,12 +122,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         {
             return CreateChainer(optionConfiguration).GetHashCode(item);
         }
-        catch (InsufficientExecutionStackException e)
+        catch (Exception e)
         {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to hash type '{typeName}'.",
-                e
-            );
+            throw new ToolException($"Issue hashing type '{typeName}'.", e);
         }
     }
 
@@ -143,12 +138,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
                 .GetHashCodeAsync(item)
                 .ConfigureAwait(false);
         }
-        catch (InsufficientExecutionStackException e)
+        catch (Exception e)
         {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to hash type '{typeName}'.",
-                e
-            );
+            throw new ToolException($"Issue hashing type '{typeName}'.", e);
         }
     }
 

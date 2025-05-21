@@ -66,33 +66,20 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         try
         {
             T result = Copy(source, new DuplicatorChainer(localOptions, this, Copy));
-            if (
-                localOptions.VerifyCloneResult
-                && !(source?.GetType()).Inherits(typeof(IAsyncEnumerable<>))
-            )
+            if (localOptions.VerifyCloneResult)
             {
-                try
-                {
-                    Options.Asserter.ValuesEqual(
-                        source,
-                        result,
-                        $"Type '{source?.GetType()}' did not clone properly. "
-                            + "Verify/create a hint to generate the type and pass it to the duplicator."
-                    );
-                }
-                catch (ToolException)
-                {
-                    // Verification is not required and containing IAsyncEnumerable throws here.
-                }
+                Options.Asserter.ValuesEqual(
+                    source,
+                    result,
+                    $"Type '{source?.GetType()}' did not clone properly. "
+                        + "Verify/create a hint to generate the type and pass it to the duplicator."
+                );
             }
             return result;
         }
-        catch (InsufficientExecutionStackException e)
+        catch (Exception e)
         {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to duplicate type '{source!.GetType().Name}'.",
-                e
-            );
+            throw new ToolException($"Issue duplicating type '{source!.GetType().Name}'.", e);
         }
     }
 

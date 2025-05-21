@@ -30,4 +30,7 @@ public record ValuerOptions : IToolOptions
 
     /// <summary>How long to wait for async comparisons to complete.</summary>
     public TimeSpan AsyncTimeout { get; init; } = new(0, 0, 5);
+
+    /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
+    public bool SkipAsyncValues { get; init; } = false;
 }

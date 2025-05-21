@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.DuplicatorTool;
+using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
 using NUnit.Framework.Internal;
 

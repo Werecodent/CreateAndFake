@@ -1,72 +1,77 @@
-﻿using System.Diagnostics.CodeAnalysis;
+namespace CreateAndFake.AsyncAsserterTool;
 
-namespace CreateAndFake.AsserterTool;
-
-/// <inheritdoc cref="IAsserter"/>
+/// <inheritdoc cref="IAsyncAsserter"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 /// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
-public partial class Asserter(AsserterOptions options) : IAsserter
+public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserter
 {
     /// <inheritdoc/>
-    public AsserterOptions Options { get; } =
+    public AsyncAsserterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Default option configuration to use.</summary>
-    protected AsserterMod? Unconfigured { get; } = null;
+    protected AsyncAsserterMod? Unconfigured { get; } = null;
 
     /// <summary>Merges <see cref="Options"/> with <paramref name="optionConfiguration"/>.</summary>
     /// <param name="optionConfiguration">Provided modifications of <see cref="Options"/> to merge.</param>
     /// <returns>The merged options to use.</returns>
-    protected AsserterOptions ApplyConfiguration(AsserterMod? optionConfiguration)
+    protected AsyncAsserterOptions ApplyConfiguration(AsyncAsserterMod? optionConfiguration)
     {
         return optionConfiguration?.Invoke(Options) ?? Options;
     }
 
     /// <inheritdoc/>
-    public virtual void Pass() { }
-
-    /// <inheritdoc/>
-    public virtual void Pass(AsserterMod? optionConfiguration)
+    public virtual Task Pass()
     {
-        _ = ApplyConfiguration(optionConfiguration);
+        return Pass(Unconfigured);
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
-    public virtual void Fail(string? details = null, string? content = null)
+    public virtual Task Pass(AsyncAsserterMod? optionConfiguration)
     {
-        Fail(Unconfigured, details, content);
+        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        localOptions.Asserter.Pass();
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
-    public virtual void Fail(
-        AsserterMod? optionConfiguration,
+    public virtual Task Fail(string? details = null, Task<string?>? content = null)
+    {
+        return Fail(Unconfigured, details, content);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task Fail(
+        AsyncAsserterMod? optionConfiguration,
         string? details = null,
-        string? content = null
+        Task<string?>? content = null
     )
     {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, content);
+        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        localOptions.Asserter.Fail(
+            details,
+            (content != null) ? await content.ConfigureAwait(false) : null
+        );
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
-    public virtual void Fail(Exception? exception, string? details = null)
+    public virtual Task Fail(Task<Exception?>? exception, string? details = null)
     {
-        Fail(exception, Unconfigured, details);
+        return Fail(exception, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
-    public virtual void Fail(
-        Exception? exception,
-        AsserterMod? optionConfiguration,
+    public virtual async Task Fail(
+        Task<Exception?>? exception,
+        AsyncAsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, exception);
+        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        localOptions.Asserter.Fail(
+            (exception != null) ? await exception.ConfigureAwait(false) : null,
+            details
+        );
     }
 
     /// <summary>Finds a suitable <c>Type</c> name to use for assertion messages.</summary>

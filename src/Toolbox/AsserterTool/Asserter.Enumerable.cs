@@ -164,16 +164,16 @@ public partial class Asserter : IEnumerableAsserter
         }
 
         int i = 0;
-        bool success = false;
+        bool found = false;
         StringBuilder contents = new();
         for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
         {
-            success = success || localOptions.Valuer.Equals(content, data.Current);
+            found = found || localOptions.Valuer.Equals(content, data.Current);
 
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
 
-        if (!success)
+        if (!found)
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",
@@ -209,16 +209,16 @@ public partial class Asserter : IEnumerableAsserter
         }
 
         int i = 0;
-        bool success = true;
+        bool notFound = true;
         StringBuilder contents = new();
         for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
         {
-            success &= !localOptions.Valuer.Equals(content, data.Current);
+            notFound &= !localOptions.Valuer.Equals(content, data.Current);
 
             _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
         }
 
-        if (!success)
+        if (!notFound)
         {
             throw new AssertException(
                 $"Expected collection to contain '{content}' but didn't.",

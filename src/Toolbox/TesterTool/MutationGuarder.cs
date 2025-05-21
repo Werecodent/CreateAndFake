@@ -73,11 +73,13 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
                 await CallAllMethods(method, null, result).ConfigureAwait(false);
             }
 
-            Options.Asserter.ValuesEqual(
-                copy,
-                data,
-                $"Parameter data was mutated when testing '{method.Name}'."
-            );
+            await Options
+                .AsyncAsserter.ValuesEqual(
+                    copy,
+                    data,
+                    $"Parameter data was mutated when testing '{method.Name}'."
+                )
+                .ConfigureAwait(false);
         }
         finally
         {

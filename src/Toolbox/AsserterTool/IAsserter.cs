@@ -11,12 +11,12 @@ namespace CreateAndFake.AsserterTool;
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter
     : ITool<AsserterOptions>,
-        IAsyncAsserter,
         IComparableAsserter,
         IDelegateAsserter,
         IEnumerableAsserter,
         IObjectAsserter,
         IStringAsserter,
+        ITaskAsserter,
         ITypeAsserter
 {
     /// <inheritdoc cref="Pass(AsserterMod)"/>

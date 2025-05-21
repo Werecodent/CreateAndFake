@@ -83,12 +83,6 @@ public sealed class RandomDataAttribute : DataAttribute
     /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
     private object? FixArg(object? arg)
     {
-        /*if (arg is IFaked and Type type)
-        {
-            type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType);
-            type.FullName.SetupReturn(typeof(Type).FullName);
-            type.IsArray.SetupReturn(typeof(Type).IsArray);
-        }*/
         if (arg is IFaked and IReflectableType reflectable)
         {
             reflectable.GetTypeInfo().SetupReturn(typeof(Type));
