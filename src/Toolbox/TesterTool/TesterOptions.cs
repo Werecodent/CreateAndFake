@@ -89,6 +89,7 @@ public record TesterOptions : IToolOptions
                 typeof(ArgumentNullException),
                 typeof(MemberAccessException),
                 typeof(NotSupportedException),
+                typeof(EndOfStreamException),
                 typeof(KeyNotFoundException),
                 typeof(InvalidCastException),
                 typeof(PathTooLongException),
