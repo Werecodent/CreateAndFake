@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
+using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsyncAsserterTool;
 using CreateAndFake.Design;
@@ -78,6 +79,7 @@ public record TesterOptions : IToolOptions
                 typeof(InvalidOperationException),
                 typeof(TargetInvocationException),
                 typeof(IndexOutOfRangeException),
+                typeof(EncoderFallbackException),
                 typeof(BadImageFormatException),
                 typeof(NotImplementedException),
                 typeof(ContextMarshalException),
