@@ -32,7 +32,9 @@ public static class MutatorTests
     [Theory, RandomData]
     internal static void Variant_TimesOut([Fake] IValuer fakeValuer, DataSample sample)
     {
-        fakeValuer.Equals(Arg.Any<object>(), Arg.Any<object>()).SetupReturn(true);
+        fakeValuer
+            .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
+            .SetupReturn(true);
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
             .Assert(t => t.Variant(sample))
@@ -45,7 +47,7 @@ public static class MutatorTests
     internal static void Variant_RepeatsUntilUnequal([Fake] IValuer fakeValuer, DataSample sample)
     {
         fakeValuer
-            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(true, true, true, false));
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
@@ -64,7 +66,7 @@ public static class MutatorTests
     )
     {
         fakeValuer
-            .Equals(Arg.Any<object>(), Arg.Any<object>())
+            .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })

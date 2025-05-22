@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
@@ -203,5 +204,12 @@ public sealed class Faker(FakerOptions options) : IFaker
             .FirstOrDefault()
             ?.OrderByDescending(c => c.GetParameters())
             .FirstOrDefault();
+    }
+
+    /// <inheritdoc/>
+    public IFaker WithOptions(FakerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Faker(optionConfiguration.Invoke(Options));
     }
 }

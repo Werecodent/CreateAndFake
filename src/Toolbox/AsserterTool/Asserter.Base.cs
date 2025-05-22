@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design;
 
 namespace CreateAndFake.AsserterTool;
 
@@ -96,5 +97,12 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         {
             return type?.Name;
         }
+    }
+
+    /// <inheritdoc/>
+    public IAsserter WithOptions(AsserterMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Asserter(optionConfiguration.Invoke(Options));
     }
 }

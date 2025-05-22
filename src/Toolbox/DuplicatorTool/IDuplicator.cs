@@ -10,6 +10,11 @@ namespace CreateAndFake.DuplicatorTool;
 /// <summary>Deep clones objects.</summary>
 public interface IDuplicator : ITool<DuplicatorOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IDuplicator WithOptions(DuplicatorMod optionConfiguration);
+
     /// <summary>Deep clones <paramref name="source"/>.</summary>
     /// <typeparam name="T"><c>Type</c> being cloned.</typeparam>
     /// <param name="source">Object to clone.</param>

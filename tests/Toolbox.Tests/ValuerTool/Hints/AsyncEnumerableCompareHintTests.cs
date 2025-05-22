@@ -9,7 +9,12 @@ public sealed class AsyncEnumerableCompareHintTests
 {
     private static readonly AsyncEnumerableCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [];
+    private static readonly Type[] _ValidTypes =
+    [
+        // typeof(IAsyncEnumerable<int>),
+        // typeof(IAsyncEnumerable<string>),
+        // typeof(IAsyncEnumerable<object>),
+    ];
 
     private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(object)];
 

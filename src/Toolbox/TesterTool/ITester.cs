@@ -10,6 +10,11 @@ namespace CreateAndFake.TesterTool;
 /// <summary>Automates common tests.</summary>
 public interface ITester : ITool<TesterOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    ITester WithOptions(TesterMod optionConfiguration);
+
     /// <inheritdoc cref="PreventsNullRefException{T}(T,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
     Task PreventsNullRefException<T>(TesterMod? optionConfiguration = null);

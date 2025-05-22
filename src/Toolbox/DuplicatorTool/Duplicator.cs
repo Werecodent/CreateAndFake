@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
@@ -71,6 +72,16 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
                 Options.Asserter.ValuesEqual(
                     source,
                     result,
+                    opt =>
+                        opt with
+                        {
+                            Valuer = opt.Valuer.WithOptions(valuer =>
+                                valuer with
+                                {
+                                    SkipAsyncValues = true,
+                                }
+                            ),
+                        },
                     $"Type '{source?.GetType()}' did not clone properly. "
                         + "Verify/create a hint to generate the type and pass it to the duplicator."
                 );
@@ -107,5 +118,12 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
                     + "Create a hint to generate the type and pass it to the duplicator."
             );
         }
+    }
+
+    /// <inheritdoc/>
+    public IDuplicator WithOptions(DuplicatorMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Duplicator(optionConfiguration.Invoke(Options));
     }
 }

@@ -316,4 +316,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
             );
         }
     }
+
+    /// <inheritdoc/>
+    public IRunner WithOptions(RunnerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Runner(optionConfiguration.Invoke(Options));
+    }
 }

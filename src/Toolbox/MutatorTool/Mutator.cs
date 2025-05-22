@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ExtractorTool;
 
@@ -31,7 +32,16 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                     () => Options.Randomizer.Create(type),
                     result =>
                     {
-                        if (values.All(o => !Options.Valuer.Equals(result, o)))
+                        if (
+                            values.All(o =>
+                                ArgumentGuard.IsAsynchronous(o)
+                                || !Options.Valuer.Equals(
+                                    result,
+                                    o,
+                                    opt => opt with { SkipAsyncValues = true }
+                                )
+                            )
+                        )
                         {
                             return true;
                         }
@@ -125,5 +135,12 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         }
 
         return modified;
+    }
+
+    /// <inheritdoc/>
+    public IMutator WithOptions(MutatorMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Mutator(optionConfiguration.Invoke(Options));
     }
 }

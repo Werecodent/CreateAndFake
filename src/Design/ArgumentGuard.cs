@@ -25,7 +25,7 @@ public static class ArgumentGuard
     public static bool IsAsynchronous(object? value)
     {
         return (value is Task task && !task.IsCompleted)
-            || (value?.GetType().Inherits(typeof(IAsyncEnumerable<>)) ?? false);
+            || (value?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
     }
 
     /// <summary>Prevents further execution if the parameter is asynchronous.</summary>

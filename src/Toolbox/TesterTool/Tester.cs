@@ -225,4 +225,11 @@ public class Tester(TesterOptions options) : ITester
             $"Missing tests for classes from {codeAssembly} in {testAssembly}."
         );
     }
+
+    /// <inheritdoc/>
+    public ITester WithOptions(TesterMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Tester(optionConfiguration.Invoke(Options));
+    }
 }

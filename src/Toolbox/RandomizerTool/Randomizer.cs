@@ -257,4 +257,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
             ?.OrderBy(c => c.GetParameters())
             .FirstOrDefault();
     }
+
+    /// <inheritdoc/>
+    public IRandomizer WithOptions(RandomizerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Randomizer(optionConfiguration.Invoke(Options));
+    }
 }

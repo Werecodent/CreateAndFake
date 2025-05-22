@@ -63,6 +63,87 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
+    protected override Task<IEnumerable<Difference>> CompareAsync(
+        IDictionary? expected,
+        IDictionary? actual,
+        ValuerChainer valuer
+    )
+    {
+        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        return LazyCompareAsync(expected, actual, valuer);
+    }
+
+    /// <inheritdoc cref="CompareAsync"/>
+    private static async Task<IEnumerable<Difference>> LazyCompareAsync(
+        IDictionary expected,
+        IDictionary actual,
+        ValuerChainer valuer
+    )
+    {
+        List<Difference> results = [];
+
+        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        {
+            results.Add(new Difference(expected.GetType(), actual.GetType()));
+        }
+
+        object[] expectedKeys = [.. expected.Keys.Cast<object>()];
+        object[] actualKeys = [.. actual.Keys.Cast<object>()];
+
+        foreach (object key in expectedKeys)
+        {
+            object? match = null;
+            foreach (object potentialMatch in actualKeys)
+            {
+                if (await valuer.EqualsAsync(key, potentialMatch).ConfigureAwait(false))
+                {
+                    match = potentialMatch;
+                    break;
+                }
+            }
+
+            if (match != null)
+            {
+                foreach (
+                    Difference diff in await valuer
+                        .CompareAsync(expected[key], actual[match])
+                        .ConfigureAwait(false)
+                )
+                {
+                    results.Add(new Difference($"[{key}]", diff));
+                }
+            }
+            else
+            {
+                results.Add(new Difference($"[{key}]", new Difference(expected[key], "'null'")));
+            }
+        }
+
+        foreach (object key in actualKeys)
+        {
+            object? match = null;
+            foreach (object potentialMatch in expectedKeys)
+            {
+                if (await valuer.EqualsAsync(key, potentialMatch).ConfigureAwait(false))
+                {
+                    match = potentialMatch;
+                    break;
+                }
+            }
+
+            if (match == null)
+            {
+                results.Add(new Difference($"[{key}]", new Difference("'null'", actual[key])));
+            }
+        }
+
+        return results;
+    }
+
+    /// <inheritdoc/>
     protected override int GetHashCode(IDictionary? item, ValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
@@ -72,6 +153,20 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         foreach (DictionaryEntry entry in item)
         {
             hash += valuer.GetHashCode(entry);
+        }
+        return hash;
+    }
+
+    /// <inheritdoc/>
+    protected override async Task<int> GetHashCodeAsync(IDictionary? item, ValuerChainer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(item, nameof(item));
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        int hash = ValueComparer.BaseHash;
+        foreach (DictionaryEntry entry in item)
+        {
+            hash += await valuer.GetHashCodeAsync(entry).ConfigureAwait(false);
         }
         return hash;
     }

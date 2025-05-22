@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
@@ -160,5 +161,12 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
     {
         return !(await CompareAsync(x, y, optionConfiguration).ConfigureAwait(false)).Any();
+    }
+
+    /// <inheritdoc/>
+    public IValuer WithOptions(ValuerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Valuer(optionConfiguration.Invoke(Options));
     }
 }

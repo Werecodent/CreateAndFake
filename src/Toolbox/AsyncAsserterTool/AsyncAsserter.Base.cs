@@ -1,3 +1,5 @@
+using CreateAndFake.Design;
+
 namespace CreateAndFake.AsyncAsserterTool;
 
 /// <inheritdoc cref="IAsyncAsserter"/>
@@ -101,5 +103,12 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
         {
             return type?.Name;
         }
+    }
+
+    /// <inheritdoc/>
+    public IAsyncAsserter WithOptions(AsyncAsserterMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new AsyncAsserter(optionConfiguration.Invoke(Options));
     }
 }

@@ -1,4 +1,5 @@
-﻿using CreateAndFake.FakerTool;
+﻿using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -23,11 +24,17 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.GetHashCode(null))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.GetHashCode(new object()))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
     }
 
     [Theory, RandomData]
@@ -59,11 +66,17 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(null, new object()))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(new object(), new object()))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
     }
 
     [Theory, RandomData]
@@ -150,7 +163,7 @@ public static class ValuerTests
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.Compare(item1, item2))
-            .Throws<InsufficientExecutionStackException>()
+            .Throws<ToolException>()
             .Message.Assert()
             .Contains(item1.GetType().Name);
     }
@@ -166,7 +179,7 @@ public static class ValuerTests
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Assert(v => v.GetHashCode(item))
-            .Throws<InsufficientExecutionStackException>()
+            .Throws<ToolException>()
             .Message.Assert()
             .Contains(item.GetType().Name);
     }
@@ -176,7 +189,10 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.GetHashCode(null))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
     }
 
     [Fact]
@@ -184,6 +200,9 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
             .Assert(v => v.Compare(null, new object()))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
     }
 }

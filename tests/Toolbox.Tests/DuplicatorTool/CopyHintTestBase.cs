@@ -44,7 +44,7 @@ public abstract class CopyHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public void TryCopy_SupportsValidTypes()
+    public async Task TryCopy_SupportsValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -55,12 +55,11 @@ public abstract class CopyHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 result = TestInstance.TryCopy(data, CreateChainer());
 
-                result
-                    .Assert()
-                    .Is(
-                        new CopyHintResult(data),
-                        "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."
-                    );
+                await Tools.AsyncAsserter.Is(
+                    new CopyHintResult(data),
+                    result,
+                    "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."
+                );
 
                 if (_copiesByRef || data is string)
                 {

@@ -9,6 +9,11 @@ namespace CreateAndFake.FakerTool;
 /// <summary>Creates fake objects.</summary>
 public interface IFaker : ITool<FakerOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IFaker WithOptions(FakerMod optionConfiguration);
+
     /// <summary>Determines if type <typeparamref name="T"/> can be faked.</summary>
     /// <typeparam name="T"><c>Type</c> to check.</typeparam>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.ValuerTool.Engine;
@@ -16,7 +17,8 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     private readonly HashSet<(int, int)> _compareHistory = [];
 
     /// <inheritdoc cref="ValuerOptions"/>
-    public ValuerOptions Options { get; } = options;
+    public ValuerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <summary>Callback mechanism..</summary>
     private readonly ValuerEngine _engine =
@@ -180,5 +182,12 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
     {
         return !(await CompareAsync(x, y, optionConfiguration).ConfigureAwait(false)).Any();
+    }
+
+    /// <inheritdoc/>
+    public IValuer WithOptions(ValuerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new ValuerChainer(optionConfiguration.Invoke(Options), engine);
     }
 }

@@ -10,6 +10,11 @@ namespace CreateAndFake.RunnerTool;
 /// <summary>Creates objects and populates them with random values.</summary>
 public interface IRunner : ITool<RunnerOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IRunner WithOptions(RunnerMod optionConfiguration);
+
     /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
     /// <param name="instance">Instance whose methods to call.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>

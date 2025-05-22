@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design;
 
 namespace CreateAndFake.ExtractorTool;
 
@@ -167,5 +168,12 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         {
             FlattenData(field.FieldType, field.GetValue(source), foundData, options);
         }
+    }
+
+    /// <inheritdoc/>
+    public IExtractor WithOptions(ExtractorMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new Extractor(optionConfiguration.Invoke(Options));
     }
 }

@@ -9,6 +9,11 @@ namespace CreateAndFake.RandomizerTool;
 /// <summary>Creates objects and populates them with random values.</summary>
 public interface IRandomizer : ITool<RandomizerOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IRandomizer WithOptions(RandomizerMod optionConfiguration);
+
     /// <summary>Creates a randomized <typeparamref name="T"/> instance.</summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>

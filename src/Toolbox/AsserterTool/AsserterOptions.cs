@@ -19,7 +19,4 @@ public record AsserterOptions : IToolOptions
 
     /// <summary>Options to use when performing <c>String</c> comparison (such as ignoring case or symbols).</summary>
     public StringComparison StringCompareOption { get; init; } = StringComparison.InvariantCulture;
-
-    /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
-    public bool SkipAsyncValues { get; init; } = false;
 }

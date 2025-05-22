@@ -69,6 +69,56 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc/>
+    protected override Task<IEnumerable<Difference>> CompareAsync(
+        object? expected,
+        object? actual,
+        ValuerChainer valuer
+    )
+    {
+        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        return LazyCompareAsync(expected, actual, valuer);
+    }
+
+    /// <inheritdoc cref="Compare"/>
+    private async Task<IEnumerable<Difference>> LazyCompareAsync(
+        object expected,
+        object actual,
+        ValuerChainer valuer
+    )
+    {
+        List<Difference> results = [];
+        Type type = expected.GetType();
+
+        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        {
+            foreach (
+                Difference diff in await valuer
+                    .CompareAsync(property.GetValue(expected), property.GetValue(actual))
+                    .ConfigureAwait(false)
+            )
+            {
+                results.Add(new Difference(property, diff));
+            }
+        }
+
+        foreach (FieldInfo field in expected.GetType().GetFields(scope))
+        {
+            foreach (
+                Difference diff in await valuer
+                    .CompareAsync(field.GetValue(expected), field.GetValue(actual))
+                    .ConfigureAwait(false)
+            )
+            {
+                results.Add(new Difference(field, diff));
+            }
+        }
+        return results;
+    }
+
+    /// <inheritdoc/>
     protected override int GetHashCode(object? item, ValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
@@ -86,6 +136,32 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         foreach (FieldInfo field in type.GetFields(scope))
         {
             hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(field.GetValue(item));
+        }
+
+        return hash;
+    }
+
+    /// <inheritdoc/>
+    protected override async Task<int> GetHashCodeAsync(object? item, ValuerChainer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(item, nameof(item));
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        Type type = item.GetType();
+        int hash = ValueComparer.BaseHash + type.GetHashCode();
+
+        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        {
+            hash =
+                hash * ValueComparer.HashMultiplier
+                + await valuer.GetHashCodeAsync(property.GetValue(item)).ConfigureAwait(false);
+        }
+
+        foreach (FieldInfo field in type.GetFields(scope))
+        {
+            hash =
+                hash * ValueComparer.HashMultiplier
+                + await valuer.GetHashCodeAsync(field.GetValue(item)).ConfigureAwait(false);
         }
 
         return hash;

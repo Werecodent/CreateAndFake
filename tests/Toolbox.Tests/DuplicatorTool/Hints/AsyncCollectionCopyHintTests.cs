@@ -18,9 +18,9 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal static void TryCopy_Empty([Size(0)] IAsyncEnumerable<int> items)
+    internal static Task TryCopy_Empty([Size(0)] IAsyncEnumerable<int> items)
     {
-        items.CreateDeepClone().Assert().Is(items);
+        return Tools.AsyncAsserter.Is(items, items.CreateDeepClone());
     }
 
     [Theory, RandomData]
@@ -47,6 +47,6 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         }
         count.Assert().Is(5);
 
-        items.Assert().Is(original);
+        await Tools.AsyncAsserter.Is(original, items);
     }
 }

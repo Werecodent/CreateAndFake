@@ -9,6 +9,11 @@ namespace CreateAndFake.MutatorTool;
 /// <summary>Changes the value of objects or creates alternatives.</summary>
 public interface IMutator : ITool<MutatorOptions>
 {
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IMutator WithOptions(MutatorMod optionConfiguration);
+
     /// <typeparam name="T"><c>Type</c> to create.</typeparam>
     /// <inheritdoc cref="Variant"/>
     T Variant<T>(T instance, params IEnumerable<T?>? extraInstances);

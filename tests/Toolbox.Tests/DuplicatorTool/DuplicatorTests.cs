@@ -1,4 +1,5 @@
-﻿using CreateAndFake.DuplicatorTool;
+﻿using CreateAndFake.Design.Tooling;
+using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
 
@@ -23,7 +24,10 @@ public static class DuplicatorTests
     {
         new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })
             .Assert(d => d.Copy(new object()))
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>()
+            .InnerException.GetType()
+            .Assert()
+            .Is(typeof(NotSupportedException));
     }
 
     [Fact]
@@ -72,7 +76,7 @@ public static class DuplicatorTests
             }
         )
             .Assert(d => d.Copy(instance))
-            .Throws<InsufficientExecutionStackException>()
+            .Throws<ToolException>()
             .Message.Assert()
             .Contains(instance.GetType().Name);
     }
