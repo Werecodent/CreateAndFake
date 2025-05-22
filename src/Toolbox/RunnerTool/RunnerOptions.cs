@@ -39,7 +39,7 @@ public record RunnerOptions : IToolOptions
     public bool IncludeInstanceMethods { get; init; } = true;
 
     /// <summary>How long to wait for methods to complete.</summary>
-    public TimeSpan Timeout { get; init; } = new(0, 0, 5);
+    public TimeSpan Timeout { get; init; } = new(0, 0, 10);
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
