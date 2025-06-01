@@ -8,7 +8,6 @@ using CreateAndFake.DuplicatorTool.Engine;
 namespace CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning collections for <see cref="IDuplicator"/> .</summary>
-
 public sealed class CollectionCopyHint : CopyHint
 {
     /// <summary>Special cases where the data needs to be reversed.</summary>

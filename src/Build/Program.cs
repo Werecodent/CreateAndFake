@@ -29,9 +29,10 @@ internal static class Program
     }
 
     /// <summary>Downloads all packages for the solution.</summary>
-    private static Task Restore()
+    private static async Task Restore()
     {
-        return RunAsync("dotnet", "restore");
+        await RunAsync("dotnet", $"tool update -g csharpier");
+        await RunAsync("dotnet", "restore");
     }
 
     /// <summary>Builds the solution.</summary>

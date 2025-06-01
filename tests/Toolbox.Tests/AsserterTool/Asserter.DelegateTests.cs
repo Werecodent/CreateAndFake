@@ -91,8 +91,8 @@ public sealed class AsserterDelegateTests
     [Fact]
     internal void Throws_FuncThrows()
     {
-        _testInstance.Throws<InvalidOperationException>(
-            () => throw new InvalidOperationException()
+        _testInstance.Throws<InvalidOperationException>(() =>
+            throw new InvalidOperationException()
         );
     }
 

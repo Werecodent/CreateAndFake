@@ -21,8 +21,8 @@ public static class Issue099Tests
         int result
     )
     {
-        Tools.Asserter.Throws<NotSupportedException>(
-            () => sample.Setup(f => f.ExtendedCall(item), Behavior.Returns(result))
+        Tools.Asserter.Throws<NotSupportedException>(() =>
+            sample.Setup(f => f.ExtendedCall(item), Behavior.Returns(result))
         );
     }
 

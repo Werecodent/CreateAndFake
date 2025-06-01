@@ -1,5 +1,5 @@
-using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
@@ -13,7 +13,6 @@ public sealed class SelfCreateHintTests : CreateHintTestBase<SelfCreateHint>
         typeof(IRandom),
         typeof(ValueRandom),
         typeof(Limiter),
-        typeof(AsyncLimiter),
         typeof(ToolSet),
     ];
 

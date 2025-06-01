@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CreateAndFake.Design;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;

@@ -1,0 +1,92 @@
+using CreateAndFake.Design.Content;
+
+namespace CreateAndFake.Design.Reiteration;
+
+/// <inheritdoc cref="ILimiter"/>
+/// <param name="timeout"><inheritdoc cref="_timeout" path="/summary"/></param>
+/// <param name="tries"><inheritdoc cref="_tries" path="/summary"/></param>
+/// <param name="delay"><inheritdoc cref="_delay" path="/summary"/></param>
+public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
+    : ILimiter,
+        IEquatable<Limiter>
+{
+    /// <summary>Instance that defaults to a single attempt.</summary>
+    public static Limiter Once { get; } = new Limiter(1);
+
+    /// <summary>Instance that defaults to five attempts.</summary>
+    public static Limiter Few { get; } = new Limiter(5);
+
+    /// <summary>Instance that defaults to a dozen attempts.</summary>
+    public static Limiter Dozen { get; } = new Limiter(12);
+
+    /// <summary>Instance that defaults to a twenty attempts.</summary>
+    public static Limiter Score { get; } = new Limiter(20);
+
+    /// <summary>Instance that defaults to a hundred attempts.</summary>
+    public static Limiter Hundred { get; } = new Limiter(100);
+
+    /// <summary>Instance that defaults to a thousand attempts.</summary>
+    public static Limiter Myriad { get; } = new Limiter(1000);
+
+    /// <summary>Instance that defaults to 25 ms with a minimal delay.</summary>
+    public static Limiter Quick { get; } =
+        new Limiter(new TimeSpan(0, 0, 0, 0, 25), new TimeSpan(0, 0, 0, 0, 1));
+
+    /// <summary>Instance that defaults to half a second with a small delay.</summary>
+    public static Limiter Fast { get; } =
+        new Limiter(new TimeSpan(0, 0, 0, 0, 500), new TimeSpan(0, 0, 0, 0, 20));
+
+    /// <summary>Instance that defaults to five seconds with a large delay.</summary>
+    public static Limiter Slow { get; } =
+        new Limiter(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 0, 0, 200));
+
+    /// <summary>Maximum attempts to try.</summary>
+    private readonly int _tries = tries;
+
+    /// <summary>Maximum duration to attempt for.</summary>
+    private readonly TimeSpan _timeout = timeout;
+
+    /// <summary>Delay between attempts.</summary>
+    private readonly TimeSpan _delay = delay ?? TimeSpan.Zero;
+
+    /// <inheritdoc cref="Limiter(TimeSpan,int,TimeSpan?)"/>
+    public Limiter(int tries, TimeSpan? delay = null)
+        : this(TimeSpan.MaxValue, tries, delay) { }
+
+    /// <inheritdoc cref="Limiter(TimeSpan,int,TimeSpan?)"/>
+    public Limiter(TimeSpan timeout, TimeSpan? delay = null)
+        : this(timeout, int.MaxValue, delay) { }
+
+    /// <summary>Compares <c>this</c> to <paramref name="obj"/> by value.</summary>
+    /// <param name="obj">Instance to compare <c>this</c> with.</param>
+    /// <returns>
+    ///     <c>true</c> if <c>this</c> is equal to <paramref name="obj"/> by value;
+    ///     <c>false</c> otherwise.
+    /// </returns>
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Limiter);
+    }
+
+    /// <inheritdoc cref="IValueEquatable.ValuesEqual"/>
+    public bool Equals(Limiter? other)
+    {
+        return other != null
+            && other._delay == _delay
+            && other._tries == _tries
+            && other._timeout == _timeout;
+    }
+
+    /// <inheritdoc cref="IValueEquatable.GetValueHash"/>
+    public override int GetHashCode()
+    {
+        return ValueComparer.Use.GetHashCode(_tries, _timeout, _delay);
+    }
+
+    /// <summary>Converts <c>this</c> to a <c>string</c>.</summary>
+    /// <returns><c>string</c> representation of <c>this</c>.</returns>
+    public override string ToString()
+    {
+        return $"{_tries}-{_timeout}-{_delay}";
+    }
+}

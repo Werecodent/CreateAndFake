@@ -171,8 +171,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 ? localOptions.Timeout
                 : TimeSpan.FromMilliseconds(-1);
 
-        Task<(bool, object?)> task = Task.Run(
-            () => UnwrapTaskResult(() => data.InvokeOn(instance))
+        Task<(bool, object?)> task = Task.Run(() =>
+            UnwrapTaskResult(() => data.InvokeOn(instance))
         );
 
         if ((await Task.WhenAny(task, Task.Delay(timeout)).ConfigureAwait(false)) != task)

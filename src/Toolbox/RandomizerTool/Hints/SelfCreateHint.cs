@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -21,19 +22,6 @@ public sealed class SelfCreateHint : CreateHint
                 rand =>
                     rand.Options.Gen.NextItem(
                         [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score]
-                    )
-            },
-            {
-                typeof(AsyncLimiter),
-                rand =>
-                    rand.Options.Gen.NextItem(
-                        [
-                            AsyncLimiter.Once,
-                            AsyncLimiter.Few,
-                            AsyncLimiter.Dozen,
-                            AsyncLimiter.Score,
-                            AsyncLimiter.Quick,
-                        ]
                     )
             },
         }.ToFrozenDictionary();
