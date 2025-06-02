@@ -15,7 +15,7 @@ public interface ISyncLimiter
         CancellationToken? canceler = null
     );
 
-    /// <summary>Retries <paramref name="behavior"/> until it returns <c>true</c>.</summary>
+    /// <summary>Retries <paramref name="behavior"/> until it returns <see langword="true"/>.</summary>
     /// <inheritdoc cref="StallUntil(string,Action,Func{bool},CancellationToken?)"/>
     void StallUntil(string message, Func<bool> behavior, CancellationToken? canceler = null);
 
@@ -167,7 +167,7 @@ public interface ISyncLimiter
     /// <param name="canceler">Token indicating attempts should be canceled.</param>
     /// <returns>
     ///     Result of the successful <paramref name="behavior"/>
-    ///     attempt or <c>default</c> if limit reached.
+    ///     attempt or <see langword="default"/> if limit reached.
     /// </returns>
     /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
     /// <remarks>Beware infinite loops in <paramref name="behavior"/>.</remarks>

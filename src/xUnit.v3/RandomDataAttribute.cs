@@ -81,7 +81,7 @@ public sealed class RandomDataAttribute : DataAttribute
     /// <param name="arg">Generated Parameter argument to fix.</param>
     /// <returns><paramref name="arg"/>, modified if necessary.</returns>
     /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
-    private object? FixArg(object? arg)
+    private static object? FixArg(object? arg)
     {
         if (arg is IFaked and IReflectableType reflectable)
         {

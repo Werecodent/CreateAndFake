@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
-/// <summary></summary>
+/// <summary>Test</summary>
 /// <param name="hints"></param>
 public sealed class ValuerEngine(ImmutableArray<CompareHint> hints)
 {
@@ -46,7 +46,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> hints)
         }
 
         DifferenceHintAsyncResult? result = hints
-            .Select(h => h.TryCompareAsync(expected, actual, chainer))
+            .Select(h => h.TryAsyncCompare(expected, actual, chainer))
             .FirstOrDefault(r => r.HasData);
 
         if (result != null)
@@ -88,7 +88,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> hints)
     public Task<int> GetHashCodeAsync(object? item, ValuerChainer chainer)
     {
         HashCodeHintAsyncResult? result = hints
-            .Select(h => h.TryGetHashCodeAsync(item, chainer))
+            .Select(h => h.TryAsyncGetHashCode(item, chainer))
             .FirstOrDefault(r => r.HasData);
 
         if (result != null)

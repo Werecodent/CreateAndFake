@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Content;
 
@@ -7,12 +6,9 @@ namespace CreateAndFake.AsserterTool;
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IDelegateAsserter
 {
+#pragma warning disable CA1031 // Rethrows all at the end.
+
     /// <inheritdoc/>
-    [SuppressMessage(
-        "Design",
-        "CA1031:Do not catch general exception types",
-        Justification = "Rethrows all at end."
-    )]
     public virtual void CheckAll(params IEnumerable<Action> cases)
     {
         if (cases == null)
@@ -34,7 +30,7 @@ public partial class Asserter : IDelegateAsserter
             }
         }
 
-        if (errors.Any(e => e != null))
+        if (errors.Exists(e => e != null))
         {
             throw new AggregateException(
                 "Cases failed: "
@@ -47,6 +43,8 @@ public partial class Asserter : IDelegateAsserter
             );
         }
     }
+
+#pragma warning restore CA1031
 
     /// <inheritdoc/>
     public virtual T Throws<T>(Action? behavior, string? details = null)
@@ -91,7 +89,7 @@ public partial class Asserter : IDelegateAsserter
         return Throws<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+#pragma warning disable CA1031 // Rethrows.
 
     /// <inheritdoc/>
     public virtual T Throws<T>(
@@ -123,7 +121,7 @@ public partial class Asserter : IDelegateAsserter
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
-#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
+#pragma warning restore CA1031
 
     private static T UnwrapException<T>(
         Exception e,
@@ -153,7 +151,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Action? behavior, string? details)
+    public virtual void ThrowsNo<T>(Action? behavior, string? details = null)
         where T : Exception
     {
         ThrowsNo<T>(behavior, Unconfigured, details);
@@ -163,7 +161,7 @@ public partial class Asserter : IDelegateAsserter
     public virtual void ThrowsNo<T>(
         Action? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {
@@ -171,7 +169,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Func<object?>? behavior, string? details)
+    public virtual void ThrowsNo<T>(Func<object?>? behavior, string? details = null)
         where T : Exception
     {
         ThrowsNo<T>(behavior, Unconfigured, details);
@@ -181,7 +179,7 @@ public partial class Asserter : IDelegateAsserter
     public virtual void ThrowsNo<T>(
         Func<object?>? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {
@@ -189,7 +187,7 @@ public partial class Asserter : IDelegateAsserter
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Delegate? behavior, string? details)
+    public virtual void ThrowsNo<T>(Delegate? behavior, string? details = null)
         where T : Exception
     {
         ThrowsNo<T>(behavior, Unconfigured, details);
@@ -199,7 +197,7 @@ public partial class Asserter : IDelegateAsserter
     public virtual void ThrowsNo<T>(
         Delegate? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {

@@ -4,7 +4,7 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Design.Tests.Content;
 
-#pragma warning disable CA1859 // Change to concrete types: Needed for generic resolution.
+#pragma warning disable CA1859 // Needed for generic resolution.
 
 public static class ValueComparerTests
 {
@@ -142,4 +142,4 @@ public static class ValueComparerTests
     }
 }
 
-#pragma warning restore CA1859 // Change to concrete types
+#pragma warning restore CA1859

@@ -53,6 +53,7 @@ public static class Subclasser
     /// <param name="parent">Parent type to inherit from.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>The created child type.</returns>
+    /// <exception cref="ArgumentException"></exception>
     internal static TypeInfo CreateInfo(Type parent, params IEnumerable<Type> interfaces)
     {
         List<Type> allInterfaces = interfaces?.ToList() ?? [];
@@ -77,7 +78,8 @@ public static class Subclasser
             throw new ArgumentException(
                 "Given interfaces not actually interfaces: '"
                     + string.Join("', '", invalidInterfaces.Select(t => t.Name))
-                    + "'."
+                    + "'.",
+                nameof(interfaces)
             );
         }
 
@@ -97,18 +99,30 @@ public static class Subclasser
         {
             return (
                 false,
-                new ArgumentException($"Cannot subclass the sealed type '{parent.Name}'.")
+                new ArgumentException(
+                    $"Cannot subclass the sealed type '{parent.Name}'.",
+                    nameof(parent)
+                )
             );
         }
         else if (parent.IsPointer)
         {
-            return (false, new ArgumentException($"Cannot subclass the pointer '{parent.Name}'."));
+            return (
+                false,
+                new ArgumentException(
+                    $"Cannot subclass the pointer '{parent.Name}'.",
+                    nameof(parent)
+                )
+            );
         }
         else if (parent.ContainsGenericParameters)
         {
             return (
                 false,
-                new ArgumentException($"Cannot subclass with unspecified generics '{parent.Name}'.")
+                new ArgumentException(
+                    $"Cannot subclass with unspecified generics '{parent.Name}'.",
+                    nameof(parent)
+                )
             );
         }
         else if (!parent.IsVisibleTo(AssemblyName))
@@ -117,7 +131,8 @@ public static class Subclasser
                 false,
                 new ArgumentException(
                     $"Cannot subclass with nonpublic type '{parent.Name}'. "
-                        + $"Think about adding 'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly."
+                        + $"Think about adding 'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly.",
+                    nameof(parent)
                 )
             );
         }
@@ -125,7 +140,10 @@ public static class Subclasser
         {
             return (
                 false,
-                new ArgumentException($"Cannot subclass system reserved '{nameof(Array)}' type.")
+                new ArgumentException(
+                    $"Cannot subclass system reserved '{nameof(Array)}' type.",
+                    nameof(parent)
+                )
             );
         }
         else

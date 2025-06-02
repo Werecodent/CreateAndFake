@@ -50,7 +50,7 @@ public static class CallDataTests
         Type[] generics1
     )
     {
-        Type[] generics2 = [.. generics1.Select(t => typeof(AnyGeneric))];
+        Type[] generics2 = [.. generics1.Select(_ => typeof(AnyGeneric))];
 
         new CallData(name, generics2, data, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics1, data, null))

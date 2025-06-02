@@ -5,6 +5,8 @@ using CreateAndFake.DuplicatorTool;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
+#pragma warning disable S2696 // Thread local.
+
 /// <summary>Internal mechanism for faked object behavior.</summary>
 public sealed class FakeMetaProvider : IDuplicatable
 {
@@ -46,10 +48,7 @@ public sealed class FakeMetaProvider : IDuplicatable
         {
             _behavior.Push(set);
         }
-        foreach (CallData data in log)
-        {
-            _log.Add(data);
-        }
+        _log.AddRange(log);
     }
 
     /// <inheritdoc/>
@@ -71,6 +70,7 @@ public sealed class FakeMetaProvider : IDuplicatable
 
     /// <summary>Sets up behavior for the fake method last called.</summary>
     /// <param name="behavior">Behavior to tie to the call.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     internal static void SetLastCallBehavior(Behavior behavior)
     {
         if (_LastCall == null)
@@ -98,6 +98,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     }
 
     /// <summary>Verifies behavior with associated times were called as expected.</summary>
+    /// <exception cref="FakeVerifyException"></exception>
     internal void Verify()
     {
         (CallData, Behavior)[] invalids = [.. _behavior.Where(t => !t.Item2.HasExpectedCalls())];
@@ -110,6 +111,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <summary>Verifies the number of calls made.</summary>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="callData">Call to verify.</param>
+    /// <exception cref="FakeVerifyException"></exception>
     internal void Verify(Times times, CallData callData)
     {
         ArgumentGuard.ThrowIfNull(times, nameof(times));
@@ -124,6 +126,7 @@ public sealed class FakeMetaProvider : IDuplicatable
 
     /// <summary>Verifies the total number of calls made.</summary>
     /// <param name="times">Expected total.</param>
+    /// <exception cref="FakeVerifyException"></exception>
     internal void VerifyTotalCalls(Times times)
     {
         ArgumentGuard.ThrowIfNull(times, nameof(times));
@@ -139,6 +142,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <param name="name">Name of the method being called.</param>
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     internal void CallVoid(object instance, string name, Type[] generics, object[] args)
     {
         object? result = CallRet<object>(instance, name, generics, args);
@@ -157,6 +161,7 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <returns>Faked result previously set up.</returns>
+    /// <exception cref="FakeCallException"></exception>
     internal T? CallRet<T>(object instance, string name, Type[] generics, object[] args)
     {
         CallData data = new(name, generics, args, Options);
@@ -194,6 +199,8 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <param name="match">Behavior details.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <returns>Base method result.</returns>
+    /// <exception cref="MissingMethodException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     private static T? CallBase<T>(
         object instance,
         string name,
@@ -237,3 +244,5 @@ public sealed class FakeMetaProvider : IDuplicatable
             : Expression.GetFuncType([.. args, methodInfo.ReturnType]);
     }
 }
+
+#pragma warning restore S2696

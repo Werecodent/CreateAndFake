@@ -86,6 +86,7 @@ public class ImmutableCollectionCopyHint : CopyHint
     }
 
     /// <summary>Copies the contents of <paramref name="source"/>.</summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="source">Collection with contents to copy.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>

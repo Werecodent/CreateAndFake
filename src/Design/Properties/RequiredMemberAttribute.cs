@@ -14,6 +14,6 @@ namespace System.Runtime.CompilerServices;
     AllowMultiple = false,
     Inherited = false
 )]
-internal sealed class RequiredMemberAttribute : Attribute { }
+internal sealed class RequiredMemberAttribute : Attribute;
 
 #endif

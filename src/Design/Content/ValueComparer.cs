@@ -17,7 +17,7 @@ public sealed class ValueComparer
         IEqualityComparer<IEnumerable>,
         IEqualityComparer<IDictionary>
 {
-    /// <summary>Hash used for <c>null</c> values.</summary>
+    /// <summary>Hash used for <see langword="null"/> values.</summary>
     public static int NullHash { get; } = 0;
 
     /// <summary>Starting hash value.</summary>
@@ -33,8 +33,8 @@ public sealed class ValueComparer
     /// <param name="x">Object to compare with <paramref name="y"/>.</param>
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="x"/> equals
-    ///     <paramref name="y"/> by value; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="x"/> equals
+    ///     <paramref name="y"/> by value; <see langword="false"/> otherwise.
     /// </returns>
     public new bool Equals(object? x, object? y)
     {
@@ -88,29 +88,6 @@ public sealed class ValueComparer
     }
 
     /// <inheritdoc cref="Equals(object,object)"/>
-    private bool EqualsBySequence(IEnumerable x, IEnumerable y)
-    {
-        if (x is string)
-        {
-            return x.Equals(y);
-        }
-        else
-        {
-            IEnumerator xGen = x.GetEnumerator();
-            IEnumerator yGen = y.GetEnumerator();
-
-            while (xGen.MoveNext())
-            {
-                if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
-                {
-                    return false;
-                }
-            }
-            return !yGen.MoveNext();
-        }
-    }
-
-    /// <inheritdoc cref="Equals(object,object)"/>
     public bool Equals(IDictionary? x, IDictionary? y)
     {
         if (ReferenceEquals(x, y))
@@ -135,6 +112,29 @@ public sealed class ValueComparer
                 }
             }
             return true;
+        }
+    }
+
+    /// <inheritdoc cref="Equals(object,object)"/>
+    private bool EqualsBySequence(IEnumerable x, IEnumerable y)
+    {
+        if (x is string)
+        {
+            return x.Equals(y);
+        }
+        else
+        {
+            IEnumerator xGen = x.GetEnumerator();
+            IEnumerator yGen = y.GetEnumerator();
+
+            while (xGen.MoveNext())
+            {
+                if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
+                {
+                    return false;
+                }
+            }
+            return !yGen.MoveNext();
         }
     }
 

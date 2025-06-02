@@ -54,6 +54,7 @@
         "Ldstr",
         "Ldtoken",
         "Lindhart",
+        "Meziantou",
         "MIDDLENAME",
         "Mutatable",
         "NETCOREAPP",
@@ -69,6 +70,7 @@
         "Randomizer",
         "Reflectable",
         "reportgenerator",
+        "Roslynator",
         "runsettings",
         "signoff",
         "Stelem",
@@ -80,6 +82,7 @@
         "targetdir",
         "Unconfigured",
         "Uninstantiated",
+        "VSTHRD",
         "Xunit"
     ],
     "cSpell.ignorePaths": [

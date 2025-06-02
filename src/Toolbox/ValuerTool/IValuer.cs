@@ -43,11 +43,11 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="x"/> equals <paramref name="y"/> by value; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value; <see langword="false"/> otherwise.
     /// </returns>
     /// <exception cref="NotSupportedException">If no hint supports comparing the objects.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
-    bool Equals(object? x, object? y, ValuerMod? optionConfiguration = null);
+    bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
     Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null);
@@ -61,7 +61,7 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <exception cref="NotSupportedException">If no hint supports hashing the object.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
-    int GetHashCode(object? item, ValuerMod? optionConfiguration = null);
+    int GetHashCode(object? item, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
     Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null);

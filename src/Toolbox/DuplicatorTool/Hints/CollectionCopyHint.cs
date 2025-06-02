@@ -82,11 +82,11 @@ public sealed class CollectionCopyHint : CopyHint
         ConstructorInfo? constructor = collectionType
             .GetConstructors()
             .Where(c => c.GetParameters().Length == 1)
-            .FirstOrDefault(c => c.GetParameters().First().ParameterType.Inherits<IEnumerable>());
+            .FirstOrDefault(c => c.GetParameters()[0].ParameterType.Inherits<IEnumerable>());
 
         if (constructor != null)
         {
-            Type requiredArg = constructor.GetParameters().First().ParameterType;
+            Type requiredArg = constructor.GetParameters()[0].ParameterType;
 
             if (requiredArg == collectionType)
             {
@@ -114,7 +114,7 @@ public sealed class CollectionCopyHint : CopyHint
                 Type pair = typeof(KeyValuePair<,>).MakeGenericType(args);
                 return type.Inherits(typeof(IEnumerable<>).MakeGenericType(pair)) ? pair : null;
             case 1:
-                return args.ElementAt(0);
+                return args[0];
             case 0:
                 return type.GetElementType() ?? typeof(object);
             default:
@@ -124,6 +124,7 @@ public sealed class CollectionCopyHint : CopyHint
 
     /// <summary>Copies the contents of <paramref name="source"/>.</summary>
     /// <param name="source">Collection with contents to copy.</param>
+    /// <param name="itemType">Collection item type.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>
     /// <returns>The duplicate object.</returns>

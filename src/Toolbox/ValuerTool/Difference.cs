@@ -21,8 +21,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     }
 
     /// <inheritdoc cref="Difference"/>
-    /// <param name="expected"><c>Object</c> compared with <paramref name="actual"/>.</param>
-    /// <param name="actual"><c>Object</c> compared against <paramref name="expected"/>.</param>
+    /// <param name="expected"><see langword="object"/> compared with <paramref name="actual"/>.</param>
+    /// <param name="actual"><see langword="object"/> compared against <paramref name="expected"/>.</param>
     public Difference(object? expected, object? actual)
     {
         _message = new Lazy<string>(() => $" -> Expected:<{expected}>, Actual:<{actual}>");
@@ -51,7 +51,7 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
         ArgumentGuard.ThrowIfNull(access, nameof(access));
         ArgumentGuard.ThrowIfNull(difference, nameof(difference));
 
-        _message = new Lazy<string>(() => access + difference.ToString());
+        _message = new Lazy<string>(() => access + difference);
     }
 
     /// <inheritdoc cref="Difference"/>
@@ -81,8 +81,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
         return ValueComparer.Use.GetHashCode(_message.Value);
     }
 
-    /// <summary>Converts <c>this</c> to a <c>string</c>.</summary>
-    /// <returns><c>string</c> representation of <c>this</c>.</returns>
+    /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>
+    /// <returns><see langword="string"/> representation of <see langword="this"/>.</returns>
     public override string ToString()
     {
         return _message.Value;

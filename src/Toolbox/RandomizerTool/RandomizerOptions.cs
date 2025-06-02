@@ -37,7 +37,7 @@ public record RandomizerOptions : IToolOptions
 
     /// <summary>Characters to include in random strings.</summary>
     public FrozenSet<char> StringCharacterSet { get; init; } =
-        FrozenSet.ToFrozenSet(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+        FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
     /// <summary>If the default set of hints should be used in randomization.</summary>
     public bool IncludeDefaultHints { get; init; } = true;

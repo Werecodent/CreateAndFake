@@ -9,7 +9,7 @@ namespace CreateAndFake.DuplicatorTool;
 
 /// <inheritdoc cref="IDuplicator"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/> </param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
 {
     /// <summary>Default set of hints to use for copying.</summary>
@@ -94,6 +94,8 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         }
     }
 
+#pragma warning disable RCS1165, S2955 // Checking for only null.
+
     /// <param name="chainer">Handles cloning child values.</param>
     /// <inheritdoc cref="Copy{T}(T,DuplicatorMod)"/>
     [return: NotNullIfNotNull(nameof(source))]
@@ -119,6 +121,8 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
             );
         }
     }
+
+#pragma warning restore RCS1165, S2955
 
     /// <inheritdoc/>
     public IDuplicator WithOptions(DuplicatorMod optionConfiguration)

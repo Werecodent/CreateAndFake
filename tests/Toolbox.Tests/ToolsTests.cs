@@ -10,7 +10,7 @@ using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
 
-#pragma warning disable CA1031 // Do not catch general exception types
+#pragma warning disable CA1031 // For testing.
 
 public static class ToolsTests
 {
@@ -169,4 +169,4 @@ public static class ToolsTests
     }
 }
 
-#pragma warning restore CA1031 // Do not catch general exception types
+#pragma warning restore CA1031

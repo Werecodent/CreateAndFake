@@ -1,4 +1,4 @@
 namespace CreateAndFake.NUnit;
 
 /// <inheritdoc/>
-public sealed class StubAttribute : BaseStubAttribute { }
+public sealed class StubAttribute : BaseStubAttribute;

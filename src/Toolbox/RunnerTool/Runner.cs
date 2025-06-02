@@ -9,7 +9,7 @@ namespace CreateAndFake.RunnerTool;
 
 /// <inheritdoc cref="IRunner"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Runner(RunnerOptions options) : IRunner
 {
     /// <inheritdoc/>
@@ -24,12 +24,12 @@ public sealed class Runner(RunnerOptions options) : IRunner
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
-        RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        //RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        TimeSpan timeout =
-            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
-                ? localOptions.Timeout
-                : TimeSpan.FromMilliseconds(-1);
+        //TimeSpan timeout =
+        //    (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+        //        ? localOptions.Timeout
+        //        : TimeSpan.FromMilliseconds(-1);
 
         List<RunResult> results = [];
         foreach (
@@ -118,13 +118,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
         return (true, result);
     }
 
-    private static T[] Enumerate<T>(object asyncData)
+    private static T[] Enumerate<T>(object syncData)
     {
         List<T> results = [];
-        foreach (T item in (IEnumerable<T>)asyncData)
-        {
-            results.Add(item);
-        }
+        results.AddRange((IEnumerable<T>)syncData);
         return [.. results];
     }
 
@@ -153,7 +150,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         return Run(instance, data, optionConfiguration);
     }
 
-#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Passed.
+#pragma warning disable CA1031 // Passed in return.
 
     /// <inheritdoc/>
     public async Task<RunResult> Run(
@@ -191,7 +188,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         }
     }
 
-#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type.
+#pragma warning restore CA1031
 
     private static Exception? UnwrapException(Exception? error)
     {
@@ -257,9 +254,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerOptions localOptions
     )
     {
-        Tuple<Type, object> match = data.FirstOrDefault(t =>
-            t.Item1.Inherits(param.ParameterType)
-        )!;
+        Tuple<Type, object> match = data.Find(t => t.Item1.Inherits(param.ParameterType))!;
         if (param.IsOut)
         {
             return null;

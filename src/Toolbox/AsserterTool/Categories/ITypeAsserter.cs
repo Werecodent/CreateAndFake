@@ -3,7 +3,7 @@ namespace CreateAndFake.AsserterTool.Categories;
 /// <summary>Handles common type test scenarios.</summary>
 public interface ITypeAsserter
 {
-#pragma warning disable CA1716 // Identifiers should not match keywords: Matches existing usage.
+#pragma warning disable CA1716 // Matches existing usage.
 
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
     void Inherits<TChild>(Type? type, string? details = null);
@@ -27,7 +27,7 @@ public interface ITypeAsserter
         string? details = null
     );
 
-#pragma warning restore CA1716 // Identifiers should not match keywords.
+#pragma warning restore CA1716
 
     /// <inheritdoc cref="InheritedBy{T}(Type,AsserterMod,string)"/>
     void InheritedBy<TParent>(Type? type, string? details = null);

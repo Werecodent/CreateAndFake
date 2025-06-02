@@ -4,6 +4,8 @@ using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Design;
 
+#pragma warning disable RCS1256 // False positive.
+
 /// <summary>Handles common argument exception cases.</summary>
 public static class ArgumentGuard
 {
@@ -31,6 +33,7 @@ public static class ArgumentGuard
     /// <summary>Prevents further execution if the parameter is asynchronous.</summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="message">Error message for the potential exception.</param>
+    /// <exception cref="ToolException">If <paramref name="value"/> is async.</exception>
     [DebuggerStepThrough]
     public static void ThrowIfAsynchronous(object? value, string message)
     {
@@ -40,3 +43,5 @@ public static class ArgumentGuard
         }
     }
 }
+
+#pragma warning restore RCS1256

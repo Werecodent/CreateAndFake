@@ -325,7 +325,7 @@ public sealed partial class Limiter : ISyncLimiter
     /// <param name="elapsed">Current amount of time that has elapsed.</param>
     /// <param name="tries">Current number of attempts.</param>
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
-    /// <returns><c>true</c> if terminal condition not reached; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if terminal condition not reached; <see langword="false"/> otherwise.</returns>
     private bool DelayIfNotDone(
         string message,
         TimeSpan elapsed,
@@ -350,7 +350,8 @@ public sealed partial class Limiter : ISyncLimiter
     /// <param name="tries">Current number of attempts.</param>
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
     /// <param name="ex">Current <c>exception</c> if present.</param>
-    /// <exception cref="TimeoutException">If an attempt limit is reached.</exception>
+    /// <exception cref="TimeoutException">If the limit is reached.</exception>
+    /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrFault(
         string message,
         TimeSpan elapsed,
@@ -377,6 +378,7 @@ public sealed partial class Limiter : ISyncLimiter
     /// <summary>Faults if behavior has been canceled; delays otherwise.</summary>
     /// <param name="message">Details to include upon a timeout <c>exception</c>.</param>
     /// <param name="canceler">Token to potentially cancel the attempts.</param>
+    /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrCancel(string message, CancellationToken? canceler)
     {
         CancellationToken token = canceler ?? CancellationToken.None;

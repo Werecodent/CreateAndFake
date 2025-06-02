@@ -4,9 +4,9 @@ namespace CreateAndFake.Tests.AsserterTool;
 
 public static class AsserterTypeTests
 {
-    private interface IParentType : IChildType { }
+    private interface IParentType : IChildType;
 
-    private interface IChildType { }
+    private interface IChildType;
 
     [Fact]
     internal static void Inherits_ParentToChild()

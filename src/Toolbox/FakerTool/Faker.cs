@@ -6,7 +6,7 @@ namespace CreateAndFake.FakerTool;
 
 /// <inheritdoc cref="IFaker"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Faker(FakerOptions options) : IFaker
 {
     /// <inheritdoc/>
@@ -116,6 +116,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <param name="values">Values to inject instead where possible.</param>
     /// <param name="subclasser">Fake creation method to use.</param>
     /// <returns>The created instance with its fakes.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private Injected<T> Inject<T>(ICollection<object> values, Func<Type, Fake> subclasser)
     {
         Type[] startingTypes =
@@ -169,9 +170,7 @@ public sealed class Faker(FakerOptions options) : IFaker
 
         for (int i = 0; i < args.Length; i++)
         {
-            Tuple<Type, object>? match = data.FirstOrDefault(t =>
-                t.Item1.Inherits(info[i].ParameterType)
-            );
+            Tuple<Type, object>? match = data.Find(t => t.Item1.Inherits(info[i].ParameterType));
             if (match != default)
             {
                 args[i] = match.Item2;

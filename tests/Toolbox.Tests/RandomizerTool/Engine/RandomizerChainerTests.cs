@@ -21,7 +21,7 @@ public static class RandomizerChainerTests
     [Fact]
     internal static void Create_HandlesInfinites()
     {
-        new RandomizerChainer(Tools.Randomizer.Options, (t, c) => c.Create<ParentLoopSample>())
+        new RandomizerChainer(Tools.Randomizer.Options, (_, c) => c.Create<ParentLoopSample>())
             .Assert(c => c.Create(typeof(ChildWithParentSample), new ParentLoopSample()))
             .Throws<InfiniteLoopException>();
     }

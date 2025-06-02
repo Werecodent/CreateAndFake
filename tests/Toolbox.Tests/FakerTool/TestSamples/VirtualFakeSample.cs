@@ -2,11 +2,8 @@
 
 namespace CreateAndFake.Tests.FakerTool.TestSamples;
 
-[SuppressMessage(
-    "Microsoft.Design",
-    "CA1065:DoNotRaiseExceptionsInUnexpectedLocations",
-    Justification = "For testing."
-)]
+#pragma warning disable CA1065, MA0025 // For testing.
+
 [ExcludeFromCodeCoverage]
 public class VirtualFakeSample : AbstractFakeSample
 {
@@ -51,3 +48,5 @@ public class VirtualFakeSample : AbstractFakeSample
         throw new NotImplementedException();
     }
 }
+
+#pragma warning restore CA1065, MA0025

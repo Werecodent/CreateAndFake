@@ -31,7 +31,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 
         int count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             count++;
             if (count == 3)
@@ -41,7 +41,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         }
 
         count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             count++;
         }

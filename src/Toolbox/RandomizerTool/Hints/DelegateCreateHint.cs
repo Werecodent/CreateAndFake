@@ -7,6 +7,8 @@ using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
+#pragma warning disable S1144 // Used via reflection.
+
 /// <summary>Handles randomizing <see cref="Delegate"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class DelegateCreateHint : CreateHint
 {
@@ -755,7 +757,7 @@ public sealed class DelegateCreateHint : CreateHint
         /// <param name="in14">Matches input parameter 14.</param>
         /// <param name="in15">Matches input parameter 15.</param>
         /// <param name="in16">Matches input parameter 16.</param>
-        /// <returns>Nothing if <c>void</c>; otherwise random data.</returns>
+        /// <returns>Nothing if <see langword="void"/>; otherwise random data.</returns>
         internal TOut? AutoDelegate<
             T1,
             T2,
@@ -814,3 +816,5 @@ public sealed class DelegateCreateHint : CreateHint
         }
     }
 }
+
+#pragma warning restore S1144

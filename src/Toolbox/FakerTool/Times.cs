@@ -32,16 +32,16 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
 
     /// <summary>Checks if <paramref name="count"/> is in the expected range.</summary>
     /// <param name="count">Value to verify.</param>
-    /// <returns><c>true</c> if <paramref name="count"/> is in range; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if <paramref name="count"/> is in range; <see langword="false"/> otherwise.</returns>
     internal bool IsInRange(int count)
     {
         return _min <= count && count <= _max;
     }
 
-    /// <summary>Compares <c>this</c> to <paramref name="obj"/> by value.</summary>
-    /// <param name="obj">Instance to compare <c>this</c> with.</param>
+    /// <summary>Compares <see langword="this"/> to <paramref name="obj"/> by value.</summary>
+    /// <param name="obj">Instance to compare <see langword="this"/> with.</param>
     /// <returns>
-    ///     <c>true</c> if <c>this</c> is equal to <paramref name="obj"/> by value; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <see langword="this"/> is equal to <paramref name="obj"/> by value; <see langword="false"/> otherwise.
     /// </returns>
     public override bool Equals(object? obj)
     {
@@ -61,8 +61,8 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
         return ValueComparer.Use.GetHashCode(_min, _max);
     }
 
-    /// <summary>Converts <c>this</c> to a <c>string</c>.</summary>
-    /// <returns><c>string</c> representation of <c>this</c>.</returns>
+    /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>
+    /// <returns><see langword="string"/> representation of <see langword="this"/>.</returns>
     public override string ToString()
     {
         string maxValue = (_max != int.MaxValue) ? $"{_max}" : "*";

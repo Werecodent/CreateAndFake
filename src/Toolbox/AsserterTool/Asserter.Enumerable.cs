@@ -27,7 +27,7 @@ public partial class Asserter : IEnumerableAsserter
         if (collection == null)
         {
             throw new AssertException(
-                $"Test failed.",
+                "Test failed.",
                 details,
                 localOptions.Gen.InitialSeed,
                 (string?)null
@@ -82,7 +82,7 @@ public partial class Asserter : IEnumerableAsserter
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection with elements, but was 'null'.",
+                "Expected collection with elements, but was 'null'.",
                 details,
                 localOptions.Gen.InitialSeed
             );

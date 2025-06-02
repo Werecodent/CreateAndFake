@@ -1,16 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.FakerTool;
 
-#pragma warning disable IDE0060 // Remove unused parameter: For testing.
-#pragma warning disable CS9113 // Parameter is unread: For testing.
-
 namespace CreateAndFake.Tests.TesterTool.TestSamples;
 
-[SuppressMessage(
-    "Microsoft.Performance",
-    "CA1822:MarkMembersAsStatic",
-    Justification = "For testing."
-)]
+#pragma warning disable // For testing.
+
 public sealed class MockDisposableSample(object value) : IDisposable
 {
     internal static readonly SemaphoreSlim _Lock = new(1);
@@ -21,11 +15,6 @@ public sealed class MockDisposableSample(object value) : IDisposable
 
     internal static int _FinalizerDisposes = 0;
 
-    [SuppressMessage(
-        "Design",
-        "CA1031:Do not catch general exception types",
-        Justification = "Must ignore in finalizer."
-    )]
     [ExcludeFromCodeCoverage]
     ~MockDisposableSample()
     {
@@ -48,5 +37,4 @@ public sealed class MockDisposableSample(object value) : IDisposable
     }
 }
 
-#pragma warning restore CS9113 // Parameter is unread
-#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore

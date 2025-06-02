@@ -46,7 +46,7 @@ public partial class Asserter : IStringAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.IndexOf(content, localOptions.StringCompareOption) >= 0)
+        if (text?.IndexOf(content, localOptions.StringCompareOption) >= 0)
         {
             throw new AssertException(
                 $"Text contained '{content}'.",
@@ -72,7 +72,7 @@ public partial class Asserter : IStringAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || !text.StartsWith(content, localOptions.StringCompareOption))
+        if (text?.StartsWith(content, localOptions.StringCompareOption) != true)
         {
             throw new AssertException(
                 $"Text did not start with '{content}'.",
@@ -98,7 +98,7 @@ public partial class Asserter : IStringAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.StartsWith(content, localOptions.StringCompareOption))
+        if (text?.StartsWith(content, localOptions.StringCompareOption) == true)
         {
             throw new AssertException(
                 $"Text started with '{content}'.",
@@ -124,7 +124,7 @@ public partial class Asserter : IStringAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || !text.EndsWith(content, localOptions.StringCompareOption))
+        if (text?.EndsWith(content, localOptions.StringCompareOption) != true)
         {
             throw new AssertException(
                 $"Text did not end with '{content}'.",
@@ -150,7 +150,7 @@ public partial class Asserter : IStringAsserter
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text != null && text.EndsWith(content, localOptions.StringCompareOption))
+        if (text?.EndsWith(content, localOptions.StringCompareOption) == true)
         {
             throw new AssertException(
                 $"Text ended with '{content}'.",

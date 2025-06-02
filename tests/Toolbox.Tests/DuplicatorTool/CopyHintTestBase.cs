@@ -119,6 +119,7 @@ public abstract class CopyHintTestBase<T>(
         }
     }
 
+    /// <summary>Create a chainer to use for testing.</summary>
     /// <param name="optionConfiguration">Modifications of options to apply for this call.</param>
     /// <returns>Chainer to use for testing.</returns>
     protected static DuplicatorChainer CreateChainer(DuplicatorMod optionConfiguration = null)
@@ -126,7 +127,7 @@ public abstract class CopyHintTestBase<T>(
         return new DuplicatorChainer(
             optionConfiguration?.Invoke(Tools.Duplicator.Options) ?? Tools.Duplicator.Options,
             Tools.Duplicator,
-            (o, c) => Tools.Duplicator.Copy(o)
+            (o, _) => Tools.Duplicator.Copy(o)
         );
     }
 }

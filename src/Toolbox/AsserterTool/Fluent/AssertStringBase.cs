@@ -1,5 +1,4 @@
-#pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
-#pragma warning disable CA1310 // Specify StringComparison for correctness: Not available for all versions.
+#pragma warning disable CA1307, CA1310 // Not available for all versions.
 
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool.Categories;
@@ -151,5 +150,4 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     }
 }
 
-#pragma warning restore CA1307 // Specify StringComparison for clarity
-#pragma warning restore CA1310 // Specify StringComparison for correctness
+#pragma warning restore CA1307, CA1310

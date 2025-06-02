@@ -1,8 +1,8 @@
-#pragma warning disable CA1716 // Rename conflicting virtual/interface member: Overriding here should be a rarity.
-
 using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsserterTool.Fluent;
+
+#pragma warning disable CA1716 // Overriding here should be a rarity.
 
 /// <summary>Handles common <see cref="Type"/> assertion calls.</summary>
 /// <param name="type"><inheritdoc cref="Type" path="/summary"/></param>
@@ -93,4 +93,4 @@ public abstract class AssertTypeBase<T>(IAsserter asserter, Type? type)
     }
 }
 
-#pragma warning restore CA1716 // Rename conflicting virtual/interface member
+#pragma warning restore CA1716

@@ -118,13 +118,14 @@ public abstract class CreateHintTestBase<T>(
         }
     }
 
+    /// <summary>Create a chainer to use for testing.</summary>
     /// <returns>Chainer to use for testing.</returns>
     /// <param name="options">Options to pass via the chainer.</param>
     protected static RandomizerChainer CreateChainer(RandomizerOptions options = null)
     {
         return new RandomizerChainer(
             options ?? Tools.Randomizer.Options,
-            (t, c) => Tools.Randomizer.Create(t)
+            (t, _) => Tools.Randomizer.Create(t)
         );
     }
 }

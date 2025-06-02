@@ -5,7 +5,7 @@ namespace CreateAndFake.AsserterTool;
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : ITypeAsserter
 {
-#pragma warning disable CA1716 // Identifiers should not match keywords: Matches existing usage.
+#pragma warning disable CA1716 // Matches existing usage.
 
     /// <inheritdoc/>
     public virtual void Inherits<TChild>(Type? type, string? details = null)
@@ -56,7 +56,7 @@ public partial class Asserter : ITypeAsserter
         }
     }
 
-#pragma warning restore CA1716 // Identifiers should not match keywords.
+#pragma warning restore CA1716
 
     /// <inheritdoc/>
     public virtual void InheritedBy<TParent>(Type? type, string? details = null)

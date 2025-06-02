@@ -62,7 +62,7 @@ public sealed class InjectedCreateHint : CreateHint
     /// <param name="target"><c>Type</c> to find a constructor for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <param name="scope">Scope of constructors to find.</param>
-    /// <returns>Constructor if found; <c>null</c> otherwise.</returns>
+    /// <returns>Constructor if found; <see langword="null"/> otherwise.</returns>
     private static ConstructorInfo? FindConstructor(
         Type target,
         RandomizerChainer randomizer,

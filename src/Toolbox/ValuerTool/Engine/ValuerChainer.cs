@@ -24,14 +24,9 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     private readonly ValuerEngine _engine =
         engine ?? throw new ArgumentNullException(nameof(engine));
 
-    private ValuerChainer NextChainer(ValuerMod? optionConfiguration)
-    {
-        return (optionConfiguration == null) ? this : this;
-    }
-
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>
     /// <param name="item">Item to check.</param>
-    /// <returns><c>true</c> if tracking <paramref name="item"/> is possible; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if tracking <paramref name="item"/> is possible; <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? item)
     {
         return !(item == null || item is IFaked || item.GetType().IsValueType);
@@ -54,7 +49,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
 
             if (_compareHistory.Add(refHash))
             {
-                return _engine.Compare(expected, actual, NextChainer(optionConfiguration));
+                return _engine.Compare(expected, actual, this);
             }
             else
             {
@@ -63,7 +58,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         }
         else
         {
-            return _engine.Compare(expected, actual, NextChainer(optionConfiguration));
+            return _engine.Compare(expected, actual, this);
         }
     }
 
@@ -86,9 +81,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
             {
                 try
                 {
-                    return await _engine
-                        .CompareAsync(expected, actual, NextChainer(optionConfiguration))
-                        .ConfigureAwait(false);
+                    return await _engine.CompareAsync(expected, actual, this).ConfigureAwait(false);
                 }
                 finally
                 {
@@ -102,9 +95,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         }
         else
         {
-            return await _engine
-                .CompareAsync(expected, actual, NextChainer(optionConfiguration))
-                .ConfigureAwait(false);
+            return await _engine.CompareAsync(expected, actual, this).ConfigureAwait(false);
         }
     }
 
@@ -115,7 +106,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     }
 
     /// <inheritdoc/>
-    public int GetHashCode(object? item, ValuerMod? optionConfiguration = null)
+    public int GetHashCode(object? item, ValuerMod? optionConfiguration)
     {
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
@@ -173,7 +164,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     }
 
     /// <inheritdoc/>
-    public bool Equals(object? x, object? y, ValuerMod? optionConfiguration = null)
+    public bool Equals(object? x, object? y, ValuerMod? optionConfiguration)
     {
         return !Compare(x, y, optionConfiguration).Any();
     }

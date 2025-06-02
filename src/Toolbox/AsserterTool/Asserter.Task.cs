@@ -42,7 +42,7 @@ public partial class Asserter : ITaskAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+#pragma warning disable CA1031 // Rethrows.
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
@@ -70,7 +70,7 @@ public partial class Asserter : ITaskAsserter
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
-#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
+#pragma warning restore CA1031
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null)
@@ -109,7 +109,7 @@ public partial class Asserter : ITaskAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type: Rethrows.
+#pragma warning disable CA1031 // Rethrows.
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
@@ -139,10 +139,10 @@ public partial class Asserter : ITaskAsserter
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
-#pragma warning restore CA1031 // Modify 'ThrowsAsync' to catch a more specific allowed exception type
+#pragma warning restore CA1031
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details)
+    public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details = null)
         where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
@@ -152,7 +152,7 @@ public partial class Asserter : ITaskAsserter
     public virtual Task ThrowsNoAsync<T>(
         Task? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {
@@ -171,7 +171,7 @@ public partial class Asserter : ITaskAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task<object?>? behavior, string? details)
+    public virtual Task ThrowsNoAsync<T>(Task<object?>? behavior, string? details = null)
         where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
@@ -181,7 +181,7 @@ public partial class Asserter : ITaskAsserter
     public virtual async Task ThrowsNoAsync<T>(
         Task<object?>? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {
@@ -208,7 +208,7 @@ public partial class Asserter : ITaskAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task?>? behavior, string? details)
+    public virtual Task ThrowsNoAsync<T>(Func<Task?>? behavior, string? details = null)
         where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
@@ -218,7 +218,7 @@ public partial class Asserter : ITaskAsserter
     public virtual Task ThrowsNoAsync<T>(
         Func<Task?>? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {
@@ -238,7 +238,7 @@ public partial class Asserter : ITaskAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task<object?>?>? behavior, string? details)
+    public virtual Task ThrowsNoAsync<T>(Func<Task<object?>?>? behavior, string? details = null)
         where T : Exception
     {
         return ThrowsNoAsync<T>(behavior, Unconfigured, details);
@@ -248,7 +248,7 @@ public partial class Asserter : ITaskAsserter
     public virtual async Task ThrowsNoAsync<T>(
         Func<Task<object?>?>? behavior,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
         where T : Exception
     {

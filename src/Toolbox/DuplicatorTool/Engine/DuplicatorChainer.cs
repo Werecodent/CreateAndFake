@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using CreateAndFake.FakerTool.Proxy;
 
-#pragma warning disable IDE0028 // Collection initialization can be simplified: Invalid because it's not constructible.
-
 namespace CreateAndFake.DuplicatorTool.Engine;
+
+#pragma warning disable IDE0028 // Invalid because it's not constructible.
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
@@ -75,11 +75,11 @@ public sealed class DuplicatorChainer(
 
     /// <summary>If <paramref name="source"/> can be tracked in history.</summary>
     /// <param name="source">Item to check.</param>
-    /// <returns><c>true</c> if possible; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? source)
     {
         return !(source == null || source is IFaked || source.GetType().IsValueType);
     }
 }
 
-#pragma warning restore IDE0028 // Collection initialization can be simplified
+#pragma warning restore IDE0028

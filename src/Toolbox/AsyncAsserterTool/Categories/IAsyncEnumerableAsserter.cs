@@ -3,7 +3,7 @@ using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsyncAsserterTool.Categories;
 
-#pragma warning disable CA1716 // Identifiers should not match keywords: Matches existing usage.
+#pragma warning disable CA1716 // Matches existing usage.
 
 /// <summary>Handles common collection test scenarios.</summary>
 public interface IAsyncEnumerableAsserter
@@ -72,4 +72,4 @@ public interface IAsyncEnumerableAsserter
     );
 }
 
-#pragma warning restore CA1716 // Identifiers should not match keywords.
+#pragma warning restore CA1716

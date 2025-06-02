@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool;
 
@@ -62,7 +61,7 @@ public sealed class Arg : IDeepCloneable
         return new OutRef<T>();
     }
 
-    /// <summary>Matches any <typeparamref name="T"/> instance except <c>null</c>.</summary>
+    /// <summary>Matches any <typeparamref name="T"/> instance except <see langword="null"/>.</summary>
     /// <typeparam name="T">Type to match.</typeparam>
     /// <returns>Random instance of <typeparamref name="T"/> for the fake setup.</returns>
     /// <remarks>Use <see cref="LambdaNotNull{T}"/> when matching via method names.</remarks>
@@ -86,6 +85,8 @@ public sealed class Arg : IDeepCloneable
         return value;
     }
 
+#pragma warning disable IDE0060, RCS1163 // Used via lambdas for setup replacement behavior.
+
     /// <summary>
     ///     Matches any <typeparamref name="T"/> reference that fulfills <paramref name="condition"/>.
     /// </summary>
@@ -93,15 +94,12 @@ public sealed class Arg : IDeepCloneable
     /// <param name="condition">Condition to verify.</param>
     /// <returns>Container for the reference.</returns>
     /// <remarks>Use <see cref="LambdaWhereRef{T}"/> when matching via method names.</remarks>
-    [SuppressMessage(
-        "IDE",
-        "IDE0060:RemoveUnusedParameters",
-        Justification = "Taken and used through lambdas for setup replacement behavior."
-    )]
     public static OutRef<T> WhereRef<T>(Func<T, bool> condition)
     {
         return new OutRef<T>();
     }
+
+#pragma warning restore IDE0060, RCS1163
 
     /// <summary>Matches any <typeparamref name="T"/> instance.</summary>
     /// <typeparam name="T">Type to match.</typeparam>
@@ -119,7 +117,7 @@ public sealed class Arg : IDeepCloneable
         return LambdaWhere<OutRef<T>>(null);
     }
 
-    /// <summary>Matches any <typeparamref name="T"/> instance except <c>null</c>.</summary>
+    /// <summary>Matches any <typeparamref name="T"/> instance except <see langword="null"/>.</summary>
     /// <typeparam name="T">Type to match.</typeparam>
     /// <returns>Arg for the fake provider to match with.</returns>
     public static Arg LambdaNotNull<T>()

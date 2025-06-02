@@ -79,7 +79,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         {
             data = Options.Runner.CreateFor(method, Options.InjectionValues);
 
-            for (int i = 0; i < data.Args.Count(); i++)
+            for (int i = 0; i < data.ArgCount; i++)
             {
                 ParameterInfo param = method.GetParameters()[i];
                 if (

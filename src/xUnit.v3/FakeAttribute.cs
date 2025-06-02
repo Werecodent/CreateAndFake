@@ -1,4 +1,4 @@
 namespace CreateAndFake.xUnit.v3;
 
 /// <inheritdoc/>
-public sealed class FakeAttribute : BaseFakeAttribute { }
+public sealed class FakeAttribute : BaseFakeAttribute;

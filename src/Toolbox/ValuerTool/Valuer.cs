@@ -9,7 +9,7 @@ namespace CreateAndFake.ValuerTool;
 
 /// <inheritdoc cref="IValuer"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Valuer(ValuerOptions options) : IValuer
 {
     /// <summary>Default set of hints to use for comparisons.</summary>
@@ -116,7 +116,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public int GetHashCode(object? item, ValuerMod? optionConfiguration = null)
+    public int GetHashCode(object? item, ValuerMod? optionConfiguration)
     {
         string? typeName = item?.GetType().Name;
         try

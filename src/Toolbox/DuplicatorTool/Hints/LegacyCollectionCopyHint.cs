@@ -4,7 +4,8 @@ using System.Collections.Specialized;
 using CreateAndFake.Design;
 using CreateAndFake.DuplicatorTool.Engine;
 
-#pragma warning disable IDE0058 // Expression value is never used: Return not available on all versions.
+#pragma warning disable IDE0058 // Return not available on all versions.
+#pragma warning disable RCS1124 // Inlining creates the wrong type.
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
@@ -22,14 +23,14 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         { typeof(ListDictionary), CreateAndCopy<ListDictionary> },
         { typeof(HybridDictionary), CreateAndCopy<HybridDictionary> },
         { typeof(OrderedDictionary), CreateAndCopy<OrderedDictionary> },
-        { typeof(BitArray), (data, cloner) => new BitArray((BitArray)data) },
+        { typeof(BitArray), (data, _) => new BitArray((BitArray)data) },
         {
             typeof(NameValueCollection),
-            (data, cloner) => new NameValueCollection((NameValueCollection)data)
+            (data, _) => new NameValueCollection((NameValueCollection)data)
         },
         {
             typeof(StringCollection),
-            (data, cloner) =>
+            (data, _) =>
             {
                 StringCollection result = [.. (StringCollection)data];
                 return result;
@@ -37,7 +38,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         },
         {
             typeof(StringDictionary),
-            (data, cloner) =>
+            (data, _) =>
             {
                 StringDictionary result = [];
                 foreach (DictionaryEntry entry in (StringDictionary)data)
@@ -87,4 +88,4 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     }
 }
 
-#pragma warning restore IDE0058 // Expression value is never used
+#pragma warning restore IDE0058, RCS1124

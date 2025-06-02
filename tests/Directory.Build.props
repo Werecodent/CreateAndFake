@@ -14,6 +14,7 @@
     <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <BaseOutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)</BaseOutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\</OutputPath>
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)TestSettings.runsettings</RunSettingsFilePath>
     <IsTestProject>true</IsTestProject>
     <UseAppHost>true</UseAppHost>
@@ -22,9 +23,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.4" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.13.0" PrivateAssets="All" />
-    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="2.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
+    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.201" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.13.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" version="17.14.15" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.13.1" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.10.0.116381" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

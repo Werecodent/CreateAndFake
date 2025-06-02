@@ -78,7 +78,7 @@ public partial class Asserter : IComparableAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Equals(value, target))
         {
-            GreaterThanOrEqualTo(target, value, opt => localOptions, details);
+            GreaterThanOrEqualTo(target, value, _ => localOptions, details);
         }
     }
 
@@ -155,7 +155,7 @@ public partial class Asserter : IComparableAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (!localOptions.Valuer.Equals(value, target))
         {
-            LessThanOrEqualTo(target, value, opt => localOptions, details);
+            LessThanOrEqualTo(target, value, _ => localOptions, details);
         }
     }
 
@@ -212,6 +212,8 @@ public partial class Asserter : IComparableAsserter
     /// <param name="math">Math used to check the <c>value</c>.</param>
     /// <param name="description">Math description to use for error message.</param>
     /// <param name="target">Value to compare with.</param>
+    /// <param name="value"></param>
+    /// <param name="optionConfiguration"></param>
     /// <param name="details">Optional failure details to include.</param>
     /// <returns>Chainer to make additional assertions with.</returns>
     /// <exception cref="AssertException">If <c>value</c> does not match <paramref name="math"/>.</exception>
@@ -236,7 +238,7 @@ public partial class Asserter : IComparableAsserter
         else if (target == null)
         {
             throw new AssertException(
-                $"Target was null and not valid for math comparison check.",
+                "Target was null and not valid for math comparison check.",
                 details,
                 localOptions.Gen.InitialSeed,
                 value.ToString()

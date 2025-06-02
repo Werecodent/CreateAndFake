@@ -4,7 +4,7 @@ using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.AsserterTool.Categories;
 
-#pragma warning disable CA1716 // Identifiers should not match keywords: Matches existing usage.
+#pragma warning disable CA1716 // Matches existing usage.
 
 /// <summary>Handles common object test scenarios.</summary>
 public interface IObjectAsserter
@@ -109,4 +109,4 @@ public interface IObjectAsserter
     void Called(object? fake, AsserterMod? optionConfiguration, Times? total = null);
 }
 
-#pragma warning restore CA1716 // Identifiers should not match keywords.
+#pragma warning restore CA1716

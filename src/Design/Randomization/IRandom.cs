@@ -2,13 +2,9 @@
 
 namespace CreateAndFake.Design.Randomization;
 
+#pragma warning disable CA1716 // Matches the Random convention.
+
 /// <summary>Provides the core functionality for generic randomization.</summary>
-[SuppressMessage(
-    "Microsoft.Naming",
-    "CA1716:IdentifiersShouldNotMatchKeywords",
-    MessageId = "Next",
-    Justification = "Matches the Random convention."
-)]
 public interface IRandom
 {
     /// <summary>Initial seed used to begin generating values.</summary>
@@ -19,7 +15,7 @@ public interface IRandom
     /// </summary>
     /// <typeparam name="T"><c>Type</c> to determine randomization support for.</typeparam>
     /// <returns>
-    ///     <c>true</c> if <typeparamref name="T"/> is supported; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <typeparamref name="T"/> is supported; <see langword="false"/> otherwise.
     /// </returns>
     bool Supports<T>()
         where T : struct, IComparable, IComparable<T>, IEquatable<T>;
@@ -29,7 +25,7 @@ public interface IRandom
     /// </summary>
     /// <param name="type"><c>Type</c> to determine randomization support for.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="type"/> is supported; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="type"/> is supported; <see langword="false"/> otherwise.
     /// </returns>
     bool Supports([NotNullWhen(true)] Type? type);
 
@@ -87,7 +83,7 @@ public interface IRandom
     /// <param name="items">Collection of items to pick from.</param>
     /// <returns>The picked item from <paramref name="items"/>.</returns>
     /// <exception cref="InvalidOperationException">
-    ///     If <paramref name="items"/> is <c>null</c> or empty.
+    ///     If <paramref name="items"/> is <see langword="null"/> or empty.
     /// </exception>
     T NextItem<T>(IEnumerable<T> items);
 
@@ -103,3 +99,5 @@ public interface IRandom
     /// <returns>The generated group of random predefined data.</returns>
     DataRandom NextData();
 }
+
+#pragma warning restore CA1716

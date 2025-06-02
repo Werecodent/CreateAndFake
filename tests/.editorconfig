@@ -1,74 +1,28 @@
 [*.cs]
 
-# Default severity for all analyzer diagnostics
-dotnet_analyzer_diagnostic.severity = warning
-
-# CA1034: Nested types should not be visible
 # Needed for testing and cleaner tests.
 dotnet_diagnostic.CA1034.severity = none
-
-# CA1044:PropertiesShouldNotBeWriteOnly
-# Necessary to test write only properties.
 dotnet_diagnostic.CA1044.severity = none
-
-# CA1051:DoNotDeclareVisibleInstanceFields
-# Necessary to test publicly visible instance fields.
 dotnet_diagnostic.CA1051.severity = none
-
-# CA1062: Validate parameter is non-null
-# Not necessary for tests to early fail for nulls.
-dotnet_diagnostic.CA1062.severity = none
-
-# CA1515: Types can be made internal
-# Scope is a part of testing.
 dotnet_diagnostic.CA1515.severity = none
-
-# CA1307: Specify StringComparison for clarity
-# Unnecessary for tests.
-dotnet_diagnostic.CA1307.severity = none
-
-# CA1707: Identifiers should not contain underscores
-# Good for test names.
-dotnet_diagnostic.CA1707.severity = none
-
-# CA1805: Do not initialize unnecessarily
-# Important for clarity and understanding intention.
-dotnet_diagnostic.CA1805.severity = none
-
-# CA1812: Avoid uninstantiated internal classes
-# Needed for testing and cleaner tests.
 dotnet_diagnostic.CA1812.severity = none
-
-# CA2007: Do not directly await a Task
-# Default of true for tests is proper.
-dotnet_diagnostic.CA2007.severity = none
-
-# CA2263: Prefer the generic overload
-# Needed for testing non-generic methods.
 dotnet_diagnostic.CA2263.severity = none
 
-# CS1591: Missing XML comment for publicly visible
-# Tests do not need comments.
+# Unnecessary for tests.
+dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CS1591.severity = none
 
-# IDE0045: 'if' statement can be simplified
-# IDE0046: Convert to conditional expression
-# Choice should be left to developer to maximize readability.
-dotnet_diagnostic.IDE0045.severity = none
-dotnet_diagnostic.IDE0046.severity = none
-
-# IDE0048: Add parentheses for clarity
-# Unneeded parentheses can hurt readability.
-dotnet_diagnostic.IDE0048.severity = none
-
-# IDE0055: Fix formatting
-# Controlled by csharpier.
-dotnet_diagnostic.IDE0055.severity = none
-
-# IDE0057 Substring can be simplified
-# No support in legacy frameworks.
-dotnet_diagnostic.IDE0057.severity = none
-
-# IDE0058: Expression value is never used
 # Noise when using fluent APIs.
 dotnet_diagnostic.IDE0058.severity = none
+
+# Default of .ConfigureAwait(true) for tests is proper.
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.MA0004.severity = None
+dotnet_diagnostic.VSTHRD111.severity = None
+
+# Conflict for test name matching.
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.MA0048.severity = None
+
+# False positive when calling tester methods.
+dotnet_diagnostic.S2699.severity = None

@@ -4,9 +4,9 @@ using Lock = System.Threading.Lock;
 using Lock = System.Object;
 #endif
 
-#pragma warning disable CA5394 // Do not use insecure randomness: Secure alternative provided.
-
 namespace CreateAndFake.Design.Randomization;
+
+#pragma warning disable CA5394 // Secure alternative provided.
 
 /// <summary>For generating deterministic random values.</summary>
 public sealed class SeededRandom : ValueRandom
@@ -64,4 +64,4 @@ public sealed class SeededRandom : ValueRandom
     }
 }
 
-#pragma warning restore CA5394 // Do not use insecure randomness
+#pragma warning restore CA5394

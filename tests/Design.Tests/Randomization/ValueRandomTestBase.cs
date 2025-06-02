@@ -1,33 +1,26 @@
 ﻿using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tests.TestSamples;
-using CreateAndFake.TesterTool;
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
-/// <summary>Handles testing value random classes.</summary>
-/// <typeparam name="T">Value random type to test.</typeparam>
 public abstract class ValueRandomTestBase<T>
     where T : ValueRandom
 {
-    /// <summary>Instance to test with.</summary>
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
     public Task ValueRandom_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<T>();
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
     public Task ValueRandom_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<T>();
     }
 
-    /// <summary>Verifies intended value types work.</summary>
     [Fact]
     public void Supports_TypeCoverage()
     {
@@ -46,14 +39,12 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Supports<decimal>().Assert().Is(true);
     }
 
-    /// <summary>Verifies an invalid type is not supported.</summary>
     [Fact]
     public void Supports_InvalidTypeFalse()
     {
         _TestInstance.Supports(typeof(object)).Assert().Is(false);
     }
 
-    /// <summary>Verifies intended value types work.</summary>
     [Fact]
     public void Next_TypeCoverage()
     {
@@ -72,7 +63,6 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Next<decimal>();
     }
 
-    /// <summary>Verifies intended value types work.</summary>
     [Fact]
     public void Next_MaxTypeCoverage()
     {
@@ -91,7 +81,6 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Next(decimal.MaxValue);
     }
 
-    /// <summary>Verifies intended value types work.</summary>
     [Fact]
     public void Next_MinTypeCoverage()
     {
@@ -110,44 +99,36 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Next(decimal.MinValue, decimal.MaxValue);
     }
 
-    /// <summary>Verifies backup stumble behavior works.</summary>
     [Fact]
     public void Next_StumbleWorks()
     {
-        int min = int.MinValue / 2 - 1;
-        int max = int.MaxValue / 2 + 1;
+        const int min = int.MinValue / 2 - 1;
+        const int max = int.MaxValue / 2 + 1;
 
         Limiter.Myriad.Repeat(
             "Testing stumble behavior.",
-            () =>
-            {
-                _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
-            }
+            () => _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max)
         );
     }
 
-    /// <summary>Verifies that an invalid type throws.</summary>
     [Fact]
     public void Next_InvalidTypeThrows()
     {
         _TestInstance.Assert(t => t.Next(typeof(object))).Throws<NotSupportedException>();
     }
 
-    /// <summary>Verifies the same min and max can be used.</summary>
     [Fact]
     public void Next_SameMinMaxWorks()
     {
         _TestInstance.Next(0, 0).Assert().Is(0);
     }
 
-    /// <summary>Verifies different values are generated.</summary>
     [Fact]
     public void Next_Variation()
     {
         _TestInstance.Next<long>().Assert().IsNot(_TestInstance.Next<long>());
     }
 
-    /// <summary>Verifies unsupported types don't work.</summary>
     [Theory, RandomData]
     public void Next_UnsupportedTypeThrows(StructSample sample)
     {
@@ -155,12 +136,11 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Assert(t => t.Next(sample)).Throws<NotSupportedException>();
     }
 
-    /// <summary>Verifies max is excluded as a possible result.</summary>
     [Fact]
     public void Next_MaxDoubleExcluded()
     {
-        double min = 9.9999999;
-        double max = 10;
+        const double min = 9.9999999;
+        const double max = 10;
 
         for (int i = 0; i < 25000; i++)
         {
@@ -168,12 +148,11 @@ public abstract class ValueRandomTestBase<T>
         }
     }
 
-    /// <summary>Verifies max is excluded as a possible result.</summary>
     [Fact]
     public void Next_MaxDecimalExcluded()
     {
-        decimal min = 9.9999999M;
-        decimal max = 10;
+        const decimal min = 9.9999999M;
+        const decimal max = 10;
 
         for (int i = 0; i < 25000; i++)
         {
@@ -181,28 +160,24 @@ public abstract class ValueRandomTestBase<T>
         }
     }
 
-    /// <summary>Verifies max values greater than min can't be used.</summary>
     [Fact]
     public void Next_MinGreaterMaxThrows()
     {
         _TestInstance.Assert(t => t.Next(0, -1)).Throws<ArgumentOutOfRangeException>();
     }
 
-    /// <summary>Verifies collections work.</summary>
     [Theory, RandomData]
     public void NextItem_CollectionsWork(ICollection<string> data)
     {
         data.Assert().Contains(_TestInstance.NextItem(data));
     }
 
-    /// <summary>Verifies readonly collections work.</summary>
     [Theory, RandomData]
     public void NextItem_ReadOnlyCollectionsWork(IReadOnlyCollection<string> data)
     {
         data.Assert().Contains(_TestInstance.NextItem(data));
     }
 
-    /// <summary>Verifies linq enumerables work.</summary>
     [Fact]
     public void NextItem_YieldWorks()
     {
@@ -211,7 +186,6 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.NextItem(CreateEnum(3)).Assert().IsNot(null);
     }
 
-    /// <summary>Verifies empty enumerables throw.</summary>
     [Fact]
     public void NextItem_EmptyThrows()
     {
@@ -221,7 +195,6 @@ public abstract class ValueRandomTestBase<T>
             .Throws<InvalidOperationException>();
     }
 
-    /// <summary>Verifies empty enumerables give default values.</summary>
     [Fact]
     public void NextItemOrDefault_EmptyGivesDefault()
     {
@@ -231,9 +204,6 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.NextItemOrDefault(Array.Empty<object>()).Assert().Is(null);
     }
 
-    /// <summary>Helper for creating linq enumerables.</summary>
-    /// <param name="size">Size of the enumerable to create.</param>
-    /// <returns>Enumerable to test with.</returns>
     private static IEnumerable<object> CreateEnum(int size)
     {
         for (int i = 0; i < size; i++)

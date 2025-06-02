@@ -27,7 +27,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
         return valuer.GetHashCode(ExtractInternals(item, valuer));
     }
 
-    /// <summary></summary>
+    /// <summary>Test</summary>
     /// <param name="item"></param>
     /// <param name="valuer"></param>
     /// <returns></returns>

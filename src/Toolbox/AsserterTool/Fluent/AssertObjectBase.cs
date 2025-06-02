@@ -5,6 +5,7 @@ using CreateAndFake.FakerTool;
 namespace CreateAndFake.AsserterTool.Fluent;
 
 /// <summary>Handles common <see cref="object"/> assertion calls.</summary>
+/// <typeparam name="T"></typeparam>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
 /// <param name="actual"><inheritdoc cref="Actual" path="/summary"/></param>
 public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
@@ -201,7 +202,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <summary>Converts <c>this</c> to a chainer for additional assertions on <c>actual</c>.</summary>
+    /// <summary>Converts <see langword="this"/> to a chainer for additional assertions on <c>actual</c>.</summary>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     protected internal AssertChainer<T> ToChainer()
     {

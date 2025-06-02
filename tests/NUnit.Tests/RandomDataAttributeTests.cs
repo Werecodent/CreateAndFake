@@ -30,7 +30,7 @@ public static class RandomDataAttributeTests
                 "Copy",
                 [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
                 Behavior.Set<MethodWrapper, DuplicatorChainer, MethodWrapper>(
-                    (w, c) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)
+                    (w, _) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)
                 )
             );
 

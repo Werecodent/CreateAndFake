@@ -4,7 +4,7 @@ namespace CreateAndFake.AsyncAsserterTool;
 
 /// <inheritdoc cref="IAsyncAsserter"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserter
 {
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
     /// <summary>Finds a suitable <c>Type</c> name to use for assertion messages.</summary>
     /// <param name="expected">Instance being compared to <c>actual</c>.</param>
     /// <param name="actual">Instance to run assertion checks with.</param>
-    /// <returns>The <c>Type</c> name to use if found; <c>null</c> otherwise.</returns>
+    /// <returns>The <c>Type</c> name to use if found; <see langword="null"/> otherwise.</returns>
     private static string? GetTypeName(object? expected, object? actual)
     {
         return ExpandTypeName((expected ?? actual)?.GetType());
@@ -90,7 +90,7 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
     /// <returns>The built name.</returns>
     private static string? ExpandTypeName(Type? type)
     {
-        if (type != null && type.IsGenericType)
+        if (type?.IsGenericType == true)
         {
             return string.Concat(
                 type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),

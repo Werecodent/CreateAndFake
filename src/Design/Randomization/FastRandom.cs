@@ -1,6 +1,6 @@
-﻿#pragma warning disable CA5394 // Do not use insecure randomness: Secure alternative provided.
+﻿namespace CreateAndFake.Design.Randomization;
 
-namespace CreateAndFake.Design.Randomization;
+#pragma warning disable CA5394 // Secure alternative provided.
 
 /// <summary>For quickly generating cryptographically insecure random values.</summary>
 /// <inheritdoc/>
@@ -24,4 +24,4 @@ public sealed class FastRandom(bool onlyValidValues = true) : ValueRandom(onlyVa
     }
 }
 
-#pragma warning restore CA5394 // Do not use insecure randomness
+#pragma warning restore CA5394

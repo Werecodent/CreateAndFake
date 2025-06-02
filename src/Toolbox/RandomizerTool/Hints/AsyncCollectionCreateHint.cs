@@ -2,9 +2,9 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.RandomizerTool.Engine;
 
-#pragma warning disable CA1307 // Specify StringComparison for clarity: Not available for all versions.
-
 namespace CreateAndFake.RandomizerTool.Hints;
+
+#pragma warning disable CA1307 // Not available for all versions.
 
 /// <summary>Handles randomizing <see cref="IAsyncEnumerable{T}"/> collections for <see cref="IRandomizer"/>.</summary>
 public sealed class AsyncCollectionCreateHint : CreateHint
@@ -62,4 +62,4 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     }
 }
 
-#pragma warning restore CA1307 // Specify StringComparison for clarity
+#pragma warning restore CA1307

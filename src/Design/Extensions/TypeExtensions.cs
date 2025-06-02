@@ -109,8 +109,8 @@ public static class TypeExtensions
     /// <param name="type"><see cref="Type"/> to check.</param>
     /// <param name="assembly">Name of the <see cref="Assembly"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="type"/> is visible to
-    ///     <paramref name="assembly"/>; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="type"/> is visible to
+    ///     <paramref name="assembly"/>; <see langword="false"/> otherwise.
     /// </returns>
     public static bool IsVisibleTo([NotNullWhen(true)] this Type? type, AssemblyName assembly)
     {
@@ -129,14 +129,14 @@ public static class TypeExtensions
     /// <returns>The casted <paramref name="type"/> if generic; null otherwise.</returns>
     public static Type? AsGenericType(this Type? type)
     {
-        return type != null && type.IsGenericType ? type.GetGenericTypeDefinition() : null;
+        return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
     }
 
     /// <summary>Checks if <paramref name="parent"/> inherits <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">Potential child <see cref="Type"/> of <paramref name="parent"/>.</typeparam>
     /// <param name="parent">Potential parent <see cref="Type"/> of <typeparamref name="T"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="parent"/> inherits <typeparamref name="T"/>; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="parent"/> inherits <typeparamref name="T"/>; <see langword="false"/> otherwise.
     /// </returns>
     public static bool Inherits<T>([NotNullWhen(true)] this Type? parent)
     {
@@ -147,7 +147,7 @@ public static class TypeExtensions
     /// <param name="parent">Potential parent <see cref="Type"/> of <paramref name="child"/>.</param>
     /// <param name="child">Potential child <see cref="Type"/> of <paramref name="parent"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <paramref name="parent"/> inherits <paramref name="child"/>; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <paramref name="parent"/> inherits <paramref name="child"/>; <see langword="false"/> otherwise.
     /// </returns>
     public static bool Inherits(
         [NotNullWhen(true)] this Type? parent,
@@ -161,7 +161,7 @@ public static class TypeExtensions
     /// <typeparam name="T">Potential parent <see cref="Type"/> of <paramref name="child"/>.</typeparam>
     /// <param name="child">Potential child <see cref="Type"/> of <typeparamref name="T"/>.</param>
     /// <returns>
-    ///     <c>true</c> if <typeparamref name="T"/> inherits <paramref name="child"/>; <c>false</c> otherwise.
+    ///     <see langword="true"/> if <typeparamref name="T"/> inherits <paramref name="child"/>; <see langword="false"/> otherwise.
     /// </returns>
     public static bool IsInheritedBy<T>([NotNullWhen(true)] this Type? child)
     {

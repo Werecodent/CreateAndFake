@@ -4,8 +4,6 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
 
-#pragma warning disable CA1822 // Member does not access instance data and can be marked static
-
 namespace CreateAndFake.TesterTool;
 
 /// <summary>Automates checks.</summary>
@@ -85,6 +83,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <summary>Runs the check.</summary>
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
+    /// <param name="instance"></param>
     /// <param name="data">Call to invoke and test.</param>
     /// <returns>Returned result from the call.</returns>
     protected async Task<object?> RunCheck(
@@ -101,16 +100,13 @@ internal abstract class BaseGuarder(TesterOptions options)
         {
             return result.Result;
         }
+        else if (HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
+        {
+            return null;
+        }
         else
         {
-            if (HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
-            {
-                return null;
-            }
-            else
-            {
-                throw (Exception)result.Result!;
-            }
+            throw (Exception)result.Result!;
         }
     }
 
@@ -148,5 +144,3 @@ internal abstract class BaseGuarder(TesterOptions options)
         Exception taskException
     );
 }
-
-#pragma warning restore CA1822 // Member does not access instance data and can be marked static

@@ -6,8 +6,8 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>
-///     Specifies the attached data will not be <c>null</c>
-///     when <paramref name="parameterName"/> is not <c>null</c>.
+///     Specifies the attached data will not be <see langword="null"/>
+///     when <paramref name="parameterName"/> is not <see langword="null"/>.
 /// </summary>
 /// <param name="parameterName"><inheritdoc cref="ParameterName" path="/summary"/></param>
 [

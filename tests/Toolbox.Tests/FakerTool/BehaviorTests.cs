@@ -33,15 +33,15 @@ public static class BehaviorTests
                 .Where(m => m.Name == nameof(Behavior.Set))
         )
         {
-            Type type = info.GetParameters().First().ParameterType;
+            Type type = info.GetParameters()[0].ParameterType;
 
             Type[] generics =
-                type.AsGenericType()?.GetGenericArguments().Select(a => typeof(string)).ToArray()
+                type.AsGenericType()?.GetGenericArguments().Select(_ => typeof(string)).ToArray()
                 ?? Type.EmptyTypes;
 
             MethodInfo caller = (generics.Length != 0) ? info.MakeGenericMethod(generics) : info;
 
-            Type setupType = caller.GetParameters().First().ParameterType;
+            Type setupType = caller.GetParameters()[0].ParameterType;
 
             Type[] args = type.Name.StartsWith("Func", StringComparison.InvariantCulture)
                 ? [.. generics.Skip(1)]

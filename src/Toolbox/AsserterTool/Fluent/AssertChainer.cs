@@ -5,7 +5,7 @@ namespace CreateAndFake.AsserterTool.Fluent;
 /// <summary>Chainer enabling additional assertion calls.</summary>
 /// <typeparam name="T">Assertion base <c>Type</c> to chain.</typeparam>
 /// <param name="chain">Assertion base instance to chain.</param>
-/// <param name="asserter">Configured options for <c>this</c>.</param>
+/// <param name="asserter">Configured options for <see langword="this"/>.</param>
 public sealed class AssertChainer<T>(T chain, IAsserter asserter)
 {
     /// <summary>Includes another assertion on the instance to test.</summary>

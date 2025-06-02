@@ -90,9 +90,9 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     /// <inheritdoc/>
     public abstract int? InitialSeed { get; }
 
-    /// <summary>Generates a <c>byte</c> array filled with random bytes.</summary>
-    /// <param name="length">Length of the <c>byte</c> array to generate.</param>
-    /// <returns>The generated <c>byte</c> array.</returns>
+    /// <summary>Generates a <see langword="byte"/> array filled with random bytes.</summary>
+    /// <param name="length">Length of the <see langword="byte"/> array to generate.</param>
+    /// <returns>The generated <see langword="byte"/> array.</returns>
     protected abstract byte[] NextBytes(short length);
 
     /// <inheritdoc/>
@@ -227,7 +227,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         }
         else
         {
-            return items.OrderBy(i => Next<int>()).First();
+            return items.OrderBy(_ => Next<int>()).First();
         }
     }
 
@@ -249,7 +249,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         }
         else
         {
-            return items.OrderBy(i => Next<int>()).FirstOrDefault()!;
+            return items.OrderBy(_ => Next<int>()).FirstOrDefault()!;
         }
     }
 

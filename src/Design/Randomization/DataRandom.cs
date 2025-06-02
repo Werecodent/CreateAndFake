@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using System.Text;
 using CreateAndFake.Design.Context;
 
 namespace CreateAndFake.Design.Randomization;
@@ -43,7 +42,7 @@ public sealed class DataRandom
     /// </summary>
     /// <param name="name">Name to match a value with.</param>
     /// <returns>
-    ///     The value representing <paramref name="name"/> if found; <c>null</c> otherwise.
+    ///     The value representing <paramref name="name"/> if found; <see langword="null"/> otherwise.
     /// </returns>
     public string? Find(string? name)
     {
@@ -57,14 +56,6 @@ public sealed class DataRandom
     /// <returns>The uppercase converted text.</returns>
     private static string ToUpperOnly(string? value)
     {
-        StringBuilder result = new();
-        foreach (char c in value?.ToUpperInvariant() ?? "")
-        {
-            if (c is >= 'A' and <= 'Z')
-            {
-                _ = result.Append(c);
-            }
-        }
-        return result.ToString();
+        return string.Concat(value?.ToUpperInvariant().Where(c => c is >= 'A' and <= 'Z') ?? []);
     }
 }

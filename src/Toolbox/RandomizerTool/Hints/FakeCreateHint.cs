@@ -91,7 +91,7 @@ public sealed class FakeCreateHint : CreateHint
         )
         {
             Type[] generics = method.IsGenericMethod
-                ? [.. method.GetGenericArguments().Select(a => typeof(AnyGeneric))]
+                ? [.. method.GetGenericArguments().Select(_ => typeof(AnyGeneric))]
                 : [];
 
             mock.Setup(

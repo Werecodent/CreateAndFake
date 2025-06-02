@@ -5,7 +5,7 @@
 
 namespace System.Diagnostics.CodeAnalysis;
 
-/// <summary>Specifies the attached data may actually be <c>null</c>.</summary>
+/// <summary>Specifies the attached data may actually be <see langword="null"/>.</summary>
 [
     ExcludeFromCodeCoverage,
     AttributeUsage(
@@ -16,6 +16,6 @@ namespace System.Diagnostics.CodeAnalysis;
         Inherited = false
     )
 ]
-internal sealed class MaybeNullAttribute : Attribute { }
+internal sealed class MaybeNullAttribute : Attribute;
 
 #endif

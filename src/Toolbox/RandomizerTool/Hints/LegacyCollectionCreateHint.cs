@@ -5,7 +5,8 @@ using System.Collections.Specialized;
 using CreateAndFake.Design;
 using CreateAndFake.RandomizerTool.Engine;
 
-#pragma warning disable IDE0058 // Expression value is never used: Return isn't present on all versions.
+#pragma warning disable IDE0058 // Return isn't present on all versions.
+#pragma warning disable RCS1124 // Creates the wrong type.
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
@@ -25,17 +26,17 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         (typeof(StringDictionary), CreateDict<StringDictionary>),
         (typeof(OrderedDictionary), CreateDict<OrderedDictionary>),
         (typeof(NameValueCollection), CreateDict<NameValueCollection>),
-        (typeof(Array), (data, gen) => data),
-        (typeof(Stack), (data, gen) => new Stack(data)),
-        (typeof(Queue), (data, gen) => new Queue(data)),
-        (typeof(ArrayList), (data, gen) => new ArrayList(data)),
+        (typeof(Array), (data, _) => data),
+        (typeof(Stack), (data, _) => new Stack(data)),
+        (typeof(Queue), (data, _) => new Queue(data)),
+        (typeof(ArrayList), (data, _) => new ArrayList(data)),
         (
             typeof(BitArray),
-            (data, gen) => new BitArray(data.Select(d => gen.Create<bool>()).ToArray())
+            (data, gen) => new BitArray(data.Select(_ => gen.Create<bool>()).ToArray())
         ),
         (
             typeof(StringCollection),
-            (data, gen) =>
+            (data, _) =>
             {
                 StringCollection result = [.. data];
                 return result;
@@ -108,4 +109,4 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     }
 }
 
-#pragma warning restore IDE0058 // Expression value is never used
+#pragma warning restore IDE0058, RCS1124

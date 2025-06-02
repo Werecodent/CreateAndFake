@@ -4,9 +4,9 @@
 public interface IDeepCloneable
 {
     /// <summary>
-    ///     Creates a clone where any mutation to <c>this</c> or the
+    ///     Creates a clone where any mutation to <see langword="this"/> or the
     ///     created copy only affects that object and not the other.
     /// </summary>
-    /// <returns>The created clone that is equal by value to <c>this</c>.</returns>
+    /// <returns>The created clone that is equal by value to <see langword="this"/>.</returns>
     IDeepCloneable DeepClone();
 }

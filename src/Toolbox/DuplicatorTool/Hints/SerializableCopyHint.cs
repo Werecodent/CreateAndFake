@@ -4,7 +4,7 @@ using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
-#pragma warning disable CS0252 // Possible unintended reference comparison: Intended.
+#pragma warning disable CS0252 // Intended.
 
 /// <summary>Handles cloning <see cref="ISerializable"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class SerializableCopyHint : CopyHint
@@ -58,4 +58,4 @@ public sealed class SerializableCopyHint : CopyHint
     }
 }
 
-#pragma warning restore CS0252 // Possible unintended reference comparison; left hand side needs cast
+#pragma warning restore CS0252

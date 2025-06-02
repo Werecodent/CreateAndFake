@@ -242,7 +242,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <returns>Found subclasses.</returns>
     private static ImmutableArray<Type> FindSelfAndSubclasses(Type type)
     {
-        BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
+        const BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
 
         ImmutableArray<Type> subclasses =
         [
@@ -270,7 +270,7 @@ public sealed class ObjectCreateHint : CreateHint
         }
     }
 
-    /// <summary>Finds <c>public</c> or <c>internal</c> constructors.</summary>
+    /// <summary>Finds <see langword="public"/> or <see langword="internal"/> constructors.</summary>
     /// <param name="type"><c>Type</c> to search for.</param>
     /// <param name="scope">Scope of constructors to look for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>

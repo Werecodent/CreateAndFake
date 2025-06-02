@@ -7,6 +7,8 @@ using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Tests.FakerTool;
 
+#pragma warning disable RCS1021 // Expression-bodied lambda creates incorrect type.
+
 public static class Fake_T_Tests
 {
     [Fact]
@@ -153,7 +155,7 @@ public static class Fake_T_Tests
     {
         Tools
             .Faker.Mock<object>()
-            .Assert(f => f.Setup(d => new object(), Behavior.Returns(new object())))
+            .Assert(f => f.Setup(_ => new object(), Behavior.Returns(new object())))
             .Throws<InvalidOperationException>();
     }
 
@@ -200,7 +202,7 @@ public static class Fake_T_Tests
         fake2.Dummy.Text = "What";
         fake2.VerifySet(Times.Once, m => m.Text, Arg.LambdaAny<string>());
 
-        fake2.SetupSet(m => m.Text, "Hinter", Behavior.Set((string input) => { }));
+        fake2.SetupSet(m => m.Text, "Hinter", Behavior.Set((string _) => { }));
         fake2.VerifySet(Times.Never, m => m.Text, "Hinter");
         fake2.Dummy.Text = "Hinter";
         fake2.VerifySet(Times.Once, m => m.Text, "Hinter");
@@ -239,7 +241,7 @@ public static class Fake_T_Tests
         fake.Setup(m => m.Read(Arg.Any<string>()), Behavior.Returns("Wow!"));
         fake.Dummy.Read("Okay?").Assert().Is("Wow!");
 
-        fake.Setup(m => m.Combo(2, "Finally"), Behavior.Set((int num, string text) => { }));
+        fake.Setup(m => m.Combo(2, "Finally"), Behavior.Set((int _, string __) => { }));
         fake.Verify(Times.Never, m => m.Combo(2, "Finally"));
         fake.Dummy.Combo(2, "Finally");
         fake.Verify(Times.Once, m => m.Combo(2, "Finally"));
@@ -247,3 +249,5 @@ public static class Fake_T_Tests
         hintBehavior.Calls.Assert().Is(2);
     }
 }
+
+#pragma warning restore RCS1021

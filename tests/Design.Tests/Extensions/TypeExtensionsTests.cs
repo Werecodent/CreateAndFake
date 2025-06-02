@@ -26,7 +26,7 @@ public static class TypeExtensionsTests
             )
             .GetType();
 
-        Parallel.For(0, 10, i => testType.Inherits<object>()).IsCompleted.Assert().Is(true);
+        Parallel.For(0, 10, _ => testType.Inherits<object>()).IsCompleted.Assert().Is(true);
     }
 
     [Theory, RandomData]

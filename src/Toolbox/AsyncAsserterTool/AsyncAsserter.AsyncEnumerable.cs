@@ -72,7 +72,7 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
         if (collection == null)
         {
             throw new AssertException(
-                $"Expected collection with elements, but was 'null'.",
+                "Expected collection with elements, but was 'null'.",
                 details,
                 localOptions.Gen.InitialSeed
             );
@@ -149,7 +149,7 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
             found =
                 found || await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -194,7 +194,7 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
         {
             notFound &= !await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)

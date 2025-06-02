@@ -1,17 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.FakerTool.Proxy;
+﻿using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
 
-/// <summary>For matching <c>out</c> and <c>ref</c> arguments.</summary>
+#pragma warning disable CA1051, S1104 // Required to match out/ref.
+
+/// <summary>For matching <see langword="out"/> and <see langword="ref"/> arguments.</summary>
 /// <typeparam name="T">Argument <c>Type</c> to match.</typeparam>
 public sealed class OutRef<T> : IOutRef
 {
     /// <summary>Used as the out/ref argument.</summary>
-    [SuppressMessage(
-        "Microsoft.Design",
-        "CA1051:DoNotDeclareVisibleInstanceFields",
-        Justification = "Required to match out/ref."
-    )]
     public T? Var = default;
 }
+
+#pragma warning restore S1104

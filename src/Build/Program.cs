@@ -31,15 +31,15 @@ internal static class Program
     /// <summary>Downloads all packages for the solution.</summary>
     private static async Task Restore()
     {
-        await RunAsync("dotnet", $"tool update -g csharpier");
-        await RunAsync("dotnet", "restore");
+        await RunAsync("dotnet", "tool update -g csharpier").ConfigureAwait(false);
+        await RunAsync("dotnet", "restore").ConfigureAwait(false);
     }
 
     /// <summary>Builds the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
     private static Task Compile(string configuration)
     {
-        return RunAsync($"dotnet", $"build --no-restore --configuration {configuration}");
+        return RunAsync("dotnet", $"build --no-restore --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
@@ -65,8 +65,8 @@ internal static class Program
     /// <summary>Tests and analyzes test code coverage.</summary>
     private static async Task Coverage()
     {
-        string prefix = "coverage";
-        string postfix = ".cobertura.xml";
+        const string prefix = "coverage";
+        const string postfix = ".cobertura.xml";
 
         string toolsDir = Path.Combine(_ArtifactDir, "tools");
         string coverageDir = Path.Combine(_ArtifactDir, "coverage");
@@ -76,23 +76,24 @@ internal static class Program
         EnsureEmpty(coverageDir);
 
         await RunAsync(
-            "dotnet",
-            string.Join(
-                ' ',
-                "test",
-                "--no-build",
-                "--no-restore",
-                "--configuration Debug",
-                "--collect:\"XPlat Code Coverage\"",
-                $"--results-directory \"{testDir}\""
+                "dotnet",
+                string.Join(
+                    ' ',
+                    "test",
+                    "--no-build",
+                    "--no-restore",
+                    "--configuration Debug",
+                    "--collect:\"XPlat Code Coverage\"",
+                    $"--results-directory \"{testDir}\""
+                )
             )
-        );
+            .ConfigureAwait(false);
 
         int count = 0;
         foreach (
             string result in Directory.GetFiles(
                 testDir,
-                $"{prefix}{postfix}",
+                prefix + postfix,
                 SearchOption.AllDirectories
             )
         )
@@ -101,13 +102,15 @@ internal static class Program
         }
 
         await RunAsync(
-            "dotnet",
-            $"tool update dotnet-reportgenerator-globaltool --tool-path {toolsDir}"
-        );
+                "dotnet",
+                $"tool update dotnet-reportgenerator-globaltool --tool-path {toolsDir}"
+            )
+            .ConfigureAwait(false);
         await RunAsync(
-            $"{toolsDir}/reportgenerator",
-            $"-reports:{coverageDir}/*.xml -targetdir:{reportDir}"
-        );
+                $"{toolsDir}/reportgenerator",
+                $"-reports:{coverageDir}/*.xml -targetdir:{reportDir}"
+            )
+            .ConfigureAwait(false);
     }
 
     /// <summary>Packs the solution.</summary>

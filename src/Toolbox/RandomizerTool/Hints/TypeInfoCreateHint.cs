@@ -78,15 +78,12 @@ public sealed class TypeInfoCreateHint : CreateHint
                 rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
             },
             {
-                typeof(string).GetConstructors().First().GetType(),
+                typeof(string).GetConstructors()[0].GetType(),
                 rand => rand.Create<ConstructorInfo>()
             },
-            { typeof(string).GetMethods().First().GetType(), rand => rand.Create<MethodInfo>() },
-            {
-                typeof(string).GetProperties().First().GetType(),
-                rand => rand.Create<PropertyInfo>()
-            },
-            { typeof(string).GetFields().First().GetType(), rand => rand.Create<FieldInfo>() },
+            { typeof(string).GetMethods()[0].GetType(), rand => rand.Create<MethodInfo>() },
+            { typeof(string).GetProperties()[0].GetType(), rand => rand.Create<PropertyInfo>() },
+            { typeof(string).GetFields()[0].GetType(), rand => rand.Create<FieldInfo>() },
             {
                 typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
                 rand => rand.Create<ParameterInfo>()

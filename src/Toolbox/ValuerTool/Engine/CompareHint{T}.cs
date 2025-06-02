@@ -1,5 +1,7 @@
 ﻿namespace CreateAndFake.ValuerTool.Engine;
 
+#pragma warning disable MA0042 // Using sync behavior for async versions.
+
 /// <typeparam name="T"><c>Type</c> being supported for comparisons.</typeparam>
 /// <inheritdoc/>
 public abstract class CompareHint<T> : CompareHint
@@ -68,3 +70,5 @@ public abstract class CompareHint<T> : CompareHint
         return Task.FromResult(GetHashCode(item, valuer));
     }
 }
+
+#pragma warning restore MA0042

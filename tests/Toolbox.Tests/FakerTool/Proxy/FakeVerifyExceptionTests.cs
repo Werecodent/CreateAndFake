@@ -2,4 +2,4 @@
 
 namespace CreateAndFake.Tests.FakerTool.Proxy;
 
-public sealed class FakeVerifyExceptionTests : ExceptionTestBase<FakeVerifyException> { }
+public sealed class FakeVerifyExceptionTests : ExceptionTestBase<FakeVerifyException>;

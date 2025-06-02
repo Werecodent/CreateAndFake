@@ -15,9 +15,11 @@ public sealed class EquatableCompareHint : CompareHint
 
         return valuer.Options.UseEquatableComparisons
             && expected != null
-            && expected.GetType().Inherits(typeof(IEquatable<>).MakeGenericType(expected.GetType()))
             && expected is not IStructuralEquatable
-            && expected is not IToolOptions;
+            && expected is not IToolOptions
+            && expected
+                .GetType()
+                .Inherits(typeof(IEquatable<>).MakeGenericType(expected.GetType()));
     }
 
     /// <inheritdoc/>

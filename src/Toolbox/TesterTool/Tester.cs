@@ -8,7 +8,7 @@ namespace CreateAndFake.TesterTool;
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public class Tester(TesterOptions options) : ITester
 {
     /// <inheritdoc/>
@@ -37,7 +37,7 @@ public class Tester(TesterOptions options) : ITester
             await checker.PreventsNullRefExceptionOnConstructors(type, true).ConfigureAwait(false);
         }
 
-        await CreateInstanceAndTestMethods(
+        await CreateInstanceAndTestMethodsAsync(
                 type,
                 localOptions,
                 checker.PreventsNullRefExceptionOnMethods
@@ -97,7 +97,11 @@ public class Tester(TesterOptions options) : ITester
             await checker.PreventsMutationOnConstructors(type, true).ConfigureAwait(false);
         }
 
-        await CreateInstanceAndTestMethods(type, localOptions, checker.PreventsMutationOnMethods)
+        await CreateInstanceAndTestMethodsAsync(
+                type,
+                localOptions,
+                checker.PreventsMutationOnMethods
+            )
             .ConfigureAwait(false);
 
         if (localOptions.IncludeStaticMethods)
@@ -155,7 +159,7 @@ public class Tester(TesterOptions options) : ITester
     /// <param name="type">Type being tested.</param>
     /// <param name="localOptions">Configured options to use.</param>
     /// <param name="checker">Test to run.</param>
-    private static async Task CreateInstanceAndTestMethods(
+    private static async Task CreateInstanceAndTestMethodsAsync(
         Type type,
         TesterOptions localOptions,
         Func<object, Task> checker
@@ -189,9 +193,6 @@ public class Tester(TesterOptions options) : ITester
         ArgumentGuard.ThrowIfNull(testAssembly, nameof(testAssembly));
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-        BindingFlags scope = localOptions.IncludeInternals
-            ? BindingFlags.Public | BindingFlags.NonPublic
-            : BindingFlags.Public;
 
         FrozenSet<string> testClasses = testAssembly.GetTypes().Select(t => t.Name).ToFrozenSet();
 

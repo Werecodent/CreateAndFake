@@ -1,18 +1,16 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Tests.TestSamples;
+﻿using CreateAndFake.Tests.TestSamples;
 
 namespace CreateAndFake.Tests.TesterTool.TestSamples;
 
+#pragma warning disable // For testing.
+
 public sealed class MockMethodPassOnly
 {
-    [SuppressMessage(
-        "Microsoft.Performance",
-        "CA1822:MarkMembersAsStatic",
-        Justification = "For testing."
-    )]
     public bool MockPassOnly(IOnlyMockSample sample)
     {
         sample?.FailIfNotMocked();
         return true;
     }
 }
+
+#pragma warning restore

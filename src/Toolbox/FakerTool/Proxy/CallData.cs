@@ -37,7 +37,7 @@ internal sealed class CallData(
         List<Tuple<Arg, object>> changes = [.. argChanges];
         for (int i = 0; i < _args.Length; i++)
         {
-            Tuple<Arg, object>? change = changes.FirstOrDefault(c => Equals(c.Item2, _args[i]));
+            Tuple<Arg, object>? change = changes.Find(c => Equals(c.Item2, _args[i]));
             if (change != default)
             {
                 _args[i] = change.Item1;
@@ -48,7 +48,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if behavior is intended for a call.</summary>
     /// <param name="input">Details of the call.</param>
-    /// <returns><c>true</c> if matched; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
     internal bool MatchesCall(CallData input)
     {
         ArgumentGuard.ThrowIfNull(input, nameof(input));
@@ -60,7 +60,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if the call generics match the expected ones.</summary>
     /// <param name="inputGenerics">Generics used in the call.</param>
-    /// <returns><c>true</c> if matched; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
     private bool GenericsMatch(Type[] inputGenerics)
     {
         bool matches = inputGenerics.Length == _generics.Length;
@@ -77,7 +77,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if the call args match the expected ones.</summary>
     /// <param name="inputArgs">Args used in the call.</param>
-    /// <returns><c>true</c> if matched; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
     private bool ArgsMatch(object?[] inputArgs)
     {
         bool matches = inputArgs.Length == _args.Length;
@@ -100,8 +100,8 @@ internal sealed class CallData(
         return matches;
     }
 
-    /// <summary>Converts <c>this</c> to a <c>string</c>.</summary>
-    /// <returns><c>string</c> representation of <c>this</c>.</returns>
+    /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>
+    /// <returns><see langword="string"/> representation of <see langword="this"/>.</returns>
     public override string ToString()
     {
         string gen =

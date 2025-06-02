@@ -53,7 +53,7 @@ public sealed class FakeVerifyException : Exception
     /// <param name="context">Additional info.</param>
     /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
-    [Obsolete(DiagnosticId = "SYSLIB0051")]
+    [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif
     private FakeVerifyException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }

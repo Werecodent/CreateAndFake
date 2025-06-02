@@ -94,7 +94,7 @@ public sealed class CollectionCreateHint : CreateHint
 
     /// <summary>Finds the <c>Type</c> to be contained by a created collection.</summary>
     /// <param name="type">Collection <c>Type</c> being created..</param>
-    /// <returns><c>null</c> if not logical; <c>Type</c> for the collection otherwise.</returns>
+    /// <returns><see langword="null"/> if not logical; <c>Type</c> for the collection otherwise.</returns>
     private static Type? GetItemType(Type type)
     {
         Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];

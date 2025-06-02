@@ -3,7 +3,7 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
-#pragma warning disable xUnit1031 // Test methods should not use blocking code: Ensures blocking code works for library.
+#pragma warning disable xUnit1031 // Ensures blocking code works for library.
 
 public static class LimiterSyncTests
 {
@@ -228,16 +228,7 @@ public static class LimiterSyncTests
         Stopwatch watch = Stopwatch.StartNew();
 
         new Limiter(_SmallDelay)
-            .Assert(l =>
-                l.Retry(
-                    "",
-                    () =>
-                    {
-                        throw exception;
-                    },
-                    TestContext.Current.CancellationToken
-                )
-            )
+            .Assert(l => l.Retry("", () => throw exception, TestContext.Current.CancellationToken))
             .Throws<TimeoutException>()
             .InnerException.Assert()
             .Is(exception)
@@ -717,4 +708,4 @@ public static class LimiterSyncTests
     }
 }
 
-#pragma warning restore xUnit1031 // Test methods should not use blocking code
+#pragma warning restore xUnit1031

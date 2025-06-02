@@ -53,7 +53,7 @@ public interface IRunner : ITool<RunnerOptions>
     /// <returns>Results of the run.</returns>
     Task<RunResult> Run(object? instance, MethodInfo method, RunnerMod? optionConfiguration = null);
 
-    // <summary>Runs the given method on the instance.</summary>
+    /// <summary>Runs the given method on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
     /// <param name="data">Method to run.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>

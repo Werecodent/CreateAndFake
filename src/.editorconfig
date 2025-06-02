@@ -1,48 +1,11 @@
 [*.cs]
 
-# Default severity for all analyzer diagnostics
-dotnet_analyzer_diagnostic.severity = warning
-
-# CA1000:DoNotDeclareStaticMembersOnGenericTypes
-# Per generic static behavior is a valuable tool that can reduce complexity.
-dotnet_diagnostic.CA1000.severity = none
-
-# CA1032: Implement standard exception constructors
 # Message based constructors are unnecessary and hurts design.
 dotnet_diagnostic.CA1032.severity = none
+dotnet_diagnostic.RCS1194.severity = None
 
-# CA1805: Do not initialize unnecessarily
-# Important for clarity and understanding intention.
-dotnet_diagnostic.CA1805.severity = none
-
-# CA1865: Use 'string.IndexOf(char)' instead
-# CA2249: Use "string.Contains" instead of "string.IndexOf"
-# Not available for all .NET versions.
-dotnet_diagnostic.CA1865.severity = none
-dotnet_diagnostic.CA2249.severity = none
-
-# IDE0045: 'if' statement can be simplified
-# IDE0046: Convert to conditional expression
-# Choice should be left to developer to maximize readability.
-dotnet_diagnostic.IDE0045.severity = none
-dotnet_diagnostic.IDE0046.severity = none
-
-# IDE0048: Add parentheses for clarity
-# Unneeded parentheses can hurt readability.
-dotnet_diagnostic.IDE0048.severity = none
-
-# IDE0055: Fix formatting
-# Controlled by csharpier.
-dotnet_diagnostic.IDE0055.severity = none
-
-# IDE0057: Substring can be simplified
-# No support in legacy frameworks.
-dotnet_diagnostic.IDE0057.severity = none
-
-# IDE0130: Namespace does not match folder structure
 # More important to provide a good public surface and backwards compatibility.
 dotnet_diagnostic.IDE0130.severity = none
 
-# CS1573: Parameter has no matching param tag in the XML comment (but other parameters do)
 # False positive when adding a <param/> tag while also using <inheritdoc/> tag.
 dotnet_diagnostic.CS1573.severity = none

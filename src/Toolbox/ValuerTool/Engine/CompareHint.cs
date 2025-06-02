@@ -1,5 +1,7 @@
 ﻿namespace CreateAndFake.ValuerTool.Engine;
 
+#pragma warning disable MA0042 // Using sync behavior for async versions.
+
 /// <summary>Handles comparing specific types for <see cref="IValuer"/>.</summary>
 public abstract class CompareHint
 {
@@ -23,7 +25,7 @@ public abstract class CompareHint
     }
 
     /// <inheritdoc cref="TryCompare"/>
-    public DifferenceHintAsyncResult TryCompareAsync(
+    public DifferenceHintAsyncResult TryAsyncCompare(
         object? expected,
         object? actual,
         ValuerChainer valuer
@@ -56,7 +58,7 @@ public abstract class CompareHint
     }
 
     /// <inheritdoc cref="TryGetHashCode"/>
-    public HashCodeHintAsyncResult TryGetHashCodeAsync(object? item, ValuerChainer valuer)
+    public HashCodeHintAsyncResult TryAsyncGetHashCode(object? item, ValuerChainer valuer)
     {
         if (Supports(item, item, valuer))
         {
@@ -71,7 +73,7 @@ public abstract class CompareHint
     /// <summary>
     ///     Determines if <paramref name="expected"/> or <paramref name="actual"/> are supported by the hint.
     /// </summary>
-    /// <returns><c>true</c> if the objects can be compared; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if the objects can be compared; <see langword="false"/> otherwise.</returns>
     /// <inheritdoc cref="TryCompare"/>
     protected abstract bool Supports(object? expected, object? actual, ValuerChainer valuer);
 
@@ -105,3 +107,5 @@ public abstract class CompareHint
         return Task.FromResult(GetHashCode(item, valuer));
     }
 }
+
+#pragma warning restore MA0042 // Using sync behavior for async versions.

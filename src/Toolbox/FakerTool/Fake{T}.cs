@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.FakerTool.Proxy;
@@ -79,6 +78,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to the setter.</summary>
+    /// <typeparam name="TResult"></typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Setter to verify.</param>
     /// <param name="value">Set value to match from the call.</param>
@@ -89,6 +89,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to the setter.</summary>
+    /// <typeparam name="TResult"></typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Setter to verify.</param>
     /// <param name="value">Arg expression to match from the call.</param>
@@ -108,6 +109,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to <paramref name="method"/>.</summary>
+    /// <typeparam name="TResult"></typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Method to verify.</param>
     public void Verify<TResult>(Times times, Expression<Func<T, TResult>> method)
@@ -120,6 +122,8 @@ public sealed class Fake<T> : Fake
     /// <param name="method">Expression to convert.</param>
     /// <param name="onlySetter">If only setter is allowed.</param>
     /// <returns>Method name, generics, and args.</returns>
+    /// <exception cref="NotSupportedException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     private static (MethodInfo, Type[], object?[]) ExtractCall(
         LambdaExpression method,
         bool onlySetter
@@ -181,14 +185,11 @@ public sealed class Fake<T> : Fake
         }
     }
 
+#pragma warning disable IDE0200 // Code coverage issue.
+
     /// <summary>Converts an lambda arg expression to its actual value.</summary>
     /// <param name="call">Expression of the arg to convert.</param>
     /// <returns>Value to pass to the call.</returns>
-    [SuppressMessage(
-        "Microsoft.Style",
-        "IDE0200:PreferMethodGroupConversion",
-        Justification = "Code coverage issue."
-    )]
     private static object ResolveArgLambda(MethodCallExpression call)
     {
         Type innerType =
@@ -201,4 +202,6 @@ public sealed class Fake<T> : Fake
             .MakeGenericMethod(innerType)
             .Invoke(null, [.. call.Arguments.Select(x => ConvertArg(x))])!;
     }
+
+#pragma warning restore IDE0200 // Code coverage issue.
 }

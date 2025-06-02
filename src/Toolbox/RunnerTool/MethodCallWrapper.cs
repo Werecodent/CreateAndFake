@@ -18,10 +18,14 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     /// <summary>Parameter data for the method.</summary>
     public IEnumerable<object?> Args => _args.Values.Cast<object>();
 
+    /// <summary>Number of args.</summary>
+    public int ArgCount => _args.Count;
+
     /// <summary>Sets parameter named <paramref name="name"/> to <paramref name="value"/>.</summary>
     /// <param name="name">Name for the parameter to modify.</param>
     /// <param name="value">New value to use.</param>
     /// <returns>Previous value that was replaced for the parameter.</returns>
+    /// <exception cref="KeyNotFoundException">If <paramref name="name"/> is not a key.</exception>
     public object? ModifyArg(string name, object? value)
     {
         if (_args.Contains(name))

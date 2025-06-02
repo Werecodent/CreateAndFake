@@ -1,11 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace CreateAndFake.FakerTool.Proxy;
+﻿namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Marker for OutRef.</summary>
-[SuppressMessage(
-    "Microsoft.Design",
-    "CA1040:AvoidEmptyInterfaces",
-    Justification = "For matching any OutRef in mock behavior."
-)]
-public interface IOutRef { }
+public interface IOutRef;

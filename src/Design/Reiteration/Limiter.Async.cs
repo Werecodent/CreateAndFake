@@ -109,10 +109,7 @@ public sealed partial class Limiter : IAsyncLimiter
             {
                 break;
             }
-            else
-            {
-                await DelayOrFaultAsync(message, watch.Elapsed, i, canceler).ConfigureAwait(false);
-            }
+            await DelayOrFaultAsync(message, watch.Elapsed, i, canceler).ConfigureAwait(false);
         }
 
         return results.AsReadOnly();

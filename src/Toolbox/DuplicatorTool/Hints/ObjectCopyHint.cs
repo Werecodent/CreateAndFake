@@ -117,8 +117,8 @@ public sealed class ObjectCopyHint : CopyHint
                 }
                 else
                 {
-                    _ = propList.Remove(potentialProps.First());
-                    matchedMembers.Add(potentialProps.First());
+                    _ = propList.Remove(potentialProps[0]);
+                    matchedMembers.Add(potentialProps[0]);
                 }
                 continue;
             }
@@ -139,8 +139,8 @@ public sealed class ObjectCopyHint : CopyHint
                 }
                 else
                 {
-                    _ = fieldList.Remove(potentialFields.First());
-                    matchedMembers.Add(potentialFields.First());
+                    _ = fieldList.Remove(potentialFields[0]);
+                    matchedMembers.Add(potentialFields[0]);
                 }
                 continue;
             }

@@ -33,13 +33,13 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     internal static async Task GetItems_Repeatable(IAsyncEnumerable<int> items)
     {
         List<int> first = [];
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             first.Add(item);
         }
 
         List<int> second = [];
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             second.Add(item);
         }
@@ -59,7 +59,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
         await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 
         int count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             count++;
             if (count == 3)
@@ -69,7 +69,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
         }
 
         count = 0;
-        await foreach (int item in items)
+        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
         {
             count++;
         }

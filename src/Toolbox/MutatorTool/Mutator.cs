@@ -7,7 +7,7 @@ namespace CreateAndFake.MutatorTool;
 
 /// <inheritdoc cref="IMutator"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
     /// <inheritdoc/>

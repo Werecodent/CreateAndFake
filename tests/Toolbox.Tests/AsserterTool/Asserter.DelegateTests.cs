@@ -55,7 +55,7 @@ public sealed class AsserterDelegateTests
     {
         _testInstance
             .Assert(t =>
-                t.Throws<ArgumentException>((Action)(() => throw new NotImplementedException()))
+                t.Throws<ArgumentException>((Action)(() => throw new NotSupportedException()))
             )
             .Throws<AssertException>();
     }
@@ -100,7 +100,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_FuncTypeMismatch()
     {
         _testInstance
-            .Assert(t => t.Throws<ArgumentException>(() => throw new NotImplementedException()))
+            .Assert(t => t.Throws<ArgumentException>(() => throw new NotSupportedException()))
             .Throws<AssertException>();
     }
 

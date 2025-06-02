@@ -4,7 +4,7 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
-#pragma warning disable xUnit1031 // Test methods should not use blocking code: Ensures blocking code works for library.
+#pragma warning disable xUnit1031 // Ensures blocking code works for library.
 
 public static class LimiterAsyncTests
 {
@@ -236,14 +236,7 @@ public static class LimiterAsyncTests
 
         Exception error = await new Limiter(_SmallDelay)
             .Assert(l =>
-                l.RetryAsync(
-                    "",
-                    () =>
-                    {
-                        throw exception;
-                    },
-                    TestContext.Current.CancellationToken
-                )
+                l.RetryAsync("", () => throw exception, TestContext.Current.CancellationToken)
             )
             .Throws<TimeoutException>();
         error
@@ -351,7 +344,7 @@ public static class LimiterAsyncTests
             .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
-#pragma warning disable AsyncFixer02 // Long-running or blocking operations inside an async method: CancelAsync not available in legacy .net.
+#pragma warning disable AsyncFixer02 // CancelAsync not available in legacy .net.
 
     [Fact]
     internal static async Task RepeatAsync_Cancelable()
@@ -452,7 +445,7 @@ public static class LimiterAsyncTests
             .Throws<TimeoutException>();
     }
 
-#pragma warning restore AsyncFixer02 // Long-running or blocking operations inside an async method
+#pragma warning restore AsyncFixer02
 
     [Theory, RandomData]
     internal static async Task RepeatAsync_ResultsValid(List<int> data)
@@ -803,4 +796,4 @@ public static class LimiterAsyncTests
     }
 }
 
-#pragma warning restore xUnit1031 // Test methods should not use blocking code
+#pragma warning restore xUnit1031

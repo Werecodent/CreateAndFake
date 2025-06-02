@@ -44,6 +44,6 @@ public interface IMutator : ITool<MutatorOptions>
     /// <summary>Attempts to mutate an object.</summary>
     /// <param name="instance">Object to modify.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><c>true</c> if <paramref name="instance"/> has been modified; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if <paramref name="instance"/> has been modified; <see langword="false"/> otherwise.</returns>
     bool Modify(object? instance, MutatorMod? optionConfiguration = null);
 }

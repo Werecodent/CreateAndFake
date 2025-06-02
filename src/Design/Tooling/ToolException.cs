@@ -24,7 +24,7 @@ public sealed class ToolException : Exception
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
-    [Obsolete(DiagnosticId = "SYSLIB0051")]
+    [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif
     private ToolException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }

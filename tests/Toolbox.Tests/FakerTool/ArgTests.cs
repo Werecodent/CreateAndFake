@@ -99,16 +99,16 @@ public static class ArgTests
     internal static void LambdaWhere_MatchesCondition(string name)
     {
         Arg.LambdaWhere<string>(null).Matches(name).Assert().Is(true);
-        Arg.LambdaWhere<string>(s => true).Matches(name).Assert().Is(true);
-        Arg.LambdaWhere<string>(s => false).Matches(name).Assert().Is(false);
+        Arg.LambdaWhere<string>(_ => true).Matches(name).Assert().Is(true);
+        Arg.LambdaWhere<string>(_ => false).Matches(name).Assert().Is(false);
     }
 
     [Theory, RandomData]
     internal static void LambdaWhereRef_MatchesCondition(OutRef<string> nameRef)
     {
         Arg.LambdaWhereRef<string>(null).Matches(nameRef).Assert().Is(true);
-        Arg.LambdaWhereRef<string>(s => true).Matches(nameRef).Assert().Is(true);
-        Arg.LambdaWhereRef<string>(s => false).Matches(nameRef).Assert().Is(false);
+        Arg.LambdaWhereRef<string>(_ => true).Matches(nameRef).Assert().Is(true);
+        Arg.LambdaWhereRef<string>(_ => false).Matches(nameRef).Assert().Is(false);
     }
 
     [Theory, RandomData]

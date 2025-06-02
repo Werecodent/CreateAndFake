@@ -84,15 +84,12 @@ public sealed class GenericCreateHint : CreateHint
 
         if (!isValidArg())
         {
-            Limiter.Few.Retry(
+            _ = Limiter.Few.Retry(
                 $"Creating generic arguments of type '{type}' for type '{parent}' [Retry]",
                 () =>
                     Limiter.Few.StallUntil(
                         $"Trying arguments of type '{type}' for type '{parent}' [Stall]",
-                        () =>
-                        {
-                            arg = CreateArgViaConstraint(constraints, parent, randomizer);
-                        },
+                        () => arg = CreateArgViaConstraint(constraints, parent, randomizer),
                         isValidArg
                     )
             );
@@ -106,6 +103,7 @@ public sealed class GenericCreateHint : CreateHint
     /// <param name="parent">Base <c>Type</c> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Created arg <c>Type</c>.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private static Type CreateArgViaConstraint(
         Type[] constraints,
         Type parent,

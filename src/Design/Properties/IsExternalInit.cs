@@ -7,11 +7,15 @@ using System.ComponentModel;
 
 namespace System.Runtime.CompilerServices;
 
+#pragma warning disable MA0036 // Must match framework version.
+
 /// <summary>
 ///     Reserved to be used by the compiler for tracking metadata.
 ///     This class should not be used by developers in source code.
 /// </summary>
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class IsExternalInit { }
+internal sealed class IsExternalInit;
+
+#pragma warning restore MA0036
 
 #endif

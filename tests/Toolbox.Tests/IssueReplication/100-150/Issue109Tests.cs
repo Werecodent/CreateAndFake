@@ -1,9 +1,9 @@
 ﻿using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Hints;
 
-#pragma warning disable CA2227 // Change collection to read-only property setter: For testing.
-
 namespace CreateAndFake.Tests.IssueReplication;
+
+#pragma warning disable CA2227 // For testing.
 
 public static class Issue109Tests
 {

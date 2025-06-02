@@ -7,7 +7,7 @@ namespace CreateAndFake.ExtractorTool;
 
 /// <inheritdoc cref="IExtractor"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
     /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
@@ -44,6 +44,7 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     /// <param name="memberType">Field/Property type the <paramref name="source"/> is assigned to.</param>
     /// <param name="source">Instance being deconstructed.</param>
     /// <param name="foundData">Collection to populate with found data.</param>
+    /// <param name="options"></param>
     private static void FlattenData(
         Type? memberType,
         object? source,
@@ -133,10 +134,19 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     {
         Type type = source.GetType();
 
-        Type? arrayType =
-            type.IsArray ? type.GetElementType()
-            : type.IsGenericType ? type.GetGenericArguments()[0]
-            : typeof(object);
+        Type? arrayType;
+        if (type.IsArray)
+        {
+            arrayType = type.GetElementType();
+        }
+        else if (type.IsGenericType)
+        {
+            arrayType = type.GetGenericArguments()[0];
+        }
+        else
+        {
+            arrayType = typeof(object);
+        }
 
         IEnumerator gen = source.GetEnumerator();
         while (gen.MoveNext())

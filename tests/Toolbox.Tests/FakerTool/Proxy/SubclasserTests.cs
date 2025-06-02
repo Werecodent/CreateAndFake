@@ -105,7 +105,7 @@ public static class SubclasserTests
     [Fact]
     internal static void Supports_FalseWithWithNonVisibleTypes()
     {
-        TypeAttributes invisibleAttributes = TypeAttributes.NotPublic | TypeAttributes.Class;
+        const TypeAttributes invisibleAttributes = TypeAttributes.NotPublic | TypeAttributes.Class;
 
         Type type = Tools.Faker.Stub<Type>().Dummy;
 

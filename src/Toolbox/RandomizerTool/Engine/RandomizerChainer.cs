@@ -59,7 +59,7 @@ public sealed class RandomizerChainer
 
     /// <summary>Checks if <typeparamref name="T"/> has already been created by the randomizer.</summary>
     /// <typeparam name="T"><c>Type</c> to check.</typeparam>
-    /// <returns><c>true</c> if <typeparamref name="T"/> already created; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if <typeparamref name="T"/> already created; <see langword="false"/> otherwise.</returns>
     public bool AlreadyCreated<T>()
     {
         return AlreadyCreated(typeof(T));
@@ -67,7 +67,7 @@ public sealed class RandomizerChainer
 
     /// <summary>Checks if <paramref name="type"/> has already been created by the randomizer.</summary>
     /// <param name="type"><c>Type</c> to check.</param>
-    /// <returns><c>true</c> if <paramref name="type"/> already created; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if <paramref name="type"/> already created; <see langword="false"/> otherwise.</returns>
     public bool AlreadyCreated(Type type)
     {
         return _history.ContainsKey(type);
@@ -95,6 +95,7 @@ public sealed class RandomizerChainer
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
     /// <returns>The created instance.</returns>
+    /// <exception cref="InfiniteLoopException">If <paramref name="type"/> is a parent.</exception>
     public object Create(Type type, RandomizerOptions? options, object? parent = null)
     {
         if (parent != null)

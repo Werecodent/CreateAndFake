@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Content;
 
-#pragma warning disable IDE0250 // Struct can be made 'readonly': For testing.
-#pragma warning disable IDE0251 // Member can be made 'readonly': For testing.
-
 namespace CreateAndFake.Tests.TestSamples;
 
 [ExcludeFromCodeCoverage]
@@ -69,6 +66,3 @@ public struct StructSample(string stringValue)
         return left.CompareTo(right) >= 0;
     }
 }
-
-#pragma warning restore IDE0250 // Struct can be made 'readonly'
-#pragma warning restore IDE0251 // Member can be made 'readonly'

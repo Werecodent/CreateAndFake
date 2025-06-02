@@ -10,7 +10,7 @@ namespace CreateAndFake.RandomizerTool;
 
 /// <inheritdoc cref="IRandomizer"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <c>null</c> parameter.</exception>
+/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 {
     /// <summary>Default set of hints to use for randomization.</summary>
@@ -220,9 +220,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 
         for (int i = 0; i < args.Length; i++)
         {
-            Tuple<Type, object>? match = data.FirstOrDefault(t =>
-                t.Item1.Inherits(info[i].ParameterType)
-            );
+            Tuple<Type, object>? match = data.Find(t => t.Item1.Inherits(info[i].ParameterType));
             if (match != default)
             {
                 args[i] = match.Item2;
@@ -249,7 +247,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         return type.GetConstructors(BindingFlags.Instance | scope)
             .GroupBy(c =>
-                c.GetParameters().Count(p => data.Any(t => t.Item1.Inherits(p.ParameterType)))
+                c.GetParameters().Count(p => data.Exists(t => t.Item1.Inherits(p.ParameterType)))
             )
             .Where(g => g.Key > 0)
             .OrderByDescending(g => g.Key)

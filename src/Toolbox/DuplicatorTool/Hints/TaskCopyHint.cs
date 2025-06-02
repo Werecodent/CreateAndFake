@@ -58,7 +58,7 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-#pragma warning disable CA1849 // Call async methods when in an async method: Completion verified.
+#pragma warning disable CA1849, MA0042, VSTHRD103 // Completion verified.
 
     private static Task<T> WrapTask<T>(Task rawTask, DuplicatorChainer duplicator)
     {
@@ -81,5 +81,5 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-#pragma warning restore CA1849 // Call async methods when in an async method
+#pragma warning restore CA1849, MA0042, VSTHRD103
 }

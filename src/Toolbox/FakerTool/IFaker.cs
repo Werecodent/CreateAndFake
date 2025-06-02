@@ -17,13 +17,13 @@ public interface IFaker : ITool<FakerOptions>
     /// <summary>Determines if type <typeparamref name="T"/> can be faked.</summary>
     /// <typeparam name="T"><c>Type</c> to check.</typeparam>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><c>true</c> if possible; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
     bool Supports<T>(FakerMod? optionConfiguration = null);
 
     /// <summary>Determines if <paramref name="type"/> can be faked.</summary>
     /// <param name="type"><c>Type</c> to check.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><c>true</c> if possible; <c>false</c> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
     bool Supports(Type type, FakerMod? optionConfiguration = null);
 
     /// /// <inheritdoc cref="Mock{T}(IEnumerable{Type},FakerMod)"/>
