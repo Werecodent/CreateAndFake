@@ -1,20 +1,21 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
+using CreateAndFake.RunnerTool;
 using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
 namespace CreateAndFake.xUnit.v3;
 
-/// <summary>Populates <seealso cref="TheoryAttribute"/> methods with random values for testing.</summary>
+/// <summary>Populates <see cref="TheoryAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
 ///     Use with Parameter attributes to control randomization behavior:
 ///     <list type="bullet"><item>
-///         <seealso cref="SizeAttribute"/>,
-///         <seealso cref="FakeAttribute"/> &amp;
-///         <seealso cref="StubAttribute"/>
+///         <see cref="SizeAttribute"/>,
+///         <see cref="FakeAttribute"/> &amp;
+///         <see cref="StubAttribute"/>
 ///     </item></list>
 ///     <example>
 ///         Example test:<code>
@@ -38,35 +39,19 @@ public sealed class RandomDataAttribute : DataAttribute
         DisposalTracker disposalTracker
     )
     {
-        IReadOnlyCollection<ITheoryDataRow> data =
-        [
-            .. Enumerable
-                .Range(0, Math.Max(0, Trials))
-                .Select(_ =>
-                    Tools
-                        .Runner.CreateFor(
-                            testMethod,
-                            opt => opt with { InheritIReflectableTypeOnFakedType = true }
-                        )
-                        .Args.Select(FixArg)
-                        .ToArray()
-                )
-                .Select(data => new TheoryDataRow(data)),
-        ];
+        List<ITheoryDataRow> data = [];
+        for (int i = 0; i < Trials; i++)
+        {
+            MethodCallWrapper test = Tools.Runner.CreateFor(
+                testMethod,
+                opt => opt with { InheritIReflectableTypeOnFakedType = true }
+            );
 
-        foreach (
-            IDisposable disposable in data.SelectMany(row => row.GetData()).OfType<IDisposable>()
-        )
-        {
-            disposalTracker?.Add(disposable);
+            data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
         }
-        foreach (
-            IAsyncDisposable disposable in data.SelectMany(row => row.GetData())
-                .OfType<IAsyncDisposable>()
-        )
-        {
-            disposalTracker?.Add(disposable);
-        }
+
+        disposalTracker?.AddRange(data.SelectMany(row => row.GetData()).OfType<IDisposable>());
+        disposalTracker?.AddRange(data.SelectMany(row => row.GetData()).OfType<IAsyncDisposable>());
 
         return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(data);
     }

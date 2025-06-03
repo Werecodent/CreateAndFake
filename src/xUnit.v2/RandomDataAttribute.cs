@@ -5,14 +5,14 @@ using Xunit.Sdk;
 
 namespace CreateAndFake.xUnit.v2;
 
-/// <summary>Populates <seealso cref="Xunit.TheoryAttribute"/> methods with random values for testing.</summary>
+/// <summary>Populates <see cref="Xunit.TheoryAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
 ///     Use with Parameter attributes to control randomization behavior:
 ///     <list type="bullet"><item>
-///         <seealso cref="SizeAttribute"/>,
-///         <seealso cref="FakeAttribute"/> &amp;
-///         <seealso cref="StubAttribute"/>
+///         <see cref="SizeAttribute"/>,
+///         <see cref="FakeAttribute"/> &amp;
+///         <see cref="StubAttribute"/>
 ///     </item></list>
 ///     <example>
 ///         Example test:<code>

@@ -4,14 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CreateAndFake.MSTest;
 
-/// <summary>Populates <seealso cref="TestMethodAttribute"/> methods with random values for testing.</summary>
+/// <summary>Populates <see cref="TestMethodAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
 ///     Use with Parameter attributes to control randomization behavior:
 ///     <list type="bullet"><item>
-///         <seealso cref="SizeAttribute"/>,
-///         <seealso cref="FakeAttribute"/> &amp;
-///         <seealso cref="StubAttribute"/>
+///         <see cref="SizeAttribute"/>,
+///         <see cref="FakeAttribute"/> &amp;
+///         <see cref="StubAttribute"/>
 ///     </item></list>
 ///     <example>
 ///         Example test:<code>
@@ -42,6 +42,7 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
     {
         ArgumentGuard.ThrowIfNull(methodInfo, nameof(methodInfo));
 
-        return $"{methodInfo.Name}({string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType))})";
+        string args = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType));
+        return $"{methodInfo.Name}({args})";
     }
 }
