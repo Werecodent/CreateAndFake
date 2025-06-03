@@ -66,6 +66,12 @@ dotnet_diagnostic.RCS1089.severity = None
 dotnet_diagnostic.RCS1123.severity = None
 dotnet_diagnostic.S3993.severity = None
 
+# Design choice.
+dotnet_diagnostic.MA0029.severity = None
+dotnet_diagnostic.MA0071.severity = None
+dotnet_diagnostic.RCS1112.severity = None
+dotnet_diagnostic.RCS1211.severity = None
+
 # Deprecated.
 dotnet_diagnostic.MA0038.severity = None
 dotnet_diagnostic.MA0041.severity = None
@@ -85,14 +91,6 @@ dotnet_diagnostic.VSTHRD200.severity = None
 
 # TODO: Documentation work.
 dotnet_diagnostic.RCS1228.severity = None
-
-# TODO: Decide on Where combination.
-dotnet_diagnostic.MA0029.severity = None
-dotnet_diagnostic.RCS1112.severity = None
-
-# TODO: Go through else branches.
-dotnet_diagnostic.MA0071.severity = None
-dotnet_diagnostic.RCS1211.severity = None
 
 # TODO: Remove commented out code.
 dotnet_diagnostic.S125.severity = None

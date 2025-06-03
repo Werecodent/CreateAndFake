@@ -1,7 +1,7 @@
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Possible result from a tool hint.</summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">Result <see cref="Type"/> for the hint.</typeparam>
 /// <param name="hasData"><inheritdoc cref="HasData" path="/summary"/></param>
 /// <param name="data"><inheritdoc cref="Data" path="/summary"/></param>
 public abstract class HintResult<T>(bool hasData, T data)

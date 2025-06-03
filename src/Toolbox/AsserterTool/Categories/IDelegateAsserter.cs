@@ -27,7 +27,7 @@ public interface IDelegateAsserter
     T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception;
 
-    /// <summary>Verifies <c>behavior</c> throws a <typeparamref name="T"/> exception.</summary>
+    /// <summary>Verifies <paramref name="behavior"/> throws a <typeparamref name="T"/> exception.</summary>
     /// <typeparam name="T">Expected exception type.</typeparam>
     /// <param name="behavior">Delegate to run assertion checks with.</param>
     /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>

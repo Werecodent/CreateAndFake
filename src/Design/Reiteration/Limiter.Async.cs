@@ -28,16 +28,14 @@ public sealed partial class Limiter : IAsyncLimiter
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
 
+        int i = 0;
         List<T> results = [];
-
         Stopwatch watch = Stopwatch.StartNew();
-        int AttemptAsync = 0;
         do
         {
             results.Add(behavior.Invoke());
         } while (
-            await DelayIfNotDoneAsync(message, watch.Elapsed, ++AttemptAsync, canceler)
-                .ConfigureAwait(false)
+            await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
         );
 
         return results.AsReadOnly();
@@ -98,7 +96,6 @@ public sealed partial class Limiter : IAsyncLimiter
         ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
 
         List<T> results = [];
-
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
@@ -317,8 +314,8 @@ public sealed partial class Limiter : IAsyncLimiter
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
 
-        Stopwatch watch = Stopwatch.StartNew();
         int i = 0;
+        Stopwatch watch = Stopwatch.StartNew();
         do
         {
             try
@@ -335,7 +332,7 @@ public sealed partial class Limiter : IAsyncLimiter
         return default;
     }
 
-    /// <returns>Awaitable <c>Task</c> handling the delay.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the delay.</returns>
     /// <inheritdoc cref="DelayIfNotDone"/>
     private async Task<bool> DelayIfNotDoneAsync(
         string message,
@@ -355,7 +352,7 @@ public sealed partial class Limiter : IAsyncLimiter
         }
     }
 
-    /// <returns>Awaitable <c>Task</c> handling the delay.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the delay.</returns>
     /// <inheritdoc cref="DelayOrFault"/>
     private async Task DelayOrFaultAsync(
         string message,
@@ -365,14 +362,13 @@ public sealed partial class Limiter : IAsyncLimiter
         Exception? ex = null
     )
     {
-        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
         if (tries >= _tries)
         {
-            throw new TimeoutException($"Reached max Attempts of '{_tries}'{details}", ex);
+            Fault($"Reached max Attempts of '{_tries}'", message, ex);
         }
         else if (elapsed >= _timeout)
         {
-            throw new TimeoutException($"Reached timeout of '{_timeout}'{details}", ex);
+            Fault($"Reached timeout of '{_timeout}'", message, ex);
         }
         else
         {
@@ -380,7 +376,7 @@ public sealed partial class Limiter : IAsyncLimiter
         }
     }
 
-    /// <returns>Awaitable <c>Task</c> handling the delay.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the delay.</returns>
     /// <inheritdoc cref="DelayOrCancel"/>
     private async Task DelayOrCancelAsync(string message, CancellationToken? canceler)
     {
@@ -398,8 +394,7 @@ public sealed partial class Limiter : IAsyncLimiter
         }
         catch (OperationCanceledException e)
         {
-            string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
-            throw new TimeoutException($"Operation canceled via token{details}", e);
+            Fault("Operation canceled via token", message, e);
         }
     }
 }

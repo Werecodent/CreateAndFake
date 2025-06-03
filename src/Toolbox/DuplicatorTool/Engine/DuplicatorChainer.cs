@@ -41,7 +41,7 @@ public sealed class DuplicatorChainer(
         }
     }
 
-    /// <typeparam name="T"><c>Type</c> being cloned.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> being cloned.</typeparam>
     /// <inheritdoc cref="Copy"/>
     public T? Copy<T>(T? source)
     {
@@ -75,7 +75,7 @@ public sealed class DuplicatorChainer(
 
     /// <summary>If <paramref name="source"/> can be tracked in history.</summary>
     /// <param name="source">Item to check.</param>
-    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? source)
     {
         return !(source == null || source is IFaked || source.GetType().IsValueType);

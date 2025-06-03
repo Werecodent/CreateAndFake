@@ -142,7 +142,7 @@ public sealed class FakeCreateHint : CreateHint
     }
 
     /// <summary>Sets up arg types for the fake behavior.</summary>
-    /// <param name="type"><c>Type</c> of the method to convert.</param>
+    /// <param name="type"><see cref="Type"/> of the method to convert.</param>
     /// <returns>Type to use for the fake behavior delegate.</returns>
     private static Type SetupArg(Type type)
     {
@@ -161,7 +161,7 @@ public sealed class FakeCreateHint : CreateHint
     }
 
     /// <summary>Sets up the arg matcher for a parameter.</summary>
-    /// <param name="type">Parameter <c>Type</c> to allow.</param>
+    /// <param name="type">Parameter <see cref="Type"/> to allow.</param>
     /// <returns>Arg to use for setting up the mock.</returns>
     private static object SetupMatch(Type type)
     {

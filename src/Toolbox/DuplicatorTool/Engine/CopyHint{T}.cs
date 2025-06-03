@@ -1,6 +1,6 @@
 ﻿namespace CreateAndFake.DuplicatorTool.Engine;
 
-/// <typeparam name="T"><c>Type</c> being supported for cloning.</typeparam>
+/// <typeparam name="T"><see cref="Type"/> being supported for cloning.</typeparam>
 /// <inheritdoc/>
 public abstract class CopyHint<T> : CopyHint
 {

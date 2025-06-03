@@ -63,7 +63,7 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertBehavior"/>
-    /// <typeparam name="T">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertBehavior Assert<T>(this Func<T>? behavior)
@@ -80,7 +80,7 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert<T>(this Func<Task<T?>>? behavior)
@@ -97,7 +97,7 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert<T>(this Task<T?>? behavior)
@@ -106,7 +106,7 @@ public static class AssertExtensions
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
-    /// <typeparam name="T"><c>Type</c> of <paramref name="origin"/>.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> of <paramref name="origin"/>.</typeparam>
     /// <param name="origin">Object with <paramref name="behavior"/> to test.</param>
     /// <param name="behavior"><c>Delegate</c> on <paramref name="origin"/> to test.</param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>

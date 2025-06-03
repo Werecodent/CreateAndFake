@@ -8,8 +8,8 @@ public interface ITypeAsserter
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
     void Inherits<TChild>(Type? type, string? details = null);
 
-    /// <summary>Verifies <c>type</c> inherits <typeparamref name="TChild"/>.</summary>
-    /// <typeparam name="TChild">Expected child of <c>type</c>.</typeparam>
+    /// <summary>Verifies <see cref="Type"/> inherits <typeparamref name="TChild"/>.</summary>
+    /// <typeparam name="TChild">Expected child of <see cref="Type"/>.</typeparam>
     /// <param name="type">Type to run assertion checks with.</param>
     /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
     void Inherits<TChild>(Type? type, AsserterMod? optionConfiguration, string? details = null);
@@ -17,8 +17,8 @@ public interface ITypeAsserter
     /// <inheritdoc cref="Inherits(Type,Type,AsserterMod,string)"/>
     void Inherits(Type? child, Type? type, string? details = null);
 
-    /// <summary>Verifies <c>type</c> inherits <paramref name="child"/>.</summary>
-    /// <param name="child">Expected child of <c>Type</c>.</param>
+    /// <summary>Verifies <see cref="Type"/> inherits <paramref name="child"/>.</summary>
+    /// <param name="child">Expected child of <see cref="Type"/>.</param>
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
     void Inherits(
         Type? child,
@@ -32,16 +32,16 @@ public interface ITypeAsserter
     /// <inheritdoc cref="InheritedBy{T}(Type,AsserterMod,string)"/>
     void InheritedBy<TParent>(Type? type, string? details = null);
 
-    /// <summary>Verifies <typeparamref name="TParent"/> inherits <c>type</c>.</summary>
-    /// <typeparam name="TParent">Expected parent of <c>type</c>.</typeparam>
+    /// <summary>Verifies <typeparamref name="TParent"/> inherits <see cref="Type"/>.</summary>
+    /// <typeparam name="TParent">Expected parent of <see cref="Type"/>.</typeparam>
     /// <inheritdoc cref="Inherits{T}(Type,AsserterMod,string)"/>
     void InheritedBy<TParent>(Type? type, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="InheritedBy(Type,Type,AsserterMod,string)"/>
     void InheritedBy(Type? parent, Type? type, string? details = null);
 
-    /// <summary>Verifies <paramref name="parent"/> inherits <c>type</c>.</summary>
-    /// <param name="parent">Expected parent of <c>type</c>.</param>
+    /// <summary>Verifies <paramref name="parent"/> inherits <see cref="Type"/>.</summary>
+    /// <param name="parent">Expected parent of <see cref="Type"/>.</param>
     /// <inheritdoc cref="InheritedBy{T}(Type,AsserterMod,string)"/>
     void InheritedBy(
         Type? parent,

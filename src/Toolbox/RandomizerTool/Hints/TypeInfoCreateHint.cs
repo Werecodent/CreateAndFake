@@ -106,9 +106,9 @@ public sealed class TypeInfoCreateHint : CreateHint
     }
 
     /// <summary>Finds a random member info.</summary>
-    /// <typeparam name="T"><c>Type</c> being found.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> being found.</typeparam>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <param name="grabber">How members are found on a <c>Type</c>.</param>
+    /// <param name="grabber">How members are found on a <see cref="Type"/>.</param>
     /// <returns>The found member.</returns>
     private static T FindTypeInfo<T>(
         RandomizerChainer randomizer,

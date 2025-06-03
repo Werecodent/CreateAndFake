@@ -26,7 +26,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
 
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>
     /// <param name="item">Item to check.</param>
-    /// <returns><see langword="true"/> if tracking <paramref name="item"/> is possible; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if tracking <paramref name="item"/> is possible, <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? item)
     {
         return !(item == null || item is IFaked || item.GetType().IsValueType);

@@ -68,10 +68,12 @@ internal abstract class BaseGuarder(TesterOptions options)
             MethodCallWrapper data = options.Runner.CreateFor(method, Options.InjectionValues);
             try
             {
-                Disposer.Cleanup(
-                    await RunCheck(testOrigin ?? method, testParam, instance, data)
-                        .ConfigureAwait(false)
-                );
+                await Disposer
+                    .CleanupAsync(
+                        await RunCheck(testOrigin ?? method, testParam, instance, data)
+                            .ConfigureAwait(false)
+                    )
+                    .ConfigureAwait(false);
             }
             finally
             {

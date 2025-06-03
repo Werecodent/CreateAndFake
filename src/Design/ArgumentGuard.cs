@@ -6,10 +6,12 @@ namespace CreateAndFake.Design;
 
 #pragma warning disable RCS1256 // False positive.
 
-/// <summary>Handles common argument exception cases.</summary>
+/// <summary>Handles common argument <see cref="Exception"/> cases.</summary>
 public static class ArgumentGuard
 {
-    /// <summary>Prevents further execution if the parameter is null.</summary>
+    /// <summary>
+    ///     Prevents further execution if <paramref name="value"/> is <see langword="null"/>.
+    /// </summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="name">Name of the parameter.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="value"/> is null.</exception>
@@ -22,7 +24,9 @@ public static class ArgumentGuard
         }
     }
 
-    /// <summary>Checks if the parameter is asynchronous.</summary>
+    /// <summary>
+    ///     Checks if <paramref name="value"/> is an asynchronous <see cref="Type"/> .
+    /// </summary>
     /// <param name="value">Passed parameter value.</param>
     public static bool IsAsynchronous(object? value)
     {
@@ -30,9 +34,12 @@ public static class ArgumentGuard
             || (value?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
     }
 
-    /// <summary>Prevents further execution if the parameter is asynchronous.</summary>
+    /// <summary>
+    ///     Prevents further execution if <paramref name="value"/>
+    ///     is an asynchronous <see cref="Type"/>.
+    /// </summary>
     /// <param name="value">Passed parameter value.</param>
-    /// <param name="message">Error message for the potential exception.</param>
+    /// <param name="message">Error details for the potential <see cref="Exception"/>.</param>
     /// <exception cref="ToolException">If <paramref name="value"/> is async.</exception>
     [DebuggerStepThrough]
     public static void ThrowIfAsynchronous(object? value, string message)

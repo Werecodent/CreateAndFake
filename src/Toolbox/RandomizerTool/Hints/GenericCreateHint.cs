@@ -39,9 +39,9 @@ public sealed class GenericCreateHint : CreateHint
 
     /// <summary>Creates a concrete arg type from the given generic arg.</summary>
     /// <param name="type">Generic arg to create.</param>
-    /// <param name="parent">Base <c>Type</c> being created.</param>
+    /// <param name="parent">Base <see cref="Type"/> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns>Created arg <c>Type</c>.</returns>
+    /// <returns>Created arg <see cref="Type"/>.</returns>
     internal static Type CreateArg(Type type, Type parent, RandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
@@ -100,9 +100,9 @@ public sealed class GenericCreateHint : CreateHint
 
     /// <summary>Creates an arg type from the given constraints.</summary>
     /// <param name="constraints">Constraints limiting the arg type.</param>
-    /// <param name="parent">Base <c>Type</c> being created.</param>
+    /// <param name="parent">Base <see cref="Type"/> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns>Created arg <c>Type</c>.</returns>
+    /// <returns>Created arg <see cref="Type"/>.</returns>
     /// <exception cref="InvalidOperationException"></exception>
     private static Type CreateArgViaConstraint(
         Type[] constraints,

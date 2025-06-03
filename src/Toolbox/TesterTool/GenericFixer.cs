@@ -29,7 +29,7 @@ internal static class GenericFixer
     /// <param name="type">Generic arg to create.</param>
     /// <param name="method">Method with the generics.</param>
     /// <param name="options"></param>
-    /// <returns>Created arg <c>Type</c>.</returns>
+    /// <returns>Created arg <see cref="Type"/>.</returns>
     private static Type CreateArg(Type type, MethodInfo method, TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
@@ -88,7 +88,7 @@ internal static class GenericFixer
     /// <summary>Creates an arg type from the given constraints.</summary>
     /// <param name="constraints">Constraints limiting the arg type.</param>
     /// <param name="options"></param>
-    /// <returns>Created arg <c>Type</c>.</returns>
+    /// <returns>Created arg <see cref="Type"/>.</returns>
     private static Type CreateArgViaConstraint(Type[] constraints, TesterOptions options)
     {
         Type constraint = options.Gen.NextItem(constraints);

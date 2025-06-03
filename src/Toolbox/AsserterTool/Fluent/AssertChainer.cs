@@ -3,7 +3,7 @@
 namespace CreateAndFake.AsserterTool.Fluent;
 
 /// <summary>Chainer enabling additional assertion calls.</summary>
-/// <typeparam name="T">Assertion base <c>Type</c> to chain.</typeparam>
+/// <typeparam name="T">Assertion base <see cref="Type"/> to chain.</typeparam>
 /// <param name="chain">Assertion base instance to chain.</param>
 /// <param name="asserter">Configured options for <see langword="this"/>.</param>
 public sealed class AssertChainer<T>(T chain, IAsserter asserter)
@@ -67,7 +67,7 @@ public sealed class AssertChainer<T>(T chain, IAsserter asserter)
         return new AssertBehavior(asserter, behavior);
     }
 
-    /// <typeparam name="TReturn">Return <c>Type</c> of <paramref name="behavior"/>.</typeparam>
+    /// <typeparam name="TReturn">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <inheritdoc cref="Also(object)"/>
@@ -77,7 +77,7 @@ public sealed class AssertChainer<T>(T chain, IAsserter asserter)
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
-    /// <typeparam name="TOrigin"><c>Type</c> of <paramref name="origin"/>.</typeparam>
+    /// <typeparam name="TOrigin"><see cref="Type"/> of <paramref name="origin"/>.</typeparam>
     /// <param name="origin">Object with <paramref name="behavior"/> to test.</param>
     /// <param name="behavior"><c>Delegate</c> on <paramref name="origin"/> to test.</param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>

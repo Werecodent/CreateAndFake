@@ -108,7 +108,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc cref="Compare"/>
-    /// <typeparam name="T">Item <c>Type</c> being compared.</typeparam>
+    /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
     private static async Task<IEnumerable<Difference>> CompareAsyncHandler<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
@@ -166,7 +166,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc cref="GetHashCodeAsync"/>
-    /// <typeparam name="T">Item <c>Type</c> being compared.</typeparam>
+    /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
     private static async Task<int> GetHashCodeHandler<T>(
         IAsyncEnumerable<T> item,
         ValuerChainer valuer

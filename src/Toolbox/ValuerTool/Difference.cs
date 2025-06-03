@@ -11,8 +11,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     private readonly Lazy<string> _message;
 
     /// <inheritdoc cref="Difference"/>
-    /// <param name="expectedType"><c>Type</c> of the compared expected object.</param>
-    /// <param name="actualType"><c>Type</c> of the compared actual object.</param>
+    /// <param name="expectedType"><see cref="Type"/> of the compared expected object.</param>
+    /// <param name="actualType"><see cref="Type"/> of the compared actual object.</param>
     public Difference(Type expectedType, Type actualType)
     {
         _message = new Lazy<string>(() =>

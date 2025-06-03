@@ -5,7 +5,7 @@ using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
-/// <summary>Handles basic <c>Type</c> compare issues for <see cref="IValuer"/>.</summary>
+/// <summary>Handles basic <see cref="Type"/> compare issues for <see cref="IValuer"/>.</summary>
 public sealed class EarlyFailCompareHint : CompareHint
 {
     /// <summary>Specific types to control via this hint.</summary>

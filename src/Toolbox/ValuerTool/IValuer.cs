@@ -43,7 +43,7 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value; <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value, <see langword="false"/> otherwise.
     /// </returns>
     /// <exception cref="NotSupportedException">If no hint supports comparing the objects.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>

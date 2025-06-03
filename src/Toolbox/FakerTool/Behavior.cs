@@ -67,7 +67,7 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     }
 
     /// <summary>Checks if call count is in expected range.</summary>
-    /// <returns><see langword="true"/> if in range; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if in range, <see langword="false"/> otherwise.</returns>
     internal bool HasExpectedCalls()
     {
         return Limit.IsInRange(Calls);

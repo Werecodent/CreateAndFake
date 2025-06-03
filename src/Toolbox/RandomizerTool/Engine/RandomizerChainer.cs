@@ -58,16 +58,16 @@ public sealed class RandomizerChainer
     }
 
     /// <summary>Checks if <typeparamref name="T"/> has already been created by the randomizer.</summary>
-    /// <typeparam name="T"><c>Type</c> to check.</typeparam>
-    /// <returns><see langword="true"/> if <typeparamref name="T"/> already created; <see langword="false"/> otherwise.</returns>
+    /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>
+    /// <returns><see langword="true"/> if <typeparamref name="T"/> already created, <see langword="false"/> otherwise.</returns>
     public bool AlreadyCreated<T>()
     {
         return AlreadyCreated(typeof(T));
     }
 
     /// <summary>Checks if <paramref name="type"/> has already been created by the randomizer.</summary>
-    /// <param name="type"><c>Type</c> to check.</param>
-    /// <returns><see langword="true"/> if <paramref name="type"/> already created; <see langword="false"/> otherwise.</returns>
+    /// <param name="type"><see cref="Type"/> to check.</param>
+    /// <returns><see langword="true"/> if <paramref name="type"/> already created, <see langword="false"/> otherwise.</returns>
     public bool AlreadyCreated(Type type)
     {
         return _history.ContainsKey(type);

@@ -4,7 +4,8 @@ using CreateAndFake.Design.Context;
 namespace CreateAndFake.Design.Randomization;
 
 /// <summary>Collects random predefined values to use for data generation.</summary>
-public sealed class DataRandom
+/// <param name="gen"><inheritdoc cref="IRandom" path="/summary"/></param>
+public sealed class DataRandom(IRandom gen)
 {
     /// <summary>Supported searchable property names for values.</summary>
     private static readonly FrozenDictionary<string, Func<DataRandom, string>> _Matcher =
@@ -20,29 +21,19 @@ public sealed class DataRandom
     /// <summary>All searchable names.</summary>
     internal static IEnumerable<string> SupportedProperties { get; } = _Matcher.Keys.ToFrozenSet();
 
-    /// <inheritdoc cref="IRandom"/>
-    private readonly IRandom _gen;
-
     /// <inheritdoc cref="Person"/>
-    private readonly Lazy<PersonContext> _person;
+    private readonly Lazy<PersonContext> _person = new(() => new PersonContext(gen));
 
     /// <inheritdoc cref="PersonContext"/>
     public PersonContext Person => _person.Value;
 
-    /// <inheritdoc cref="DataRandom"/>
-    /// <param name="gen"><inheritdoc cref="_gen" path="/summary"/></param>
-    public DataRandom(IRandom gen)
-    {
-        _gen = gen ?? throw new ArgumentNullException(nameof(gen));
-        _person = new(() => new PersonContext(_gen));
-    }
-
     /// <summary>
     ///     Searches for a value representing the identifying <paramref name="name"/>.
     /// </summary>
-    /// <param name="name">Name to match a value with.</param>
+    /// <param name="name">Name to find a value for.</param>
     /// <returns>
-    ///     The value representing <paramref name="name"/> if found; <see langword="null"/> otherwise.
+    ///     The value representing <paramref name="name"/> if found,
+    ///     <see langword="null"/> otherwise.
     /// </returns>
     public string? Find(string? name)
     {

@@ -76,17 +76,17 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
         );
     }
 
-    /// <summary>Finds a suitable <c>Type</c> name to use for assertion messages.</summary>
+    /// <summary>Finds a suitable <see cref="Type"/> name to use for assertion messages.</summary>
     /// <param name="expected">Instance being compared to <c>actual</c>.</param>
     /// <param name="actual">Instance to run assertion checks with.</param>
-    /// <returns>The <c>Type</c> name to use if found; <see langword="null"/> otherwise.</returns>
+    /// <returns>The <see cref="Type"/> name to use if found, <see langword="null"/> otherwise.</returns>
     private static string? GetTypeName(object? expected, object? actual)
     {
         return ExpandTypeName((expected ?? actual)?.GetType());
     }
 
-    /// <summary>Builds <c>Type</c> name with generic argument names.</summary>
-    /// <param name="type"><c>Type</c> to describe.</param>
+    /// <summary>Builds <see cref="Type"/> name with generic argument names.</summary>
+    /// <param name="type"><see cref="Type"/> to describe.</param>
     /// <returns>The built name.</returns>
     private static string? ExpandTypeName(Type? type)
     {

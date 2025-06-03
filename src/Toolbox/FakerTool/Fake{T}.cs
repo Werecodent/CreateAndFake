@@ -5,7 +5,7 @@ using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
 
-/// <typeparam name="T"><c>Type</c> being faked.</typeparam>
+/// <typeparam name="T"><see cref="Type"/> being faked.</typeparam>
 /// <inheritdoc/>
 public sealed class Fake<T> : Fake
 {

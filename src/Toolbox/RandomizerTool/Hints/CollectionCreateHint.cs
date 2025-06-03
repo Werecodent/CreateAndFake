@@ -57,7 +57,7 @@ public sealed class CollectionCreateHint : CreateHint
     }
 
     /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object? Create(Type type, int size, Type itemType, RandomizerChainer randomizer)
@@ -92,9 +92,9 @@ public sealed class CollectionCreateHint : CreateHint
         }
     }
 
-    /// <summary>Finds the <c>Type</c> to be contained by a created collection.</summary>
-    /// <param name="type">Collection <c>Type</c> being created..</param>
-    /// <returns><see langword="null"/> if not logical; <c>Type</c> for the collection otherwise.</returns>
+    /// <summary>Finds the <see cref="Type"/> to be contained by a created collection.</summary>
+    /// <param name="type">Collection <see cref="Type"/> being created..</param>
+    /// <returns><see langword="null"/> if not logical; <see cref="Type"/> for the collection otherwise.</returns>
     private static Type? GetItemType(Type type)
     {
         Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
@@ -122,8 +122,8 @@ public sealed class CollectionCreateHint : CreateHint
     }
 
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to find matches for.</param>
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
+    /// <param name="type"><see cref="Type"/> to find matches for.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>All possible matches.</returns>
     private static IEnumerable<Type> FindMatches(Type type, Type itemType)
     {
@@ -148,7 +148,7 @@ public sealed class CollectionCreateHint : CreateHint
     }
 
     /// <summary>Creates basic structures for <paramref name="itemType"/>.</summary>
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Data populated with random values.</returns>
@@ -162,10 +162,10 @@ public sealed class CollectionCreateHint : CreateHint
         return data;
     }
 
-    /// <summary>Constructs the new <c>Type</c> to make for the collection.</summary>
-    /// <param name="collection">Matching collection <c>Type</c> with details.</param>
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
-    /// <returns><c>Type</c> to create.</returns>
+    /// <summary>Constructs the new <see cref="Type"/> to make for the collection.</summary>
+    /// <param name="collection">Matching collection <see cref="Type"/> with details.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
+    /// <returns><see cref="Type"/> to create.</returns>
     private static Type MakeNewType(Type collection, Type itemType)
     {
         if (!collection.IsGenericType)

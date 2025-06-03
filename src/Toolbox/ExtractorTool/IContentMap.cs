@@ -9,12 +9,12 @@ public interface IContentMap
 
     /// <summary>Determines if the map has <paramref name="item"/> in it.</summary>
     /// <param name="item">Content to check for.</param>
-    /// <returns><see langword="true"/> if <see langword="this"/> has the item; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if <see langword="this"/> has the item, <see langword="false"/> otherwise.</returns>
     bool HasContent(object? item);
 
     /// <summary>Determines if <see langword="this"/> has any content from <paramref name="maps"/> in it.</summary>
     /// <param name="maps">Content to compare <see langword="this"/> with.</param>
-    /// <returns><see langword="true"/> if <see langword="this"/> has content from <paramref name="maps"/>; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if <see langword="this"/> has content from <paramref name="maps"/>, <see langword="false"/> otherwise.</returns>
     /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
     bool HasSharedContent(params IEnumerable<IContentMap> maps);
 

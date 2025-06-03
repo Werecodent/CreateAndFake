@@ -2,7 +2,10 @@ using System.Runtime.Serialization;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Exception type for fatal errors occurring within CreateAndFake tools.</summary>
+/// <summary>
+///     <see cref="Exception"/> <see cref="Type"/> for fatal
+///     errors occurring within <see cref="CreateAndFake"/> tools.
+/// </summary>
 [Serializable, KnownType(typeof(Exception))]
 public sealed class ToolException : Exception
 {

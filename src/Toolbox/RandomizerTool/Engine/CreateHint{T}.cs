@@ -2,7 +2,7 @@
 
 namespace CreateAndFake.RandomizerTool.Engine;
 
-/// <typeparam name="T"><c>Type</c> being supported for randomization.</typeparam>
+/// <typeparam name="T"><see cref="Type"/> being supported for randomization.</typeparam>
 /// <inheritdoc/>
 public abstract class CreateHint<T> : CreateHint
 {

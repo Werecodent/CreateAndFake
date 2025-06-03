@@ -73,7 +73,7 @@ public abstract class CompareHint
     /// <summary>
     ///     Determines if <paramref name="expected"/> or <paramref name="actual"/> are supported by the hint.
     /// </summary>
-    /// <returns><see langword="true"/> if the objects can be compared; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if the objects can be compared, <see langword="false"/> otherwise.</returns>
     /// <inheritdoc cref="TryCompare"/>
     protected abstract bool Supports(object? expected, object? actual, ValuerChainer valuer);
 

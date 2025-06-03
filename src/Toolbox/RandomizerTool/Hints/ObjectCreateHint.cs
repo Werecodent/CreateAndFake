@@ -34,7 +34,7 @@ public sealed class ObjectCreateHint : CreateHint
         return result != null ? new(result) : CreateHintResult.None;
     }
 
-    /// <param name="rootType">Original <c>Type</c> being generated.</param>
+    /// <param name="rootType">Original <see cref="Type"/> being generated.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object? Create(Type type, Type rootType, RandomizerChainer randomizer)
@@ -96,7 +96,7 @@ public sealed class ObjectCreateHint : CreateHint
     }
 
     /// <summary>Creates a new instance of <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to generate.</param>
+    /// <param name="type"><see cref="Type"/> to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <param name="smartData">Predefined random data.</param>
     /// <returns>The created instance.</returns>
@@ -170,10 +170,10 @@ public sealed class ObjectCreateHint : CreateHint
     }
 
     /// <summary>Creates a <typeparamref name="T"/> instance.</summary>
-    /// <typeparam name="T">Creation method <c>Type</c>.</typeparam>
+    /// <typeparam name="T">Creation method <see cref="Type"/>.</typeparam>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <param name="smartData">Predefined random data.</param>
-    /// <param name="invoker">How to create the <c>Type</c> from the creation method.</param>
+    /// <param name="invoker">How to create the <see cref="Type"/> from the creation method.</param>
     /// <param name="creators">Possible creation methods.</param>
     /// <returns>The created instance.</returns>
     private static object CreateFrom<T>(
@@ -216,10 +216,10 @@ public sealed class ObjectCreateHint : CreateHint
         );
     }
 
-    /// <summary>Finds a creatable <c>Type</c> of <paramref name="type"/>.</summary>
-    /// <param name="type">Parent <c>Type</c> being created.</param>
+    /// <summary>Finds a creatable <see cref="Type"/> of <paramref name="type"/>.</summary>
+    /// <param name="type">Parent <see cref="Type"/> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns><c>Type</c> to use.</returns>
+    /// <returns><see cref="Type"/> to use.</returns>
     private static Type FindTypeToCreate(Type type, RandomizerChainer randomizer)
     {
         ImmutableArray<Type> subclasses;
@@ -238,7 +238,7 @@ public sealed class ObjectCreateHint : CreateHint
     }
 
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>
-    /// <param name="type">Parent <c>Type</c>.</param>
+    /// <param name="type">Parent <see cref="Type"/>.</param>
     /// <returns>Found subclasses.</returns>
     private static ImmutableArray<Type> FindSelfAndSubclasses(Type type)
     {
@@ -271,7 +271,7 @@ public sealed class ObjectCreateHint : CreateHint
     }
 
     /// <summary>Finds <see langword="public"/> or <see langword="internal"/> constructors.</summary>
-    /// <param name="type"><c>Type</c> to search for.</param>
+    /// <param name="type"><see cref="Type"/> to search for.</param>
     /// <param name="scope">Scope of constructors to look for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found constructors.</returns>
@@ -290,7 +290,7 @@ public sealed class ObjectCreateHint : CreateHint
     }
 
     /// <summary>Finds static methods that create <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to search for.</param>
+    /// <param name="type"><see cref="Type"/> to search for.</param>
     /// <param name="scope">Scope of constructors to look for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found factory methods.</returns>

@@ -156,15 +156,15 @@ public interface ISyncLimiter
 
     /// <summary>Retries <paramref name="behavior"/> upon encountering exceptions.</summary>
     /// <typeparam name="TError">
-    ///     Exception <c>Type</c> to ignore and retry <paramref name="behavior"/> if encountered.
+    ///     Exception <see cref="Type"/> to ignore and retry <paramref name="behavior"/> if encountered.
     /// </typeparam>
     /// <typeparam name="TResult">
-    ///     Result <c>Type</c> returned from <paramref name="behavior"/>.
+    ///     Result <see cref="Type"/> returned from <paramref name="behavior"/>.
     /// </typeparam>
     /// <param name="message">Details to include when throwing exceptions.</param>
     /// <param name="behavior">Code to repeatably attempt.</param>
     /// <param name="resetState">Code to run between attempts.</param>
-    /// <param name="canceler">Token indicating attempts should be canceled.</param>
+    /// <param name="canceler">Token indicating behavior should be canceled.</param>
     /// <returns>
     ///     Result of the successful <paramref name="behavior"/>
     ///     attempt or <see langword="default"/> if limit reached.

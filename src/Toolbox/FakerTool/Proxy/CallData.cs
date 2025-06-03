@@ -48,7 +48,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if behavior is intended for a call.</summary>
     /// <param name="input">Details of the call.</param>
-    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched, <see langword="false"/> otherwise.</returns>
     internal bool MatchesCall(CallData input)
     {
         ArgumentGuard.ThrowIfNull(input, nameof(input));
@@ -60,7 +60,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if the call generics match the expected ones.</summary>
     /// <param name="inputGenerics">Generics used in the call.</param>
-    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched, <see langword="false"/> otherwise.</returns>
     private bool GenericsMatch(Type[] inputGenerics)
     {
         bool matches = inputGenerics.Length == _generics.Length;
@@ -77,7 +77,7 @@ internal sealed class CallData(
 
     /// <summary>Determines if the call args match the expected ones.</summary>
     /// <param name="inputArgs">Args used in the call.</param>
-    /// <returns><see langword="true"/> if matched; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if matched, <see langword="false"/> otherwise.</returns>
     private bool ArgsMatch(object?[] inputArgs)
     {
         bool matches = inputArgs.Length == _args.Length;

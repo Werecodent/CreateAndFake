@@ -177,7 +177,7 @@ public class Tester(TesterOptions options) : ITester
             }
             finally
             {
-                Disposer.Cleanup(instance);
+                await Disposer.CleanupAsync(instance).ConfigureAwait(false);
             }
         }
     }

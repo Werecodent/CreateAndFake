@@ -32,7 +32,7 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
 
     /// <summary>Checks if <paramref name="count"/> is in the expected range.</summary>
     /// <param name="count">Value to verify.</param>
-    /// <returns><see langword="true"/> if <paramref name="count"/> is in range; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if <paramref name="count"/> is in range, <see langword="false"/> otherwise.</returns>
     internal bool IsInRange(int count)
     {
         return _min <= count && count <= _max;
@@ -41,7 +41,7 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     /// <summary>Compares <see langword="this"/> to <paramref name="obj"/> by value.</summary>
     /// <param name="obj">Instance to compare <see langword="this"/> with.</param>
     /// <returns>
-    ///     <see langword="true"/> if <see langword="this"/> is equal to <paramref name="obj"/> by value; <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <see langword="this"/> is equal to <paramref name="obj"/> by value, <see langword="false"/> otherwise.
     /// </returns>
     public override bool Equals(object? obj)
     {

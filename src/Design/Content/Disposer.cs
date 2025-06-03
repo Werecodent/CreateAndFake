@@ -10,7 +10,21 @@ public static class Disposer
         foreach (object? item in items ?? [])
         {
             (item as IDisposable)?.Dispose();
-            _ = (item as IAsyncDisposable)?.DisposeAsync().Preserve();
+            _ = (item as IAsyncDisposable)?.DisposeAsync().AsTask();
+        }
+    }
+
+    /// <returns>Awaitable <see cref="Task"/> handling the disposal.</returns>
+    /// <inheritdoc cref="Cleanup"/>
+    public static async Task CleanupAsync(params IEnumerable<object?>? items)
+    {
+        foreach (object? item in items ?? [])
+        {
+            (item as IDisposable)?.Dispose();
+            if (item is IAsyncDisposable disposable)
+            {
+                await disposable.DisposeAsync().ConfigureAwait(false);
+            }
         }
     }
 }

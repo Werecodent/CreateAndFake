@@ -28,14 +28,13 @@ public sealed partial class Limiter : ISyncLimiter
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
 
+        int i = 0;
         List<T> results = [];
-
         Stopwatch watch = Stopwatch.StartNew();
-        int attempt = 0;
         do
         {
             results.Add(behavior.Invoke());
-        } while (DelayIfNotDone(message, watch.Elapsed, ++attempt, canceler));
+        } while (DelayIfNotDone(message, watch.Elapsed, ++i, canceler));
 
         return results.AsReadOnly();
     }
@@ -91,7 +90,6 @@ public sealed partial class Limiter : ISyncLimiter
         ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
 
         List<T> results = [];
-
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
@@ -304,8 +302,8 @@ public sealed partial class Limiter : ISyncLimiter
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
 
-        Stopwatch watch = Stopwatch.StartNew();
         int i = 0;
+        Stopwatch watch = Stopwatch.StartNew();
         do
         {
             try
@@ -323,9 +321,12 @@ public sealed partial class Limiter : ISyncLimiter
     /// <summary>Delays if terminal condition not reached.</summary>
     /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="elapsed">Current amount of time that has elapsed.</param>
-    /// <param name="tries">Current number of attempts.</param>
-    /// <param name="canceler">Token to potentially cancel the attempts.</param>
-    /// <returns><see langword="true"/> if terminal condition not reached; <see langword="false"/> otherwise.</returns>
+    /// <param name="tries">Current number of repetitions.</param>
+    /// <param name="canceler">Token indicating behavior should be canceled.</param>
+    /// <returns>
+    ///     <see langword="true"/> if terminal condition not reached,
+    ///     <see langword="false"/> otherwise.
+    /// </returns>
     private bool DelayIfNotDone(
         string message,
         TimeSpan elapsed,
@@ -345,11 +346,11 @@ public sealed partial class Limiter : ISyncLimiter
     }
 
     /// <summary>Faults if terminal condition reached; delays otherwise.</summary>
-    /// <param name="message">Details to include upon a timeout <c>exception</c>.</param>
+    /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="elapsed">Current amount of time that has elapsed.</param>
-    /// <param name="tries">Current number of attempts.</param>
-    /// <param name="canceler">Token to potentially cancel the attempts.</param>
-    /// <param name="ex">Current <c>exception</c> if present.</param>
+    /// <param name="tries">Current number of repetitions.</param>
+    /// <param name="canceler">Token indicating behavior should be canceled.</param>
+    /// <param name="ex">Current <see cref="Exception"/> if present.</param>
     /// <exception cref="TimeoutException">If the limit is reached.</exception>
     /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrFault(
@@ -360,14 +361,13 @@ public sealed partial class Limiter : ISyncLimiter
         Exception? ex = null
     )
     {
-        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
         if (tries >= _tries)
         {
-            throw new TimeoutException($"Reached max attempts of '{_tries}'{details}", ex);
+            Fault($"Reached max tries of '{_tries}'", message, ex);
         }
         else if (elapsed >= _timeout)
         {
-            throw new TimeoutException($"Reached timeout of '{_timeout}'{details}", ex);
+            Fault($"Reached timeout of '{_timeout}'", message, ex);
         }
         else
         {
@@ -376,8 +376,8 @@ public sealed partial class Limiter : ISyncLimiter
     }
 
     /// <summary>Faults if behavior has been canceled; delays otherwise.</summary>
-    /// <param name="message">Details to include upon a timeout <c>exception</c>.</param>
-    /// <param name="canceler">Token to potentially cancel the attempts.</param>
+    /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
+    /// <param name="canceler">Token indicating behavior should be canceled.</param>
     /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrCancel(string message, CancellationToken? canceler)
     {
@@ -388,8 +388,7 @@ public sealed partial class Limiter : ISyncLimiter
         }
         if (token.IsCancellationRequested)
         {
-            string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
-            throw new TimeoutException($"Operation canceled via token{details}");
+            Fault("Operation canceled via token", message);
         }
     }
 }

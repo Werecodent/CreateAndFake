@@ -70,7 +70,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     }
 
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to find matches for.</param>
+    /// <param name="type"><see cref="Type"/> to find matches for.</param>
     /// <returns>All possible matches.</returns>
     private static IEnumerable<(Type, Func<string[], RandomizerChainer, object>)> FindMatches(
         Type type
@@ -80,7 +80,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     }
 
     /// <summary>Creates the <typeparamref name="TDict"/> and populates it with data.</summary>
-    /// <typeparam name="TDict"><c>Type</c> to create.</typeparam>
+    /// <typeparam name="TDict"><see cref="Type"/> to create.</typeparam>
     /// <param name="keys">Keys to create in the <typeparamref name="TDict"/>.</param>
     /// <param name="gen">Handles randomizing child values.</param>
     /// <returns>The created instance.</returns>

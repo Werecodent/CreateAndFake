@@ -4,7 +4,7 @@ using CreateAndFake.Design;
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Instance with dynamically injected fakes.</summary>
-/// <typeparam name="T"><c>Type</c> being injected by fakes.</typeparam>
+/// <typeparam name="T"><see cref="Type"/> being injected by fakes.</typeparam>
 public sealed class Injected<T>
 {
     /// <summary>Faked implementation.</summary>
@@ -26,7 +26,7 @@ public sealed class Injected<T>
     }
 
     /// <summary>Finds the <typeparamref name="TInject"/> fake.</summary>
-    /// <typeparam name="TInject"><c>Type</c> of fake to look for.</typeparam>
+    /// <typeparam name="TInject"><see cref="Type"/> of fake to look for.</typeparam>
     /// <param name="skip">How many fakes of the <typeparamref name="TInject"/> to ignore first.</param>
     /// <returns>The found <typeparamref name="TInject"/> fake.</returns>
     public Fake<TInject> Fake<TInject>(int skip = 0)
@@ -42,7 +42,7 @@ public sealed class Injected<T>
     }
 
     /// <summary>Finds the fake owner of the given dummy.</summary>
-    /// <typeparam name="TInject"><c>Type</c> of fake to look for.</typeparam>
+    /// <typeparam name="TInject"><see cref="Type"/> of fake to look for.</typeparam>
     /// <param name="dummy">Dummy of a fake to search on.</param>
     /// <returns>The found fake.</returns>
     public Fake<TInject> Fake<TInject>(TInject dummy)

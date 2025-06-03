@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Reiteration;
@@ -88,5 +89,24 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     public override string ToString()
     {
         return $"{_tries}-{_timeout}-{_delay}";
+    }
+
+    /// <summary>Throws a <see cref="TimeoutException"/>.</summary>
+    /// <param name="error">Issue causing the <see cref="TimeoutException"/>.</param>
+    /// <param name="message">Details to include in the <see cref="TimeoutException"/>.</param>
+    /// <param name="ex">Encountered exception causing the <see cref="TimeoutException"/>.</param>
+    /// <exception cref="TimeoutException">With the error and message details.</exception>
+    [DoesNotReturn]
+    private static void Fault(string error, string message, Exception? ex = null)
+    {
+        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
+        if (ex != null)
+        {
+            throw new TimeoutException(error + details, ex);
+        }
+        else
+        {
+            throw new TimeoutException(error + details);
+        }
     }
 }

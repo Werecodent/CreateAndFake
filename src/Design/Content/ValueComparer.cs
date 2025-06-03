@@ -17,13 +17,13 @@ public sealed class ValueComparer
         IEqualityComparer<IEnumerable>,
         IEqualityComparer<IDictionary>
 {
-    /// <summary>Hash used for <see langword="null"/> values.</summary>
+    /// <summary>Hash code used for <see langword="null"/> values.</summary>
     public static int NullHash { get; } = 0;
 
-    /// <summary>Starting hash value.</summary>
+    /// <summary>Starting hash code value.</summary>
     public static int BaseHash { get; } = 1009;
 
-    /// <summary>Multiplier for computing hashes.</summary>
+    /// <summary>Multiplier for computing hash codes.</summary>
     public static int HashMultiplier { get; } = 92821;
 
     /// <summary>Default instance to use for comparing objects by value.</summary>
@@ -34,7 +34,7 @@ public sealed class ValueComparer
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals
-    ///     <paramref name="y"/> by value; <see langword="false"/> otherwise.
+    ///     <paramref name="y"/> by value, <see langword="false"/> otherwise.
     /// </returns>
     public new bool Equals(object? x, object? y)
     {
@@ -122,26 +122,24 @@ public sealed class ValueComparer
         {
             return x.Equals(y);
         }
-        else
-        {
-            IEnumerator xGen = x.GetEnumerator();
-            IEnumerator yGen = y.GetEnumerator();
 
-            while (xGen.MoveNext())
+        IEnumerator xGen = x.GetEnumerator();
+        IEnumerator yGen = y.GetEnumerator();
+
+        while (xGen.MoveNext())
+        {
+            if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
             {
-                if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
-                {
-                    return false;
-                }
+                return false;
             }
-            return !yGen.MoveNext();
         }
+        return !yGen.MoveNext();
     }
 
     /// <summary>
     ///     Computes an identifying hash code for <paramref name="items"/> based upon value.
     /// </summary>
-    /// <param name="items">Bundled objects to generate a single value hash code for.</param>
+    /// <param name="items">Bundled objects to generate a single hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="items"/>.</returns>
     public int GetHashCode(params IEnumerable<object?>? items)
     {
@@ -212,16 +210,14 @@ public sealed class ValueComparer
         {
             return NullHash;
         }
-        else
+
+        int hash = BaseHash;
+        foreach (DictionaryEntry item in obj)
         {
-            int hash = BaseHash;
-            foreach (DictionaryEntry item in obj)
-            {
-                hash += GetHashCode(item.Key);
-                hash += GetHashCode(item.Value);
-            }
-            return hash;
+            hash += GetHashCode(item.Key);
+            hash += GetHashCode(item.Value);
         }
+        return hash;
     }
 
     /// <summary>
@@ -229,11 +225,11 @@ public sealed class ValueComparer
     /// </summary>
     /// <param name="x">Object to compare with <paramref name="y"/>.</param>
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
-    /// <returns>
-    ///     <para>Positive value if <paramref name="x"/> &gt; <paramref name="y"/>.</para>
-    ///     <para>Zero if <paramref name="x"/> = <paramref name="y"/>.</para>
-    ///     <para>Negative value if <paramref name="x"/> &lt; <paramref name="y"/>.</para>
-    /// </returns>
+    /// <returns><list type="bullet">
+    ///     <item>Positive value if <paramref name="x"/> &gt; <paramref name="y"/>.</item>
+    ///     <item>Zero if <paramref name="x"/> = <paramref name="y"/>.</item>
+    ///     <item>Negative value if <paramref name="x"/> &lt; <paramref name="y"/>.</item>
+    /// </list></returns>
     public int Compare(object? x, object? y)
     {
         return ReferenceEquals(x, y) ? 0 : GetHashCode(x).CompareTo(GetHashCode(y));

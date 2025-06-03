@@ -16,7 +16,7 @@ public interface IDuplicator : ITool<DuplicatorOptions>
     IDuplicator WithOptions(DuplicatorMod optionConfiguration);
 
     /// <summary>Deep clones <paramref name="source"/>.</summary>
-    /// <typeparam name="T"><c>Type</c> being cloned.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> being cloned.</typeparam>
     /// <param name="source">Object to clone.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>

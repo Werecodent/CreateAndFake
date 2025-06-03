@@ -106,7 +106,7 @@ public sealed class DelegateCreateHint : CreateHint
         }
 
         /// <summary>Randomizes any OutRef inputs and the return.</summary>
-        /// <typeparam name="T">Return <c>Type</c> for the delegate.</typeparam>
+        /// <typeparam name="T">Return <see cref="Type"/> for the delegate.</typeparam>
         /// <param name="inputs">Inputs for the delegate.</param>
         /// <returns>Generated output for the delegate.</returns>
         private T? HandleInAndOut<T>(params IEnumerable<object?> inputs)

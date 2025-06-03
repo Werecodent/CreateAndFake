@@ -14,12 +14,12 @@ public interface IMutator : ITool<MutatorOptions>
     /// <returns>The created tool.</returns>
     IMutator WithOptions(MutatorMod optionConfiguration);
 
-    /// <typeparam name="T"><c>Type</c> to create.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> to create.</typeparam>
     /// <inheritdoc cref="Variant"/>
     T Variant<T>(T instance, params IEnumerable<T?>? extraInstances);
 
     /// <summary>Creates an object with different values.</summary>
-    /// <param name="type"><c>Type</c> to create.</param>
+    /// <param name="type"><see cref="Type"/> to create.</param>
     /// <param name="instance">Object to diverge from.</param>
     /// <param name="extraInstances">Extra objects to diverge from.</param>
     /// <returns>
@@ -27,12 +27,12 @@ public interface IMutator : ITool<MutatorOptions>
     /// </returns>
     object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances);
 
-    /// <typeparam name="T"><c>Type</c> to create.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> to create.</typeparam>
     /// <inheritdoc cref="Unique"/>
     T Unique<T>(T instance, params IEnumerable<T?>? extraInstances);
 
     /// <summary>Creates an object with completely different values.</summary>
-    /// <param name="type"><c>Type</c> to create.</param>
+    /// <param name="type"><see cref="Type"/> to create.</param>
     /// <param name="instance">Object to diverge from.</param>
     /// <param name="extraInstances">Extra objects to diverge from.</param>
     /// <returns>
@@ -44,6 +44,6 @@ public interface IMutator : ITool<MutatorOptions>
     /// <summary>Attempts to mutate an object.</summary>
     /// <param name="instance">Object to modify.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><see langword="true"/> if <paramref name="instance"/> has been modified; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if <paramref name="instance"/> has been modified, <see langword="false"/> otherwise.</returns>
     bool Modify(object? instance, MutatorMod? optionConfiguration = null);
 }

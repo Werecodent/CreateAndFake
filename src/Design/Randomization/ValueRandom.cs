@@ -58,13 +58,13 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         }.ToFrozenDictionary();
 
     /// <summary>Generates a random <typeparamref name="T"/> value using random bytes.</summary>
-    /// <typeparam name="T">Type to create.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> to create.</typeparam>
     /// <param name="gen">Instance generating the random bytes.</param>
     /// <param name="converter">
     ///     Behavior used to convert the bytes to <typeparamref name="T"/>.
     /// </param>
     /// <param name="size">Number of bytes required to generate <typeparamref name="T"/>.</param>
-    /// <param name="invalids">Special invalid values for the type.</param>
+    /// <param name="invalids">Special invalid values for <typeparamref name="T"/>.</param>
     /// <returns>The generated <typeparamref name="T"/> value.</returns>
     private static T Create<T>(
         ValueRandom gen,

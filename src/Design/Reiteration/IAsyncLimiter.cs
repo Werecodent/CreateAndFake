@@ -3,7 +3,7 @@ namespace CreateAndFake.Design.Reiteration;
 /// <summary>Provides the core functionality for asynchronous repetition.</summary>
 public interface IAsyncLimiter
 {
-    /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the repetitions.</returns>
     /// <inheritdoc cref="RepeatAsync{T}(string,Func{T},CancellationToken?)"/>
     Task RepeatAsync(string message, Action? behavior, CancellationToken? canceler = null);
 
@@ -14,11 +14,11 @@ public interface IAsyncLimiter
         CancellationToken? canceler = null
     );
 
-    /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the repetitions.</returns>
     /// <inheritdoc cref="ISyncLimiter.StallUntil(string,Func{bool},CancellationToken?)"/>
     Task StallUntilAsync(string message, Func<bool> behavior, CancellationToken? canceler = null);
 
-    /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the repetitions.</returns>
     /// <inheritdoc cref="StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken?)"/>
     Task StallUntilAsync(
         string message,
@@ -58,7 +58,7 @@ public interface IAsyncLimiter
     Task RetryAsync<TError>(string message, Action behavior, CancellationToken? canceler = null)
         where TError : Exception;
 
-    /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the repetitions.</returns>
     /// <inheritdoc cref="RetryAsync{T,T}(string,Func{T},Action,CancellationToken?)"/>
     Task RetryAsync<TError>(
         string message,
@@ -115,7 +115,7 @@ public interface IAsyncLimiter
     Task AttemptAsync<TError>(string message, Action behavior, CancellationToken? canceler = null)
         where TError : Exception;
 
-    /// <returns>Awaitable <c>Task</c> handling the repetitions.</returns>
+    /// <returns>Awaitable <see cref="Task"/> handling the repetitions.</returns>
     /// <inheritdoc cref="AttemptAsync{T,T}(string,Func{T},Action,CancellationToken?)"/>
     Task AttemptAsync<TError>(
         string message,

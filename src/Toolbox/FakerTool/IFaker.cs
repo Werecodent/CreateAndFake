@@ -15,21 +15,21 @@ public interface IFaker : ITool<FakerOptions>
     IFaker WithOptions(FakerMod optionConfiguration);
 
     /// <summary>Determines if type <typeparamref name="T"/> can be faked.</summary>
-    /// <typeparam name="T"><c>Type</c> to check.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
     bool Supports<T>(FakerMod? optionConfiguration = null);
 
     /// <summary>Determines if <paramref name="type"/> can be faked.</summary>
-    /// <param name="type"><c>Type</c> to check.</param>
+    /// <param name="type"><see cref="Type"/> to check.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><see langword="true"/> if possible; <see langword="false"/> otherwise.</returns>
+    /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
     bool Supports(Type type, FakerMod? optionConfiguration = null);
 
     /// /// <inheritdoc cref="Mock{T}(IEnumerable{Type},FakerMod)"/>
     Fake<T> Mock<T>(params IEnumerable<Type> interfaces);
 
-    /// <typeparam name="T"><c>Type</c> being faked.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> being faked.</typeparam>
     /// <inheritdoc cref="Mock(Type,IEnumerable{Type},FakerMod)"/>
     Fake<T> Mock<T>(IEnumerable<Type> interfaces, FakerMod? optionConfiguration);
 
@@ -46,7 +46,7 @@ public interface IFaker : ITool<FakerOptions>
     /// /// <inheritdoc cref="Stub{T}(IEnumerable{Type},FakerMod)"/>
     Fake<T> Stub<T>(params IEnumerable<Type> interfaces);
 
-    /// <typeparam name="T"><c>Type</c> being faked.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> being faked.</typeparam>
     /// <inheritdoc cref="Stub(Type,IEnumerable{Type},FakerMod)"/>
     Fake<T> Stub<T>(IEnumerable<Type> interfaces, FakerMod? optionConfiguration);
 

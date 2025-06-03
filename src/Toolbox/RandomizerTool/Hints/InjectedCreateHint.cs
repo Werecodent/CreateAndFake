@@ -59,10 +59,10 @@ public sealed class InjectedCreateHint : CreateHint
     }
 
     /// <summary>Finds the constructor with the most class references then by fewest parameters.</summary>
-    /// <param name="target"><c>Type</c> to find a constructor for.</param>
+    /// <param name="target"><see cref="Type"/> to find a constructor for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <param name="scope">Scope of constructors to find.</param>
-    /// <returns>Constructor if found; <see langword="null"/> otherwise.</returns>
+    /// <returns>Constructor if found, <see langword="null"/> otherwise.</returns>
     private static ConstructorInfo? FindConstructor(
         Type target,
         RandomizerChainer randomizer,

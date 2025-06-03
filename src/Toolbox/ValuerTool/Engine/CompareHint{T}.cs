@@ -2,7 +2,7 @@
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 
-/// <typeparam name="T"><c>Type</c> being supported for comparisons.</typeparam>
+/// <typeparam name="T"><see cref="Type"/> being supported for comparisons.</typeparam>
 /// <inheritdoc/>
 public abstract class CompareHint<T> : CompareHint
 {

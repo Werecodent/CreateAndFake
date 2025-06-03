@@ -12,7 +12,7 @@ public sealed class InfiniteLoopException : Exception
         : base() { }
 
     /// <inheritdoc cref="InfiniteLoopException"/>
-    /// <param name="lastType">Last <c>Type</c> attempted to be created.</param>
+    /// <param name="lastType">Last <see cref="Type"/> attempted to be created.</param>
     /// <param name="history">Stack of created parents.</param>
     public InfiniteLoopException(Type lastType, IEnumerable<Type> history)
         : base(

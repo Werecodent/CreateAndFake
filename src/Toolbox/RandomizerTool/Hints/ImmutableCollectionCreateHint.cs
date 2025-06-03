@@ -58,7 +58,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
         }
     }
 
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object? Create(Type type, Type itemType, RandomizerChainer randomizer)
@@ -77,9 +77,9 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
             );
     }
 
-    /// <summary>Finds the <c>Type</c> to be contained by a created collection.</summary>
-    /// <param name="type">Collection <c>Type</c> being created..</param>
-    /// <returns><see langword="null"/> if not logical; <c>Type</c> for the collection otherwise.</returns>
+    /// <summary>Finds the <see cref="Type"/> to be contained by a created collection.</summary>
+    /// <param name="type">Collection <see cref="Type"/> being created..</param>
+    /// <returns><see langword="null"/> if not logical, <see cref="Type"/> for the collection otherwise.</returns>
     private static Type? GetItemType(Type type)
     {
         Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
@@ -103,8 +103,8 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     }
 
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to find matches for.</param>
-    /// <param name="itemType">Item <c>Type</c> to be contained in the collection.</param>
+    /// <param name="type"><see cref="Type"/> to find matches for.</param>
+    /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>All possible matches.</returns>
     private static IEnumerable<(Type, MethodInfo)> FindMatches(Type type, Type itemType)
     {

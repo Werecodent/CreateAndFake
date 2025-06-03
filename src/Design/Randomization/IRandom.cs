@@ -13,9 +13,10 @@ public interface IRandom
     /// <summary>
     ///     Checks if <typeparamref name="T"/> can be used for <see cref="Next{T}()"/>.
     /// </summary>
-    /// <typeparam name="T"><c>Type</c> to determine randomization support for.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> to determine randomization support for.</typeparam>
     /// <returns>
-    ///     <see langword="true"/> if <typeparamref name="T"/> is supported; <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <typeparamref name="T"/> is supported,
+    ///     <see langword="false"/> otherwise.
     /// </returns>
     bool Supports<T>()
         where T : struct, IComparable, IComparable<T>, IEquatable<T>;
@@ -23,9 +24,10 @@ public interface IRandom
     /// <summary>
     ///     Checks if <paramref name="type"/> can be used for <see cref="Next(Type)"/>.
     /// </summary>
-    /// <param name="type"><c>Type</c> to determine randomization support for.</param>
+    /// <param name="type"><see cref="Type"/> to determine randomization support for.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="type"/> is supported; <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <paramref name="type"/> is supported,
+    ///     <see langword="false"/> otherwise.
     /// </returns>
     bool Supports([NotNullWhen(true)] Type? type);
 
@@ -50,7 +52,8 @@ public interface IRandom
     /// <typeparam name="T">Value type to generate.</typeparam>
     /// <param name="max">Positive exclusive upper boundary for the value.</param>
     /// <returns>
-    ///     The generated <typeparamref name="T"/> value &lt; <paramref name="max"/>.
+    ///     The generated <typeparamref name="T"/> value &lt;
+    ///     <paramref name="max"/> and &gt;= <c>0</c>.
     /// </returns>
     /// <exception cref="NotSupportedException">
     ///     If <typeparamref name="T"/> isn't supported.
@@ -79,7 +82,7 @@ public interface IRandom
         where T : struct, IComparable, IComparable<T>, IEquatable<T>;
 
     /// <summary>Picks a random item from <paramref name="items"/>.</summary>
-    /// <typeparam name="T">Type of items being picked from.</typeparam>
+    /// <typeparam name="T"><see cref="Type"/> of items being picked from.</typeparam>
     /// <param name="items">Collection of items to pick from.</param>
     /// <returns>The picked item from <paramref name="items"/>.</returns>
     /// <exception cref="InvalidOperationException">
@@ -87,11 +90,11 @@ public interface IRandom
     /// </exception>
     T NextItem<T>(IEnumerable<T> items);
 
-    /// <inheritdoc cref="NextItem"/>
     /// <returns>
-    ///     The picked item from <paramref name="items"/>
-    ///     if any; default for the type otherwise.
+    ///     The picked item from <paramref name="items"/> if any,
+    ///     default for <see cref="Type"/> <typeparamref name="T"/> otherwise.
     /// </returns>
+    /// <inheritdoc cref="NextItem"/>
     [return: MaybeNull, NotNullIfNotNull(nameof(items))]
     T NextItemOrDefault<T>(IEnumerable<T>? items);
 

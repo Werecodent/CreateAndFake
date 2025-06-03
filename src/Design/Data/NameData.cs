@@ -336,6 +336,7 @@ public static class NameData
             // Gt
             // Gu
             "Guston",
+            "Guts",
             // Gv
             // Gw
             "Gwen",
@@ -1023,6 +1024,7 @@ public static class NameData
             // Zd
             // Ze
             "Zebi",
+            "Zed",
             // Zf
             // Zg
             // Zh

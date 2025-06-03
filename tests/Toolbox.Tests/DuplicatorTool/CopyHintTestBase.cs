@@ -90,7 +90,7 @@ public abstract class CopyHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data, result.Data);
+                await Disposer.CleanupAsync(data, result.Data);
             }
         }
     }

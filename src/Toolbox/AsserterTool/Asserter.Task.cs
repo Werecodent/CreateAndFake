@@ -59,7 +59,9 @@ public partial class Asserter : ITaskAsserter
         {
             try
             {
-                Disposer.Cleanup(await behavior.ConfigureAwait(false));
+                await Disposer
+                    .CleanupAsync(await behavior.ConfigureAwait(false))
+                    .ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -128,7 +130,7 @@ public partial class Asserter : ITaskAsserter
         {
             try
             {
-                Disposer.Cleanup(await task.ConfigureAwait(false));
+                await Disposer.CleanupAsync(await task.ConfigureAwait(false)).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -190,7 +192,9 @@ public partial class Asserter : ITaskAsserter
         {
             try
             {
-                Disposer.Cleanup(await behavior.ConfigureAwait(false));
+                await Disposer
+                    .CleanupAsync(await behavior.ConfigureAwait(false))
+                    .ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -258,7 +262,7 @@ public partial class Asserter : ITaskAsserter
         {
             try
             {
-                Disposer.Cleanup(await task.ConfigureAwait(false));
+                await Disposer.CleanupAsync(await task.ConfigureAwait(false)).ConfigureAwait(false);
             }
             catch (Exception e)
             {

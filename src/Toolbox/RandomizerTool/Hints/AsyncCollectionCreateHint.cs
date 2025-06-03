@@ -49,7 +49,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     }
 
     /// <summary>Supplies collection items asynchronously.</summary>
-    /// <typeparam name="T">Item <c>Type</c> to supply.</typeparam>
+    /// <typeparam name="T">Item <see cref="Type"/> to supply.</typeparam>
     /// <param name="backing">Collection items to supply.</param>
     /// <returns>The collection made from <paramref name="backing"/>.</returns>
     private static async IAsyncEnumerable<T> GetItems<T>(List<T> backing)

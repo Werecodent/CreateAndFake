@@ -4,7 +4,7 @@
 public abstract class CreateHint
 {
     /// <summary>Tries to create a random instance of the given <paramref name="type"/>.</summary>
-    /// <param name="type"><c>Type</c> to generate.</param>
+    /// <param name="type"><see cref="Type"/> to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Possible result.</returns>
     public abstract CreateHintResult TryCreate(Type type, RandomizerChainer randomizer);
