@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.Tests.IssueReplication;
+﻿using CreateAndFake.Design.Tooling;
+
+namespace CreateAndFake.Tests.IssueReplication;
 
 public static class Issue107Tests
 {
@@ -10,6 +12,6 @@ public static class Issue107Tests
     {
         typeof(SelfReferenceContainer<>)
             .Assert(c => c.CreateRandomInstance())
-            .Throws<TimeoutException>();
+            .Throws<ToolException>();
     }
 }

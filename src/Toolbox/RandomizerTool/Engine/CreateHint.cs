@@ -7,5 +7,5 @@ public abstract class CreateHint
     /// <param name="type"><see cref="Type"/> to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Possible result.</returns>
-    public abstract CreateHintResult TryCreate(Type type, RandomizerChainer randomizer);
+    public abstract CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer);
 }

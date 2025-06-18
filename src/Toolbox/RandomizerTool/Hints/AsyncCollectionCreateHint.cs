@@ -10,7 +10,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class AsyncCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -27,19 +27,15 @@ public sealed class AsyncCollectionCreateHint : CreateHint
         )
         {
             Type itemType = type.GetGenericArguments().Single();
+            object backingData = randomizer.Create(
+                typeof(List<>).MakeGenericType(itemType),
+                _ => randomizer.Options
+            );
             return new(
                 GetType()
                     .GetMethod(nameof(GetItems), BindingFlags.Static | BindingFlags.NonPublic)!
                     .MakeGenericMethod(itemType)
-                    .Invoke(
-                        null,
-                        [
-                            randomizer.Create(
-                                typeof(List<>).MakeGenericType(itemType),
-                                randomizer.Options
-                            ),
-                        ]
-                    )
+                    .Invoke(null, [backingData])
             );
         }
         else

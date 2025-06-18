@@ -1,123 +1,123 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 
 namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
-public sealed class RandomizerChainer
+public sealed class RandomizerChainer : IRandomizerChainer
 {
-    /// <summary>Callback to <see cref="IRandomizer"/> to randomize child values.</summary>
-    private readonly Func<Type, RandomizerChainer, object> _randomizer;
+    /// <summary>Callback mechanism.</summary>
+    private readonly IRandomizerEngine _engine;
 
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
-    private readonly ImmutableDictionary<Type, object> _history;
-
-    /// <summary>Container of the instance to create.</summary>
-    public object? Parent { get; }
+    private readonly IDictionary<Type, object> _history;
 
     /// <inheritdoc cref="RandomizerOptions"/>
     public RandomizerOptions Options { get; }
 
-    /// <inheritdoc cref="RandomizerChainer"/>
+    /// <inheritdoc cref="IRandomizerChainer"/>
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-    /// <param name="randomizer"><inheritdoc cref="_randomizer" path="/summary"/></param>
-    public RandomizerChainer(
-        RandomizerOptions options,
-        Func<Type, RandomizerChainer, object> randomizer
-    )
+    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    public RandomizerChainer(RandomizerOptions options, IRandomizerEngine engine)
     {
-        _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
+        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         Options = options ?? throw new ArgumentNullException(nameof(options));
 
-        _history = ImmutableDictionary<Type, object>.Empty;
-        Parent = null;
+        _history = new Dictionary<Type, object>();
     }
 
-    /// <inheritdoc cref="RandomizerChainer"/>
+    /// <inheritdoc cref="IRandomizerChainer"/>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
-    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-    /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
-    private RandomizerChainer(
-        RandomizerChainer prevChainer,
-        RandomizerOptions? options,
-        object? parent
-    )
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
+    private RandomizerChainer(RandomizerChainer prevChainer, RandomizerMod? optionConfiguration)
     {
-        Parent = parent;
-        Options = options ?? prevChainer.Options.NestedOptions ?? prevChainer.Options;
-        _randomizer = prevChainer._randomizer;
+        Options =
+            (optionConfiguration != null)
+                ? optionConfiguration.Invoke(
+                    prevChainer.Options.NestedOptions ?? prevChainer.Options
+                )
+                : prevChainer.Options.NestedOptions ?? prevChainer.Options;
+        _engine = prevChainer._engine;
 
-        if (parent != null)
-        {
-            _history = prevChainer._history.Add(parent.GetType(), parent);
-        }
-        else
-        {
-            _history = prevChainer._history;
-        }
+        _history = prevChainer._history;
     }
 
-    /// <summary>Checks if <typeparamref name="T"/> has already been created by the randomizer.</summary>
-    /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>
-    /// <returns><see langword="true"/> if <typeparamref name="T"/> already created, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc/>
     public bool AlreadyCreated<T>()
     {
         return AlreadyCreated(typeof(T));
     }
 
-    /// <summary>Checks if <paramref name="type"/> has already been created by the randomizer.</summary>
-    /// <param name="type"><see cref="Type"/> to check.</param>
-    /// <returns><see langword="true"/> if <paramref name="type"/> already created, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc/>
     public bool AlreadyCreated(Type type)
     {
         return _history.ContainsKey(type);
     }
 
-    /// <summary>Calls the randomizer to create a random <typeparamref name="T"/> instance.</summary>
-    /// <typeparam name="T">Type to create.</typeparam>
-    /// <returns>The created <typeparamref name="T"/> instance.</returns>
-    public T Create<T>()
+    /// <inheritdoc/>
+    public object Create(Type type, object? parent, RandomizerMod? optionConfiguration = null)
     {
-        return (T)Create(typeof(T), null);
-    }
-
-    /// <summary>Calls the randomizer to create a random instance of the given <paramref name="type"/>.</summary>
-    /// <param name="type">Type to create.</param>
-    /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
-    /// <returns>The created instance.</returns>
-    public object Create(Type type, object? parent = null)
-    {
-        return Create(type, null, parent);
-    }
-
-    /// <summary>Calls the randomizer to create a random instance of the given <paramref name="type"/>.</summary>
-    /// <param name="type">Type to create.</param>
-    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-    /// <param name="parent"><inheritdoc cref="Parent" path="/summary"/></param>
-    /// <returns>The created instance.</returns>
-    /// <exception cref="InfiniteLoopException">If <paramref name="type"/> is a parent.</exception>
-    public object Create(Type type, RandomizerOptions? options, object? parent = null)
-    {
-        if (parent != null)
+        if (AlreadyCreated(type))
         {
-            if (AlreadyCreated(type))
-            {
-                return _history[type];
-            }
-            else if (parent.GetType() == type)
-            {
-                return parent;
-            }
+            return _history[type];
         }
-        else if (AlreadyCreated(type))
+        else if (parent?.GetType() == type)
         {
-            throw new InfiniteLoopException(type, _history.Keys);
+            return parent;
+        }
+
+        if (parent != null && !_history.ContainsKey(parent.GetType()))
+        {
+            _history.Add(parent.GetType(), parent);
         }
 
         RuntimeHelpers.EnsureSufficientExecutionStack();
-        return _randomizer.Invoke(
-            type,
-            new RandomizerChainer(this, options, (parent != Parent) ? parent : null)
-        );
+        object result =
+            (optionConfiguration != null || Options.NestedOptions != null)
+                ? _engine.Create(type, new RandomizerChainer(this, optionConfiguration))
+                : _engine.Create(type, this);
+
+        if (parent != null)
+        {
+            _ = _history.Remove(parent.GetType());
+        }
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public T Create<T>(RandomizerMod? optionConfiguration = null)
+    {
+        return (T)Create(typeof(T), null, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public object Create(Type type, RandomizerMod? optionConfiguration = null)
+    {
+        return Create(type, null, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null)
+    {
+        return (T)Inject(typeof(T), values);
+    }
+
+    /// <inheritdoc/>
+    public object Inject(
+        Type type,
+        IEnumerable<object?>? values,
+        RandomizerMod? optionConfiguration = null
+    )
+    {
+        return (optionConfiguration != null || Options.NestedOptions != null)
+            ? _engine.Inject(type, values, new RandomizerChainer(this, optionConfiguration))
+            : _engine.Inject(type, values, this);
+    }
+
+    /// <inheritdoc/>
+    public IRandomizer WithOptions(RandomizerMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new RandomizerChainer(this, optionConfiguration);
     }
 }

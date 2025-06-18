@@ -1,4 +1,5 @@
-﻿using CreateAndFake.FakerTool;
+﻿using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 using CreateAndFake.Tests.TestSamples;
@@ -46,7 +47,7 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     {
         Tools
             .Randomizer.Assert(t => t.Create<Injected<IUnimplementedSample>>())
-            .Throws<InvalidOperationException>();
+            .Throws<ToolException>();
     }
 
     [Theory, RandomData]

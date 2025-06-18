@@ -34,12 +34,18 @@ public interface IRandomizer : ITool<RandomizerOptions>
     /// </summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <param name="values">Values to inject into the <typeparamref name="T"/> instance.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
-    T Inject<T>(params IEnumerable<object?>? values);
+    T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null);
 
     /// <summary>Creates an instance using <paramref name="values"/> or random data as needed.</summary>
     /// <param name="type">Type to create.</param>
     /// <param name="values">Values to inject into the instance.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
     /// <returns>The created instance.</returns>
-    object Inject(Type type, params IEnumerable<object?>? values);
+    object Inject(
+        Type type,
+        IEnumerable<object?>? values,
+        RandomizerMod? optionConfiguration = null
+    );
 }

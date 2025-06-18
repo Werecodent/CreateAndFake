@@ -56,7 +56,7 @@ public sealed class FakeCreateHint : CreateHint
     ];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -72,7 +72,7 @@ public sealed class FakeCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static Fake Create(Type type, RandomizerChainer randomizer)
+    private static Fake Create(Type type, IRandomizerChainer randomizer)
     {
         Type target = type.GetGenericArguments().Single();
 
@@ -109,7 +109,7 @@ public sealed class FakeCreateHint : CreateHint
     /// <param name="method">Method to fake.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Behavior for the fake.</returns>
-    private static Behavior MakeBehavior(MethodInfo method, RandomizerChainer randomizer)
+    private static Behavior MakeBehavior(MethodInfo method, IRandomizerChainer randomizer)
     {
         Type[] args = [.. method.GetParameters().Select(p => SetupArg(p.ParameterType))];
 

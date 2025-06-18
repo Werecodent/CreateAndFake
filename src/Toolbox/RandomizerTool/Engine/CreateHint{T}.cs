@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Engine;
 public abstract class CreateHint<T> : CreateHint
 {
     /// <inheritdoc/>
-    public sealed override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public sealed override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -28,5 +28,5 @@ public abstract class CreateHint<T> : CreateHint
     /// <summary>Creates a random <typeparamref name="T"/> instance.</summary>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
-    protected abstract T Create(RandomizerChainer randomizer);
+    protected abstract T Create(IRandomizerChainer randomizer);
 }

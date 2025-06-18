@@ -20,7 +20,7 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         .Single(m => m.GetParameters().Length == 2);
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         Type? asGeneric = type.AsGenericType();
 

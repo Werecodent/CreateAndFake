@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class ValueCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 

@@ -11,7 +11,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class GenericCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -27,7 +27,7 @@ public sealed class GenericCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object Create(Type type, RandomizerChainer randomizer)
+    private static object Create(Type type, IRandomizerChainer randomizer)
     {
         return randomizer.Create(
             type.MakeGenericType(
@@ -42,7 +42,7 @@ public sealed class GenericCreateHint : CreateHint
     /// <param name="parent">Base <see cref="Type"/> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Created arg <see cref="Type"/>.</returns>
-    internal static Type CreateArg(Type type, Type parent, RandomizerChainer randomizer)
+    internal static Type CreateArg(Type type, Type parent, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(type, nameof(type));
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
@@ -107,7 +107,7 @@ public sealed class GenericCreateHint : CreateHint
     private static Type CreateArgViaConstraint(
         Type[] constraints,
         Type parent,
-        RandomizerChainer randomizer
+        IRandomizerChainer randomizer
     )
     {
         Type constraint = randomizer.Options.Gen.NextItem(constraints);

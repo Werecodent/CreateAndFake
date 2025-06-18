@@ -9,7 +9,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class InjectedCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -25,7 +25,7 @@ public sealed class InjectedCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object Create(Type type, RandomizerChainer randomizer)
+    private static object Create(Type type, IRandomizerChainer randomizer)
     {
         Type target = type.GetGenericArguments().Single();
 
@@ -65,7 +65,7 @@ public sealed class InjectedCreateHint : CreateHint
     /// <returns>Constructor if found, <see langword="null"/> otherwise.</returns>
     private static ConstructorInfo? FindConstructor(
         Type target,
-        RandomizerChainer randomizer,
+        IRandomizerChainer randomizer,
         BindingFlags scope
     )
     {

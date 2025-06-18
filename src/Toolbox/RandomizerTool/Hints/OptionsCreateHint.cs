@@ -8,7 +8,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class OptionsCreateHint : CreateHint<RandomizerOptions>
 {
     /// <inheritdoc/>
-    protected override RandomizerOptions Create(RandomizerChainer randomizer)
+    protected override RandomizerOptions Create(IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 

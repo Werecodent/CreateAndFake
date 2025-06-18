@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class SpanCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -23,11 +23,11 @@ public sealed class SpanCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, RandomizerChainer randomizer)
+    private static object? Create(Type type, IRandomizerChainer randomizer)
     {
         Type content = type.GetGenericArguments().Single();
         Type arrayType = Array.CreateInstance(content, 0).GetType();
 
-        return randomizer.Create(arrayType, randomizer.Parent);
+        return randomizer.Create(arrayType);
     }
 }

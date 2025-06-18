@@ -11,8 +11,8 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class CommonSystemCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens =
-        new Dictionary<Type, Func<RandomizerChainer, object>>()
+    private static readonly FrozenDictionary<Type, Func<IRandomizerChainer, object>> _Gens =
+        new Dictionary<Type, Func<IRandomizerChainer, object>>()
         {
             {
                 typeof(CultureInfo),
@@ -51,11 +51,11 @@ public sealed class CommonSystemCreateHint : CreateHint
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (type != null && _Gens.TryGetValue(type, out Func<RandomizerChainer, object?>? gen))
+        if (type != null && _Gens.TryGetValue(type, out Func<IRandomizerChainer, object?>? gen))
         {
             return new(gen.Invoke(randomizer));
         }

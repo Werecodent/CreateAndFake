@@ -39,7 +39,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
         _Collections.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
         if (type == null)
@@ -61,7 +61,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, Type itemType, RandomizerChainer randomizer)
+    private static object? Create(Type type, Type itemType, IRandomizerChainer randomizer)
     {
         (Type, MethodInfo) chosen = randomizer.Options.Gen.NextItem(FindMatches(type, itemType));
         return chosen

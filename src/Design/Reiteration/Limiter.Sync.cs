@@ -384,7 +384,8 @@ public sealed partial class Limiter : ISyncLimiter
         CancellationToken token = canceler ?? CancellationToken.None;
         if (_delay > TimeSpan.Zero)
         {
-            _ = token.WaitHandle.WaitOne(_delay);
+            Thread.Sleep(_delay);
+            //_ = token.WaitHandle.WaitOne(_delay);
         }
         if (token.IsCancellationRequested)
         {

@@ -20,7 +20,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     public ValuerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <summary>Callback mechanism..</summary>
+    /// <summary>Callback mechanism.</summary>
     private readonly ValuerEngine _engine =
         engine ?? throw new ArgumentNullException(nameof(engine));
 

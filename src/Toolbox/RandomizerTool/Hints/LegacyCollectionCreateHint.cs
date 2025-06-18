@@ -16,7 +16,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     /// <summary>Supported types and the methods used to generate them.</summary>
     private static readonly ImmutableArray<(
         Type,
-        Func<string[], RandomizerChainer, object>
+        Func<string[], IRandomizerChainer, object>
     )> _Creators =
     [
         (typeof(Hashtable), CreateDict<Hashtable>),
@@ -49,7 +49,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         _Creators.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer? randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -72,7 +72,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
     /// <param name="type"><see cref="Type"/> to find matches for.</param>
     /// <returns>All possible matches.</returns>
-    private static IEnumerable<(Type, Func<string[], RandomizerChainer, object>)> FindMatches(
+    private static IEnumerable<(Type, Func<string[], IRandomizerChainer, object>)> FindMatches(
         Type type
     )
     {
@@ -84,7 +84,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     /// <param name="keys">Keys to create in the <typeparamref name="TDict"/>.</param>
     /// <param name="gen">Handles randomizing child values.</param>
     /// <returns>The created instance.</returns>
-    private static TDict CreateDict<TDict>(string[] keys, RandomizerChainer gen)
+    private static TDict CreateDict<TDict>(string[] keys, IRandomizerChainer gen)
     {
         dynamic data = Activator.CreateInstance<TDict>()!;
         for (int i = 0; i < keys.Length; i++)
@@ -98,7 +98,7 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     /// <param name="size">Number of items to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Data populated with random values.</returns>
-    private static string[] CreateInternalData(int size, RandomizerChainer randomizer)
+    private static string[] CreateInternalData(int size, IRandomizerChainer randomizer)
     {
         string[] data = new string[size];
         for (int i = 0; i < data.Length; i++)

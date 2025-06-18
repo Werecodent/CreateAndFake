@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class TaskCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -23,7 +23,7 @@ public sealed class TaskCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, RandomizerChainer randomizer)
+    private static object? Create(Type type, IRandomizerChainer randomizer)
     {
         if (type.IsGenericType)
         {
@@ -32,7 +32,7 @@ public sealed class TaskCreateHint : CreateHint
             return typeof(Task)
                 .GetMethod(nameof(Task.FromResult))!
                 .MakeGenericMethod(content)
-                .Invoke(null, [randomizer.Create(content, randomizer.Parent)]);
+                .Invoke(null, [randomizer.Create(content)]);
         }
         else
         {

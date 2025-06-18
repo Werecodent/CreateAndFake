@@ -21,7 +21,7 @@ public sealed class DelegateCreateHint : CreateHint
     ];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -41,7 +41,7 @@ public sealed class DelegateCreateHint : CreateHint
 
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object Create(Type type, RandomizerChainer randomizer)
+    private static object Create(Type type, IRandomizerChainer randomizer)
     {
         Delegator delegator = new(randomizer);
 
@@ -75,11 +75,11 @@ public sealed class DelegateCreateHint : CreateHint
     private sealed class Delegator
     {
         /// <summary>Creates random results.</summary>
-        private readonly RandomizerChainer _randomizer;
+        private readonly IRandomizerChainer _randomizer;
 
         /// <summary>Sets up the randomization.</summary>
         /// <param name="randomizer"><inheritdoc cref="_randomizer" path="/summary"/></param>
-        internal Delegator(RandomizerChainer randomizer)
+        internal Delegator(IRandomizerChainer randomizer)
         {
             _randomizer = randomizer;
         }
@@ -96,10 +96,7 @@ public sealed class DelegateCreateHint : CreateHint
                     if (inputType.Inherits<IOutRef>())
                     {
                         FieldInfo valueField = inputType.GetField(nameof(OutRef<object>.Var))!;
-                        valueField.SetValue(
-                            outRef,
-                            _randomizer.Create(valueField.FieldType, _randomizer.Parent)
-                        );
+                        valueField.SetValue(outRef, _randomizer.Create(valueField.FieldType));
                     }
                 }
             }
@@ -112,7 +109,7 @@ public sealed class DelegateCreateHint : CreateHint
         private T? HandleInAndOut<T>(params IEnumerable<object?> inputs)
         {
             HandleIn(inputs);
-            return (T?)_randomizer.Create(typeof(T), _randomizer.Parent);
+            return _randomizer.Create<T>();
         }
 
         /// <inheritdoc cref="AutoDelegate{T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T}"/>

@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class StringCreateHint : CreateHint<string>
 {
     /// <inheritdoc/>
-    protected override string Create(RandomizerChainer randomizer)
+    protected override string Create(IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 

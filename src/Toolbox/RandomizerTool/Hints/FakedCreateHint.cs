@@ -9,7 +9,7 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class FakedCreateHint : CreateHint<IFaked>
 {
     /// <inheritdoc/>
-    protected override IFaked Create(RandomizerChainer randomizer)
+    protected override IFaked Create(IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 

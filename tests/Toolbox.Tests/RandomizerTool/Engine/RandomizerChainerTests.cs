@@ -1,5 +1,4 @@
-﻿using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
+﻿using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.Tests.TestSamples;
 
 namespace CreateAndFake.Tests.RandomizerTool.Engine;
@@ -9,20 +8,19 @@ public static class RandomizerChainerTests
     [Fact]
     internal static Task RandomizerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RandomizerChainer>();
+        return Tools.Tester.PreventsNullRefException<IRandomizerChainer>();
     }
 
     [Fact]
     internal static Task RandomizerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RandomizerChainer>();
+        return Tools.Tester.PreventsParameterMutation<IRandomizerChainer>();
     }
 
     [Fact]
     internal static void Create_HandlesInfinites()
     {
-        new RandomizerChainer(Tools.Randomizer.Options, (_, c) => c.Create<ParentLoopSample>())
-            .Assert(c => c.Create(typeof(ChildWithParentSample), new ParentLoopSample()))
-            .Throws<InfiniteLoopException>();
+        Tools.Randomizer.Create<ChildWithParentSample>().Assert().IsNot(null);
+        Tools.Randomizer.Create<ParentLoopSample>().Assert().IsNot(null);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;
@@ -48,7 +49,7 @@ public static class RandomizerTests
     {
         new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false })
             .Assert(r => r.Create<object>())
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>();
     }
 
     [Theory, RandomData]
@@ -57,7 +58,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
+                m => m.TryCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(CreateHintResult.None, Times.Once)
             );
 
@@ -69,7 +70,7 @@ public static class RandomizerTests
             }
         )
             .Assert(r => r.Create<string>())
-            .Throws<NotSupportedException>();
+            .Throws<ToolException>();
 
         hint.Assert().Called(Times.Once);
     }
@@ -80,7 +81,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(data.GetType(), Arg.Any<RandomizerChainer>()),
+                m => m.TryCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(new CreateHintResult(data), Times.Once)
             );
 
@@ -103,7 +104,7 @@ public static class RandomizerTests
     {
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(type, Arg.Any<RandomizerChainer>()),
+                m => m.TryCreate(type, Arg.Any<IRandomizerChainer>()),
                 Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
             );
 
@@ -115,7 +116,7 @@ public static class RandomizerTests
             }
         )
             .Assert(r => r.Create(type))
-            .Throws<InsufficientExecutionStackException>()
+            .Throws<ToolException>()
             .Message.Assert()
             .Contains(type.Name);
     }
@@ -141,7 +142,7 @@ public static class RandomizerTests
                     }
                 )
             )
-            .Throws<TimeoutException>();
+            .Throws<ToolException>();
     }
 
     [Theory, RandomData]

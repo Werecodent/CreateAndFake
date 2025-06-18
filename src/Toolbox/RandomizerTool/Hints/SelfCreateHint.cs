@@ -3,6 +3,7 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
@@ -10,12 +11,14 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class SelfCreateHint : CreateHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly FrozenDictionary<Type, Func<RandomizerChainer, object>> _Gens =
-        new Dictionary<Type, Func<RandomizerChainer, object>>()
+    private static readonly FrozenDictionary<Type, Func<IRandomizerChainer, object>> _Gens =
+        new Dictionary<Type, Func<IRandomizerChainer, object>>()
         {
             { typeof(SeededRandom), rand => new SeededRandom(rand.Options.Gen.Next<int>()) },
             { typeof(ValueRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IRandom), rand => rand.Create<SeededRandom>() },
+            { typeof(IRandomizer), rand => rand.Create<Randomizer>() },
+            { typeof(IValuer), rand => rand.Create<Valuer>() },
             { typeof(ToolSet), rand => ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>()) },
             {
                 typeof(Limiter),
@@ -27,11 +30,11 @@ public sealed class SelfCreateHint : CreateHint
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (type != null && _Gens.TryGetValue(type, out Func<RandomizerChainer, object?>? gen))
+        if (type != null && _Gens.TryGetValue(type, out Func<IRandomizerChainer, object?>? gen))
         {
             return new(gen.Invoke(randomizer));
         }

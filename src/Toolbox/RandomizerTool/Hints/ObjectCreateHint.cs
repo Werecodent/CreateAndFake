@@ -19,7 +19,7 @@ public sealed class ObjectCreateHint : CreateHint
     };
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, RandomizerChainer randomizer)
+    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
@@ -37,7 +37,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="rootType">Original <see cref="Type"/> being generated.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, Type rootType, RandomizerChainer randomizer)
+    private static object? Create(Type type, Type rootType, IRandomizerChainer randomizer)
     {
         if (type != rootType)
         {
@@ -68,7 +68,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="data">Instance to populate.</param>
     /// <param name="smartData">Smart data currently being utilized.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    private static void Populate(object data, DataRandom smartData, RandomizerChainer randomizer)
+    private static void Populate(object data, DataRandom smartData, IRandomizerChainer randomizer)
     {
         Type dataType = data.GetType();
 
@@ -100,7 +100,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <param name="smartData">Predefined random data.</param>
     /// <returns>The created instance.</returns>
-    private static object? CreateNew(Type type, RandomizerChainer randomizer, DataRandom smartData)
+    private static object? CreateNew(Type type, IRandomizerChainer randomizer, DataRandom smartData)
     {
         /*
          * Order of preference:
@@ -177,7 +177,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="creators">Possible creation methods.</param>
     /// <returns>The created instance.</returns>
     private static object CreateFrom<T>(
-        RandomizerChainer randomizer,
+        IRandomizerChainer randomizer,
         DataRandom smartData,
         Func<T, object?[], object> invoker,
         IEnumerable<T> creators
@@ -210,7 +210,7 @@ public sealed class ObjectCreateHint : CreateHint
                     {
                         string? smartValue =
                             (p.ParameterType == typeof(string)) ? smartData.Find(p.Name) : null;
-                        return smartValue ?? randomizer.Create(p.ParameterType, randomizer.Parent);
+                        return smartValue ?? randomizer.Create(p.ParameterType);
                     }),
             ]
         );
@@ -220,7 +220,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="type">Parent <see cref="Type"/> being created.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns><see cref="Type"/> to use.</returns>
-    private static Type FindTypeToCreate(Type type, RandomizerChainer randomizer)
+    private static Type FindTypeToCreate(Type type, IRandomizerChainer randomizer)
     {
         ImmutableArray<Type> subclasses;
         lock (_SubclassCache)
@@ -278,7 +278,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static IEnumerable<ConstructorInfo> FindConstructors(
         Type type,
         BindingFlags scope,
-        RandomizerChainer? randomizer = null
+        IRandomizerChainer? randomizer = null
     )
     {
         return type.GetConstructors(BindingFlags.Instance | scope)
@@ -297,7 +297,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static IEnumerable<MethodInfo> FindFactories(
         Type type,
         BindingFlags scope,
-        RandomizerChainer? randomizer = null
+        IRandomizerChainer? randomizer = null
     )
     {
         MethodInfo[] factories =

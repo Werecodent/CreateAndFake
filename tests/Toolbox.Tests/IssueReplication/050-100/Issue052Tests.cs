@@ -22,7 +22,7 @@ public static class Issue052Tests
         Data testItem = new() { Item = "Sample" };
 
         hint.Setup(
-            d => d.TryCreate(typeof(Data), Arg.Any<RandomizerChainer>()),
+            d => d.TryCreate(typeof(Data), Arg.Any<IRandomizerChainer>()),
             Behavior.Returns(new CreateHintResult(testItem), Times.Once)
         );
 
