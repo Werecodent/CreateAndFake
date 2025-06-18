@@ -11,7 +11,7 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
     protected override IEnumerable<Difference> Compare(
         IFaked? expected,
         IFaked? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -20,7 +20,7 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IFaked? item, ValuerChainer valuer)
+    protected override int GetHashCode(IFaked? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

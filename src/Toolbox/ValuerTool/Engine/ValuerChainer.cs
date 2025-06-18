@@ -6,23 +6,49 @@ using CreateAndFake.FakerTool.Proxy;
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
-/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
-public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : IValuer
+public sealed class ValuerChainer : IValuerChainer
 {
+    /// <summary>Callback mechanism.</summary>
+    private readonly IValuerEngine _engine;
+
     /// <summary>History of hashes to match up references.</summary>
-    private readonly Dictionary<int, object?> _hashHistory = [];
+    private readonly Dictionary<int, object?> _hashHistory;
 
     /// <summary>History of comparisons to match up references.</summary>
-    private readonly HashSet<(int, int)> _compareHistory = [];
+    private readonly HashSet<(int, int)> _compareHistory;
 
     /// <inheritdoc cref="ValuerOptions"/>
-    public ValuerOptions Options { get; } =
-        options ?? throw new ArgumentNullException(nameof(options));
+    public ValuerOptions Options { get; }
 
-    /// <summary>Callback mechanism.</summary>
-    private readonly ValuerEngine _engine =
-        engine ?? throw new ArgumentNullException(nameof(engine));
+    /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    public ValuerChainer(ValuerOptions options, IValuerEngine engine)
+    {
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
+        _hashHistory = [];
+        _compareHistory = [];
+    }
+
+    /// <inheritdoc cref="IValuerChainer"/>
+    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
+    private ValuerChainer(ValuerChainer prevChainer, ValuerMod? optionConfiguration)
+    {
+        ValuerOptions options = prevChainer.Options;
+
+        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
+
+        _engine = prevChainer._engine;
+        _hashHistory = prevChainer._hashHistory;
+        _compareHistory = prevChainer._compareHistory;
+    }
+
+    private ValuerChainer GetSubChainer(ValuerMod? optionConfiguration)
+    {
+        return (optionConfiguration != null) ? new ValuerChainer(this, optionConfiguration) : this;
+    }
 
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>
     /// <param name="item">Item to check.</param>
@@ -49,7 +75,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
 
             if (_compareHistory.Add(refHash))
             {
-                return _engine.Compare(expected, actual, this);
+                return _engine.Compare(expected, actual, GetSubChainer(optionConfiguration));
             }
             else
             {
@@ -58,7 +84,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         }
         else
         {
-            return _engine.Compare(expected, actual, this);
+            return _engine.Compare(expected, actual, GetSubChainer(optionConfiguration));
         }
     }
 
@@ -81,7 +107,9 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
             {
                 try
                 {
-                    return await _engine.CompareAsync(expected, actual, this).ConfigureAwait(false);
+                    return await _engine
+                        .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                        .ConfigureAwait(false);
                 }
                 finally
                 {
@@ -95,7 +123,9 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         }
         else
         {
-            return await _engine.CompareAsync(expected, actual, this).ConfigureAwait(false);
+            return await _engine
+                .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                .ConfigureAwait(false);
         }
     }
 
@@ -111,7 +141,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
-            return _engine.GetHashCode(item, this);
+            return _engine.GetHashCode(item, GetSubChainer(optionConfiguration));
         }
 
         int refHash = RuntimeHelpers.GetHashCode(item);
@@ -123,7 +153,7 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         _hashHistory[refHash] = item;
         try
         {
-            return _engine.GetHashCode(item, this);
+            return _engine.GetHashCode(item, GetSubChainer(optionConfiguration));
         }
         finally
         {
@@ -137,7 +167,9 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
-            return await _engine.GetHashCodeAsync(item, this).ConfigureAwait(false);
+            return await _engine
+                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration))
+                .ConfigureAwait(false);
         }
 
         int refHash = RuntimeHelpers.GetHashCode(item);
@@ -149,7 +181,9 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
         _hashHistory[refHash] = item;
         try
         {
-            return await _engine.GetHashCodeAsync(item, this).ConfigureAwait(false);
+            return await _engine
+                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration))
+                .ConfigureAwait(false);
         }
         finally
         {
@@ -179,6 +213,6 @@ public sealed class ValuerChainer(ValuerOptions options, ValuerEngine engine) : 
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
-        return new ValuerChainer(optionConfiguration.Invoke(Options), engine);
+        return new ValuerChainer(optionConfiguration.Invoke(Options), _engine);
     }
 }

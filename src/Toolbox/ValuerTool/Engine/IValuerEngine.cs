@@ -1,0 +1,25 @@
+namespace CreateAndFake.ValuerTool.Engine;
+
+/// <inheritdoc cref="IValuer"/>
+public interface IValuerEngine
+{
+    /// <param name="chainer">Handles callback behavior for child values.</param>
+    /// <inheritdoc cref="IValuer.Compare(object,object,ValuerMod)"/>
+    IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer);
+
+    /// <param name="chainer">Handles callback behavior for child values.</param>
+    /// <inheritdoc cref="IValuer.GetHashCodeAsync"/>
+    Task<IEnumerable<Difference>> CompareAsync(
+        object? expected,
+        object? actual,
+        IValuerChainer chainer
+    );
+
+    /// <param name="chainer">Handles callback behavior for child values.</param>
+    /// <inheritdoc cref="IValuer.GetHashCode(object)"/>
+    int GetHashCode(object? item, IValuerChainer chainer);
+
+    /// <param name="chainer">Handles callback behavior for child values.</param>
+    /// <inheritdoc cref="IValuer.GetHashCodeAsync"/>
+    Task<int> GetHashCodeAsync(object? item, IValuerChainer chainer);
+}

@@ -5,14 +5,14 @@ namespace CreateAndFake.Tests.ValuerTool.Engine;
 public static class ValuerChainerTests
 {
     [Fact]
-    internal static Task ValuerChainer_GuardsNulls()
+    internal static Task IValuerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ValuerChainer>();
+        return Tools.Tester.PreventsNullRefException<IValuerChainer>();
     }
 
     [Fact]
-    internal static Task ValuerChainer_NoParameterMutation()
+    internal static Task IValuerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ValuerChainer>();
+        return Tools.Tester.PreventsParameterMutation<IValuerChainer>();
     }
 }

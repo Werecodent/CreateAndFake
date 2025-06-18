@@ -13,7 +13,7 @@ namespace CreateAndFake.ValuerTool;
 public sealed class Valuer(ValuerOptions options) : IValuer
 {
     /// <summary>Default set of hints to use for comparisons.</summary>
-    private static readonly ImmutableArray<CompareHint> _DefaultHints =
+    internal static readonly ImmutableArray<CompareHint> DefaultHints =
     [
         new TaskCompareHint(),
         new AsyncEnumerableCompareHint(),
@@ -46,7 +46,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     private static ImmutableArray<CompareHint> BuildHints(ValuerOptions newOptions)
     {
         return newOptions.IncludeDefaultHints
-            ? newOptions.Hints.AddRange(_DefaultHints)
+            ? newOptions.Hints.AddRange(DefaultHints)
             : newOptions.Hints;
     }
 
@@ -62,7 +62,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
             : BuildHints(localOptions);
     }
 
-    internal ValuerChainer CreateChainer(ValuerMod? optionConfiguration)
+    private ValuerChainer CreateChainer(ValuerMod? optionConfiguration)
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         return new ValuerChainer(localOptions, new ValuerEngine(SelectHints(localOptions)));

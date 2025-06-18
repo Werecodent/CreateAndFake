@@ -48,7 +48,7 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
     [Theory, RandomData]
     internal static void GetHashCode_CanIgnoreSeed(SeededRandom gen)
     {
-        ValuerChainer chainer = CreateChainer(
+        IValuerChainer chainer = CreateChainer(
             Tools.Valuer.Options with
             {
                 IgnoreCurrentRandomSeed = true,
@@ -63,7 +63,7 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
     [Theory, RandomData]
     internal static void GetHashCode_CanIncludeSeed(SeededRandom gen)
     {
-        ValuerChainer chainer = CreateChainer(
+        IValuerChainer chainer = CreateChainer(
             Tools.Valuer.Options with
             {
                 IgnoreCurrentRandomSeed = false,

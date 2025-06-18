@@ -61,12 +61,12 @@ public static class Issue052Tests
 
         hint.Setup(
             "Supports",
-            [item1, item2, Arg.LambdaAny<ValuerChainer>()],
+            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(true, Times.Once)
         );
         hint.Setup(
             "Compare",
-            [item1, item2, Arg.LambdaAny<ValuerChainer>()],
+            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
         );
 

@@ -12,7 +12,7 @@ public sealed class StatelessCompareHint : CompareHint
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         if (expected == null || actual == null)
         {
@@ -28,14 +28,14 @@ public sealed class StatelessCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         return [];
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, ValuerChainer valuer)
+    protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
 

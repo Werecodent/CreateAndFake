@@ -10,7 +10,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 {
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         if (expected == null || actual == null)
         {
@@ -25,7 +25,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -39,7 +39,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     private IEnumerable<Difference> LazyCompare(
         object expected,
         object actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         Type type = expected.GetType();
@@ -72,7 +72,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     protected override Task<IEnumerable<Difference>> CompareAsync(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -86,7 +86,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     private async Task<IEnumerable<Difference>> LazyCompareAsync(
         object expected,
         object actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         List<Difference> results = [];
@@ -119,7 +119,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, ValuerChainer valuer)
+    protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -142,7 +142,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override async Task<int> GetHashCodeAsync(object? item, ValuerChainer valuer)
+    protected override async Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));

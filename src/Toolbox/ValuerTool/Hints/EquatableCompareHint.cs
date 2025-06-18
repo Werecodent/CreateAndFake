@@ -9,7 +9,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class EquatableCompareHint : CompareHint
 {
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
@@ -26,7 +26,7 @@ public sealed class EquatableCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -42,7 +42,7 @@ public sealed class EquatableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, ValuerChainer valuer)
+    protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
 

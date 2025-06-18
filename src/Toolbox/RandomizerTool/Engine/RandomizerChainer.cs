@@ -31,15 +31,19 @@ public sealed class RandomizerChainer : IRandomizerChainer
     /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
     private RandomizerChainer(RandomizerChainer prevChainer, RandomizerMod? optionConfiguration)
     {
-        Options =
-            (optionConfiguration != null)
-                ? optionConfiguration.Invoke(
-                    prevChainer.Options.NestedOptions ?? prevChainer.Options
-                )
-                : prevChainer.Options.NestedOptions ?? prevChainer.Options;
-        _engine = prevChainer._engine;
+        RandomizerOptions options = prevChainer.Options.NestedOptions ?? prevChainer.Options;
 
+        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
+
+        _engine = prevChainer._engine;
         _history = prevChainer._history;
+    }
+
+    private RandomizerChainer GetSubChainer(RandomizerMod? optionConfiguration)
+    {
+        return (optionConfiguration != null || Options.NestedOptions != null)
+            ? new RandomizerChainer(this, optionConfiguration)
+            : this;
     }
 
     /// <inheritdoc/>
@@ -72,10 +76,7 @@ public sealed class RandomizerChainer : IRandomizerChainer
         }
 
         RuntimeHelpers.EnsureSufficientExecutionStack();
-        object result =
-            (optionConfiguration != null || Options.NestedOptions != null)
-                ? _engine.Create(type, new RandomizerChainer(this, optionConfiguration))
-                : _engine.Create(type, this);
+        object result = _engine.Create(type, GetSubChainer(optionConfiguration));
 
         if (parent != null)
         {
@@ -109,9 +110,7 @@ public sealed class RandomizerChainer : IRandomizerChainer
         RandomizerMod? optionConfiguration = null
     )
     {
-        return (optionConfiguration != null || Options.NestedOptions != null)
-            ? _engine.Inject(type, values, new RandomizerChainer(this, optionConfiguration))
-            : _engine.Inject(type, values, this);
+        return _engine.Inject(type, values, GetSubChainer(optionConfiguration));
     }
 
     /// <inheritdoc/>

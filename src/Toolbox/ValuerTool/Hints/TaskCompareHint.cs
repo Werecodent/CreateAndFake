@@ -10,7 +10,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     protected override IEnumerable<Difference> Compare(
         Task? expected,
         Task? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -19,7 +19,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(Task? item, ValuerChainer valuer)
+    protected override int GetHashCode(Task? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

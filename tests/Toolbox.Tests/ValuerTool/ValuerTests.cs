@@ -43,13 +43,13 @@ public static class ValuerTests
         hint.ToFake()
             .Setup(
                 "Supports",
-                [data, data, Arg.LambdaAny<ValuerChainer>()],
+                [data, data, Arg.LambdaAny<IValuerChainer>()],
                 Behavior.Returns(true, Times.Once)
             );
         hint.ToFake()
             .Setup(
                 "GetHashCode",
-                [data, Arg.LambdaAny<ValuerChainer>()],
+                [data, Arg.LambdaAny<IValuerChainer>()],
                 Behavior.Returns(result, Times.Once)
             );
 
@@ -109,12 +109,12 @@ public static class ValuerTests
     {
         hint.Setup(
             "Supports",
-            [data1, data2, Arg.LambdaAny<ValuerChainer>()],
+            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(true, Times.Once)
         );
         hint.Setup(
             "Compare",
-            [data1, data2, Arg.LambdaAny<ValuerChainer>()],
+            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
         );
 
@@ -131,12 +131,12 @@ public static class ValuerTests
     {
         hint.Setup(
             "Supports",
-            [data1, data2, Arg.LambdaAny<ValuerChainer>()],
+            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(true, Times.Once)
         );
         hint.Setup(
             "Compare",
-            [data1, data2, Arg.LambdaAny<ValuerChainer>()],
+            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once)
         );
 
@@ -157,7 +157,7 @@ public static class ValuerTests
     {
         hint.Setup(
             "Supports",
-            [item1, item2, Arg.LambdaAny<ValuerChainer>()],
+            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
         );
 
@@ -173,7 +173,7 @@ public static class ValuerTests
     {
         hint.Setup(
             "Supports",
-            [item, item, Arg.LambdaAny<ValuerChainer>()],
+            [item, item, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
         );
 

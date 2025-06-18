@@ -11,7 +11,7 @@ public sealed class MemberInfoCompareHint : CompareHint<MemberInfo>
     protected override IEnumerable<Difference> Compare(
         MemberInfo? expected,
         MemberInfo? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -32,7 +32,7 @@ public sealed class MemberInfoCompareHint : CompareHint<MemberInfo>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(MemberInfo? item, ValuerChainer valuer)
+    protected override int GetHashCode(MemberInfo? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));

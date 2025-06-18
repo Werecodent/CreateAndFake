@@ -12,7 +12,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     protected override IEnumerable<Difference> Compare(
         IDictionary? expected,
         IDictionary? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -26,7 +26,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     private static IEnumerable<Difference> LazyCompare(
         IDictionary expected,
         IDictionary actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
@@ -66,7 +66,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     protected override Task<IEnumerable<Difference>> CompareAsync(
         IDictionary? expected,
         IDictionary? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -80,7 +80,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     private static async Task<IEnumerable<Difference>> LazyCompareAsync(
         IDictionary expected,
         IDictionary actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         List<Difference> results = [];
@@ -144,7 +144,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IDictionary? item, ValuerChainer valuer)
+    protected override int GetHashCode(IDictionary? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -158,7 +158,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override async Task<int> GetHashCodeAsync(IDictionary? item, ValuerChainer valuer)
+    protected override async Task<int> GetHashCodeAsync(IDictionary? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));

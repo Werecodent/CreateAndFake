@@ -14,7 +14,7 @@ public sealed class EarlyFailCompareHint : CompareHint
     );
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         return expected == null
             || actual == null
@@ -39,7 +39,7 @@ public sealed class EarlyFailCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         if (expected == null && actual == null)
@@ -61,7 +61,7 @@ public sealed class EarlyFailCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, ValuerChainer valuer)
+    protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         return ValueComparer.Use.GetHashCode(item);
     }

@@ -12,7 +12,7 @@ public abstract class CompareHint
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="valuer">Handles comparing child values.</param>
     /// <returns>Possible result.</returns>
-    public DifferenceHintResult TryCompare(object? expected, object? actual, ValuerChainer valuer)
+    public DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer)
     {
         if (Supports(expected, actual, valuer))
         {
@@ -28,7 +28,7 @@ public abstract class CompareHint
     public DifferenceHintAsyncResult TryAsyncCompare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         if (Supports(expected, actual, valuer))
@@ -45,7 +45,7 @@ public abstract class CompareHint
     /// <param name="item">Object to generate a hash code for.</param>
     /// <param name="valuer">Handles hashing behavior for child values.</param>
     /// <returns>Possible result.</returns>
-    public HashCodeHintResult TryGetHashCode(object? item, ValuerChainer valuer)
+    public HashCodeHintResult TryGetHashCode(object? item, IValuerChainer valuer)
     {
         if (Supports(item, item, valuer))
         {
@@ -58,7 +58,7 @@ public abstract class CompareHint
     }
 
     /// <inheritdoc cref="TryGetHashCode"/>
-    public HashCodeHintAsyncResult TryAsyncGetHashCode(object? item, ValuerChainer valuer)
+    public HashCodeHintAsyncResult TryAsyncGetHashCode(object? item, IValuerChainer valuer)
     {
         if (Supports(item, item, valuer))
         {
@@ -75,7 +75,7 @@ public abstract class CompareHint
     /// </summary>
     /// <returns><see langword="true"/> if the objects can be compared, <see langword="false"/> otherwise.</returns>
     /// <inheritdoc cref="TryCompare"/>
-    protected abstract bool Supports(object? expected, object? actual, ValuerChainer valuer);
+    protected abstract bool Supports(object? expected, object? actual, IValuerChainer valuer);
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <returns>The found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
@@ -83,14 +83,14 @@ public abstract class CompareHint
     protected abstract IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     );
 
     /// <inheritdoc cref="Compare"/>
     protected virtual Task<IEnumerable<Difference>> CompareAsync(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         return Task.FromResult(Compare(expected, actual, valuer));
@@ -99,10 +99,10 @@ public abstract class CompareHint
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
     /// <inheritdoc cref="TryGetHashCode"/>
-    protected abstract int GetHashCode(object? item, ValuerChainer valuer);
+    protected abstract int GetHashCode(object? item, IValuerChainer valuer);
 
     /// <inheritdoc cref="GetHashCode"/>
-    protected virtual Task<int> GetHashCodeAsync(object? item, ValuerChainer valuer)
+    protected virtual Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
     {
         return Task.FromResult(GetHashCode(item, valuer));
     }

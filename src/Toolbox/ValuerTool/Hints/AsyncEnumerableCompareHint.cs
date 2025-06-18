@@ -11,7 +11,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class AsyncEnumerableCompareHint : CompareHint
 {
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, ValuerChainer valuer)
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         return (expected?.GetType()).Inherits(typeof(IAsyncEnumerable<>))
             && (actual?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
@@ -21,7 +21,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -43,7 +43,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     protected override Task<IEnumerable<Difference>> CompareAsync(
         object? expected,
         object? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -74,7 +74,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, ValuerChainer valuer)
+    protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
@@ -92,7 +92,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override Task<int> GetHashCodeAsync(object? item, ValuerChainer valuer)
+    protected override Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -112,7 +112,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     private static async Task<IEnumerable<Difference>> CompareAsyncHandler<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         List<Difference> differences = [];
@@ -169,7 +169,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
     private static async Task<int> GetHashCodeHandler<T>(
         IAsyncEnumerable<T> item,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         int hash = ValueComparer.BaseHash;

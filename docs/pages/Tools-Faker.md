@@ -84,10 +84,10 @@ public void GetHashCode_ValidHint()
 
     Fake<CompareHint> hint = Tools.Faker.Mock<CompareHint>();
     hint.Setup("Supports",
-        new[] { data, data, Arg.LambdaAny<ValuerChainer>() },
+        new[] { data, data, Arg.LambdaAny<IValuerChainer>() },
         Behavior.Returns(true, Times.Once));
     hint.Setup("GetHashCode",
-        new[] { data, Arg.LambdaAny<ValuerChainer>() },
+        new[] { data, Arg.LambdaAny<IValuerChainer>() },
         Behavior.Returns(result, Times.Once));
 
     Tools.Asserter.Is(result, new Valuer(false, hint.Dummy).GetHashCode(data));

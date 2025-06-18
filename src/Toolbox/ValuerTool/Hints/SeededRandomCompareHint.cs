@@ -11,7 +11,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
     protected override IEnumerable<Difference> Compare(
         SeededRandom? expected,
         SeededRandom? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -20,7 +20,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(SeededRandom? item, ValuerChainer valuer)
+    protected override int GetHashCode(SeededRandom? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
@@ -31,7 +31,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
     /// <param name="item"></param>
     /// <param name="valuer"></param>
     /// <returns></returns>
-    private static object? ExtractInternals(SeededRandom? item, ValuerChainer valuer)
+    private static object? ExtractInternals(SeededRandom? item, IValuerChainer valuer)
     {
         if (item == null)
         {

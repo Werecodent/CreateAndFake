@@ -12,7 +12,7 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
     protected override IEnumerable<Difference> Compare(
         StringDictionary? expected,
         StringDictionary? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -21,7 +21,7 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(StringDictionary? item, ValuerChainer valuer)
+    protected override int GetHashCode(StringDictionary? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 

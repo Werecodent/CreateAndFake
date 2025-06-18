@@ -16,7 +16,7 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     protected override IEnumerable<Difference> Compare(
         IValuerEquatable? expected,
         IValuerEquatable? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -28,7 +28,7 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     private static IEnumerable<Difference> LazyCompare(
         IValuerEquatable? expected,
         IValuerEquatable? actual,
-        ValuerChainer valuer
+        IValuerChainer valuer
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -52,7 +52,7 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerEquatable? item, ValuerChainer valuer)
+    protected override int GetHashCode(IValuerEquatable? item, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
