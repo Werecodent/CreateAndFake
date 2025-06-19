@@ -7,11 +7,11 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class DuplicatableCopyHint : CopyHint<IDuplicatable>
 {
     /// <inheritdoc/>
-    protected override IDuplicatable Copy(IDuplicatable source, DuplicatorChainer duplicator)
+    protected override IDuplicatable Copy(IDuplicatable source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
-        return source.DeepClone(duplicator.Duplicator);
+        return source.DeepClone(duplicator);
     }
 }

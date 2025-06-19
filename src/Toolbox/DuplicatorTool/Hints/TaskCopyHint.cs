@@ -8,7 +8,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class TaskCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
@@ -38,7 +38,7 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-    private static Task WrapPlainTask(Task task, DuplicatorChainer duplicator)
+    private static Task WrapPlainTask(Task task, IDuplicatorChainer duplicator)
     {
         if (task.IsCanceled)
         {
@@ -60,7 +60,7 @@ public sealed class TaskCopyHint : CopyHint
 
 #pragma warning disable CA1849, MA0042, VSTHRD103 // Completion verified.
 
-    private static Task<T> WrapTask<T>(Task rawTask, DuplicatorChainer duplicator)
+    private static Task<T> WrapTask<T>(Task rawTask, IDuplicatorChainer duplicator)
     {
         Task<T> task = (Task<T>)rawTask;
         if (task.IsCanceled)

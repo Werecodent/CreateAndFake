@@ -12,7 +12,7 @@ public sealed class ObjectCopyHint : CopyHint
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
@@ -22,7 +22,7 @@ public sealed class ObjectCopyHint : CopyHint
     }
 
     /// <inheritdoc cref="CopyHint{T}.CopyHint"/>
-    private static object? Copy(object source, DuplicatorChainer duplicator)
+    private static object? Copy(object source, IDuplicatorChainer duplicator)
     {
         object? dupe = CreateNew(source, duplicator);
         if (dupe == null)
@@ -58,7 +58,7 @@ public sealed class ObjectCopyHint : CopyHint
     /// <param name="source">Object whose <see cref="Type"/> is to be created.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <returns>The created instance.</returns>
-    private static object? CreateNew(object source, DuplicatorChainer duplicator)
+    private static object? CreateNew(object source, IDuplicatorChainer duplicator)
     {
         Type type = source.GetType();
 
@@ -88,7 +88,7 @@ public sealed class ObjectCopyHint : CopyHint
     /// <returns>Null if failed; created instance otherwise.</returns>
     private static object? TryCreate(
         object source,
-        DuplicatorChainer duplicator,
+        IDuplicatorChainer duplicator,
         ConstructorInfo constructor,
         IEnumerable<PropertyInfo> props,
         IEnumerable<FieldInfo> fields
@@ -161,7 +161,7 @@ public sealed class ObjectCopyHint : CopyHint
     private static object? CopyMember(
         MemberInfo member,
         object source,
-        DuplicatorChainer duplicator
+        IDuplicatorChainer duplicator
     )
     {
         if (member is PropertyInfo prop)

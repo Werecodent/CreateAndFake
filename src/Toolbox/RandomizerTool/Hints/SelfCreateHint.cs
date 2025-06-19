@@ -2,6 +2,9 @@ using System.Collections.Frozen;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
+using CreateAndFake.DuplicatorTool;
+using CreateAndFake.ExtractorTool;
+using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.ValuerTool;
 
@@ -18,6 +21,9 @@ public sealed class SelfCreateHint : CreateHint
             { typeof(ValueRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IRandomizer), rand => rand.Create<Randomizer>() },
+            { typeof(IDuplicator), rand => rand.Create<Duplicator>() },
+            { typeof(IMutator), rand => rand.Create<Mutator>() },
+            { typeof(IExtractor), rand => rand.Create<Extractor>() },
             { typeof(IValuer), rand => rand.Create<Valuer>() },
             { typeof(ToolSet), rand => ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>()) },
             {

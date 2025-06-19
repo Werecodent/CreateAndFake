@@ -7,12 +7,12 @@ public static class DuplicatorChainerTests
     [Fact]
     internal static Task DuplicatorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DuplicatorChainer>();
+        return Tools.Tester.PreventsNullRefException<IDuplicatorChainer>();
     }
 
     [Fact]
     internal static Task DuplicatorChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DuplicatorChainer>();
+        return Tools.Tester.PreventsParameterMutation<IDuplicatorChainer>();
     }
 }

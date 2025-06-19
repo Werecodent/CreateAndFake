@@ -15,8 +15,8 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     /// <summary>Supported types and the methods used to generate them.</summary>
     private static readonly FrozenDictionary<
         Type,
-        Func<object, DuplicatorChainer, object>
-    > _Copiers = new Dictionary<Type, Func<object, DuplicatorChainer, object>>()
+        Func<object, IDuplicatorChainer, object>
+    > _Copiers = new Dictionary<Type, Func<object, IDuplicatorChainer, object>>()
     {
         { typeof(Hashtable), CreateAndCopy<Hashtable> },
         { typeof(SortedList), CreateAndCopy<SortedList> },
@@ -51,7 +51,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     }.ToFrozenDictionary();
 
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
@@ -59,7 +59,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         if (
             _Copiers.TryGetValue(
                 source.GetType(),
-                out Func<object, DuplicatorChainer, object>? copier
+                out Func<object, IDuplicatorChainer, object>? copier
             )
         )
         {
@@ -76,7 +76,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     /// <param name="source">Collection to clone.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>
-    private static T CreateAndCopy<T>(object source, DuplicatorChainer duplicator)
+    private static T CreateAndCopy<T>(object source, IDuplicatorChainer duplicator)
         where T : IDictionary, new()
     {
         T result = new();

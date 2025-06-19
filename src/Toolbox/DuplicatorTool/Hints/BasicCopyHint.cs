@@ -20,7 +20,7 @@ public sealed class BasicCopyHint : CopyHint
     ];
 
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 

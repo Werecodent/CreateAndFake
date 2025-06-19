@@ -16,7 +16,7 @@ public sealed class CollectionCopyHint : CopyHint
     );
 
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
@@ -39,7 +39,7 @@ public sealed class CollectionCopyHint : CopyHint
     }
 
     /// <inheritdoc/>
-    private static IEnumerable? Copy(IEnumerable source, DuplicatorChainer duplicator)
+    private static IEnumerable? Copy(IEnumerable source, IDuplicatorChainer duplicator)
     {
         Type type = source.GetType();
         Type? itemType = FindItemType(type);
@@ -62,7 +62,7 @@ public sealed class CollectionCopyHint : CopyHint
         Array contents,
         Type collectionType,
         Type itemType,
-        DuplicatorChainer duplicator
+        IDuplicatorChainer duplicator
     )
     {
         if (collectionType.IsArray)
@@ -131,7 +131,7 @@ public sealed class CollectionCopyHint : CopyHint
     private static Array CopyContents(
         IEnumerable source,
         Type itemType,
-        DuplicatorChainer duplicator,
+        IDuplicatorChainer duplicator,
         bool reverse
     )
     {

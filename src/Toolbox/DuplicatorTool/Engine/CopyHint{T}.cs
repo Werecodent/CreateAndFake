@@ -5,7 +5,7 @@
 public abstract class CopyHint<T> : CopyHint
 {
     /// <inheritdoc/>
-    public sealed override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         if (source is T data)
         {
@@ -21,5 +21,5 @@ public abstract class CopyHint<T> : CopyHint
     /// <param name="source">Object to clone.</param>
     /// <param name="duplicator">Handles cloning child values.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>
-    protected abstract T Copy(T source, DuplicatorChainer duplicator);
+    protected abstract T Copy(T source, IDuplicatorChainer duplicator);
 }

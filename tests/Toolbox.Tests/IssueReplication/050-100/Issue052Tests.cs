@@ -39,7 +39,7 @@ public static class Issue052Tests
         Duplicator duplicator = new(Tools.Duplicator.Options with { IncludeDefaultHints = false });
 
         hint.Setup(
-            d => d.TryCopy(item, Arg.Any<DuplicatorChainer>()),
+            d => d.TryCopy(item, Arg.Any<IDuplicatorChainer>()),
             Behavior.Returns(new CopyHintResult(item), Times.Once)
         );
 

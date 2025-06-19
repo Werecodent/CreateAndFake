@@ -50,7 +50,7 @@ public class ImmutableCollectionCopyHint : CopyHint
         )!;
 
     /// <inheritdoc/>
-    public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 
@@ -93,7 +93,7 @@ public class ImmutableCollectionCopyHint : CopyHint
     /// <returns>The duplicate object.</returns>
     private static T?[] CopyContentsHelper<T>(
         IEnumerable<T?> source,
-        DuplicatorChainer duplicator,
+        IDuplicatorChainer duplicator,
         bool reverse
     )
     {

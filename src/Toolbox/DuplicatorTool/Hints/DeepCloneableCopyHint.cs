@@ -8,7 +8,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class DeepCloneableCopyHint : CopyHint<IDeepCloneable>
 {
     /// <inheritdoc/>
-    protected override IDeepCloneable Copy(IDeepCloneable source, DuplicatorChainer duplicator)
+    protected override IDeepCloneable Copy(IDeepCloneable source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 

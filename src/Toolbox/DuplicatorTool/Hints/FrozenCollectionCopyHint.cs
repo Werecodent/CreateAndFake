@@ -29,7 +29,7 @@ public class FrozenCollectionCopyHint : CopyHint
         )!;
 
     /// <inheritdoc/>
-    public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
 
@@ -92,7 +92,7 @@ public class FrozenCollectionCopyHint : CopyHint
     /// <param name="source">Collection with contents to copy.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <returns>The duplicate object.</returns>
-    private static T?[] CopyContentsHelper<T>(IEnumerable<T?> source, DuplicatorChainer duplicator)
+    private static T?[] CopyContentsHelper<T>(IEnumerable<T?> source, IDuplicatorChainer duplicator)
     {
         List<T?> copy = [];
 

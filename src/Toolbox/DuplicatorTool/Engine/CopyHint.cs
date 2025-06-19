@@ -7,5 +7,5 @@ public abstract class CopyHint
     /// <param name="source">Object to clone.</param>
     /// <param name="duplicator">Handles cloning child values.</param>
     /// <returns>Possible result.</returns>
-    public abstract CopyHintResult TryCopy(object source, DuplicatorChainer duplicator);
+    public abstract CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator);
 }

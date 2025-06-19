@@ -42,7 +42,7 @@ public static class DuplicatorTests
     [Theory, RandomData]
     internal static void Copy_ValidHintWorks(object data, [Stub] CopyHint hint)
     {
-        hint.TryCopy(data, Arg.Any<DuplicatorChainer>())
+        hint.TryCopy(data, Arg.Any<IDuplicatorChainer>())
             .SetupReturn(new CopyHintResult(data), Times.Once);
 
         new Duplicator(
@@ -64,7 +64,7 @@ public static class DuplicatorTests
     {
         hint.ToFake()
             .Setup(
-                m => m.TryCopy(instance, Arg.Any<DuplicatorChainer>()),
+                m => m.TryCopy(instance, Arg.Any<IDuplicatorChainer>()),
                 Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
             );
 

@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Content;
+using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.TesterTool;
 
@@ -122,12 +123,11 @@ public abstract class CopyHintTestBase<T>(
     /// <summary>Create a chainer to use for testing.</summary>
     /// <param name="optionConfiguration">Modifications of options to apply for this call.</param>
     /// <returns>Chainer to use for testing.</returns>
-    protected static DuplicatorChainer CreateChainer(DuplicatorMod optionConfiguration = null)
+    protected static IDuplicatorChainer CreateChainer(DuplicatorMod optionConfiguration = null)
     {
         return new DuplicatorChainer(
             optionConfiguration?.Invoke(Tools.Duplicator.Options) ?? Tools.Duplicator.Options,
-            Tools.Duplicator,
-            (o, _) => Tools.Duplicator.Copy(o)
+            new DuplicatorEngine(Duplicator.DefaultHints)
         );
     }
 }

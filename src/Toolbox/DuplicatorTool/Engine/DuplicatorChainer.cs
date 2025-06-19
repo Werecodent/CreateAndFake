@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
@@ -7,28 +8,47 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 #pragma warning disable IDE0028 // Invalid because it's not constructible.
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
-/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <param name="duplicator"><inheritdoc cref="Duplicator" path="/summary"/></param>
-/// <param name="callback"><inheritdoc cref="_callback" path="/summary"/></param>
-public sealed class DuplicatorChainer(
-    DuplicatorOptions options,
-    IDuplicator duplicator,
-    Func<object?, DuplicatorChainer, object?> callback
-)
+public sealed class DuplicatorChainer : IDuplicatorChainer
 {
-    /// <summary>Reference to the actual duplicator.</summary>
-    internal IDuplicator Duplicator { get; } =
-        duplicator ?? throw new ArgumentNullException(nameof(duplicator));
-
-    /// <summary>Callback to the duplicator to handle child values.</summary>
-    private readonly Func<object?, DuplicatorChainer, object?> _callback =
-        callback ?? throw new ArgumentNullException(nameof(callback));
+    /// <summary>Callback mechanism.</summary>
+    private readonly IDuplicatorEngine _engine;
 
     /// <summary>History of clones to match up references.</summary>
-    private readonly ConditionalWeakTable<object, object?> _history = new();
+    private readonly ConditionalWeakTable<object, object?> _history;
 
     /// <inheritdoc cref="DuplicatorOptions"/>
-    public DuplicatorOptions Options { get; } = options;
+    public DuplicatorOptions Options { get; }
+
+    /// <inheritdoc cref="IDuplicatorChainer"/>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    public DuplicatorChainer(DuplicatorOptions options, IDuplicatorEngine engine)
+    {
+        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+
+        _history = new ConditionalWeakTable<object, object?>();
+    }
+
+    /// <inheritdoc cref="IDuplicatorChainer"/>
+    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
+    private DuplicatorChainer(DuplicatorChainer prevChainer, DuplicatorMod? optionConfiguration)
+    {
+        DuplicatorOptions options = prevChainer.Options;
+
+        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
+
+        _engine = prevChainer._engine;
+        _history = prevChainer._history;
+    }
+
+    private DuplicatorChainer GetSubChainer(DuplicatorMod? optionConfiguration)
+    {
+        return (optionConfiguration != null)
+            ? new DuplicatorChainer(this, optionConfiguration)
+            : this;
+    }
 
     /// <summary>Adds successful clone details to history.</summary>
     /// <param name="source">Object cloned.</param>
@@ -41,31 +61,29 @@ public sealed class DuplicatorChainer(
         }
     }
 
-    /// <typeparam name="T"><see cref="Type"/> being cloned.</typeparam>
-    /// <inheritdoc cref="Copy"/>
-    public T? Copy<T>(T? source)
+    /// <inheritdoc/>
+    [return: NotNullIfNotNull(nameof(source))]
+    public T Copy<T>(T source, DuplicatorMod? optionConfiguration = null)
     {
-        return (T?)Copy((object?)source);
+        return (T?)Copy((object?)source, optionConfiguration)!;
     }
 
-    /// <summary>Deep clones <paramref name="source"/>.</summary>
-    /// <param name="source">Object to clone.</param>
-    /// <returns>Clone of <paramref name="source"/>.</returns>
-    /// <exception cref="NotSupportedException">If no hint supports cloning <paramref name="source"/>.</exception>
-    public object? Copy(object? source)
+    /// <inheritdoc cref="Copy{T}"/>
+    [return: NotNullIfNotNull(nameof(source))]
+    public object? Copy(object? source, DuplicatorMod? optionConfiguration = null)
     {
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(source))
         {
-            return _callback.Invoke(source, this);
+            return _engine.Copy(source, GetSubChainer(optionConfiguration));
         }
 
         if (_history.TryGetValue(source, out object? clone))
         {
-            return clone;
+            return clone!;
         }
 
-        object? result = _callback.Invoke(source, this);
+        object? result = _engine.Copy(source, GetSubChainer(optionConfiguration));
         if (!_history.TryGetValue(source, out _))
         {
             _history.Add(source, result);
@@ -79,6 +97,13 @@ public sealed class DuplicatorChainer(
     private static bool CanTrack([NotNullWhen(true)] object? source)
     {
         return !(source == null || source is IFaked || source.GetType().IsValueType);
+    }
+
+    /// <inheritdoc/>
+    public IDuplicator WithOptions(DuplicatorMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        return new DuplicatorChainer(this, optionConfiguration);
     }
 }
 

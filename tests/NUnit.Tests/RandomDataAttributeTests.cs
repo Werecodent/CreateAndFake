@@ -28,8 +28,8 @@ public static class RandomDataAttributeTests
             .ToFake()
             .Setup(
                 "Copy",
-                [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<DuplicatorChainer>()],
-                Behavior.Set<MethodWrapper, DuplicatorChainer, MethodWrapper>(
+                [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<IDuplicatorChainer>()],
+                Behavior.Set<MethodWrapper, IDuplicatorChainer, MethodWrapper>(
                     (w, _) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)
                 )
             );

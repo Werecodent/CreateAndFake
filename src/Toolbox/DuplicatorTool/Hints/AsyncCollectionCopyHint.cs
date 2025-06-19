@@ -8,7 +8,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class AsyncCollectionCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, nameof(source));
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
@@ -35,7 +35,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     /// <returns>Clone of <paramref name="source"/>.</returns>
     private static async IAsyncEnumerable<T?> CopyAsync<T>(
         IAsyncEnumerable<T> source,
-        DuplicatorChainer duplicator
+        IDuplicatorChainer duplicator
     )
     {
         await foreach (T item in source.ConfigureAwait(false))

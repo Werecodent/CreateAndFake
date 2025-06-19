@@ -10,7 +10,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class SerializableCopyHint : CopyHint
 {
     /// <inheritdoc/>
-    public override CopyHintResult TryCopy(object source, DuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         if (source is ISerializable)
         {
