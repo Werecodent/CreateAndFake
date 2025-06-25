@@ -9,7 +9,7 @@ using CreateAndFake.RandomizerTool.Engine;
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Configuration for controlling randomization behavior.</summary>
-public record RandomizerOptions : IToolOptions
+public record RandomizerOptions : IToolHintOptions<RandomizerOptions, CreateHint>
 {
     /// <summary>Value generator used for base randomization.</summary>
     public required IRandom Gen { get; init; }
@@ -39,16 +39,16 @@ public record RandomizerOptions : IToolOptions
     public FrozenSet<char> StringCharacterSet { get; init; } =
         FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
-    /// <summary>If the default set of hints should be used in randomization.</summary>
+    /// <inheritdoc/>
     public bool IncludeDefaultHints { get; init; } = true;
 
-    /// <summary>Custom generators used to randomize specific types.</summary>
+    /// <inheritdoc/>
     public ImmutableArray<CreateHint> Hints { get; init; } = [];
 
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;
 
-    /// <summary>Options to use when randomizing child values.</summary>
+    /// <inheritdoc/>
     public RandomizerOptions? NestedOptions { get; init; } = null;
 
     /// <inheritdoc cref="NextSize"/>

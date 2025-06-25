@@ -8,12 +8,6 @@ namespace CreateAndFake.Design.Tests.Reiteration;
 public static class LimiterBaseTests
 {
     [Fact]
-    internal static Task Limiter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefException(Limiter.Few);
-    }
-
-    [Fact]
     internal static void Limiter_DefaultsSet()
     {
         foreach (

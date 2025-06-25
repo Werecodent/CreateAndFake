@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
@@ -22,24 +21,7 @@ public static class ToolsTests
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(ToolSet)),
-            Assembly.GetExecutingAssembly(),
-            opt =>
-                opt with
-                {
-                    TestClassCoverageExceptions = FrozenSet.ToFrozenSet(
-                        [
-                            "CompilerFeatureRequiredAttribute",
-                            "IsExternalInit",
-                            "RequiredMemberAttribute",
-                            "DoesNotReturnAttribute",
-                            "MaybeNullAttribute",
-                            "NotNullAttribute",
-                            "NotNullIfNotNullAttribute",
-                            "NotNullWhenAttribute",
-                            "SetsRequiredMembersAttribute",
-                        ]
-                    ),
-                }
+            Assembly.GetExecutingAssembly()
         );
     }
 

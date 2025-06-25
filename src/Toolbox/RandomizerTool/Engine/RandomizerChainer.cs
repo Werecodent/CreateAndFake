@@ -1,10 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
-public sealed class RandomizerChainer : IRandomizerChainer
+public sealed class RandomizerChainer
+    : ToolChainer<RandomizerChainer, RandomizerOptions, CreateHint>,
+        IRandomizerChainer
 {
     /// <summary>Callback mechanism.</summary>
     private readonly IRandomizerEngine _engine;
@@ -12,38 +15,30 @@ public sealed class RandomizerChainer : IRandomizerChainer
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
     private readonly IDictionary<Type, object> _history;
 
-    /// <inheritdoc cref="RandomizerOptions"/>
-    public RandomizerOptions Options { get; }
-
     /// <inheritdoc cref="IRandomizerChainer"/>
-    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
     public RandomizerChainer(RandomizerOptions options, IRandomizerEngine engine)
+        : base(options)
     {
         _engine = engine ?? throw new ArgumentNullException(nameof(engine));
-        Options = options ?? throw new ArgumentNullException(nameof(options));
-
         _history = new Dictionary<Type, object>();
     }
 
     /// <inheritdoc cref="IRandomizerChainer"/>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
-    private RandomizerChainer(RandomizerChainer prevChainer, RandomizerMod? optionConfiguration)
+    private RandomizerChainer(RandomizerOptions options, RandomizerChainer prevChainer)
+        : base(options)
     {
-        RandomizerOptions options = prevChainer.Options.NestedOptions ?? prevChainer.Options;
-
-        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
-
         _engine = prevChainer._engine;
         _history = prevChainer._history;
     }
 
-    private RandomizerChainer GetSubChainer(RandomizerMod? optionConfiguration)
+    /// <inheritdoc/>
+    protected override RandomizerChainer CreateSubChainer(RandomizerOptions options)
     {
-        return (optionConfiguration != null || Options.NestedOptions != null)
-            ? new RandomizerChainer(this, optionConfiguration)
-            : this;
+        return new RandomizerChainer(options, this);
     }
 
     /// <inheritdoc/>
@@ -117,6 +112,6 @@ public sealed class RandomizerChainer : IRandomizerChainer
     public IRandomizer WithOptions(RandomizerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
-        return new RandomizerChainer(this, optionConfiguration);
+        return new RandomizerChainer(optionConfiguration.Invoke(Options), this);
     }
 }

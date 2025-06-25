@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 
+#pragma warning disable IDE0130 // To be included for entire library.
+
 namespace CreateAndFake;
 
 /// <summary>Inheritance methods to extend the <see cref="Type"/> <see langword="class"/>.</summary>
@@ -36,6 +38,76 @@ public static class TypeExtensions
         return type.GetInterfaces()
             .Where(i => i.IsGenericType)
             .Single(i => i.GetGenericTypeDefinition() == baseGenericType);
+    }
+
+    /// <summary>Get all fields.</summary>
+    /// <param name="type">Type with the fields.</param>
+    /// <returns>All fields.</returns>
+    public static IEnumerable<FieldInfo> GetAllFields(this Type type)
+    {
+        ArgumentGuard.ThrowIfNull(type, nameof(type));
+
+        foreach (
+            FieldInfo field in type.GetFields(
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+            )
+        )
+        {
+            yield return field;
+        }
+
+        Type baseType = type.BaseType;
+        int i = 0;
+        while (baseType != null && i++ < 10)
+        {
+            foreach (
+                FieldInfo field in baseType.GetFields(
+                    BindingFlags.Instance | BindingFlags.NonPublic
+                )
+            )
+            {
+                if (field.IsPrivate)
+                {
+                    yield return field;
+                }
+            }
+            baseType = baseType.BaseType;
+        }
+    }
+
+    /// <summary>Get all properties.</summary>
+    /// <param name="type">Type with properties.</param>
+    /// <returns>All properties.</returns>
+    public static IEnumerable<PropertyInfo> GetAllProperties(this Type type)
+    {
+        ArgumentGuard.ThrowIfNull(type, nameof(type));
+
+        foreach (
+            PropertyInfo prop in type.GetProperties(
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+            )
+        )
+        {
+            yield return prop;
+        }
+
+        Type baseType = type.BaseType;
+        int i = 0;
+        while (baseType != null && i++ < 10)
+        {
+            foreach (
+                PropertyInfo prop in baseType.GetProperties(
+                    BindingFlags.Instance | BindingFlags.NonPublic
+                )
+            )
+            {
+                if (prop.CanRead && (prop.GetGetMethod()?.IsPrivate ?? false))
+                {
+                    yield return prop;
+                }
+            }
+            baseType = baseType.BaseType;
+        }
     }
 
     /// <summary>
@@ -275,3 +347,5 @@ public static class TypeExtensions
         }
     }
 }
+
+#pragma warning restore IDE0130

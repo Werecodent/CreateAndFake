@@ -4,8 +4,5 @@
 dotnet_diagnostic.CA1032.severity = none
 dotnet_diagnostic.RCS1194.severity = None
 
-# More important to provide a good public surface and backwards compatibility.
-dotnet_diagnostic.IDE0130.severity = none
-
 # False positive when adding a <param/> tag while also using <inheritdoc/> tag.
 dotnet_diagnostic.CS1573.severity = none

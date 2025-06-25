@@ -68,8 +68,8 @@ public sealed class ObjectCopyHint : CopyHint
         }
         else
         {
-            PropertyInfo[] props = [.. type.GetProperties(_MemberFlags).Where(p => p.CanRead)];
-            FieldInfo[] fields = [.. type.GetFields(_MemberFlags)];
+            PropertyInfo[] props = [.. type.GetAllProperties()];
+            FieldInfo[] fields = [.. type.GetAllFields()];
 
             return type.GetConstructors(_MemberFlags)
                 .Where(c => !c.IsPrivate)

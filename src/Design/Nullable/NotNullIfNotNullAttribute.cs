@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if LEGACY // Attribute added in .NET Standard 2.1 & Core 3.0
+#pragma warning disable IDE0130 // Must match existing location.
 
 namespace System.Diagnostics.CodeAnalysis;
 
@@ -24,4 +25,5 @@ internal sealed class NotNullIfNotNullAttribute(string parameterName) : Attribut
     public string ParameterName { get; } = parameterName;
 }
 
+#pragma warning restore IDE0130
 #endif

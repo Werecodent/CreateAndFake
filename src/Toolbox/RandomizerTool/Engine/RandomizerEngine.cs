@@ -1,33 +1,16 @@
-using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool;
+namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <inheritdoc cref="IRandomizer"/>
 /// <param name="defaultHints">Generators used to randomize specific types.</param>
-public sealed class RandomizerEngine(ImmutableArray<CreateHint> defaultHints) : IRandomizerEngine
+public sealed class RandomizerEngine(IEnumerable<CreateHint> defaultHints)
+    : ToolEngine<CreateHint>(defaultHints),
+        IRandomizerEngine
 {
-    /// <summary>Picks hints to use for randomization based upon <paramref name="options"/>.</summary>
-    /// <param name="options">Potentially modified configuration to use.</param>
-    /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IEnumerable<CreateHint> SelectHints(RandomizerOptions options)
-    {
-        foreach (CreateHint hint in options.Hints)
-        {
-            yield return hint;
-        }
-        if (options.IncludeDefaultHints)
-        {
-            foreach (CreateHint hint in defaultHints)
-            {
-                yield return hint;
-            }
-        }
-    }
-
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>
     public object Create(Type type, IRandomizerChainer chainer)
@@ -35,7 +18,7 @@ public sealed class RandomizerEngine(ImmutableArray<CreateHint> defaultHints) : 
         ArgumentGuard.ThrowIfNull(type, nameof(type));
         ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
 
-        CreateHintResult? result = SelectHints(chainer.Options)
+        CreateHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCreate(type, chainer))
             .FirstOrDefault(r => r.HasData);
 

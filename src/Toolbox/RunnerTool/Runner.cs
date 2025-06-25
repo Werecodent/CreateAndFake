@@ -4,6 +4,7 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.RunnerTool.Attributes;
 
 namespace CreateAndFake.RunnerTool;
 

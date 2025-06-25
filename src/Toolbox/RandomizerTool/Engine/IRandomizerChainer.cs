@@ -3,7 +3,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
-public interface IRandomizerChainer : IRandomizer
+public interface IRandomizerChainer : IRandomizer, IToolChainer<RandomizerOptions>
 {
     /// <summary>Checks if <typeparamref name="T"/> has already been created by the randomizer.</summary>
     /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>

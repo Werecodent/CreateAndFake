@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if LEGACY // Required feature shipped with C# 13 / .NET 11.0
+#pragma warning disable IDE0130 // Must match existing location.
 
 using System.Diagnostics.CodeAnalysis;
 
@@ -34,4 +35,5 @@ internal sealed class CompilerFeatureRequiredAttribute(string featureName) : Att
     public const string RequiredMembers = nameof(RequiredMembers);
 }
 
+#pragma warning restore IDE0130
 #endif
