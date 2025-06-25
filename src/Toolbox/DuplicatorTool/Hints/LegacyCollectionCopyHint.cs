@@ -22,8 +22,31 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         { typeof(SortedList), CreateAndCopy<SortedList> },
         { typeof(ListDictionary), CreateAndCopy<ListDictionary> },
         { typeof(HybridDictionary), CreateAndCopy<HybridDictionary> },
-        { typeof(OrderedDictionary), CreateAndCopy<OrderedDictionary> },
         { typeof(BitArray), (data, _) => new BitArray((BitArray)data) },
+        {
+            typeof(OrderedDictionary),
+            (data, duplicator) =>
+            {
+                OrderedDictionary original = (OrderedDictionary)data;
+                OrderedDictionary result = [];
+
+                Dictionary<object, object?> transfer = [];
+                foreach (DictionaryEntry entry in original)
+                {
+                    transfer.Add(entry.Key, entry.Value);
+                }
+
+                for (int i = 0; i < original.Count; i++)
+                {
+                    object? value = original[i];
+                    object key = transfer.First(entry => ReferenceEquals(entry.Value, value)).Key;
+                    transfer.Remove(key);
+
+                    result.Add(duplicator.Copy(key), duplicator.Copy(value));
+                }
+                return result;
+            }
+        },
         {
             typeof(NameValueCollection),
             (data, _) => new NameValueCollection((NameValueCollection)data)

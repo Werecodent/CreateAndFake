@@ -56,9 +56,9 @@ public static class TypeExtensions
             yield return field;
         }
 
-        Type baseType = type.BaseType;
+        Type? baseType = type.BaseType;
         int i = 0;
-        while (baseType != null && i++ < 10)
+        while (baseType != null && baseType != typeof(object) && i++ < 10)
         {
             foreach (
                 FieldInfo field in baseType.GetFields(
@@ -91,9 +91,9 @@ public static class TypeExtensions
             yield return prop;
         }
 
-        Type baseType = type.BaseType;
+        Type? baseType = type.BaseType;
         int i = 0;
-        while (baseType != null && i++ < 10)
+        while (baseType != null && baseType != typeof(object) && i++ < 10)
         {
             foreach (
                 PropertyInfo prop in baseType.GetProperties(
