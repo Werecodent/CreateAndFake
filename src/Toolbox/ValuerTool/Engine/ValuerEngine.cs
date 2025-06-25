@@ -1,30 +1,14 @@
-using System.Collections.Immutable;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc cref="IValuer"/>
 /// <param name="defaultHints">Generators used to compare specific types.</param>
-public sealed class ValuerEngine(ImmutableArray<CompareHint> defaultHints) : IValuerEngine
+public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
+    : ToolEngine<CompareHint>(defaultHints),
+        IValuerEngine
 {
-    /// <summary>Picks hints to use for randomization based upon <paramref name="options"/>.</summary>
-    /// <param name="options">Potentially modified configuration to use.</param>
-    /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IEnumerable<CompareHint> SelectHints(ValuerOptions options)
-    {
-        foreach (CompareHint hint in options.Hints)
-        {
-            yield return hint;
-        }
-        if (options.IncludeDefaultHints)
-        {
-            foreach (CompareHint hint in defaultHints)
-            {
-                yield return hint;
-            }
-        }
-    }
-
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer)
     {
@@ -35,7 +19,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> defaultHints) : IVa
             return [];
         }
 
-        DifferenceHintResult? result = SelectHints(chainer.Options)
+        DifferenceHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCompare(expected, actual, chainer))
             .FirstOrDefault(r => r.HasData);
 
@@ -66,7 +50,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> defaultHints) : IVa
             return Task.FromResult<IEnumerable<Difference>>([]);
         }
 
-        DifferenceHintAsyncResult? result = SelectHints(chainer.Options)
+        DifferenceHintAsyncResult? result = SelectHints(chainer)
             .Select(h => h.TryAsyncCompare(expected, actual, chainer))
             .FirstOrDefault(r => r.HasData);
 
@@ -88,7 +72,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> defaultHints) : IVa
     {
         ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
 
-        HashCodeHintResult? result = SelectHints(chainer.Options)
+        HashCodeHintResult? result = SelectHints(chainer)
             .Select(h => h.TryGetHashCode(item, chainer))
             .FirstOrDefault(r => r.HasData);
 
@@ -110,7 +94,7 @@ public sealed class ValuerEngine(ImmutableArray<CompareHint> defaultHints) : IVa
     {
         ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
 
-        HashCodeHintAsyncResult? result = SelectHints(chainer.Options)
+        HashCodeHintAsyncResult? result = SelectHints(chainer)
             .Select(h => h.TryAsyncGetHashCode(item, chainer))
             .FirstOrDefault(r => r.HasData);
 

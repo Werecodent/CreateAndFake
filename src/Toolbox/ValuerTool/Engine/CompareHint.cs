@@ -1,9 +1,11 @@
-﻿namespace CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.Design.Tooling;
+
+namespace CreateAndFake.ValuerTool.Engine;
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 
 /// <summary>Handles comparing specific types for <see cref="IValuer"/>.</summary>
-public abstract class CompareHint
+public abstract class CompareHint : IToolHint
 {
     /// <summary>
     ///     Tries to find the differences between <paramref name="expected"/> and <paramref name="actual"/>.

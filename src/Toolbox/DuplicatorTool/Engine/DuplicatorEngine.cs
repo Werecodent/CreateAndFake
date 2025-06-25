@@ -1,33 +1,17 @@
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
 
+#pragma warning disable RCS1165, S2955 // Checking for only null specifically.
+
 /// <inheritdoc cref="IDuplicator"/>
 /// <param name="defaultHints">Generators used to duplicate specific types.</param>
-public sealed class DuplicatorEngine(ImmutableArray<CopyHint> defaultHints) : IDuplicatorEngine
+public sealed class DuplicatorEngine(IEnumerable<CopyHint> defaultHints)
+    : ToolEngine<CopyHint>(defaultHints),
+        IDuplicatorEngine
 {
-    /// <summary>Picks hints to use for randomization based upon <paramref name="options"/>.</summary>
-    /// <param name="options">Potentially modified configuration to use.</param>
-    /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private IEnumerable<CopyHint> SelectHints(DuplicatorOptions options)
-    {
-        foreach (CopyHint hint in options.Hints)
-        {
-            yield return hint;
-        }
-        if (options.IncludeDefaultHints)
-        {
-            foreach (CopyHint hint in defaultHints)
-            {
-                yield return hint;
-            }
-        }
-    }
-
-#pragma warning disable RCS1165, S2955 // Checking for only null.
-
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]
     public T Copy<T>(T source, IDuplicatorChainer chainer)
@@ -38,7 +22,7 @@ public sealed class DuplicatorEngine(ImmutableArray<CopyHint> defaultHints) : ID
         {
             return default!;
         }
-        CopyHintResult? result = SelectHints(chainer.Options)
+        CopyHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCopy(source, chainer))
             .FirstOrDefault(r => r.HasData);
 
@@ -54,6 +38,6 @@ public sealed class DuplicatorEngine(ImmutableArray<CopyHint> defaultHints) : ID
             );
         }
     }
+}
 
 #pragma warning restore RCS1165, S2955
-}

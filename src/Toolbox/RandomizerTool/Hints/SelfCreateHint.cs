@@ -17,15 +17,15 @@ public sealed class SelfCreateHint : CreateHint
     private static readonly FrozenDictionary<Type, Func<IRandomizerChainer, object>> _Gens =
         new Dictionary<Type, Func<IRandomizerChainer, object>>()
         {
+            { typeof(ToolSet), rand => ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>()) },
             { typeof(SeededRandom), rand => new SeededRandom(rand.Options.Gen.Next<int>()) },
             { typeof(ValueRandom), rand => rand.Create<SeededRandom>() },
-            { typeof(IRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IRandomizer), rand => rand.Create<Randomizer>() },
             { typeof(IDuplicator), rand => rand.Create<Duplicator>() },
-            { typeof(IMutator), rand => rand.Create<Mutator>() },
             { typeof(IExtractor), rand => rand.Create<Extractor>() },
+            { typeof(IRandom), rand => rand.Create<SeededRandom>() },
+            { typeof(IMutator), rand => rand.Create<Mutator>() },
             { typeof(IValuer), rand => rand.Create<Valuer>() },
-            { typeof(ToolSet), rand => ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>()) },
             {
                 typeof(Limiter),
                 rand =>

@@ -1,7 +1,9 @@
+using CreateAndFake.Design.Tooling;
+
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc cref="IValuer"/>
-public interface IValuerEngine
+public interface IValuerEngine : IToolEngine<CompareHint>
 {
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <inheritdoc cref="IValuer.Compare(object,object,ValuerMod)"/>

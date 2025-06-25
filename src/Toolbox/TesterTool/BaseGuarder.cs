@@ -124,7 +124,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         else if (data is IEnumerable asEnum && asEnum is not string)
         {
             IEnumerator gen = asEnum.GetEnumerator();
-            while (gen.MoveNext())
+            while (gen?.MoveNext() ?? false)
             {
                 DisposeAllButInjected(gen.Current);
             }

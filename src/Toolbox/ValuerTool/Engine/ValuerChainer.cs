@@ -1,12 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
-public sealed class ValuerChainer : IValuerChainer
+public sealed class ValuerChainer
+    : ToolChainer<ValuerChainer, ValuerOptions, CompareHint>,
+        IValuerChainer
 {
     /// <summary>Callback mechanism.</summary>
     private readonly IValuerEngine _engine;
@@ -17,37 +20,32 @@ public sealed class ValuerChainer : IValuerChainer
     /// <summary>History of comparisons to match up references.</summary>
     private readonly HashSet<(int, int)> _compareHistory;
 
-    /// <inheritdoc cref="ValuerOptions"/>
-    public ValuerOptions Options { get; }
-
     /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
-    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
     public ValuerChainer(ValuerOptions options, IValuerEngine engine)
+        : base(options)
     {
-        Options = options ?? throw new ArgumentNullException(nameof(options));
         _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _hashHistory = [];
         _compareHistory = [];
     }
 
     /// <inheritdoc cref="IValuerChainer"/>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
-    private ValuerChainer(ValuerChainer prevChainer, ValuerMod? optionConfiguration)
+    private ValuerChainer(ValuerOptions options, ValuerChainer prevChainer)
+        : base(options)
     {
-        ValuerOptions options = prevChainer.Options;
-
-        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
-
         _engine = prevChainer._engine;
         _hashHistory = prevChainer._hashHistory;
         _compareHistory = prevChainer._compareHistory;
     }
 
-    private ValuerChainer GetSubChainer(ValuerMod? optionConfiguration)
+    /// <inheritdoc/>
+    protected override ValuerChainer CreateSubChainer(ValuerOptions options)
     {
-        return (optionConfiguration != null) ? new ValuerChainer(this, optionConfiguration) : this;
+        return new ValuerChainer(options, this);
     }
 
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>
@@ -213,6 +211,6 @@ public sealed class ValuerChainer : IValuerChainer
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
-        return new ValuerChainer(optionConfiguration.Invoke(Options), _engine);
+        return new ValuerChainer(optionConfiguration.Invoke(Options), this);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
@@ -8,7 +9,9 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 #pragma warning disable IDE0028 // Invalid because it's not constructible.
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
-public sealed class DuplicatorChainer : IDuplicatorChainer
+public sealed class DuplicatorChainer
+    : ToolChainer<DuplicatorChainer, DuplicatorOptions, CopyHint>,
+        IDuplicatorChainer
 {
     /// <summary>Callback mechanism.</summary>
     private readonly IDuplicatorEngine _engine;
@@ -16,38 +19,30 @@ public sealed class DuplicatorChainer : IDuplicatorChainer
     /// <summary>History of clones to match up references.</summary>
     private readonly ConditionalWeakTable<object, object?> _history;
 
-    /// <inheritdoc cref="DuplicatorOptions"/>
-    public DuplicatorOptions Options { get; }
-
     /// <inheritdoc cref="IDuplicatorChainer"/>
-    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
     public DuplicatorChainer(DuplicatorOptions options, IDuplicatorEngine engine)
+        : base(options)
     {
         _engine = engine ?? throw new ArgumentNullException(nameof(engine));
-        Options = options ?? throw new ArgumentNullException(nameof(options));
-
         _history = new ConditionalWeakTable<object, object?>();
     }
 
     /// <inheritdoc cref="IDuplicatorChainer"/>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new tool.</param>
-    private DuplicatorChainer(DuplicatorChainer prevChainer, DuplicatorMod? optionConfiguration)
+    private DuplicatorChainer(DuplicatorOptions options, DuplicatorChainer prevChainer)
+        : base(options)
     {
-        DuplicatorOptions options = prevChainer.Options;
-
-        Options = (optionConfiguration != null) ? optionConfiguration.Invoke(options) : options;
-
         _engine = prevChainer._engine;
         _history = prevChainer._history;
     }
 
-    private DuplicatorChainer GetSubChainer(DuplicatorMod? optionConfiguration)
+    /// <inheritdoc/>
+    protected override DuplicatorChainer CreateSubChainer(DuplicatorOptions options)
     {
-        return (optionConfiguration != null)
-            ? new DuplicatorChainer(this, optionConfiguration)
-            : this;
+        return new DuplicatorChainer(options, this);
     }
 
     /// <summary>Adds successful clone details to history.</summary>
@@ -103,7 +98,7 @@ public sealed class DuplicatorChainer : IDuplicatorChainer
     public IDuplicator WithOptions(DuplicatorMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
-        return new DuplicatorChainer(this, optionConfiguration);
+        return new DuplicatorChainer(optionConfiguration.Invoke(Options), this);
     }
 }
 

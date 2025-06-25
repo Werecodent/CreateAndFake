@@ -7,13 +7,16 @@ using CreateAndFake.ValuerTool.Engine;
 namespace CreateAndFake.ValuerTool;
 
 /// <summary>Configuration for controlling comparison behavior.</summary>
-public record ValuerOptions : IToolOptions
+public record ValuerOptions : IToolHintOptions<ValuerOptions, CompareHint>
 {
-    /// <summary>If the default set of hints should be used in comparison.</summary>
+    /// <inheritdoc/>
     public bool IncludeDefaultHints { get; init; } = true;
 
-    /// <summary>Custom comparators used to compare specific types.</summary>
+    /// <inheritdoc/>
     public ImmutableArray<CompareHint> Hints { get; init; } = [];
+
+    /// <inheritdoc/>
+    public ValuerOptions? NestedOptions => null;
 
     /// <summary>Allows <see cref="IEquatable{T}"/> to handle comparisons if applicable.</summary>
     public bool UseEquatableComparisons { get; init; } = true;
