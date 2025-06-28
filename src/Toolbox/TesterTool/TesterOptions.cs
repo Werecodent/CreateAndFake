@@ -72,6 +72,7 @@ public sealed record TesterOptions : IToolOptions
         FrozenSet.ToFrozenSet(
             [
                 typeof(InsufficientExecutionStackException),
+                typeof(WaitHandleCannotBeOpenedException),
                 typeof(InvalidFilterCriteriaException),
                 typeof(MulticastNotSupportedException),
                 typeof(TargetParameterCountException),
