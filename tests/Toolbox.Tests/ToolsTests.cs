@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TestSamples;
@@ -43,7 +44,7 @@ public static class ToolsTests
     [Theory, RandomData]
     internal static void Tools_HandlesInfinites(InfiniteSample sample)
     {
-        Tools.Mutator.Assert(m => m.Variant(sample)).Throws<TimeoutException>();
+        Tools.Mutator.Assert(m => m.Variant(sample)).Throws<ToolException>();
 
         InfiniteSample dupe = Tools.Duplicator.Copy(sample);
 
@@ -52,7 +53,7 @@ public static class ToolsTests
     }
 
     [Fact, ExcludeFromCodeCoverage]
-    internal static void Tools_AllCreateAndFakeTypesWork()
+    internal static async Task Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore =
         [
@@ -81,7 +82,7 @@ public static class ToolsTests
         {
             try
             {
-                TestTrip(type);
+                await TestTrip(type);
             }
             catch (Exception e)
             {
@@ -92,19 +93,19 @@ public static class ToolsTests
     }
 
     [Fact]
-    internal static void Tools_ExceptionTypesWork()
+    internal static async Task Tools_ExceptionTypesWork()
     {
         Type type = typeof(Exception);
 
         for (int i = 0; i < 100; i++)
         {
-            TestTrip(type);
+            await TestTrip(type);
         }
     }
 
     /// <summary>Verifies the type works with the tools.</summary>
     /// <param name="type">Type to test.</param>
-    private static void TestTrip(Type type)
+    private static async Task TestTrip(Type type)
     {
         string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
         object original = null,
@@ -117,8 +118,8 @@ public static class ToolsTests
 
             Tools.Asserter.ValuesEqual(original, dupe, failMessage);
             Tools.Asserter.ValuesEqual(
-                Tools.Valuer.GetHashCode(original),
-                Tools.Valuer.GetHashCode(dupe),
+                Tools.Valuer.GetHashCodeAsync(original),
+                Tools.Valuer.GetHashCodeAsync(dupe),
                 $"HashCode {failMessage}"
             );
 
@@ -128,8 +129,8 @@ public static class ToolsTests
 
                 Tools.Asserter.ValuesNotEqual(original, variant, failMessage);
                 Tools.Asserter.ValuesNotEqual(
-                    Tools.Valuer.GetHashCode(original),
-                    Tools.Valuer.GetHashCode(variant),
+                    Tools.Valuer.GetHashCodeAsync(original),
+                    Tools.Valuer.GetHashCodeAsync(variant),
                     failMessage
                 );
 
@@ -146,7 +147,7 @@ public static class ToolsTests
         }
         finally
         {
-            Disposer.Cleanup(original, variant, dupe);
+            await Disposer.CleanupAsync(original, variant, dupe);
         }
     }
 }

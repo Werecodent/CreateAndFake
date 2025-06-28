@@ -104,13 +104,13 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                 finally
                 {
                     _ = data.ModifyArg(i, original);
-                    DisposeAllButInjected(result);
+                    await DisposeAllButInjected(result).ConfigureAwait(false);
                 }
             }
         }
         finally
         {
-            DisposeAllButInjected(data);
+            await DisposeAllButInjected(data).ConfigureAwait(false);
         }
     }
 

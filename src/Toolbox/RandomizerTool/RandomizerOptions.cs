@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using System.Collections.Immutable;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
@@ -9,7 +9,7 @@ using CreateAndFake.RandomizerTool.Engine;
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Configuration for controlling randomization behavior.</summary>
-public record RandomizerOptions : IToolHintOptions<RandomizerOptions, CreateHint>
+public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, CreateHint>
 {
     /// <summary>Value generator used for base randomization.</summary>
     public required IRandom Gen { get; init; }
@@ -39,17 +39,33 @@ public record RandomizerOptions : IToolHintOptions<RandomizerOptions, CreateHint
     public FrozenSet<char> StringCharacterSet { get; init; } =
         FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
-    /// <inheritdoc/>
-    public bool IncludeDefaultHints { get; init; } = true;
-
-    /// <inheritdoc/>
-    public ImmutableArray<CreateHint> Hints { get; init; } = [];
-
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;
 
     /// <inheritdoc/>
-    public RandomizerOptions? NestedOptions { get; init; } = null;
+    public override int GetHashCode()
+    {
+        return ValueComparer.Use.GetHashCode(
+            Gen,
+            Faker,
+            Limiter,
+            CollectionAttempts,
+            CollectionMinSize,
+            CollectionMaxSize,
+            StringMinSize,
+            StringMaxSize,
+            StringCharacterSet,
+            IncludeDefaultHints,
+            Hints,
+            FinalCondition
+        );
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(RandomizerOptions);
+    }
 
     /// <inheritdoc cref="NextSize"/>
     /// <seealso cref="CollectionMinSize"/>

@@ -15,7 +15,7 @@ using CreateAndFake.RunnerTool;
 namespace CreateAndFake.TesterTool;
 
 /// <summary>Configuration for controlling automated testing behavior.</summary>
-public record TesterOptions : IToolOptions
+public sealed record TesterOptions : IToolOptions
 {
     /// <summary>Core value random handler.</summary>
     public required IRandom Gen { get; init; }

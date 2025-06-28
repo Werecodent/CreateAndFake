@@ -42,7 +42,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public void TryCompare_SupportsSameValidTypes()
+    public async Task TryCompare_SupportsSameValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -62,14 +62,14 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data);
+                await Disposer.CleanupAsync(data);
             }
         }
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public virtual void TryCompare_SupportsDifferentValidTypes()
+    public virtual async Task TryCompare_SupportsDifferentValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -94,14 +94,14 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(one, two);
+                await Disposer.CleanupAsync(one, two);
             }
         }
     }
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public void TryCompare_InvalidTypesFail()
+    public async Task TryCompare_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -122,14 +122,14 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(one, two);
+                await Disposer.CleanupAsync(one, two);
             }
         }
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public void TryGetHashCode_SupportsSameValidTypes()
+    public async Task TryGetHashCode_SupportsSameValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -161,14 +161,14 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data, dataCopy);
+                await Disposer.CleanupAsync(data, dataCopy);
             }
         }
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public void TryGetHashCode_SupportsDifferentValidTypes()
+    public async Task TryGetHashCode_SupportsDifferentValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -193,14 +193,14 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data, dataDiffer);
+                await Disposer.CleanupAsync(data, dataDiffer);
             }
         }
     }
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public void TryGetHashCode_InvalidTypesFail()
+    public async Task TryGetHashCode_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -217,7 +217,7 @@ public abstract class CompareHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data);
+                await Disposer.CleanupAsync(data);
             }
         }
     }

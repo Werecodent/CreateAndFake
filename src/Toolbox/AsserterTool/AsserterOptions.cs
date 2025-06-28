@@ -6,7 +6,7 @@ using CreateAndFake.ValuerTool;
 namespace CreateAndFake.AsserterTool;
 
 /// <summary>Configuration for controlling assert behavior.</summary>
-public record AsserterOptions : IToolOptions
+public sealed record AsserterOptions : IToolOptions
 {
     /// <summary>Core randomizer with a potential seed for logging.</summary>
     public required IRandom Gen { get; init; }

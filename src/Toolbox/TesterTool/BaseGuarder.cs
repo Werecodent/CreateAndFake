@@ -77,7 +77,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             }
             finally
             {
-                DisposeAllButInjected(data);
+                await DisposeAllButInjected(data).ConfigureAwait(false);
             }
         }
     }
@@ -114,24 +114,24 @@ internal abstract class BaseGuarder(TesterOptions options)
 
     /// <summary>Checks data for disposables and disposes them.</summary>
     /// <param name="data">Data to check and dispose.</param>
-    protected void DisposeAllButInjected(object? data)
+    protected async Task DisposeAllButInjected(object? data)
     {
         if (data is IDictionary asDict)
         {
-            DisposeAllButInjected(asDict.Keys);
-            DisposeAllButInjected(asDict.Values);
+            await DisposeAllButInjected(asDict.Keys).ConfigureAwait(false);
+            await DisposeAllButInjected(asDict.Values).ConfigureAwait(false);
         }
         else if (data is IEnumerable asEnum && asEnum is not string)
         {
             IEnumerator gen = asEnum.GetEnumerator();
             while (gen?.MoveNext() ?? false)
             {
-                DisposeAllButInjected(gen.Current);
+                await DisposeAllButInjected(gen.Current).ConfigureAwait(false);
             }
         }
         else if (!Options.InjectionValues.Any(v => ReferenceEquals(data, v)))
         {
-            Disposer.Cleanup(data);
+            await Disposer.CleanupAsync(data).ConfigureAwait(false);
         }
     }
 

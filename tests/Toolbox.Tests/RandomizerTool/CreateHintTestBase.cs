@@ -59,7 +59,7 @@ public abstract class CreateHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public void TryCreate_SupportsValidTypes()
+    public async Task TryCreate_SupportsValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -97,7 +97,7 @@ public abstract class CreateHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(result.Data);
+                await Disposer.CleanupAsync(result.Data);
             }
         }
     }

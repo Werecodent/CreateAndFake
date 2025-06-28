@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Frozen;
-using System.Reflection;
+using System.Collections.Immutable;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
+using CreateAndFake.ExtractorTool.Engine;
+using CreateAndFake.ExtractorTool.Hints;
 
 namespace CreateAndFake.ExtractorTool;
 
@@ -10,21 +11,20 @@ namespace CreateAndFake.ExtractorTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
-    /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
-    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet(
-        [
-            Assembly.GetExecutingAssembly().GetType(),
-            typeof(Type).GetType(),
-            typeof(ParameterInfo),
-            typeof(PropertyInfo),
-            typeof(MemberInfo),
-            typeof(MethodInfo),
-            typeof(FieldInfo),
-            typeof(Assembly),
-            typeof(string),
-            typeof(Type),
-        ]
-    );
+    /// <summary>Default set of hints to use for copying.</summary>
+    internal static readonly ImmutableArray<ExtractHint> DefaultHints =
+    [
+        new NullExtractHint(),
+        new EndingExtractHint(),
+        new DictionaryExtractHint(),
+        new EnumerableExtractHint(),
+        new DelegateExtractHint(),
+        new TaskExtractHint(),
+        new ObjectExtractHint(),
+    ];
+
+    /// <summary>Handles hint based extraction.</summary>
+    private static readonly IExtractorEngine _engine = new ExtractorEngine(DefaultHints);
 
     /// <inheritdoc/>
     public ExtractorOptions Options { get; } =
@@ -34,149 +34,13 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     public IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
     {
         ExtractorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-
-        Dictionary<Type, ISet<object>> data = [];
-        FlattenData(null, source, data, localOptions);
-        return new ContentMap(data, localOptions);
-    }
-
-    /// <summary>Finds data associated with <paramref name="source"/></summary>
-    /// <param name="memberType">Field/Property type the <paramref name="source"/> is assigned to.</param>
-    /// <param name="source">Instance being deconstructed.</param>
-    /// <param name="foundData">Collection to populate with found data.</param>
-    /// <param name="options"></param>
-    private static void FlattenData(
-        Type? memberType,
-        object? source,
-        IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options
-    )
-    {
-        if (source != null)
+        try
         {
-            Type keyType = memberType ?? source.GetType();
-            try
-            {
-                if (!foundData.TryGetValue(keyType, out ISet<object>? data))
-                {
-                    data = new HashSet<object>(options.Valuer);
-                    foundData.Add(keyType, data);
-                }
-
-                if (
-                    data.Add(source)
-                    && !keyType.Inherits<Delegate>()
-                    && !options.ContentEndTypes.Contains(keyType)
-                    && !_ContentEndTypes.Contains(keyType)
-                )
-                {
-                    FlattenComplexData(source, foundData, options);
-                }
-            }
-            catch (InsufficientExecutionStackException e)
-            {
-                throw new InsufficientExecutionStackException(
-                    $"Ran into infinite generation trying to extract type '{keyType}'.",
-                    e
-                );
-            }
+            return new ExtractorChainer(localOptions, _engine).Extract(source);
         }
-    }
-
-    /// <summary>Finds nested data associated with <paramref name="source"/>.</summary>
-    /// <inheritdoc cref="FlattenData"/>
-    private static void FlattenComplexData(
-        object source,
-        IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options
-    )
-    {
-        if (source is IDictionary map)
+        catch (Exception e)
         {
-            FlattenDictionaryData(map, foundData, options);
-        }
-        else if (source is IEnumerable values)
-        {
-            FlattenEnumerableData(values, foundData, options);
-        }
-        else if (!source.GetType().IsValueType)
-        {
-            FlattenInnerData(source, foundData, options);
-        }
-    }
-
-    /// <inheritdoc cref="FlattenComplexData"/>
-    private static void FlattenDictionaryData(
-        IDictionary source,
-        IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options
-    )
-    {
-        Type type = source.GetType();
-
-        Type[] mapArgs = type.IsGenericType
-            ? type.GetGenericArguments()
-            : [typeof(object), typeof(object)];
-
-        foreach (DictionaryEntry item in source)
-        {
-            FlattenData(mapArgs[0], item.Key, foundData, options);
-            FlattenData(mapArgs[1], item.Value, foundData, options);
-        }
-    }
-
-    /// <inheritdoc cref="FlattenComplexData"/>
-    private static void FlattenEnumerableData(
-        IEnumerable source,
-        IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options
-    )
-    {
-        Type type = source.GetType();
-
-        Type? arrayType;
-        if (type.IsArray)
-        {
-            arrayType = type.GetElementType();
-        }
-        else if (type.IsGenericType)
-        {
-            arrayType = type.GetGenericArguments()[0];
-        }
-        else
-        {
-            arrayType = typeof(object);
-        }
-
-        IEnumerator gen = source.GetEnumerator();
-        while (gen.MoveNext())
-        {
-            FlattenData(arrayType, gen.Current, foundData, options);
-        }
-    }
-
-    /// <summary>Finds member data inside <paramref name="source"/>.</summary>
-    /// <inheritdoc cref="FlattenData"/>
-    private static void FlattenInnerData(
-        object source,
-        IDictionary<Type, ISet<object>> foundData,
-        ExtractorOptions options
-    )
-    {
-        Type type = source.GetType();
-
-        BindingFlags scope = options.ExtractPrivateMembers
-            ? BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic
-            : BindingFlags.Public | BindingFlags.Instance;
-
-        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
-        {
-            FlattenData(property.PropertyType, property.GetValue(source), foundData, options);
-        }
-
-        foreach (FieldInfo field in type.GetFields(scope))
-        {
-            FlattenData(field.FieldType, field.GetValue(source), foundData, options);
+            throw new ToolException($"Issue extracting type '{source?.GetType().Name}'.", e);
         }
     }
 

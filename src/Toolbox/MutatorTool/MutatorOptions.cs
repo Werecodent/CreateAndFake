@@ -7,7 +7,7 @@ using CreateAndFake.ValuerTool;
 namespace CreateAndFake.MutatorTool;
 
 /// <summary>Configuration for controlling mutating behavior.</summary>
-public record MutatorOptions : IToolOptions
+public sealed record MutatorOptions : IToolOptions
 {
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }

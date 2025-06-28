@@ -9,8 +9,14 @@ public static class Disposer
     {
         foreach (object? item in items ?? [])
         {
-            (item as IDisposable)?.Dispose();
-            _ = (item as IAsyncDisposable)?.DisposeAsync().AsTask();
+            if (item is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+            else if (item is IAsyncDisposable asyncDisposable)
+            {
+                _ = asyncDisposable.DisposeAsync().AsTask();
+            }
         }
     }
 
@@ -20,10 +26,13 @@ public static class Disposer
     {
         foreach (object? item in items ?? [])
         {
-            (item as IDisposable)?.Dispose();
-            if (item is IAsyncDisposable disposable)
+            if (item is IAsyncDisposable asyncDisposable)
             {
-                await disposable.DisposeAsync().ConfigureAwait(false);
+                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+            }
+            else if (item is IDisposable disposable)
+            {
+                disposable.Dispose();
             }
         }
     }

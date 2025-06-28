@@ -83,9 +83,9 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         }
         finally
         {
-            DisposeAllButInjected(data?.Args);
-            DisposeAllButInjected(copy?.Args);
-            DisposeAllButInjected(result);
+            await DisposeAllButInjected(data?.Args).ConfigureAwait(false);
+            await DisposeAllButInjected(copy?.Args).ConfigureAwait(false);
+            await DisposeAllButInjected(result).ConfigureAwait(false);
         }
     }
 

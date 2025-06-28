@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using System.Collections.Immutable;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
@@ -7,17 +7,8 @@ using CreateAndFake.ValuerTool.Engine;
 namespace CreateAndFake.ValuerTool;
 
 /// <summary>Configuration for controlling comparison behavior.</summary>
-public record ValuerOptions : IToolHintOptions<ValuerOptions, CompareHint>
+public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
 {
-    /// <inheritdoc/>
-    public bool IncludeDefaultHints { get; init; } = true;
-
-    /// <inheritdoc/>
-    public ImmutableArray<CompareHint> Hints { get; init; } = [];
-
-    /// <inheritdoc/>
-    public ValuerOptions? NestedOptions => null;
-
     /// <summary>Allows <see cref="IEquatable{T}"/> to handle comparisons if applicable.</summary>
     public bool UseEquatableComparisons { get; init; } = true;
 
@@ -36,4 +27,25 @@ public record ValuerOptions : IToolHintOptions<ValuerOptions, CompareHint>
 
     /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
     public bool SkipAsyncValues { get; init; } = false;
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return ValueComparer.Use.GetHashCode(
+            IncludeDefaultHints,
+            Hints,
+            UseEquatableComparisons,
+            CheckCollectionType,
+            IgnoreCurrentRandomSeed,
+            FallbackTypes,
+            AsyncTimeout,
+            SkipAsyncValues
+        );
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(ValuerOptions);
+    }
 }

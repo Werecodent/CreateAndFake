@@ -98,7 +98,7 @@ public abstract class CopyHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public void TryCopy_InvalidTypesFail()
+    public async Task TryCopy_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -115,7 +115,7 @@ public abstract class CopyHintTestBase<T>(
             }
             finally
             {
-                Disposer.Cleanup(data);
+                await Disposer.CleanupAsync(data);
             }
         }
     }

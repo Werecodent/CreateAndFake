@@ -8,13 +8,13 @@ public static class RandomizerChainerTests
     [Fact]
     internal static Task RandomizerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IRandomizerChainer>();
+        return Tools.Tester.PreventsNullRefException<RandomizerChainer>();
     }
 
     [Fact]
     internal static Task RandomizerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IRandomizerChainer>();
+        return Tools.Tester.PreventsParameterMutation<RandomizerChainer>();
     }
 
     [Fact]

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.MutatorTool;
@@ -56,7 +57,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         }
         catch (TimeoutException e)
         {
-            throw new TimeoutException($"Could not create different instance of type '{type}'.", e);
+            throw new ToolException($"Could not create different instance of type '{type}'.", e);
         }
     }
 
@@ -100,7 +101,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         }
         catch (TimeoutException e)
         {
-            throw new TimeoutException($"Could not create unique instance of type '{type}'.", e);
+            throw new ToolException($"Could not create unique instance of type '{type}'.", e);
         }
     }
 

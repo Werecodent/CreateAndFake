@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Reiteration;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
@@ -38,7 +39,7 @@ public static class MutatorTests
 
         new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
             .Assert(t => t.Variant(sample))
-            .Throws<TimeoutException>();
+            .Throws<ToolException>();
 
         fakeValuer.Assert().Called();
     }
@@ -111,7 +112,7 @@ public static class MutatorTests
             }
         )
             .Assert(t => t.Unique(sample))
-            .Throws<TimeoutException>();
+            .Throws<ToolException>();
     }
 
     [Theory, RandomData]
