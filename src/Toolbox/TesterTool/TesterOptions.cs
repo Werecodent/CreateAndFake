@@ -65,7 +65,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
     public FrozenSet<string> MethodsToIgnore { get; init; } =
-        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "PrintMembers"]);
+        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync", "PrintMembers"]);
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
     public FrozenSet<Type> IgnorableExceptions { get; init; } =

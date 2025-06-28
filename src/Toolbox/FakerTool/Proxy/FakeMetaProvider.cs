@@ -172,7 +172,12 @@ public sealed class FakeMetaProvider : IDuplicatable
         if (match.Equals(default))
         {
             _defaultCalls++;
-            if (ThrowByDefault)
+            if (
+                ThrowByDefault
+                && name != "Dispose"
+                && name != "DisposeAsync"
+                && name != "Finalizer"
+            )
             {
                 throw new FakeCallException(data, _behavior.Select(b => b.Item1));
             }
