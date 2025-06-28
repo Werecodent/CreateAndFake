@@ -1,4 +1,5 @@
-﻿using CreateAndFake.RandomizerTool.Engine;
+﻿using CreateAndFake.RandomizerTool;
+using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.Tests.TestSamples;
 
 namespace CreateAndFake.Tests.RandomizerTool.Engine;
@@ -8,13 +9,23 @@ public static class RandomizerChainerTests
     [Fact]
     internal static Task RandomizerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RandomizerChainer>();
+        return Tools.Tester.PreventsNullRefException(
+            new RandomizerChainer(
+                Tools.Randomizer.Options,
+                new RandomizerEngine(Randomizer.DefaultHints)
+            )
+        );
     }
 
     [Fact]
     internal static Task RandomizerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RandomizerChainer>();
+        return Tools.Tester.PreventsParameterMutation(
+            new RandomizerChainer(
+                Tools.Randomizer.Options,
+                new RandomizerEngine(Randomizer.DefaultHints)
+            )
+        );
     }
 
     [Fact]
