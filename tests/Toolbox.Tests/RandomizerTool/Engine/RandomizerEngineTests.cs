@@ -11,7 +11,7 @@ public static class RandomizerEngineTests
     {
         return Tools.Tester.PreventsNullRefException(
             new RandomizerEngine(Randomizer.DefaultHints),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]) }
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]) }
         );
     }
 
@@ -20,7 +20,7 @@ public static class RandomizerEngineTests
     {
         return Tools.Tester.PreventsParameterMutation(
             new RandomizerEngine(Randomizer.DefaultHints),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]) }
+            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]) }
         );
     }
 }

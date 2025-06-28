@@ -10,7 +10,7 @@ jobs:
   ubuntu:
     runs-on: ubuntu-latest
     environment: staging
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -25,7 +25,7 @@ jobs:
   mac:
     runs-on: macOS-latest
     environment: staging
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -40,7 +40,7 @@ jobs:
   windows:
     runs-on: windows-2025
     environment: staging
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
