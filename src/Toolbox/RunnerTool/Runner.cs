@@ -174,9 +174,18 @@ public sealed class Runner(RunnerOptions options) : IRunner
             UnwrapTaskResult(() => data.InvokeOn(instance))
         );
 
-        if ((await Task.WhenAny(task, Task.Delay(timeout)).ConfigureAwait(false)) != task)
+        using (CancellationTokenSource stopper = new())
         {
-            throw new TimeoutException($"Attempting to run method '{data.Method.Name}' timed out.");
+            if (
+                (await Task.WhenAny(task, Task.Delay(timeout, stopper.Token)).ConfigureAwait(false))
+                != task
+            )
+            {
+                throw new TimeoutException(
+                    $"Attempting to run method '{data.Method.Name}' timed out."
+                );
+            }
+            stopper.CancelAfter(0);
         }
 
         try
