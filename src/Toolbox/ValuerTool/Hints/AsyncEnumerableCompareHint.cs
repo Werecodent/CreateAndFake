@@ -53,8 +53,12 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             return Task.FromResult<IEnumerable<Difference>>([new Difference(expected, actual)]);
         }
 
-        Type expectedType = expected.GetType().FindConcreteInterface(typeof(IAsyncEnumerable<>));
-        Type actualType = expected.GetType().FindConcreteInterface(typeof(IAsyncEnumerable<>));
+        Type expectedType = TypeDescriber
+            .For(expected.GetType())
+            .FindConcreteInterface(typeof(IAsyncEnumerable<>));
+        Type actualType = TypeDescriber
+            .For(actual.GetType())
+            .FindConcreteInterface(typeof(IAsyncEnumerable<>));
 
         if (expectedType != actualType)
         {

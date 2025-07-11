@@ -197,10 +197,10 @@ public class Tester(TesterOptions options) : ITester
         FrozenSet<string> testClasses = testAssembly.GetTypes().Select(t => t.Name).ToFrozenSet();
 
         localOptions.Asserter.IsEmpty(
-            TypeExtensions
+            TypeDescriber
                 .FindLoadedClassTypes(codeAssembly)
                 .Where(t => !t.IsAbstract)
-                .Where(t => t.IsVisibleTo(testAssembly.GetName()))
+                .Where(t => TypeDescriber.IsVisibleTo(t, testAssembly.GetName()))
                 .Where(t =>
                 {
                     IEnumerable<string> possibleNames;

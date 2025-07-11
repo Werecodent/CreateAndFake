@@ -13,10 +13,6 @@ public static class Disposer
             {
                 disposable.Dispose();
             }
-            else if (item is IAsyncDisposable asyncDisposable)
-            {
-                _ = asyncDisposable.DisposeAsync().AsTask();
-            }
         }
     }
 

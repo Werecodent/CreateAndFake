@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RunnerTool.Attributes;
@@ -58,8 +59,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
             result = typeof(Runner)
                 .GetMethod(nameof(EnumerateAsync), BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(
-                    result
-                        .GetType()
+                    TypeDescriber
+                        .For(result.GetType())
                         .FindConcreteInterface(typeof(IAsyncEnumerable<>))
                         .GetGenericArguments()
                 )
@@ -103,8 +104,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 typeof(Runner)
                     .GetMethod(nameof(Enumerate), BindingFlags.Static | BindingFlags.NonPublic)!
                     .MakeGenericMethod(
-                        result
-                            .GetType()
+                        TypeDescriber
+                            .For(result.GetType())
                             .FindConcreteInterface(typeof(IEnumerable<>))
                             .GetGenericArguments()
                     )

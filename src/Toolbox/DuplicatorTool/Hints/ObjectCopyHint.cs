@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
@@ -68,8 +69,9 @@ public sealed class ObjectCopyHint : CopyHint
         }
         else
         {
-            PropertyInfo[] props = [.. type.GetAllProperties()];
-            FieldInfo[] fields = [.. type.GetAllFields()];
+            TypeDescriber describer = TypeDescriber.For(type);
+            PropertyInfo[] props = [.. describer.GetAllProperties()];
+            FieldInfo[] fields = [.. describer.GetAllFields()];
 
             return type.GetConstructors(_MemberFlags)
                 .Where(c => !c.IsPrivate)

@@ -72,7 +72,7 @@ public sealed class CollectionCreateHint : CreateHint
             return internalData;
         }
 #if LEGACY // Constructor missing in .NET full.
-        else if (newType.AsGenericType() == typeof(Dictionary<,>))
+        else if (newType.AsGenericBase() == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(newType);
             foreach (dynamic item in internalData)

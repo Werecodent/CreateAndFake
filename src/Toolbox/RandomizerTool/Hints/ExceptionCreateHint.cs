@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -21,7 +22,9 @@ public sealed class ExceptionCreateHint : CreateHint
 
         ConstructorInfo[] options =
         [
-            .. type.FindLocalSubclasses()
+            .. TypeDescriber
+                .For(type)
+                .FindLocalSubclasses()
                 .Where(t => t.IsVisible)
                 .Where(t => t.IsSerializable)
 #if LEGACY // Security exceptions don't work with default serialization in .NET full.

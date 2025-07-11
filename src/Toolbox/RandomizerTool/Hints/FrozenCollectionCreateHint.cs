@@ -22,7 +22,7 @@ public sealed class FrozenCollectionCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        Type? asGeneric = type.AsGenericType();
+        Type? asGeneric = type.AsGenericBase();
 
         if (asGeneric == typeof(FrozenSet<>))
         {

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
@@ -125,7 +126,7 @@ public static class Subclasser
                 )
             );
         }
-        else if (!parent.IsVisibleTo(AssemblyName))
+        else if (!TypeDescriber.IsVisibleTo(parent, AssemblyName))
         {
             return (
                 false,

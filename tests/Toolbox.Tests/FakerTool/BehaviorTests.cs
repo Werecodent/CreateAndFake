@@ -36,7 +36,7 @@ public static class BehaviorTests
             Type type = info.GetParameters()[0].ParameterType;
 
             Type[] generics =
-                type.AsGenericType()?.GetGenericArguments().Select(_ => typeof(string)).ToArray()
+                type.AsGenericBase()?.GetGenericArguments().Select(_ => typeof(string)).ToArray()
                 ?? Type.EmptyTypes;
 
             MethodInfo caller = (generics.Length != 0) ? info.MakeGenericMethod(generics) : info;

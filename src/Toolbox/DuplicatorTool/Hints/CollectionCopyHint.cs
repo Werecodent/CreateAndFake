@@ -52,7 +52,7 @@ public sealed class CollectionCopyHint : CopyHint
             source,
             itemType,
             duplicator,
-            _ReverseCases.Contains(type.AsGenericType() ?? type)
+            _ReverseCases.Contains(type.AsGenericBase() ?? type)
         );
 
         return MakeCollection(contents, type, itemType, duplicator);
@@ -69,7 +69,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             return contents;
         }
-        else if (collectionType.AsGenericType() == typeof(Dictionary<,>))
+        else if (collectionType.AsGenericBase() == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(collectionType)!;
             foreach (dynamic item in contents)

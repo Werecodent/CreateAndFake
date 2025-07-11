@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Design.Tests.Extensions;
@@ -37,7 +38,7 @@ public static class TypeExtensionsTests
     {
         assembly.Setup(d => d.GetTypes(), Behavior.Throw(error));
 
-        TypeExtensions.FindLoadedTypes(assembly.Dummy).Assert().IsEmpty();
+        TypeDescriber.FindLoadedTypes(assembly.Dummy).Assert().IsEmpty();
     }
 
     [Theory, RandomData]
@@ -48,6 +49,6 @@ public static class TypeExtensionsTests
     {
         assembly.Setup(d => d.GetTypes(), Behavior.Throw(error));
 
-        TypeExtensions.FindLoadedTypes(assembly.Dummy).Assert().IsEmpty();
+        TypeDescriber.FindLoadedTypes(assembly.Dummy).Assert().IsEmpty();
     }
 }
