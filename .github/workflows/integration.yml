@@ -7,8 +7,11 @@ on:
     branches: [ master ]
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-latest
+  testing:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     environment: staging
     timeout-minutes: 10
     steps:
@@ -21,23 +24,8 @@ jobs:
           8.0.x
     - name: Build & Test
       run: ./build/run.sh test
-
-  mac:
-    runs-on: macOS-latest
-    environment: staging
-    timeout-minutes: 10
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: | 
-          9.0.x
-          8.0.x
-    - name: Build & Test
-      run: bash build/run.sh test
-
-  windows:
+    
+  coverage:
     runs-on: windows-2025
     environment: staging
     timeout-minutes: 10
@@ -49,10 +37,10 @@ jobs:
         dotnet-version: | 
           9.0.x
           8.0.x
-    - name: Build & Test & Coverage
+    - name: Build & Check Test Coverage
       shell: cmd
-      run: ./build/run.cmd test coverage
-    - name: Upload coverage
+      run: ./build/run.cmd coverage
+    - name: Upload Coverage
       uses: codecov/codecov-action@v4
       with:
         directory: ./artifacts/coverage
