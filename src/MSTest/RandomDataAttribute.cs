@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
+using CreateAndFake.RunnerTool;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CreateAndFake.MSTest;
+
+#pragma warning disable CA1031 // Avoid breaking test runner.
 
 /// <summary>Populates <see cref="TestMethodAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
@@ -32,17 +34,40 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
     /// <inheritdoc/>
     public IEnumerable<object?[]> GetData(MethodInfo methodInfo)
     {
-        return Enumerable
-            .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Runner.CreateFor(methodInfo).Args.ToArray());
+        if (methodInfo == null)
+        {
+            return [];
+        }
+
+        List<object?[]> results = [];
+        for (int i = 0; i < Trials; i++)
+        {
+            try
+            {
+                MethodCallWrapper data = Tools.Runner.CreateFor(methodInfo);
+                results.Add([.. data.Args]);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Test generation failure on {methodInfo}:{e.Message}");
+            }
+        }
+        return results;
     }
 
     /// <inheritdoc/>
     public string? GetDisplayName(MethodInfo methodInfo, object?[]? data)
     {
-        ArgumentGuard.ThrowIfNull(methodInfo, nameof(methodInfo));
-
-        string args = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType));
-        return $"{methodInfo.Name}({args})";
+        if (methodInfo != null)
+        {
+            string args = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType));
+            return $"{methodInfo.Name}({args})";
+        }
+        else
+        {
+            return "Null";
+        }
     }
 }
+
+#pragma warning restore CA1031

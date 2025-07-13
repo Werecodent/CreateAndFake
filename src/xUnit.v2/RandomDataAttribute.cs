@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
+using CreateAndFake.RunnerTool;
 using Xunit.Sdk;
 
 namespace CreateAndFake.xUnit.v2;
+
+#pragma warning disable CA1031 // Avoid breaking test runner.
 
 /// <summary>Populates <see cref="Xunit.TheoryAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
@@ -33,9 +36,25 @@ public sealed class RandomDataAttribute : DataAttribute
     /// <inheritdoc/>
     public override IEnumerable<object?[]> GetData(MethodInfo testMethod)
     {
-        return Enumerable
-            .Range(0, Math.Max(0, Trials))
-            .Select(_ => Tools.Runner.CreateFor(testMethod).Args.Select(FixArg).ToArray());
+        if (testMethod == null)
+        {
+            return [];
+        }
+
+        List<object?[]> results = [];
+        for (int i = 0; i < Trials; i++)
+        {
+            try
+            {
+                MethodCallWrapper data = Tools.Runner.CreateFor(testMethod);
+                results.Add([.. data.Args.Select(FixArg)]);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Test generation failure on {testMethod}:{e.Message}");
+            }
+        }
+        return results;
     }
 
     /// <summary>Fixes <paramref name="arg"/> to be compatible with xUnit.</summary>
@@ -53,3 +72,5 @@ public sealed class RandomDataAttribute : DataAttribute
         return arg;
     }
 }
+
+#pragma warning restore CA1031

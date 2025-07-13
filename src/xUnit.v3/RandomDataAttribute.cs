@@ -8,6 +8,8 @@ using Xunit.v3;
 
 namespace CreateAndFake.xUnit.v3;
 
+#pragma warning disable CA1031 // Avoid breaking test runner.
+
 /// <summary>Populates <see cref="TheoryAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
@@ -34,26 +36,52 @@ public sealed class RandomDataAttribute : DataAttribute
     public int Trials { get; set; } = 1;
 
     /// <inheritdoc/>
-    public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+    public override async ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
         MethodInfo testMethod,
         DisposalTracker disposalTracker
     )
     {
+        if (testMethod == null)
+        {
+            return [];
+        }
+
         List<ITheoryDataRow> data = [];
         for (int i = 0; i < Trials; i++)
         {
-            MethodCallWrapper test = Tools.Runner.CreateFor(
-                testMethod,
-                opt => opt with { InheritIReflectableTypeOnFakedType = true }
-            );
-
-            data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
+            try
+            {
+                MethodCallWrapper test = Tools.Runner.CreateFor(
+                    testMethod,
+                    opt => opt with { InheritIReflectableTypeOnFakedType = true }
+                );
+                data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
+            }
+            catch (Exception e)
+            {
+                await Console
+                    .Error.WriteLineAsync(
+                        $"Test generation failure on {testMethod.Name}:{e.Message}"
+                    )
+                    .ConfigureAwait(false);
+            }
         }
 
-        disposalTracker?.AddRange(data.SelectMany(row => row.GetData()).OfType<IDisposable>());
-        disposalTracker?.AddRange(data.SelectMany(row => row.GetData()).OfType<IAsyncDisposable>());
+        try
+        {
+            disposalTracker?.AddRange(
+                data.SelectMany(row => row.GetData())
+                    .Where(item => item is IDisposable or IAsyncDisposable)
+            );
+        }
+        catch (Exception e)
+        {
+            await Console
+                .Error.WriteLineAsync($"Test disposal failure on {testMethod.Name}:{e.Message}")
+                .ConfigureAwait(false);
+        }
 
-        return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(data);
+        return data;
     }
 
     /// <inheritdoc/>
@@ -75,3 +103,5 @@ public sealed class RandomDataAttribute : DataAttribute
         return arg;
     }
 }
+
+#pragma warning restore CA1031

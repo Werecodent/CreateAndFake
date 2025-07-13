@@ -71,6 +71,7 @@ dotnet_diagnostic.MA0029.severity = None
 dotnet_diagnostic.MA0071.severity = None
 dotnet_diagnostic.RCS1112.severity = None
 dotnet_diagnostic.RCS1211.severity = None
+dotnet_diagnostic.S3267.severity = None
 
 # Deprecated.
 dotnet_diagnostic.MA0038.severity = None
