@@ -244,11 +244,10 @@ public sealed class ObjectCreateHint : CreateHint
     {
         const BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
 
-        TypeDescriber describer = TypeDescriber.For(type);
         ImmutableArray<Type> subclasses =
         [
-            .. describer
-                .FindLocalSubclasses()
+            .. TypeDescriber
+                .FindLocalSubclasses(type)
                 .Prepend(type)
                 .Where(t =>
                     FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any()
@@ -263,8 +262,8 @@ public sealed class ObjectCreateHint : CreateHint
         {
             return
             [
-                .. describer
-                    .FindLoadedSubclasses()
+                .. TypeDescriber
+                    .FindLoadedSubclasses(type)
                     .Prepend(type)
                     .Where(t =>
                         FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any()

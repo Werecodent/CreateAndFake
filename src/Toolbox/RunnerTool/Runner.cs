@@ -60,8 +60,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 .GetMethod(nameof(EnumerateAsync), BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(
                     TypeDescriber
-                        .For(result.GetType())
-                        .FindConcreteInterface(typeof(IAsyncEnumerable<>))
+                        .FindConcreteInterface(result.GetType(), typeof(IAsyncEnumerable<>))
                         .GetGenericArguments()
                 )
                 .Invoke(null, [result]);
@@ -105,8 +104,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     .GetMethod(nameof(Enumerate), BindingFlags.Static | BindingFlags.NonPublic)!
                     .MakeGenericMethod(
                         TypeDescriber
-                            .For(result.GetType())
-                            .FindConcreteInterface(typeof(IEnumerable<>))
+                            .FindConcreteInterface(result.GetType(), typeof(IEnumerable<>))
                             .GetGenericArguments()
                     )
                     .Invoke(null, [result])
@@ -166,7 +164,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         TimeSpan timeout =
-            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
+            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= 10000) //int.MaxValue)
                 ? localOptions.Timeout
                 : TimeSpan.FromMilliseconds(-1);
 
@@ -185,7 +183,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     $"Attempting to run method '{data.Method.Name}' timed out."
                 );
             }
-            stopper.CancelAfter(0);
+            stopper.Cancel();
         }
 
         try

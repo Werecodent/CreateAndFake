@@ -69,9 +69,8 @@ public sealed class ObjectCopyHint : CopyHint
         }
         else
         {
-            TypeDescriber describer = TypeDescriber.For(type);
-            PropertyInfo[] props = [.. describer.GetAllProperties()];
-            FieldInfo[] fields = [.. describer.GetAllFields()];
+            PropertyInfo[] props = [.. TypeDescriber.GetAllProperties(type)];
+            FieldInfo[] fields = [.. TypeDescriber.GetAllFields(type)];
 
             return type.GetConstructors(_MemberFlags)
                 .Where(c => !c.IsPrivate)

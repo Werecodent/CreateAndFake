@@ -200,7 +200,7 @@ public class Tester(TesterOptions options) : ITester
             TypeDescriber
                 .FindLoadedClassTypes(codeAssembly)
                 .Where(t => !t.IsAbstract)
-                .Where(t => TypeDescriber.IsVisibleTo(t, testAssembly.GetName()))
+                .Where(t => TypeDescriber.IsVisible(t, testAssembly.GetName()))
                 .Where(t =>
                 {
                     IEnumerable<string> possibleNames;

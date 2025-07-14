@@ -99,6 +99,7 @@ public sealed record TesterOptions : IToolOptions
                 typeof(KeyNotFoundException),
                 typeof(InvalidCastException),
                 typeof(PathTooLongException),
+                typeof(DllNotFoundException),
                 typeof(FakeVerifyException),
                 typeof(AggregateException),
                 typeof(ArgumentException),

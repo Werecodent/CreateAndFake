@@ -126,7 +126,7 @@ public static class Subclasser
                 )
             );
         }
-        else if (!TypeDescriber.IsVisibleTo(parent, AssemblyName))
+        else if (!TypeDescriber.IsVisible(parent, AssemblyName))
         {
             return (
                 false,

@@ -65,7 +65,7 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
         }
         else
         {
-            return "Null";
+            return null;
         }
     }
 }

@@ -23,8 +23,7 @@ public sealed class ExceptionCreateHint : CreateHint
         ConstructorInfo[] options =
         [
             .. TypeDescriber
-                .For(type)
-                .FindLocalSubclasses()
+                .FindLocalSubclasses(type)
                 .Where(t => t.IsVisible)
                 .Where(t => t.IsSerializable)
 #if LEGACY // Security exceptions don't work with default serialization in .NET full.

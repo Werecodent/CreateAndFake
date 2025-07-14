@@ -114,7 +114,7 @@ public sealed class GenericCreateHint : CreateHint
         if (parent == constraint)
         {
             return randomizer.Options.Gen.NextItemOrDefault(
-                    TypeDescriber.For(parent).FindLoadedSubclasses()
+                    TypeDescriber.FindLoadedSubclasses(parent)
                 )
                 ?? throw new InvalidOperationException(
                     $"Cannot create '{parent}' due to self-reference and no visible subclasses."

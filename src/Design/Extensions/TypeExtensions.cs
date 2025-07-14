@@ -35,7 +35,7 @@ public static class TypeExtensions
     /// </returns>
     public static bool Inherits<T>([NotNullWhen(true)] this Type? parent)
     {
-        return TypeDescriber.For(parent).Inherits<T>();
+        return InheritanceTracker.For(parent).Inherits<T>();
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public static class TypeExtensions
         [NotNullWhen(true)] Type? child
     )
     {
-        return TypeDescriber.For(parent).Inherits(child);
+        return InheritanceTracker.For(parent).Inherits(child);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public static class TypeExtensions
     /// </returns>
     public static bool IsInheritedBy<T>([NotNullWhen(true)] this Type? child)
     {
-        return TypeDescriber.For<T>().Inherits(child);
+        return InheritanceTracker.For<T>().Inherits(child);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public static class TypeExtensions
         [NotNullWhen(true)] Type? parent
     )
     {
-        return TypeDescriber.For(parent).Inherits(child);
+        return InheritanceTracker.For(parent).Inherits(child);
     }
 }
 

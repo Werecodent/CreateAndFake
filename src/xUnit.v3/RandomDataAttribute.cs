@@ -67,19 +67,16 @@ public sealed class RandomDataAttribute : DataAttribute
             }
         }
 
-        /*try
+        /*disposalTracker?.AddRange(
+            data.SelectMany(row => row.GetData())
+                .Where(item => item is IDisposable or IAsyncDisposable)
+        );*/
+
+        SafeDisposer? disposer = SafeDisposer.TryTracking(data.SelectMany(row => row.GetData()));
+        if (disposer != null)
         {
-            disposalTracker?.AddRange(
-                data.SelectMany(row => row.GetData())
-                    .Where(item => item is IDisposable or IAsyncDisposable)
-            );
+            disposalTracker?.Add(disposer);
         }
-        catch (Exception e)
-        {
-            await Console
-                .Error.WriteLineAsync($"Test disposal failure on {testMethod.Name}:{e.Message}")
-                .ConfigureAwait(false);
-        }*/
 
         return data;
     }
