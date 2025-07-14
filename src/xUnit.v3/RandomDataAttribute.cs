@@ -67,7 +67,7 @@ public sealed class RandomDataAttribute : DataAttribute
             }
         }
 
-        try
+        /*try
         {
             disposalTracker?.AddRange(
                 data.SelectMany(row => row.GetData())
@@ -79,7 +79,7 @@ public sealed class RandomDataAttribute : DataAttribute
             await Console
                 .Error.WriteLineAsync($"Test disposal failure on {testMethod.Name}:{e.Message}")
                 .ConfigureAwait(false);
-        }
+        }*/
 
         return data;
     }

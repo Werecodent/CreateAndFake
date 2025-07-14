@@ -83,6 +83,7 @@ public sealed record TesterOptions : IToolOptions
                 typeof(TargetInvocationException),
                 typeof(IndexOutOfRangeException),
                 typeof(EncoderFallbackException),
+                typeof(DecoderFallbackException),
                 typeof(ObjectDisposedException),
                 typeof(BadImageFormatException),
                 typeof(NotImplementedException),
