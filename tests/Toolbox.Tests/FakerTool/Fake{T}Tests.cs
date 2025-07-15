@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.Samples.OldSamples;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 using CreateAndFake.Tests.TestSamples;
 using CreateAndFake.ValuerTool;
@@ -43,7 +44,7 @@ public static class Fake_T_Tests
     [Theory, RandomData]
     internal static void Fake_ScopeBehavior(string name)
     {
-        Fake<ScopeSample> fake = Tools.Faker.Mock<ScopeSample>();
+        Fake<InternalScopeSample> fake = Tools.Faker.Mock<InternalScopeSample>();
         fake.Dummy.Assert(d => d.PublicProp).Throws<FakeCallException>();
         fake.Dummy.Assert(d => d.PublicProp = name).Throws<FakeCallException>();
         fake.Dummy.Assert(d => d.PublicMethod()).Throws<FakeCallException>();

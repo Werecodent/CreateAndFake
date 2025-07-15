@@ -1,0 +1,18 @@
+[*.cs]
+
+# For testing designs regardless of best practices.
+dotnet_diagnostic.IDE0005.severity = None
+dotnet_diagnostic.IDE0058.severity = None
+dotnet_diagnostic.IDE0250.severity = None
+dotnet_diagnostic.IDE0251.severity = None
+dotnet_diagnostic.CA1044.severity = None
+dotnet_diagnostic.CA1051.severity = None
+dotnet_diagnostic.S1104.severity = None
+dotnet_diagnostic.S1144.severity = None
+dotnet_diagnostic.S2094.severity = None
+dotnet_diagnostic.S2376.severity = None
+dotnet_diagnostic.MA0025.severity = None
+dotnet_diagnostic.MA0036.severity = None
+dotnet_diagnostic.MA0075.severity = None
+dotnet_diagnostic.MA0102.severity = None
+dotnet_diagnostic.RCS1170.severity = None

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;

@@ -1,6 +1,6 @@
 ﻿using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 
 namespace CreateAndFake.Tests.FakerTool.Proxy;
 

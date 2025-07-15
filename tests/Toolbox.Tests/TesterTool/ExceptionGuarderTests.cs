@@ -1,8 +1,8 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Samples.OldSamples;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;
-using CreateAndFake.Tests.TestSamples;
 
 namespace CreateAndFake.Tests.TesterTool;
 

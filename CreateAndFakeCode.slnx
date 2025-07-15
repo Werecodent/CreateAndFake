@@ -6,6 +6,7 @@
     <Project Path="src/NUnit/CreateAndFake.NUnit.csproj" />
     <Project Path="src/xUnit.v2/CreateAndFake.xUnit.v2.csproj" />
     <Project Path="src/xUnit.v3/CreateAndFake.xUnit.v3.csproj" />
+    <Project Path="src/Samples/CreateAndFake.Samples.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Design.Tests/CreateAndFake.Design.Tests.csproj" />
@@ -14,5 +15,6 @@
     <Project Path="tests/NUnit.Tests/CreateAndFake.NUnit.Tests.csproj" />
     <Project Path="tests/xUnit.v2.Tests/CreateAndFake.xUnit.v2.Tests.csproj" />
     <Project Path="tests/xUnit.v3.Tests/CreateAndFake.xUnit.v3.Tests.csproj" />
+    <Project Path="tests/Samples.Tests/CreateAndFake.Samples.Tests.csproj" />
   </Folder>
 </Solution>

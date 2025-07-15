@@ -3,7 +3,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Tests.MutatorTool;

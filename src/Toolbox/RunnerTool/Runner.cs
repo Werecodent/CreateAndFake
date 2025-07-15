@@ -26,13 +26,6 @@ public sealed class Runner(RunnerOptions options) : IRunner
     {
         ArgumentGuard.ThrowIfNull(instance, nameof(instance));
 
-        //RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-
-        //TimeSpan timeout =
-        //    (localOptions.Timeout.TotalMilliseconds is >= -1 and <= int.MaxValue)
-        //        ? localOptions.Timeout
-        //        : TimeSpan.FromMilliseconds(-1);
-
         List<RunResult> results = [];
         foreach (
             MethodInfo method in instance
@@ -183,7 +176,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     $"Attempting to run method '{data.Method.Name}' timed out."
                 );
             }
+#if LEGACY
             stopper.Cancel();
+#else
+            await stopper.CancelAsync().ConfigureAwait(false);
+#endif
         }
 
         try

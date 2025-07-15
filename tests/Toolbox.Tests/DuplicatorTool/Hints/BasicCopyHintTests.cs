@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 

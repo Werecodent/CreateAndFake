@@ -1,7 +1,7 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Fluent;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 
 namespace CreateAndFake.Tests.AsserterTool;
 

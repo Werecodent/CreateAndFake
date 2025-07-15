@@ -1,6 +1,6 @@
 ﻿using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 
 namespace CreateAndFake.Tests.RandomizerTool.Engine;
 

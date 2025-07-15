@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Tests.TestSamples;
+using CreateAndFake.Samples.OldSamples;
 
 namespace CreateAndFake.Tests.FakerTool;
 
