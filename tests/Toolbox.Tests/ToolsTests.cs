@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
 using Xunit.Internal;
 

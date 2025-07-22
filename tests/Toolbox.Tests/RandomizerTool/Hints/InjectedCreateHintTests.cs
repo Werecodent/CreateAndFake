@@ -1,7 +1,7 @@
 ﻿using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;

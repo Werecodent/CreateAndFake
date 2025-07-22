@@ -1,5 +1,5 @@
 ﻿using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace CreateAndFake.Tests.FakerTool;

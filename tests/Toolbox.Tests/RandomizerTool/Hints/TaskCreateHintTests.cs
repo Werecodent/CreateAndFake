@@ -1,5 +1,5 @@
 ﻿using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 

@@ -1,6 +1,6 @@
 ﻿using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 

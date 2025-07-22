@@ -1,7 +1,7 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 

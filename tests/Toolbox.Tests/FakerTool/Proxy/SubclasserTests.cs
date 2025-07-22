@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace CreateAndFake.Tests.FakerTool.Proxy;

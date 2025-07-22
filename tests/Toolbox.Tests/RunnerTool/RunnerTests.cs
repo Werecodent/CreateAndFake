@@ -1,7 +1,7 @@
 using System.Reflection;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples.OldSamples;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RunnerTool;
 

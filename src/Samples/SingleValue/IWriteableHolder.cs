@@ -1,5 +1,6 @@
 namespace CreateAndFake.Samples.SingleValue;
 
+[ValidSample]
 public interface IWriteableHolder<in T>
 {
     T Value { set; }
