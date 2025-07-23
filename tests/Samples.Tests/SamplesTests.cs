@@ -14,7 +14,5 @@ public static class SamplesTests
                 Tools.Tester.ProvidesTestClassCoverage(assembly, Assembly.GetExecutingAssembly())
             )
             .Throws<AssertException>();
-
-        SampleGenerator.AllDataSamples.Assert().IsEmpty();
     }
 }

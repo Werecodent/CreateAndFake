@@ -3,6 +3,7 @@ using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public class ValuerEquatableSample : IValuerEquatable
 {
     public string? StringValue { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace CreateAndFake.Samples.ErrorCases;
 
-[ExcludeFromCodeCoverage]
+[InvalidSample, ExcludeFromCodeCoverage]
 public sealed class InvalidCreateSample : IOnlyMockSample
 {
     public InvalidCreateSample()

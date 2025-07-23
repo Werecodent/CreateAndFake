@@ -2,6 +2,7 @@
 
 namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public class DataHolderSample : DataSample
 {
     public DataSample? NestedValue { get; set; }

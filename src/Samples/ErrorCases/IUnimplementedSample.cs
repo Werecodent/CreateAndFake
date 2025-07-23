@@ -1,5 +1,6 @@
-﻿namespace CreateAndFake.Samples.Scenarios;
+﻿namespace CreateAndFake.Samples.ErrorCases;
 
+[InvalidSample]
 public interface IUnimplementedSample
 {
     int Flag { get; }

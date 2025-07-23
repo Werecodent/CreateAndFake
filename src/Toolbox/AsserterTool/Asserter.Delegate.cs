@@ -6,8 +6,6 @@ namespace CreateAndFake.AsserterTool;
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IDelegateAsserter
 {
-#pragma warning disable CA1031 // Rethrows all at the end.
-
     /// <inheritdoc/>
     public virtual void CheckAll(params IEnumerable<Action> cases)
     {
@@ -43,8 +41,6 @@ public partial class Asserter : IDelegateAsserter
             );
         }
     }
-
-#pragma warning restore CA1031
 
     /// <inheritdoc/>
     public virtual T Throws<T>(Action? behavior, string? details = null)
@@ -89,8 +85,6 @@ public partial class Asserter : IDelegateAsserter
         return Throws<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Rethrows.
-
     /// <inheritdoc/>
     public virtual T Throws<T>(
         Delegate? behavior,
@@ -120,8 +114,6 @@ public partial class Asserter : IDelegateAsserter
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
-
-#pragma warning restore CA1031
 
     private static T UnwrapException<T>(
         Exception e,

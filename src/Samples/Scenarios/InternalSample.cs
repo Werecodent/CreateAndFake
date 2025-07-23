@@ -2,7 +2,7 @@
 
 namespace CreateAndFake.Samples.Scenarios;
 
-[ExcludeFromCodeCoverage]
+[ValidSample, ExcludeFromCodeCoverage]
 internal sealed class InternalSample
 {
     public string? Data { get; set; }

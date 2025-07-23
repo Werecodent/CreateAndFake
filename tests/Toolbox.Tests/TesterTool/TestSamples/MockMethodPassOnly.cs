@@ -1,4 +1,4 @@
-﻿using CreateAndFake.Samples.Scenarios;
+﻿using CreateAndFake.Samples.ErrorCases;
 
 namespace CreateAndFake.Tests.TesterTool.TestSamples;
 

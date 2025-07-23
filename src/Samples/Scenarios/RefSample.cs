@@ -1,5 +1,6 @@
 ﻿namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public abstract class RefSample
 {
     public abstract void ReturnVoid(ref string input);

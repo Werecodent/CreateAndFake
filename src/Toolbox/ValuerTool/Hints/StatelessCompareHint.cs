@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -20,8 +21,8 @@ public sealed class StatelessCompareHint : CompareHint
         }
 
         Type type = expected.GetType();
-        return !type.GetProperties(_Scope).Any(p => p.CanRead)
-            && type.GetFields(_Scope).Length == 0;
+        return !TypeDescriber.GetAllProperties(type, _Scope).Any(p => p.CanRead)
+            && !TypeDescriber.GetAllFields(type, _Scope).Any();
     }
 
     /// <inheritdoc/>

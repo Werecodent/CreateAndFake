@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
@@ -124,7 +125,8 @@ internal static class Emitter
         return interfaces
             .Where(t => t != typeof(IFaked))
             .SelectMany(i =>
-                i.GetProperties(_MemberFinder)
+                TypeDescriber
+                    .GetAllProperties(i, _MemberFinder)
                     .Where(p => IsVisible(p.GetMethod))
                     .Concat(FindImplementableProperties(i.GetInterfaces()))
             )

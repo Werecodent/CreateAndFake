@@ -1,6 +1,6 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.TesterTool;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 

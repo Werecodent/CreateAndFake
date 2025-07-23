@@ -3,7 +3,7 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Samples.Scenarios;
 
-[ExcludeFromCodeCoverage]
+[ValidSample, ExcludeFromCodeCoverage]
 public struct StructSample(string stringValue)
     : IEquatable<StructSample>,
         IComparable<StructSample>,

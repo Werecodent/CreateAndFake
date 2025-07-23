@@ -35,93 +35,117 @@ public static class TypeDescriber
             ?? throw new InvalidOperationException($"Type {type} doesn't inherit {genericBase}.");
     }
 
-    /// <typeparam name="T"><see cref="Type"/> to find fields on.</typeparam>
-    /// <inheritdoc cref="GetAllFields(Type)"/>
+    /// <inheritdoc cref="GetAllFields{T}(BindingFlags)"/>
     public static IEnumerable<FieldInfo> GetAllFields<T>()
     {
         return GetAllFields(typeof(T));
     }
 
+    /// <typeparam name="T"><see cref="Type"/> to find fields on.</typeparam>
+    /// <inheritdoc cref="GetAllFields(Type,BindingFlags)"/>
+    public static IEnumerable<FieldInfo> GetAllFields<T>(BindingFlags scope)
+    {
+        return GetAllFields(typeof(T), scope);
+    }
+
+    /// <inheritdoc cref="GetAllFields(Type,BindingFlags)"/>
+    public static IEnumerable<FieldInfo> GetAllFields(Type? type)
+    {
+        return GetAllFields(type, BindingFlags.Public | BindingFlags.NonPublic);
+    }
+
     /// <summary>Get all fields.</summary>
     /// <param name="type"><see cref="Type"/> to find fields on.</param>
+    /// <param name="scope">Member scope to filter results on.</param>
     /// <returns>All fields.</returns>
-    public static IEnumerable<FieldInfo> GetAllFields(Type? type)
+    public static IEnumerable<FieldInfo> GetAllFields(Type? type, BindingFlags scope)
     {
         if (type == null)
         {
             yield break;
         }
 
-        foreach (
-            FieldInfo field in type.GetFields(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-            )
-        )
+        foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | scope))
         {
             yield return field;
         }
 
-        Type? baseType = type.BaseType;
-        int i = 0;
-        while (baseType != null && baseType != typeof(object) && i++ < 10)
+        if (scope.HasFlag(BindingFlags.NonPublic))
         {
-            foreach (
-                FieldInfo field in baseType.GetFields(
-                    BindingFlags.Instance | BindingFlags.NonPublic
-                )
-            )
+            Type? baseType = type.BaseType;
+            int i = 0;
+            while (baseType != null && baseType != typeof(object) && i++ < 10)
             {
-                if (field.IsPrivate)
+                foreach (
+                    FieldInfo field in baseType.GetFields(
+                        BindingFlags.Instance | BindingFlags.NonPublic
+                    )
+                )
                 {
-                    yield return field;
+                    if (field.IsPrivate)
+                    {
+                        yield return field;
+                    }
                 }
+                baseType = baseType.BaseType;
             }
-            baseType = baseType.BaseType;
         }
     }
 
-    /// <typeparam name="T"><see cref="Type"/> to find properties on.</typeparam>
-    /// <inheritdoc cref="GetAllProperties(Type)"/>
+    /// <inheritdoc cref="GetAllProperties{T}(BindingFlags)"/>
     public static IEnumerable<PropertyInfo> GetAllProperties<T>()
     {
         return GetAllProperties(typeof(T));
     }
 
+    /// <typeparam name="T"><see cref="Type"/> to find properties on.</typeparam>
+    /// <inheritdoc cref="GetAllProperties(Type,BindingFlags)"/>
+    public static IEnumerable<PropertyInfo> GetAllProperties<T>(BindingFlags scope)
+    {
+        return GetAllProperties(typeof(T), scope);
+    }
+
+    /// <inheritdoc cref="GetAllProperties(Type,BindingFlags)"/>
+    public static IEnumerable<PropertyInfo> GetAllProperties(Type? type)
+    {
+        return GetAllProperties(type, BindingFlags.Public | BindingFlags.NonPublic);
+    }
+
     /// <summary>Get all properties.</summary>
     /// <param name="type"><see cref="Type"/> to find properties on.</param>
+    /// <param name="scope">Member scope to filter results on.</param>
     /// <returns>All properties.</returns>
-    public static IEnumerable<PropertyInfo> GetAllProperties(Type? type)
+    public static IEnumerable<PropertyInfo> GetAllProperties(Type? type, BindingFlags scope)
     {
         if (type == null)
         {
             yield break;
         }
 
-        foreach (
-            PropertyInfo prop in type.GetProperties(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-            )
-        )
+        foreach (PropertyInfo prop in type.GetProperties(BindingFlags.Instance | scope))
         {
             yield return prop;
         }
 
-        Type? baseType = type.BaseType;
-        int i = 0;
-        while (baseType != null && baseType != typeof(object) && i++ < 10)
+        if (scope.HasFlag(BindingFlags.NonPublic))
         {
-            foreach (
-                PropertyInfo prop in baseType.GetProperties(
-                    BindingFlags.Instance | BindingFlags.NonPublic
-                )
-            )
+            Type? baseType = type.BaseType;
+            int i = 0;
+            while (baseType != null && baseType != typeof(object) && i++ < 10)
             {
-                if (prop.CanRead && (prop.GetGetMethod()?.IsPrivate ?? false))
+                foreach (
+                    PropertyInfo prop in baseType.GetProperties(
+                        BindingFlags.Instance | BindingFlags.NonPublic
+                    )
+                )
                 {
-                    yield return prop;
+                    if (prop.CanRead && (prop.GetGetMethod()?.IsPrivate ?? false))
+                    {
+                        yield return prop;
+                    }
                 }
+                baseType = baseType.BaseType;
             }
-            baseType = baseType.BaseType;
         }
     }
 

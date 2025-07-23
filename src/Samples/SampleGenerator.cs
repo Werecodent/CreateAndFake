@@ -49,25 +49,17 @@ public static class SampleGenerator
 
     private static ImmutableArray<Type> MakeMasterList()
     {
-        Type[] allValidSamples =
+        return
         [
             .. Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
                 .Where(t => t.GetCustomAttribute<ValidSampleAttribute>() != null),
-        ];
-        Type[] baseAndSingleGenerics =
-        [
             .. _BaseTypes,
             .. InsertIntoSingleGenerics(_BaseTypes, _SingleCollections),
             .. InsertIntoSingleGenerics(_BaseTypes, _SingleHolders),
-        ];
-        Type[] baseAndCollections =
-        [
-            .. InsertIntoSingleGenerics(_BaseTypes, _SingleCollections),
             .. InsertIntoDoubleGenerics(_BaseTypes, _DoubleCollections),
         ];
-        return [.. allValidSamples, .. baseAndSingleGenerics, .. baseAndCollections];
     }
 
     private static IEnumerable<Type> InsertIntoSingleGenerics(

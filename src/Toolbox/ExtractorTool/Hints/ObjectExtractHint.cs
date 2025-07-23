@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.ExtractorTool.Hints;
@@ -19,11 +20,15 @@ public sealed class ObjectExtractHint : ExtractHint<object>
                 : BindingFlags.Public | BindingFlags.Instance;
 
             Type type = value.GetType();
-            foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+            foreach (
+                PropertyInfo property in TypeDescriber
+                    .GetAllProperties(type, scope)
+                    .Where(p => p.CanRead)
+            )
             {
                 _ = extractor.InnerExtract(property.GetValue(value));
             }
-            foreach (FieldInfo field in type.GetFields(scope))
+            foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
             {
                 _ = extractor.InnerExtract(field.GetValue(value));
             }

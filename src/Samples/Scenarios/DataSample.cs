@@ -1,5 +1,6 @@
 ﻿namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public class DataSample
 {
     public string? StringValue { get; set; }

@@ -4,19 +4,17 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Samples;
+using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.Samples.SingleValue;
 using CreateAndFake.TesterTool;
 using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
 
-#pragma warning disable CA1031 // For testing.
-
 public static class ToolsTests
 {
-    private const BindingFlags _Mutable =
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-
     [Fact]
     internal static void CreateAndFake_Tests_TestClassCoverage()
     {
@@ -93,6 +91,34 @@ public static class ToolsTests
     }
 
     [Fact]
+    internal static async Task Tools_ValidSamplesWork()
+    {
+        Dictionary<Type, Exception> failures = [];
+
+        foreach (Type type in SampleGenerator.AllValidDataSamples)
+        {
+            try
+            {
+                await TestTrip(type);
+            }
+            catch (Exception e)
+            {
+                failures.Add(type, e.Unwrap());
+            }
+        }
+        failures
+            .Select(f => (f.Key.Name, f.Value.GetType().Name, f.Value.Message))
+            .Assert()
+            .IsEmpty();
+    }
+
+    [Fact]
+    internal static Task Tools_TestIndividual()
+    {
+        return TestTrip(typeof(BaseHolder<>));
+    }
+
+    [Fact]
     internal static async Task Tools_ExceptionTypesWork()
     {
         Type type = typeof(Exception);
@@ -123,7 +149,9 @@ public static class ToolsTests
                 $"HashCode {failMessage}"
             );
 
-            if (type.GetProperties(_Mutable).Length != 0 || type.GetFields(_Mutable).Length != 0)
+            if (
+                TypeDescriber.GetAllProperties(type).Any() || TypeDescriber.GetAllFields(type).Any()
+            )
             {
                 variant = Tools.Mutator.Variant(type, original);
 
@@ -151,5 +179,3 @@ public static class ToolsTests
         }
     }
 }
-
-#pragma warning restore CA1031

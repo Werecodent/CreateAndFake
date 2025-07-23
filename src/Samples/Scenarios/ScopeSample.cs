@@ -2,7 +2,7 @@
 
 namespace CreateAndFake.Samples.Scenarios;
 
-[ExcludeFromCodeCoverage]
+[ValidSample, ExcludeFromCodeCoverage]
 public class ScopeSample
 {
     public virtual string? PublicProp { get; set; }

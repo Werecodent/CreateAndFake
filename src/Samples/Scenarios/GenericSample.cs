@@ -1,5 +1,6 @@
 ﻿namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public abstract class GenericSample<TClass>
 {
     public abstract string Run<TMethod>(TMethod input);

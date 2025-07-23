@@ -3,6 +3,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool;

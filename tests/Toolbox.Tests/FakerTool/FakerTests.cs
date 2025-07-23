@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 

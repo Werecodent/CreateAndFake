@@ -1,5 +1,6 @@
 ﻿namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public abstract class OutSample
 {
     public abstract void ReturnVoid(out string input);

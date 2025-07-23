@@ -42,8 +42,6 @@ public partial class Asserter : ITaskAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Rethrows.
-
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Task<object?>? behavior,
@@ -71,8 +69,6 @@ public partial class Asserter : ITaskAsserter
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
-
-#pragma warning restore CA1031
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null)
@@ -111,8 +107,6 @@ public partial class Asserter : ITaskAsserter
         return ThrowsAsync<T>(behavior, Unconfigured, details);
     }
 
-#pragma warning disable CA1031 // Rethrows.
-
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Func<Task<object?>?>? behavior,
@@ -140,8 +134,6 @@ public partial class Asserter : ITaskAsserter
 
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
-
-#pragma warning restore CA1031
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details = null)

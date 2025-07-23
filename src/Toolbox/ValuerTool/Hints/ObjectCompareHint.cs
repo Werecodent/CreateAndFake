@@ -18,7 +18,8 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         }
 
         Type type = expected.GetType();
-        return type.GetProperties(scope).Any(p => p.CanRead) || type.GetFields(scope).Length != 0;
+        return TypeDescriber.GetAllProperties(type, scope).Any(p => p.CanRead)
+            || TypeDescriber.GetAllFields(type, scope).Any();
     }
 
     /// <inheritdoc/>
@@ -44,7 +45,11 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     {
         Type type = expected.GetType();
 
-        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        foreach (
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(type, scope)
+                .Where(p => p.CanRead)
+        )
         {
             foreach (
                 Difference diff in valuer.Compare(
@@ -57,7 +62,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in expected.GetType().GetFields(scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
             foreach (
                 Difference diff in valuer.Compare(field.GetValue(expected), field.GetValue(actual))
@@ -92,7 +97,11 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         List<Difference> results = [];
         Type type = expected.GetType();
 
-        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        foreach (
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(type, scope)
+                .Where(p => p.CanRead)
+        )
         {
             foreach (
                 Difference diff in await valuer
@@ -104,7 +113,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in expected.GetType().GetFields(scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
             foreach (
                 Difference diff in await valuer
@@ -127,13 +136,17 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 
-        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        foreach (
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(type, scope)
+                .Where(p => p.CanRead)
+        )
         {
             hash =
                 hash * ValueComparer.HashMultiplier + valuer.GetHashCode(property.GetValue(item));
         }
 
-        foreach (FieldInfo field in type.GetFields(scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
             hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(field.GetValue(item));
         }
@@ -150,14 +163,18 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 
-        foreach (PropertyInfo property in type.GetProperties(scope).Where(p => p.CanRead))
+        foreach (
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(type, scope)
+                .Where(p => p.CanRead)
+        )
         {
             hash =
                 hash * ValueComparer.HashMultiplier
                 + await valuer.GetHashCodeAsync(property.GetValue(item)).ConfigureAwait(false);
         }
 
-        foreach (FieldInfo field in type.GetFields(scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
             hash =
                 hash * ValueComparer.HashMultiplier

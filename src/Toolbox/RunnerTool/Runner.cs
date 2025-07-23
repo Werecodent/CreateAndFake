@@ -143,8 +143,6 @@ public sealed class Runner(RunnerOptions options) : IRunner
         return Run(instance, data, optionConfiguration);
     }
 
-#pragma warning disable CA1031 // Passed in return.
-
     /// <inheritdoc/>
     public async Task<RunResult> Run(
         object? instance,
@@ -193,8 +191,6 @@ public sealed class Runner(RunnerOptions options) : IRunner
             return new(data.Method, data.Args, UnwrapException(taskException), false, true);
         }
     }
-
-#pragma warning restore CA1031
 
     private static Exception? UnwrapException(Exception? error)
     {

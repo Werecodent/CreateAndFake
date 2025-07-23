@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CreateAndFake.MSTest;
 
-#pragma warning disable CA1031 // Avoid breaking test runner.
-
 /// <summary>Populates <see cref="TestMethodAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
@@ -69,5 +67,3 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource
         }
     }
 }
-
-#pragma warning restore CA1031

@@ -8,8 +8,6 @@ using Xunit.v3;
 
 namespace CreateAndFake.xUnit.v3;
 
-#pragma warning disable CA1031 // Avoid breaking test runner.
-
 /// <summary>Populates <see cref="TheoryAttribute"/> methods with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
@@ -100,5 +98,3 @@ public sealed class RandomDataAttribute : DataAttribute
         return arg;
     }
 }
-
-#pragma warning restore CA1031

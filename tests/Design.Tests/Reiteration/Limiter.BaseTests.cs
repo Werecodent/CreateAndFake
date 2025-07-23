@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
@@ -11,8 +12,8 @@ public static class LimiterBaseTests
     internal static void Limiter_DefaultsSet()
     {
         foreach (
-            PropertyInfo info in typeof(Limiter)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+            PropertyInfo info in TypeDescriber
+                .GetAllProperties(typeof(Limiter), BindingFlags.Public)
                 .Where(p => p.PropertyType == typeof(Limiter))
         )
         {

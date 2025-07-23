@@ -73,6 +73,10 @@ dotnet_diagnostic.RCS1112.severity = None
 dotnet_diagnostic.RCS1211.severity = None
 dotnet_diagnostic.S3267.severity = None
 
+# Unavoidable for handling anything thrown at the libary.
+dotnet_diagnostic.CA1031.severity = None
+dotnet_diagnostic.RCS1075.severity = None
+
 # Deprecated.
 dotnet_diagnostic.MA0038.severity = None
 dotnet_diagnostic.MA0041.severity = None

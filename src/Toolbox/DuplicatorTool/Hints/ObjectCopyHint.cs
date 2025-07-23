@@ -33,9 +33,8 @@ public sealed class ObjectCopyHint : CopyHint
         duplicator.AddToHistory(source, dupe);
 
         foreach (
-            FieldInfo field in source
-                .GetType()
-                .GetFields(BindingFlags.Instance | BindingFlags.Public)
+            FieldInfo field in TypeDescriber
+                .GetAllFields(source.GetType(), BindingFlags.Public)
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -43,9 +42,8 @@ public sealed class ObjectCopyHint : CopyHint
         }
 
         foreach (
-            PropertyInfo property in source
-                .GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(source.GetType(), BindingFlags.Public)
                 .Where(p => p.CanRead && p.CanWrite)
         )
         {

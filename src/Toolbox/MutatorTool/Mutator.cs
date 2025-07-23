@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
@@ -113,26 +114,46 @@ public sealed class Mutator(MutatorOptions options) : IMutator
             return false;
         }
 
+        if (instance.GetType().Inherits<IEnumerable>())
+        {
+            return false;
+        }
+
         bool modified = false;
 
         Type type = instance.GetType();
-        foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, BindingFlags.Public))
         {
-            field.SetValue(instance, Variant(field.FieldType, field.GetValue(instance)));
-            modified = true;
+            try
+            {
+                field.SetValue(instance, Variant(field.FieldType, field.GetValue(instance)));
+                modified = true;
+            }
+            catch (Exception)
+            {
+                // Failed to modify.
+            }
         }
         foreach (
-            PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(type, BindingFlags.Public)
                 .Where(p => p.CanWrite && p.CanRead)
                 .Where(p => p.GetGetMethod() != null)
                 .Where(p => p.GetSetMethod() != null)
         )
         {
-            property.SetValue(
-                instance,
-                Variant(property.PropertyType, property.GetValue(instance))
-            );
-            modified = true;
+            try
+            {
+                property.SetValue(
+                    instance,
+                    Variant(property.PropertyType, property.GetValue(instance))
+                );
+                modified = true;
+            }
+            catch (Exception)
+            {
+                // Failed to modify.
+            }
         }
 
         return modified;

@@ -73,8 +73,8 @@ public sealed class ObjectCreateHint : CreateHint
         Type dataType = data.GetType();
 
         foreach (
-            FieldInfo field in dataType
-                .GetFields(BindingFlags.Instance | BindingFlags.Public)
+            FieldInfo field in TypeDescriber
+                .GetAllFields(dataType, BindingFlags.Public)
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -83,8 +83,8 @@ public sealed class ObjectCreateHint : CreateHint
             field.SetValue(data, smartValue ?? randomizer.Create(field.FieldType, data));
         }
         foreach (
-            PropertyInfo property in dataType
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            PropertyInfo property in TypeDescriber
+                .GetAllProperties(dataType, BindingFlags.Public)
                 .Where(p => p.CanWrite)
                 .Where(p => p.GetSetMethod() != null)
         )

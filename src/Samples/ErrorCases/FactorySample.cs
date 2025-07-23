@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace CreateAndFake.Samples.ErrorCases;
 
+[InvalidSample]
 public sealed class FactorySample
 {
     [ExcludeFromCodeCoverage]
@@ -12,7 +13,7 @@ public sealed class FactorySample
         Data = data;
     }
 
-    internal static FactorySample Create(int data)
+    public static FactorySample Create(int data)
     {
         return new FactorySample("Value:" + data);
     }

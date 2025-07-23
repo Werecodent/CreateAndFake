@@ -2,6 +2,7 @@
 
 namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public class ValueEquatableSample : IValueEquatable
 {
     public string? StringValue { get; set; }

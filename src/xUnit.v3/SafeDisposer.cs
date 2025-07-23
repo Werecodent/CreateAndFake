@@ -1,7 +1,5 @@
 namespace CreateAndFake.xUnit.v3;
 
-#pragma warning disable RCS1075, CA1031 // As intended.
-
 internal sealed class SafeDisposer : IAsyncDisposable
 {
     private readonly IEnumerable<IDisposable> _disposables;
@@ -61,5 +59,3 @@ internal sealed class SafeDisposer : IAsyncDisposable
         }
     }
 }
-
-#pragma warning restore RCS1075, CA1031 // As intended.

@@ -1,5 +1,6 @@
-﻿namespace CreateAndFake.Samples.Scenarios;
+﻿namespace CreateAndFake.Samples.ErrorCases;
 
+[InvalidSample]
 public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sample2)
 {
     private readonly IOnlyMockSample _sample1 =

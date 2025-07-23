@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Context;
 using CreateAndFake.Design.Randomization;
 
@@ -27,7 +28,7 @@ public abstract class DataContextTestBase<T>
     [Theory, RandomData]
     public void DataContext_MaintainsValues(T testInstance)
     {
-        foreach (PropertyInfo prop in typeof(T).GetProperties())
+        foreach (PropertyInfo prop in TypeDescriber.GetAllProperties<T>())
         {
             prop.GetValue(testInstance).Assert().Is(prop.GetValue(testInstance));
         }

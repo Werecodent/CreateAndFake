@@ -1,5 +1,6 @@
 ﻿namespace CreateAndFake.Samples.Scenarios;
 
+[ValidSample]
 public class FieldSample(string stringValue, string stringValue2)
 {
     public const int Perm = 1;

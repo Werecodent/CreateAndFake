@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;

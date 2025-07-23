@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.Design.Tests.Randomization;
@@ -20,7 +21,7 @@ public static class DataRandomTests
     [Theory, RandomData]
     internal static void DataRandom_MaintainsValues(DataRandom testInstance)
     {
-        foreach (PropertyInfo prop in typeof(DataRandom).GetProperties())
+        foreach (PropertyInfo prop in TypeDescriber.GetAllProperties(typeof(DataRandom)))
         {
             prop.GetValue(testInstance).Assert().Is(prop.GetValue(testInstance));
         }
