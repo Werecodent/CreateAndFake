@@ -8,7 +8,8 @@ namespace CreateAndFake.FakerTool.Proxy;
 #pragma warning disable S2696 // Thread local.
 
 /// <summary>Internal mechanism for faked object behavior.</summary>
-public sealed class FakeMetaProvider : IDuplicatable
+/// <param name="identifier"><inheritdoc cref="Identifier" path="/summary"/></param>
+public sealed class FakeMetaProvider(int identifier) : IDuplicatable
 {
     /// <summary>Last called method.</summary>
     [ThreadStatic]
@@ -23,8 +24,9 @@ public sealed class FakeMetaProvider : IDuplicatable
     /// <summary>Number of calls made with no associated behavior.</summary>
     private int _defaultCalls = 0;
 
-    /// <summary>Mutatable for value tooling.</summary>
-    public int Identifier { get; set; }
+    /// <summary>Value assigned to identify the instance.</summary>
+    /// <remarks>Uniqueness not guaranteed nor verified.</remarks>
+    public int Identifier { get; } = identifier;
 
     /// <summary>Determines behavior when missing set behavior for a call.</summary>
     public bool ThrowByDefault { get; set; } = true;
@@ -33,13 +35,15 @@ public sealed class FakeMetaProvider : IDuplicatable
     internal FakerOptions? Options { get; set; }
 
     /// <inheritdoc cref="FakeMetaProvider"/>
-    public FakeMetaProvider() { }
-
-    /// <inheritdoc cref="FakeMetaProvider"/>
     /// <param name="behavior">Behavior to pass in.</param>
     /// <param name="log">Record of calls to pass in.</param>
     /// <remarks>Copy constructor.</remarks>
-    internal FakeMetaProvider(IEnumerable<(CallData, Behavior)> behavior, IEnumerable<CallData> log)
+    internal FakeMetaProvider(
+        int identifier,
+        IEnumerable<(CallData, Behavior)> behavior,
+        IEnumerable<CallData> log
+    )
+        : this(identifier)
     {
         ArgumentGuard.ThrowIfNull(behavior, nameof(log));
         ArgumentGuard.ThrowIfNull(log, nameof(log));
@@ -57,12 +61,12 @@ public sealed class FakeMetaProvider : IDuplicatable
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         return new FakeMetaProvider(
+            Identifier,
             _behavior.Reverse().Select(t => duplicator.Copy(t)),
             _log.Select(t => duplicator.Copy(t)!)
         )
         {
             Options = duplicator.Copy(Options),
-            Identifier = Identifier,
             ThrowByDefault = ThrowByDefault,
             _defaultCalls = _defaultCalls,
         };

@@ -1,4 +1,5 @@
-﻿#if NET9_0_OR_GREATER
+﻿using CreateAndFake.Design.Content;
+#if NET9_0_OR_GREATER
 using Lock = System.Threading.Lock;
 #else
 using Lock = System.Object;
@@ -9,7 +10,7 @@ namespace CreateAndFake.Design.Randomization;
 #pragma warning disable CA5394 // Secure alternative provided.
 
 /// <summary>For generating deterministic random values.</summary>
-public sealed class SeededRandom : ValueRandom
+public sealed class SeededRandom : ValueRandom, IDeepCloneable
 {
     /// <summary>Lock to prevent thread collision with seeds.</summary>
     private readonly Lock _lock = new();
@@ -36,16 +37,26 @@ public sealed class SeededRandom : ValueRandom
     public SeededRandom(int? seed = null)
         : this(true, seed) { }
 
-    /// <inheritdoc cref="SeededRandom"/>
-    /// <param name="onlyValidValues">
-    ///     <inheritdoc cref="ValueRandom.OnlyValidValues" path="/summary"/>
-    /// </param>
     /// <param name="seed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
+    /// <inheritdoc cref="SeededRandom(bool, int?, int)"/>
     public SeededRandom(bool onlyValidValues, int? seed = null)
         : base(onlyValidValues)
     {
         InitialSeed = seed ?? Environment.TickCount;
         _seed = InitialSeed.Value;
+    }
+
+    /// <inheritdoc cref="SeededRandom"/>
+    /// <param name="onlyValidValues">
+    ///     <inheritdoc cref="ValueRandom.OnlyValidValues" path="/summary"/>
+    /// </param>
+    /// <param name="initialSeed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
+    /// <param name="seed"><inheritdoc cref="_seed" path="/summary"/></param>
+    private SeededRandom(bool onlyValidValues, int? initialSeed, int seed)
+        : base(onlyValidValues)
+    {
+        InitialSeed = initialSeed;
+        _seed = seed;
     }
 
     /// <inheritdoc/>
@@ -61,6 +72,12 @@ public sealed class SeededRandom : ValueRandom
         byte[] buffer = new byte[length];
         gen.NextBytes(buffer);
         return buffer;
+    }
+
+    /// <inheritdoc/>
+    public IDeepCloneable DeepClone()
+    {
+        return new SeededRandom(OnlyValidValues, InitialSeed, _seed);
     }
 }
 

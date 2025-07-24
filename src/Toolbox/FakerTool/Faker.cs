@@ -34,7 +34,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public Fake<T> Mock<T>(IEnumerable<Type> interfaces, FakerMod? optionConfiguration)
     {
-        IFaked provider = Subclasser.Create(typeof(T), interfaces);
+        IFaked provider = Subclasser.Create(typeof(T), options, interfaces);
         provider.FakeMeta.Options = optionConfiguration?.Invoke(Options) ?? Options;
         return new Fake<T>(provider);
     }
@@ -48,7 +48,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public Fake Mock(Type parent, IEnumerable<Type> interfaces, FakerMod? optionConfiguration)
     {
-        IFaked provider = Subclasser.Create(parent, interfaces);
+        IFaked provider = Subclasser.Create(parent, options, interfaces);
         provider.FakeMeta.Options = optionConfiguration?.Invoke(Options) ?? Options;
         return new Fake(provider);
     }

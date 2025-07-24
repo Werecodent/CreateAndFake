@@ -4,7 +4,7 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
-using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -115,9 +115,7 @@ public sealed class ObjectCreateHint : CreateHint
         ConstructorInfo? defaultConstructor = type.GetConstructor(Type.EmptyTypes);
         if (type == typeof(object))
         {
-            IFaked fake = randomizer.Options.Faker.Stub<IFaked>().Dummy;
-            fake.FakeMeta.Identifier = randomizer.Create<int>();
-            return fake;
+            return randomizer.Options.Faker.Stub<object>().Dummy;
         }
         else if (defaultConstructor != null)
         {
@@ -161,7 +159,7 @@ public sealed class ObjectCreateHint : CreateHint
         }
         else if (randomizer.Options.Faker.Supports(type))
         {
-            return randomizer.Options.Faker.Stub(type).Dummy;
+            return ((Fake)randomizer.Create(typeof(Fake<>).MakeGenericType(type))).Dummy;
         }
         else
         {

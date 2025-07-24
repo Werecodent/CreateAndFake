@@ -86,9 +86,10 @@ View the [license](LICENSE.txt) file for more details.
 
 ## Acknowledgments
 
-* [xUnit](https://xunit.github.io): For running tests.
+* [xUnit](https://github.com/xunit/xunit) + [NUnit](https://github.com/nunit/nunit) + [MSTest](https://github.com/microsoft/testfx): For running tests.
 * [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator) + [CodeCov](https://codecov.io): For test coverage.
 * [Bullseye](https://github.com/adamralph/bullseye) + [SimpleExec](https://github.com/adamralph/simple-exec) + [MinVer](https://github.com/adamralph/minver): For project building.
+* [AsyncFixer](https://github.com/semihokur/AsyncFixer) + [MissingAwaitWarning](https://github.com/ykoksen/unused-task-warning) + [Meziantou.Analyzer](https://github.com/meziantou/Meziantou.Analyzer) + [Sonar](https://github.com/SonarSource/sonar-dotnet): For code analyzers.
 * [CSharpier](https://github.com/belav/csharpier): For formatting code.
 * [GitHub](https://github.com): For hosting code.
 * [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development): For C# and editors.

@@ -11,23 +11,33 @@ public static class SubclasserTests
     [Fact]
     internal static void Create_InterfacesWork()
     {
-        Subclasser.Create<IFakeSample>().Assert().IsNot(null);
-        Subclasser.Create<IFakeSample>(typeof(IClashingFakeSample)).Assert().IsNot(null);
+        Subclasser.Create<IFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
+        Subclasser
+            .Create<IFakeSample>(Tools.Faker.Options, typeof(IClashingFakeSample))
+            .Assert()
+            .IsNot(null);
     }
 
     [Fact]
     internal static void Create_ClassesWork()
     {
-        Subclasser.Create<AbstractFakeSample>().Assert().IsNot(null);
-        Subclasser.Create<VirtualFakeSample>().Assert().IsNot(null);
+        Subclasser.Create<AbstractFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
+        Subclasser.Create<VirtualFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
     }
 
     [Fact]
     internal static void Create_BothWork()
     {
-        Subclasser.Create<AbstractFakeSample>(typeof(IFakeSample)).Assert().IsNot(null);
         Subclasser
-            .Create<VirtualFakeSample>(typeof(IFakeSample), typeof(IClashingFakeSample))
+            .Create<AbstractFakeSample>(Tools.Faker.Options, typeof(IFakeSample))
+            .Assert()
+            .IsNot(null);
+        Subclasser
+            .Create<VirtualFakeSample>(
+                Tools.Faker.Options,
+                typeof(IFakeSample),
+                typeof(IClashingFakeSample)
+            )
             .Assert()
             .IsNot(null);
     }
@@ -35,26 +45,30 @@ public static class SubclasserTests
     [Fact]
     internal static void Create_IFakedDefault()
     {
-        Subclasser.Create<object>().GetType().Assert().Inherits<IFaked>();
-        Subclasser.Create(null, null).Assert().IsNot(null);
+        Subclasser.Create<object>(Tools.Faker.Options).GetType().Assert().Inherits<IFaked>();
+        Subclasser.Create(null, Tools.Faker.Options, null).Assert().IsNot(null);
     }
 
     [Fact]
     internal static void Create_IFakedFunctional()
     {
-        Subclasser.Create<IFaked>().FakeMeta.Assert().IsNot(null);
+        Subclasser.Create<IFaked>(Tools.Faker.Options).FakeMeta.Assert().IsNot(null);
     }
 
     [Fact]
     internal static void Create_OnlyMultipleInterfaces()
     {
-        typeof(object).Assert(t => Subclasser.Create<DataSample>(t)).Throws<ArgumentException>();
+        typeof(object)
+            .Assert(t => Subclasser.Create<DataSample>(Tools.Faker.Options, t))
+            .Throws<ArgumentException>();
     }
 
     [Fact]
     internal static void Create_SealedTypesThrow()
     {
-        typeof(string).Assert(t => Subclasser.Create(t)).Throws<ArgumentException>();
+        typeof(string)
+            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Throws<ArgumentException>();
     }
 
     [Fact]
@@ -80,26 +94,38 @@ public static class SubclasserTests
     [Fact]
     internal static void Create_DefinedGenericsWork()
     {
-        Subclasser.Create<ConstraintSample<int, DataSample>>().Assert().IsNot(null);
-        Subclasser.Create<ConstraintSample<bool, DataSample>>().Assert().IsNot(null);
+        Subclasser
+            .Create<ConstraintSample<int, DataSample>>(Tools.Faker.Options)
+            .Assert()
+            .IsNot(null);
+        Subclasser
+            .Create<ConstraintSample<bool, DataSample>>(Tools.Faker.Options)
+            .Assert()
+            .IsNot(null);
     }
 
     [Fact]
     internal static void Create_UndefinedGenericsThrow()
     {
-        typeof(ConstraintSample<,>).Assert(t => Subclasser.Create(t)).Throws<ArgumentException>();
+        typeof(ConstraintSample<,>)
+            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Throws<ArgumentException>();
     }
 
     [Fact]
     internal static void Create_PointersThrow()
     {
-        typeof(void*).Assert(t => Subclasser.Create(t)).Throws<ArgumentException>();
+        typeof(void*)
+            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Throws<ArgumentException>();
     }
 
     [Fact]
     internal static void Create_InternalTypesThrow()
     {
-        typeof(InternalSample).Assert(t => Subclasser.Create(t)).Throws<ArgumentException>();
+        typeof(InternalSample)
+            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Throws<ArgumentException>();
     }
 
     [Fact]
@@ -115,7 +141,7 @@ public static class SubclasserTests
         type.Assembly.SetupReturn(typeof(object).Assembly);
         type.Name.SetupReturn("TestInvisibleType");
 
-        type.Assert(t => Subclasser.Create(t))
+        type.Assert(t => Subclasser.Create(t, Tools.Faker.Options))
             .Throws<ArgumentException>()
             .Message.Assert()
             .Contains("InternalsVisibleTo");

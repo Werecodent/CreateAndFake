@@ -14,7 +14,6 @@ public sealed class FakedCreateHint : CreateHint<IFaked>
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
         Fake stub = randomizer.Options.Faker.Stub<object>();
-        stub.Dummy.FakeMeta.Identifier = randomizer.Create<int>();
         return stub.Dummy;
     }
 }

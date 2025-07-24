@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool.Proxy;
@@ -30,24 +31,32 @@ public static class Subclasser
 
     /// <summary>Creates a subclass of the given type.</summary>
     /// <typeparam name="T">Parent type to inherit from.</typeparam>
+    /// <param name="options">Configured options being used by the tool.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>An instance of the created child type.</returns>
-    public static T Create<T>(params IEnumerable<Type> interfaces)
+    public static T Create<T>(FakerOptions options, params IEnumerable<Type> interfaces)
     {
-        return (T)Create(typeof(T), interfaces);
+        return (T)Create(typeof(T), options, interfaces);
     }
 
     /// <summary>Creates a subclass of the given type.</summary>
     /// <param name="parent">Parent type to inherit from.</param>
+    /// <param name="options">Configured options being used by the tool.</param>
     /// <param name="interfaces">Extra interfaces to implement.</param>
     /// <returns>An instance of the created child type.</returns>
-    public static IFaked Create(Type parent, params IEnumerable<Type> interfaces)
+    public static IFaked Create(
+        Type parent,
+        FakerOptions options,
+        params IEnumerable<Type> interfaces
+    )
     {
+        ArgumentGuard.ThrowIfNull(options, nameof(options));
+
         return (IFaked)
             CreateInfo(parent, interfaces)
                 .AsType()
                 .GetConstructor([Emitter.MetaType])!
-                .Invoke([new FakeMetaProvider()]);
+                .Invoke([new FakeMetaProvider(options.Gen.Next<int>())]);
     }
 
     /// <summary>Creates a subclass of the given type.</summary>

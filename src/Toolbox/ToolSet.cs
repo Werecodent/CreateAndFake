@@ -48,7 +48,7 @@ public sealed class ToolSet(
     {
         IRandom gen = new SeededRandom(seed);
         Valuer valuer = new(new ValuerOptions());
-        Faker faker = new(new FakerOptions { Valuer = valuer });
+        Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer });
         Randomizer randomizer = new(new RandomizerOptions { Gen = gen, Faker = faker });
         Extractor extractor = new(
             new ExtractorOptions { Randomizer = randomizer, Valuer = valuer }
