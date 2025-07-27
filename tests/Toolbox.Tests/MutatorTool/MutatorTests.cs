@@ -102,13 +102,7 @@ public static class MutatorTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                Extractor = new Extractor(
-                    Tools.Extractor.Options with
-                    {
-                        Valuer = fakeValuer,
-                        Limiter = new Limiter(3),
-                    }
-                ),
+                Extractor = new Extractor(Tools.Extractor.Options with { Valuer = fakeValuer }),
             }
         )
             .Assert(t => t.Unique(sample))
