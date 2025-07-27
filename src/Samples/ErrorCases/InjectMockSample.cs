@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.Samples.ErrorCases;
+﻿using CreateAndFake.ValuerTool;
+
+namespace CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample]
 public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sample2)
@@ -11,6 +13,5 @@ public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sa
     {
         _sample1.FailIfNotMocked();
         _sample2.FailIfNotMocked();
-        Tools.Asserter.IsNot(_sample1, _sample2);
     }
 }

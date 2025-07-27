@@ -144,8 +144,8 @@ public static class ToolsTests
 
             Tools.Asserter.ValuesEqual(original, dupe, failMessage);
             Tools.Asserter.ValuesEqual(
-                Tools.Valuer.GetHashCodeAsync(original),
-                Tools.Valuer.GetHashCodeAsync(dupe),
+                await Tools.Valuer.GetHashCodeAsync(original).ConfigureAwait(false),
+                await Tools.Valuer.GetHashCodeAsync(dupe).ConfigureAwait(false),
                 $"HashCode {failMessage}"
             );
 
@@ -157,8 +157,8 @@ public static class ToolsTests
 
                 Tools.Asserter.ValuesNotEqual(original, variant, failMessage);
                 Tools.Asserter.ValuesNotEqual(
-                    Tools.Valuer.GetHashCodeAsync(original),
-                    Tools.Valuer.GetHashCodeAsync(variant),
+                    await Tools.Valuer.GetHashCodeAsync(original).ConfigureAwait(false),
+                    await Tools.Valuer.GetHashCodeAsync(variant).ConfigureAwait(false),
                     failMessage
                 );
 

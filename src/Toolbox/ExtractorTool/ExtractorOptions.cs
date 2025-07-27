@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Engine;
 using CreateAndFake.RandomizerTool;
@@ -16,9 +15,6 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
 
     /// <summary>Ensures object variance.</summary>
     public required IValuer Valuer { get; init; }
-
-    /// <summary>Limits attempts at creating variants.</summary>
-    public Limiter Limiter { get; init; } = Limiter.Score;
 
     /// <summary>If private properties/fields should be extracted as well.</summary>
     public bool ExtractPrivateMembers { get; init; } = false;
@@ -36,7 +32,6 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
         return ValueComparer.Use.GetHashCode(
             Randomizer,
             Valuer,
-            Limiter,
             IncludeDefaultHints,
             Hints,
             ExtractPrivateMembers,

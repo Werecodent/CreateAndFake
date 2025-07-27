@@ -15,10 +15,16 @@ public interface ITester : ITool<TesterOptions>
     /// <returns>The created tool.</returns>
     ITester WithOptions(TesterMod optionConfiguration);
 
-    /// <inheritdoc cref="PreventsNullRefException{T}(T,TesterMod)"/>
+    /// <inheritdoc cref="PreventsNullRefException(Type,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
     Task PreventsNullRefException<T>(TesterMod? optionConfiguration = null);
 
+    ///  <summary>
+    ///     Verifies nulls are guarded on the type.
+    ///     Tests each parameter possible with null.
+    ///     Constructor and factory parameters are tested by running all methods.
+    ///     Ignores any exception besides NullReferenceException and moves on.
+    /// </summary>
     /// <inheritdoc cref="PreventsNullRefException{T}(T,TesterMod)"/>
     /// <param name="type">Type to verify.</param>
     Task PreventsNullRefException(Type type, TesterMod? optionConfiguration = null);

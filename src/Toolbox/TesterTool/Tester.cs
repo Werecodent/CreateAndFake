@@ -56,6 +56,8 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
+        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         NullGuarder checker = new(localOptions);
 
@@ -67,7 +69,7 @@ public class Tester(TesterOptions options) : ITester
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            await checker.PreventsNullRefExceptionOnMethods(instance!).ConfigureAwait(false);
+            await checker.PreventsNullRefExceptionOnMethods(instance).ConfigureAwait(false);
         }
         if (localOptions.IncludeStaticMethods)
         {

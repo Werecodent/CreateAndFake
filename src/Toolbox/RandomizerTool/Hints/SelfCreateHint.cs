@@ -30,6 +30,9 @@ public sealed class SelfCreateHint : CreateHint
             { typeof(IRandom), rand => rand.Create<SeededRandom>() },
             { typeof(IMutator), rand => rand.Create<Mutator>() },
             { typeof(IValuer), rand => rand.Create<Valuer>() },
+            { typeof(ILimiter), rand => rand.Create<Limiter>() },
+            { typeof(IAsyncLimiter), rand => rand.Create<Limiter>() },
+            { typeof(ISyncLimiter), rand => rand.Create<Limiter>() },
             {
                 typeof(Limiter),
                 rand =>

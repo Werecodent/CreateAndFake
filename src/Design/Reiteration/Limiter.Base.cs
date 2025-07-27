@@ -58,6 +58,40 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     public Limiter(TimeSpan timeout, TimeSpan? delay = null)
         : this(timeout, int.MaxValue, delay) { }
 
+    /// <inheritdoc/>
+    public TimeSpan GetMaxDurationEstimate()
+    {
+        if (_tries == int.MaxValue)
+        {
+            if (_delay > TimeSpan.Zero)
+            {
+                return TimeSpan.FromMilliseconds(
+                    Math.Round(_timeout.TotalMilliseconds / _delay.TotalMilliseconds)
+                        * _delay.TotalMilliseconds
+                );
+            }
+            else
+            {
+                return _timeout;
+            }
+        }
+        else if (_delay > TimeSpan.Zero)
+        {
+            if (TimeSpan.MaxValue.TotalMilliseconds / _delay.TotalMilliseconds > _tries)
+            {
+                return TimeSpan.FromMilliseconds(_tries * _delay.TotalMilliseconds);
+            }
+            else
+            {
+                return TimeSpan.MaxValue;
+            }
+        }
+        else
+        {
+            return TimeSpan.FromMilliseconds(_tries);
+        }
+    }
+
     /// <summary>Compares <see langword="this"/> to <paramref name="obj"/> by value.</summary>
     /// <param name="obj">Instance to compare <see langword="this"/> with.</param>
     /// <returns>
@@ -69,13 +103,25 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         return Equals(obj as Limiter);
     }
 
+    /// <inheritdoc/>
+    public bool Equals(ILimiter? other)
+    {
+        return Equals(other as Limiter);
+    }
+
     /// <inheritdoc cref="IValueEquatable.ValuesEqual"/>
     public bool Equals(Limiter? other)
     {
-        return other != null
+        return other is not null
             && other._delay == _delay
             && other._tries == _tries
             && other._timeout == _timeout;
+    }
+
+    /// <inheritdoc/>
+    public int CompareTo(ILimiter? other)
+    {
+        return GetMaxDurationEstimate().CompareTo(other?.GetMaxDurationEstimate() ?? TimeSpan.Zero);
     }
 
     /// <inheritdoc cref="IValueEquatable.GetValueHash"/>
@@ -108,5 +154,49 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         {
             throw new TimeoutException(error + details);
         }
+    }
+
+    /// <summary>Compares <paramref name="left"/> to <paramref name="right"/> by value.</summary>
+    /// <param name="left">Instance to compare against.</param>
+    /// <param name="right">Instance to compare with.</param>
+    /// <returns>True if equal, false otherwise.</returns>
+    public static bool operator ==(Limiter? left, Limiter? right)
+    {
+        return left is null ? right is null : left.Equals(right);
+    }
+
+    /// <returns>True if not equal, false otherwise.</returns>
+    /// <inheritdoc cref="operator =="/>
+    public static bool operator !=(Limiter? left, Limiter? right)
+    {
+        return !(left == right);
+    }
+
+    /// <returns>True if less than, false otherwise.</returns>
+    /// <inheritdoc cref="operator =="/>
+    public static bool operator <(Limiter? left, Limiter? right)
+    {
+        return left is null ? right is not null : left.CompareTo(right) < 0;
+    }
+
+    /// <returns>True if less than or equal, false otherwise.</returns>
+    /// <inheritdoc cref="operator =="/>
+    public static bool operator <=(Limiter? left, Limiter? right)
+    {
+        return left is null || left.CompareTo(right) <= 0;
+    }
+
+    /// <returns>True if greater than, false otherwise.</returns>
+    /// <inheritdoc cref="operator =="/>
+    public static bool operator >(Limiter? left, Limiter? right)
+    {
+        return left?.CompareTo(right) > 0;
+    }
+
+    /// <returns>True if greater than or equal, false otherwise.</returns>
+    /// <inheritdoc cref="operator =="/>
+    public static bool operator >=(Limiter? left, Limiter? right)
+    {
+        return left is null ? right is null : left.CompareTo(right) >= 0;
     }
 }
