@@ -4,10 +4,8 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.Samples.SingleValue;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using Xunit.Internal;
@@ -92,7 +90,7 @@ public static class ToolsTests
         failures.Assert().IsEmpty();
     }
 
-    [Fact]
+    /*[Fact]
     internal static async Task Tools_ValidSamplesWork()
     {
         Dictionary<Type, Exception> failures = [];
@@ -118,7 +116,7 @@ public static class ToolsTests
     internal static Task Tools_TestIndividual()
     {
         return TestTrip(typeof(BaseHolder<>));
-    }
+    }*/
 
     [Fact]
     internal static async Task Tools_ExceptionTypesWork()

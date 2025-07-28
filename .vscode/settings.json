@@ -2,6 +2,7 @@
     "omnisharp.enableEditorConfigSupport": true,
     "dotnet.formatting.organizeImportsOnFormat": true,
     "dotnet.testWindow.enableTestExplorerDiff": false,
+    "dotnet.unitTests.runSettingsPath": "./tests/TestSettings.runsettings",
     "dotnet.defaultSolution": "CreateAndFakeCode.slnx",
     "git.enableSmartCommit": true,
     "git.enableCommitSigning": true,
