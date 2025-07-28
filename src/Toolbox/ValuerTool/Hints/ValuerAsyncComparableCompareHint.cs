@@ -1,0 +1,82 @@
+using CreateAndFake.AsserterTool;
+using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
+using CreateAndFake.ValuerTool.Engine;
+
+namespace CreateAndFake.ValuerTool.Hints;
+
+/// <summary>Handles comparing <see cref="IValuerEquatable"/> instances for <see cref="IValuer"/>.</summary>
+public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncComparable>
+{
+    /// <inheritdoc/>
+    protected override IEnumerable<Difference> Compare(
+        IValuerAsyncComparable? expected,
+        IValuerAsyncComparable? actual,
+        IValuerChainer valuer
+    )
+    {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        if (valuer.Options.SkipAsyncValues)
+        {
+            return [];
+        }
+        else
+        {
+            throw new ToolException(
+                $"Cannot compare IValuerAsyncComparables in synchronous context using {nameof(IValuer)}. "
+                    + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override async Task<IEnumerable<Difference>> CompareAsync(
+        IValuerAsyncComparable? expected,
+        IValuerAsyncComparable? actual,
+        IValuerChainer valuer
+    )
+    {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+
+        List<Difference> results = [];
+        await foreach (
+            Difference diff in expected.CompareAsync(actual, valuer).ConfigureAwait(false)
+        )
+        {
+            results.Add(diff);
+        }
+        return results;
+    }
+
+    /// <inheritdoc/>
+    protected override int GetHashCode(IValuerAsyncComparable? item, IValuerChainer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        if (valuer.Options.SkipAsyncValues)
+        {
+            return 0;
+        }
+        else
+        {
+            throw new ToolException(
+                $"Cannot hash IValuerAsyncComparable in synchronous context using {nameof(IValuer)}. "
+                    + "Collect into a synchronous collection before attempting to hash."
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override Task<int> GetHashCodeAsync(
+        IValuerAsyncComparable? item,
+        IValuerChainer valuer
+    )
+    {
+        ArgumentGuard.ThrowIfNull(item, nameof(item));
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        return item.GetValueHashAsync(valuer);
+    }
+}

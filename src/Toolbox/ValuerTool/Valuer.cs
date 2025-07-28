@@ -21,6 +21,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new FallbackCompareHint(),
         new FakedCompareHint(),
         new ValueEquatableCompareHint(),
+        new ValuerAsyncComparableCompareHint(),
+        new ValuerComparableCompareHint(),
         new ValuerEquatableCompareHint(),
         new EquatableCompareHint(),
         new StringDictionaryCompareHint(),

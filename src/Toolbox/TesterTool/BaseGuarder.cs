@@ -121,17 +121,30 @@ internal abstract class BaseGuarder(TesterOptions options)
             await DisposeAllButInjected(asDict.Keys).ConfigureAwait(false);
             await DisposeAllButInjected(asDict.Values).ConfigureAwait(false);
         }
-        else if (data is IEnumerable asEnum && asEnum is not string)
+        else if (data is IEnumerable asEnum)
         {
-            IEnumerator gen = asEnum.GetEnumerator();
-            while (gen?.MoveNext() ?? false)
-            {
-                await DisposeAllButInjected(gen.Current).ConfigureAwait(false);
-            }
+            await DisposeAllButInjected(asEnum).ConfigureAwait(false);
         }
         else if (!Options.InjectionValues.Any(v => ReferenceEquals(data, v)))
         {
             await Disposer.CleanupAsync(data).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>Checks data for disposables and disposes them.</summary>
+    /// <param name="data">Data to check and dispose.</param>
+    protected async Task DisposeAllButInjected(IEnumerable? data)
+    {
+        if (data is not null and not string)
+        {
+            IEnumerator gen = data.GetEnumerator();
+            while (gen?.MoveNext() ?? false)
+            {
+                if (!Options.InjectionValues.Any(v => ReferenceEquals(gen.Current, v)))
+                {
+                    await Disposer.CleanupAsync(gen.Current).ConfigureAwait(false);
+                }
+            }
         }
     }
 

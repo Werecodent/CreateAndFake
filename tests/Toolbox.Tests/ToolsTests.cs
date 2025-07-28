@@ -9,6 +9,7 @@ using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Samples.SingleValue;
 using CreateAndFake.TesterTool;
+using CreateAndFake.ValuerTool;
 using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
@@ -64,6 +65,7 @@ public static class ToolsTests
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),
+            typeof(IValuerAsyncComparable),
         ];
 
         Dictionary<Type, Exception> failures = [];
@@ -144,8 +146,8 @@ public static class ToolsTests
 
             Tools.Asserter.ValuesEqual(original, dupe, failMessage);
             Tools.Asserter.ValuesEqual(
-                await Tools.Valuer.GetHashCodeAsync(original).ConfigureAwait(false),
-                await Tools.Valuer.GetHashCodeAsync(dupe).ConfigureAwait(false),
+                await Tools.Valuer.GetHashCodeAsync(original),
+                await Tools.Valuer.GetHashCodeAsync(dupe),
                 $"HashCode {failMessage}"
             );
 
@@ -157,8 +159,8 @@ public static class ToolsTests
 
                 Tools.Asserter.ValuesNotEqual(original, variant, failMessage);
                 Tools.Asserter.ValuesNotEqual(
-                    await Tools.Valuer.GetHashCodeAsync(original).ConfigureAwait(false),
-                    await Tools.Valuer.GetHashCodeAsync(variant).ConfigureAwait(false),
+                    await Tools.Valuer.GetHashCodeAsync(original),
+                    await Tools.Valuer.GetHashCodeAsync(variant),
                     failMessage
                 );
 
