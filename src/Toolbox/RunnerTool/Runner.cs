@@ -64,26 +64,42 @@ public sealed class Runner(RunnerOptions options) : IRunner
             return (true, null);
         }
 
-        bool isTask = false;
         if (result is ValueTask valueTask)
         {
-            await valueTask.ConfigureAwait(false);
-            isTask = true;
+            if (result.GetType().Inherits(typeof(ValueTask<>)))
+            {
+                result = typeof(Runner)
+                    .GetMethod(
+                        nameof(ExecuteValueTask),
+                        BindingFlags.Static | BindingFlags.NonPublic
+                    )!
+                    .MakeGenericMethod(
+                        TypeDescriber
+                            .FindConcreteInterface(result.GetType(), typeof(ValueTask<>))
+                            .GetGenericArguments()
+                    )
+                    .Invoke(null, [result])!;
+            }
+            else
+            {
+                await valueTask.ConfigureAwait(false);
+            }
         }
+
         if (result is Task task)
         {
             await task.ConfigureAwait(false);
-            isTask = true;
-        }
 
-        if (isTask)
-        {
             PropertyInfo? prop = result.GetType().GetProperty("Result");
             return (prop != null) ? (true, prop.GetValue(result)) : (false, null);
         }
 
         Type resultType = result.GetType();
-        if (resultType.Inherits<ICollection>() || resultType.Inherits(typeof(ICollection<>)))
+        if (
+            resultType.Inherits<ICollection>()
+            || resultType.Inherits(typeof(ICollection<>))
+            || resultType == typeof(string)
+        )
         {
             return (true, result);
         }
@@ -103,12 +119,13 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     .Invoke(null, [result])
             );
         }
-        if (resultType.Inherits<IEnumerable>())
-        {
-            return (true, ((IEnumerable)result).OfType<object>().ToArray());
-        }
 
         return (true, result);
+    }
+
+    private static async Task<T> ExecuteValueTask<T>(ValueTask<T> task)
+    {
+        return await task.ConfigureAwait(false);
     }
 
     private static T[] Enumerate<T>(object syncData)
@@ -157,7 +174,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         TimeSpan timeout =
             (localOptions.Timeout.TotalMilliseconds is >= -1 and <= 10000) //int.MaxValue)
                 ? localOptions.Timeout
-                : TimeSpan.FromMilliseconds(-1);
+                : TimeSpan.FromMilliseconds(10000);
 
         Task<(bool, object?)> task = Task.Run(() =>
             UnwrapTaskResult(() => data.InvokeOn(instance))
