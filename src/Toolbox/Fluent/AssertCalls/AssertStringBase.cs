@@ -1,9 +1,10 @@
 #pragma warning disable CA1307, CA1310 // Not available for all versions.
 
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see cref="string"/> assertion calls.</summary>
 /// <param name="text"><inheritdoc cref="Text" path="/summary"/></param>

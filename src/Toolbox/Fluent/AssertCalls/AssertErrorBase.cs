@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see cref="Exception"/> assertion calls.</summary>
 /// <param name="error"><inheritdoc cref="Error" path="/summary"/></param>

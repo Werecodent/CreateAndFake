@@ -1,6 +1,7 @@
 ﻿using System.Collections;
+using CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <inheritdoc/>
 public sealed class AssertEnumerable : AssertEnumerableBase<AssertEnumerable>

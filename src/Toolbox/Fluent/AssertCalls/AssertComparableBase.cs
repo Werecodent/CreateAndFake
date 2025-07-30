@@ -1,6 +1,7 @@
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common comparables assertion calls.</summary>
 /// <param name="value"><inheritdoc cref="Value" path="/summary"/></param>

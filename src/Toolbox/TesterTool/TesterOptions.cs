@@ -78,6 +78,7 @@ public sealed record TesterOptions : IToolOptions
                 typeof(TargetParameterCountException),
                 typeof(ArgumentOutOfRangeException),
                 typeof(UnauthorizedAccessException),
+                typeof(EntryPointNotFoundException),
                 typeof(ArrayTypeMismatchException),
                 typeof(InvalidOperationException),
                 typeof(TargetInvocationException),

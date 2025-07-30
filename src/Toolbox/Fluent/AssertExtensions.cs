@@ -1,5 +1,6 @@
 ﻿using System.Collections;
-using CreateAndFake.AsserterTool.Fluent;
+using CreateAndFake.Fluent.AssertAsyncCalls;
+using CreateAndFake.Fluent.AssertCalls;
 
 namespace CreateAndFake.Fluent;
 

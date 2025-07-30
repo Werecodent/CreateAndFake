@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool.Fluent;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.AsserterTool.Fluent;
+namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertComparableTests
 {

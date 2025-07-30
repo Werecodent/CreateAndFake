@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.FakerTool;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see cref="object"/> assertion calls.</summary>
 /// <typeparam name="T"></typeparam>

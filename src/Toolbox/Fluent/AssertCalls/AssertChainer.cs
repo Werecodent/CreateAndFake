@@ -1,6 +1,7 @@
 ﻿using System.Collections;
+using CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Chainer enabling additional assertion calls.</summary>
 /// <typeparam name="T">Assertion base <see cref="Type"/> to chain.</typeparam>

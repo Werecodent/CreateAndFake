@@ -1,6 +1,7 @@
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 #pragma warning disable CA1716 // Overriding here should be a rarity.
 

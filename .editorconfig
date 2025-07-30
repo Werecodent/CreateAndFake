@@ -81,7 +81,7 @@ dotnet_diagnostic.RCS1075.severity = None
 dotnet_diagnostic.MA0038.severity = None
 dotnet_diagnostic.MA0041.severity = None
 
-# Not supported in all version.
+# Not supported in all .NET versions.
 dotnet_diagnostic.CA1865.severity = none
 dotnet_diagnostic.CA2249.severity = none
 dotnet_diagnostic.IDE0057.severity = none

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common collection assertion calls.</summary>
 /// <param name="collection"><inheritdoc cref="Collection" path="/summary"/></param>

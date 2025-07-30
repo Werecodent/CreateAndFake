@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool.Fluent;
+using CreateAndFake.Fluent.AssertAsyncCalls;
 
-namespace CreateAndFake.Tests.AsserterTool.Fluent;
+namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public sealed class AssertAsyncTests
 {

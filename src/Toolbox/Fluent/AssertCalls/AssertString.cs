@@ -1,4 +1,6 @@
-namespace CreateAndFake.AsserterTool.Fluent;
+using CreateAndFake.AsserterTool;
+
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <inheritdoc/>
 public sealed class AssertString : AssertStringBase<AssertString>

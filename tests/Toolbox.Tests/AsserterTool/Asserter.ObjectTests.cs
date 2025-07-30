@@ -1,6 +1,6 @@
 using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Fluent;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.AsserterTool;

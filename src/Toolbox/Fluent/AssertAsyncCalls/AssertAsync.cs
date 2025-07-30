@@ -1,4 +1,6 @@
-namespace CreateAndFake.AsserterTool.Fluent;
+using CreateAndFake.AsserterTool;
+
+namespace CreateAndFake.Fluent.AssertAsyncCalls;
 
 /// <inheritdoc/>
 public sealed class AssertAsync : AssertAsyncBase<AssertAsync>

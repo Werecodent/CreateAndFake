@@ -1,6 +1,7 @@
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Fluent;
+namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="behavior">Delegate to check.</param>
