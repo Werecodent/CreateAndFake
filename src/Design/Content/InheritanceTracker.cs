@@ -13,6 +13,7 @@ public sealed class InheritanceTracker
     /// </summary>
     private static readonly Dictionary<Type, InheritanceTracker> _InheritCache = [];
 
+    /// <summary>Tracker for null types.</summary>
     private static readonly InheritanceTracker _NullDescriber = new(null, []);
 
     /// <summary>Finds the describer for <typeparamref name="T"/>.</summary>

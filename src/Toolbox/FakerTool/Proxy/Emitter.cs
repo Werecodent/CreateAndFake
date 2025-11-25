@@ -5,6 +5,8 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
+#pragma warning disable CS8600, CS8601, CS8602, CS8604 // Nullability flags set in .NET 10.
+
 /// <summary>Creates dynamic subclasses by IL code.</summary>
 internal static class Emitter
 {
@@ -26,21 +28,18 @@ internal static class Emitter
         | BindingFlags.Instance;
 
     /// <summary>Methods called to chain fake calls.</summary>
-    private static readonly MethodInfo _VoidChainer =
-            MetaType.GetMethod(
-                nameof(FakeMetaProvider.CallVoid),
-                BindingFlags.Instance | BindingFlags.NonPublic
-            )!,
-        _ResultChainer =
-            MetaType.GetMethod(
-                nameof(FakeMetaProvider.CallRet),
-                BindingFlags.Instance | BindingFlags.NonPublic
-            )!,
-        _TypeResolver =
-            typeof(Type).GetMethod(
-                nameof(Type.GetTypeFromHandle),
-                BindingFlags.Static | BindingFlags.Public
-            )!;
+    private static readonly MethodInfo _VoidChainer = MetaType.GetMethod(
+            nameof(FakeMetaProvider.CallVoid),
+            BindingFlags.Instance | BindingFlags.NonPublic
+        ),
+        _ResultChainer = MetaType.GetMethod(
+            nameof(FakeMetaProvider.CallRet),
+            BindingFlags.Instance | BindingFlags.NonPublic
+        ),
+        _TypeResolver = typeof(Type).GetMethod(
+            nameof(Type.GetTypeFromHandle),
+            BindingFlags.Static | BindingFlags.Public
+        );
 
     /// <summary>Module storing the faked types.</summary>
     private static readonly ModuleBuilder _Module = AssemblyBuilder
@@ -203,9 +202,9 @@ internal static class Emitter
             {
                 // args[i] = new OutRef<T>();
                 Type outRef = typeof(OutRef<>).MakeGenericType(
-                    argInfos[i].ParameterType.GetElementType()!
+                    argInfos[i].ParameterType.GetElementType()
                 );
-                gen.Emit(OpCodes.Newobj, outRef.GetConstructor(Type.EmptyTypes)!);
+                gen.Emit(OpCodes.Newobj, outRef.GetConstructor(Type.EmptyTypes));
                 gen.Emit(OpCodes.Stelem_Ref);
                 if (!argInfos[i].IsOut)
                 {
@@ -216,7 +215,7 @@ internal static class Emitter
                     gen.Emit(OpCodes.Castclass, outRef);
                     gen.Emit(OpCodes.Ldarg, i + 1);
                     gen.Emit(OpCodes.Ldind_Ref);
-                    gen.Emit(OpCodes.Stfld, outRef.GetField(nameof(OutRef<Type>.Var))!);
+                    gen.Emit(OpCodes.Stfld, outRef.GetField(nameof(OutRef<>.Var)));
                 }
             }
         }
@@ -259,7 +258,7 @@ internal static class Emitter
             if (argInfos[i].ParameterType.IsByRef)
             {
                 Type outRef = typeof(OutRef<>).MakeGenericType(
-                    argInfos[i].ParameterType.GetElementType()!
+                    argInfos[i].ParameterType.GetElementType()
                 );
 
                 gen.Emit(OpCodes.Ldarg, i + 1);
@@ -267,7 +266,7 @@ internal static class Emitter
                 gen.Emit(OpCodes.Ldc_I4, i);
                 gen.Emit(OpCodes.Ldelem_Ref);
                 gen.Emit(OpCodes.Castclass, outRef);
-                gen.Emit(OpCodes.Ldfld, outRef.GetField(nameof(OutRef<Type>.Var))!);
+                gen.Emit(OpCodes.Ldfld, outRef.GetField(nameof(OutRef<>.Var)));
                 gen.Emit(OpCodes.Stind_Ref);
             }
         }
@@ -321,8 +320,8 @@ internal static class Emitter
     /// <returns>Info for the meta provider get hook.</returns>
     private static MethodInfo SetupFakeMetaProvider(TypeBuilder newType, FieldInfo backingField)
     {
-        PropertyInfo propInfo = FakeType.GetProperty(nameof(IFaked.FakeMeta))!;
-        MethodInfo getterInfo = propInfo.GetGetMethod()!;
+        PropertyInfo propInfo = FakeType.GetProperty(nameof(IFaked.FakeMeta));
+        MethodInfo getterInfo = propInfo.GetGetMethod();
 
         MethodBuilder getMetaMethod = newType.DefineMethod(
             nameof(IFaked) + "." + getterInfo.Name,
@@ -351,3 +350,5 @@ internal static class Emitter
         return getterInfo;
     }
 }
+
+#pragma warning restore CS8600, CS8601, CS8602, CS8604 // Nullability flags set in .NET 10.

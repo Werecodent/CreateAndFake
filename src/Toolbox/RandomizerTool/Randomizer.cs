@@ -69,7 +69,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                     },
                     result =>
                     {
-                        if (localOptions.FinalCondition?.Invoke(result!) ?? true)
+                        if (localOptions.FinalCondition?.Invoke(result) ?? true)
                         {
                             return true;
                         }
@@ -80,7 +80,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                         }
                     }
                 )
-                .Last()!;
+                .Last();
         }
         catch (Exception e)
         {

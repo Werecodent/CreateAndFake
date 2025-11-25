@@ -105,7 +105,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
         T result = new();
         foreach (DictionaryEntry entry in (T)source)
         {
-            result.Add(duplicator.Copy(entry.Key)!, duplicator.Copy(entry.Value));
+            result.Add(duplicator.Copy(entry.Key), duplicator.Copy(entry.Value));
         }
         return result;
     }

@@ -37,8 +37,8 @@ public sealed class CommonSystemCreateHint : CreateHint
                 typeof(Assembly),
                 rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies())
             },
-            { typeof(AssemblyName), rand => rand.Create<Assembly>()!.GetName() },
-            { typeof(Uri), rand => rand.Create<UriBuilder>()!.Uri },
+            { typeof(AssemblyName), rand => rand.Create<Assembly>().GetName() },
+            { typeof(Uri), rand => rand.Create<UriBuilder>().Uri },
             {
                 typeof(UriBuilder),
                 rand => new UriBuilder(

@@ -7,6 +7,8 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 /// <summary>Handles cloning <see cref="Task"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class TaskCopyHint : CopyHint
 {
+#pragma warning disable CS8602 // Nullability flags set in .NET 10.
+
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
@@ -22,7 +24,7 @@ public sealed class TaskCopyHint : CopyHint
             {
                 return new(
                     typeof(TaskCopyHint)
-                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)!
+                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)
                         .MakeGenericMethod(task.GetType().GetGenericArguments())
                         .Invoke(null, [task, duplicator])
                 );
@@ -38,6 +40,8 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
+#pragma warning restore CS8602 // Nullability flags set in .NET 10.
+
     private static Task WrapPlainTask(Task task, IDuplicatorChainer duplicator)
     {
         if (task.IsCanceled)
@@ -46,7 +50,7 @@ public sealed class TaskCopyHint : CopyHint
         }
         else if (task.IsFaulted)
         {
-            return Task.FromException(duplicator.Copy(task.Exception)!);
+            return Task.FromException(duplicator.Copy(task.Exception));
         }
         else if (task.IsCompleted)
         {
@@ -69,15 +73,15 @@ public sealed class TaskCopyHint : CopyHint
         }
         else if (task.IsFaulted)
         {
-            return Task.FromException<T>(duplicator.Copy(task.Exception)!);
+            return Task.FromException<T>(duplicator.Copy(task.Exception));
         }
         else if (task.IsCompleted)
         {
-            return Task.FromResult(duplicator.Copy(task.Result)!);
+            return Task.FromResult(duplicator.Copy(task.Result));
         }
         else
         {
-            return Task.Run(async () => duplicator.Copy(await task.ConfigureAwait(false))!);
+            return Task.Run(async () => duplicator.Copy(await task.ConfigureAwait(false)));
         }
     }
 

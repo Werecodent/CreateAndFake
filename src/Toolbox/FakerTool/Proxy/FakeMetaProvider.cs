@@ -63,7 +63,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
         return new FakeMetaProvider(
             Identifier,
             _behavior.Reverse().Select(t => duplicator.Copy(t)),
-            _log.Select(t => duplicator.Copy(t)!)
+            _log.Select(t => duplicator.Copy(t))
         )
         {
             Options = duplicator.Copy(Options),
