@@ -2,8 +2,9 @@
   <Folder Name="/src/">
     <Project Path="src/Design/CreateAndFake.Design.csproj" />
     <Project Path="src/Toolbox/CreateAndFake.csproj" />
-    <Project Path="src/MSTest/CreateAndFake.MSTest.csproj" />
-    <Project Path="src/NUnit/CreateAndFake.NUnit.csproj" />
+    <Project Path="src/MSTest.v3/CreateAndFake.MSTest.v3.csproj" />
+    <Project Path="src/MSTest.v4/CreateAndFake.MSTest.v4.csproj" />
+    <Project Path="src/NUnit.v3/CreateAndFake.NUnit.v3.csproj" />
     <Project Path="src/xUnit.v2/CreateAndFake.xUnit.v2.csproj" />
     <Project Path="src/xUnit.v3/CreateAndFake.xUnit.v3.csproj" />
     <Project Path="src/Samples/CreateAndFake.Samples.csproj" />
@@ -11,8 +12,9 @@
   <Folder Name="/tests/">
     <Project Path="tests/Design.Tests/CreateAndFake.Design.Tests.csproj" />
     <Project Path="tests/Toolbox.Tests/CreateAndFake.Tests.csproj" />
-    <Project Path="tests/MSTest.Tests/CreateAndFake.MSTest.Tests.csproj" />
-    <Project Path="tests/NUnit.Tests/CreateAndFake.NUnit.Tests.csproj" />
+    <Project Path="tests/MSTest.v3.Tests/CreateAndFake.MSTest.v3.Tests.csproj" />
+    <Project Path="tests/MSTest.v4.Tests/CreateAndFake.MSTest.v4.Tests.csproj" />
+    <Project Path="tests/NUnit.v3.Tests/CreateAndFake.NUnit.v3.Tests.csproj" />
     <Project Path="tests/xUnit.v2.Tests/CreateAndFake.xUnit.v2.Tests.csproj" />
     <Project Path="tests/xUnit.v3.Tests/CreateAndFake.xUnit.v3.Tests.csproj" />
     <Project Path="tests/Samples.Tests/CreateAndFake.Samples.Tests.csproj" />
