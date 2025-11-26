@@ -46,4 +46,4 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         directory: ./artifacts/coverage
-        token: ${{ secrets.CODECOV_TOKEN }}
+        token: ${{ Secrets.CODECOV_TOKEN }}
