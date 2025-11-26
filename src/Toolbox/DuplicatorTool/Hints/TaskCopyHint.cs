@@ -7,8 +7,6 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 /// <summary>Handles cloning <see cref="Task"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class TaskCopyHint : CopyHint
 {
-#pragma warning disable CS8602 // Nullability flags set in .NET 10.
-
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
@@ -24,7 +22,7 @@ public sealed class TaskCopyHint : CopyHint
             {
                 return new(
                     typeof(TaskCopyHint)
-                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)
+                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)!
                         .MakeGenericMethod(task.GetType().GetGenericArguments())
                         .Invoke(null, [task, duplicator])
                 );
@@ -39,8 +37,6 @@ public sealed class TaskCopyHint : CopyHint
             return CopyHintResult.None;
         }
     }
-
-#pragma warning restore CS8602 // Nullability flags set in .NET 10.
 
     private static Task WrapPlainTask(Task task, IDuplicatorChainer duplicator)
     {

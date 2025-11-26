@@ -39,15 +39,13 @@ public sealed class DelegateCreateHint : CreateHint
         }
     }
 
-#pragma warning disable CS8600, CS8602 // Nullability flags set in .NET 10.
-
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object Create(Type type, IRandomizerChainer randomizer)
     {
         Delegator delegator = new(randomizer);
 
-        MethodInfo info = type.GetMethod("Invoke");
+        MethodInfo info = type.GetMethod("Invoke")!;
         bool hasReturn = info.ReturnType != typeof(void);
 
         MethodInfo match = _Delegators
@@ -97,14 +95,12 @@ public sealed class DelegateCreateHint : CreateHint
                     Type inputType = outRef.GetType();
                     if (inputType.Inherits<IOutRef>())
                     {
-                        FieldInfo valueField = inputType.GetField(nameof(OutRef<>.Var));
+                        FieldInfo valueField = inputType.GetField(nameof(OutRef<>.Var))!;
                         valueField.SetValue(outRef, _randomizer.Create(valueField.FieldType));
                     }
                 }
             }
         }
-
-#pragma warning restore CS8600, CS8602 // Nullability flags set in .NET 10.
 
         /// <summary>Randomizes any OutRef inputs and the return.</summary>
         /// <typeparam name="T">Return <see cref="Type"/> for the delegate.</typeparam>

@@ -118,8 +118,6 @@ public sealed class Fake<T> : Fake
         Verify(times, call.Item1.Name, call.Item2, call.Item3);
     }
 
-#pragma warning disable CS8602, CS8603, CS8604, CS8619 // Nullability flags set in .NET 10.
-
     /// <summary>Changes expression to call data.</summary>
     /// <param name="method">Expression to convert.</param>
     /// <param name="onlySetter">If only setter is allowed.</param>
@@ -152,8 +150,8 @@ public sealed class Fake<T> : Fake
         {
             PropertyInfo info = (PropertyInfo)memberExpression.Member;
             return onlySetter
-                ? (info.GetSetMethod(), Type.EmptyTypes, [])
-                : (info.GetGetMethod(), Type.EmptyTypes, []);
+                ? (info.GetSetMethod()!, Type.EmptyTypes, [])
+                : (info.GetGetMethod()!, Type.EmptyTypes, []);
         }
         else
         {
@@ -171,7 +169,7 @@ public sealed class Fake<T> : Fake
             && memberExpression.Member.Name == nameof(OutRef<>.Var)
         )
         {
-            return ConvertArg(memberExpression.Expression);
+            return ConvertArg(memberExpression.Expression!);
         }
 
         MethodCallExpression? call =
@@ -200,11 +198,10 @@ public sealed class Fake<T> : Fake
                 : call.Method.ReturnType;
 
         return typeof(Arg)
-            .GetMethod("Lambda" + call.Method.Name)
+            .GetMethod("Lambda" + call.Method.Name)!
             .MakeGenericMethod(innerType)
-            .Invoke(null, [.. call.Arguments.Select(x => ConvertArg(x))]);
+            .Invoke(null, [.. call.Arguments.Select(x => ConvertArg(x))])!;
     }
 
 #pragma warning restore IDE0200 // Code coverage issue.
-#pragma warning restore CS8602, CS8603, CS8604, CS8619 // Nullability flags set in .NET 10.
 }

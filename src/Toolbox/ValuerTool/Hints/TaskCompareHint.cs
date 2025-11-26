@@ -3,8 +3,6 @@ using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
-#pragma warning disable CS8602 // Nullability flags set in .NET 10.
-
 /// <summary>Handles comparing <see cref="Task"/> instances for <see cref="IValuer"/>.</summary>
 public sealed class TaskCompareHint : CompareHint<Task>
 {
@@ -43,9 +41,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
         }
         else
         {
-            return item.GetType().GetProperty(nameof(Task<>.Result)).GetValue(item);
+            return item.GetType().GetProperty(nameof(Task<>.Result))!.GetValue(item);
         }
     }
 }
-
-#pragma warning restore CS8602 // Nullability flags set in .NET 10.
