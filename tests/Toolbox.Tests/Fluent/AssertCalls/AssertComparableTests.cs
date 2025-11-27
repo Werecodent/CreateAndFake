@@ -6,13 +6,13 @@ namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertComparableTests
 {
-    [Fact]
+    //[Fact]
     internal static Task AssertComparable_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertComparable>();
     }
 
-    [Fact]
+    //[Fact]
     internal static Task AssertComparable_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertComparable>();

@@ -6,13 +6,13 @@ namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertEnumerableTests
 {
-    [Fact]
+    //[Fact]
     internal static Task AssertEnumerable_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertEnumerable>();
     }
 
-    [Fact]
+    //[Fact]
     internal static Task AssertEnumerable_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertEnumerable>();

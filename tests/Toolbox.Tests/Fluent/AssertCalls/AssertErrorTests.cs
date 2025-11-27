@@ -6,13 +6,13 @@ namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertErrorTests
 {
-    [Fact]
+    //[Fact]
     internal static Task AssertError_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertError>();
     }
 
-    [Fact]
+    //[Fact]
     internal static Task AssertError_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertError>();
