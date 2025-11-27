@@ -174,7 +174,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         TimeSpan timeout =
             (localOptions.Timeout.TotalMilliseconds is >= -1 and <= 10000) //int.MaxValue)
                 ? localOptions.Timeout
-                : TimeSpan.FromMilliseconds(10000);
+                : TimeSpan.FromMilliseconds(15000);
 
         Task<(bool, object?)> task = Task.Run(() =>
             UnwrapTaskResult(() => data.InvokeOn(instance))
