@@ -36,9 +36,12 @@ public sealed class SelfCreateHint : CreateHint
             {
                 typeof(Limiter),
                 rand =>
-                    rand.Options.Gen.NextItem(
-                        [Limiter.Once, Limiter.Few, Limiter.Dozen, Limiter.Score]
-                    )
+                    rand.Options.Gen.NextItem([
+                        Limiter.Once,
+                        Limiter.Few,
+                        Limiter.Dozen,
+                        Limiter.Score,
+                    ])
             },
             { typeof(AsserterMod), _ => (AsserterOptions mod) => mod },
             { typeof(DuplicatorMod), _ => (DuplicatorOptions mod) => mod },

@@ -22,14 +22,12 @@ public sealed class ImmutableCollectionCreateHintTests
     private static readonly Type[] _ValidTypes =
     [
         .. ImmutableCollectionCreateHint
-            .PotentialCollections.Concat(
-                [
-                    typeof(IImmutableList<>),
-                    typeof(IImmutableQueue<>),
-                    typeof(IImmutableStack<>),
-                    typeof(IImmutableDictionary<,>),
-                ]
-            )
+            .PotentialCollections.Concat([
+                typeof(IImmutableList<>),
+                typeof(IImmutableQueue<>),
+                typeof(IImmutableStack<>),
+                typeof(IImmutableDictionary<,>),
+            ])
             .Select(MakeDefined),
     ];
 
@@ -48,9 +46,9 @@ public sealed class ImmutableCollectionCreateHintTests
         if (type.IsGenericTypeDefinition)
         {
             FastRandom random = new();
-            return type.MakeGenericType(
-                [.. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes))]
-            );
+            return type.MakeGenericType([
+                .. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes)),
+            ]);
         }
         else
         {

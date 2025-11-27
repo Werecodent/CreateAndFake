@@ -147,9 +147,9 @@ public sealed class ObjectCopyHint : CopyHint
             return null;
         }
 
-        return constructor.Invoke(
-            [.. matchedMembers.Select(m => CopyMember(m, source, duplicator))]
-        );
+        return constructor.Invoke([
+            .. matchedMembers.Select(m => CopyMember(m, source, duplicator)),
+        ]);
     }
 
     /// <summary>Copies the value of <paramref name="member"/> on <paramref name="source"/>.</summary>

@@ -9,20 +9,18 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class EndingExtractHint : ExtractHint
 {
     /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
-    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet(
-        [
-            Assembly.GetExecutingAssembly().GetType(),
-            typeof(Type).GetType(),
-            typeof(ParameterInfo),
-            typeof(PropertyInfo),
-            typeof(MemberInfo),
-            typeof(MethodInfo),
-            typeof(FieldInfo),
-            typeof(Assembly),
-            typeof(string),
-            typeof(Type),
-        ]
-    );
+    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet([
+        Assembly.GetExecutingAssembly().GetType(),
+        typeof(Type).GetType(),
+        typeof(ParameterInfo),
+        typeof(PropertyInfo),
+        typeof(MemberInfo),
+        typeof(MethodInfo),
+        typeof(FieldInfo),
+        typeof(Assembly),
+        typeof(string),
+        typeof(Type),
+    ]);
 
     /// <inheritdoc/>
     public override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)

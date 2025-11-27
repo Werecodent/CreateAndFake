@@ -11,9 +11,11 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class CollectionCopyHint : CopyHint
 {
     /// <summary>Special cases where the data needs to be reversed.</summary>
-    private static readonly FrozenSet<Type> _ReverseCases = FrozenSet.ToFrozenSet(
-        [typeof(ConcurrentStack<>), typeof(Stack<>), typeof(Stack)]
-    );
+    private static readonly FrozenSet<Type> _ReverseCases = FrozenSet.ToFrozenSet([
+        typeof(ConcurrentStack<>),
+        typeof(Stack<>),
+        typeof(Stack),
+    ]);
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)

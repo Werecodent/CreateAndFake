@@ -30,9 +30,9 @@ public sealed class GenericCreateHint : CreateHint
     private static object Create(Type type, IRandomizerChainer randomizer)
     {
         return randomizer.Create(
-            type.MakeGenericType(
-                [.. type.GetGenericArguments().Select(a => CreateArg(a, type, randomizer))]
-            ),
+            type.MakeGenericType([
+                .. type.GetGenericArguments().Select(a => CreateArg(a, type, randomizer)),
+            ]),
             type
         );
     }

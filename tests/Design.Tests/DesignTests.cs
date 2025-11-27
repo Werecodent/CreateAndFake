@@ -14,19 +14,17 @@ public static class DesignTests
             opt =>
                 opt with
                 {
-                    TestClassCoverageExceptions = FrozenSet.ToFrozenSet(
-                        [
-                            "CompilerFeatureRequiredAttribute",
-                            "IsExternalInit",
-                            "RequiredMemberAttribute",
-                            "DoesNotReturnAttribute",
-                            "MaybeNullAttribute",
-                            "NotNullAttribute",
-                            "NotNullIfNotNullAttribute",
-                            "NotNullWhenAttribute",
-                            "SetsRequiredMembersAttribute",
-                        ]
-                    ),
+                    TestClassCoverageExceptions = FrozenSet.ToFrozenSet([
+                        "CompilerFeatureRequiredAttribute",
+                        "IsExternalInit",
+                        "RequiredMemberAttribute",
+                        "DoesNotReturnAttribute",
+                        "MaybeNullAttribute",
+                        "NotNullAttribute",
+                        "NotNullIfNotNullAttribute",
+                        "NotNullWhenAttribute",
+                        "SetsRequiredMembersAttribute",
+                    ]),
                 }
         );
     }

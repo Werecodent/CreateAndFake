@@ -19,9 +19,9 @@ internal static class GenericFixer
         ArgumentGuard.ThrowIfNull(options, nameof(options));
 
         return method.IsGenericMethodDefinition
-            ? method.MakeGenericMethod(
-                [.. method.GetGenericArguments().Select(arg => CreateArg(arg, method, options))]
-            )
+            ? method.MakeGenericMethod([
+                .. method.GetGenericArguments().Select(arg => CreateArg(arg, method, options)),
+            ])
             : method;
     }
 

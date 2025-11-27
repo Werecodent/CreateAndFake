@@ -19,20 +19,18 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     private static readonly Type[] _ValidTypes =
     [
         .. CollectionCreateHint
-            .PotentialCollections.Concat(
-                [
-                    typeof(IEnumerable<>),
-                    typeof(IList<>),
-                    typeof(ISet<>),
-                    typeof(IDictionary<,>),
-                    typeof(IReadOnlyCollection<>),
-                    typeof(IReadOnlyList<>),
-                    typeof(IReadOnlyDictionary<,>),
-                    typeof(int[]),
-                    typeof(string[]),
-                    typeof(object[]),
-                ]
-            )
+            .PotentialCollections.Concat([
+                typeof(IEnumerable<>),
+                typeof(IList<>),
+                typeof(ISet<>),
+                typeof(IDictionary<,>),
+                typeof(IReadOnlyCollection<>),
+                typeof(IReadOnlyList<>),
+                typeof(IReadOnlyDictionary<,>),
+                typeof(int[]),
+                typeof(string[]),
+                typeof(object[]),
+            ])
             .Select(MakeDefined),
     ];
 
@@ -59,9 +57,9 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     {
         if (type.IsGenericTypeDefinition)
         {
-            return type.MakeGenericType(
-                [.. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes))]
-            );
+            return type.MakeGenericType([
+                .. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes)),
+            ]);
         }
         else
         {

@@ -45,12 +45,10 @@ public sealed class InjectedCreateHint : CreateHint
             }
 
             return type.GetConstructor([target, typeof(IEnumerable<Fake>)])!
-                .Invoke(
-                    [
-                        maker.Invoke([.. args.Select(v => (v is Fake fake) ? fake.Dummy : v)]),
-                        args.OfType<Fake>(),
-                    ]
-                );
+                .Invoke([
+                    maker.Invoke([.. args.Select(v => (v is Fake fake) ? fake.Dummy : v)]),
+                    args.OfType<Fake>(),
+                ]);
         }
         else
         {

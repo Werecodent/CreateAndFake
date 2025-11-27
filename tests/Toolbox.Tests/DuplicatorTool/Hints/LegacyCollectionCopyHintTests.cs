@@ -8,9 +8,12 @@ public sealed class LegacyCollectionCopyHintTests : CopyHintTestBase<LegacyColle
 {
     private static readonly Type[] _ValidTypes =
     [
-        .. LegacyCollectionCreateHint.PotentialCollections.Except(
-            [typeof(ArrayList), typeof(Queue), typeof(Stack), typeof(Array)]
-        ),
+        .. LegacyCollectionCreateHint.PotentialCollections.Except([
+            typeof(ArrayList),
+            typeof(Queue),
+            typeof(Stack),
+            typeof(Array),
+        ]),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];

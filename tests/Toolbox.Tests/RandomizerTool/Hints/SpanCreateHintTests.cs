@@ -36,9 +36,9 @@ public sealed class SpanCreateHintTests : CreateHintTestBase<SpanCreateHint>
     {
         if (type.IsGenericTypeDefinition)
         {
-            return type.MakeGenericType(
-                [.. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes))]
-            );
+            return type.MakeGenericType([
+                .. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes)),
+            ]);
         }
         else
         {

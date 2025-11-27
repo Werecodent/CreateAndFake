@@ -39,9 +39,9 @@ public sealed class FrozenCollectionCreateHintTests : CreateHintTestBase<FrozenC
         if (type.IsGenericTypeDefinition)
         {
             FastRandom random = new();
-            return type.MakeGenericType(
-                [.. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes))]
-            );
+            return type.MakeGenericType([
+                .. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes)),
+            ]);
         }
         else
         {

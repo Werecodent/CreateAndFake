@@ -71,9 +71,12 @@ public static class FakerTests
     [Theory, RandomData]
     internal static void Inject_UsesValues(int num, string text)
     {
-        Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>(
-            [null, Tools.Faker.Stub<AbstractFakeSample>(), num, text]
-        );
+        Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>([
+            null,
+            Tools.Faker.Stub<AbstractFakeSample>(),
+            num,
+            text,
+        ]);
 
         sample.Dummy.Sample1.Text.Assert().Is(null);
         sample.Dummy.Sample2.Assert(s => s.Calc()).Throws<FakeCallException>();

@@ -188,15 +188,13 @@ public sealed class ObjectCreateHint : CreateHint
         {
             creator = (T)
                 (object)
-                    method.MakeGenericMethod(
-                        [
-                            .. method
-                                .GetGenericArguments()
-                                .Select(a =>
-                                    GenericCreateHint.CreateArg(a, method.ReturnType, randomizer)
-                                ),
-                        ]
-                    );
+                    method.MakeGenericMethod([
+                        .. method
+                            .GetGenericArguments()
+                            .Select(a =>
+                                GenericCreateHint.CreateArg(a, method.ReturnType, randomizer)
+                            ),
+                    ]);
         }
 
         return invoker.Invoke(
@@ -232,7 +230,8 @@ public sealed class ObjectCreateHint : CreateHint
 
         return randomizer.Options.Gen.NextItemOrDefault(
                 subclasses.Where(t => !randomizer.AlreadyCreated(t))
-            ) ?? type;
+            )
+            ?? type;
     }
 
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>

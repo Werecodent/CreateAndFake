@@ -9,9 +9,10 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class EarlyFailCompareHint : CompareHint
 {
     /// <summary>Specific types to control via this hint.</summary>
-    private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet(
-        [typeof(string), typeof(object)]
-    );
+    private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet([
+        typeof(string),
+        typeof(object),
+    ]);
 
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)

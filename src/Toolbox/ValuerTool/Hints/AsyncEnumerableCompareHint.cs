@@ -64,9 +64,9 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
         if (expectedType != actualType)
         {
-            return Task.FromResult<IEnumerable<Difference>>(
-                [new Difference(expectedType, actualType)]
-            );
+            return Task.FromResult<IEnumerable<Difference>>([
+                new Difference(expectedType, actualType),
+            ]);
         }
 
         return (Task<IEnumerable<Difference>>)
