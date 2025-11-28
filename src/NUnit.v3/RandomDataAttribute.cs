@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.RunnerTool;
+using CreateAndFake.RunnerTool.Attributes;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
@@ -6,7 +7,7 @@ using NUnit.Framework.Internal.Builders;
 
 namespace CreateAndFake.NUnit.v3;
 
-/// <summary>Populates test methods with random values for testing.</summary>
+/// <summary>Flags test methods to be populated with random values for testing.</summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
 ///     Use with Parameter attributes to control randomization behavior:
@@ -25,10 +26,9 @@ namespace CreateAndFake.NUnit.v3;
 ///     </example>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder
+public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder, IRandomDataMarker
 {
-    /// <summary>Number of times to test the associated method.</summary>
-    /// <remarks>Default:<c>1</c></remarks>
+    /// <inheritdoc/>
     public int Trials { get; set; } = 1;
 
     /// <inheritdoc/>

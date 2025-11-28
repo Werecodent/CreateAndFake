@@ -15,12 +15,18 @@ namespace CreateAndFake.Tests;
 public static class ToolsTests
 {
     [Fact]
-    internal static void CreateAndFake_Tests_TestClassCoverage()
+    internal static void CreateAndFake_TestClassCoverage()
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(ToolSet)),
             Assembly.GetExecutingAssembly()
         );
+    }
+
+    [Fact]
+    internal static Task CreateAndFake_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
     }
 
     [Theory, RandomData]

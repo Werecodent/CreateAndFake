@@ -15,7 +15,12 @@ public static class ContentMapTests
     [Fact]
     internal static Task ContentMap_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ContentMap>();
+        return Tools.Tester.PreventsParameterMutation<ContentMap>(opt =>
+            opt with
+            {
+                InjectionValues = [Tools.Extractor.Options],
+            }
+        );
     }
 
     [Theory, RandomData]

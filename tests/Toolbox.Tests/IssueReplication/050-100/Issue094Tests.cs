@@ -4,6 +4,7 @@ using CreateAndFake.AsserterTool;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.TesterTool;
@@ -34,160 +35,167 @@ public static class Issue094Tests
     }
 
     [Fact]
-    internal static void Issue094_AsserterOptionsWorks()
+    internal static async Task Issue094_AsserterOptionsWorks()
     {
-        TestToolBehavior<AsserterOptions>();
-        TestToolBehavior<AsserterMod>();
+        await TestToolBehavior<AsserterOptions>();
+        await TestToolBehavior<AsserterMod>();
     }
 
     [Fact]
-    internal static void Issue094_DuplicatorOptionsWorks()
+    internal static async Task Issue094_DuplicatorOptionsWorks()
     {
-        TestToolBehavior<DuplicatorOptions>();
-        TestToolBehavior<DuplicatorMod>();
+        await TestToolBehavior<DuplicatorOptions>();
+        await TestToolBehavior<DuplicatorMod>();
     }
 
     [Fact]
-    internal static void Issue094_FakerOptionsWorks()
+    internal static async Task Issue094_FakerOptionsWorks()
     {
-        TestToolBehavior<FakerOptions>();
-        TestToolBehavior<FakerMod>();
+        await TestToolBehavior<FakerOptions>();
+        await TestToolBehavior<FakerMod>();
     }
 
     [Fact]
-    internal static void Issue094_MutatorOptionsWorks()
+    internal static async Task Issue094_MutatorOptionsWorks()
     {
-        TestToolBehavior<MutatorOptions>();
-        TestToolBehavior<MutatorMod>();
+        await TestToolBehavior<MutatorOptions>();
+        await TestToolBehavior<MutatorMod>();
     }
 
     [Fact]
-    internal static void Issue094_ExtractorOptionsWorks()
+    internal static async Task Issue094_ExtractorOptionsWorks()
     {
-        TestToolBehavior<ExtractorOptions>();
-        TestToolBehavior<ExtractorMod>();
+        await TestToolBehavior<ExtractorOptions>();
+        await TestToolBehavior<ExtractorMod>();
     }
 
     [Fact]
-    internal static void Issue094_RandomizerOptionsWorks()
+    internal static async Task Issue094_RandomizerOptionsWorks()
     {
-        TestToolBehavior<RandomizerOptions>();
-        TestToolBehavior<RandomizerMod>();
+        await TestToolBehavior<RandomizerOptions>();
+        await TestToolBehavior<RandomizerMod>();
     }
 
     [Fact]
-    internal static void Issue094_TesterOptionsWorks()
+    internal static async Task Issue094_TesterOptionsWorks()
     {
-        TestToolBehavior<TesterOptions>();
-        TestToolBehavior<TesterMod>();
+        await TestToolBehavior<TesterOptions>();
+        await TestToolBehavior<TesterMod>();
     }
 
     [Fact]
-    internal static void Issue094_ValuerOptionsWorks()
+    internal static async Task Issue094_ValuerOptionsWorks()
     {
-        TestToolBehavior<ValuerOptions>();
-        TestToolBehavior<ValuerMod>();
+        await TestToolBehavior<ValuerOptions>();
+        await TestToolBehavior<ValuerMod>();
     }
 
     [Fact]
-    internal static void Issue094_AsserterWorks()
+    internal static async Task Issue094_AsserterWorks()
     {
-        TestToolBehavior<IAsserter>();
-        TestToolBehavior<Asserter>();
+        await TestToolBehavior<IAsserter>();
+        await TestToolBehavior<Asserter>();
     }
 
     [Fact]
-    internal static void Issue094_DuplicatorWorks()
+    internal static async Task Issue094_DuplicatorWorks()
     {
-        TestToolBehavior<IDuplicator>();
-        TestToolBehavior<Duplicator>();
+        await TestToolBehavior<IDuplicator>();
+        await TestToolBehavior<Duplicator>();
     }
 
     [Fact]
-    internal static void Issue094_FakerWorks()
+    internal static async Task Issue094_FakerWorks()
     {
-        TestToolBehavior<IFaker>();
-        TestToolBehavior<Faker>();
+        await TestToolBehavior<IFaker>();
+        await TestToolBehavior<Faker>();
     }
 
     [Fact]
-    internal static void Issue094_MutatorWorks()
+    internal static async Task Issue094_MutatorWorks()
     {
-        TestToolBehavior<IMutator>();
-        TestToolBehavior<Mutator>();
+        await TestToolBehavior<IMutator>();
+        await TestToolBehavior<Mutator>();
     }
 
     [Fact]
-    internal static void Issue094_ExtractorWorks()
+    internal static async Task Issue094_ExtractorWorks()
     {
-        TestToolBehavior<IExtractor>();
-        TestToolBehavior<Extractor>();
+        await TestToolBehavior<IExtractor>();
+        await TestToolBehavior<Extractor>();
     }
 
     [Fact]
-    internal static void Issue094_RandomizerWorks()
+    internal static async Task Issue094_RandomizerWorks()
     {
-        TestToolBehavior<IRandomizer>();
-        TestToolBehavior<Randomizer>();
+        await TestToolBehavior<IRandomizer>();
+        await TestToolBehavior<Randomizer>();
     }
 
     [Fact]
-    internal static void Issue094_TesterWorks()
+    internal static async Task Issue094_TesterWorks()
     {
-        TestToolBehavior<ITester>();
-        TestToolBehavior<Tester>();
+        await TestToolBehavior<ITester>();
+        await TestToolBehavior<Tester>();
     }
 
     [Fact]
-    internal static void Issue094_ValuerWorks()
+    internal static async Task Issue094_ValuerWorks()
     {
-        TestToolBehavior<IValuer>();
-        TestToolBehavior<Valuer>();
+        await TestToolBehavior<IValuer>();
+        await TestToolBehavior<Valuer>();
     }
 
     [Fact]
-    internal static void Issue094_IntPtrWorks()
+    internal static Task Issue094_IntPtrWorks()
     {
-        TestToolBehavior<IntPtr>();
+        return TestToolBehavior<IntPtr>();
     }
 
     [Fact]
-    internal static void Issue094_RuntimeArrayWorks()
+    internal static Task Issue094_RuntimeArrayWorks()
     {
-        TestToolBehavior<Wrapped>();
+        return TestToolBehavior<Wrapped>();
     }
 
     [Fact]
-    internal static void Issue094_MemberInfoWorks()
+    internal static Task Issue094_MemberInfoWorks()
     {
-        TestToolBehavior<MemberInfo>();
+        return TestToolBehavior<MemberInfo>();
     }
 
     [Fact]
-    internal static void Issue094_SpanWorks()
+    internal static Task Issue094_SpanWorks()
     {
-        TestToolBehavior(typeof(Span<>));
+        return TestToolBehavior(typeof(Span<>));
     }
 
     [Fact]
-    internal static void Issue094_ValueTupleWorks()
+    internal static Task Issue094_ValueTupleWorks()
     {
-        TestToolBehavior(typeof(ValueTuple<,>));
+        return TestToolBehavior(typeof(ValueTuple<,>));
     }
 
     [Fact]
-    internal static void Issue094_FormatProviderWorks()
+    internal static async Task Issue094_FormatProviderWorks()
     {
-        TestToolBehavior<CultureInfo>();
-        TestToolBehavior<IFormatProvider>();
+        await TestToolBehavior<CultureInfo>();
+        await TestToolBehavior<IFormatProvider>();
     }
 
-    private static void TestToolBehavior<T>()
+    [Fact]
+    internal static async Task Issue094_FakedWorks()
     {
-        TestToolBehavior(typeof(T));
+        await TestToolBehavior(typeof(IFaked));
+        await TestToolBehavior(typeof(Fake<object>));
     }
 
-    private static void TestToolBehavior(Type type)
+    private static Task TestToolBehavior<T>()
+    {
+        return TestToolBehavior(typeof(T));
+    }
+
+    private static async Task TestToolBehavior(Type type)
     {
         for (int i = 0; i < 10; i++)
         {
@@ -197,10 +205,11 @@ public static class Issue094Tests
 
             object dupe = Tools.Duplicator.Copy(sample);
 
+            await Tools.AsyncAsserter.Is(sample, dupe);
             Tools.Asserter.Is(sample, dupe);
             Tools.Asserter.Is(
-                Tools.Valuer.GetHashCode(sample),
-                Tools.Valuer.GetHashCode(dupe),
+                await Tools.Valuer.GetHashCodeAsync(sample),
+                await Tools.Valuer.GetHashCodeAsync(dupe),
                 $"{sample}"
             );
         }

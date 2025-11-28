@@ -2,14 +2,20 @@ using System.Reflection;
 
 namespace CreateAndFake.xUnit.v2.Tests;
 
-public static class XUnit_v2Tests
+public static class XUnitTests
 {
     [Fact]
-    internal static void XUnit_v2_TestClassCoverage()
+    internal static void XUnit_TestClassCoverage()
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(RandomDataAttribute)),
             Assembly.GetExecutingAssembly()
         );
+    }
+
+    [Fact]
+    internal static Task XUnit_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
     }
 }

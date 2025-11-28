@@ -3,6 +3,8 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
+using CreateAndFake.RunnerTool;
+using CreateAndFake.RunnerTool.Attributes;
 
 namespace CreateAndFake.TesterTool;
 
@@ -227,6 +229,54 @@ public class Tester(TesterOptions options) : ITester
                 .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
             $"Missing tests for classes from {codeAssembly} in {testAssembly}."
         );
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task ValidateRandomDataParameters(
+        Assembly testAssembly,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(testAssembly, nameof(testAssembly));
+
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        IEnumerable<MethodInfo> testMethods = TypeDescriber
+            .FindLoadedTypes(testAssembly)
+            .Where(t => !t.IsGenericType)
+            .SelectMany(t =>
+                t.GetMethods(
+                    BindingFlags.Instance
+                        | BindingFlags.Static
+                        | BindingFlags.Public
+                        | BindingFlags.NonPublic
+                        | BindingFlags.FlattenHierarchy
+                )
+            )
+            .Where(m =>
+                !m.IsGenericMethod && m.GetCustomAttributes(true).Any(a => a is IRandomDataMarker)
+            );
+
+        foreach (MethodInfo method in testMethods)
+        {
+            MethodCallWrapper? data = null;
+            try
+            {
+                data = localOptions.Runner.CreateFor(method);
+                foreach (object? item in data.Args)
+                {
+                    _ = localOptions.TestDisplayNameConverter.Invoke(item);
+                }
+            }
+            catch (Exception e)
+            {
+                localOptions.Asserter.Fail(e, $"Randomization failed for method '{method}'");
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(data?.Args).ConfigureAwait(false);
+            }
+        }
     }
 
     /// <inheritdoc/>

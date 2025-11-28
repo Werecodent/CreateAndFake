@@ -13,4 +13,10 @@ public class MSTestTests
             Assembly.GetExecutingAssembly()
         );
     }
+
+    [TestMethod]
+    public Task MSTest_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+    }
 }

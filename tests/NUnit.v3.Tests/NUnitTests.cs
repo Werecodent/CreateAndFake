@@ -13,4 +13,10 @@ public static class NUnitTests
             Assembly.GetExecutingAssembly()
         );
     }
+
+    [Test]
+    public static Task NUnit_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+    }
 }

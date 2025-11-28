@@ -4,6 +4,7 @@ global using TesterMod = System.Func<
 >;
 using System.Reflection;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.RunnerTool.Attributes;
 
 namespace CreateAndFake.TesterTool;
 
@@ -78,4 +79,12 @@ public interface ITester : ITool<TesterOptions>
         Assembly testAssembly,
         TesterMod? optionConfiguration = null
     );
+
+    /// <summary>
+    ///     Validates <paramref name="testAssembly"/> methods marked by
+    ///     <see cref="IRandomDataMarker"/> can be populated with random data.
+    /// </summary>
+    /// <param name="testAssembly">Assembly with the tests.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    Task ValidateRandomDataParameters(Assembly testAssembly, TesterMod? optionConfiguration = null);
 }

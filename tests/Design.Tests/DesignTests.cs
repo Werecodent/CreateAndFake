@@ -28,4 +28,10 @@ public static class DesignTests
                 }
         );
     }
+
+    [Fact]
+    internal static Task Design_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+    }
 }

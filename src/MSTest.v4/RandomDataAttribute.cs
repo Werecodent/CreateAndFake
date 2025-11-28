@@ -1,9 +1,13 @@
 ﻿using System.Reflection;
 using CreateAndFake.RunnerTool;
+using CreateAndFake.RunnerTool.Attributes;
 
 namespace CreateAndFake.MSTest.v4;
 
-/// <summary>Populates <see cref="TestMethodAttribute"/> methods with random values for testing.</summary>
+/// <summary>
+///     Flags <see cref="TestMethodAttribute"/> methods
+///     to be populated with random values for testing.
+/// </summary>
 /// <remarks>
 ///     Earlier Parameters will be used to construct later Parameters if possible.<br/>
 ///     Use with Parameter attributes to control randomization behavior:
@@ -22,10 +26,9 @@ namespace CreateAndFake.MSTest.v4;
 ///     </example>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-public sealed class RandomDataAttribute : Attribute, ITestDataSource
+public sealed class RandomDataAttribute : Attribute, ITestDataSource, IRandomDataMarker
 {
-    /// <summary>Number of times to test the associated method.</summary>
-    /// <remarks>Default:<c>1</c></remarks>
+    /// <inheritdoc/>
     public int Trials { get; set; } = 1;
 
     /// <inheritdoc/>

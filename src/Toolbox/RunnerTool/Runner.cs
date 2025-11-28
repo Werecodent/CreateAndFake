@@ -187,6 +187,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 != task
             )
             {
+#if LEGACY
+                stopper.Cancel();
+#else
+                await stopper.CancelAsync().ConfigureAwait(false);
+#endif
                 throw new TimeoutException(
                     $"Attempting to run method '{data.Method.Name}' timed out."
                 );

@@ -59,6 +59,9 @@ public sealed record TesterOptions : IToolOptions
     /// <summary>Possible strings replacing generics in a type name for coverage tests.</summary>
     public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
 
+    /// <summary>Method used to convert parameters to a test name.</summary>
+    public Func<object?, string> TestDisplayNameConverter { get; init; } = o => o?.ToString() ?? "";
+
     /// <summary>Types to ignore for test class coverage tests.</summary>
     public FrozenSet<string> TestClassCoverageExceptions { get; init; } =
         FrozenSet.ToFrozenSet<string>([]);
