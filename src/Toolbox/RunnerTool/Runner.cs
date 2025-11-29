@@ -14,6 +14,10 @@ namespace CreateAndFake.RunnerTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Runner(RunnerOptions options) : IRunner
 {
+    /// <summary>Asynchronous cancellation not available in all versions.</summary>
+    private static readonly bool _CanAsyncCancel =
+        typeof(CancellationTokenSource).GetMethod("CancelAsync") != null;
+
     /// <inheritdoc/>
     public RunnerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
@@ -182,25 +186,25 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         using (CancellationTokenSource stopper = new())
         {
-            if (
+            bool timedOut =
                 (await Task.WhenAny(task, Task.Delay(timeout, stopper.Token)).ConfigureAwait(false))
-                != task
-            )
+                != task;
+
+            if (_CanAsyncCancel)
             {
-#if LEGACY
+                await ((dynamic)stopper).CancelAsync().ConfigureAwait(false);
+            }
+            else
+            {
                 stopper.Cancel();
-#else
-                await stopper.CancelAsync().ConfigureAwait(false);
-#endif
+            }
+
+            if (timedOut)
+            {
                 throw new TimeoutException(
                     $"Attempting to run method '{data.Method.Name}' timed out."
                 );
             }
-#if LEGACY
-            stopper.Cancel();
-#else
-            await stopper.CancelAsync().ConfigureAwait(false);
-#endif
         }
 
         try
