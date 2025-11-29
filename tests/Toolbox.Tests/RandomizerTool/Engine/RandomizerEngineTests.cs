@@ -20,7 +20,12 @@ public static class RandomizerEngineTests
     {
         return Tools.Tester.PreventsParameterMutation(
             new RandomizerEngine(Randomizer.DefaultHints),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]) }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [Randomizer.DefaultHints],
+                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]),
+                }
         );
     }
 }
