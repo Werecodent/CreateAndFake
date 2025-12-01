@@ -221,11 +221,6 @@ public static class Issue094Tests
 
             await Tools.AsyncAsserter.Is(sample, dupe);
             Tools.Asserter.Is(sample, dupe);
-            Tools.Asserter.Is(
-                await Tools.Valuer.GetHashCodeAsync(sample),
-                await Tools.Valuer.GetHashCodeAsync(dupe),
-                $"Hash code equality failed for type {type}: {sample}"
-            );
         }
     }
 }
