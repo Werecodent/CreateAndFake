@@ -50,6 +50,7 @@ public sealed class TypeInfoCreateHint : CreateHint
                                     t.GetMethods()
                                         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
                                 )
+                                .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
                                 .Where(m => m.IsPublic)
                     )
             },
@@ -65,6 +66,7 @@ public sealed class TypeInfoCreateHint : CreateHint
                         t =>
                             t.GetMethods()
                                 .Where(m => m.IsPublic)
+                                .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
                                 .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
                     )
             },

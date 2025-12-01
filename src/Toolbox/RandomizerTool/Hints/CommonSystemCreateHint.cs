@@ -16,12 +16,7 @@ public sealed class CommonSystemCreateHint : CreateHint
         {
             {
                 typeof(CultureInfo),
-                rand =>
-                    rand.Options.Gen.NextItem(
-                        CultureInfo.GetCultures(
-                            CultureTypes.NeutralCultures | CultureTypes.SpecificCultures
-                        )
-                    )
+                rand => rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures))
             },
             { typeof(DateTimeFormatInfo), rand => rand.Create<CultureInfo>().DateTimeFormat },
             { typeof(NumberFormatInfo), rand => rand.Create<CultureInfo>().NumberFormat },

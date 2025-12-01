@@ -1,12 +1,14 @@
 ﻿using System.Collections.Specialized;
 using System.Reflection;
+using CreateAndFake.Design;
+using CreateAndFake.DuplicatorTool;
 
 namespace CreateAndFake.RunnerTool;
 
 /// <summary>Holds parameter data for a method.</summary>
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
-public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
+public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args) : IDuplicatable
 {
     /// <summary>Parameter names with associated data to pass.</summary>
     private readonly OrderedDictionary _args =
@@ -64,5 +66,13 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
         {
             return Method.Invoke(instance, [.. Args]);
         }
+    }
+
+    /// <inheritdoc/>
+    public IDuplicatable DeepClone(IDuplicator duplicator)
+    {
+        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+
+        return new MethodCallWrapper(duplicator.Copy(method), duplicator.Copy(_args));
     }
 }

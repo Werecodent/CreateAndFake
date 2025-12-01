@@ -194,11 +194,7 @@ public static class Issue094Tests
         await TestToolBehavior<DateTimeFormatInfo>();
         await TestToolBehavior<NumberFormatInfo>();
 
-        foreach (
-            IFormatProvider provider in CultureInfo.GetCultures(
-                CultureTypes.NeutralCultures | CultureTypes.SpecificCultures
-            )
-        )
+        foreach (IFormatProvider provider in CultureInfo.GetCultures(CultureTypes.AllCultures))
         {
             provider.CreateDeepClone().Assert().Is(provider);
         }

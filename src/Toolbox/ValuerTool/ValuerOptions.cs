@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using System.Globalization;
-using System.Reflection;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
@@ -23,11 +22,11 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
 
     /// <summary>Types to use default equality/hashing.</summary>
     public FrozenSet<Type> FallbackTypes { get; init; } =
-        FrozenSet.ToFrozenSet([
-            typeof(CultureInfo),
-            typeof(DateTimeFormatInfo),
-            typeof(NumberFormatInfo),
-            typeof(CompareInfo),
+        FrozenSet.ToFrozenSet<Type>([
+            //typeof(CultureInfo),
+            //typeof(DateTimeFormatInfo),
+            //typeof(NumberFormatInfo),
+            //typeof(CompareInfo),
             /*typeof(MethodBase),
             typeof(MemberInfo),
             typeof(ConstructorInfo),
