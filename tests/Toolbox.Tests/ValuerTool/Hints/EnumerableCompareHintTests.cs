@@ -23,15 +23,22 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
     [Theory, RandomData]
     internal void Compare_SizeMismatchOutOfBounds(List<string> original)
     {
+        IValuerChainer chainer = CreateChainer(
+            Tools.Valuer.Options with
+            {
+                IncludeValueHashInComparison = false,
+            }
+        );
+
         List<string> variant = original.CreateDeepClone();
         variant.RemoveAt(variant.Count - 1);
 
-        DifferenceHintResult result = TestInstance.TryCompare(original, variant, CreateChainer());
+        DifferenceHintResult result = TestInstance.TryCompare(original, variant, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
         result.Data.Single().ToString().Assert().Contains("outofbounds");
 
-        result = TestInstance.TryCompare(variant, original, CreateChainer());
+        result = TestInstance.TryCompare(variant, original, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
         result.Data.Single().ToString().Assert().Contains("outofbounds");

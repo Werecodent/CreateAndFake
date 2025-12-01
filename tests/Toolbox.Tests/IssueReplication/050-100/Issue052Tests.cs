@@ -57,7 +57,13 @@ public static class Issue052Tests
         Data item2
     )
     {
-        Valuer valuer = new(Tools.Valuer.Options with { IncludeDefaultHints = false });
+        Valuer valuer = new(
+            Tools.Valuer.Options with
+            {
+                IncludeDefaultHints = false,
+                IncludeValueHashInComparison = false,
+            }
+        );
 
         hint.Setup(
             "Supports",

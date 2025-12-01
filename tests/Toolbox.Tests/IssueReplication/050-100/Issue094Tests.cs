@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
@@ -8,6 +9,7 @@ using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 
@@ -110,6 +112,7 @@ public static class Issue094Tests
     {
         await TestToolBehavior<IFaker>();
         await TestToolBehavior<Faker>();
+        await TestToolBehavior<FakeMetaProvider>();
     }
 
     [Fact]
@@ -202,6 +205,25 @@ public static class Issue094Tests
     {
         await TestToolBehavior(typeof(IFaked));
         await TestToolBehavior(typeof(Fake<object>));
+    }
+
+    [Fact]
+    internal static Task Issue094_MethodCallWrapperWorks()
+    {
+        return TestToolBehavior(typeof(MethodCallWrapper));
+    }
+
+    [Theory, RandomData]
+    internal static void Issue094_MethodCallWrapperWithFakesWorks(
+        MethodBase method,
+        Fake<object> fake
+    )
+    {
+        OrderedDictionary dict = new OrderedDictionary();
+        dict.Add("test", fake);
+
+        MethodCallWrapper wrapper = new MethodCallWrapper(method, dict);
+        wrapper.Assert().Is(wrapper.CreateDeepClone());
     }
 
     private static Task TestToolBehavior<T>()

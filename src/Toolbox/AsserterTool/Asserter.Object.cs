@@ -196,7 +196,7 @@ public partial class Asserter : IObjectAsserter
     /// <inheritdoc/>
     public virtual void Called(object? fake, AsserterMod? optionConfiguration, Times? total = null)
     {
-        IsNot(null, fake);
+        ReferenceNotEqual(null, fake);
         new Fake((IFaked)fake!).VerifyAll(total);
     }
 }

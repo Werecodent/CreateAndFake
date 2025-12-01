@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
@@ -16,9 +17,29 @@ public abstract class CompareHint : IToolHint
     /// <returns>Possible result.</returns>
     public DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer)
     {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
         if (Supports(expected, actual, valuer))
         {
-            return new(Compare(expected, actual, valuer));
+            IEnumerable<Difference> results = Compare(expected, actual, valuer);
+            if (
+                valuer.Options.IncludeValueHashInComparison
+                && !ReferenceEquals(expected, actual)
+                && expected is not null
+                && actual is not null
+            )
+            {
+                int expectedHash = GetHashCode(expected, valuer);
+                int actualHash = GetHashCode(actual, valuer);
+
+                if (expectedHash != actualHash)
+                {
+                    results = results.Append(
+                        new Difference("(ValueHash)", new Difference(expectedHash, actualHash))
+                    );
+                }
+            }
+            return new(results);
         }
         else
         {
@@ -33,14 +54,46 @@ public abstract class CompareHint : IToolHint
         IValuerChainer valuer
     )
     {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
         if (Supports(expected, actual, valuer))
         {
-            return new(CompareAsync(expected, actual, valuer));
+            return new(HandleAsyncCompare(expected, actual, valuer));
         }
         else
         {
             return DifferenceHintAsyncResult.None;
         }
+    }
+
+    /// <inheritdoc cref="TryAsyncCompare"/>
+    private async Task<IEnumerable<Difference>> HandleAsyncCompare(
+        object? expected,
+        object? actual,
+        IValuerChainer valuer
+    )
+    {
+        IEnumerable<Difference> results = await CompareAsync(expected, actual, valuer)
+            .ConfigureAwait(false);
+
+        if (
+            valuer.Options.IncludeValueHashInComparison
+            && !ReferenceEquals(expected, actual)
+            && expected is not null
+            && actual is not null
+        )
+        {
+            int expectedHash = await GetHashCodeAsync(expected, valuer).ConfigureAwait(false);
+            int actualHash = await GetHashCodeAsync(actual, valuer).ConfigureAwait(false);
+
+            if (expectedHash != actualHash)
+            {
+                results = results.Append(
+                    new Difference("(ValueHash)", new Difference(expectedHash, actualHash))
+                );
+            }
+        }
+        return results;
     }
 
     /// <summary>Tries to compute an identifying hash code for <paramref name="item"/> based upon value.</summary>

@@ -104,7 +104,8 @@ public static class ValuerTests
     internal static void Equals_NoDifferencesTrue(
         object data1,
         object data2,
-        Fake<CompareHint> hint
+        Fake<CompareHint> hint,
+        int hash
     )
     {
         hint.Setup(
@@ -117,17 +118,32 @@ public static class ValuerTests
             [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
         );
+        hint.Setup(
+            "GetHashCode",
+            [data1, Arg.LambdaAny<IValuerChainer>()],
+            Behavior.Returns(hash, Times.Once)
+        );
+        hint.Setup(
+            "GetHashCode",
+            [data2, Arg.LambdaAny<IValuerChainer>()],
+            Behavior.Returns(hash, Times.Once)
+        );
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Equals(data1, data2)
             .Assert()
             .Is(true);
 
-        hint.VerifyAll(Times.Exactly(2));
+        hint.VerifyAll(Times.Exactly(4));
     }
 
     [Theory, RandomData]
-    internal static void Equals_DifferencesFalse(object data1, object data2, Fake<CompareHint> hint)
+    internal static void Equals_DifferencesFalse(
+        object data1,
+        object data2,
+        Fake<CompareHint> hint,
+        int hash
+    )
     {
         hint.Setup(
             "Supports",
@@ -139,13 +155,23 @@ public static class ValuerTests
             [data1, data2, Arg.LambdaAny<IValuerChainer>()],
             Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once)
         );
+        hint.Setup(
+            "GetHashCode",
+            [data1, Arg.LambdaAny<IValuerChainer>()],
+            Behavior.Returns(hash, Times.Once)
+        );
+        hint.Setup(
+            "GetHashCode",
+            [data2, Arg.LambdaAny<IValuerChainer>()],
+            Behavior.Returns(hash, Times.Once)
+        );
 
         new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
             .Equals(data1, data2)
             .Assert()
             .Is(false);
 
-        hint.VerifyAll(Times.Exactly(2));
+        hint.VerifyAll(Times.Exactly(4));
     }
 
     [Theory, RandomData]

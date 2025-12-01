@@ -218,6 +218,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
             }
         }
 
+        if (task.Exception != null)
+        {
+            return new(data.Method, data.Args, UnwrapException(task.Exception), false, true);
+        }
+
         try
         {
             (bool, object?) result = await task.ConfigureAwait(false);
