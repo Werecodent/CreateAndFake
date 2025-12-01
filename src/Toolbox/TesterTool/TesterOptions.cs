@@ -79,6 +79,7 @@ public sealed record TesterOptions : IToolOptions
             typeof(MulticastNotSupportedException),
             typeof(TargetParameterCountException),
             typeof(ArgumentOutOfRangeException),
+            typeof(InsufficientMemoryException),
             typeof(UnauthorizedAccessException),
             typeof(EntryPointNotFoundException),
             typeof(ArrayTypeMismatchException),
@@ -102,6 +103,7 @@ public sealed record TesterOptions : IToolOptions
             typeof(KeyNotFoundException),
             typeof(InvalidCastException),
             typeof(PathTooLongException),
+            typeof(ThreadStateException),
             typeof(DllNotFoundException),
             typeof(FakeVerifyException),
             typeof(AggregateException),
@@ -114,6 +116,7 @@ public sealed record TesterOptions : IToolOptions
             typeof(AssertException),
             typeof(TargetException),
             typeof(SystemException),
+            typeof(RankException),
             typeof(ToolException),
         ]);
 }

@@ -17,13 +17,17 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return new(new TimeSpan(duplicator.Copy(span.Ticks)));
         }
-        else if (source is CultureInfo info)
+        else if (source is CultureInfo culture)
         {
-            return new(
-                info.IsReadOnly
-                    ? CultureInfo.ReadOnly(new CultureInfo(info.Name, info.UseUserOverride))
-                    : new CultureInfo(info.Name, info.UseUserOverride)
-            );
+            return new(culture.IsReadOnly ? culture : culture.Clone());
+        }
+        else if (source is DateTimeFormatInfo dateTimeFormat)
+        {
+            return new(dateTimeFormat.IsReadOnly ? dateTimeFormat : dateTimeFormat.Clone());
+        }
+        else if (source is NumberFormatInfo numberFormat)
+        {
+            return new(numberFormat.IsReadOnly ? numberFormat : numberFormat.Clone());
         }
         else if (source is Uri link)
         {

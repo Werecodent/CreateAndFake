@@ -26,9 +26,9 @@ public sealed class ExceptionCreateHint : CreateHint
                 .FindLocalSubclasses(type)
                 .Where(t => t.IsVisible)
                 .Where(t => t.IsSerializable)
-#if LEGACY // Security exceptions don't work with default serialization in .NET full.
-                .Where(t => !t.Namespace.StartsWith("System.Security", StringComparison.Ordinal))
-#endif
+                .Where(t =>
+                    t.Namespace?.StartsWith("System.Security", StringComparison.Ordinal) != true
+                )
                 .Select(t => t.GetConstructor([typeof(string)]))
                 .Where(c => c != null)
                 .Select(c => c!),

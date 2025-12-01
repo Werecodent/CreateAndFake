@@ -71,6 +71,19 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
                 yield return new Difference(field, diff);
             }
         }
+
+        if (valuer.Options.IncludeValueHashInComparison)
+        {
+            foreach (
+                Difference diff in valuer.Compare(
+                    valuer.GetHashCode(expected),
+                    valuer.GetHashCode(actual)
+                )
+            )
+            {
+                yield return new Difference("(ValueHash)", diff);
+            }
+        }
     }
 
     /// <inheritdoc/>
@@ -124,6 +137,22 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
                 results.Add(new Difference(field, diff));
             }
         }
+
+        if (valuer.Options.IncludeValueHashInComparison)
+        {
+            foreach (
+                Difference diff in await valuer
+                    .CompareAsync(
+                        await valuer.GetHashCodeAsync(expected).ConfigureAwait(false),
+                        await valuer.GetHashCodeAsync(actual).ConfigureAwait(false)
+                    )
+                    .ConfigureAwait(false)
+            )
+            {
+                results.Add(new Difference("(valueHash)", diff));
+            }
+        }
+
         return results;
     }
 

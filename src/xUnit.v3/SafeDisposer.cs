@@ -1,5 +1,7 @@
 namespace CreateAndFake.xUnit.v3;
 
+#pragma warning disable CA1816 // To prevent crashing the entire program.
+
 internal sealed class SafeDisposer : IAsyncDisposable
 {
     private readonly IEnumerable<IDisposable> _disposables;
@@ -18,6 +20,7 @@ internal sealed class SafeDisposer : IAsyncDisposable
             catch (Exception)
             {
                 // Prevent test harness crashes.
+                GC.SuppressFinalize(current);
             }
         }
         foreach (IAsyncDisposable current in _asyncDisposables)
@@ -29,6 +32,7 @@ internal sealed class SafeDisposer : IAsyncDisposable
             catch (Exception)
             {
                 // Prevent test harness crashes.
+                GC.SuppressFinalize(current);
             }
         }
     }
@@ -59,3 +63,5 @@ internal sealed class SafeDisposer : IAsyncDisposable
         }
     }
 }
+
+#pragma warning restore CA1816 // To prevent crashing the entire program.

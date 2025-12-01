@@ -23,8 +23,8 @@ public static class RandomizerEngineTests
             opt =>
                 opt with
                 {
-                    InjectionValues = [Randomizer.DefaultHints],
-                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]),
+                    InjectionValues = [Tools.Randomizer.Options, Randomizer.DefaultHints],
+                    MethodsToIgnore = FrozenSet.ToFrozenSet(["Create", "SelectHints", "Inject"]),
                 }
         );
     }

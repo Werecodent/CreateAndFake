@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
@@ -159,9 +160,15 @@ public static class Issue094Tests
     }
 
     [Fact]
-    internal static Task Issue094_MemberInfoWorks()
+    internal static async Task Issue094_MemberInfoWorks()
     {
-        return TestToolBehavior<MemberInfo>();
+        await TestToolBehavior<MemberInfo>();
+        await TestToolBehavior<MethodBase>();
+        await TestToolBehavior<ConstructorInfo>();
+        await TestToolBehavior<MethodInfo>();
+        await TestToolBehavior<PropertyInfo>();
+        await TestToolBehavior<FieldInfo>();
+        await TestToolBehavior<ParameterInfo>();
     }
 
     [Fact]
@@ -179,8 +186,15 @@ public static class Issue094Tests
     [Fact]
     internal static async Task Issue094_FormatProviderWorks()
     {
-        await TestToolBehavior<CultureInfo>();
         await TestToolBehavior<IFormatProvider>();
+        await TestToolBehavior<CultureInfo>();
+        await TestToolBehavior<DateTimeFormatInfo>();
+        await TestToolBehavior<NumberFormatInfo>();
+
+        foreach (IFormatProvider provider in CultureInfo.GetCultures(CultureTypes.AllCultures))
+        {
+            provider.CreateDeepClone().Assert().Is(provider);
+        }
     }
 
     [Fact]
@@ -210,7 +224,7 @@ public static class Issue094Tests
             Tools.Asserter.Is(
                 await Tools.Valuer.GetHashCodeAsync(sample),
                 await Tools.Valuer.GetHashCodeAsync(dupe),
-                $"{sample}"
+                $"Hash code equality failed for type {type}: {sample}"
             );
         }
     }

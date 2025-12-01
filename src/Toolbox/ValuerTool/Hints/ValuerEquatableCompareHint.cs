@@ -9,7 +9,7 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
 {
     /// <summary>Compares equatables by value as well.</summary>
     private static readonly ObjectCompareHint _NestedHint = new(
-        BindingFlags.Public | BindingFlags.Instance
+        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
     );
 
     /// <inheritdoc/>

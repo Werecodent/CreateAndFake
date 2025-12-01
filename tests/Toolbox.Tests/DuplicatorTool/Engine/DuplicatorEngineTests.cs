@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Engine;
@@ -22,6 +23,7 @@ public static class DuplicatorEngineTests
         return Tools.Tester.PreventsParameterMutation<DuplicatorEngine>(opt =>
             opt with
             {
+                InjectionValues = [Tools.Duplicator.Options, Duplicator.DefaultHints],
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
             }
         );

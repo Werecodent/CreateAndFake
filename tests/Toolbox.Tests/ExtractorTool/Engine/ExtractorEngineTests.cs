@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using CreateAndFake.ExtractorTool;
 using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.Tests.ExtractorTool.Engine;
@@ -22,6 +23,7 @@ public static class ExtractorEngineTests
         return Tools.Tester.PreventsParameterMutation<ExtractorEngine>(opt =>
             opt with
             {
+                InjectionValues = [Tools.Extractor.Options, Extractor.DefaultHints],
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
             }
         );

@@ -95,7 +95,16 @@ public sealed class Runner(RunnerOptions options) : IRunner
             await task.ConfigureAwait(false);
 
             PropertyInfo? prop = result.GetType().GetProperty("Result");
-            return (prop != null) ? (true, prop.GetValue(result)) : (false, null);
+            if (prop == null)
+            {
+                return (false, null);
+            }
+
+            result = prop.GetValue(result);
+            if (result == null)
+            {
+                return (true, null);
+            }
         }
 
         Type resultType = result.GetType();
@@ -176,9 +185,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         TimeSpan timeout =
-            (localOptions.Timeout.TotalMilliseconds is >= -1 and <= 10000) //int.MaxValue)
+            (localOptions.Timeout.TotalMilliseconds is >= -1)
                 ? localOptions.Timeout
-                : TimeSpan.FromMilliseconds(15000);
+                : TimeSpan.FromMilliseconds(30000);
 
         Task<(bool, object?)> task = Task.Run(() =>
             UnwrapTaskResult(() => data.InvokeOn(instance))
@@ -196,7 +205,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
             }
             else
             {
+#pragma warning disable AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
                 stopper.Cancel();
+#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
             }
 
             if (timedOut)
