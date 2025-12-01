@@ -30,6 +30,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new EnumerableCompareHint(),
         new SeededRandomCompareHint(),
         new MemberInfoCompareHint(),
+        new MethodBaseCompareHint(),
+        new ParameterInfoCompareHint(),
         new ObjectCompareHint(BindingFlags.Public | BindingFlags.Instance),
         new ObjectCompareHint(BindingFlags.NonPublic | BindingFlags.Instance),
         new StatelessCompareHint(),

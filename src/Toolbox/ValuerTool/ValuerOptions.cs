@@ -28,13 +28,18 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
             typeof(DateTimeFormatInfo),
             typeof(NumberFormatInfo),
             typeof(CompareInfo),
-            typeof(MethodBase),
+            /*typeof(MethodBase),
             typeof(MemberInfo),
             typeof(ConstructorInfo),
+            typeof(string).GetConstructors()[0].GetType(),
             typeof(MethodInfo),
+            typeof(string).GetMethods()[0].GetType(),
             typeof(PropertyInfo),
+            typeof(string).GetProperties()[0].GetType(),
             typeof(FieldInfo),
+            typeof(string).GetFields()[0].GetType(),
             typeof(ParameterInfo),
+            typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),*/
         ]);
 
     /// <summary>How long to wait for async comparisons to complete.</summary>

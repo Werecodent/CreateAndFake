@@ -49,6 +49,14 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return new(member);
         }
+        else if (source is MethodBase method)
+        {
+            return new(method);
+        }
+        else if (source is ParameterInfo parameter)
+        {
+            return new(parameter);
+        }
         else
         {
             return CopyHintResult.None;
