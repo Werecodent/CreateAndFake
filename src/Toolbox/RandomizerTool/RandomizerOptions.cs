@@ -61,12 +61,6 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
         );
     }
 
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(RandomizerOptions);
-    }
-
     /// <inheritdoc cref="NextSize"/>
     /// <seealso cref="CollectionMinSize"/>
     /// <seealso cref="CollectionMaxSize"/>

@@ -67,4 +67,10 @@ public sealed class ValueComparer<T>
     {
         return ValueComparer.Use.Compare(x, y);
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

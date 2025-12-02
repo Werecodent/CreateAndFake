@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool;
 
 namespace CreateAndFake.RunnerTool;
@@ -74,5 +75,11 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
         ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
 
         return new MethodCallWrapper(duplicator.Copy(method), duplicator.Copy(_args));
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{TypeDescriber.ExpandedName(GetType())}({TypeDescriber.BuildTestName(method)})";
     }
 }

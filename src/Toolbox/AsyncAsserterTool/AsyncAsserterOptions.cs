@@ -20,4 +20,10 @@ public record AsyncAsserterOptions : IToolOptions
 
     /// <summary>Handles comparisons for assertion checks.</summary>
     public required IValuer Valuer { get; init; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(AsyncAsserterOptions);
+    }
 }

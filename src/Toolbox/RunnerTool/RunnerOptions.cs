@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Reflection;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
@@ -11,6 +12,9 @@ namespace CreateAndFake.RunnerTool;
 /// <summary>Configuration for controlling run behavior.</summary>
 public sealed record RunnerOptions : IToolOptions
 {
+    /// <summary>Value generator used for base randomization.</summary>
+    public required IRandom Gen { get; init; }
+
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }
 
@@ -43,4 +47,10 @@ public sealed record RunnerOptions : IToolOptions
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(RunnerOptions);
+    }
 }

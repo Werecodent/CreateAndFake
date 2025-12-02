@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tooling;
 
@@ -15,4 +16,11 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
 
     /// <inheritdoc/>
     public TSelf? NestedOptions { get; init; } = default;
+
+    /// <inheritdoc/>
+    public sealed override string ToString()
+    {
+        // Prevents infinite loop from nested options.
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

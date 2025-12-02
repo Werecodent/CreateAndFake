@@ -39,10 +39,4 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
             ContentEndTypes
         );
     }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(ExtractorOptions);
-    }
 }

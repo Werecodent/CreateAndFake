@@ -158,4 +158,10 @@ public sealed class InheritanceTracker
             FindInheritance(type.BaseType, foundChildren);
         }
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{TypeDescriber.ExpandedName(GetType())}({TypeDescriber.ExpandedName(_type)})";
+    }
 }

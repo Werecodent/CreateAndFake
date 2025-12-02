@@ -60,13 +60,8 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
             IgnoreCurrentRandomSeed,
             FallbackTypes,
             AsyncTimeout,
-            SkipAsyncValues
+            SkipAsyncValues,
+            IncludeValueHashInComparison
         );
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(ValuerOptions);
     }
 }

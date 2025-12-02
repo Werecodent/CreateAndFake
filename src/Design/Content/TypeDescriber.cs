@@ -285,4 +285,43 @@ public static class TypeDescriber
                     .Any(a => a.AssemblyName == assembly.Name)
             );
     }
+
+    /// <summary>Builds <see cref="Type"/> name with generic argument names.</summary>
+    /// <param name="type"><see cref="Type"/> to describe.</param>
+    /// <returns>The built name.</returns>
+    public static string ExpandedName(Type? type)
+    {
+        if (type?.IsGenericType == true)
+        {
+            return string.Concat(
+                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
+                "<",
+                string.Join(",", type.GetGenericArguments().Select(ExpandedName)),
+                ">"
+            );
+        }
+        else
+        {
+            return type?.Name ?? "";
+        }
+    }
+
+    /// <summary>Builds a name for the <paramref name="method"/> under test.</summary>
+    /// <param name="method">Method being tested.</param>
+    /// <returns>The built name.</returns>
+    public static string BuildTestName(MethodBase method)
+    {
+        if (method != null)
+        {
+            IEnumerable<string> paramNames = method
+                .GetParameters()
+                .Select(p => ExpandedName(p.ParameterType));
+
+            return $"{method.Name}({string.Join(",", paramNames)})";
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

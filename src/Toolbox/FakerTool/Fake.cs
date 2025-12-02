@@ -1,4 +1,5 @@
-﻿using CreateAndFake.FakerTool.Proxy;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
 
@@ -83,5 +84,11 @@ public class Fake(IFaked fake)
     public void VerifyTotalCalls(Times times)
     {
         Dummy.FakeMeta.VerifyTotalCalls(times);
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

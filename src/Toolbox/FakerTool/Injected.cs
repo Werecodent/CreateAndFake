@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.FakerTool;
 
@@ -57,5 +58,11 @@ public sealed class Injected<T>
         {
             fake.VerifyAll();
         }
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

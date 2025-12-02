@@ -2,6 +2,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 
@@ -109,6 +110,8 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
+        MutatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
         if (instance == null)
         {
             return false;
@@ -126,7 +129,15 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         {
             try
             {
-                field.SetValue(instance, Variant(field.FieldType, field.GetValue(instance)));
+                object? smartData =
+                    (field.FieldType == typeof(string))
+                        ? new DataRandom(localOptions.Gen).Find(field.Name)
+                        : null;
+
+                field.SetValue(
+                    instance,
+                    smartData ?? Variant(field.FieldType, field.GetValue(instance))
+                );
                 modified = true;
             }
             catch (Exception)
@@ -144,9 +155,14 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         {
             try
             {
+                object? smartData =
+                    (property.PropertyType == typeof(string))
+                        ? new DataRandom(localOptions.Gen).Find(property.Name)
+                        : null;
+
                 property.SetValue(
                     instance,
-                    Variant(property.PropertyType, property.GetValue(instance))
+                    smartData ?? Variant(property.PropertyType, property.GetValue(instance))
                 );
                 modified = true;
             }

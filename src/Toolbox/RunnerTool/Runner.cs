@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RunnerTool.Attributes;
@@ -347,13 +348,19 @@ public sealed class Runner(RunnerOptions options) : IRunner
             _ = data.Remove(match);
             return match.Item2;
         }
-        else
+        else if (param.ParameterType == typeof(string))
         {
-            return localOptions.Randomizer.Inject(
-                param.ParameterType,
-                [.. args.Values.Cast<object>().Where(a => a is Fake or IFaked).Reverse()]
-            );
+            string? smartData = new DataRandom(localOptions.Gen).Find(param.Name);
+            if (smartData != null)
+            {
+                return smartData;
+            }
         }
+
+        return localOptions.Randomizer.Inject(
+            param.ParameterType,
+            [.. args.Values.Cast<object>().Where(a => a is Fake or IFaked).Reverse()]
+        );
     }
 
     /// <inheritdoc/>

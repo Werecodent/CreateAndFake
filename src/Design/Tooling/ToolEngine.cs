@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Runs the hint behavior pipeline.</summary>
@@ -26,5 +28,11 @@ public abstract class ToolEngine<THint>(IEnumerable<THint> defaultHints)
                 yield return hint;
             }
         }
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

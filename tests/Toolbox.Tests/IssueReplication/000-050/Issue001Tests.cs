@@ -17,4 +17,10 @@ public static class Issue001Tests
         unique.Value.Assert().IsNot(original.Value);
         unique.Assert().UniqueFrom(original);
     }
+
+    [Theory, RandomData]
+    internal static void Issue001_CanCreateUniqueValues(int original)
+    {
+        original.CreateUnique().Assert().IsNot(original);
+    }
 }

@@ -35,10 +35,4 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, Copy
             SerializableTypes
         );
     }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(DuplicatorOptions);
-    }
 }

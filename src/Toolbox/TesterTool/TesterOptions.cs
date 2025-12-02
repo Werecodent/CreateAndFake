@@ -86,9 +86,11 @@ public sealed record TesterOptions : IToolOptions
             typeof(ArrayTypeMismatchException),
             typeof(InvalidOperationException),
             typeof(TargetInvocationException),
+            typeof(AccessViolationException),
             typeof(IndexOutOfRangeException),
             typeof(EncoderFallbackException),
             typeof(DecoderFallbackException),
+            typeof(DataMisalignedException),
             typeof(ObjectDisposedException),
             typeof(BadImageFormatException),
             typeof(NotImplementedException),
@@ -120,4 +122,10 @@ public sealed record TesterOptions : IToolOptions
             typeof(RankException),
             typeof(ToolException),
         ]);
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(TesterOptions);
+    }
 }

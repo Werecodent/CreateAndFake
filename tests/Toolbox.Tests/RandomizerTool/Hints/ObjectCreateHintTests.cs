@@ -42,7 +42,7 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
             "Retries until using a concrete class that works.",
             () =>
                 typeof(IIsGoodOrBadSample)
-                    .CreateRandomInstance(opt => opt with { Limiter = Limiter.Hundred })
+                    .CreateRandomInstance(opt => opt with { Limiter = Limiter.Myriad })
                     .Assert()
                     .IsNot(null)
         );

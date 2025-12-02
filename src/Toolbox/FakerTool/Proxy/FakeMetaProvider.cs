@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool;
 
 namespace CreateAndFake.FakerTool.Proxy;
@@ -251,6 +252,12 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
         return (methodInfo.ReturnType == typeof(void))
             ? Expression.GetActionType([.. args])
             : Expression.GetFuncType([.. args, methodInfo.ReturnType]);
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{TypeDescriber.ExpandedName(GetType())}({Identifier})";
     }
 }
 

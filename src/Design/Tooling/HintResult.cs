@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Possible result from a tool hint.</summary>
@@ -11,4 +13,10 @@ public abstract class HintResult<T>(bool hasData, T data)
 
     /// <summary>Result of the hint if <see cref="HasData"/> is <see langword="true"/>.</summary>
     public T Data { get; } = data;
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

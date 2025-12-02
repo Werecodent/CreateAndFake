@@ -19,4 +19,10 @@ public sealed record AsserterOptions : IToolOptions
 
     /// <summary>Options to use when performing <see langword="string"/> comparison (such as ignoring case or symbols).</summary>
     public StringComparison StringCompareOption { get; init; } = StringComparison.InvariantCulture;
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return nameof(AsserterOptions);
+    }
 }

@@ -20,4 +20,10 @@ public static class Issue009Tests
         NameData.Values.Assert().Contains(sample._middleName);
         NameData.Values.Assert().Contains(sample.LastName);
     }
+
+    [Theory, RandomData]
+    internal static void Issue009_SmartDataIsUsedForRandomData(string firstName)
+    {
+        NameData.Values.Assert().Contains(firstName);
+    }
 }

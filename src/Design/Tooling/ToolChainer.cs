@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Handles recursive tool behavior.</summary>
@@ -37,4 +39,10 @@ public abstract class ToolChainer<TSelf, TOptions, THint>(TOptions options)
     /// <param name="options"></param>
     /// <returns></returns>
     protected abstract TSelf CreateSubChainer(TOptions options);
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

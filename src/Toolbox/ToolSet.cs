@@ -56,6 +56,7 @@ public sealed class ToolSet(
         Mutator mutator = new(
             new MutatorOptions
             {
+                Gen = gen,
                 Randomizer = randomizer,
                 Valuer = valuer,
                 Extractor = extractor,
@@ -84,6 +85,7 @@ public sealed class ToolSet(
         Runner runner = new(
             new RunnerOptions
             {
+                Gen = gen,
                 Faker = faker,
                 Randomizer = randomizer,
                 Mutator = mutator,
