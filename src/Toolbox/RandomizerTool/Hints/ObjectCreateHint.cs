@@ -3,7 +3,6 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Engine;
 
@@ -26,7 +25,7 @@ public sealed class ObjectCreateHint : CreateHint
         object? result =
             (type == null)
                 ? null
-                : Limiter.Dozen.Attempt(
+                : randomizer.Options.ObjectCreateAttempts.Attempt(
                     $"Create object of type '{type}'",
                     () => Create(FindTypeToCreate(type, randomizer), type, randomizer)
                 );

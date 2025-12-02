@@ -18,7 +18,10 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     public required IFaker Faker { get; init; }
 
     /// <summary>Limits attempts at matching conditions.</summary>
-    public Limiter Limiter { get; init; } = Limiter.Score;
+    public Limiter RandomizerCreateAttempts { get; init; } = Limiter.Score;
+
+    /// <summary>Limits attempts at creating unspecific objects.</summary>
+    public Limiter ObjectCreateAttempts { get; init; } = Limiter.Dozen;
 
     /// <summary>Limits population attempts for collections when encountering problems.</summary>
     public Limiter CollectionAttempts { get; init; } = Limiter.Score;
@@ -48,7 +51,8 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
         return ValueComparer.Use.GetHashCode(
             Gen,
             Faker,
-            Limiter,
+            RandomizerCreateAttempts,
+            ObjectCreateAttempts,
             CollectionAttempts,
             CollectionMinSize,
             CollectionMaxSize,

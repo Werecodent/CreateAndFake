@@ -1,18 +1,30 @@
-﻿using CreateAndFake.DuplicatorTool.Engine;
+﻿using System.Reflection;
+using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Engine;
 
 public static class DuplicatorChainerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(NotSupportedException),
+                typeof(TargetParameterCountException),
+                typeof(ArgumentException),
+            ],
+        };
+
     [Fact]
     internal static Task DuplicatorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IDuplicatorChainer>();
+        return Tools.Tester.PreventsNullRefException<IDuplicatorChainer>(config);
     }
 
     [Fact]
     internal static Task DuplicatorChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IDuplicatorChainer>();
+        return Tools.Tester.PreventsParameterMutation<IDuplicatorChainer>(config);
     }
 }

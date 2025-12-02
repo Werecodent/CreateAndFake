@@ -1,20 +1,33 @@
-﻿using CreateAndFake.FakerTool;
+﻿using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.Tests.FakerTool.Proxy;
 
 public static class FakeMetaProviderTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(FakeCallException),
+                typeof(ToolException),
+                typeof(FakeVerifyException),
+                typeof(InvalidOperationException),
+            ],
+        };
+
     [Fact]
     internal static Task FakeMetaProvider_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>();
+        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>(config);
     }
 
     [Fact]
     internal static Task FakeMetaProvider_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>();
+        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>(config);
     }
 
     [Theory, RandomData]

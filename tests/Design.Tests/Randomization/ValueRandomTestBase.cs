@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Randomization;
+﻿using System.Collections.Frozen;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tests.TestSamples;
 
@@ -7,18 +8,36 @@ namespace CreateAndFake.Design.Tests.Randomization;
 public abstract class ValueRandomTestBase<T>
     where T : ValueRandom
 {
+    private static readonly FrozenSet<Type> ignorableExceptions =
+    [
+        typeof(NotSupportedException),
+        typeof(ArgumentOutOfRangeException),
+        typeof(InvalidOperationException),
+        typeof(OverflowException),
+    ];
+
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
 
     [Fact]
     public Task ValueRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>(opt =>
+            opt with
+            {
+                IgnorableExceptions = ignorableExceptions,
+            }
+        );
     }
 
     [Fact]
     public Task ValueRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>();
+        return Tools.Tester.PreventsParameterMutation<T>(opt =>
+            opt with
+            {
+                IgnorableExceptions = ignorableExceptions,
+            }
+        );
     }
 
     [Fact]

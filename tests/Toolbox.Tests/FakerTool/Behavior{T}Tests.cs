@@ -4,16 +4,26 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class Behavior_T_Tests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(MemberAccessException),
+                typeof(InvalidOperationException),
+            ],
+        };
+
     [Fact]
     internal static Task Behavior_T_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(Behavior<>));
+        return Tools.Tester.PreventsNullRefException(typeof(Behavior<>), config);
     }
 
     [Fact]
     internal static Task Behavior_T_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(Behavior<>));
+        return Tools.Tester.PreventsParameterMutation(typeof(Behavior<>), config);
     }
 
     [Fact]

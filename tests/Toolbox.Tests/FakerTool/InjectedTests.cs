@@ -11,7 +11,12 @@ public static class InjectedTests
     {
         return Tools.Tester.PreventsNullRefException(
             sample,
-            opt => opt with { InjectionValues = [sample.Fakes] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [sample.Fakes],
+                    IgnorableExceptions = [typeof(InvalidOperationException)],
+                }
         );
     }
 
@@ -20,7 +25,12 @@ public static class InjectedTests
     {
         return Tools.Tester.PreventsParameterMutation(
             sample,
-            opt => opt with { InjectionValues = [sample.Fakes] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [sample.Fakes],
+                    IgnorableExceptions = [typeof(InvalidOperationException)],
+                }
         );
     }
 

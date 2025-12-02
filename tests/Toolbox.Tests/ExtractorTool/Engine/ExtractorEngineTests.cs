@@ -1,4 +1,6 @@
 using System.Collections.Frozen;
+using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.ExtractorTool.Engine;
 
@@ -13,6 +15,7 @@ public static class ExtractorEngineTests
             opt with
             {
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions = [typeof(ToolException), typeof(NotSupportedException)],
             }
         );
     }
@@ -25,6 +28,12 @@ public static class ExtractorEngineTests
             {
                 InjectionValues = [Tools.Extractor.Options, Extractor.DefaultHints],
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions =
+                [
+                    typeof(ToolException),
+                    typeof(NotSupportedException),
+                    typeof(TargetParameterCountException),
+                ],
             }
         );
     }

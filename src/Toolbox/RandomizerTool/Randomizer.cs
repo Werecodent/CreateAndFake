@@ -58,10 +58,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         try
         {
             return localOptions
-                .Limiter.StallUntil(
+                .RandomizerCreateAttempts.StallUntil(
                     $"Trying to create instance of '{type}'",
                     () =>
                     {
+                        // Don't pass local options here.
                         return new RandomizerChainer(Options, _engine).Create(
                             type,
                             optionConfiguration

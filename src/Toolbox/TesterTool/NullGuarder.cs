@@ -135,6 +135,8 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
             );
         }
 
-        return Options.IgnorableExceptions.Contains(taskException.GetType());
+        return Options.IgnoreAllExceptions
+            || Options.IgnorableExceptions.Contains(taskException.GetType())
+            || taskException.GetType() == typeof(ArgumentNullException);
     }
 }

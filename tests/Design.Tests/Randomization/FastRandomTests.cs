@@ -1,10 +1,19 @@
-﻿using CreateAndFake.Design.Randomization;
+﻿using System.Collections.Frozen;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
 public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
 {
+    private static readonly FrozenSet<Type> ignorableExceptions =
+    [
+        typeof(NotSupportedException),
+        typeof(ArgumentOutOfRangeException),
+        typeof(InvalidOperationException),
+        typeof(OverflowException),
+    ];
+
     private static readonly double[] _BadDoubles =
     [
         double.NaN,
@@ -22,13 +31,23 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     [Fact]
     internal static Task FastRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FastRandom>();
+        return Tools.Tester.PreventsNullRefException<FastRandom>(opt =>
+            opt with
+            {
+                IgnorableExceptions = ignorableExceptions,
+            }
+        );
     }
 
     [Fact]
     internal static Task FastRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FastRandom>();
+        return Tools.Tester.PreventsParameterMutation<FastRandom>(opt =>
+            opt with
+            {
+                IgnorableExceptions = ignorableExceptions,
+            }
+        );
     }
 
     [Fact]

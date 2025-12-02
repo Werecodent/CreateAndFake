@@ -64,6 +64,7 @@ dotnet_diagnostic.MA0076.severity = None
 dotnet_diagnostic.MA0169.severity = None
 dotnet_diagnostic.RCS1089.severity = None
 dotnet_diagnostic.RCS1123.severity = None
+dotnet_diagnostic.S2743.severity = None
 dotnet_diagnostic.S3993.severity = None
 
 # Design choice.

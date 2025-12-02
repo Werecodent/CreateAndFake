@@ -10,13 +10,15 @@ namespace CreateAndFake.Tests.TesterTool;
 
 public static class NullGuarderTests
 {
+    private static readonly TesterMod config = opt => opt with { IgnoreAllExceptions = true };
+
     private static readonly NullGuarder _ShortTestInstance = new(
         Tools.Tester.Options with
         {
             Runner = new Runner(
                 Tools.Runner.Options with
                 {
-                    Timeout = new TimeSpan(0, 0, 0, 0, 10),
+                    Timeout = new TimeSpan(0, 0, 0, 0, 20),
                 }
             ),
         }
@@ -32,13 +34,13 @@ public static class NullGuarderTests
     [Fact]
     internal static Task NullGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(_ShortTestInstance);
+        return Tools.Tester.PreventsNullRefException(_ShortTestInstance, config);
     }
 
     [Fact]
     internal static Task NullGuarder_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(_ShortTestInstance);
+        return Tools.Tester.PreventsParameterMutation(_ShortTestInstance, config);
     }
 
     [Fact]

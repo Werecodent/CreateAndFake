@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.Scenarios;
@@ -7,16 +8,31 @@ namespace CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(KeyNotFoundException),
+                typeof(ArgumentOutOfRangeException),
+                typeof(TargetException),
+                typeof(ToolException),
+                typeof(ArgumentException),
+                typeof(TargetParameterCountException),
+                typeof(InvalidOperationException),
+            ],
+        };
+
     [Fact]
     internal static Task MethodCallWrapper_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<MethodCallWrapper>();
+        return Tools.Tester.PreventsNullRefException<MethodCallWrapper>(config);
     }
 
     [Fact]
     internal static Task MethodCallWrapper_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<MethodCallWrapper>();
+        return Tools.Tester.PreventsParameterMutation<MethodCallWrapper>(config);
     }
 
     [Fact]

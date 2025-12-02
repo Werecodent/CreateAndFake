@@ -7,6 +7,9 @@ public static class TypeDescriberTests
     [Fact]
     internal static Task TypeDescriber_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(TypeDescriber));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(TypeDescriber),
+            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
+        );
     }
 }

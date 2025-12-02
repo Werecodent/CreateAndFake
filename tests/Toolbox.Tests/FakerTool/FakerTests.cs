@@ -8,16 +8,22 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class FakerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(ArgumentException)],
+        };
+
     [Fact]
     internal static Task Faker_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Faker>();
+        return Tools.Tester.PreventsNullRefException<Faker>(config);
     }
 
     [Fact]
     internal static Task Faker_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Faker>();
+        return Tools.Tester.PreventsParameterMutation<Faker>(config);
     }
 
     [Fact]

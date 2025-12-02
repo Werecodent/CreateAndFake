@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.Samples.Scenarios;
 
@@ -19,6 +20,7 @@ public static class ContentMapTests
             opt with
             {
                 InjectionValues = [Tools.Extractor.Options],
+                IgnorableExceptions = [typeof(ToolException)],
             }
         );
     }

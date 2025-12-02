@@ -10,26 +10,23 @@ namespace CreateAndFake.Tests.RandomizerTool;
 
 public static class RandomizerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            InjectionValues = [GetGeneratableMethod()],
+            IgnorableExceptions = [typeof(ToolException)],
+        };
+
     [Fact]
     internal static Task Randomizer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Randomizer>(opt =>
-            opt with
-            {
-                InjectionValues = [GetGeneratableMethod()],
-            }
-        );
+        return Tools.Tester.PreventsNullRefException<Randomizer>(config);
     }
 
     [Fact]
     internal static Task Randomizer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Randomizer>(opt =>
-            opt with
-            {
-                InjectionValues = [GetGeneratableMethod()],
-            }
-        );
+        return Tools.Tester.PreventsParameterMutation<Randomizer>(config);
     }
 
     private static MethodInfo GetGeneratableMethod()

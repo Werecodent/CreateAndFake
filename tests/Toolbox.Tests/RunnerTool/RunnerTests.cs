@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
@@ -7,26 +8,23 @@ namespace CreateAndFake.Tests.RunnerTool;
 
 public static class RunnerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            InjectionValues = [GetGeneratableMethod()],
+            IgnorableExceptions = [typeof(ArgumentOutOfRangeException), typeof(ToolException)],
+        };
+
     [Fact]
     internal static Task Runner_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Runner>(opt =>
-            opt with
-            {
-                InjectionValues = [GetGeneratableMethod()],
-            }
-        );
+        return Tools.Tester.PreventsNullRefException<Runner>(config);
     }
 
     [Fact]
     internal static Task Runner_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Runner>(opt =>
-            opt with
-            {
-                InjectionValues = [GetGeneratableMethod()],
-            }
-        );
+        return Tools.Tester.PreventsParameterMutation<Runner>(config);
     }
 
     private static MethodInfo GetGeneratableMethod()

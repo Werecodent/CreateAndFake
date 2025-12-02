@@ -1,4 +1,7 @@
-﻿using CreateAndFake.Design.Content;
+﻿using System.Reflection;
+using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
@@ -17,6 +20,24 @@ public abstract class CompareHintTestBase<T>(
 )
     where T : CompareHint
 {
+    /// <summary>Configuration to use for automatic tests.</summary>
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(InvalidCastException),
+                typeof(NotSupportedException),
+                typeof(ToolException),
+                typeof(TargetException),
+                typeof(InvalidOperationException),
+                typeof(TargetParameterCountException),
+                typeof(InsufficientExecutionStackException),
+                typeof(ArgumentException),
+                typeof(FakeCallException),
+            ],
+        };
+
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = testInstance;
 
@@ -30,14 +51,14 @@ public abstract class CompareHintTestBase<T>(
     [Fact]
     public Task CompareHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance, config);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
     public Task CompareHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(TestInstance);
+        return Tools.Tester.PreventsParameterMutation(TestInstance, config);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

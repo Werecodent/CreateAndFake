@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -13,6 +14,7 @@ public static class ValuerEngineTests
             opt with
             {
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions = [typeof(NotSupportedException)],
             }
         );
     }
@@ -25,6 +27,12 @@ public static class ValuerEngineTests
             {
                 InjectionValues = [Tools.Valuer.Options, Valuer.DefaultHints],
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions =
+                [
+                    typeof(NotSupportedException),
+                    typeof(TargetException),
+                    typeof(InsufficientExecutionStackException),
+                ],
             }
         );
     }

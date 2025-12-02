@@ -1,14 +1,11 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using System.Reflection;
-using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsyncAsserterTool;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
-using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
 
@@ -70,58 +67,11 @@ public sealed record TesterOptions : IToolOptions
     public FrozenSet<string> MethodsToIgnore { get; init; } =
         FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync", "PrintMembers"]);
 
+    /// <summary>If all inner exceptions are ignored when running tests on classes.</summary>
+    public bool IgnoreAllExceptions { get; init; } = false;
+
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
-    public FrozenSet<Type> IgnorableExceptions { get; init; } =
-        FrozenSet.ToFrozenSet([
-            typeof(InsufficientExecutionStackException),
-            typeof(WaitHandleCannotBeOpenedException),
-            typeof(InvalidFilterCriteriaException),
-            typeof(MulticastNotSupportedException),
-            typeof(TargetParameterCountException),
-            typeof(ArgumentOutOfRangeException),
-            typeof(InsufficientMemoryException),
-            typeof(UnauthorizedAccessException),
-            typeof(EntryPointNotFoundException),
-            typeof(OperationCanceledException),
-            typeof(ArrayTypeMismatchException),
-            typeof(InvalidOperationException),
-            typeof(TargetInvocationException),
-            typeof(AccessViolationException),
-            typeof(IndexOutOfRangeException),
-            typeof(EncoderFallbackException),
-            typeof(DecoderFallbackException),
-            typeof(DataMisalignedException),
-            typeof(ObjectDisposedException),
-            typeof(BadImageFormatException),
-            typeof(NotImplementedException),
-            typeof(ContextMarshalException),
-            typeof(MissingMethodException),
-            typeof(NullReferenceException),
-            typeof(TaskSchedulerException),
-            typeof(MissingFieldException),
-            typeof(ArgumentNullException),
-            typeof(MemberAccessException),
-            typeof(NotSupportedException),
-            typeof(EndOfStreamException),
-            typeof(KeyNotFoundException),
-            typeof(InvalidCastException),
-            typeof(PathTooLongException),
-            typeof(ThreadStateException),
-            typeof(DllNotFoundException),
-            typeof(FakeVerifyException),
-            typeof(AggregateException),
-            typeof(ArgumentException),
-            typeof(FakeCallException),
-            typeof(OverflowException),
-            typeof(TypeLoadException),
-            typeof(TimeoutException),
-            typeof(FormatException),
-            typeof(AssertException),
-            typeof(TargetException),
-            typeof(SystemException),
-            typeof(RankException),
-            typeof(ToolException),
-        ]);
+    public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
     /// <inheritdoc/>
     public override string ToString()

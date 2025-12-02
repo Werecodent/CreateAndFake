@@ -4,15 +4,25 @@ namespace CreateAndFake.Tests.ValuerTool.Engine;
 
 public static class ValuerChainerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(NotSupportedException),
+                typeof(InsufficientExecutionStackException),
+            ],
+        };
+
     [Fact]
     internal static Task IValuerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IValuerChainer>();
+        return Tools.Tester.PreventsNullRefException<IValuerChainer>(config);
     }
 
     [Fact]
     internal static Task IValuerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IValuerChainer>();
+        return Tools.Tester.PreventsParameterMutation<IValuerChainer>(config);
     }
 }

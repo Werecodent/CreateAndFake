@@ -11,6 +11,7 @@ dotnet_diagnostic.CA2263.severity = none
 # Unnecessary for tests.
 dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CS1591.severity = none
+dotnet_diagnostic.VSTHRD200.severity = None
 
 # Noise when using fluent APIs.
 dotnet_diagnostic.IDE0058.severity = none

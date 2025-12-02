@@ -6,22 +6,28 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class BehaviorTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]),
+            IgnorableExceptions =
+            [
+                typeof(ArgumentException),
+                typeof(NotImplementedException),
+                typeof(TargetParameterCountException),
+            ],
+        };
+
     [Fact]
     internal static Task Behavior_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
-            typeof(Behavior),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
-        );
+        return Tools.Tester.PreventsNullRefException(typeof(Behavior), config);
     }
 
     [Fact]
     internal static Task Behavior_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
-            typeof(Behavior),
-            opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]) }
-        );
+        return Tools.Tester.PreventsParameterMutation(typeof(Behavior), config);
     }
 
     [Fact]

@@ -7,16 +7,27 @@ namespace CreateAndFake.Tests.ValuerTool;
 
 public static class ValuerTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(ToolException),
+                typeof(NotSupportedException),
+                typeof(InsufficientExecutionStackException),
+            ],
+        };
+
     [Fact]
     internal static Task Valuer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Valuer>();
+        return Tools.Tester.PreventsNullRefException<Valuer>(config);
     }
 
     [Fact]
     internal static Task Valuer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Valuer>();
+        return Tools.Tester.PreventsParameterMutation<Valuer>(config);
     }
 
     [Fact]

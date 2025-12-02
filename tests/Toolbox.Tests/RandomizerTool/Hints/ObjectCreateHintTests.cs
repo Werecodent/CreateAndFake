@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Reiteration;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.ErrorCases;
@@ -36,15 +37,31 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
     }
 
     [Fact]
+    public void Create_FailsWithBadSample()
+    {
+        typeof(IIsGoodOrBadSample)
+            .Assert(type =>
+                Limiter.Hundred.Repeat(
+                    "Retries until failing to pick the good sample.",
+                    () =>
+                        type.CreateRandomInstance(opt =>
+                            opt with
+                            {
+                                ObjectCreateAttempts = Limiter.Once,
+                            }
+                        )
+                )
+            )
+            .Throws<ToolException>();
+    }
+
+    [Fact]
     public void Create_RetriesUntilGoodSample()
     {
-        Limiter.Dozen.Repeat(
-            "Retries until using a concrete class that works.",
-            () =>
-                typeof(IIsGoodOrBadSample)
-                    .CreateRandomInstance(opt => opt with { Limiter = Limiter.Myriad })
-                    .Assert()
-                    .IsNot(null)
-        );
+        typeof(IIsGoodOrBadSample)
+            .CreateRandomInstance(opt => opt with { ObjectCreateAttempts = Limiter.Hundred })
+            .GetType()
+            .Assert()
+            .Is(typeof(IsGoodSample));
     }
 }

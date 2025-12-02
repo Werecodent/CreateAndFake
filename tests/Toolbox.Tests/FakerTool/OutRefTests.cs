@@ -13,6 +13,9 @@ public static class OutRefTests
     [Fact]
     internal static Task OutRef_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(OutRef<>));
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(OutRef<>),
+            opt => opt with { IgnorableExceptions = [typeof(MemberAccessException)] }
+        );
     }
 }

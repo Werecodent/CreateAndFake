@@ -7,16 +7,22 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 
 public static class DuplicatorTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(ToolException)],
+        };
+
     [Fact]
     internal static Task Duplicator_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Duplicator>();
+        return Tools.Tester.PreventsNullRefException<Duplicator>(config);
     }
 
     [Fact]
     internal static Task Duplicator_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Duplicator>();
+        return Tools.Tester.PreventsParameterMutation<Duplicator>(config);
     }
 
     [Fact]

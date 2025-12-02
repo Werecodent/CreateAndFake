@@ -1,4 +1,6 @@
-﻿using CreateAndFake.Design.Content;
+﻿using System.Reflection;
+using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.TesterTool;
@@ -17,6 +19,21 @@ public abstract class CopyHintTestBase<T>(
 )
     where T : CopyHint, new()
 {
+    /// <summary>Configuration to use for automatic tests.</summary>
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(NotSupportedException),
+                typeof(TargetParameterCountException),
+                typeof(InsufficientExecutionStackException),
+                typeof(OverflowException),
+                typeof(ArgumentException),
+                typeof(ToolException),
+            ],
+        };
+
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = new T();
 
@@ -33,14 +50,14 @@ public abstract class CopyHintTestBase<T>(
     [Fact]
     public Task CopyHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance, config);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
     public Task CopyHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(TestInstance);
+        return Tools.Tester.PreventsParameterMutation(TestInstance, config);
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>

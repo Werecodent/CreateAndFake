@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.RandomizerTool.Hints;
 
@@ -5,16 +6,22 @@ namespace CreateAndFake.Tests.ExtractorTool;
 
 public static class ExtractorTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(ToolException)],
+        };
+
     [Fact]
     internal static Task Extractor_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Extractor>();
+        return Tools.Tester.PreventsNullRefException<Extractor>(config);
     }
 
     [Fact]
     internal static Task Extractor_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Extractor>();
+        return Tools.Tester.PreventsParameterMutation<Extractor>(config);
     }
 
     [Fact]

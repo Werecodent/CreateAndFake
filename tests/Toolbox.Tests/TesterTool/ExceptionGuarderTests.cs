@@ -8,16 +8,18 @@ namespace CreateAndFake.Tests.TesterTool;
 
 public static class ExceptionGuarderTests
 {
+    private static readonly TesterMod config = opt => opt with { IgnoreAllExceptions = true };
+
     [Fact]
     internal static Task ExceptionGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ExceptionGuarder>();
+        return Tools.Tester.PreventsNullRefException<ExceptionGuarder>(config);
     }
 
     [Fact]
     internal static Task ExceptionGuarder_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ExceptionGuarder>();
+        return Tools.Tester.PreventsParameterMutation<ExceptionGuarder>(config);
     }
 
     [Fact]

@@ -1,20 +1,36 @@
 using System.Reflection;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.AsyncAsserterTool;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Tests.AsyncAsserterTool;
 
 public static class AsyncAsserterTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(AssertException),
+                typeof(ArgumentException),
+                typeof(NotSupportedException),
+                typeof(InsufficientExecutionStackException),
+                typeof(ToolException),
+                typeof(TargetException),
+            ],
+        };
+
     [Fact]
     internal static Task AsyncAsserter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AsyncAsserter>();
+        return Tools.Tester.PreventsNullRefException<AsyncAsserter>(config);
     }
 
     [Fact]
     internal static Task AsyncAsserter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AsyncAsserter>();
+        return Tools.Tester.PreventsParameterMutation<AsyncAsserter>(config);
     }
 
     [Fact]

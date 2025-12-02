@@ -19,6 +19,13 @@ public abstract class CreateHintTestBase<T>(
 )
     where T : CreateHint
 {
+    /// <summary>Configuration to use for automatic tests.</summary>
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(InvalidOperationException)],
+        };
+
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = testInstance;
 
@@ -32,7 +39,7 @@ public abstract class CreateHintTestBase<T>(
     [Fact]
     public Task CreateHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(TestInstance, config);
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
@@ -42,7 +49,7 @@ public abstract class CreateHintTestBase<T>(
         return Tools.Tester.PreventsParameterMutation(
             TestInstance,
             opt =>
-                opt with
+                config(opt) with
                 {
                     InjectionValues =
                     [

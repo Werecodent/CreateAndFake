@@ -1,22 +1,35 @@
 ﻿using System.Reflection;
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.Tests.AsserterTool;
 
 public static class AsserterTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(AssertException),
+                typeof(ToolException),
+                typeof(FakeVerifyException),
+            ],
+        };
+
     private static readonly Asserter _testInstance = new(Tools.Asserter.Options);
 
     [Fact]
     internal static Task Asserter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Asserter>();
+        return Tools.Tester.PreventsNullRefException<Asserter>(config);
     }
 
     [Fact]
     internal static Task Asserter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Asserter>();
+        return Tools.Tester.PreventsParameterMutation<Asserter>(config);
     }
 
     [Fact]

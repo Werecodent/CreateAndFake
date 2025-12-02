@@ -10,10 +10,16 @@ namespace CreateAndFake.Tests.MutatorTool;
 
 public static class MutatorTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(ToolException)],
+        };
+
     [Fact]
     internal static Task Mutator_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Mutator>();
+        return Tools.Tester.PreventsNullRefException<Mutator>(config);
     }
 
     [Theory, RandomData]

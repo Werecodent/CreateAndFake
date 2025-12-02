@@ -98,6 +98,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     {
         ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
 
-        return Options.IgnorableExceptions.Contains(taskException.GetType());
+        return Options.IgnoreAllExceptions
+            || Options.IgnorableExceptions.Contains(taskException.GetType());
     }
 }

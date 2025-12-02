@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 
@@ -13,6 +14,12 @@ public static class DuplicatorEngineTests
             opt with
             {
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(TargetParameterCountException),
+                    typeof(NotSupportedException),
+                ],
             }
         );
     }
@@ -25,6 +32,12 @@ public static class DuplicatorEngineTests
             {
                 InjectionValues = [Tools.Duplicator.Options, Duplicator.DefaultHints],
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(TargetParameterCountException),
+                    typeof(NotSupportedException),
+                ],
             }
         );
     }

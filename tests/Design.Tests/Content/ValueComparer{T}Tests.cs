@@ -14,7 +14,18 @@ public static class ValueComparer_T_Tests
     [Fact]
     internal static Task ValueComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(ValueComparer<>));
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(ValueComparer<>),
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(MemberAccessException),
+                        typeof(InvalidOperationException),
+                    ],
+                }
+        );
     }
 
     [Theory, RandomData]

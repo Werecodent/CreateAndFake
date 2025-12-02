@@ -57,6 +57,10 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return new(parameter);
         }
+        else if (source is IntPtr intPointer)
+        {
+            return new(new IntPtr((int)intPointer));
+        }
         else
         {
             return CopyHintResult.None;
