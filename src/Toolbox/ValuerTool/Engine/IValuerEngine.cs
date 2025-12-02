@@ -11,7 +11,7 @@ public interface IValuerEngine : IToolEngine<CompareHint>
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <inheritdoc cref="IValuer.GetHashCodeAsync"/>
-    Task<IEnumerable<Difference>> CompareAsync(
+    IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer chainer

@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
@@ -37,7 +38,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
     }
 
     /// <inheritdoc/>
-    public Task<IEnumerable<Difference>> CompareAsync(
+    public IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer chainer
@@ -47,7 +48,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
 
         if (ReferenceEquals(expected, actual))
         {
-            return Task.FromResult<IEnumerable<Difference>>([]);
+            return AsyncEnumHelper<Difference>.Empty;
         }
 
         DifferenceHintAsyncResult? result = SelectHints(chainer)

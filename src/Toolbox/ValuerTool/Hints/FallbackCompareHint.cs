@@ -14,6 +14,16 @@ public sealed class FallbackCompareHint : CompareHint
     );
 
     /// <inheritdoc/>
+    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+
+        Type? type = (expected ?? actual)?.GetType();
+
+        return type != null && valuer.Options.FallbackTypes.Contains(type);
+    }
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
@@ -36,17 +46,15 @@ public sealed class FallbackCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override async Task<IEnumerable<Difference>> CompareAsync(
+    protected override async IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer valuer
     )
     {
-        List<Difference> results = [];
-
         if (expected != actual)
         {
-            results.Add(new Difference(".equals", new Difference(expected, actual)));
+            yield return new Difference(".equals", new Difference(expected, actual));
 
             DifferenceHintAsyncResult byValues = _NestedHint.TryAsyncCompare(
                 expected,
@@ -55,25 +63,17 @@ public sealed class FallbackCompareHint : CompareHint
             );
             if (byValues.HasData)
             {
-                results.AddRange(await byValues.Data!.ConfigureAwait(false));
+                await foreach (Difference diff in byValues.Data!.ConfigureAwait(false))
+                {
+                    yield return diff;
+                }
             }
         }
-        return results;
     }
 
     /// <inheritdoc/>
     protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
         return item?.GetHashCode() ?? ValueComparer.NullHash;
-    }
-
-    /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
-    {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
-
-        Type? type = (expected ?? actual)?.GetType();
-
-        return type != null && valuer.Options.FallbackTypes.Contains(type);
     }
 }

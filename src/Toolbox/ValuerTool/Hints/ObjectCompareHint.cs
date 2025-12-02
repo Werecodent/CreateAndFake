@@ -74,7 +74,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override Task<IEnumerable<Difference>> CompareAsync(
+    protected override async IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer valuer
@@ -84,17 +84,6 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return LazyCompareAsync(expected, actual, valuer);
-    }
-
-    /// <inheritdoc cref="Compare"/>
-    private async Task<IEnumerable<Difference>> LazyCompareAsync(
-        object expected,
-        object actual,
-        IValuerChainer valuer
-    )
-    {
-        List<Difference> results = [];
         Type type = expected.GetType();
 
         foreach (
@@ -103,29 +92,27 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
                 .Where(p => p.CanRead)
         )
         {
-            foreach (
-                Difference diff in await valuer
+            await foreach (
+                Difference diff in valuer
                     .CompareAsync(property.GetValue(expected), property.GetValue(actual))
                     .ConfigureAwait(false)
             )
             {
-                results.Add(new Difference(property, diff));
+                yield return new Difference(property, diff);
             }
         }
 
         foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
-            foreach (
-                Difference diff in await valuer
+            await foreach (
+                Difference diff in valuer
                     .CompareAsync(field.GetValue(expected), field.GetValue(actual))
                     .ConfigureAwait(false)
             )
             {
-                results.Add(new Difference(field, diff));
+                yield return new Difference(field, diff);
             }
         }
-
-        return results;
     }
 
     /// <inheritdoc/>

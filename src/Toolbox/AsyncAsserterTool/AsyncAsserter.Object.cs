@@ -1,6 +1,7 @@
 using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsyncAsserterTool.Categories;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.AsyncAsserterTool;
@@ -58,10 +59,10 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     {
         AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Difference[] differences =
-        [
-            .. await localOptions.Valuer.CompareAsync(expected, actual).ConfigureAwait(false),
-        ];
+        Difference[] differences = await AsyncEnumHelper
+            .ToArrayAsync(localOptions.Valuer.CompareAsync(expected, actual))
+            .ConfigureAwait(false);
+
         if (differences.Length > 0)
         {
             throw new AssertException(

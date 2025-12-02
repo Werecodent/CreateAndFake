@@ -31,7 +31,7 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     }
 
     /// <inheritdoc/>
-    protected override async Task<IEnumerable<Difference>> CompareAsync(
+    protected override IAsyncEnumerable<Difference> CompareAsync(
         IValuerAsyncComparable? expected,
         IValuerAsyncComparable? actual,
         IValuerChainer valuer
@@ -40,14 +40,7 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
 
-        List<Difference> results = [];
-        await foreach (
-            Difference diff in expected.CompareAsync(actual, valuer).ConfigureAwait(false)
-        )
-        {
-            results.Add(diff);
-        }
-        return results;
+        return expected.CompareAsync(actual, valuer);
     }
 
     /// <inheritdoc/>

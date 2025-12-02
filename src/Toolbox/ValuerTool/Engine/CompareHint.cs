@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
@@ -67,14 +68,18 @@ public abstract class CompareHint : IToolHint
     }
 
     /// <inheritdoc cref="TryAsyncCompare"/>
-    private async Task<IEnumerable<Difference>> HandleAsyncCompare(
+    private async IAsyncEnumerable<Difference> HandleAsyncCompare(
         object? expected,
         object? actual,
         IValuerChainer valuer
     )
     {
-        IEnumerable<Difference> results = await CompareAsync(expected, actual, valuer)
-            .ConfigureAwait(false);
+        await foreach (
+            Difference diff in CompareAsync(expected, actual, valuer).ConfigureAwait(false)
+        )
+        {
+            yield return diff;
+        }
 
         if (
             valuer.Options.IncludeValueHashInComparison
@@ -88,12 +93,12 @@ public abstract class CompareHint : IToolHint
 
             if (expectedHash != actualHash)
             {
-                results = results.Append(
-                    new Difference("(ValueHash)", new Difference(expectedHash, actualHash))
+                yield return new Difference(
+                    "(ValueHash)",
+                    new Difference(expectedHash, actualHash)
                 );
             }
         }
-        return results;
     }
 
     /// <summary>Tries to compute an identifying hash code for <paramref name="item"/> based upon value.</summary>
@@ -142,13 +147,13 @@ public abstract class CompareHint : IToolHint
     );
 
     /// <inheritdoc cref="Compare"/>
-    protected virtual Task<IEnumerable<Difference>> CompareAsync(
+    protected virtual IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer valuer
     )
     {
-        return Task.FromResult(Compare(expected, actual, valuer));
+        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
     }
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>

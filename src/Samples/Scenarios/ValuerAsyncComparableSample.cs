@@ -16,16 +16,16 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
 
         if (other is ValuerAsyncComparableSample sample)
         {
-            foreach (
-                Difference diff in await valuer
+            await foreach (
+                Difference diff in valuer
                     .CompareAsync(StringValue, sample.StringValue)
                     .ConfigureAwait(false)
             )
             {
                 yield return new Difference($".{nameof(StringValue)}", diff);
             }
-            foreach (
-                Difference diff in await valuer
+            await foreach (
+                Difference diff in valuer
                     .CompareAsync(NumberValue, sample.NumberValue)
                     .ConfigureAwait(false)
             )

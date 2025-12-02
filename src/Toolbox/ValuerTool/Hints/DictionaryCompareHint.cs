@@ -63,7 +63,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override Task<IEnumerable<Difference>> CompareAsync(
+    protected override async IAsyncEnumerable<Difference> CompareAsync(
         IDictionary? expected,
         IDictionary? actual,
         IValuerChainer valuer
@@ -73,21 +73,9 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         ArgumentGuard.ThrowIfNull(actual, nameof(actual));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return LazyCompareAsync(expected, actual, valuer);
-    }
-
-    /// <inheritdoc cref="CompareAsync"/>
-    private static async Task<IEnumerable<Difference>> LazyCompareAsync(
-        IDictionary expected,
-        IDictionary actual,
-        IValuerChainer valuer
-    )
-    {
-        List<Difference> results = [];
-
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
-            results.Add(new Difference(expected.GetType(), actual.GetType()));
+            yield return new Difference(expected.GetType(), actual.GetType());
         }
 
         object[] expectedKeys = [.. expected.Keys.Cast<object>()];
@@ -107,18 +95,18 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
             if (match != null)
             {
-                foreach (
-                    Difference diff in await valuer
+                await foreach (
+                    Difference diff in valuer
                         .CompareAsync(expected[key], actual[match])
                         .ConfigureAwait(false)
                 )
                 {
-                    results.Add(new Difference($"[{key}]", diff));
+                    yield return new Difference($"[{key}]", diff);
                 }
             }
             else
             {
-                results.Add(new Difference($"[{key}]", new Difference(expected[key], "'null'")));
+                yield return new Difference($"[{key}]", new Difference(expected[key], "'null'"));
             }
         }
 
@@ -136,11 +124,9 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
             if (match == null)
             {
-                results.Add(new Difference($"[{key}]", new Difference("'null'", actual[key])));
+                yield return new Difference($"[{key}]", new Difference("'null'", actual[key]));
             }
         }
-
-        return results;
     }
 
     /// <inheritdoc/>

@@ -26,3 +26,6 @@ dotnet_diagnostic.MA0048.severity = None
 
 # False positive when calling tester methods.
 dotnet_diagnostic.S2699.severity = None
+
+# TODO: Remove, temporary for commenting out tests.
+dotnet_diagnostic.RCS1181.severity = None

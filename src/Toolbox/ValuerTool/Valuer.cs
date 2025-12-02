@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
@@ -91,7 +92,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<Difference>> CompareAsync(
+    public IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         ValuerMod? optionConfiguration = null
@@ -100,12 +101,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return
-            [
-                .. await CreateChainer(optionConfiguration)
-                    .CompareAsync(expected, actual)
-                    .ConfigureAwait(false),
-            ];
+            return CreateChainer(optionConfiguration).CompareAsync(expected, actual);
         }
         catch (Exception e)
         {
@@ -164,7 +160,9 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc/>
     public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
     {
-        return !(await CompareAsync(x, y, optionConfiguration).ConfigureAwait(false)).Any();
+        return !await AsyncEnumHelper
+            .HasAnyAsync(CompareAsync(x, y, optionConfiguration))
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

@@ -29,7 +29,7 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     );
 
     /// <inheritdoc cref="Compare"/>
-    Task<IEnumerable<Difference>> CompareAsync(
+    IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         ValuerMod? optionConfiguration = null

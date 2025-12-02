@@ -40,7 +40,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override Task<IEnumerable<Difference>> CompareAsync(
+    protected override IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer valuer
@@ -50,7 +50,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
         if (expected == null || actual == null)
         {
-            return Task.FromResult<IEnumerable<Difference>>([new Difference(expected, actual)]);
+            return AsyncEnumHelper.CreateFrom([new Difference(expected, actual)]);
         }
 
         Type expectedType = TypeDescriber.FindConcreteInterface(
@@ -64,12 +64,10 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
         if (expectedType != actualType)
         {
-            return Task.FromResult<IEnumerable<Difference>>([
-                new Difference(expectedType, actualType),
-            ]);
+            return AsyncEnumHelper.CreateFrom([new Difference(expectedType, actualType)]);
         }
 
-        return (Task<IEnumerable<Difference>>)
+        return (IAsyncEnumerable<Difference>)
             GetType()
                 .GetMethod(
                     nameof(CompareAsyncHandler),
@@ -115,17 +113,15 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
     /// <inheritdoc cref="Compare"/>
     /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
-    private static async Task<IEnumerable<Difference>> CompareAsyncHandler<T>(
+    private static async IAsyncEnumerable<Difference> CompareAsyncHandler<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
         IValuerChainer valuer
     )
     {
-        List<Difference> differences = [];
-
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
-            differences.Add(new Difference(expected.GetType(), actual.GetType()));
+            yield return new Difference(expected.GetType(), actual.GetType());
         }
 
         IAsyncEnumerator<T> expectedEnumerator = expected.GetAsyncEnumerator();
@@ -138,37 +134,32 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             {
                 if (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
                 {
-                    differences.AddRange(
-                        (
-                            await valuer
-                                .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
-                                .ConfigureAwait(false)
-                        ).Select(diff => new Difference(index, diff))
-                    );
+                    await foreach (
+                        Difference diff in valuer
+                            .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
+                            .ConfigureAwait(false)
+                    )
+                    {
+                        yield return new Difference(index, diff);
+                    }
                 }
                 else
                 {
-                    differences.Add(
-                        new Difference(
-                            index,
-                            new Difference(expectedEnumerator.Current, "'outofbounds'")
-                        )
+                    yield return new Difference(
+                        index,
+                        new Difference(expectedEnumerator.Current, "'outofbounds'")
                     );
                 }
                 index++;
             }
             while (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
-                differences.Add(
-                    new Difference(
-                        index++,
-                        new Difference("'outofbounds'", actualEnumerator.Current)
-                    )
+                yield return new Difference(
+                    index++,
+                    new Difference("'outofbounds'", actualEnumerator.Current)
                 );
             }
         }
-
-        return differences;
     }
 
     /// <inheritdoc cref="GetHashCodeAsync"/>

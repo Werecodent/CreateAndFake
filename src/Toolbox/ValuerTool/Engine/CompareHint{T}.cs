@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.Design.Content;
+
+namespace CreateAndFake.ValuerTool.Engine;
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 
@@ -30,7 +32,7 @@ public abstract class CompareHint<T> : CompareHint
     );
 
     /// <inheritdoc/>
-    protected sealed override Task<IEnumerable<Difference>> CompareAsync(
+    protected sealed override IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         IValuerChainer valuer
@@ -40,13 +42,13 @@ public abstract class CompareHint<T> : CompareHint
     }
 
     /// <inheritdoc cref="CompareAsync(object,object,IValuerChainer)"/>
-    protected virtual Task<IEnumerable<Difference>> CompareAsync(
+    protected virtual IAsyncEnumerable<Difference> CompareAsync(
         T? expected,
         T? actual,
         IValuerChainer valuer
     )
     {
-        return Task.FromResult<IEnumerable<Difference>>([.. Compare(expected, actual, valuer)]);
+        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
     }
 
     /// <inheritdoc/>

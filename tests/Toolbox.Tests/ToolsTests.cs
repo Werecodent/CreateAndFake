@@ -8,6 +8,7 @@ using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
+using CreateAndFake.ValuerTool.Engine;
 using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
@@ -70,6 +71,7 @@ public static class ToolsTests
             typeof(Tools),
             typeof(BaseGuarder),
             typeof(IValuerAsyncComparable),
+            typeof(DifferenceHintAsyncResult),
         ];
 
         Dictionary<Type, Exception> failures = [];

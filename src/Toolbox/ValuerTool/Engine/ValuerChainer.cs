@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool.Proxy;
 
@@ -73,21 +74,36 @@ public sealed class ValuerChainer
 
             if (_compareHistory.Add(refHash))
             {
-                return _engine.Compare(expected, actual, GetSubChainer(optionConfiguration));
-            }
-            else
-            {
-                return [];
+                // Yield return is required here to prevent infinite loops.
+                foreach (
+                    Difference diff in _engine.Compare(
+                        expected,
+                        actual,
+                        GetSubChainer(optionConfiguration)
+                    )
+                )
+                {
+                    yield return diff;
+                }
             }
         }
         else
         {
-            return _engine.Compare(expected, actual, GetSubChainer(optionConfiguration));
+            foreach (
+                Difference diff in _engine.Compare(
+                    expected,
+                    actual,
+                    GetSubChainer(optionConfiguration)
+                )
+            )
+            {
+                yield return diff;
+            }
         }
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<Difference>> CompareAsync(
+    public async IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
         ValuerMod? optionConfiguration = null
@@ -105,25 +121,32 @@ public sealed class ValuerChainer
             {
                 try
                 {
-                    return await _engine
-                        .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
-                        .ConfigureAwait(false);
+                    // Await & yield return is required here to prevent infinite loops.
+                    await foreach (
+                        Difference diff in _engine
+                            .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                            .ConfigureAwait(false)
+                    )
+                    {
+                        yield return diff;
+                    }
                 }
                 finally
                 {
                     _ = _compareHistory.Remove(refHash);
                 }
             }
-            else
-            {
-                return [];
-            }
         }
         else
         {
-            return await _engine
-                .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
-                .ConfigureAwait(false);
+            await foreach (
+                Difference diff in _engine
+                    .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                    .ConfigureAwait(false)
+            )
+            {
+                yield return diff;
+            }
         }
     }
 
@@ -179,6 +202,7 @@ public sealed class ValuerChainer
         _hashHistory[refHash] = item;
         try
         {
+            // Await is required here to prevent infinite loops.
             return await _engine
                 .GetHashCodeAsync(item, GetSubChainer(optionConfiguration))
                 .ConfigureAwait(false);
@@ -204,7 +228,9 @@ public sealed class ValuerChainer
     /// <inheritdoc/>
     public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
     {
-        return !(await CompareAsync(x, y, optionConfiguration).ConfigureAwait(false)).Any();
+        return !await AsyncEnumHelper
+            .HasAnyAsync(CompareAsync(x, y, optionConfiguration))
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

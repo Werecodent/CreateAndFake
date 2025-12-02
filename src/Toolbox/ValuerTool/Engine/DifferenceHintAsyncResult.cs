@@ -3,16 +3,16 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc/>
-public sealed class DifferenceHintAsyncResult : HintResult<Task<IEnumerable<Difference>>?>
+public sealed class DifferenceHintAsyncResult : HintResult<IAsyncEnumerable<Difference>?>
 {
     /// <summary>For when a hint doesn't support a type or fails to compare it.</summary>
     public static DifferenceHintAsyncResult None { get; } = new(false, null);
 
     /// <inheritdoc/>
-    private DifferenceHintAsyncResult(bool hasData, Task<IEnumerable<Difference>>? data)
+    private DifferenceHintAsyncResult(bool hasData, IAsyncEnumerable<Difference>? data)
         : base(hasData, data) { }
 
-    /// <inheritdoc cref="DifferenceHintAsyncResult(bool,Task{IEnumerable{Difference}})"/>
-    public DifferenceHintAsyncResult(Task<IEnumerable<Difference>> data)
+    /// <inheritdoc cref="DifferenceHintAsyncResult(bool,IAsyncEnumerable{Difference})"/>
+    public DifferenceHintAsyncResult(IAsyncEnumerable<Difference> data)
         : this(true, data) { }
 }

@@ -82,6 +82,7 @@ public sealed record TesterOptions : IToolOptions
             typeof(InsufficientMemoryException),
             typeof(UnauthorizedAccessException),
             typeof(EntryPointNotFoundException),
+            typeof(OperationCanceledException),
             typeof(ArrayTypeMismatchException),
             typeof(InvalidOperationException),
             typeof(TargetInvocationException),
