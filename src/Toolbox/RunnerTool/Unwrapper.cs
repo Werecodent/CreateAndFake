@@ -24,15 +24,13 @@ internal static class Unwrapper
     {
         object? result = call.Invoke();
 
-        if (result == null)
-        {
-            return null;
-        }
-
-        if (
-            result.GetType().Inherits<Task>()
-            || result.GetType().Inherits<ValueTask>()
-            || result.GetType().Inherits(typeof(ValueTask<>))
+        while (
+            result != null
+            && (
+                result.GetType().Inherits<Task>()
+                || result.GetType().Inherits<ValueTask>()
+                || result.GetType().Inherits(typeof(ValueTask<>))
+            )
         )
         {
             result = await UnwrapTask(result).ConfigureAwait(false);

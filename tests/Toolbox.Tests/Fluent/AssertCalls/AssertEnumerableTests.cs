@@ -19,13 +19,13 @@ public static class AssertEnumerableTests
             ],
         };
 
-    //[Fact]
+    [Fact]
     internal static Task AssertEnumerable_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertEnumerable>(config);
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertEnumerable_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertEnumerable>(config);

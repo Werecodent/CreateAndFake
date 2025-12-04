@@ -19,13 +19,13 @@ public static class AssertComparableTests
             ],
         };
 
-    //[Fact]
+    [Fact]
     internal static Task AssertComparable_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertComparable>(config);
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertComparable_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertComparable>(config);

@@ -19,13 +19,13 @@ public static class AssertTypeTests
             ],
         };
 
-    //[Fact]
+    [Fact]
     internal static Task AssertType_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertType>(config);
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertType_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertType>(config);

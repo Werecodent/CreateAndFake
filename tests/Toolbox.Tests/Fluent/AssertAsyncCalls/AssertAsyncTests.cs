@@ -4,7 +4,7 @@ namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public static class AssertAsyncTests
 {
-    //s[Fact]
+    [Fact]
     internal static Task AssertAsync_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertAsync>(opt =>
@@ -15,7 +15,7 @@ public static class AssertAsyncTests
         );
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertAsync_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertAsync>(opt =>
@@ -26,7 +26,7 @@ public static class AssertAsyncTests
         );
     }
 
-    //[Theory, RandomData]
+    [Theory, RandomData]
     internal static Task Throws_HandlesAsyncNoError(InvalidDataException error)
     {
         return error.Assert(async e => await WaitTest(e)).Throws<InvalidDataException>();

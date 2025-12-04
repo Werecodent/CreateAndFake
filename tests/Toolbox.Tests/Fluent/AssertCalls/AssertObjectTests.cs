@@ -20,13 +20,13 @@ public static class AssertObjectTests
             ],
         };
 
-    //[Fact]
+    [Fact]
     internal static Task AssertObject_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertObject>(config);
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertObject_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertObject>(config);

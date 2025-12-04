@@ -19,13 +19,13 @@ public static class AssertErrorTests
             ],
         };
 
-    //[Fact]
+    [Fact]
     internal static Task AssertError_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<AssertError>(config);
     }
 
-    //[Fact]
+    [Fact]
     internal static Task AssertError_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<AssertError>(config);
