@@ -59,17 +59,17 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     {
         AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Difference[] differences = await AsyncEnumHelper
-            .ToArrayAsync(localOptions.Valuer.CompareAsync(expected, actual))
+        IList<Difference> differences = await AsyncEnumHelper
+            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual))
             .ConfigureAwait(false);
 
-        if (differences.Length > 0)
+        if (differences.Count > 0)
         {
             throw new AssertException(
                 $"Value equality failed for type '{GetTypeName(expected, actual)}'.",
                 details,
                 localOptions.Gen.InitialSeed,
-                string.Join<Difference>(Environment.NewLine, differences)
+                string.Join(Environment.NewLine, differences)
             );
         }
     }

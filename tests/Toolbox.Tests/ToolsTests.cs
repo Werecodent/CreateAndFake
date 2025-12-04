@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
+using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
@@ -64,6 +65,7 @@ public static class ToolsTests
             typeof(Arg),
             typeof(Fake<>),
             typeof(VoidType),
+            typeof(VoidReturn),
             typeof(AnyGeneric),
             typeof(Injected<>),
             typeof(Behavior<>),

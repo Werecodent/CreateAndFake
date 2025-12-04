@@ -32,17 +32,20 @@ public static class AsyncEnumHelper
         return await enumerator.MoveNextAsync().ConfigureAwait(false);
     }
 
-    /// <summary>Converts <paramref name="values"/> to an array.</summary>
+    /// <summary>Converts <paramref name="values"/> to a list.</summary>
     /// <typeparam name="T">Content type.</typeparam>
     /// <param name="values">Collection to convert.</param>
-    /// <returns>The created array.</returns>
-    public static async Task<T[]> ToArrayAsync<T>(IAsyncEnumerable<T> values)
+    /// <returns>The created list.</returns>
+    public static async Task<IList<T>> ToListAsync<T>(IAsyncEnumerable<T>? values)
     {
         List<T> results = [];
-        await foreach (T value in values.ConfigureAwait(false))
+        if (values != null)
         {
-            results.Add(value);
+            await foreach (T value in values.ConfigureAwait(false))
+            {
+                results.Add(value);
+            }
         }
-        return [.. results];
+        return results;
     }
 }

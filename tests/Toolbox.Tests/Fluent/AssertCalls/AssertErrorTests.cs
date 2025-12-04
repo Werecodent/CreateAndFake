@@ -1,3 +1,5 @@
+using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.RunnerTool;
@@ -6,16 +8,27 @@ namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertErrorTests
 {
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(AssertException),
+                typeof(ToolException),
+                typeof(InvalidCastException),
+            ],
+        };
+
     //[Fact]
     internal static Task AssertError_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertError>();
+        return Tools.Tester.PreventsNullRefException<AssertError>(config);
     }
 
     //[Fact]
     internal static Task AssertError_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertError>();
+        return Tools.Tester.PreventsParameterMutation<AssertError>(config);
     }
 
     [Theory, RandomData]

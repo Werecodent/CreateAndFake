@@ -2,22 +2,32 @@ using CreateAndFake.Fluent.AssertAsyncCalls;
 
 namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public sealed class AssertAsyncTests
+public static class AssertAsyncTests
 {
-    //[Fact]
+    //s[Fact]
     internal static Task AssertAsync_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertAsync>();
+        return Tools.Tester.PreventsNullRefException<AssertAsync>(opt =>
+            opt with
+            {
+                IgnoreAllExceptions = true,
+            }
+        );
     }
 
     //[Fact]
     internal static Task AssertAsync_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertAsync>();
+        return Tools.Tester.PreventsParameterMutation<AssertAsync>(opt =>
+            opt with
+            {
+                IgnoreAllExceptions = true,
+            }
+        );
     }
 
     //[Theory, RandomData]
-    internal Task Throws_HandlesAsyncNoError(InvalidDataException error)
+    internal static Task Throws_HandlesAsyncNoError(InvalidDataException error)
     {
         return error.Assert(async e => await WaitTest(e)).Throws<InvalidDataException>();
     }

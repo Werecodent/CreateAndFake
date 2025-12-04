@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
@@ -45,120 +43,6 @@ public sealed class Runner(RunnerOptions options) : IRunner
         return new(results);
     }
 
-    /// <summary>Ensures the result is completed.</summary>
-    /// <param name="call">Potentially wrapped data.</param>
-    /// <returns>The unwrapped result.</returns>
-    private static async Task<(bool, object?)> UnwrapTaskResult(Func<object?> call)
-    {
-        object? result = call.Invoke();
-
-        if (result?.GetType().Inherits(typeof(IAsyncEnumerable<>)) ?? false)
-        {
-            result = typeof(Runner)
-                .GetMethod(nameof(EnumerateAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-                .MakeGenericMethod(
-                    TypeDescriber
-                        .FindConcreteInterface(result.GetType(), typeof(IAsyncEnumerable<>))
-                        .GetGenericArguments()
-                )
-                .Invoke(null, [result]);
-        }
-
-        if (result == null)
-        {
-            return (true, null);
-        }
-
-        if (result is ValueTask valueTask)
-        {
-            if (result.GetType().Inherits(typeof(ValueTask<>)))
-            {
-                result = typeof(Runner)
-                    .GetMethod(
-                        nameof(ExecuteValueTask),
-                        BindingFlags.Static | BindingFlags.NonPublic
-                    )!
-                    .MakeGenericMethod(
-                        TypeDescriber
-                            .FindConcreteInterface(result.GetType(), typeof(ValueTask<>))
-                            .GetGenericArguments()
-                    )
-                    .Invoke(null, [result])!;
-            }
-            else
-            {
-                await valueTask.ConfigureAwait(false);
-            }
-        }
-
-        if (result is Task task)
-        {
-            await task.ConfigureAwait(false);
-
-            PropertyInfo? prop = result.GetType().GetProperty("Result");
-            if (prop == null)
-            {
-                return (false, null);
-            }
-
-            result = prop.GetValue(result);
-            if (result == null)
-            {
-                return (true, null);
-            }
-        }
-
-        Type resultType = result.GetType();
-        if (
-            resultType.Inherits<ICollection>()
-            || resultType.Inherits(typeof(ICollection<>))
-            || resultType == typeof(string)
-        )
-        {
-            return (true, result);
-        }
-
-        // Required to execute yield return methods.
-        if (resultType.Inherits(typeof(IEnumerable<>)))
-        {
-            return (
-                true,
-                typeof(Runner)
-                    .GetMethod(nameof(Enumerate), BindingFlags.Static | BindingFlags.NonPublic)!
-                    .MakeGenericMethod(
-                        TypeDescriber
-                            .FindConcreteInterface(result.GetType(), typeof(IEnumerable<>))
-                            .GetGenericArguments()
-                    )
-                    .Invoke(null, [result])
-            );
-        }
-
-        return (true, result);
-    }
-
-    private static async Task<T> ExecuteValueTask<T>(ValueTask<T> task)
-    {
-        return await task.ConfigureAwait(false);
-    }
-
-    private static T[] Enumerate<T>(object syncData)
-    {
-        List<T> results = [];
-        results.AddRange((IEnumerable<T>)syncData);
-        return [.. results];
-    }
-
-    private static async Task<T[]> EnumerateAsync<T>(object asyncData)
-    {
-        List<T> results = [];
-        await foreach (T item in ((IAsyncEnumerable<T>)asyncData).ConfigureAwait(false))
-        {
-            results.Add(item);
-        }
-        return [.. results];
-    }
-
     /// <inheritdoc/>
     public Task<RunResult> Run(
         object? instance,
@@ -190,9 +74,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 ? localOptions.Timeout
                 : TimeSpan.FromMilliseconds(30000);
 
-        Task<(bool, object?)> task = Task.Run(() =>
-            UnwrapTaskResult(() => data.InvokeOn(instance))
-        );
+        Task<object?> task = Task.Run(() => Unwrapper.UnwrapResult(() => data.InvokeOn(instance)));
 
         using (CancellationTokenSource stopper = new())
         {
@@ -221,17 +103,17 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         if (task.Exception != null)
         {
-            return new(data.Method, data.Args, UnwrapException(task.Exception), false, true);
+            return new(data.Method, data.Args, UnwrapException(task.Exception), true);
         }
 
         try
         {
-            (bool, object?) result = await task.ConfigureAwait(false);
-            return new(data.Method, data.Args, result.Item2, result.Item1, false);
+            object? result = await task.ConfigureAwait(false);
+            return new(data.Method, data.Args, result, false);
         }
         catch (Exception taskException)
         {
-            return new(data.Method, data.Args, UnwrapException(taskException), false, true);
+            return new(data.Method, data.Args, UnwrapException(taskException), true);
         }
     }
 

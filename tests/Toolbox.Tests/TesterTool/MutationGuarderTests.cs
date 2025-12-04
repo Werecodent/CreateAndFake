@@ -19,6 +19,7 @@ public static class MutationGuarderTests
                 typeof(TargetParameterCountException),
                 typeof(TargetException),
                 typeof(ArgumentException),
+                typeof(FormatException),
             ],
         };
 

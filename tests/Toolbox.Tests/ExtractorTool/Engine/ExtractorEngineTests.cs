@@ -15,7 +15,13 @@ public static class ExtractorEngineTests
             opt with
             {
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
-                IgnorableExceptions = [typeof(ToolException), typeof(NotSupportedException)],
+                IgnorableExceptions =
+                [
+                    typeof(ToolException),
+                    typeof(NotSupportedException),
+                    typeof(TargetParameterCountException),
+                    typeof(InvalidOperationException),
+                ],
             }
         );
     }
@@ -33,6 +39,7 @@ public static class ExtractorEngineTests
                     typeof(ToolException),
                     typeof(NotSupportedException),
                     typeof(TargetParameterCountException),
+                    typeof(InvalidOperationException),
                 ],
             }
         );

@@ -6,13 +6,11 @@ namespace CreateAndFake.RunnerTool;
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="Args" path="/summary"/></param>
 /// <param name="result"><inheritdoc cref="Result" path="/summary"/></param>
-/// <param name="hasSuccessfulResult"><inheritdoc cref="HasSuccessfulResult" path="/summary"/></param>
 /// <param name="threwException"><inheritdoc cref="ThrewException" path="/summary"/></param>
 public sealed class RunResult(
     MethodBase method,
     IEnumerable<object?> args,
     object? result,
-    bool hasSuccessfulResult,
     bool threwException
 )
 {
@@ -26,7 +24,8 @@ public sealed class RunResult(
     public object? Result { get; } = result;
 
     /// <summary>If the method completed and returned data; Result will be the data.</summary>
-    public bool HasSuccessfulResult { get; } = hasSuccessfulResult;
+    public bool HasSuccessfulResult { get; } =
+        !threwException && result?.GetType() != typeof(VoidReturn);
 
     /// <summary>If the method threw an exception; Result will be the exception.</summary>
     public bool ThrewException { get; } = threwException;

@@ -1,27 +1,13 @@
 using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsyncAsserterTool.Categories;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.AsyncAsserterTool;
 
 /// <inheritdoc cref="IAsyncAsserter"/>
 public partial class AsyncAsserter : IAsyncEnumerableAsserter
 {
-    private static async Task<IEnumerable<T>?> Collect<T>(IAsyncEnumerable<T>? collection)
-    {
-        if (collection == null)
-        {
-            return null;
-        }
-
-        List<T> results = [];
-        await foreach (T item in collection.ConfigureAwait(false))
-        {
-            results.Add(item);
-        }
-        return results;
-    }
-
     /// <inheritdoc/>
     public virtual Task Fail<T>(IAsyncEnumerable<T>? collection, string? details = null)
     {
@@ -36,7 +22,10 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     )
     {
         AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        localOptions.Asserter.Fail(await Collect(collection).ConfigureAwait(false), details);
+        localOptions.Asserter.Fail(
+            await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false),
+            details
+        );
     }
 
     /// <inheritdoc/>
@@ -108,7 +97,7 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
         AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         localOptions.Asserter.HasCount(
             count,
-            await Collect(collection).ConfigureAwait(false),
+            await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false),
             details
         );
     }
