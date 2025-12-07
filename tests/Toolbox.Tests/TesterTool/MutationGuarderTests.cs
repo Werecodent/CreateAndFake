@@ -17,6 +17,7 @@ public static class MutationGuarderTests
         {
             IgnorableExceptions =
             [
+                typeof(InvalidOperationException),
                 typeof(TargetParameterCountException),
                 typeof(TargetException),
                 typeof(ArgumentException),

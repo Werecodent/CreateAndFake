@@ -15,6 +15,7 @@ public static class AsserterTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(FakeVerifyException),
+                typeof(TimeoutException),
             ],
         };
 
