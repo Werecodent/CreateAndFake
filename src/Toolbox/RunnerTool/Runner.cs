@@ -98,7 +98,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
             if (timedOut)
             {
                 throw new TimeoutException(
-                    $"Attempting to run method '{data.Method.Name}' timed out."
+                    $"Attempting to run method '{data.Method.Name}' timed out: {timeout}"
                 );
             }
         }
