@@ -48,7 +48,7 @@ public sealed partial class Limiter : IAsyncLimiter
         CancellationToken? canceler = null
     )
     {
-        return StallUntilAsync(message, null, behavior, canceler);
+        return StallUntilAsync(message, (Action?)null, behavior, canceler);
     }
 
     /// <inheritdoc/>

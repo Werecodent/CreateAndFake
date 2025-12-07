@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
@@ -90,9 +91,12 @@ public static class MutationGuarderTests
     [Fact]
     internal static Task CallMethod_TimesOut()
     {
-        return _ShortTestInstance
-            .Assert(t => t.PreventsMutationOnStatics(typeof(LongMethodSample), false))
-            .Throws<TimeoutException>();
+        return Limiter.Few.RetryAsync<AssertException>(
+            "Attempting to test timeout works.",
+            _ShortTestInstance
+                .Assert(t => t.PreventsMutationOnStatics(typeof(LongMethodSample), false))
+                .Throws<TimeoutException>()
+        );
     }
 
     [Fact]

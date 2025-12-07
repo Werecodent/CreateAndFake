@@ -62,28 +62,28 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsIntValueTask(int data)
     {
-        ValueTask<int> run = ValueTask.FromResult(data);
+        ValueTask<int> run = new(Task.FromResult(data));
         (await Unwrapper.UnwrapResult(() => run)).Assert().Is(data);
     }
 
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsStringValueTask(string data)
     {
-        ValueTask<string> run = ValueTask.FromResult(data);
+        ValueTask<string> run = new(Task.FromResult(data));
         (await Unwrapper.UnwrapResult(() => run)).Assert().Is(data);
     }
 
     [Fact]
     internal static async Task UnwrapResult_UnwrapsNullValueTask()
     {
-        ValueTask<object> run = ValueTask.FromResult<object>(null);
+        ValueTask<object> run = new(Task.FromResult<object>(null));
         (await Unwrapper.UnwrapResult(() => run)).Assert().Is(null);
     }
 
     [Fact]
     internal static async Task UnwrapResult_UnwrapsValueTask()
     {
-        (await Unwrapper.UnwrapResult(() => ValueTask.CompletedTask))
+        (await Unwrapper.UnwrapResult(() => new ValueTask(Task.CompletedTask)))
             .Assert()
             .Is(VoidReturn.Instance);
     }
