@@ -10,47 +10,47 @@ namespace CreateAndFake.AsyncAsserterTool;
 public partial class AsyncAsserter : IAsyncObjectAsserter
 {
     /// <inheritdoc/>
-    public Task Is(object? expected, object? actual, string? details = null)
+    public Task IsAsync(object? expected, object? actual, string? details = null)
     {
-        return Is(expected, actual, Unconfigured, details);
+        return IsAsync(expected, actual, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public Task Is(
+    public Task IsAsync(
         object? expected,
         object? actual,
         AsyncAsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ValuesEqual(expected, actual, optionConfiguration, details);
+        return ValuesEqualAsync(expected, actual, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
-    public Task IsNot(object? expected, object? actual, string? details = null)
+    public Task IsNotAsync(object? expected, object? actual, string? details = null)
     {
-        return IsNot(expected, actual, Unconfigured, details);
+        return IsNotAsync(expected, actual, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public Task IsNot(
+    public Task IsNotAsync(
         object? expected,
         object? actual,
         AsyncAsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ValuesNotEqual(expected, actual, optionConfiguration, details);
+        return ValuesNotEqualAsync(expected, actual, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task ValuesEqual(object? expected, object? actual, string? details = null)
+    public virtual Task ValuesEqualAsync(object? expected, object? actual, string? details = null)
     {
-        return ValuesEqual(expected, actual, Unconfigured, details);
+        return ValuesEqualAsync(expected, actual, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task ValuesEqual(
+    public virtual async Task ValuesEqualAsync(
         object? expected,
         object? actual,
         AsyncAsserterMod? optionConfiguration,
@@ -75,13 +75,17 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ValuesNotEqual(object? expected, object? actual, string? details = null)
+    public virtual Task ValuesNotEqualAsync(
+        object? expected,
+        object? actual,
+        string? details = null
+    )
     {
-        return ValuesNotEqual(expected, actual, Unconfigured, details);
+        return ValuesNotEqualAsync(expected, actual, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task ValuesNotEqual(
+    public virtual async Task ValuesNotEqualAsync(
         object? expected,
         object? actual,
         AsyncAsserterMod? optionConfiguration,
@@ -101,13 +105,13 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task AreUnique(object? expected, object? actual, string? details = null)
+    public virtual Task AreUniqueAsync(object? expected, object? actual, string? details = null)
     {
-        return AreUnique(expected, actual, Unconfigured, details);
+        return AreUniqueAsync(expected, actual, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task AreUnique(
+    public virtual Task AreUniqueAsync(
         object? expected,
         object? actual,
         AsyncAsserterMod? optionConfiguration,

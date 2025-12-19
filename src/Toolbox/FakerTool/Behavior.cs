@@ -164,12 +164,14 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <returns>Instance to set up the mock with.</returns>
     public static Behavior<T> Series<T>(params IEnumerable<T> values)
     {
-        IEnumerator<T> gen = (values ?? []).GetEnumerator();
+        List<T> collected = values?.ToList() ?? [];
+
+        int i = 0;
         return Set(() =>
         {
-            if (gen.MoveNext())
+            if (i < collected.Count)
             {
-                return gen.Current;
+                return collected[i++];
             }
             else
             {

@@ -241,7 +241,7 @@ public static class Issue094Tests
 
             object dupe = Tools.Duplicator.Copy(sample);
 
-            await Tools.AsyncAsserter.Is(sample, dupe);
+            await Tools.AsyncAsserter.IsAsync(sample, dupe);
             Tools.Asserter.Is(sample, dupe);
         }
     }

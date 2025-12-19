@@ -139,10 +139,9 @@ public sealed class CollectionCopyHint : CopyHint
     {
         List<object?> copy = [];
 
-        IEnumerator enumerator = source.GetEnumerator();
-        while (enumerator.MoveNext())
+        foreach (object item in source)
         {
-            copy.Add(duplicator.Copy(enumerator.Current));
+            copy.Add(duplicator.Copy(item));
         }
 
         if (reverse)

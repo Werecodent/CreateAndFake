@@ -96,10 +96,9 @@ public class FrozenCollectionCopyHint : CopyHint
     {
         List<T?> copy = [];
 
-        IEnumerator enumerator = source.GetEnumerator();
-        while (enumerator.MoveNext())
+        foreach (T? item in source)
         {
-            copy.Add((T?)duplicator.Copy(enumerator.Current));
+            copy.Add(duplicator.Copy(item));
         }
 
         return [.. copy];

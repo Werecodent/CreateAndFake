@@ -73,7 +73,7 @@ public abstract class CopyHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 result = TestInstance.TryCopy(data, CreateChainer());
 
-                await Tools.AsyncAsserter.Is(
+                await Tools.AsyncAsserter.IsAsync(
                     new CopyHintResult(data),
                     result,
                     "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."

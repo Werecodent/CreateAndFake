@@ -137,12 +137,11 @@ internal abstract class BaseGuarder(TesterOptions options)
     {
         if (data is not null and not string)
         {
-            IEnumerator gen = data.GetEnumerator();
-            while (gen?.MoveNext() ?? false)
+            foreach (object item in data)
             {
-                if (!Options.InjectionValues.Any(v => ReferenceEquals(gen.Current, v)))
+                if (!Options.InjectionValues.Any(v => ReferenceEquals(item, v)))
                 {
-                    await Disposer.CleanupAsync(gen.Current).ConfigureAwait(false);
+                    await Disposer.CleanupAsync(item).ConfigureAwait(false);
                 }
             }
         }

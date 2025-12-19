@@ -53,7 +53,18 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
             .Intersect(AllContent(), _options.Valuer)
             .Where(d => !_options.UniqueIgnoredTypes.Contains(d.GetType()))
             .Where(d => !d.GetType().IsEnum)
-            .Where(d => !(d is IEnumerable series && !series.GetEnumerator().MoveNext()));
+            .Where(d =>
+            {
+                if (d is IEnumerable series)
+                {
+                    foreach (object item in series)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            });
     }
 
     /// <inheritdoc/>

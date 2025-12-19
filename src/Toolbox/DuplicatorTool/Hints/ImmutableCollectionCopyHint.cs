@@ -99,10 +99,9 @@ public class ImmutableCollectionCopyHint : CopyHint
     {
         List<T?> copy = [];
 
-        IEnumerator enumerator = source.GetEnumerator();
-        while (enumerator.MoveNext())
+        foreach (T? item in source)
         {
-            copy.Add((T?)duplicator.Copy(enumerator.Current));
+            copy.Add(duplicator.Copy(item));
         }
 
         if (reverse)

@@ -41,7 +41,8 @@ public static class AsyncAsserterTests
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                 .Where(m => !m.IsVirtual)
                 .Select(m => m.Name)
-                .Where(n => n is not nameof(AsyncAsserter.Is) and not nameof(AsyncAsserter.IsNot))
+                .Where(n => n is not nameof(AsyncAsserter.IsAsync))
+                .Where(n => n is not nameof(AsyncAsserter.IsNotAsync))
                 .Where(n => n is not $"get_{nameof(AsyncAsserter.Options)}")
         );
     }

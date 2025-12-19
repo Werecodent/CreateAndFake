@@ -9,13 +9,13 @@ namespace CreateAndFake.AsyncAsserterTool;
 public partial class AsyncAsserter : IAsyncEnumerableAsserter
 {
     /// <inheritdoc/>
-    public virtual Task Fail<T>(IAsyncEnumerable<T>? collection, string? details = null)
+    public virtual Task FailAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
     {
-        return Fail(collection, Unconfigured, details);
+        return FailAsync(collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task Fail<T>(
+    public virtual async Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,
         string? details = null
@@ -29,29 +29,29 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task IsEmpty<T>(IAsyncEnumerable<T>? collection, string? details = null)
+    public virtual Task IsEmptyAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
     {
-        return IsEmpty(collection, Unconfigured, details);
+        return IsEmptyAsync(collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task IsEmpty<T>(
+    public virtual Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return HasCount(0, collection, optionConfiguration, details);
+        return HasCountAsync(0, collection, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task IsNotEmpty<T>(IAsyncEnumerable<T>? collection, string? details = null)
+    public virtual Task IsNotEmptyAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
     {
-        return IsNotEmpty(collection, Unconfigured, details);
+        return IsNotEmptyAsync(collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task IsNotEmpty<T>(
+    public virtual async Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,
         string? details = null
@@ -66,7 +66,8 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
                 localOptions.Gen.InitialSeed
             );
         }
-        else if (!await collection.GetAsyncEnumerator().MoveNextAsync().ConfigureAwait(false))
+
+        await foreach (T item in collection.ConfigureAwait(false))
         {
             throw new AssertException(
                 "Expected collection with elements, but was empty.",
@@ -77,17 +78,17 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task HasCount<T>(
+    public virtual Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
         string? details = null
     )
     {
-        return HasCount(count, collection, Unconfigured, details);
+        return HasCountAsync(count, collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task HasCount<T>(
+    public virtual async Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,
@@ -103,17 +104,17 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task Contains<T>(
+    public virtual Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
         string? details
     )
     {
-        return Contains(content, collection, Unconfigured, details);
+        return ContainsAsync(content, collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task Contains<T>(
+    public virtual async Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,
@@ -153,17 +154,17 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ContainsNot<T>(
+    public virtual Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
         string? details = null
     )
     {
-        return ContainsNot(content, collection, Unconfigured, details);
+        return ContainsNotAsync(content, collection, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task ContainsNot<T>(
+    public virtual async Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
         AsyncAsserterMod? optionConfiguration,

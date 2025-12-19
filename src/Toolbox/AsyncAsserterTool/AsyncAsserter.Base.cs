@@ -23,13 +23,13 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
     }
 
     /// <inheritdoc/>
-    public virtual Task Pass()
+    public virtual Task PassAsync()
     {
-        return Pass(Unconfigured);
+        return PassAsync(Unconfigured);
     }
 
     /// <inheritdoc/>
-    public virtual Task Pass(AsyncAsserterMod? optionConfiguration)
+    public virtual Task PassAsync(AsyncAsserterMod? optionConfiguration)
     {
         AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         localOptions.Asserter.Pass();
@@ -37,13 +37,13 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
     }
 
     /// <inheritdoc/>
-    public virtual Task Fail(string? details = null, Task<string?>? content = null)
+    public virtual Task FailAsync(string? details = null, Task<string?>? content = null)
     {
-        return Fail(Unconfigured, details, content);
+        return FailAsync(Unconfigured, details, content);
     }
 
     /// <inheritdoc/>
-    public virtual async Task Fail(
+    public virtual async Task FailAsync(
         AsyncAsserterMod? optionConfiguration,
         string? details = null,
         Task<string?>? content = null
@@ -57,13 +57,13 @@ public partial class AsyncAsserter(AsyncAsserterOptions options) : IAsyncAsserte
     }
 
     /// <inheritdoc/>
-    public virtual Task Fail(Task<Exception?>? exception, string? details = null)
+    public virtual Task FailAsync(Task<Exception?>? exception, string? details = null)
     {
-        return Fail(exception, Unconfigured, details);
+        return FailAsync(exception, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual async Task Fail(
+    public virtual async Task FailAsync(
         Task<Exception?>? exception,
         AsyncAsserterMod? optionConfiguration,
         string? details = null

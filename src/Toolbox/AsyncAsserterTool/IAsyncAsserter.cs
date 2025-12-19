@@ -20,26 +20,26 @@ public interface IAsyncAsserter
     IAsyncAsserter WithOptions(AsyncAsserterMod optionConfiguration);
 
     /// <inheritdoc cref="IAsserter.Pass()"/>
-    Task Pass();
+    Task PassAsync();
 
     /// <inheritdoc cref="IAsserter.Pass(AsserterMod)"/>
-    Task Pass(AsyncAsserterMod? optionConfiguration);
+    Task PassAsync(AsyncAsserterMod? optionConfiguration);
 
     /// <inheritdoc cref="IAsserter.Fail(string,string)"/>
-    Task Fail(string? details = null, Task<string?>? content = null);
+    Task FailAsync(string? details = null, Task<string?>? content = null);
 
     /// <inheritdoc cref="IAsserter.Fail(AsserterMod,string,string)"/>
-    Task Fail(
+    Task FailAsync(
         AsyncAsserterMod? optionConfiguration,
         string? details = null,
         Task<string?>? content = null
     );
 
     /// <inheritdoc cref="IAsserter.Fail(Exception,string)"/>
-    Task Fail(Task<Exception?>? exception, string? details = null);
+    Task FailAsync(Task<Exception?>? exception, string? details = null);
 
     /// <inheritdoc cref="IAsserter.Fail(Exception,AsserterMod,string)"/>
-    Task Fail(
+    Task FailAsync(
         Task<Exception?>? exception,
         AsyncAsserterMod? optionConfiguration,
         string? details = null

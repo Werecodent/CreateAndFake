@@ -89,11 +89,8 @@ public abstract class CreateHintTestBase<T>(
                 if (result.Data is IEnumerable collection)
                 {
                     collection
-                        .GetEnumerator()
-                        .MoveNext()
                         .Assert()
-                        .Is(
-                            true,
+                        .IsNotEmpty(
                             "Hint '"
                                 + typeof(T).Name
                                 + "' failed to create populated '"

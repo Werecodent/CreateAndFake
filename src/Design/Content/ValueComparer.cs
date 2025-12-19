@@ -123,17 +123,26 @@ public sealed class ValueComparer
             return x.Equals(y);
         }
 
-        IEnumerator xGen = x.GetEnumerator();
-        IEnumerator yGen = y.GetEnumerator();
-
-        while (xGen.MoveNext())
+        IEnumerator? xGen = null;
+        IEnumerator? yGen = null;
+        try
         {
-            if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
+            xGen = x.GetEnumerator();
+            yGen = y.GetEnumerator();
+
+            while (xGen.MoveNext())
             {
-                return false;
+                if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
+                {
+                    return false;
+                }
             }
+            return !yGen.MoveNext();
         }
-        return !yGen.MoveNext();
+        finally
+        {
+            Disposer.Cleanup(xGen, yGen);
+        }
     }
 
     /// <summary>

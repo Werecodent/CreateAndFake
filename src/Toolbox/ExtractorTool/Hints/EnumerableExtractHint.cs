@@ -14,10 +14,9 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
 
         if (extractor.AddFoundValue(value))
         {
-            IEnumerator gen = value.GetEnumerator();
-            while (gen.MoveNext())
+            foreach (object item in value)
             {
-                _ = extractor.InnerExtract(gen.Current);
+                _ = extractor.InnerExtract(item);
             }
             return true;
         }

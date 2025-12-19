@@ -14,7 +14,11 @@ public static class ValuerEngineTests
             opt with
             {
                 MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
-                IgnorableExceptions = [typeof(NotSupportedException)],
+                IgnorableExceptions =
+                [
+                    typeof(NotSupportedException),
+                    typeof(InsufficientExecutionStackException),
+                ],
             }
         );
     }

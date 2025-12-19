@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.AsserterTool;
 
@@ -34,11 +35,12 @@ public partial class Asserter : IEnumerableAsserter
             );
         }
 
-        int i = 0;
         StringBuilder contents = new();
-        for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
+
+        int i = 0;
+        foreach (object item in collection)
         {
-            _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         throw new AssertException(
@@ -87,13 +89,22 @@ public partial class Asserter : IEnumerableAsserter
                 localOptions.Gen.InitialSeed
             );
         }
-        else if (!collection.GetEnumerator().MoveNext())
+
+        IEnumerator gen = collection.GetEnumerator();
+        try
         {
-            throw new AssertException(
-                "Expected collection with elements, but was empty.",
-                details,
-                localOptions.Gen.InitialSeed
-            );
+            if (!gen.MoveNext())
+            {
+                throw new AssertException(
+                    "Expected collection with elements, but was empty.",
+                    details,
+                    localOptions.Gen.InitialSeed
+                );
+            }
+        }
+        finally
+        {
+            Disposer.Cleanup(gen);
         }
     }
 
@@ -121,11 +132,12 @@ public partial class Asserter : IEnumerableAsserter
             );
         }
 
-        int i = 0;
         StringBuilder contents = new();
-        for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
+
+        int i = 0;
+        foreach (object item in collection)
         {
-            _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i != count)
@@ -163,14 +175,15 @@ public partial class Asserter : IEnumerableAsserter
             );
         }
 
-        int i = 0;
         bool found = false;
         StringBuilder contents = new();
-        for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
-        {
-            found = found || localOptions.Valuer.Equals(content, data.Current);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
+        int i = 0;
+        foreach (object item in collection)
+        {
+            found = found || localOptions.Valuer.Equals(content, item);
+
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -208,14 +221,15 @@ public partial class Asserter : IEnumerableAsserter
             return;
         }
 
-        int i = 0;
         bool notFound = true;
         StringBuilder contents = new();
-        for (IEnumerator data = collection.GetEnumerator(); data.MoveNext(); i++)
-        {
-            notFound &= !localOptions.Valuer.Equals(content, data.Current);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(data.Current).AppendLine();
+        int i = 0;
+        foreach (object item in collection)
+        {
+            notFound &= !localOptions.Valuer.Equals(content, item);
+
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)

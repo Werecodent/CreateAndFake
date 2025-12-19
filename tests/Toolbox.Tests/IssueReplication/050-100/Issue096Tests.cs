@@ -28,13 +28,13 @@ public static class Issue096Tests
         for (int i = 0; i < 50; i++)
         {
             T sample = Tools.Randomizer.Create<T>();
-            await Tools.AsyncAsserter.IsNot(null, sample);
-            await Tools.AsyncAsserter.IsNot(sample, Tools.Mutator.Variant(sample));
+            await Tools.AsyncAsserter.IsNotAsync(null, sample);
+            await Tools.AsyncAsserter.IsNotAsync(sample, Tools.Mutator.Variant(sample));
 
             T dupe = Tools.Duplicator.Copy(sample);
 
-            await Tools.AsyncAsserter.Is(sample, dupe);
-            await Tools.AsyncAsserter.Is(
+            await Tools.AsyncAsserter.IsAsync(sample, dupe);
+            await Tools.AsyncAsserter.IsAsync(
                 await Tools.Valuer.GetHashCodeAsync(sample),
                 await Tools.Valuer.GetHashCodeAsync(dupe)
             );

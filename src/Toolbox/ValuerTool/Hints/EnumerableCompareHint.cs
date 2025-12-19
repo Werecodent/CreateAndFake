@@ -34,39 +34,48 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        IEnumerator expectedEnumerator = expected.GetEnumerator();
-        IEnumerator actualEnumerator = actual.GetEnumerator();
-        int index = 0;
-
-        while (expectedEnumerator.MoveNext())
+        IEnumerator? expectedEnumerator = null;
+        IEnumerator? actualEnumerator = null;
+        try
         {
-            if (actualEnumerator.MoveNext())
+            expectedEnumerator = expected.GetEnumerator();
+            actualEnumerator = actual.GetEnumerator();
+            int index = 0;
+
+            while (expectedEnumerator.MoveNext())
             {
-                foreach (
-                    Difference diff in valuer.Compare(
-                        expectedEnumerator.Current,
-                        actualEnumerator.Current
-                    )
-                )
+                if (actualEnumerator.MoveNext())
                 {
-                    yield return new Difference(index, diff);
+                    foreach (
+                        Difference diff in valuer.Compare(
+                            expectedEnumerator.Current,
+                            actualEnumerator.Current
+                        )
+                    )
+                    {
+                        yield return new Difference(index, diff);
+                    }
                 }
+                else
+                {
+                    yield return new Difference(
+                        index,
+                        new Difference(expectedEnumerator.Current, "'outofbounds'")
+                    );
+                }
+                index++;
             }
-            else
+            while (actualEnumerator.MoveNext())
             {
                 yield return new Difference(
-                    index,
-                    new Difference(expectedEnumerator.Current, "'outofbounds'")
+                    index++,
+                    new Difference("'outofbounds'", actualEnumerator.Current)
                 );
             }
-            index++;
         }
-        while (actualEnumerator.MoveNext())
+        finally
         {
-            yield return new Difference(
-                index++,
-                new Difference("'outofbounds'", actualEnumerator.Current)
-            );
+            Disposer.Cleanup(expectedEnumerator, actualEnumerator);
         }
     }
 
@@ -86,38 +95,47 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        IEnumerator expectedEnumerator = expected.GetEnumerator();
-        IEnumerator actualEnumerator = actual.GetEnumerator();
-        int index = 0;
-
-        while (expectedEnumerator.MoveNext())
+        IEnumerator? expectedEnumerator = null;
+        IEnumerator? actualEnumerator = null;
+        try
         {
-            if (actualEnumerator.MoveNext())
+            expectedEnumerator = expected.GetEnumerator();
+            actualEnumerator = actual.GetEnumerator();
+            int index = 0;
+
+            while (expectedEnumerator.MoveNext())
             {
-                await foreach (
-                    Difference diff in valuer
-                        .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
-                        .ConfigureAwait(false)
-                )
+                if (actualEnumerator.MoveNext())
                 {
-                    yield return new Difference(index, diff);
+                    await foreach (
+                        Difference diff in valuer
+                            .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
+                            .ConfigureAwait(false)
+                    )
+                    {
+                        yield return new Difference(index, diff);
+                    }
                 }
+                else
+                {
+                    yield return new Difference(
+                        index,
+                        new Difference(expectedEnumerator.Current, "'outofbounds'")
+                    );
+                }
+                index++;
             }
-            else
+            while (actualEnumerator.MoveNext())
             {
                 yield return new Difference(
-                    index,
-                    new Difference(expectedEnumerator.Current, "'outofbounds'")
+                    index++,
+                    new Difference("'outofbounds'", actualEnumerator.Current)
                 );
             }
-            index++;
         }
-        while (actualEnumerator.MoveNext())
+        finally
         {
-            yield return new Difference(
-                index++,
-                new Difference("'outofbounds'", actualEnumerator.Current)
-            );
+            await Disposer.CleanupAsync(expectedEnumerator, actualEnumerator).ConfigureAwait(false);
         }
     }
 
