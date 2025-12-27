@@ -10,9 +10,9 @@ public static class AssertExtensions
     /// <inheritdoc cref="AssertObject"/>
     /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static AssertObject Assert(this object? actual)
+    public static AssertAsyncObject Assert(this object? actual)
     {
-        return new AssertObject(Tools.Asserter, actual);
+        return new AssertAsyncObject(Tools.Asserter, actual);
     }
 
     /// <inheritdoc cref="AssertEnumerable"/>

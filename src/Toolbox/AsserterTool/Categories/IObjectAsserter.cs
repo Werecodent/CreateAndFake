@@ -25,6 +25,16 @@ public interface IObjectAsserter
         string? details = null
     );
 
+    /// <inheritdoc cref="IsNull(object,AsserterMod,string)"/>
+    void IsNull(object? actual, string? details = null);
+
+    /// <summary>Verifies <c>actual</c> equals <see langword="null"/>.</summary>
+    /// <param name="actual">Instance to run assertion checks with.</param>
+    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="details">Description to include in assertion failure messages.</param>
+    /// <exception cref="AssertException">If the comparison fails to match the expected behavior.</exception>
+    void IsNull(object? actual, AsserterMod? optionConfiguration, string? details = null);
+
     /// <inheritdoc cref="IsNot(object,object,AsserterMod,string)"/>
     void IsNot(object? expected, object? actual, string? details = null);
 
@@ -36,6 +46,13 @@ public interface IObjectAsserter
         AsserterMod? optionConfiguration,
         string? details = null
     );
+
+    /// <inheritdoc cref="IsNotNull(object,AsserterMod,string)"/>
+    void IsNotNull(object? actual, string? details = null);
+
+    /// <summary>Verifies <c>actual</c> unequals <see langword="null"/>.</summary>
+    /// <inheritdoc cref="Is(object,object,AsserterMod,string)"/>
+    void IsNotNull(object? actual, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="ReferenceEqual(object,object,AsserterMod,string)"/>
     void ReferenceEqual(object? expected, object? actual, string? details = null);

@@ -23,10 +23,10 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
     {
         Task task = Task.Run(() => { }, TestContext.Current.CancellationToken);
         await task;
-        TestInstance
+        await TestInstance
             .TryCopy(task, CreateChainer())
             .Assert()
-            .Is(new CopyHintResult(Task.CompletedTask));
+            .IsAsync(new CopyHintResult(Task.CompletedTask));
     }
 
     [Fact]

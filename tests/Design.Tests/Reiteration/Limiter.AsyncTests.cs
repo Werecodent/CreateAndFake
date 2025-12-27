@@ -252,15 +252,15 @@ public static class LimiterAsyncTests
     {
         Stopwatch watch = Stopwatch.StartNew();
 
-        (
-            await new Limiter(_SmallDelay).AttemptAsync(
-                "",
-                () => watch.IsRunning ? throw exception : new object(),
-                TestContext.Current.CancellationToken
-            )
-        )
+        object result = await new Limiter(_SmallDelay).AttemptAsync(
+            "",
+            () => watch.IsRunning ? throw exception : new object(),
+            TestContext.Current.CancellationToken
+        );
+
+        result
             .Assert()
-            .Is(null)
+            .IsNull()
             .Also(watch.Elapsed.TotalMilliseconds)
             .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
     }

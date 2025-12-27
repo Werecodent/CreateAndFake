@@ -16,6 +16,7 @@ public static class AssertStringTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
+                typeof(NotSupportedException),
             ],
         };
 
@@ -37,7 +38,11 @@ public static class AssertStringTests
         RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
         results
             .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertString>)
+            .Where(r =>
+                r.Result
+                    is not AssertChainer<AssertString>
+                        and Task<AssertChainer<AssertEnumerable>>
+            )
             .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();

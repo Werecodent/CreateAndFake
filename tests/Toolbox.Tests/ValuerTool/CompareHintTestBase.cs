@@ -134,10 +134,10 @@ public abstract class CompareHintTestBase<T>(
                 one = Tools.Randomizer.Create(type);
                 two = Tools.Randomizer.Create(one.GetType());
 
-                TestInstance
+                await TestInstance
                     .TryCompare(one, two, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         DifferenceHintResult.None,
                         $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
                     );
@@ -166,17 +166,17 @@ public abstract class CompareHintTestBase<T>(
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                TestInstance
+                await TestInstance
                     .TryGetHashCode(data, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         dataHash,
                         $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'."
                     );
-                TestInstance
+                await TestInstance
                     .TryGetHashCode(dataCopy, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         dataHash,
                         $"Hint '{typeof(T).Name}' generated different hash for dupe '{type.Name}'."
                     );
@@ -205,10 +205,10 @@ public abstract class CompareHintTestBase<T>(
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                TestInstance
+                await TestInstance
                     .TryGetHashCode(dataDiffer, CreateChainer())
                     .Assert()
-                    .IsNot(
+                    .IsNotAsync(
                         dataHash,
                         $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
                     );
@@ -229,10 +229,10 @@ public abstract class CompareHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance
+                await TestInstance
                     .TryGetHashCode(data, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         HashCodeHintResult.None,
                         $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
                     );

@@ -81,8 +81,7 @@ public abstract class CreateHintTestBase<T>(
                     );
                 result
                     .Data.Assert()
-                    .IsNot(
-                        null,
+                    .IsNotNull(
                         "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
                     );
 

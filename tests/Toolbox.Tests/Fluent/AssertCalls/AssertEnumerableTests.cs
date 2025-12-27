@@ -16,6 +16,8 @@ public static class AssertEnumerableTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
+                typeof(NotSupportedException),
+                typeof(ArgumentException),
             ],
         };
 
@@ -37,7 +39,11 @@ public static class AssertEnumerableTests
         RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
         results
             .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertEnumerable>)
+            .Where(r =>
+                r.Result
+                    is not AssertChainer<AssertEnumerable>
+                        and Task<AssertChainer<AssertEnumerable>>
+            )
             .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();

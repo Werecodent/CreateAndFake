@@ -39,6 +39,22 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
+    /// <inheritdoc cref="IObjectAsserter.IsNull(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNull(string? details = null)
+    {
+        asserter.IsNull(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IObjectAsserter.IsNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNull(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.IsNull(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
     /// <inheritdoc cref="IObjectAsserter.IsNot(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNot(object? expected, string? details = null)
@@ -56,6 +72,22 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
     )
     {
         asserter.IsNot(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IObjectAsserter.IsNotNull(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNotNull(string? details = null)
+    {
+        asserter.IsNotNull(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IObjectAsserter.IsNotNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNotNull(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.IsNotNull(Actual, optionConfiguration, details);
         return ToChainer();
     }
 

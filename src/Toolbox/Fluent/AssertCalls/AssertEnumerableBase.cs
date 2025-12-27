@@ -93,6 +93,31 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> ContainsAsync(
+        object? content,
+        string? details = null
+    )
+    {
+        await Asserter.ContainsAsync(content, Collection, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> ContainsAsync(
+        object? content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .ContainsAsync(content, Collection, optionConfiguration, details)
+            .ConfigureAwait(false);
+        return ToChainer();
+    }
+
     /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(object? content, string? details = null)
@@ -110,6 +135,31 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     )
     {
         Asserter.ContainsNot(content, Collection, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> ContainsNotAsync(
+        object? content,
+        string? details = null
+    )
+    {
+        await Asserter.ContainsNotAsync(content, Collection, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> ContainsNotAsync(
+        object? content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .ContainsNotAsync(content, Collection, optionConfiguration, details)
+            .ConfigureAwait(false);
         return ToChainer();
     }
 

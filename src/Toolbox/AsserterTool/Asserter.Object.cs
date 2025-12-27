@@ -27,6 +27,18 @@ public partial class Asserter : IObjectAsserter
     }
 
     /// <inheritdoc/>
+    public void IsNull(object? actual, string? details = null)
+    {
+        IsNull(actual, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void IsNull(object? actual, AsserterMod? optionConfiguration, string? details = null)
+    {
+        ReferenceEqual(null, actual, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
     public void IsNot(object? expected, object? actual, string? details = null)
     {
         IsNot(expected, actual, Unconfigured, details);
@@ -41,6 +53,18 @@ public partial class Asserter : IObjectAsserter
     )
     {
         ValuesNotEqual(expected, actual, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
+    public void IsNotNull(object? actual, string? details = null)
+    {
+        IsNotNull(actual, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void IsNotNull(object? actual, AsserterMod? optionConfiguration, string? details = null)
+    {
+        ReferenceNotEqual(null, actual, optionConfiguration, details);
     }
 
     /// <inheritdoc/>

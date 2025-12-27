@@ -72,10 +72,10 @@ public abstract class ExtractHintTestBase<T>(
             object value = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance
+                await TestInstance
                     .TryExtract(value, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         ExtractHintResult.None,
                         "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
                     );

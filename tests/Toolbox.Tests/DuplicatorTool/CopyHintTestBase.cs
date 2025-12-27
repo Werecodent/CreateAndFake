@@ -122,10 +122,10 @@ public abstract class CopyHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                TestInstance
+                await TestInstance
                     .TryCopy(data, CreateChainer())
                     .Assert()
-                    .Is(
+                    .IsAsync(
                         CopyHintResult.None,
                         "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
                     );
