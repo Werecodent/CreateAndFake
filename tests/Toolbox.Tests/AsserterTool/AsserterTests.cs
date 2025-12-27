@@ -17,6 +17,8 @@ public static class AsserterTests
                 typeof(FakeVerifyException),
                 typeof(TimeoutException),
                 typeof(NotSupportedException),
+                typeof(TargetException),
+                typeof(InsufficientExecutionStackException),
             ],
         };
 
