@@ -74,7 +74,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
             }
 
             await Options
-                .AsyncAsserter.ValuesEqualAsync(
+                .Asserter.ValuesEqualAsync(
                     copy,
                     data,
                     $"Parameter data was mutated when testing '{method.Name}'."

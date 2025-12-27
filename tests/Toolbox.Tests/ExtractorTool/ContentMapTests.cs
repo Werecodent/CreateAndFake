@@ -13,7 +13,7 @@ public static class ContentMapTests
         return Tools.Tester.PreventsNullRefException<ContentMap>();
     }
 
-    //[Fact]
+    [Fact]
     internal static Task ContentMap_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<ContentMap>(opt =>

@@ -1,6 +1,4 @@
-using CreateAndFake.AsserterTool.Categories;
-
-namespace CreateAndFake.AsyncAsserterTool.Categories;
+namespace CreateAndFake.AsserterTool.Categories;
 
 #pragma warning disable CA1716 // Matches existing usage.
 
@@ -14,7 +12,7 @@ public interface IAsyncObjectAsserter
     Task IsAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -25,7 +23,7 @@ public interface IAsyncObjectAsserter
     Task IsNotAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -36,7 +34,7 @@ public interface IAsyncObjectAsserter
     Task ValuesEqualAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -47,7 +45,7 @@ public interface IAsyncObjectAsserter
     Task ValuesNotEqualAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -58,7 +56,7 @@ public interface IAsyncObjectAsserter
     Task AreUniqueAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 }

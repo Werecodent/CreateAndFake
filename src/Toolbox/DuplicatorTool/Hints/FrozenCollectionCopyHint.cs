@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design;

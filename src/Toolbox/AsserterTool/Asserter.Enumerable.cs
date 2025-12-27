@@ -198,6 +198,53 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
+    public virtual Task ContainsAsync(object? content, IEnumerable? collection, string? details)
+    {
+        return ContainsAsync(content, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task ContainsAsync(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection to contain '{content}', but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        bool found = false;
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            found =
+                found || await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
+
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+        }
+
+        if (!found)
+        {
+            throw new AssertException(
+                $"Expected collection to contain '{content}' but didn't.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void ContainsNot(
         object? content,
         IEnumerable? collection,
@@ -228,6 +275,52 @@ public partial class Asserter : IEnumerableAsserter
         foreach (object item in collection)
         {
             notFound &= !localOptions.Valuer.Equals(content, item);
+
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+        }
+
+        if (!notFound)
+        {
+            throw new AssertException(
+                $"Expected collection to contain '{content}' but didn't.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual Task ContainsNotAsync(
+        object? content,
+        IEnumerable? collection,
+        string? details = null
+    )
+    {
+        return ContainsNotAsync(content, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task ContainsNotAsync(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            return;
+        }
+
+        bool notFound = true;
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            notFound &= !await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
 
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }

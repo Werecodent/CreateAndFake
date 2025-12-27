@@ -1,12 +1,11 @@
 using System.Text;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsyncAsserterTool.Categories;
+using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Content;
 
-namespace CreateAndFake.AsyncAsserterTool;
+namespace CreateAndFake.AsserterTool;
 
-/// <inheritdoc cref="IAsyncAsserter"/>
-public partial class AsyncAsserter : IAsyncEnumerableAsserter
+/// <inheritdoc cref="IAsserter"/>
+public partial class Asserter : IAsyncEnumerableAsserter
 {
     /// <inheritdoc/>
     public virtual Task FailAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
@@ -17,15 +16,11 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     /// <inheritdoc/>
     public virtual async Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        localOptions.Asserter.Fail(
-            await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false),
-            details
-        );
+        Fail(await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false), details);
     }
 
     /// <inheritdoc/>
@@ -37,7 +32,7 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     /// <inheritdoc/>
     public virtual Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
@@ -53,11 +48,11 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     /// <inheritdoc/>
     public virtual async Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
@@ -91,12 +86,11 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     public virtual async Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        localOptions.Asserter.HasCount(
+        HasCount(
             count,
             await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false),
             details
@@ -117,11 +111,11 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     public virtual async Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
@@ -167,11 +161,11 @@ public partial class AsyncAsserter : IAsyncEnumerableAsserter
     public virtual async Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             return;

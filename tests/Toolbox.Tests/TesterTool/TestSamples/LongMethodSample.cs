@@ -9,8 +9,9 @@ public static class LongMethodSample
         where T : new()
     {
         Thread.Sleep(new TimeSpan(0, 0, 2));
+        Thread.Sleep(new TimeSpan(0, 0, 1));
 
         output = new T();
-        throw new InvalidOperationException(data);
+        throw new InvalidOperationException($"{nameof(BeSlow)} finished with data: {data}.");
     }
 }

@@ -11,6 +11,8 @@ namespace CreateAndFake.AsserterTool;
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter
     : ITool<AsserterOptions>,
+        IAsyncObjectAsserter,
+        IAsyncEnumerableAsserter,
         IComparableAsserter,
         IDelegateAsserter,
         IEnumerableAsserter,

@@ -51,6 +51,17 @@ public interface IEnumerableAsserter
         string? details
     );
 
+    /// <inheritdoc cref="Contains(object,IEnumerable,string)"/>
+    Task ContainsAsync(object? content, IEnumerable? collection, string? details);
+
+    /// <inheritdoc cref="Contains(object,IEnumerable,AsserterMod,string)"/>
+    Task ContainsAsync(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details
+    );
+
     /// <inheritdoc cref="ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     void ContainsNot(object? content, IEnumerable? collection, string? details = null);
 
@@ -58,6 +69,17 @@ public interface IEnumerableAsserter
     /// <param name="content">Expected missing element.</param>
     /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
     void ContainsNot(
+        object? content,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="ContainsNot(object,IEnumerable,string)"/>
+    Task ContainsNotAsync(object? content, IEnumerable? collection, string? details = null);
+
+    /// <inheritdoc cref="ContainsNot(object,IEnumerable,AsserterMod,string)"/>
+    Task ContainsNotAsync(
         object? content,
         IEnumerable? collection,
         AsserterMod? optionConfiguration,

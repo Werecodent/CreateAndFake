@@ -1,7 +1,6 @@
 using System.Collections;
-using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsyncAsserterTool.Categories;
+namespace CreateAndFake.AsserterTool.Categories;
 
 #pragma warning disable CA1716 // Matches existing usage.
 
@@ -14,7 +13,7 @@ public interface IAsyncEnumerableAsserter
     /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,AsserterMod,string)"/>
     Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -24,7 +23,7 @@ public interface IAsyncEnumerableAsserter
     /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
     Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -35,7 +34,7 @@ public interface IAsyncEnumerableAsserter
     Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -46,7 +45,7 @@ public interface IAsyncEnumerableAsserter
     Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details
     );
 
@@ -61,7 +60,7 @@ public interface IAsyncEnumerableAsserter
     Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 
@@ -71,7 +70,7 @@ public interface IAsyncEnumerableAsserter
     /// <inheritdoc cref="IEnumerableAsserter.Fail(IEnumerable,AsserterMod,string)"/>
     Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     );
 }

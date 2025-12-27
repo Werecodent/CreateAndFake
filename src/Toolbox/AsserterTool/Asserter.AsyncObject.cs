@@ -1,13 +1,12 @@
 using System.Text;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsyncAsserterTool.Categories;
+using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.AsyncAsserterTool;
+namespace CreateAndFake.AsserterTool;
 
-/// <inheritdoc cref="IAsyncAsserter"/>
-public partial class AsyncAsserter : IAsyncObjectAsserter
+/// <inheritdoc cref="IAsserter"/>
+public partial class Asserter : IAsyncObjectAsserter
 {
     /// <inheritdoc/>
     public Task IsAsync(object? expected, object? actual, string? details = null)
@@ -19,7 +18,7 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     public Task IsAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
@@ -36,7 +35,7 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     public Task IsNotAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
@@ -53,11 +52,11 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     public virtual async Task ValuesEqualAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         IList<Difference> differences = await AsyncEnumHelper
             .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual))
@@ -88,11 +87,11 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     public virtual async Task ValuesNotEqualAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (await localOptions.Valuer.EqualsAsync(expected, actual).ConfigureAwait(false))
         {
             throw new AssertException(
@@ -114,13 +113,13 @@ public partial class AsyncAsserter : IAsyncObjectAsserter
     public virtual Task AreUniqueAsync(
         object? expected,
         object? actual,
-        AsyncAsserterMod? optionConfiguration,
+        AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        AsyncAsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        localOptions.Asserter.ReferenceNotEqual(expected, actual, details);
+        ReferenceNotEqual(expected, actual, details);
 
         int i = 0;
         StringBuilder contents = new();
