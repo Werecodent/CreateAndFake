@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
@@ -17,6 +18,7 @@ public static class AssertStringTests
                 typeof(ToolException),
                 typeof(InvalidCastException),
                 typeof(NotSupportedException),
+                typeof(TargetException),
             ],
         };
 

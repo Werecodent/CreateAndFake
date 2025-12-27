@@ -8,6 +8,7 @@ public static class LongMethodSample
     public static void BeSlow<T>(string data, out T output)
         where T : new()
     {
+        Thread.Sleep(new TimeSpan(0, 0, 3));
         Thread.Sleep(new TimeSpan(0, 0, 2));
         Thread.Sleep(new TimeSpan(0, 0, 1));
 
