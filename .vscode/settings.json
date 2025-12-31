@@ -21,6 +21,7 @@
     },
     "cSpell.words": [
         "Analyser",
+        "ASPNETCORE",
         "Browsable",
         "Callvirt",
         "Castclass",
@@ -82,6 +83,7 @@
         "Subclasser",
         "SYSLIB",
         "targetdir",
+        "testsettings",
         "Unconfigured",
         "Uninstantiated",
         "Unwrapper",

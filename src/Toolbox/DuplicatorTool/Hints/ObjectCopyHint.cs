@@ -38,16 +38,19 @@ public sealed class ObjectCopyHint : CopyHint
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
-            field.SetValue(dupe, duplicator.Copy(field.GetValue(source)));
+            object? value = field.GetValue(source);
+            field.SetValue(dupe, duplicator.Copy(value));
         }
 
         foreach (
             PropertyInfo property in TypeDescriber
                 .GetAllProperties(source.GetType(), BindingFlags.Public)
                 .Where(p => p.CanRead && p.CanWrite)
+                .Where(p => p.GetIndexParameters().Length == 0)
         )
         {
-            property.SetValue(dupe, duplicator.Copy(property.GetValue(source)));
+            object? value = property.GetValue(source);
+            property.SetValue(dupe, duplicator.Copy(value));
         }
 
         return dupe;

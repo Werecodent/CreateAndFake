@@ -10,6 +10,7 @@
     <Project Path="src/Samples/CreateAndFake.Samples.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Configuration.Tests/CreateAndFake.Configuration.Tests.csproj" />
     <Project Path="tests/Design.Tests/CreateAndFake.Design.Tests.csproj" />
     <Project Path="tests/Toolbox.Tests/CreateAndFake.Tests.csproj" />
     <Project Path="tests/MSTest.v3.Tests/CreateAndFake.MSTest.v3.Tests.csproj" />

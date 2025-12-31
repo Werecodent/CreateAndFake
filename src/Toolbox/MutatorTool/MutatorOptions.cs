@@ -4,6 +4,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.MutatorTool;
 
@@ -23,7 +24,28 @@ public sealed record MutatorOptions : IToolOptions
     public required IExtractor Extractor { get; init; }
 
     /// <summary>Limits attempts at creating variants.</summary>
+    [ConfigurableOption]
     public Limiter Limiter { get; init; } = Limiter.Score;
+
+    /// <summary>
+    ///     Creates options from <see langword="this"/>
+    ///     overridden with values from <paramref name="config"/>.
+    /// </summary>
+    /// <param name="config">Configuration with overrides to use.</param>
+    /// <returns>The created options.</returns>
+    internal MutatorOptions WithConfig(IConfigurationSection? config)
+    {
+        IConfigurationSection? section = config?.GetSection(nameof(Mutator));
+        if (section == null)
+        {
+            return this;
+        }
+
+        return this with
+        {
+            Limiter = section.GetValue(nameof(Limiter), Limiter),
+        };
+    }
 
     /// <inheritdoc/>
     public override string ToString()

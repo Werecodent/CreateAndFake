@@ -7,6 +7,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.TesterTool;
 
@@ -29,45 +30,117 @@ public sealed record TesterOptions : IToolOptions
     public required IRunner Runner { get; init; }
 
     /// <summary>Retries tests if timeout is reached.</summary>
+    [ConfigurableOption]
     public Limiter Limiter { get; init; } = Limiter.Few;
 
     /// <summary>Values to inject into called methods.</summary>
+    [ConfigurableOption]
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
     /// <summary>If constructors are included when running tests on classes.</summary>
+    [ConfigurableOption]
     public bool IncludeConstructors { get; init; } = true;
 
     /// <summary>If class methods are included when running tests on classes.</summary>
+    [ConfigurableOption]
     public bool IncludeInstanceMethods { get; init; } = true;
 
     /// <summary>If static methods are included when running tests on classes.</summary>
+    [ConfigurableOption]
     public bool IncludeStaticMethods { get; init; } = true;
 
     /// <summary>If internal members are included when running tests on classes.</summary>
+    [ConfigurableOption]
     public bool IncludeInternals { get; init; } = true;
 
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
+    [ConfigurableOption]
     public string TestClassNameSuffix { get; init; } = "Tests";
 
     /// <summary>Possible strings replacing generics in a type name for coverage tests.</summary>
+    [ConfigurableOption]
     public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
 
     /// <summary>Method used to convert parameters to a test name.</summary>
+    [ConfigurableOption]
     public Func<object?, string> TestDisplayNameConverter { get; init; } = o => o?.ToString() ?? "";
 
     /// <summary>Types to ignore for test class coverage tests.</summary>
+    [ConfigurableOption]
     public FrozenSet<string> TestClassCoverageExceptions { get; init; } =
         FrozenSet.ToFrozenSet<string>([]);
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
+    [ConfigurableOption]
     public FrozenSet<string> MethodsToIgnore { get; init; } =
         FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync", "PrintMembers"]);
 
     /// <summary>If all inner exceptions are ignored when running tests on classes.</summary>
+    [ConfigurableOption]
     public bool IgnoreAllExceptions { get; init; } = false;
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
+    [ConfigurableOption]
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
+
+    /// <summary>
+    ///     Creates options from <see langword="this"/>
+    ///     overridden with values from <paramref name="config"/>.
+    /// </summary>
+    /// <param name="config">Configuration with overrides to use.</param>
+    /// <returns>The created options.</returns>
+    internal TesterOptions WithConfig(IConfigurationSection? config)
+    {
+        IConfigurationSection? section = config?.GetSection(nameof(Tester));
+        if (section == null)
+        {
+            return this;
+        }
+
+        return this with
+        {
+            Limiter = section.GetValue(nameof(Limiter), Limiter),
+            InjectionValues = section.GetValue(nameof(InjectionValues), InjectionValues),
+            IncludeConstructors = section.GetValue(
+                nameof(IncludeConstructors),
+                IncludeConstructors
+            ),
+            IncludeInstanceMethods = section.GetValue(
+                nameof(IncludeInstanceMethods),
+                IncludeInstanceMethods
+            ),
+            IncludeStaticMethods = section.GetValue(
+                nameof(IncludeStaticMethods),
+                IncludeStaticMethods
+            ),
+            IncludeInternals = section.GetValue(nameof(IncludeInternals), IncludeInternals),
+            TestClassNameSuffix = section.GetValue(
+                nameof(TestClassNameSuffix),
+                TestClassNameSuffix
+            ),
+            TestClassNameGenericSubstitutes = section.GetValue(
+                nameof(TestClassNameGenericSubstitutes),
+                TestClassNameGenericSubstitutes
+            ),
+            TestDisplayNameConverter = section.GetValue(
+                nameof(TestDisplayNameConverter),
+                TestDisplayNameConverter
+            ),
+            TestClassCoverageExceptions = section.GetValue(
+                nameof(TestClassCoverageExceptions),
+                TestClassCoverageExceptions
+            ),
+            MethodsToIgnore = section.GetValue(nameof(MethodsToIgnore), MethodsToIgnore),
+            IgnoreAllExceptions = section.GetValue(
+                nameof(IgnoreAllExceptions),
+                IgnoreAllExceptions
+            ),
+            IgnorableExceptions = section.GetValue(
+                nameof(IgnorableExceptions),
+                IgnorableExceptions
+            ),
+        };
+    }
 
     /// <inheritdoc/>
     public override string ToString()

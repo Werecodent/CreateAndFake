@@ -4,6 +4,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Engine;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.ExtractorTool;
 
@@ -17,6 +18,7 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
     public required IValuer Valuer { get; init; }
 
     /// <summary>If private properties/fields should be extracted as well.</summary>
+    [ConfigurableOption]
     public bool ExtractPrivateMembers { get; init; } = false;
 
     /// <summary>Types with too small of range for unique randomization.</summary>
@@ -25,6 +27,29 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
 
     /// <summary>Types that need no further inspection when creating a <see cref="ContentMap"/>.</summary>
     public FrozenSet<Type> ContentEndTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
+
+    /// <summary>
+    ///     Creates options from <see langword="this"/>
+    ///     overridden with values from <paramref name="config"/>.
+    /// </summary>
+    /// <param name="config">Configuration with overrides to use.</param>
+    /// <returns>The created options.</returns>
+    internal ExtractorOptions WithConfig(IConfigurationSection? config)
+    {
+        IConfigurationSection? section = config?.GetSection(nameof(Extractor));
+        if (section == null)
+        {
+            return this;
+        }
+
+        return this with
+        {
+            ExtractPrivateMembers = section.GetValue(
+                nameof(ExtractPrivateMembers),
+                ExtractPrivateMembers
+            ),
+        };
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode()

@@ -6,6 +6,7 @@ using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.RunnerTool;
 
@@ -28,25 +29,67 @@ public sealed record RunnerOptions : IToolOptions
     public required IFaker Faker { get; init; }
 
     /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
+    [ConfigurableOption]
     public bool InheritIReflectableTypeOnFakedType { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    [ConfigurableOption]
     public bool IncludeFinalize { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    [ConfigurableOption]
     public bool IncludeDispose { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    [ConfigurableOption]
     public bool IncludeStaticMethods { get; init; } = true;
 
     /// <summary>Option for which methods to include.</summary>
+    [ConfigurableOption]
     public bool IncludeInstanceMethods { get; init; } = true;
 
     /// <summary>How long to wait for methods to complete.</summary>
+    [ConfigurableOption]
     public TimeSpan Timeout { get; init; } = new(0, 0, 30);
 
     /// <summary>Values to inject into called methods.</summary>
+    [ConfigurableOption]
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
+
+    /// <summary>
+    ///     Creates options from <see langword="this"/>
+    ///     overridden with values from <paramref name="config"/>.
+    /// </summary>
+    /// <param name="config">Configuration with overrides to use.</param>
+    /// <returns>The created options.</returns>
+    internal RunnerOptions WithConfig(IConfigurationSection? config)
+    {
+        IConfigurationSection? section = config?.GetSection(nameof(Runner));
+        if (section == null)
+        {
+            return this;
+        }
+
+        return this with
+        {
+            InheritIReflectableTypeOnFakedType = section.GetValue(
+                nameof(InheritIReflectableTypeOnFakedType),
+                InheritIReflectableTypeOnFakedType
+            ),
+            IncludeFinalize = section.GetValue(nameof(IncludeFinalize), IncludeFinalize),
+            IncludeDispose = section.GetValue(nameof(IncludeDispose), IncludeDispose),
+            IncludeStaticMethods = section.GetValue(
+                nameof(IncludeStaticMethods),
+                IncludeStaticMethods
+            ),
+            IncludeInstanceMethods = section.GetValue(
+                nameof(IncludeInstanceMethods),
+                IncludeInstanceMethods
+            ),
+            Timeout = section.GetValue(nameof(Timeout), Timeout),
+            InjectionValues = section.GetValue(nameof(InjectionValues), InjectionValues),
+        };
+    }
 
     /// <inheritdoc/>
     public override string ToString()

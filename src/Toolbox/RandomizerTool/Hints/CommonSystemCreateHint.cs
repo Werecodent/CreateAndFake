@@ -3,7 +3,9 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using CreateAndFake.Design;
+using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Engine;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
@@ -37,6 +39,10 @@ public sealed class CommonSystemCreateHint : CreateHint
             {
                 typeof(Assembly),
                 rand => rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies())
+            },
+            {
+                typeof(IConfigurationSection),
+                rand => rand.Create<Fake<IConfigurationSection>>().Dummy
             },
             { typeof(AssemblyName), rand => rand.Create<Assembly>().GetName() },
             { typeof(Uri), rand => rand.Create<UriBuilder>().Uri },

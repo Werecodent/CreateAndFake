@@ -1,0 +1,14 @@
+{
+    "CreateAndFake": {
+        "Seed": 2,
+        "Asserter": {},
+        "Duplicator": {},
+        "Extractor": {},
+        "Faker": {},
+        "Mutator": {},
+        "Randomizer": {},
+        "Runner": {},
+        "Tester": {},
+        "Valuer": {}
+    }
+}

@@ -8,6 +8,7 @@ using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
+using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake;
 
@@ -35,20 +36,58 @@ public sealed class ToolSet(
     ITester tester
 )
 {
+    /// <summary>For loading environment specific settings.</summary>
+    private static readonly string _EnvironmentName = FindEnvironmentName();
+
+    /// <summary>Finds the configured environment name.</summary>
+    /// <returns>The name if found, <c>Production</c> otherwise.</returns>
+    internal static string FindEnvironmentName()
+    {
+        IConfigurationRoot config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
+
+        return config.GetValue<string>("ASPNETCORE_ENVIRONMENT")
+            ?? config.GetValue<string>("DOTNET_ENVIRONMENT")
+            ?? "Production";
+    }
+
     /// <summary>Default tools to use.</summary>
-    public static ToolSet DefaultSet { get; } = CreateViaSeed(Environment.TickCount);
+    public static ToolSet DefaultSet { get; } = CreateViaConfig();
+
+    /// <summary>Creates all the reflection tools using configuration settings.</summary>
+    /// <returns>The created reflection tools.</returns>
+    public static ToolSet CreateViaConfig()
+    {
+        IConfigurationSection config = new ConfigurationBuilder()
+            .AddJsonFile("testsettings.json", true)
+            .AddJsonFile($"testsettings.{_EnvironmentName}.json", true)
+            .Build()
+            .GetSection("CreateAndFake");
+
+        return Create(config.GetValue("Seed", Environment.TickCount), config);
+    }
 
     /// <summary>Creates all the reflection tools using <paramref name="seed"/>.</summary>
     /// <param name="seed"><inheritdoc cref="SeededRandom(int?)" path="/param[@name='seed']"/></param>
     /// <returns>The created reflection tools.</returns>
     public static ToolSet CreateViaSeed(int seed)
     {
+        return Create(seed, null);
+    }
+
+    /// <summary>Creates all the reflection tools using the seed and configuration settings.</summary>
+    /// <param name="seed"><inheritdoc cref="SeededRandom(int?)" path="/param[@name='seed']"/></param>
+    /// <param name="config">Loaded configuration to use.</param>
+    /// <returns>The created reflection tools.</returns>
+    private static ToolSet Create(int seed, IConfigurationSection? config)
+    {
         IRandom gen = new SeededRandom(seed);
-        Valuer valuer = new(new ValuerOptions());
-        Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer });
-        Randomizer randomizer = new(new RandomizerOptions { Gen = gen, Faker = faker });
+        Valuer valuer = new(new ValuerOptions().WithConfig(config));
+        Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer }.WithConfig(config));
+        Randomizer randomizer = new(
+            new RandomizerOptions { Gen = gen, Faker = faker }.WithConfig(config)
+        );
         Extractor extractor = new(
-            new ExtractorOptions { Randomizer = randomizer, Valuer = valuer }
+            new ExtractorOptions { Randomizer = randomizer, Valuer = valuer }.WithConfig(config)
         );
         Mutator mutator = new(
             new MutatorOptions
@@ -57,7 +96,7 @@ public sealed class ToolSet(
                 Randomizer = randomizer,
                 Valuer = valuer,
                 Extractor = extractor,
-            }
+            }.WithConfig(config)
         );
         Asserter asserter = new(
             new AsserterOptions
@@ -65,10 +104,10 @@ public sealed class ToolSet(
                 Gen = gen,
                 Extractor = extractor,
                 Valuer = valuer,
-            }
+            }.WithConfig(config)
         );
         Duplicator duplicator = new(
-            new DuplicatorOptions { Asserter = asserter, Extractor = extractor }
+            new DuplicatorOptions { Asserter = asserter, Extractor = extractor }.WithConfig(config)
         );
         Runner runner = new(
             new RunnerOptions
@@ -78,7 +117,7 @@ public sealed class ToolSet(
                 Randomizer = randomizer,
                 Mutator = mutator,
                 Duplicator = duplicator,
-            }
+            }.WithConfig(config)
         );
         Tester tester = new(
             new TesterOptions
@@ -88,7 +127,7 @@ public sealed class ToolSet(
                 Duplicator = duplicator,
                 Asserter = asserter,
                 Runner = runner,
-            }
+            }.WithConfig(config)
         );
 
         return new ToolSet(
