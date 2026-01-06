@@ -30,7 +30,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         try
         {
             return Options
-                .Limiter.StallUntil(
+                .VariantAttempts.StallUntil(
                     $"Create variant of type '{type}'",
                     () => Options.Randomizer.Create(type),
                     result =>
@@ -83,7 +83,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         try
         {
             return Options
-                .Limiter.StallUntil(
+                .VariantAttempts.StallUntil(
                     $"Create unique of type '{type}'",
                     () => Options.Randomizer.Create(type),
                     result =>

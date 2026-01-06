@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Reiteration;
@@ -7,6 +9,7 @@ namespace CreateAndFake.Design.Reiteration;
 /// <param name="timeout"><inheritdoc cref="_timeout" path="/summary"/></param>
 /// <param name="tries"><inheritdoc cref="_tries" path="/summary"/></param>
 /// <param name="delay"><inheritdoc cref="_delay" path="/summary"/></param>
+[TypeConverter(typeof(LimiterTypeConverter))]
 public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
     : ILimiter,
         IEquatable<Limiter>
@@ -40,6 +43,26 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <summary>Instance that defaults to five seconds with a large delay.</summary>
     public static Limiter Slow { get; } =
         new Limiter(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 0, 0, 200));
+
+    /// <summary>Specific names that can be converted.</summary>
+    private static readonly Dictionary<string, Limiter> _NamedLimiters = new()
+    {
+        { nameof(Once), Once },
+        { nameof(Few), Few },
+        { nameof(Dozen), Dozen },
+        { nameof(Score), Score },
+        { nameof(Hundred), Hundred },
+        { nameof(Myriad), Myriad },
+        { nameof(Quick), Quick },
+        { nameof(Fast), Fast },
+        { nameof(Slow), Slow },
+    };
+
+    /// <summary>Specific limiters with their name.</summary>
+    private static readonly Dictionary<Limiter, string> _LimiterNames = _NamedLimiters.ToDictionary(
+        pair => pair.Value,
+        pair => pair.Key
+    );
 
     /// <summary>Maximum attempts to try.</summary>
     private readonly int _tries = tries;
@@ -134,7 +157,63 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <returns><see langword="string"/> representation of <see langword="this"/>.</returns>
     public override string ToString()
     {
+        if (_LimiterNames.TryGetValue(this, out string? name))
+        {
+            return name;
+        }
+
+        if (_delay == TimeSpan.Zero)
+        {
+            if (_timeout == TimeSpan.MaxValue)
+            {
+                return $"{_tries}";
+            }
+            else if (_tries == int.MaxValue)
+            {
+                return $"{_timeout}";
+            }
+        }
         return $"{_tries}-{_timeout}-{_delay}";
+    }
+
+    /// <summary>
+    ///     Creates a <see cref="Limiter"/> from its <see langword="string"/> representation.
+    /// </summary>
+    /// <param name="data"><see langword="string"/> representation to convert from.</param>
+    /// <param name="culture">Culture used for conversion.</param>
+    /// <returns>The created instance.</returns>
+    /// <exception cref="FormatException">When <paramref name="data"/> is not valid.</exception>
+    public static Limiter ConvertFrom(string data, CultureInfo? culture)
+    {
+        if (_NamedLimiters.TryGetValue(data, out Limiter? named))
+        {
+            return named;
+        }
+        else if (int.TryParse(data, NumberStyles.Any, culture, out int justTries))
+        {
+            return new Limiter(justTries);
+        }
+        else if (TimeSpan.TryParse(data, culture, out TimeSpan justTimeout))
+        {
+            return new Limiter(justTimeout);
+        }
+        else
+        {
+            string[] parts = data?.Split('-') ?? [];
+            if (
+                parts.Length == 3
+                && int.TryParse(parts[0], NumberStyles.Any, culture, out int tries)
+                && TimeSpan.TryParse(parts[1], culture, out TimeSpan timeout)
+                && TimeSpan.TryParse(parts[2], culture, out TimeSpan delay)
+            )
+            {
+                return new Limiter(timeout, tries, delay);
+            }
+            else
+            {
+                throw new FormatException($"Invalid format for {nameof(Limiter)}: {data}");
+            }
+        }
     }
 
     /// <summary>Throws a <see cref="TimeoutException"/>.</summary>

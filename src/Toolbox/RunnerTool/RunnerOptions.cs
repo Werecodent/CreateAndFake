@@ -53,7 +53,6 @@ public sealed record RunnerOptions : IToolOptions
     public TimeSpan Timeout { get; init; } = new(0, 0, 30);
 
     /// <summary>Values to inject into called methods.</summary>
-    [ConfigurableOption]
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
     /// <summary>
@@ -87,7 +86,6 @@ public sealed record RunnerOptions : IToolOptions
                 IncludeInstanceMethods
             ),
             Timeout = section.GetValue(nameof(Timeout), Timeout),
-            InjectionValues = section.GetValue(nameof(InjectionValues), InjectionValues),
         };
     }
 

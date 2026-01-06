@@ -83,7 +83,11 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
             CollectionMaxSize = section.GetValue(nameof(CollectionMaxSize), CollectionMaxSize),
             StringMinSize = section.GetValue(nameof(StringMinSize), StringMinSize),
             StringMaxSize = section.GetValue(nameof(StringMaxSize), StringMaxSize),
-            StringCharacterSet = section.GetValue(nameof(StringCharacterSet), StringCharacterSet),
+            StringCharacterSet = section
+                .GetValue(nameof(StringCharacterSet), string.Join("", StringCharacterSet))
+                .ToCharArray()
+                .Distinct()
+                .ToFrozenSet(),
         };
     }
 

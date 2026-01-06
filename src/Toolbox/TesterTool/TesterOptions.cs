@@ -34,7 +34,6 @@ public sealed record TesterOptions : IToolOptions
     public Limiter Limiter { get; init; } = Limiter.Few;
 
     /// <summary>Values to inject into called methods.</summary>
-    [ConfigurableOption]
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
     /// <summary>If constructors are included when running tests on classes.</summary>
@@ -62,7 +61,6 @@ public sealed record TesterOptions : IToolOptions
     public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
 
     /// <summary>Method used to convert parameters to a test name.</summary>
-    [ConfigurableOption]
     public Func<object?, string> TestDisplayNameConverter { get; init; } = o => o?.ToString() ?? "";
 
     /// <summary>Types to ignore for test class coverage tests.</summary>
@@ -80,7 +78,6 @@ public sealed record TesterOptions : IToolOptions
     public bool IgnoreAllExceptions { get; init; } = false;
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
-    [ConfigurableOption]
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
     /// <summary>
@@ -118,28 +115,44 @@ public sealed record TesterOptions : IToolOptions
                 nameof(TestClassNameSuffix),
                 TestClassNameSuffix
             ),
-            TestClassNameGenericSubstitutes = section.GetValue(
-                nameof(TestClassNameGenericSubstitutes),
-                TestClassNameGenericSubstitutes
-            ),
+            TestClassNameGenericSubstitutes =
+                GetSectionList<string>(section, nameof(TestClassNameGenericSubstitutes))
+                    ?.ToImmutableArray() ?? TestClassNameGenericSubstitutes,
             TestDisplayNameConverter = section.GetValue(
                 nameof(TestDisplayNameConverter),
                 TestDisplayNameConverter
             ),
-            TestClassCoverageExceptions = section.GetValue(
-                nameof(TestClassCoverageExceptions),
-                TestClassCoverageExceptions
-            ),
-            MethodsToIgnore = section.GetValue(nameof(MethodsToIgnore), MethodsToIgnore),
+            TestClassCoverageExceptions =
+                GetSectionList<string>(section, nameof(TestClassCoverageExceptions))?.ToFrozenSet()
+                ?? TestClassCoverageExceptions,
+            MethodsToIgnore =
+                GetSectionList<string>(section, nameof(MethodsToIgnore))?.ToFrozenSet()
+                ?? MethodsToIgnore,
             IgnoreAllExceptions = section.GetValue(
                 nameof(IgnoreAllExceptions),
                 IgnoreAllExceptions
             ),
-            IgnorableExceptions = section.GetValue(
-                nameof(IgnorableExceptions),
-                IgnorableExceptions
-            ),
         };
+    }
+
+    /// <summary>Deserializes a list from the configuration.</summary>
+    /// <typeparam name="T">Object type for the list.</typeparam>
+    /// <param name="config">Root configuration section for the options.</param>
+    /// <param name="sectionName">Name of the subsection representing the list.</param>
+    /// <returns>The deserialized list if present, null otherwise.</returns>
+    private static List<T>? GetSectionList<T>(IConfigurationSection config, string sectionName)
+    {
+        IConfigurationSection section = config.GetSection(sectionName);
+        if (section.Exists())
+        {
+            List<T> bindResult = [];
+            section.Bind(bindResult);
+            return bindResult;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <inheritdoc/>

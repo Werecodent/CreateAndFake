@@ -43,7 +43,13 @@ public static class MutatorTests
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupReturn(true);
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(3) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                VariantAttempts = new Limiter(3),
+            }
+        )
             .Assert(t => t.Variant(sample))
             .Throws<ToolException>();
 
@@ -57,7 +63,13 @@ public static class MutatorTests
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(true, true, true, false));
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                VariantAttempts = new Limiter(5),
+            }
+        )
             .Variant(sample)
             .Assert()
             .IsNot(null);
@@ -76,7 +88,13 @@ public static class MutatorTests
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                VariantAttempts = new Limiter(5),
+            }
+        )
             .Variant(sample1, sample2)
             .Assert()
             .IsNot(null);
@@ -123,7 +141,13 @@ public static class MutatorTests
             .SetupCall(Behavior.Series(true, true, true, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                VariantAttempts = new Limiter(5),
+            }
+        )
             .Unique(sample)
             .Assert()
             .IsNot(null);
@@ -141,7 +165,13 @@ public static class MutatorTests
             .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
-        new Mutator(Tools.Mutator.Options with { Valuer = fakeValuer, Limiter = new Limiter(5) })
+        new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                VariantAttempts = new Limiter(5),
+            }
+        )
             .Unique(sample1, sample2)
             .Assert()
             .IsNot(null);

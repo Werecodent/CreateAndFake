@@ -1,14 +1,66 @@
 {
     "CreateAndFake": {
         "Seed": 2,
-        "Asserter": {},
-        "Duplicator": {},
-        "Extractor": {},
+        "Asserter": {
+            "StringCompareOption": "CurrentCulture"
+        },
+        "Duplicator": {
+            "VerifyCloneResult": false
+        },
+        "Extractor": {
+            "ExtractPrivateMembers": true
+        },
         "Faker": {},
-        "Mutator": {},
-        "Randomizer": {},
-        "Runner": {},
-        "Tester": {},
-        "Valuer": {}
+        "Mutator": {
+            "Limiter": 20
+        },
+        "Randomizer": {
+            "RandomizerCreateAttempts": "Few",
+            "ObjectCreateAttempts": "00:01:00",
+            "CollectionAttempts": 5,
+            "CollectionMinSize": 2,
+            "CollectionMaxSize": 4,
+            "StringMinSize": 2,
+            "StringMaxSize": 4,
+            "StringCharacterSet": "ABC1"
+        },
+        "Runner": {
+            "InheritIReflectableTypeOnFakedType": true,
+            "IncludeFinalize": true,
+            "IncludeDispose": true,
+            "IncludeStaticMethods": false,
+            "IncludeInstanceMethods": false,
+            "Timeout": "00:00:10"
+        },
+        "Tester": {
+            "Limiter": "Once",
+            "IncludeConstructors": false,
+            "IncludeInstanceMethods": false,
+            "IncludeStaticMethods": false,
+            "IncludeInternals": false,
+            "TestClassNameSuffix": "Test",
+            "TestClassNameGenericSubstitutes": [
+                "",
+                "_T_",
+                "_"
+            ],
+            "TestClassCoverageExceptions": [
+                "A",
+                "C"
+            ],
+            "MethodsToIgnore": [
+                "A",
+                "B"
+            ],
+            "IgnoreAllExceptions": true
+        },
+        "Valuer": {
+            "UseEquatableComparisons": false,
+            "CheckCollectionType": true,
+            "IgnoreCurrentRandomSeed": false,
+            "AsyncTimeout": "00:01:00",
+            "SkipAsyncValues": true,
+            "IncludeValueHashInComparison": false
+        }
     }
 }

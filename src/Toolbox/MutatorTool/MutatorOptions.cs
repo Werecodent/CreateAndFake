@@ -25,7 +25,7 @@ public sealed record MutatorOptions : IToolOptions
 
     /// <summary>Limits attempts at creating variants.</summary>
     [ConfigurableOption]
-    public Limiter Limiter { get; init; } = Limiter.Score;
+    public ILimiter VariantAttempts { get; init; } = Limiter.Score;
 
     /// <summary>
     ///     Creates options from <see langword="this"/>
@@ -43,7 +43,7 @@ public sealed record MutatorOptions : IToolOptions
 
         return this with
         {
-            Limiter = section.GetValue(nameof(Limiter), Limiter),
+            VariantAttempts = section.GetValue(nameof(VariantAttempts), VariantAttempts),
         };
     }
 

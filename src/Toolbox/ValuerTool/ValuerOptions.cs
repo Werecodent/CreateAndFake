@@ -24,7 +24,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
     public bool IgnoreCurrentRandomSeed { get; init; } = true;
 
     /// <summary>Types to use default equality/hashing.</summary>
-    [ConfigurableOption]
+    //[ConfigurableOption]
     public FrozenSet<Type> FallbackTypes { get; init; } =
         FrozenSet.ToFrozenSet<Type>([
             //typeof(CultureInfo),
@@ -85,7 +85,6 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
                 nameof(IgnoreCurrentRandomSeed),
                 IgnoreCurrentRandomSeed
             ),
-            FallbackTypes = section.GetValue(nameof(FallbackTypes), FallbackTypes),
             AsyncTimeout = section.GetValue(nameof(AsyncTimeout), AsyncTimeout),
             SkipAsyncValues = section.GetValue(nameof(SkipAsyncValues), SkipAsyncValues),
             IncludeValueHashInComparison = section.GetValue(
