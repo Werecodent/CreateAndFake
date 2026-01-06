@@ -1,4 +1,5 @@
-﻿using CreateAndFake.AsserterTool;
+﻿using System.Reflection;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
@@ -18,6 +19,7 @@ public static class AssertEnumerableTests
                 typeof(InvalidCastException),
                 typeof(NotSupportedException),
                 typeof(ArgumentException),
+                typeof(TargetException),
             ],
         };
 

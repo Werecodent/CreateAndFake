@@ -54,7 +54,7 @@ public static class SampleGenerator
             .. Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => t.GetCustomAttribute<ValidSampleAttribute>() != null),
+                .Where(t => Attribute.IsDefined(t, typeof(ValidSampleAttribute))),
             .. _BaseTypes,
             .. InsertIntoSingleGenerics(_BaseTypes, _SingleCollections),
             .. InsertIntoSingleGenerics(_BaseTypes, _SingleHolders),

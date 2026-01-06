@@ -85,7 +85,7 @@ public static class ToolsTests
                 .Where(t => !t.Inherits<Attribute>())
                 .Where(t => !ignore.Contains(t))
                 .Where(t => !t.IsNestedPrivate)
-                .Where(t => t.GetCustomAttribute<CompilerGeneratedAttribute>() == null)
+                .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute)))
         )
         {
             try

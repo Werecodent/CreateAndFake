@@ -99,7 +99,7 @@ public static class ToolSetTests
         foreach (
             PropertyInfo prop in typeof(T)
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.GetCustomAttribute<ConfigurableOptionAttribute>() != null)
+                .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
         )
         {
             object currentValue = prop.GetValue(configOptions);
@@ -134,7 +134,7 @@ public static class ToolSetTests
                 .Except(
                     typeof(T)
                         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(p => p.GetCustomAttribute<ConfigurableOptionAttribute>() != null)
+                        .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
                         .Select(p => p.Name)
                 ),
             "Configuration had extra settings."

@@ -96,6 +96,7 @@ dotnet_diagnostic.VSTHRD003.severity = None
 
 # TODO: Async suffix design for fluent to be determined later.
 dotnet_diagnostic.VSTHRD200.severity = None
+dotnet_diagnostic.AsyncFixer06.severity = None
 
 # TODO: Documentation work.
 dotnet_diagnostic.RCS1228.severity = None
