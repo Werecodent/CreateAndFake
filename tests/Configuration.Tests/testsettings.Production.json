@@ -12,7 +12,7 @@
         },
         "Faker": {},
         "Mutator": {
-            "Limiter": 20
+            "VariantAttempts": 20
         },
         "Randomizer": {
             "RandomizerCreateAttempts": "Few",

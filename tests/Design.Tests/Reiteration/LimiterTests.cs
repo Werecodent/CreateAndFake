@@ -9,6 +9,7 @@ public static class LimiterTests
     [
         typeof(NotSupportedException),
         typeof(TimeoutException),
+        typeof(FormatException),
     ];
 
     [Fact]

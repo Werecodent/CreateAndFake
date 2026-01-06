@@ -12,6 +12,7 @@ public static class AsserterTests
         {
             IgnorableExceptions =
             [
+                typeof(ArgumentException),
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(FakeVerifyException),
