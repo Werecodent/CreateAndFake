@@ -44,10 +44,20 @@ public static class TesterTests
     {
         Type nullType = null;
         await nullType
-            .Assert(t => _ShortTestInstance.PreventsNullRefException(t))
+            .Assert(t =>
+                _ShortTestInstance.PreventsNullRefException(
+                    t,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<ArgumentNullException>();
         await nullType
-            .Assert(t => _ShortTestInstance.PreventsParameterMutation(t))
+            .Assert(t =>
+                _ShortTestInstance.PreventsParameterMutation(
+                    t,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<ArgumentNullException>();
     }
 
@@ -61,7 +71,9 @@ public static class TesterTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            await _LongTestInstance.PreventsNullRefException<MockDisposableSample>();
+            await _LongTestInstance.PreventsNullRefException<MockDisposableSample>(
+                TestContext.Current.CancellationToken
+            );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Exactly(2), d => d.Dispose());
@@ -82,7 +94,9 @@ public static class TesterTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            await _LongTestInstance.PreventsParameterMutation<MockDisposableSample>();
+            await _LongTestInstance.PreventsParameterMutation<MockDisposableSample>(
+                TestContext.Current.CancellationToken
+            );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Exactly(2), d => d.Dispose());

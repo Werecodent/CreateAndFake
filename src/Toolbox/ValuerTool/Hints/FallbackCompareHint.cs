@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
@@ -49,7 +50,8 @@ public sealed class FallbackCompareHint : CompareHint
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler
     )
     {
         if (expected != actual)
@@ -63,7 +65,11 @@ public sealed class FallbackCompareHint : CompareHint
             );
             if (byValues.HasData)
             {
-                await foreach (Difference diff in byValues.Data!.ConfigureAwait(false))
+                await foreach (
+                    Difference diff in byValues
+                        .Data!.WithCancellation(canceler)
+                        .ConfigureAwait(false)
+                )
                 {
                     yield return diff;
                 }

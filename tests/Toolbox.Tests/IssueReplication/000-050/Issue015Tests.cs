@@ -19,7 +19,9 @@ public static class Issue015Tests
     internal static Task Issue015_GuardsParameterMutation()
     {
         return typeof(Sample)
-            .Assert(t => Tools.Tester.PreventsParameterMutation(t))
+            .Assert(t =>
+                Tools.Tester.PreventsParameterMutation(t, TestContext.Current.CancellationToken)
+            )
             .Throws<AssertException>();
     }
 }

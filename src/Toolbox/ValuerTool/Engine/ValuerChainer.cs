@@ -183,13 +183,17 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
-    public async Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null)
+    public async Task<int> GetHashCodeAsync(
+        object? item,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    )
     {
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
             return await _engine
-                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration))
+                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
                 .ConfigureAwait(false);
         }
 
@@ -204,7 +208,7 @@ public sealed class ValuerChainer
         {
             // Await is required here to prevent infinite loops.
             return await _engine
-                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration))
+                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
                 .ConfigureAwait(false);
         }
         finally
@@ -226,10 +230,15 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
-    public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
+    public async Task<bool> EqualsAsync(
+        object? x,
+        object? y,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    )
     {
         return !await AsyncEnumHelper
-            .HasAnyAsync(CompareAsync(x, y, optionConfiguration))
+            .HasAnyAsync(CompareAsync(x, y, optionConfiguration), canceler)
             .ConfigureAwait(false);
     }
 

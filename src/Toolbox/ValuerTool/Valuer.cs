@@ -130,13 +130,17 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public async Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null)
+    public async Task<int> GetHashCodeAsync(
+        object? item,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    )
     {
         string? typeName = item?.GetType().Name;
         try
         {
             return await CreateChainer(optionConfiguration)
-                .GetHashCodeAsync(item)
+                .GetHashCodeAsync(item, canceler)
                 .ConfigureAwait(false);
         }
         catch (Exception e)
@@ -158,10 +162,15 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public async Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null)
+    public async Task<bool> EqualsAsync(
+        object? x,
+        object? y,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    )
     {
         return !await AsyncEnumHelper
-            .HasAnyAsync(CompareAsync(x, y, optionConfiguration))
+            .HasAnyAsync(CompareAsync(x, y, optionConfiguration), canceler)
             .ConfigureAwait(false);
     }
 

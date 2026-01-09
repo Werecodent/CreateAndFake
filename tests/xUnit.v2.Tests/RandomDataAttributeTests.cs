@@ -9,6 +9,7 @@ public static class RandomDataAttributeTests
     {
         return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
+            CancellationToken.None,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }
@@ -18,6 +19,7 @@ public static class RandomDataAttributeTests
     {
         return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
+            CancellationToken.None,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }

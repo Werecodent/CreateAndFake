@@ -16,13 +16,19 @@ public static class DuplicatorTests
     [Fact]
     internal static Task Duplicator_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Duplicator>(config);
+        return Tools.Tester.PreventsNullRefException<Duplicator>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Duplicator_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Duplicator>(config);
+        return Tools.Tester.PreventsParameterMutation<Duplicator>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]

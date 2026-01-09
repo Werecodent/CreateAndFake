@@ -8,46 +8,64 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsyncEnumerableAsserter
 {
     /// <inheritdoc/>
-    public virtual Task FailAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
+    public virtual Task FailAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
     {
-        return FailAsync(collection, Unconfigured, details);
+        return FailAsync(collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        Fail(await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false), details);
-    }
-
-    /// <inheritdoc/>
-    public virtual Task IsEmptyAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
-    {
-        return IsEmptyAsync(collection, Unconfigured, details);
+        Fail(
+            await AsyncEnumHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
+            details
+        );
     }
 
     /// <inheritdoc/>
     public virtual Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return IsEmptyAsync(collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task IsEmptyAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return HasCountAsync(0, collection, optionConfiguration, details);
+        return HasCountAsync(0, collection, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task IsNotEmptyAsync<T>(IAsyncEnumerable<T>? collection, string? details = null)
+    public virtual Task IsNotEmptyAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
     {
-        return IsNotEmptyAsync(collection, Unconfigured, details);
+        return IsNotEmptyAsync(collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -62,7 +80,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
             );
         }
 
-        await foreach (T item in collection.ConfigureAwait(false))
+        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
         {
             throw new AssertException(
                 "Expected collection with elements, but was empty.",
@@ -76,23 +94,25 @@ public partial class Asserter : IAsyncEnumerableAsserter
     public virtual Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        return HasCountAsync(count, collection, Unconfigured, details);
+        return HasCountAsync(count, collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task HasCountAsync<T>(
         int count,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         HasCount(
             count,
-            await AsyncEnumHelper.ToListAsync(collection).ConfigureAwait(false),
+            await AsyncEnumHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
             details
         );
     }
@@ -101,16 +121,18 @@ public partial class Asserter : IAsyncEnumerableAsserter
     public virtual Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         string? details
     )
     {
-        return ContainsAsync(content, collection, Unconfigured, details);
+        return ContainsAsync(content, collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ContainsAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details
     )
@@ -128,10 +150,13 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool found = false;
         StringBuilder contents = new();
-        await foreach (T item in collection.ConfigureAwait(false))
+        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
         {
             found =
-                found || await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
+                found
+                || await localOptions
+                    .Valuer.EqualsAsync(content, item, canceler)
+                    .ConfigureAwait(false);
 
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
@@ -151,16 +176,18 @@ public partial class Asserter : IAsyncEnumerableAsserter
     public virtual Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        return ContainsNotAsync(content, collection, Unconfigured, details);
+        return ContainsNotAsync(content, collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ContainsNotAsync<T>(
         object? content,
         IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -174,9 +201,11 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool notFound = true;
         StringBuilder contents = new();
-        await foreach (T item in collection.ConfigureAwait(false))
+        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
         {
-            notFound &= !await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
+            notFound &= !await localOptions
+                .Valuer.EqualsAsync(content, item, canceler)
+                .ConfigureAwait(false);
 
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }

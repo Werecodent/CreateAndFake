@@ -9,49 +9,67 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsyncObjectAsserter
 {
     /// <inheritdoc/>
-    public Task IsAsync(object? expected, object? actual, string? details = null)
+    public Task IsAsync(
+        object? expected,
+        object? actual,
+        CancellationToken canceler,
+        string? details = null
+    )
     {
-        return IsAsync(expected, actual, Unconfigured, details);
+        return IsAsync(expected, actual, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public Task IsAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ValuesEqualAsync(expected, actual, optionConfiguration, details);
-    }
-
-    /// <inheritdoc/>
-    public Task IsNotAsync(object? expected, object? actual, string? details = null)
-    {
-        return IsNotAsync(expected, actual, Unconfigured, details);
+        return ValuesEqualAsync(expected, actual, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
     public Task IsNotAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return IsNotAsync(expected, actual, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public Task IsNotAsync(
+        object? expected,
+        object? actual,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ValuesNotEqualAsync(expected, actual, optionConfiguration, details);
+        return ValuesNotEqualAsync(expected, actual, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task ValuesEqualAsync(object? expected, object? actual, string? details = null)
+    public virtual Task ValuesEqualAsync(
+        object? expected,
+        object? actual,
+        CancellationToken canceler,
+        string? details = null
+    )
     {
-        return ValuesEqualAsync(expected, actual, Unconfigured, details);
+        return ValuesEqualAsync(expected, actual, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ValuesEqualAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -59,7 +77,7 @@ public partial class Asserter : IAsyncObjectAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         IList<Difference> differences = await AsyncEnumHelper
-            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual))
+            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual), canceler)
             .ConfigureAwait(false);
 
         if (differences.Count > 0)
@@ -77,22 +95,24 @@ public partial class Asserter : IAsyncObjectAsserter
     public virtual Task ValuesNotEqualAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        return ValuesNotEqualAsync(expected, actual, Unconfigured, details);
+        return ValuesNotEqualAsync(expected, actual, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ValuesNotEqualAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (await localOptions.Valuer.EqualsAsync(expected, actual).ConfigureAwait(false))
+        if (await localOptions.Valuer.EqualsAsync(expected, actual, canceler).ConfigureAwait(false))
         {
             throw new AssertException(
                 $"Value inequality failed for type '{GetTypeName(expected, actual)}'.",
@@ -104,15 +124,21 @@ public partial class Asserter : IAsyncObjectAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task AreUniqueAsync(object? expected, object? actual, string? details = null)
+    public virtual Task AreUniqueAsync(
+        object? expected,
+        object? actual,
+        CancellationToken canceler,
+        string? details = null
+    )
     {
-        return AreUniqueAsync(expected, actual, Unconfigured, details);
+        return AreUniqueAsync(expected, actual, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task AreUniqueAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )

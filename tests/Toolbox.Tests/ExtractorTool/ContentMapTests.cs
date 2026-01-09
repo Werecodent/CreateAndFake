@@ -10,18 +10,22 @@ public static class ContentMapTests
     [Fact]
     internal static Task ContentMap_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ContentMap>();
+        return Tools.Tester.PreventsNullRefException<ContentMap>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task ContentMap_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ContentMap>(opt =>
-            opt with
-            {
-                InjectionValues = [Tools.Extractor.Options],
-                IgnorableExceptions = [typeof(ToolException)],
-            }
+        return Tools.Tester.PreventsParameterMutation<ContentMap>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    InjectionValues = [Tools.Extractor.Options],
+                    IgnorableExceptions = [typeof(ToolException)],
+                }
         );
     }
 

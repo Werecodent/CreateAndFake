@@ -16,6 +16,9 @@ public static class XUnitTests
     [Fact]
     internal static Task XUnit_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+        return Tools.Tester.ValidateRandomDataParameters(
+            Assembly.GetExecutingAssembly(),
+            TestContext.Current.CancellationToken
+        );
     }
 }

@@ -14,6 +14,7 @@ public static class RandomDataAttributeTests
     {
         return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.CurrentContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), testStub] }
         );
     }
@@ -36,6 +37,7 @@ public static class RandomDataAttributeTests
 
         return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.CurrentContext.CancellationToken,
             opt =>
                 opt with
                 {

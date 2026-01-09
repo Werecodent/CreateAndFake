@@ -50,14 +50,22 @@ public abstract class CopyHintTestBase<T>(
     [Fact]
     public Task CopyHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance, config);
+        return Tools.Tester.PreventsNullRefException(
+            TestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
     public Task CopyHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(TestInstance, config);
+        return Tools.Tester.PreventsParameterMutation(
+            TestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
@@ -76,6 +84,7 @@ public abstract class CopyHintTestBase<T>(
                 await Tools.Asserter.IsAsync(
                     new CopyHintResult(data),
                     result,
+                    TestContext.Current.CancellationToken,
                     "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."
                 );
 
@@ -127,6 +136,7 @@ public abstract class CopyHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         CopyHintResult.None,
+                        TestContext.Current.CancellationToken,
                         "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
                     );
             }

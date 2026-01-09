@@ -58,7 +58,7 @@ public static class UnwrapperTests
     {
         await (await Unwrapper.UnwrapResult(() => Task.CompletedTask))
             .Assert()
-            .IsAsync(VoidReturn.Instance);
+            .IsAsync(VoidReturn.Instance, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -87,7 +87,7 @@ public static class UnwrapperTests
     {
         await (await Unwrapper.UnwrapResult(() => new ValueTask(Task.CompletedTask)))
             .Assert()
-            .IsAsync(VoidReturn.Instance);
+            .IsAsync(VoidReturn.Instance, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

@@ -7,12 +7,16 @@ public static class RunResultsTests
     [Fact]
     internal static Task RunResults_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RunResults>();
+        return Tools.Tester.PreventsNullRefException<RunResults>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task RunResults_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RunResults>();
+        return Tools.Tester.PreventsParameterMutation<RunResults>(
+            TestContext.Current.CancellationToken
+        );
     }
 }

@@ -5,6 +5,8 @@ namespace CreateAndFake.MSTest.v4.Tests;
 [TestClass]
 public class MSTestTests
 {
+    public TestContext TestContext { get; set; }
+
     [TestMethod]
     public void MSTest_TestClassCoverage()
     {
@@ -17,6 +19,9 @@ public class MSTestTests
     [TestMethod]
     public Task MSTest_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+        return Tools.Tester.ValidateRandomDataParameters(
+            Assembly.GetExecutingAssembly(),
+            TestContext.CancellationToken
+        );
     }
 }

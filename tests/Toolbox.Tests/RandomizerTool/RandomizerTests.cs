@@ -20,13 +20,19 @@ public static class RandomizerTests
     [Fact]
     internal static Task Randomizer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Randomizer>(config);
+        return Tools.Tester.PreventsNullRefException<Randomizer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Randomizer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Randomizer>(config);
+        return Tools.Tester.PreventsParameterMutation<Randomizer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     private static MethodInfo GetGeneratableMethod()

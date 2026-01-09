@@ -7,22 +7,18 @@ public static class AssertAsyncObjectTests
     [Fact]
     internal static Task AssertAsync_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertAsyncObject>(opt =>
-            opt with
-            {
-                IgnoreAllExceptions = true,
-            }
+        return Tools.Tester.PreventsNullRefException<AssertAsyncObject>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 
     [Fact]
     internal static Task AssertAsync_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertAsyncObject>(opt =>
-            opt with
-            {
-                IgnoreAllExceptions = true,
-            }
+        return Tools.Tester.PreventsParameterMutation<AssertAsyncObject>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 }

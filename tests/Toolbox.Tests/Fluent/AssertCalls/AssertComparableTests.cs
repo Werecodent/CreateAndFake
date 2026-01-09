@@ -22,13 +22,19 @@ public static class AssertComparableTests
     [Fact]
     internal static Task AssertComparable_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertComparable>(config);
+        return Tools.Tester.PreventsNullRefException<AssertComparable>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task AssertComparable_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertComparable>(config);
+        return Tools.Tester.PreventsParameterMutation<AssertComparable>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

@@ -25,13 +25,19 @@ public static class AssertStringTests
     [Fact]
     internal static Task AssertString_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertString>(config);
+        return Tools.Tester.PreventsNullRefException<AssertString>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task AssertString_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertString>(config);
+        return Tools.Tester.PreventsParameterMutation<AssertString>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

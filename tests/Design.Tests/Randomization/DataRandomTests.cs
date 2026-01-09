@@ -9,13 +9,17 @@ public static class DataRandomTests
     [Fact]
     internal static Task DataRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DataRandom>();
+        return Tools.Tester.PreventsNullRefException<DataRandom>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task DataRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DataRandom>();
+        return Tools.Tester.PreventsParameterMutation<DataRandom>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

@@ -19,7 +19,10 @@ public static class MutatorTests
     [Fact]
     internal static Task Mutator_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Mutator>(config);
+        return Tools.Tester.PreventsNullRefException<Mutator>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

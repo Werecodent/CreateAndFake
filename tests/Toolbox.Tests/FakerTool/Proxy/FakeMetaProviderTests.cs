@@ -21,13 +21,19 @@ public static class FakeMetaProviderTests
     [Fact]
     internal static Task FakeMetaProvider_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>(config);
+        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task FakeMetaProvider_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>(config);
+        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

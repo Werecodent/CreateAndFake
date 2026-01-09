@@ -27,13 +27,19 @@ public static class MethodCallWrapperTests
     [Fact]
     internal static Task MethodCallWrapper_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<MethodCallWrapper>(config);
+        return Tools.Tester.PreventsNullRefException<MethodCallWrapper>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task MethodCallWrapper_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<MethodCallWrapper>(config);
+        return Tools.Tester.PreventsParameterMutation<MethodCallWrapper>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]

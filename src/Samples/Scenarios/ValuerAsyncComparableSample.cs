@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design;
+﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Scenarios;
@@ -10,7 +11,11 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
 
     public int NumberValue;
 
-    public virtual async IAsyncEnumerable<Difference> CompareAsync(object? other, IValuer valuer)
+    public virtual async IAsyncEnumerable<Difference> CompareAsync(
+        object? other,
+        IValuer valuer,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
@@ -19,6 +24,7 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(StringValue, sample.StringValue)
+                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -27,6 +33,7 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(NumberValue, sample.NumberValue)
+                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -39,10 +46,10 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
         }
     }
 
-    public virtual Task<int> GetValueHashAsync(IValuer valuer)
+    public virtual Task<int> GetValueHashAsync(IValuer valuer, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return valuer.GetHashCodeAsync(new object?[] { StringValue, NumberValue });
+        return valuer.GetHashCodeAsync(new object?[] { StringValue, NumberValue }, canceler);
     }
 }

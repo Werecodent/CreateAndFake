@@ -11,6 +11,7 @@ public static class InjectedTests
     {
         return Tools.Tester.PreventsNullRefException(
             sample,
+            TestContext.Current.CancellationToken,
             opt =>
                 opt with
                 {
@@ -25,6 +26,7 @@ public static class InjectedTests
     {
         return Tools.Tester.PreventsParameterMutation(
             sample,
+            TestContext.Current.CancellationToken,
             opt =>
                 opt with
                 {

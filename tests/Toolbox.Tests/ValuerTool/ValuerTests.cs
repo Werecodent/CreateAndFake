@@ -21,13 +21,19 @@ public static class ValuerTests
     [Fact]
     internal static Task Valuer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Valuer>(config);
+        return Tools.Tester.PreventsNullRefException<Valuer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Valuer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Valuer>(config);
+        return Tools.Tester.PreventsParameterMutation<Valuer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]

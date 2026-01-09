@@ -7,13 +7,17 @@ public static class ExtractHintResultTests
     [Fact]
     internal static Task ExtractHintResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ExtractHintResult>();
+        return Tools.Tester.PreventsNullRefException<ExtractHintResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task ExtractHintResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ExtractHintResult>();
+        return Tools.Tester.PreventsParameterMutation<ExtractHintResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

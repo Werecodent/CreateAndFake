@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
@@ -83,7 +84,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         IEnumerable? expected,
         IEnumerable? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -110,6 +112,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                     await foreach (
                         Difference diff in valuer
                             .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
+                            .WithCancellation(canceler)
                             .ConfigureAwait(false)
                     )
                     {
@@ -154,7 +157,11 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     }
 
     /// <inheritdoc/>
-    protected override async Task<int> GetHashCodeAsync(IEnumerable? item, IValuerChainer valuer)
+    protected override async Task<int> GetHashCodeAsync(
+        IEnumerable? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -164,7 +171,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(value).ConfigureAwait(false);
+                + await valuer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);
         }
         return hash;
     }

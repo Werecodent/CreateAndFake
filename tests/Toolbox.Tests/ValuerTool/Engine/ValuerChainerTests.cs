@@ -17,12 +17,18 @@ public static class ValuerChainerTests
     [Fact]
     internal static Task IValuerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IValuerChainer>(config);
+        return Tools.Tester.PreventsNullRefException<IValuerChainer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task IValuerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IValuerChainer>(config);
+        return Tools.Tester.PreventsParameterMutation<IValuerChainer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 }

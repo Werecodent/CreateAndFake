@@ -5,13 +5,17 @@ public static class ToolSetTests
     [Fact]
     internal static Task ToolSet_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ToolSet>();
+        return Tools.Tester.PreventsNullRefException<ToolSet>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task ToolSet_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ToolSet>();
+        return Tools.Tester.PreventsParameterMutation<ToolSet>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

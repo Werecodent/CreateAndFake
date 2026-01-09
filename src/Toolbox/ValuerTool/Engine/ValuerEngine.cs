@@ -91,12 +91,16 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
     }
 
     /// <inheritdoc/>
-    public Task<int> GetHashCodeAsync(object? item, IValuerChainer chainer)
+    public Task<int> GetHashCodeAsync(
+        object? item,
+        IValuerChainer chainer,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
 
         HashCodeHintAsyncResult? result = SelectHints(chainer)
-            .Select(h => h.TryAsyncGetHashCode(item, chainer))
+            .Select(h => h.TryAsyncGetHashCode(item, chainer, canceler))
             .FirstOrDefault(r => r.HasData);
 
         if (result != null)

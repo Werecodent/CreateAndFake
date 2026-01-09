@@ -7,13 +7,17 @@ public static class AssertChainerTests
     [Fact]
     internal static Task AssertChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertChainer<object>>();
+        return Tools.Tester.PreventsNullRefException<AssertChainer<object>>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task AssertChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertChainer<object>>();
+        return Tools.Tester.PreventsParameterMutation<AssertChainer<object>>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

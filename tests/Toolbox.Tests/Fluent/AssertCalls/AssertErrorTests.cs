@@ -22,13 +22,19 @@ public static class AssertErrorTests
     [Fact]
     internal static Task AssertError_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertError>(config);
+        return Tools.Tester.PreventsNullRefException<AssertError>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task AssertError_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertError>(config);
+        return Tools.Tester.PreventsParameterMutation<AssertError>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

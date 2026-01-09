@@ -7,13 +7,17 @@ public static class DifferenceHintResultTests
     [Fact]
     internal static Task DifferenceHintResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DifferenceHintResult>();
+        return Tools.Tester.PreventsNullRefException<DifferenceHintResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task DifferenceHintResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DifferenceHintResult>();
+        return Tools.Tester.PreventsParameterMutation<DifferenceHintResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

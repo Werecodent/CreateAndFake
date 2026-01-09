@@ -28,7 +28,10 @@ public static class ToolsTests
     [Fact]
     internal static Task CreateAndFake_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+        return Tools.Tester.ValidateRandomDataParameters(
+            Assembly.GetExecutingAssembly(),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]
@@ -143,6 +146,7 @@ public static class ToolsTests
     /// <param name="type">Type to test.</param>
     private static async Task TestTrip(Type type)
     {
+        CancellationToken ct = TestContext.Current.CancellationToken;
         string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
         object original = null,
             variant = null,
@@ -152,10 +156,11 @@ public static class ToolsTests
             original = Tools.Randomizer.Create(type);
             dupe = Tools.Duplicator.Copy(original);
 
-            Tools.Asserter.ValuesEqual(original, dupe, failMessage);
-            Tools.Asserter.ValuesEqual(
-                await Tools.Valuer.GetHashCodeAsync(original),
-                await Tools.Valuer.GetHashCodeAsync(dupe),
+            await Tools.Asserter.ValuesEqualAsync(original, dupe, ct, failMessage);
+            await Tools.Asserter.ValuesEqualAsync(
+                await Tools.Valuer.GetHashCodeAsync(original, ct),
+                await Tools.Valuer.GetHashCodeAsync(dupe, ct),
+                ct,
                 $"HashCode {failMessage}"
             );
 
@@ -165,16 +170,17 @@ public static class ToolsTests
             {
                 variant = Tools.Mutator.Variant(type, original);
 
-                Tools.Asserter.ValuesNotEqual(original, variant, failMessage);
-                Tools.Asserter.ValuesNotEqual(
-                    await Tools.Valuer.GetHashCodeAsync(original),
-                    await Tools.Valuer.GetHashCodeAsync(variant),
+                await Tools.Asserter.ValuesNotEqualAsync(original, variant, ct, failMessage);
+                await Tools.Asserter.ValuesNotEqualAsync(
+                    await Tools.Valuer.GetHashCodeAsync(original, ct),
+                    await Tools.Valuer.GetHashCodeAsync(variant, ct),
+                    ct,
                     failMessage
                 );
 
                 if (Tools.Mutator.Modify(original))
                 {
-                    Tools.Asserter.ValuesNotEqual(dupe, original);
+                    await Tools.Asserter.ValuesNotEqualAsync(dupe, original, ct);
                 }
             }
 

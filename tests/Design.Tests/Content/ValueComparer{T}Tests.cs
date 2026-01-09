@@ -8,7 +8,10 @@ public static class ValueComparer_T_Tests
     [Fact]
     internal static Task ValueComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(ValueComparer<>));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(ValueComparer<>),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
@@ -16,6 +19,7 @@ public static class ValueComparer_T_Tests
     {
         return Tools.Tester.PreventsParameterMutation(
             typeof(ValueComparer<>),
+            TestContext.Current.CancellationToken,
             opt =>
                 opt with
                 {

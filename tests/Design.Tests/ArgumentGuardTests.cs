@@ -5,13 +5,19 @@ public static class ArgumentGuardTests
     [Fact]
     public static Task ArgumentGuard_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(ArgumentGuard));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(ArgumentGuard),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     public static Task ArgumentGuard_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(ArgumentGuard));
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(ArgumentGuard),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

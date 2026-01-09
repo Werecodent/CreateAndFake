@@ -15,13 +15,19 @@ public static class ExtractorTests
     [Fact]
     internal static Task Extractor_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Extractor>(config);
+        return Tools.Tester.PreventsNullRefException<Extractor>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Extractor_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Extractor>(config);
+        return Tools.Tester.PreventsParameterMutation<Extractor>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]

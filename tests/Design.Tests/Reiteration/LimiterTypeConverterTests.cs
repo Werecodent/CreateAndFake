@@ -14,22 +14,18 @@ public class LimiterTypeConverterTests
     [Fact]
     public Task LimiterTypeConverter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<LimiterTypeConverter>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsNullRefException<LimiterTypeConverter>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 
     [Fact]
     public Task LimiterTypeConverter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<LimiterTypeConverter>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsParameterMutation<LimiterTypeConverter>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 }

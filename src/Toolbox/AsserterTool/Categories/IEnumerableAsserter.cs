@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CreateAndFake.AsserterTool.Categories;
 
+#pragma warning disable CA1068 // Cleaner calls.
+
 /// <summary>Handles common collection test scenarios.</summary>
 public interface IEnumerableAsserter
 {
@@ -52,12 +54,18 @@ public interface IEnumerableAsserter
     );
 
     /// <inheritdoc cref="Contains(object,IEnumerable,string)"/>
-    Task ContainsAsync(object? content, IEnumerable? collection, string? details);
+    Task ContainsAsync(
+        object? content,
+        IEnumerable? collection,
+        CancellationToken canceler,
+        string? details
+    );
 
     /// <inheritdoc cref="Contains(object,IEnumerable,AsserterMod,string)"/>
     Task ContainsAsync(
         object? content,
         IEnumerable? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details
     );
@@ -76,12 +84,18 @@ public interface IEnumerableAsserter
     );
 
     /// <inheritdoc cref="ContainsNot(object,IEnumerable,string)"/>
-    Task ContainsNotAsync(object? content, IEnumerable? collection, string? details = null);
+    Task ContainsNotAsync(
+        object? content,
+        IEnumerable? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
 
     /// <inheritdoc cref="ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     Task ContainsNotAsync(
         object? content,
         IEnumerable? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     );
@@ -95,3 +109,5 @@ public interface IEnumerableAsserter
     [DoesNotReturn]
     void Fail(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null);
 }
+
+#pragma warning restore CA1068

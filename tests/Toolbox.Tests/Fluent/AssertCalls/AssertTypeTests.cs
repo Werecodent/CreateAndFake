@@ -22,13 +22,19 @@ public static class AssertTypeTests
     [Fact]
     internal static Task AssertType_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertType>(config);
+        return Tools.Tester.PreventsNullRefException<AssertType>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task AssertType_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertType>(config);
+        return Tools.Tester.PreventsParameterMutation<AssertType>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

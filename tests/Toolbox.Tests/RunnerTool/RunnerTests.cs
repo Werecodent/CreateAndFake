@@ -18,13 +18,19 @@ public static class RunnerTests
     [Fact]
     internal static Task Runner_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Runner>(config);
+        return Tools.Tester.PreventsNullRefException<Runner>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Runner_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Runner>(config);
+        return Tools.Tester.PreventsParameterMutation<Runner>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     private static MethodInfo GetGeneratableMethod()

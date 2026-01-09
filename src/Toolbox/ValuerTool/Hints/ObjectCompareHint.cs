@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
@@ -77,7 +78,8 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -95,6 +97,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(property.GetValue(expected), property.GetValue(actual))
+                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -107,6 +110,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(field.GetValue(expected), field.GetValue(actual))
+                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -143,7 +147,11 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override async Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
+    protected override async Task<int> GetHashCodeAsync(
+        object? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -159,14 +167,18 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(property.GetValue(item)).ConfigureAwait(false);
+                + await valuer
+                    .GetHashCodeAsync(property.GetValue(item), canceler)
+                    .ConfigureAwait(false);
         }
 
         foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(field.GetValue(item)).ConfigureAwait(false);
+                + await valuer
+                    .GetHashCodeAsync(field.GetValue(item), canceler)
+                    .ConfigureAwait(false);
         }
 
         return hash;

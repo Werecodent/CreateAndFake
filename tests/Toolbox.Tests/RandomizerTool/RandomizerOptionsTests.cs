@@ -11,13 +11,17 @@ public static class RandomizerOptionsTests
     [Fact]
     internal static Task RandomizerOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RandomizerOptions>();
+        return Tools.Tester.PreventsNullRefException<RandomizerOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task RandomizerOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RandomizerOptions>();
+        return Tools.Tester.PreventsParameterMutation<RandomizerOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

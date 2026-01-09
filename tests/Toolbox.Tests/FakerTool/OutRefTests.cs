@@ -7,7 +7,10 @@ public static class OutRefTests
     [Fact]
     internal static Task OutRef_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(OutRef<>));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(OutRef<>),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
@@ -15,6 +18,7 @@ public static class OutRefTests
     {
         return Tools.Tester.PreventsParameterMutation(
             typeof(OutRef<>),
+            TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(MemberAccessException)] }
         );
     }

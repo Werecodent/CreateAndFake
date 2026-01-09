@@ -16,9 +16,12 @@ public interface ITester : ITool<TesterOptions>
     /// <returns>The created tool.</returns>
     ITester WithOptions(TesterMod optionConfiguration);
 
-    /// <inheritdoc cref="PreventsNullRefException(Type,TesterMod)"/>
+    /// <inheritdoc cref="PreventsNullRefException(Type,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PreventsNullRefException<T>(TesterMod? optionConfiguration = null);
+    Task PreventsNullRefException<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     ///  <summary>
     ///     Verifies nulls are guarded on the type.
@@ -26,9 +29,13 @@ public interface ITester : ITool<TesterOptions>
     ///     Constructor and factory parameters are tested by running all methods.
     ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
-    /// <inheritdoc cref="PreventsNullRefException{T}(T,TesterMod)"/>
+    /// <inheritdoc cref="PreventsNullRefException{T}(T,CancellationToken,TesterMod)"/>
     /// <param name="type">Type to verify.</param>
-    Task PreventsNullRefException(Type type, TesterMod? optionConfiguration = null);
+    Task PreventsNullRefException(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>
     ///     Verifies nulls are guarded on the type.
@@ -38,16 +45,28 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    Task PreventsNullRefException<T>(T instance, TesterMod? optionConfiguration = null);
+    Task PreventsNullRefException<T>(
+        T instance,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
-    /// <inheritdoc cref="PreventsParameterMutation{T}(T,TesterMod)"/>
+    /// <inheritdoc cref="PreventsParameterMutation{T}(T,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PreventsParameterMutation<T>(TesterMod? optionConfiguration = null);
+    Task PreventsParameterMutation<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
-    /// <inheritdoc cref="PreventsParameterMutation{T}(T,TesterMod)"/>
+    /// <inheritdoc cref="PreventsParameterMutation{T}(T,CancellationToken,TesterMod)"/>
     /// <param name="type">Type to verify.</param>
-    Task PreventsParameterMutation(Type type, TesterMod? optionConfiguration = null);
+    Task PreventsParameterMutation(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>
     ///     Verifies mutations are prevented on the type.
@@ -56,17 +75,30 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    Task PreventsParameterMutation<T>(T instance, TesterMod? optionConfiguration = null);
+    Task PreventsParameterMutation<T>(
+        T instance,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <inheritdoc cref="PassthroughWithNoExceptions"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PassthroughWithNoExceptions<T>(TesterMod? optionConfiguration = null);
+    Task PassthroughWithNoExceptions<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>Verifies no exceptions are thrown on any method when using injection and random data.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    Task PassthroughWithNoExceptions(object instance, TesterMod? optionConfiguration = null);
+    Task PassthroughWithNoExceptions(
+        object instance,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>
     ///     Verifies <paramref name="testAssembly"/> has a test class for all classes in <paramref name="codeAssembly"/>.
@@ -85,6 +117,11 @@ public interface ITester : ITool<TesterOptions>
     ///     <see cref="IRandomDataMarker"/> can be populated with random data.
     /// </summary>
     /// <param name="testAssembly">Assembly with the tests.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    Task ValidateRandomDataParameters(Assembly testAssembly, TesterMod? optionConfiguration = null);
+    Task ValidateRandomDataParameters(
+        Assembly testAssembly,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 }

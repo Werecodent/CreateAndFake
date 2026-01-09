@@ -13,12 +13,20 @@ public static class CreateExtensionsTests
     [Fact]
     internal static Task CreateExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(CreateExtensions), config);
+        return Tools.Tester.PreventsNullRefException(
+            typeof(CreateExtensions),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task CreateExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(CreateExtensions), config);
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(CreateExtensions),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 }

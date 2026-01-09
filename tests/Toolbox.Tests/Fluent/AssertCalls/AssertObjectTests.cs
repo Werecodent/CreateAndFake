@@ -23,13 +23,19 @@ public static class AssertObjectTests
     [Fact]
     internal static Task AssertObject_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertObject>(config);
+        return Tools.Tester.PreventsNullRefException<AssertObject>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task AssertObject_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertObject>(config);
+        return Tools.Tester.PreventsParameterMutation<AssertObject>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Theory, RandomData]

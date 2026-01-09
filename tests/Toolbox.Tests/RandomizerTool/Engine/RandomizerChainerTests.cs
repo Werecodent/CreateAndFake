@@ -13,7 +13,8 @@ public static class RandomizerChainerTests
             new RandomizerChainer(
                 Tools.Randomizer.Options,
                 new RandomizerEngine(Randomizer.DefaultHints)
-            )
+            ),
+            TestContext.Current.CancellationToken
         );
     }
 
@@ -24,7 +25,8 @@ public static class RandomizerChainerTests
             new RandomizerChainer(
                 Tools.Randomizer.Options,
                 new RandomizerEngine(Randomizer.DefaultHints)
-            )
+            ),
+            TestContext.Current.CancellationToken
         );
     }
 

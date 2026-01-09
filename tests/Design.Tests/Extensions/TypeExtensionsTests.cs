@@ -9,7 +9,10 @@ public static class TypeExtensionsTests
     [Fact]
     internal static Task TypeExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(TypeExtensions));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(TypeExtensions),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

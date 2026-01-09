@@ -35,17 +35,19 @@ public abstract class CompareHint<T> : CompareHint
     protected sealed override IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
-        return CompareAsync((T?)expected, (T?)actual, valuer);
+        return CompareAsync((T?)expected, (T?)actual, valuer, canceler);
     }
 
-    /// <inheritdoc cref="CompareAsync(object,object,IValuerChainer)"/>
+    /// <inheritdoc cref="CompareAsync(object,object,IValuerChainer,CancellationToken)"/>
     protected virtual IAsyncEnumerable<Difference> CompareAsync(
         T? expected,
         T? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
@@ -61,13 +63,21 @@ public abstract class CompareHint<T> : CompareHint
     protected abstract int GetHashCode(T? item, IValuerChainer valuer);
 
     /// <inheritdoc/>
-    protected sealed override Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
+    protected sealed override Task<int> GetHashCodeAsync(
+        object? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
-        return GetHashCodeAsync((T?)item, valuer);
+        return GetHashCodeAsync((T?)item, valuer, canceler);
     }
 
-    /// <inheritdoc cref="GetHashCodeAsync(object,IValuerChainer)"/>
-    protected virtual Task<int> GetHashCodeAsync(T? item, IValuerChainer valuer)
+    /// <inheritdoc cref="GetHashCodeAsync(object,IValuerChainer,CancellationToken)"/>
+    protected virtual Task<int> GetHashCodeAsync(
+        T? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         return Task.FromResult(GetHashCode(item, valuer));
     }

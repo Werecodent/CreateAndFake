@@ -7,6 +7,8 @@ public static class InheritanceTrackerTests
     [Fact]
     internal static Task TypeDescriber_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<InheritanceTracker>();
+        return Tools.Tester.PreventsNullRefException<InheritanceTracker>(
+            TestContext.Current.CancellationToken
+        );
     }
 }

@@ -9,13 +9,13 @@ public abstract class ExceptionTestBase<T>
     [Fact]
     public Task Exception_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
     public Task Exception_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>();
+        return Tools.Tester.PreventsParameterMutation<T>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

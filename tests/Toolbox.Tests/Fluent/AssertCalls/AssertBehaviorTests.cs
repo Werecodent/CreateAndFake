@@ -8,22 +8,18 @@ public static class AssertBehaviorTests
     [Fact]
     internal static Task AssertBehavior_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertBehavior>(opt =>
-            opt with
-            {
-                IgnoreAllExceptions = true,
-            }
+        return Tools.Tester.PreventsNullRefException<AssertBehavior>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 
     [Fact]
     internal static Task AssertBehavior_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertBehavior>(opt =>
-            opt with
-            {
-                IgnoreAllExceptions = true,
-            }
+        return Tools.Tester.PreventsParameterMutation<AssertBehavior>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 

@@ -4,128 +4,150 @@ using CreateAndFake.Fluent.AssertCalls;
 
 namespace CreateAndFake.Fluent.AssertAsyncCalls;
 
+#pragma warning disable CA1068 // Cleaner calls.
+
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
 public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actual)
     : AssertObjectBase<T>(asserter, actual)
     where T : AssertAsyncObjectBase<T>
 {
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public async Task<AssertChainer<T>> IsAsync(object? expected, string? details = null)
-    {
-        await Asserter.IsAsync(expected, Actual, details).ConfigureAwait(false);
-        return ToChainer();
-    }
-
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsAsync(
         object? expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.IsAsync(expected, Actual, canceler, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public async Task<AssertChainer<T>> IsAsync(
+        object? expected,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .IsAsync(expected, Actual, optionConfiguration, details)
+            .IsAsync(expected, Actual, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public async Task<AssertChainer<T>> IsNotAsync(object? expected, string? details = null)
-    {
-        await Asserter.IsNotAsync(expected, Actual, details).ConfigureAwait(false);
-        return ToChainer();
-    }
-
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsNotAsync(
         object? expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.IsNotAsync(expected, Actual, canceler, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public async Task<AssertChainer<T>> IsNotAsync(
+        object? expected,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .IsNotAsync(expected, Actual, optionConfiguration, details)
+            .IsNotAsync(expected, Actual, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesEqualAsync(
         object? expected,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        await Asserter.ValuesEqualAsync(expected, Actual, details).ConfigureAwait(false);
+        await Asserter.ValuesEqualAsync(expected, Actual, canceler, details).ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesEqualAsync(
         object? expected,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .ValuesEqualAsync(expected, Actual, optionConfiguration, details)
+            .ValuesEqualAsync(expected, Actual, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesNotEqualAsync(
         object? expected,
-        string? details = null
-    )
-    {
-        await Asserter.ValuesNotEqualAsync(expected, Actual, details).ConfigureAwait(false);
-        return ToChainer();
-    }
-
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual async Task<AssertChainer<T>> ValuesNotEqualAsync(
-        object? expected,
-        AsserterMod? optionConfiguration,
+        CancellationToken canceler,
         string? details = null
     )
     {
         await Asserter
-            .ValuesNotEqualAsync(expected, Actual, optionConfiguration, details)
+            .ValuesNotEqualAsync(expected, Actual, canceler, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,string)"/>
+    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual async Task<AssertChainer<T>> UniqueFromAsync(
+    public virtual async Task<AssertChainer<T>> ValuesNotEqualAsync(
         object? expected,
-        string? details = null
-    )
-    {
-        await Asserter.AreUniqueAsync(expected, Actual, details).ConfigureAwait(false);
-        return ToChainer();
-    }
-
-    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual async Task<AssertChainer<T>> UniqueFromAsync(
-        object? expected,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .AreUniqueAsync(expected, Actual, optionConfiguration, details)
+            .ValuesNotEqualAsync(expected, Actual, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> UniqueFromAsync(
+        object? expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.AreUniqueAsync(expected, Actual, canceler, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<T>> UniqueFromAsync(
+        object? expected,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .AreUniqueAsync(expected, Actual, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
 }
+
+#pragma warning restore CA1068

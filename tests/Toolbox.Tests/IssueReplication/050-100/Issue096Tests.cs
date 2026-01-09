@@ -25,18 +25,20 @@ public static class Issue096Tests
 
     private static async Task TestSample<T>()
     {
+        var ct = TestContext.Current.CancellationToken;
         for (int i = 0; i < 50; i++)
         {
             T sample = Tools.Randomizer.Create<T>();
-            await Tools.Asserter.IsNotAsync(null, sample);
-            await Tools.Asserter.IsNotAsync(sample, Tools.Mutator.Variant(sample));
+            await Tools.Asserter.IsNotAsync(null, sample, ct);
+            await Tools.Asserter.IsNotAsync(sample, Tools.Mutator.Variant(sample), ct);
 
             T dupe = Tools.Duplicator.Copy(sample);
 
-            await Tools.Asserter.IsAsync(sample, dupe);
+            await Tools.Asserter.IsAsync(sample, dupe, ct);
             await Tools.Asserter.IsAsync(
-                await Tools.Valuer.GetHashCodeAsync(sample),
-                await Tools.Valuer.GetHashCodeAsync(dupe)
+                await Tools.Valuer.GetHashCodeAsync(sample, ct),
+                await Tools.Valuer.GetHashCodeAsync(dupe, ct),
+                ct
             );
         }
     }

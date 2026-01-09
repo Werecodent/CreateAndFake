@@ -15,13 +15,17 @@ public static class ValueComparerTests
     [Fact]
     internal static Task ValueComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ValueComparer>();
+        return Tools.Tester.PreventsNullRefException<ValueComparer>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task ValueComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ValueComparer>();
+        return Tools.Tester.PreventsParameterMutation<ValueComparer>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

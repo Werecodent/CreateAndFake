@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
@@ -43,7 +44,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     protected override IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -74,7 +76,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                     BindingFlags.Static | BindingFlags.NonPublic
                 )!
                 .MakeGenericMethod(expectedType.GetGenericArguments().Single())
-                .Invoke(null, [expected, actual, valuer])!;
+                .Invoke(null, [expected, actual, valuer, canceler])!;
     }
 
     /// <inheritdoc/>
@@ -96,7 +98,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
+    protected override Task<int> GetHashCodeAsync(
+        object? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -108,7 +114,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                     BindingFlags.Static | BindingFlags.NonPublic
                 )!
                 .MakeGenericMethod(item.GetType().GetGenericArguments().Single())
-                .Invoke(null, [item, valuer])!;
+                .Invoke(null, [item, valuer, canceler])!;
     }
 
     /// <inheritdoc cref="Compare"/>
@@ -116,7 +122,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     private static async IAsyncEnumerable<Difference> CompareAsyncHandler<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler
     )
     {
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
@@ -124,8 +131,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        IAsyncEnumerator<T> expectedEnumerator = expected.GetAsyncEnumerator();
-        IAsyncEnumerator<T> actualEnumerator = actual.GetAsyncEnumerator();
+        IAsyncEnumerator<T> expectedEnumerator = expected.GetAsyncEnumerator(canceler);
+        IAsyncEnumerator<T> actualEnumerator = actual.GetAsyncEnumerator(canceler);
         await using (expectedEnumerator.ConfigureAwait(false))
         await using (actualEnumerator.ConfigureAwait(false))
         {
@@ -137,11 +144,13 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                     await foreach (
                         Difference diff in valuer
                             .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
+                            .WithCancellation(canceler)
                             .ConfigureAwait(false)
                     )
                     {
                         yield return new Difference(index, diff);
                     }
+                    canceler.ThrowIfCancellationRequested();
                 }
                 else
                 {
@@ -166,15 +175,16 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
     private static async Task<int> GetHashCodeHandler<T>(
         IAsyncEnumerable<T> item,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         int hash = ValueComparer.BaseHash;
-        await foreach (T current in item.ConfigureAwait(false))
+        await foreach (T current in item.WithCancellation(canceler).ConfigureAwait(false))
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(current).ConfigureAwait(false);
+                + await valuer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
         }
         return hash;
     }

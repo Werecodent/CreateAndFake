@@ -26,6 +26,7 @@ public static class ExtractorChainerTests
                 Tools.Extractor.Options,
                 new ExtractorEngine(Extractor.DefaultHints)
             ),
+            TestContext.Current.CancellationToken,
             config
         );
     }
@@ -38,6 +39,7 @@ public static class ExtractorChainerTests
                 Tools.Extractor.Options,
                 new ExtractorEngine(Extractor.DefaultHints)
             ),
+            TestContext.Current.CancellationToken,
             config
         );
     }

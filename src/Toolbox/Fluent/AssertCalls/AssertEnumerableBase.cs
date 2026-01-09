@@ -5,6 +5,8 @@ using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.Fluent.AssertCalls;
 
+#pragma warning disable CA1068 // Cleaner calls.
+
 /// <summary>Handles common collection assertion calls.</summary>
 /// <param name="collection"><inheritdoc cref="Collection" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
@@ -93,27 +95,29 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        await Asserter.ContainsAsync(content, Collection, details).ConfigureAwait(false);
+        await Asserter.ContainsAsync(content, Collection, canceler, details).ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .ContainsAsync(content, Collection, optionConfiguration, details)
+            .ContainsAsync(content, Collection, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
@@ -138,27 +142,31 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        await Asserter.ContainsNotAsync(content, Collection, details).ConfigureAwait(false);
+        await Asserter
+            .ContainsNotAsync(content, Collection, canceler, details)
+            .ConfigureAwait(false);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         await Asserter
-            .ContainsNotAsync(content, Collection, optionConfiguration, details)
+            .ContainsNotAsync(content, Collection, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return ToChainer();
     }
@@ -177,3 +185,5 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         Asserter.Fail(Collection, optionConfiguration, details);
     }
 }
+
+#pragma warning restore CA1068

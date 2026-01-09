@@ -11,6 +11,7 @@ public static class RandomizerEngineTests
     {
         return Tools.Tester.PreventsNullRefException(
             new RandomizerEngine(Randomizer.DefaultHints),
+            TestContext.Current.CancellationToken,
             opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]) }
         );
     }
@@ -20,6 +21,7 @@ public static class RandomizerEngineTests
     {
         return Tools.Tester.PreventsParameterMutation(
             new RandomizerEngine(Randomizer.DefaultHints),
+            TestContext.Current.CancellationToken,
             opt =>
                 opt with
                 {

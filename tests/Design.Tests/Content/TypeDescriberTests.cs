@@ -9,6 +9,7 @@ public static class TypeDescriberTests
     {
         return Tools.Tester.PreventsNullRefException(
             typeof(TypeDescriber),
+            TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
         );
     }

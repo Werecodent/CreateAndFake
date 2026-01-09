@@ -11,13 +11,17 @@ public static class TesterOptionsTests
     [Fact]
     internal static Task TesterOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<TesterOptions>();
+        return Tools.Tester.PreventsNullRefException<TesterOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task TesterOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<TesterOptions>();
+        return Tools.Tester.PreventsParameterMutation<TesterOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

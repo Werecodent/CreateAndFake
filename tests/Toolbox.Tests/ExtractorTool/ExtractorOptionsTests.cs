@@ -11,13 +11,17 @@ public static class ExtractorOptionsTests
     [Fact]
     internal static Task ExtractorOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ExtractorOptions>();
+        return Tools.Tester.PreventsNullRefException<ExtractorOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task ExtractorOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ExtractorOptions>();
+        return Tools.Tester.PreventsParameterMutation<ExtractorOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

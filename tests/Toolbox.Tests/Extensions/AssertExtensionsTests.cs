@@ -5,13 +5,19 @@ public static class AssertExtensionsTests
     [Fact]
     internal static Task AssertExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(AssertExtensions));
+        return Tools.Tester.PreventsNullRefException(
+            typeof(AssertExtensions),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task AssertExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(AssertExtensions));
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(AssertExtensions),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

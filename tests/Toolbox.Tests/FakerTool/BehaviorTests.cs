@@ -21,13 +21,21 @@ public static class BehaviorTests
     [Fact]
     internal static Task Behavior_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(Behavior), config);
+        return Tools.Tester.PreventsNullRefException(
+            typeof(Behavior),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task Behavior_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(Behavior), config);
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(Behavior),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]

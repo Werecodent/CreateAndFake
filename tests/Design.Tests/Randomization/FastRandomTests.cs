@@ -31,22 +31,18 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     [Fact]
     internal static Task FastRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FastRandom>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsNullRefException<FastRandom>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 
     [Fact]
     internal static Task FastRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FastRandom>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsParameterMutation<FastRandom>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 

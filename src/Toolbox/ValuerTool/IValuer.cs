@@ -50,7 +50,13 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
-    Task<bool> EqualsAsync(object? x, object? y, ValuerMod? optionConfiguration = null);
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task<bool> EqualsAsync(
+        object? x,
+        object? y,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    );
 
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
     new int GetHashCode(object? item);
@@ -64,5 +70,10 @@ public interface IValuer : ITool<ValuerOptions>, IEqualityComparer<object>, IEqu
     int GetHashCode(object? item, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
-    Task<int> GetHashCodeAsync(object? item, ValuerMod? optionConfiguration = null);
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task<int> GetHashCodeAsync(
+        object? item,
+        CancellationToken canceler,
+        ValuerMod? optionConfiguration = null
+    );
 }

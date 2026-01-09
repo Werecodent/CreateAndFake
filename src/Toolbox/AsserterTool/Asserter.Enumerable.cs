@@ -198,15 +198,21 @@ public partial class Asserter : IEnumerableAsserter
     }
 
     /// <inheritdoc/>
-    public virtual Task ContainsAsync(object? content, IEnumerable? collection, string? details)
+    public virtual Task ContainsAsync(
+        object? content,
+        IEnumerable? collection,
+        CancellationToken canceler,
+        string? details
+    )
     {
-        return ContainsAsync(content, collection, Unconfigured, details);
+        return ContainsAsync(content, collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ContainsAsync(
         object? content,
         IEnumerable? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details
     )
@@ -228,7 +234,10 @@ public partial class Asserter : IEnumerableAsserter
         foreach (object item in collection)
         {
             found =
-                found || await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
+                found
+                || await localOptions
+                    .Valuer.EqualsAsync(content, item, canceler)
+                    .ConfigureAwait(false);
 
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
@@ -294,16 +303,18 @@ public partial class Asserter : IEnumerableAsserter
     public virtual Task ContainsNotAsync(
         object? content,
         IEnumerable? collection,
+        CancellationToken canceler,
         string? details = null
     )
     {
-        return ContainsNotAsync(content, collection, Unconfigured, details);
+        return ContainsNotAsync(content, collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ContainsNotAsync(
         object? content,
         IEnumerable? collection,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -320,7 +331,9 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
-            notFound &= !await localOptions.Valuer.EqualsAsync(content, item).ConfigureAwait(false);
+            notFound &= !await localOptions
+                .Valuer.EqualsAsync(content, item, canceler)
+                .ConfigureAwait(false);
 
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }

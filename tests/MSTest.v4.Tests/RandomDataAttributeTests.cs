@@ -5,11 +5,14 @@ namespace CreateAndFake.MSTest.v4.Tests;
 [TestClass]
 public class RandomDataAttributeTests
 {
+    public TestContext TestContext { get; set; }
+
     [TestMethod]
     public Task RandomDataAttribute_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }
@@ -19,6 +22,7 @@ public class RandomDataAttributeTests
     {
         return Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
         );
     }

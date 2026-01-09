@@ -17,6 +17,7 @@ public static class LimiterTests
     {
         return Tools.Tester.PreventsNullRefException(
             Limiter.Few,
+            TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }

@@ -19,12 +19,18 @@ public static class DuplicatorChainerTests
     [Fact]
     internal static Task DuplicatorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IDuplicatorChainer>(config);
+        return Tools.Tester.PreventsNullRefException<IDuplicatorChainer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task DuplicatorChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IDuplicatorChainer>(config);
+        return Tools.Tester.PreventsParameterMutation<IDuplicatorChainer>(
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 }

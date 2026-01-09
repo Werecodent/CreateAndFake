@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
@@ -66,7 +67,8 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         IDictionary? expected,
         IDictionary? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
@@ -86,7 +88,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             object? match = null;
             foreach (object potentialMatch in actualKeys)
             {
-                if (await valuer.EqualsAsync(key, potentialMatch).ConfigureAwait(false))
+                if (await valuer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
                 {
                     match = potentialMatch;
                     break;
@@ -98,6 +100,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
                 await foreach (
                     Difference diff in valuer
                         .CompareAsync(expected[key], actual[match])
+                        .WithCancellation(canceler)
                         .ConfigureAwait(false)
                 )
                 {
@@ -115,7 +118,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             object? match = null;
             foreach (object potentialMatch in expectedKeys)
             {
-                if (await valuer.EqualsAsync(key, potentialMatch).ConfigureAwait(false))
+                if (await valuer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
                 {
                     match = potentialMatch;
                     break;
@@ -144,7 +147,11 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override async Task<int> GetHashCodeAsync(IDictionary? item, IValuerChainer valuer)
+    protected override async Task<int> GetHashCodeAsync(
+        IDictionary? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -152,7 +159,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += await valuer.GetHashCodeAsync(entry).ConfigureAwait(false);
+            hash += await valuer.GetHashCodeAsync(entry, canceler).ConfigureAwait(false);
         }
         return hash;
     }

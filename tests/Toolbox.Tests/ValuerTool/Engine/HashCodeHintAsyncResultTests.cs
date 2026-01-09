@@ -7,13 +7,17 @@ public static class HashCodeHintAsyncResultTests
     [Fact]
     internal static Task HashCodeHintAsyncResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<HashCodeHintAsyncResult>();
+        return Tools.Tester.PreventsNullRefException<HashCodeHintAsyncResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task HashCodeHintAsyncResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<HashCodeHintAsyncResult>();
+        return Tools.Tester.PreventsParameterMutation<HashCodeHintAsyncResult>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

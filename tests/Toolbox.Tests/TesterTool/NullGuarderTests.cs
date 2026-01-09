@@ -34,13 +34,21 @@ public static class NullGuarderTests
     [Fact]
     internal static Task NullGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(_ShortTestInstance, config);
+        return Tools.Tester.PreventsNullRefException(
+            _ShortTestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task NullGuarder_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(_ShortTestInstance, config);
+        return Tools.Tester.PreventsParameterMutation(
+            _ShortTestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
@@ -67,22 +75,18 @@ public static class NullGuarderTests
         Fake<IOnlyMockSample> fake2
     )
     {
-        return Tools.Tester.PreventsNullRefException<InjectMockSample>(opt =>
-            opt with
-            {
-                InjectionValues = [fake1, fake2],
-            }
+        return Tools.Tester.PreventsNullRefException<InjectMockSample>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [fake1, fake2] }
         );
     }
 
     [Theory, RandomData]
     internal static Task PreventsNullRefException_InjectsWithMethods(Fake<IOnlyMockSample> fake)
     {
-        return Tools.Tester.PreventsNullRefException<MockMethodPassOnly>(opt =>
-            opt with
-            {
-                InjectionValues = [fake],
-            }
+        return Tools.Tester.PreventsNullRefException<MockMethodPassOnly>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [fake] }
         );
     }
 
@@ -90,14 +94,21 @@ public static class NullGuarderTests
     internal static Task PreventsNullRefException_OnStatics()
     {
         return Tools
-            .Tester.Assert(t => t.PreventsNullRefException(typeof(StaticMutationSample)))
+            .Tester.Assert(t =>
+                t.PreventsNullRefException(
+                    typeof(StaticMutationSample),
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<AssertException>();
     }
 
     [Fact]
     internal static Task PreventsNullRefException_StatelessFine()
     {
-        return Tools.Tester.PreventsNullRefException<StatelessSample>();
+        return Tools.Tester.PreventsNullRefException<StatelessSample>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

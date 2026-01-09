@@ -39,7 +39,11 @@ public abstract class CreateHintTestBase<T>(
     [Fact]
     public Task CreateHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance, config);
+        return Tools.Tester.PreventsNullRefException(
+            TestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
@@ -48,6 +52,7 @@ public abstract class CreateHintTestBase<T>(
     {
         return Tools.Tester.PreventsParameterMutation(
             TestInstance,
+            TestContext.Current.CancellationToken,
             opt =>
                 config(opt) with
                 {

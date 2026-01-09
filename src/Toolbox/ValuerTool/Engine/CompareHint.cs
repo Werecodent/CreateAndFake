@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design;
+﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
@@ -68,18 +69,24 @@ public abstract class CompareHint : IToolHint
     }
 
     /// <inheritdoc cref="TryAsyncCompare"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     private async IAsyncEnumerable<Difference> HandleAsyncCompare(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
+        ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
+
         await foreach (
-            Difference diff in CompareAsync(expected, actual, valuer).ConfigureAwait(false)
+            Difference diff in CompareAsync(expected, actual, valuer, canceler)
+                .ConfigureAwait(false)
         )
         {
             yield return diff;
         }
+        canceler.ThrowIfCancellationRequested();
 
         if (
             valuer.Options.IncludeValueHashInComparison
@@ -88,8 +95,9 @@ public abstract class CompareHint : IToolHint
             && actual is not null
         )
         {
-            int expectedHash = await GetHashCodeAsync(expected, valuer).ConfigureAwait(false);
-            int actualHash = await GetHashCodeAsync(actual, valuer).ConfigureAwait(false);
+            int expectedHash = await GetHashCodeAsync(expected, valuer, canceler)
+                .ConfigureAwait(false);
+            int actualHash = await GetHashCodeAsync(actual, valuer, canceler).ConfigureAwait(false);
 
             if (expectedHash != actualHash)
             {
@@ -118,11 +126,16 @@ public abstract class CompareHint : IToolHint
     }
 
     /// <inheritdoc cref="TryGetHashCode"/>
-    public HashCodeHintAsyncResult TryAsyncGetHashCode(object? item, IValuerChainer valuer)
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    public HashCodeHintAsyncResult TryAsyncGetHashCode(
+        object? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         if (Supports(item, item, valuer))
         {
-            return new(GetHashCodeAsync(item, valuer));
+            return new(GetHashCodeAsync(item, valuer, canceler));
         }
         else
         {
@@ -147,10 +160,12 @@ public abstract class CompareHint : IToolHint
     );
 
     /// <inheritdoc cref="Compare"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     protected virtual IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
@@ -162,7 +177,12 @@ public abstract class CompareHint : IToolHint
     protected abstract int GetHashCode(object? item, IValuerChainer valuer);
 
     /// <inheritdoc cref="GetHashCode"/>
-    protected virtual Task<int> GetHashCodeAsync(object? item, IValuerChainer valuer)
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    protected virtual Task<int> GetHashCodeAsync(
+        object? item,
+        IValuerChainer valuer,
+        CancellationToken canceler
+    )
     {
         return Task.FromResult(GetHashCode(item, valuer));
     }

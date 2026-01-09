@@ -17,6 +17,9 @@ public static class NUnitTests
     [Test]
     public static Task NUnit_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(Assembly.GetExecutingAssembly());
+        return Tools.Tester.ValidateRandomDataParameters(
+            Assembly.GetExecutingAssembly(),
+            TestContext.CurrentContext.CancellationToken
+        );
     }
 }

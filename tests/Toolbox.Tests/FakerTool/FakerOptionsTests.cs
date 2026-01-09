@@ -11,13 +11,17 @@ public static class FakerOptionsTests
     [Fact]
     internal static Task FakerOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakerOptions>();
+        return Tools.Tester.PreventsNullRefException<FakerOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task FakerOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakerOptions>();
+        return Tools.Tester.PreventsParameterMutation<FakerOptions>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

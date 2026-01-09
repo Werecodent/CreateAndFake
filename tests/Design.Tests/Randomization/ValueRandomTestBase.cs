@@ -21,22 +21,18 @@ public abstract class ValueRandomTestBase<T>
     [Fact]
     public Task ValueRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsNullRefException<T>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 
     [Fact]
     public Task ValueRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>(opt =>
-            opt with
-            {
-                IgnorableExceptions = ignorableExceptions,
-            }
+        return Tools.Tester.PreventsParameterMutation<T>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
     }
 

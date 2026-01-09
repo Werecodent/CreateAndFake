@@ -11,17 +11,15 @@ public abstract class DataContextTestBase<T>
     [Fact]
     public Task DataContext_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>();
+        return Tools.Tester.PreventsNullRefException<T>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
     public Task DataContext_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>(opt =>
-            opt with
-            {
-                InjectionValues = [new FastRandom()],
-            }
+        return Tools.Tester.PreventsParameterMutation<T>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [new FastRandom()] }
         );
     }
 

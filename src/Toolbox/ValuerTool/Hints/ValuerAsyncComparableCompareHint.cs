@@ -34,7 +34,8 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     protected override IAsyncEnumerable<Difference> CompareAsync(
         IValuerAsyncComparable? expected,
         IValuerAsyncComparable? actual,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
@@ -64,12 +65,13 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
         IValuerAsyncComparable? item,
-        IValuerChainer valuer
+        IValuerChainer valuer,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(item, nameof(item));
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
 
-        return item.GetValueHashAsync(valuer);
+        return item.GetValueHashAsync(valuer, canceler);
     }
 }

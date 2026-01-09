@@ -11,12 +11,20 @@ public static class FakeExtensionsTests
     [Fact]
     internal static Task FakeExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(typeof(FakeExtensions), config);
+        return Tools.Tester.PreventsNullRefException(
+            typeof(FakeExtensions),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     [Fact]
     internal static Task FakeExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(typeof(FakeExtensions), config);
+        return Tools.Tester.PreventsParameterMutation(
+            typeof(FakeExtensions),
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 }

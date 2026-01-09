@@ -10,34 +10,38 @@ public static class ValuerEngineTests
     [Fact]
     internal static Task ValuerEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ValuerEngine>(opt =>
-            opt with
-            {
-                MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
-                IgnorableExceptions =
-                [
-                    typeof(NotSupportedException),
-                    typeof(InsufficientExecutionStackException),
-                ],
-            }
+        return Tools.Tester.PreventsNullRefException<ValuerEngine>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                    IgnorableExceptions =
+                    [
+                        typeof(NotSupportedException),
+                        typeof(InsufficientExecutionStackException),
+                    ],
+                }
         );
     }
 
     [Fact]
     internal static Task ValuerEngine_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ValuerEngine>(opt =>
-            opt with
-            {
-                InjectionValues = [Tools.Valuer.Options, Valuer.DefaultHints],
-                MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
-                IgnorableExceptions =
-                [
-                    typeof(NotSupportedException),
-                    typeof(TargetException),
-                    typeof(InsufficientExecutionStackException),
-                ],
-            }
+        return Tools.Tester.PreventsParameterMutation<ValuerEngine>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    InjectionValues = [Tools.Valuer.Options, Valuer.DefaultHints],
+                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
+                    IgnorableExceptions =
+                    [
+                        typeof(NotSupportedException),
+                        typeof(TargetException),
+                        typeof(InsufficientExecutionStackException),
+                    ],
+                }
         );
     }
 }

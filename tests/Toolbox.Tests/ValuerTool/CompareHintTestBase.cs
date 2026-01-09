@@ -52,14 +52,22 @@ public abstract class CompareHintTestBase<T>(
     [Fact]
     public Task CompareHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance, config);
+        return Tools.Tester.PreventsNullRefException(
+            TestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
     public Task CompareHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(TestInstance, config);
+        return Tools.Tester.PreventsParameterMutation(
+            TestInstance,
+            TestContext.Current.CancellationToken,
+            config
+        );
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
@@ -139,6 +147,7 @@ public abstract class CompareHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         DifferenceHintResult.None,
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
                     );
             }
@@ -171,6 +180,7 @@ public abstract class CompareHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         dataHash,
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'."
                     );
                 await TestInstance
@@ -178,6 +188,7 @@ public abstract class CompareHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         dataHash,
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' generated different hash for dupe '{type.Name}'."
                     );
             }
@@ -210,6 +221,7 @@ public abstract class CompareHintTestBase<T>(
                     .Assert()
                     .IsNotAsync(
                         dataHash,
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
                     );
             }
@@ -234,6 +246,7 @@ public abstract class CompareHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         HashCodeHintResult.None,
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
                     );
             }

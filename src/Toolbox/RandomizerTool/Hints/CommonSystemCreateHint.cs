@@ -55,6 +55,7 @@ public sealed class CommonSystemCreateHint : CreateHint
                 )
             },
             { typeof(StringBuilder), rand => new StringBuilder(rand.Create<string>()) },
+            { typeof(CancellationToken), _ => new CancellationToken(false) },
         }.ToFrozenDictionary();
 
     /// <inheritdoc/>

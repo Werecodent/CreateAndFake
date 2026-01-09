@@ -11,6 +11,7 @@ public static class RandomDataAttributeTests
         await using DisposalTracker tracker = new();
         await Tools.Tester.PreventsNullRefException(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), tracker] }
         );
     }
@@ -21,6 +22,7 @@ public static class RandomDataAttributeTests
         await using DisposalTracker tracker = new();
         await Tools.Tester.PreventsParameterMutation(
             new RandomDataAttribute() { Trials = 3 },
+            TestContext.Current.CancellationToken,
             opt =>
                 opt with
                 {

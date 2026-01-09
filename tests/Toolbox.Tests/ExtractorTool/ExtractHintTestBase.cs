@@ -30,7 +30,10 @@ public abstract class ExtractHintTestBase<T>(
     [Fact]
     public Task ExtractHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(TestInstance);
+        return Tools.Tester.PreventsNullRefException(
+            TestInstance,
+            TestContext.Current.CancellationToken
+        );
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
@@ -77,6 +80,7 @@ public abstract class ExtractHintTestBase<T>(
                     .Assert()
                     .IsAsync(
                         ExtractHintResult.None,
+                        TestContext.Current.CancellationToken,
                         "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
                     );
             }
