@@ -61,6 +61,15 @@ public sealed class CommonSystemCopyHint : CopyHint
         {
             return new(new IntPtr((int)intPointer));
         }
+        else if (source is CancellationTokenSource canceler)
+        {
+            CancellationTokenSource result = new();
+            if (canceler.IsCancellationRequested)
+            {
+                result.Cancel();
+            }
+            return new(result);
+        }
         else
         {
             return CopyHintResult.None;

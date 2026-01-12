@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.RandomizerTool.Engine;
 
@@ -20,7 +21,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
                 type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>)
                 || (
                     type.FullName?.Contains(
-                        $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItems)}>"
+                        $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItemsCancelable)}>"
                     ) ?? false
                 )
             )
@@ -44,15 +45,25 @@ public sealed class AsyncCollectionCreateHint : CreateHint
         }
     }
 
+    /// <inheritdoc cref="GetItemsCancelable"/>
+    private static IAsyncEnumerable<T> GetItems<T>(List<T> backing)
+    {
+        return GetItemsCancelable(backing);
+    }
+
     /// <summary>Supplies collection items asynchronously.</summary>
     /// <typeparam name="T">Item <see cref="Type"/> to supply.</typeparam>
     /// <param name="backing">Collection items to supply.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The collection made from <paramref name="backing"/>.</returns>
-    private static async IAsyncEnumerable<T> GetItems<T>(List<T> backing)
+    private static async IAsyncEnumerable<T> GetItemsCancelable<T>(
+        List<T> backing,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
     {
         for (int i = 0; i < backing.Count; i++)
         {
-            await Task.Delay(0).ConfigureAwait(false);
+            await Task.Delay(0, canceler).ConfigureAwait(false);
             yield return backing[i];
         }
     }

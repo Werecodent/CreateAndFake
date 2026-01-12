@@ -6,6 +6,10 @@ namespace CreateAndFake.Design.Content;
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
 public static class AsyncEnumHelper
 {
+    /// <summary>Asynchronous cancellation not available in all versions.</summary>
+    private static readonly bool _CanAsyncCancel =
+        typeof(CancellationTokenSource).GetMethod("CancelAsync") != null;
+
     /// <summary>Converts <paramref name="values"/> to an async collection.</summary>
     /// <typeparam name="T">Collection content type.</typeparam>
     /// <param name="values">Collection to convert.</param>
@@ -51,16 +55,17 @@ public static class AsyncEnumHelper
     {
         ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
 
+        canceler.ThrowIfCancellationRequested();
+
         if (values == null)
         {
             return false;
         }
-        await foreach (T _ in values.ConfigureAwait(false).WithCancellation(canceler))
+        await foreach (T _ in values.WithCancellation(canceler).ConfigureAwait(false))
         {
             return true;
         }
 
-        canceler.ThrowIfCancellationRequested();
         return false;
     }
 
@@ -74,14 +79,62 @@ public static class AsyncEnumHelper
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
+
         List<T> results = [];
         if (values != null)
         {
             await foreach (T value in values.WithCancellation(canceler).ConfigureAwait(false))
             {
                 results.Add(value);
+                canceler.ThrowIfCancellationRequested();
             }
         }
         return results;
+    }
+
+    /// <summary>
+    ///     Converts <paramref name="values"/> to an async collection but triggers
+    ///     cancellation via <paramref name="source"/> after the first yielded value.
+    /// </summary>
+    /// <typeparam name="T">Collection content type.</typeparam>
+    /// <param name="values">Collection to convert.</param>
+    /// <param name="source">Source of the cancellation token to cancel.</param>
+    /// <returns>The converted collection.</returns>
+    public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
+        IEnumerable<T> values,
+        CancellationTokenSource source
+    )
+    {
+        ArgumentGuard.ThrowIfNull(values, nameof(values));
+        ArgumentGuard.ThrowIfNull(source, nameof(source));
+
+        foreach (T value in values)
+        {
+            yield return value;
+            if (!source.IsCancellationRequested)
+            {
+                await TriggerCancellationAsync(source).ConfigureAwait(false);
+            }
+        }
+    }
+
+    /// <summary>Handles canceling via <paramref name="source"/> using async if possible.</summary>
+    /// <param name="source">Source of the cancellation token to cancel.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public static async Task TriggerCancellationAsync(CancellationTokenSource source)
+    {
+        ArgumentGuard.ThrowIfNull(source, nameof(source));
+
+        if (_CanAsyncCancel)
+        {
+            await ((dynamic)source).CancelAsync().ConfigureAwait(false);
+        }
+        else
+        {
+#pragma warning disable AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
+            source.Cancel();
+#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
+        }
     }
 }

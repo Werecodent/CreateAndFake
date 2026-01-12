@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
@@ -13,10 +14,6 @@ namespace CreateAndFake.RunnerTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Runner(RunnerOptions options) : IRunner
 {
-    /// <summary>Asynchronous cancellation not available in all versions.</summary>
-    private static readonly bool _CanAsyncCancel =
-        typeof(CancellationTokenSource).GetMethod("CancelAsync") != null;
-
     /// <inheritdoc/>
     public RunnerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
@@ -84,16 +81,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 (await Task.WhenAny(task, Task.Delay(timeout, stopper.Token)).ConfigureAwait(false))
                 != task;
 
-            if (_CanAsyncCancel)
-            {
-                await ((dynamic)stopper).CancelAsync().ConfigureAwait(false);
-            }
-            else
-            {
-#pragma warning disable AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
-                stopper.Cancel();
-#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
-            }
+            await AsyncEnumHelper.TriggerCancellationAsync(stopper).ConfigureAwait(false);
 
             if (timedOut)
             {

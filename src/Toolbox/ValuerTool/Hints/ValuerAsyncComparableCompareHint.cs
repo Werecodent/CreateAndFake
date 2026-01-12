@@ -41,7 +41,7 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
         ArgumentGuard.ThrowIfNull(expected, nameof(expected));
 
-        return expected.CompareAsync(actual, valuer);
+        return expected.CompareAsync(actual, valuer, canceler);
     }
 
     /// <inheritdoc/>
