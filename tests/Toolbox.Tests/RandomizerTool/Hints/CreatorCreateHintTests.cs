@@ -1,13 +1,15 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Text;
+using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
-public sealed class CommonSystemCreateHintTests : CreateHintTestBase<CommonSystemCreateHint>
+public sealed class CreatorCreateHintTests : CreateHintTestBase<CreatorCreateHint>
 {
-    private static readonly CommonSystemCreateHint _TestInstance = new();
+    private static readonly CreatorCreateHint _TestInstance = new();
 
     private static readonly Type[] _ValidTypes =
     [
@@ -21,11 +23,13 @@ public sealed class CommonSystemCreateHintTests : CreateHintTestBase<CommonSyste
         typeof(Uri),
         typeof(UriBuilder),
         typeof(StringBuilder),
+        typeof(IFaked),
+        typeof(RandomizerOptions),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public CommonSystemCreateHintTests()
+    public CreatorCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]

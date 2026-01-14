@@ -52,4 +52,10 @@ public static class TypeExtensionsTests
 
         TypeDescriber.FindLoadedTypes(assembly.Dummy).Assert().IsEmpty();
     }
+
+    [Fact]
+    internal static void Inherits_SelfIncluded()
+    {
+        typeof(string).Inherits<string>();
+    }
 }

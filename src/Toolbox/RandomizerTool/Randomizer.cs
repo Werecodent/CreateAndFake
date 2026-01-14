@@ -16,6 +16,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     internal static readonly ImmutableArray<CreateHint> DefaultHints =
     [
         new ValueCreateHint(),
+        new CreatorCreateHint(),
         new EnumCreateHint(),
         new GenericCreateHint(),
         new AsyncCollectionCreateHint(),
@@ -27,14 +28,11 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         new StringCreateHint(),
         new DelegateCreateHint(),
         new TaskCreateHint(),
-        new CommonSystemCreateHint(),
         new TypeInfoCreateHint(),
         new InjectedCreateHint(),
         new FakeCreateHint(),
-        new FakedCreateHint(),
         new ExceptionCreateHint(),
         new SelfCreateHint(),
-        new OptionsCreateHint(),
         new ObjectCreateHint(),
     ];
 

@@ -53,6 +53,9 @@ public sealed class InheritanceTracker
     /// <summary>All inherited types for the type.</summary>
     private readonly FrozenSet<Type> _children;
 
+    /// <inheritdoc cref="_children"/>
+    public IEnumerable<Type> InheritedTypes => _children;
+
     /// <summary><inheritdoc cref="TypeDescriber"/></summary>
     /// <param name="type"><inheritdoc cref="_type" path="/summary"/></param>
     /// <param name="children"><inheritdoc cref="_children" path="/summary"/></param>
@@ -104,12 +107,9 @@ public sealed class InheritanceTracker
     }
 
     /// <summary>
-    ///     Checks if this type
-    ///     (<see langword="this"/>) inherits <typeparamref name="T"/>.
+    ///     Checks if this type (<see langword="this"/>) inherits <typeparamref name="T"/>.
     /// </summary>
-    /// <typeparam name="T">
-    ///     Potential child <see cref="Type"/> of this type.
-    /// </typeparam>
+    /// <typeparam name="T"> Potential child <see cref="Type"/> of this type.</typeparam>
     /// <returns>
     ///     <see langword="true"/> if this type inherits <typeparamref name="T"/>,
     ///     <see langword="false"/> otherwise.
@@ -120,8 +120,7 @@ public sealed class InheritanceTracker
     }
 
     /// <summary>
-    ///     Checks if the type
-    ///     (<see langword="this"/>) inherits <paramref name="child"/>.
+    ///     Checks if the type (<see langword="this"/>) inherits <paramref name="child"/>.
     /// </summary>
     /// <param name="child">Potential child of the type.</param>
     /// <returns>

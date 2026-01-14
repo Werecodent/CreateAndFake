@@ -16,6 +16,7 @@ public static class AssertComparableTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
+                typeof(ArgumentException),
             ],
         };
 

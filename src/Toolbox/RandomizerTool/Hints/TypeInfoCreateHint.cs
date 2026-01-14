@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -32,74 +32,72 @@ public sealed class TypeInfoCreateHint : CreateHint
     ];
 
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly FrozenDictionary<Type, Func<IRandomizerChainer, object>> _Gens =
-        new Dictionary<Type, Func<IRandomizerChainer, object>>()
-        {
-            { typeof(Type).GetType(), rand => rand.Options.Gen.NextItem(_PossibleTypes) },
-            { typeof(Type), rand => rand.Options.Gen.NextItem(_PossibleTypes) },
-            { typeof(MemberInfo), rand => rand.Create<MethodBase>() },
-            {
-                typeof(MethodBase),
-                rand =>
-                    FindTypeInfo(
-                        rand,
-                        t =>
-                            t.GetConstructors()
-                                .Cast<MethodBase>()
-                                .Concat(
-                                    t.GetMethods()
-                                        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                                )
-                                .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
-                                .Where(m => m.IsPublic)
-                    )
-            },
-            {
-                typeof(ConstructorInfo),
-                rand => FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
-            },
-            {
-                typeof(MethodInfo),
-                rand =>
-                    FindTypeInfo(
-                        rand,
-                        t =>
-                            t.GetMethods()
-                                .Where(m => m.IsPublic)
-                                .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
-                                .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                    )
-            },
-            { typeof(PropertyInfo), rand => FindTypeInfo(rand, t => t.GetProperties()) },
-            {
-                typeof(FieldInfo),
-                rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
-            },
-            {
-                typeof(ParameterInfo),
-                rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
-            },
-            {
-                typeof(string).GetConstructors()[0].GetType(),
-                rand => rand.Create<ConstructorInfo>()
-            },
-            { typeof(string).GetMethods()[0].GetType(), rand => rand.Create<MethodInfo>() },
-            { typeof(string).GetProperties()[0].GetType(), rand => rand.Create<PropertyInfo>() },
-            { typeof(string).GetFields()[0].GetType(), rand => rand.Create<FieldInfo>() },
-            {
-                typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
-                rand => rand.Create<ParameterInfo>()
-            },
-        }.ToFrozenDictionary();
+    private static readonly ICreator[] _Creators =
+    [
+        new Creator(typeof(Type).GetType(), rand => rand.Options.Gen.NextItem(_PossibleTypes)),
+        new Creator<Type>(rand => rand.Options.Gen.NextItem(_PossibleTypes)),
+        new Creator<MemberInfo>(rand => rand.Create<MethodBase>()),
+        new Creator<MethodBase>(rand =>
+            FindTypeInfo(
+                rand,
+                t =>
+                    t.GetConstructors()
+                        .Cast<MethodBase>()
+                        .Concat(
+                            t.GetMethods().Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+                        )
+                        .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
+                        .Where(m => m.IsPublic)
+            )
+        ),
+        new Creator<ConstructorInfo>(rand =>
+            FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
+        ),
+        new Creator<MethodInfo>(rand =>
+            FindTypeInfo(
+                rand,
+                t =>
+                    t.GetMethods()
+                        .Where(m => m.IsPublic)
+                        .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
+                        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+            )
+        ),
+        new Creator<PropertyInfo>(rand => FindTypeInfo(rand, t => t.GetProperties())),
+        new Creator<FieldInfo>(rand =>
+            FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
+        ),
+        new Creator<ParameterInfo>(rand =>
+            FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
+        ),
+        new Creator(
+            typeof(string).GetConstructors()[0].GetType(),
+            rand => rand.Create<ConstructorInfo>()
+        ),
+        new Creator(typeof(string).GetMethods()[0].GetType(), rand => rand.Create<MethodInfo>()),
+        new Creator(
+            typeof(string).GetProperties()[0].GetType(),
+            rand => rand.Create<PropertyInfo>()
+        ),
+        new Creator(typeof(string).GetFields()[0].GetType(), rand => rand.Create<FieldInfo>()),
+        new Creator(
+            typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
+            rand => rand.Create<ParameterInfo>()
+        ),
+    ];
+
+    /// <summary>Supported types and the methods used to generate them.</summary>
+    private static readonly IDictionary<Type, ICreator> _CreatorsByType =
+        TypeSupporter.GroupBySupportedType(_Creators);
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
 
-        if (type != null && _Gens.TryGetValue(type, out Func<IRandomizerChainer, object?>? gen))
+        if (type != null && _CreatorsByType.TryGetValue(type, out ICreator? gen))
         {
-            return new(gen.Invoke(randomizer));
+            return new(gen.CreateSupported(randomizer));
         }
         else
         {
@@ -120,7 +118,7 @@ public sealed class TypeInfoCreateHint : CreateHint
         T[] result;
         do
         {
-            Type foundType = (Type)_Gens[typeof(Type)].Invoke(randomizer);
+            Type foundType = (Type)_CreatorsByType[typeof(Type)].CreateSupported(randomizer)!;
             result = foundType.IsPublic ? [.. grabber.Invoke(foundType)] : [];
         } while (result.Length == 0);
 
