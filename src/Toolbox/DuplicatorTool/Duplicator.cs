@@ -15,7 +15,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     /// <summary>Default set of hints to use for copying.</summary>
     internal static readonly ImmutableArray<CopyHint> DefaultHints =
     [
-        new CommonSystemCopyHint(),
+        new CopierCopyHint(),
         new TaskCopyHint(),
         new DeepCloneableCopyHint(),
         new DuplicatableCopyHint(),
@@ -25,6 +25,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         new ImmutableCollectionCopyHint(),
         new LegacyCollectionCopyHint(),
         new CollectionCopyHint(),
+        new TypeInfoCopyHint(),
         new CloneableCopyHint(),
         new SerializableCopyHint(),
         new ObjectCopyHint(),

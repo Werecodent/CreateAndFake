@@ -7,24 +7,10 @@ public sealed class TypeInfoCreateHintTests : CreateHintTestBase<TypeInfoCreateH
 {
     private static readonly TypeInfoCreateHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes =
-    [
-        typeof(Type),
-        typeof(Type).GetType(),
-        typeof(ConstructorInfo),
-        typeof(PropertyInfo),
-        typeof(MethodInfo),
-        typeof(MemberInfo),
-        typeof(MemberInfo),
-        typeof(FieldInfo),
-        typeof(ParameterInfo),
-        typeof(MethodBase),
-    ];
-
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
     public TypeInfoCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_TestInstance, TypeInfoCreateHint.SupportedTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void TryCreate_ContinuesUntilMemberFound()

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.RunnerTool;
@@ -74,6 +75,7 @@ public static class ToolsTests
             typeof(Injected<>),
             typeof(Behavior<>),
             typeof(Creator<>),
+            typeof(Copier<>),
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),
