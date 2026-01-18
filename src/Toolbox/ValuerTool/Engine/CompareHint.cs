@@ -10,6 +10,9 @@ namespace CreateAndFake.ValuerTool.Engine;
 /// <summary>Handles comparing specific types for <see cref="IValuer"/>.</summary>
 public abstract class CompareHint : IToolHint
 {
+    /// <inheritdoc/>
+    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+
     /// <summary>
     ///     Tries to find the differences between <paramref name="expected"/> and <paramref name="actual"/>.
     /// </summary>

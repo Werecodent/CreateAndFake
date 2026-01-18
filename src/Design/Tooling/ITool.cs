@@ -5,6 +5,9 @@ namespace CreateAndFake.Design.Tooling;
 public interface ITool<out TOptions>
     where TOptions : IToolOptions
 {
+    /// <inheritdoc cref="IToolEngine{T}.SupportedTypes"/>
+    IEnumerable<Type> SupportedTypes { get; }
+
     /// <summary>Configured options being used by the tool.</summary>
     TOptions Options { get; }
 }

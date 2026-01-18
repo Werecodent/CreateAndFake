@@ -9,12 +9,9 @@ namespace CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
 public sealed class ValuerChainer
-    : ToolChainer<ValuerChainer, ValuerOptions, CompareHint>,
+    : ToolChainer<ValuerChainer, IValuerEngine, ValuerOptions, CompareHint>,
         IValuerChainer
 {
-    /// <summary>Callback mechanism.</summary>
-    private readonly IValuerEngine _engine;
-
     /// <summary>History of hashes to match up references.</summary>
     private readonly Dictionary<int, object?> _hashHistory;
 
@@ -23,11 +20,10 @@ public sealed class ValuerChainer
 
     /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
     public ValuerChainer(ValuerOptions options, IValuerEngine engine)
-        : base(options)
+        : base(options, engine)
     {
-        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _hashHistory = [];
         _compareHistory = [];
     }
@@ -36,9 +32,8 @@ public sealed class ValuerChainer
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     private ValuerChainer(ValuerOptions options, ValuerChainer prevChainer)
-        : base(options)
+        : base(options, prevChainer)
     {
-        _engine = prevChainer._engine;
         _hashHistory = prevChainer._hashHistory;
         _compareHistory = prevChainer._compareHistory;
     }
@@ -76,7 +71,7 @@ public sealed class ValuerChainer
             {
                 // Yield return is required here to prevent infinite loops.
                 foreach (
-                    Difference diff in _engine.Compare(
+                    Difference diff in Engine.Compare(
                         expected,
                         actual,
                         GetSubChainer(optionConfiguration)
@@ -90,7 +85,7 @@ public sealed class ValuerChainer
         else
         {
             foreach (
-                Difference diff in _engine.Compare(
+                Difference diff in Engine.Compare(
                     expected,
                     actual,
                     GetSubChainer(optionConfiguration)
@@ -123,7 +118,7 @@ public sealed class ValuerChainer
                 {
                     // Await & yield return is required here to prevent infinite loops.
                     await foreach (
-                        Difference diff in _engine
+                        Difference diff in Engine
                             .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
                             .ConfigureAwait(false)
                     )
@@ -140,7 +135,7 @@ public sealed class ValuerChainer
         else
         {
             await foreach (
-                Difference diff in _engine
+                Difference diff in Engine
                     .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
                     .ConfigureAwait(false)
             )
@@ -162,7 +157,7 @@ public sealed class ValuerChainer
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
-            return _engine.GetHashCode(item, GetSubChainer(optionConfiguration));
+            return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
         }
 
         int refHash = RuntimeHelpers.GetHashCode(item);
@@ -174,7 +169,7 @@ public sealed class ValuerChainer
         _hashHistory[refHash] = item;
         try
         {
-            return _engine.GetHashCode(item, GetSubChainer(optionConfiguration));
+            return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
         }
         finally
         {
@@ -192,7 +187,7 @@ public sealed class ValuerChainer
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
-            return await _engine
+            return await Engine
                 .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
                 .ConfigureAwait(false);
         }
@@ -207,7 +202,7 @@ public sealed class ValuerChainer
         try
         {
             // Await is required here to prevent infinite loops.
-            return await _engine
+            return await Engine
                 .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
                 .ConfigureAwait(false);
         }
@@ -245,7 +240,7 @@ public sealed class ValuerChainer
     /// <inheritdoc/>
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new ValuerChainer(optionConfiguration.Invoke(Options), this);
     }
 }

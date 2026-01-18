@@ -88,6 +88,7 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
                 .ToCharArray()
                 .Distinct()
                 .ToFrozenSet(),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
     }
 

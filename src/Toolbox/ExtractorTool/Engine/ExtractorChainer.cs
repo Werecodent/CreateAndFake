@@ -5,22 +5,18 @@ namespace CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IExtractor"/> to extract child values.</summary>
 public sealed class ExtractorChainer
-    : ToolChainer<ExtractorChainer, ExtractorOptions, ExtractHint>,
+    : ToolChainer<ExtractorChainer, IExtractorEngine, ExtractorOptions, ExtractHint>,
         IExtractorChainer
 {
-    /// <summary>Callback mechanism.</summary>
-    private readonly IExtractorEngine _engine;
-
     /// <summary>Flattened internal data.</summary>
     private readonly Dictionary<Type, ISet<object>> _foundContents;
 
     /// <inheritdoc cref="IExtractorChainer"/>
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
     public ExtractorChainer(ExtractorOptions options, IExtractorEngine engine)
-        : base(options)
+        : base(options, engine)
     {
-        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _foundContents = [];
     }
 
@@ -28,9 +24,8 @@ public sealed class ExtractorChainer
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     private ExtractorChainer(ExtractorOptions options, ExtractorChainer prevChainer)
-        : base(options)
+        : base(options, prevChainer)
     {
-        _engine = prevChainer._engine;
         _foundContents = prevChainer._foundContents;
     }
 
@@ -52,7 +47,7 @@ public sealed class ExtractorChainer
     {
         try
         {
-            return _engine.Extract(value, GetSubChainer(optionConfiguration));
+            return Engine.Extract(value, GetSubChainer(optionConfiguration));
         }
         catch (InsufficientExecutionStackException e)
         {
@@ -84,7 +79,7 @@ public sealed class ExtractorChainer
     /// <inheritdoc/>
     public IExtractor WithOptions(ExtractorMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new ExtractorChainer(optionConfiguration.Invoke(Options), this);
     }
 }

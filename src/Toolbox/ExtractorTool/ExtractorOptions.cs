@@ -48,6 +48,7 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
                 nameof(ExtractPrivateMembers),
                 ExtractPrivateMembers
             ),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
     }
 

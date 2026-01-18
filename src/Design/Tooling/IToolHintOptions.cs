@@ -9,6 +9,10 @@ public interface IToolHintOptions<TSelf, THint> : IToolOptions
     where TSelf : IToolHintOptions<TSelf, THint>
     where THint : IToolHint
 {
+    /// <summary>Limits recursion for the chainer.</summary>
+    [ConfigurableOption]
+    int MaxHintRecursion { get; }
+
     /// <summary>If the default set of hints should be used by the tool.</summary>
     bool IncludeDefaultHints { get; }
 

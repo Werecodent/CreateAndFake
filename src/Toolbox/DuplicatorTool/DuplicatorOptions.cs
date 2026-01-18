@@ -42,6 +42,7 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, Copy
         return this with
         {
             VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
     }
 

@@ -14,6 +14,9 @@ public sealed class Faker(FakerOptions options) : IFaker
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => [];
+
+    /// <inheritdoc/>
     public bool Supports<T>(FakerMod? optionConfiguration = null)
     {
         return Subclasser.Supports<T>();

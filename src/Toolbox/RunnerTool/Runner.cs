@@ -19,6 +19,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => [];
+
+    /// <inheritdoc/>
     public async Task<RunResults> CallMethodsOn(
         object instance,
         RunnerMod? optionConfiguration = null

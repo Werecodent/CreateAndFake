@@ -4,17 +4,44 @@ namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Handles recursive tool behavior.</summary>
 /// <typeparam name="TSelf">Self type reference.</typeparam>
+/// <typeparam name="TEngine">Engine driving the chainer behavior.</typeparam>
 /// <typeparam name="TOptions">Type for the options.</typeparam>
 /// <typeparam name="THint">Type for the hints.</typeparam>
-/// <inheritdoc cref="ToolChainer{T, T, T}"/>
-/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-public abstract class ToolChainer<TSelf, TOptions, THint>(TOptions options)
-    where TSelf : ToolChainer<TSelf, TOptions, THint>
+/// <inheritdoc cref="ToolChainer{T, T, T, T}"/>
+public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChainer<TOptions>
+    where TSelf : ToolChainer<TSelf, TEngine, TOptions, THint>
+    where TEngine : IToolEngine<THint>
     where TOptions : IToolHintOptions<TOptions, THint>
     where THint : IToolHint
 {
+    /// <summary>Callback mechanism.</summary>
+    protected TEngine Engine { get; }
+
     /// <summary>Configured options.</summary>
-    public TOptions Options { get; } = options ?? throw new ArgumentNullException(nameof(options));
+    public TOptions Options { get; }
+
+    /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => Engine.SupportedTypes;
+
+    /// <inheritdoc cref="IToolChainer{T}"/>
+    /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="IToolEngine{T}" path="/summary"/></param>
+    protected ToolChainer(TOptions options, TEngine engine)
+    {
+        Engine = engine ?? throw new ArgumentNullException(nameof(engine));
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+    }
+
+    /// <inheritdoc cref="IToolChainer{T}"/>
+    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
+    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    protected ToolChainer(TOptions options, TSelf prevChainer)
+    {
+        ArgumentGuard.ThrowIfNull(prevChainer);
+
+        Engine = prevChainer.Engine;
+        Options = options ?? throw new ArgumentNullException(nameof(options));
+    }
 
     /// <summary>Test</summary>
     /// <param name="optionConfiguration"></param>

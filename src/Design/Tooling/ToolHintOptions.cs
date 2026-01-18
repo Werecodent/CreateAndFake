@@ -9,6 +9,10 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
     where THint : IToolHint
 {
     /// <inheritdoc/>
+    [ConfigurableOption]
+    public int MaxHintRecursion { get; init; } = 50;
+
+    /// <inheritdoc/>
     public bool IncludeDefaultHints { get; init; } = true;
 
     /// <inheritdoc/>

@@ -10,22 +10,18 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
 public sealed class DuplicatorChainer
-    : ToolChainer<DuplicatorChainer, DuplicatorOptions, CopyHint>,
+    : ToolChainer<DuplicatorChainer, IDuplicatorEngine, DuplicatorOptions, CopyHint>,
         IDuplicatorChainer
 {
-    /// <summary>Callback mechanism.</summary>
-    private readonly IDuplicatorEngine _engine;
-
     /// <summary>History of clones to match up references.</summary>
     private readonly ConditionalWeakTable<object, object?> _history;
 
     /// <inheritdoc cref="IDuplicatorChainer"/>
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="_engine" path="/summary"/></param>
+    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
     public DuplicatorChainer(DuplicatorOptions options, IDuplicatorEngine engine)
-        : base(options)
+        : base(options, engine)
     {
-        _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _history = new ConditionalWeakTable<object, object?>();
     }
 
@@ -33,9 +29,8 @@ public sealed class DuplicatorChainer
     /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     private DuplicatorChainer(DuplicatorOptions options, DuplicatorChainer prevChainer)
-        : base(options)
+        : base(options, prevChainer)
     {
-        _engine = prevChainer._engine;
         _history = prevChainer._history;
     }
 
@@ -70,7 +65,7 @@ public sealed class DuplicatorChainer
         RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(source))
         {
-            return _engine.Copy(source, GetSubChainer(optionConfiguration));
+            return Engine.Copy(source, GetSubChainer(optionConfiguration));
         }
 
         if (_history.TryGetValue(source, out object? clone))
@@ -78,7 +73,7 @@ public sealed class DuplicatorChainer
             return clone!;
         }
 
-        object? result = _engine.Copy(source, GetSubChainer(optionConfiguration));
+        object? result = Engine.Copy(source, GetSubChainer(optionConfiguration));
         if (!_history.TryGetValue(source, out _))
         {
             _history.Add(source, result);
@@ -97,7 +92,7 @@ public sealed class DuplicatorChainer
     /// <inheritdoc/>
     public IDuplicator WithOptions(DuplicatorMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new DuplicatorChainer(optionConfiguration.Invoke(Options), this);
     }
 }

@@ -37,11 +37,14 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     ];
 
     /// <summary>Handles hint based randomization.</summary>
-    private static readonly IRandomizerEngine _engine = new RandomizerEngine(DefaultHints);
+    private static readonly RandomizerEngine _engine = new(DefaultHints);
 
     /// <inheritdoc/>
     public RandomizerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
+
+    /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
 
     /// <inheritdoc/>
     public T Create<T>(RandomizerMod? optionConfiguration = null)

@@ -5,6 +5,9 @@ namespace CreateAndFake.ExtractorTool.Engine;
 /// <summary>Handles extracting specific types for <see cref="IExtractor"/>.</summary>
 public abstract class ExtractHint : IToolHint
 {
+    /// <inheritdoc/>
+    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+
     /// <summary>Tries to extract content.</summary>
     /// <param name="value"></param>
     /// <param name="extractor"></param>

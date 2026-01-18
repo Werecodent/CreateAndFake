@@ -32,11 +32,14 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     ];
 
     /// <summary>Handles hint based duplication.</summary>
-    private static readonly IDuplicatorEngine _engine = new DuplicatorEngine(DefaultHints);
+    private static readonly DuplicatorEngine _engine = new(DefaultHints);
 
     /// <inheritdoc/>
     public DuplicatorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
+
+    /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
 
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]

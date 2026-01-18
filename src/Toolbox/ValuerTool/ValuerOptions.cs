@@ -91,6 +91,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
                 nameof(IncludeValueHashInComparison),
                 IncludeValueHashInComparison
             ),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
     }
 

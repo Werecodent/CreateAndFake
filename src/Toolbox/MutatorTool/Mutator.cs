@@ -18,6 +18,9 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => [];
+
+    /// <inheritdoc/>
     public T Variant<T>(T instance, params IEnumerable<T?>? extraInstances)
     {
         return (T)Variant(typeof(T), instance, extraInstances?.Cast<object>());

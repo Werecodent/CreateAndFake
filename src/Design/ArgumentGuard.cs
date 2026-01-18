@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+//using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Design;
@@ -16,7 +17,10 @@ public static class ArgumentGuard
     /// <param name="name">Name of the parameter.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="value"/> is null.</exception>
     [DebuggerStepThrough]
-    public static void ThrowIfNull([NotNull] object? value, string name)
+    public static void ThrowIfNull(
+        [NotNull] object? value,
+        /*[CallerArgumentExpression(nameof(value))]*/string? name = null
+    )
     {
         if (value is null)
         {

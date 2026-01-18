@@ -24,11 +24,14 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     ];
 
     /// <summary>Handles hint based extraction.</summary>
-    private static readonly IExtractorEngine _engine = new ExtractorEngine(DefaultHints);
+    private static readonly ExtractorEngine _engine = new(DefaultHints);
 
     /// <inheritdoc/>
     public ExtractorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
+
+    /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
 
     /// <inheritdoc/>
     public IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)

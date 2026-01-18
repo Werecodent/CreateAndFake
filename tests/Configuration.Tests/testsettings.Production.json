@@ -5,10 +5,12 @@
             "StringCompareOption": "CurrentCulture"
         },
         "Duplicator": {
-            "VerifyCloneResult": false
+            "VerifyCloneResult": false,
+            "MaxHintRecursion": 9
         },
         "Extractor": {
-            "ExtractPrivateMembers": true
+            "ExtractPrivateMembers": true,
+            "MaxHintRecursion": 9
         },
         "Faker": {},
         "Mutator": {
@@ -22,7 +24,8 @@
             "CollectionMaxSize": 4,
             "StringMinSize": 2,
             "StringMaxSize": 4,
-            "StringCharacterSet": "ABC1"
+            "StringCharacterSet": "ABC1",
+            "MaxHintRecursion": 9
         },
         "Runner": {
             "InheritIReflectableTypeOnFakedType": true,
@@ -60,7 +63,8 @@
             "IgnoreCurrentRandomSeed": false,
             "AsyncTimeout": "00:01:00",
             "SkipAsyncValues": true,
-            "IncludeValueHashInComparison": false
+            "IncludeValueHashInComparison": false,
+            "MaxHintRecursion": 9
         }
     }
 }

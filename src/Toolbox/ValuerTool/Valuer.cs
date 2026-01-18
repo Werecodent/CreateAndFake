@@ -38,40 +38,15 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new StatelessCompareHint(),
     ];
 
+    /// <summary>Handles hint based comparisons.</summary>
+    private static readonly ValuerEngine _engine = new(DefaultHints);
+
     /// <inheritdoc/>
     public ValuerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <summary>Generators used to copy specific types.</summary>
-    private readonly ImmutableArray<CompareHint> _hints = BuildHints(options);
-
-    /// <summary>Builds hints to use for randomization based upon <paramref name="newOptions"/>.</summary>
-    /// <param name="newOptions">Configuration for randomization.</param>
-    /// <returns>Built hints to use.</returns>
-    private static ImmutableArray<CompareHint> BuildHints(ValuerOptions newOptions)
-    {
-        return newOptions.IncludeDefaultHints
-            ? newOptions.Hints.AddRange(DefaultHints)
-            : newOptions.Hints;
-    }
-
-    /// <summary>Picks hints to use for randomization based upon <paramref name="localOptions"/>.</summary>
-    /// <param name="localOptions">Potentially modified configuration to use.</param>
-    /// <returns>Cached hints if possible; built hints otherwise.</returns>
-    private ImmutableArray<CompareHint> SelectHints(ValuerOptions localOptions)
-    {
-        return
-            Options.IncludeDefaultHints == localOptions.IncludeDefaultHints
-            && Options.Hints == localOptions.Hints
-            ? _hints
-            : BuildHints(localOptions);
-    }
-
-    private ValuerChainer CreateChainer(ValuerMod? optionConfiguration)
-    {
-        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-        return new ValuerChainer(localOptions, new ValuerEngine(SelectHints(localOptions)));
-    }
+    /// <inheritdoc/>
+    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
 
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(
@@ -83,7 +58,14 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return [.. CreateChainer(optionConfiguration).Compare(expected, actual)];
+            return
+            [
+                .. new ValuerChainer(Options, _engine).Compare(
+                    expected,
+                    actual,
+                    optionConfiguration
+                ),
+            ];
         }
         catch (Exception e)
         {
@@ -101,7 +83,11 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = (expected ?? actual)?.GetType().Name;
         try
         {
-            return CreateChainer(optionConfiguration).CompareAsync(expected, actual);
+            return new ValuerChainer(Options, _engine).CompareAsync(
+                expected,
+                actual,
+                optionConfiguration
+            );
         }
         catch (Exception e)
         {
@@ -121,7 +107,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = item?.GetType().Name;
         try
         {
-            return CreateChainer(optionConfiguration).GetHashCode(item);
+            return new ValuerChainer(Options, _engine).GetHashCode(item, optionConfiguration);
         }
         catch (Exception e)
         {
@@ -139,8 +125,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         string? typeName = item?.GetType().Name;
         try
         {
-            return await CreateChainer(optionConfiguration)
-                .GetHashCodeAsync(item, canceler)
+            return await new ValuerChainer(Options, _engine)
+                .GetHashCodeAsync(item, canceler, optionConfiguration)
                 .ConfigureAwait(false);
         }
         catch (Exception e)
