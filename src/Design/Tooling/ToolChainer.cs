@@ -23,6 +23,9 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     /// <inheritdoc/>
     public IEnumerable<Type> SupportedTypes => Engine.SupportedTypes;
 
+    /// <summary>Current nested level.</summary>
+    private readonly int _nestedDepth;
+
     /// <inheritdoc cref="IToolChainer{T}"/>
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="engine"><inheritdoc cref="IToolEngine{T}" path="/summary"/></param>
@@ -31,6 +34,7 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
         ArgumentGuard.ThrowIfNull(options, engine);
         Options = options;
         Engine = engine;
+        _nestedDepth = 0;
     }
 
     /// <inheritdoc cref="IToolChainer{T}"/>
@@ -41,6 +45,12 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
         ArgumentGuard.ThrowIfNull(options, prevChainer);
         Options = options;
         Engine = prevChainer.Engine;
+        _nestedDepth = prevChainer._nestedDepth + 1;
+
+        if (_nestedDepth >= options.MaxHintRecursion)
+        {
+            throw new ToolException($"Reached max recursion depth of '{options.MaxHintRecursion}'");
+        }
     }
 
     /// <summary>Test</summary>

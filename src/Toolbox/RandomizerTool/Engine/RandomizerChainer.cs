@@ -12,18 +12,14 @@ public sealed class RandomizerChainer
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
     private readonly IDictionary<Type, object> _history;
 
-    /// <inheritdoc cref="IRandomizerChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
+    /// <inheritdoc/>
     public RandomizerChainer(RandomizerOptions options, IRandomizerEngine engine)
         : base(options, engine)
     {
         _history = new Dictionary<Type, object>();
     }
 
-    /// <inheritdoc cref="IRandomizerChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <inheritdoc/>
     private RandomizerChainer(RandomizerOptions options, RandomizerChainer prevChainer)
         : base(options, prevChainer)
     {

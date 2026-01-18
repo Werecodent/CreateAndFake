@@ -11,18 +11,14 @@ public sealed class ExtractorChainer
     /// <summary>Flattened internal data.</summary>
     private readonly Dictionary<Type, ISet<object>> _foundContents;
 
-    /// <inheritdoc cref="IExtractorChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
+    /// <inheritdoc/>
     public ExtractorChainer(ExtractorOptions options, IExtractorEngine engine)
         : base(options, engine)
     {
         _foundContents = [];
     }
 
-    /// <inheritdoc cref="IExtractorChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <inheritdoc/>
     private ExtractorChainer(ExtractorOptions options, ExtractorChainer prevChainer)
         : base(options, prevChainer)
     {

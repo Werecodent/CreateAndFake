@@ -7,7 +7,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ExtractorTool;
 
 /// <summary>Extracts the contents of objects.</summary>
-public interface IExtractor : ITool<ExtractorOptions>
+public interface IExtractor : IHintTool<ExtractorOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

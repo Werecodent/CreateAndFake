@@ -18,9 +18,6 @@ public class Tester(TesterOptions options) : ITester
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => [];
-
-    /// <inheritdoc/>
     public virtual Task PreventsNullRefException<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null

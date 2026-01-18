@@ -7,7 +7,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
-public interface IRandomizer : ITool<RandomizerOptions>
+public interface IRandomizer : IHintTool<RandomizerOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

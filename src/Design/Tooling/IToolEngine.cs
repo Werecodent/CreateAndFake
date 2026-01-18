@@ -7,8 +7,7 @@ namespace CreateAndFake.Design.Tooling;
 public interface IToolEngine<out THint>
     where THint : IToolHint
 {
-    /// <summary>Specific types that the hint can support.</summary>
-    /// <remarks>Not inclusive and not required.</remarks>
+    /// <inheritdoc cref="IHintTool{T}.SupportedTypes"/>
     IEnumerable<Type> SupportedTypes { get; }
 }
 

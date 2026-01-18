@@ -8,7 +8,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.DuplicatorTool;
 
 /// <summary>Deep clones objects.</summary>
-public interface IDuplicator : ITool<DuplicatorOptions>
+public interface IDuplicator : IHintTool<DuplicatorOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

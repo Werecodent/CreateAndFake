@@ -12,9 +12,6 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     public AsserterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => [];
-
     /// <summary>Default option configuration to use.</summary>
     protected AsserterMod? Unconfigured { get; } = null;
 

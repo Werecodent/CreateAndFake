@@ -18,9 +18,7 @@ public sealed class ValuerChainer
     /// <summary>History of comparisons to match up references.</summary>
     private readonly HashSet<(int, int)> _compareHistory;
 
-    /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
+    /// <inheritdoc/>
     public ValuerChainer(ValuerOptions options, IValuerEngine engine)
         : base(options, engine)
     {
@@ -28,9 +26,7 @@ public sealed class ValuerChainer
         _compareHistory = [];
     }
 
-    /// <inheritdoc cref="IValuerChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <inheritdoc/>
     private ValuerChainer(ValuerOptions options, ValuerChainer prevChainer)
         : base(options, prevChainer)
     {

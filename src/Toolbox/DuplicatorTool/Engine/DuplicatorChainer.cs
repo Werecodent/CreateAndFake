@@ -16,18 +16,14 @@ public sealed class DuplicatorChainer
     /// <summary>History of clones to match up references.</summary>
     private readonly ConditionalWeakTable<object, object?> _history;
 
-    /// <inheritdoc cref="IDuplicatorChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="engine"><inheritdoc cref="Engine" path="/summary"/></param>
+    /// <inheritdoc/>
     public DuplicatorChainer(DuplicatorOptions options, IDuplicatorEngine engine)
         : base(options, engine)
     {
         _history = new ConditionalWeakTable<object, object?>();
     }
 
-    /// <inheritdoc cref="IDuplicatorChainer"/>
-    /// <param name="options"><inheritdoc cref="ITool{T}.Options" path="/summary"/></param>
-    /// <param name="prevChainer">Previous chainer to build upon.</param>
+    /// <inheritdoc/>
     private DuplicatorChainer(DuplicatorOptions options, DuplicatorChainer prevChainer)
         : base(options, prevChainer)
     {
