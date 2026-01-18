@@ -26,7 +26,7 @@ public sealed partial class Limiter : IAsyncLimiter
         CancellationToken? canceler = null
     )
     {
-        ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
+        ArgumentGuard.ThrowIfNull(behavior);
 
         int i = 0;
         List<T> results = [];
@@ -79,7 +79,7 @@ public sealed partial class Limiter : IAsyncLimiter
         CancellationToken? canceler = null
     )
     {
-        ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
+        ArgumentGuard.ThrowIfNull(checkState);
 
         return StallUntilAsync(message, behavior, _ => checkState.Invoke(), canceler);
     }
@@ -92,8 +92,7 @@ public sealed partial class Limiter : IAsyncLimiter
         CancellationToken? canceler = null
     )
     {
-        ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
-        ArgumentGuard.ThrowIfNull(checkState, nameof(checkState));
+        ArgumentGuard.ThrowIfNull(behavior, checkState);
 
         List<T> results = [];
         Stopwatch watch = Stopwatch.StartNew();
@@ -202,7 +201,7 @@ public sealed partial class Limiter : IAsyncLimiter
     )
         where TError : Exception
     {
-        ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
+        ArgumentGuard.ThrowIfNull(behavior);
 
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
@@ -312,7 +311,7 @@ public sealed partial class Limiter : IAsyncLimiter
     )
         where TError : Exception
     {
-        ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
+        ArgumentGuard.ThrowIfNull(behavior);
 
         int i = 0;
         Stopwatch watch = Stopwatch.StartNew();

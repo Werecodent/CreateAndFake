@@ -14,9 +14,9 @@ public sealed class MethodBaseCompareHint : CompareHint<MethodBase>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
-        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(expected);
+        ArgumentGuard.ThrowIfNull(actual);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (
             expected.MetadataToken != actual.MetadataToken
@@ -34,8 +34,8 @@ public sealed class MethodBaseCompareHint : CompareHint<MethodBase>
     /// <inheritdoc/>
     protected override int GetHashCode(MethodBase? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(item);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCode((item.MetadataToken, item.Module.MetadataToken));
     }

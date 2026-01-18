@@ -17,7 +17,7 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (other is ValuerAsyncComparableSample sample)
         {
@@ -48,7 +48,7 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
 
     public virtual Task<int> GetValueHashAsync(IValuer valuer, CancellationToken canceler)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCodeAsync(new object?[] { StringValue, NumberValue }, canceler);
     }

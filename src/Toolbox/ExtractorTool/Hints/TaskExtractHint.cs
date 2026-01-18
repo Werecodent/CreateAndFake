@@ -9,7 +9,7 @@ public sealed class TaskExtractHint : ExtractHint<Task>
     /// <inheritdoc/>
     protected override bool Extract(Task value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         return extractor.AddFoundValue(value);
     }

@@ -28,8 +28,9 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     /// <param name="engine"><inheritdoc cref="IToolEngine{T}" path="/summary"/></param>
     protected ToolChainer(TOptions options, TEngine engine)
     {
-        Engine = engine ?? throw new ArgumentNullException(nameof(engine));
-        Options = options ?? throw new ArgumentNullException(nameof(options));
+        ArgumentGuard.ThrowIfNull(options, engine);
+        Options = options;
+        Engine = engine;
     }
 
     /// <inheritdoc cref="IToolChainer{T}"/>
@@ -37,10 +38,9 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     protected ToolChainer(TOptions options, TSelf prevChainer)
     {
-        ArgumentGuard.ThrowIfNull(prevChainer);
-
+        ArgumentGuard.ThrowIfNull(options, prevChainer);
+        Options = options;
         Engine = prevChainer.Engine;
-        Options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
     /// <summary>Test</summary>

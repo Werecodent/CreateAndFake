@@ -105,7 +105,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     /// <inheritdoc/>
     public IAsserter WithOptions(AsserterMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Asserter(optionConfiguration.Invoke(Options));
     }
 }

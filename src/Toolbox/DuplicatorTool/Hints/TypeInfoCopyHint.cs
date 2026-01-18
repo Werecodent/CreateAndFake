@@ -33,7 +33,7 @@ public sealed class TypeInfoCopyHint : CopyHint
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
         if (_SupportedTypes.Any(t => type.Inherits(t)))

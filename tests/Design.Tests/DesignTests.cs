@@ -15,6 +15,7 @@ public static class DesignTests
                 opt with
                 {
                     TestClassCoverageExceptions = FrozenSet.ToFrozenSet([
+                        "CallerArgumentExpressionAttribute",
                         "CompilerFeatureRequiredAttribute",
                         "IsExternalInit",
                         "RequiredMemberAttribute",

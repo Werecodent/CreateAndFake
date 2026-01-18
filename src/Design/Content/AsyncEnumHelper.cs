@@ -53,7 +53,7 @@ public static class AsyncEnumHelper
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
+        ArgumentGuard.ThrowIfNull(canceler);
 
         canceler.ThrowIfCancellationRequested();
 
@@ -79,7 +79,7 @@ public static class AsyncEnumHelper
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
+        ArgumentGuard.ThrowIfNull(canceler);
 
         List<T> results = [];
         if (values != null)
@@ -106,8 +106,7 @@ public static class AsyncEnumHelper
         CancellationTokenSource source
     )
     {
-        ArgumentGuard.ThrowIfNull(values, nameof(values));
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(values, source);
 
         foreach (T value in values)
         {
@@ -124,7 +123,7 @@ public static class AsyncEnumHelper
     /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task TriggerCancellationAsync(CancellationTokenSource source)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(source);
 
         if (_CanAsyncCancel)
         {

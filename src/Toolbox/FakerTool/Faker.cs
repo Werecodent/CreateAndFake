@@ -211,7 +211,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <inheritdoc/>
     public IFaker WithOptions(FakerMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Faker(optionConfiguration.Invoke(Options));
     }
 }

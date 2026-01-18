@@ -9,7 +9,7 @@ public sealed class ValueCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         if (randomizer.Options.Gen.Supports(type))
         {

@@ -16,7 +16,7 @@ public sealed class DuplicatorEngine(IEnumerable<CopyHint> defaultHints)
     [return: NotNullIfNotNull(nameof(source))]
     public T Copy<T>(T source, IDuplicatorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         if (source == null)
         {

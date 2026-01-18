@@ -13,7 +13,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.Compare(ExtractResult(expected), ExtractResult(actual));
     }
@@ -21,7 +21,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     /// <inheritdoc/>
     protected override int GetHashCode(Task? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCode(ExtractResult(item));
     }

@@ -10,7 +10,7 @@ public class PrivateValuerEquatableSample(string stringValue) : IValuerEquatable
 
     public virtual bool ValuesEqual(object? other, IValuer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return (other is PrivateValuerEquatableSample sample)
             && valuer.Equals(StringValue, sample.StringValue);

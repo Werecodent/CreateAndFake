@@ -30,7 +30,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+        ArgumentGuard.ThrowIfNull(expected);
 
         if (!expected.ValuesEqual(actual))
         {

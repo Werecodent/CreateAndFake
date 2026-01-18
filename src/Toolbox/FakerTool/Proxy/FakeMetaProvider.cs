@@ -46,8 +46,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     )
         : this(identifier)
     {
-        ArgumentGuard.ThrowIfNull(behavior, nameof(log));
-        ArgumentGuard.ThrowIfNull(log, nameof(log));
+        ArgumentGuard.ThrowIfNull(behavior, log);
 
         foreach ((CallData, Behavior) set in behavior)
         {
@@ -59,7 +58,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     /// <inheritdoc/>
     public IDuplicatable DeepClone(IDuplicator duplicator)
     {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(duplicator);
 
         return new FakeMetaProvider(
             Identifier,
@@ -96,8 +95,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     /// <param name="behavior">Behavior to tie to the call.</param>
     internal void SetCallBehavior(CallData callData, Behavior behavior)
     {
-        ArgumentGuard.ThrowIfNull(callData, nameof(callData));
-        ArgumentGuard.ThrowIfNull(behavior, nameof(behavior));
+        ArgumentGuard.ThrowIfNull(callData, behavior);
 
         _behavior.Push((callData, behavior));
     }
@@ -119,8 +117,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     /// <exception cref="FakeVerifyException"></exception>
     internal void Verify(Times times, CallData callData)
     {
-        ArgumentGuard.ThrowIfNull(times, nameof(times));
-        ArgumentGuard.ThrowIfNull(callData, nameof(callData));
+        ArgumentGuard.ThrowIfNull(times, callData);
 
         IEnumerable<CallData> calls = [.. _log.Where(callData.MatchesCall)];
         if (!times.IsInRange(calls.Count()))
@@ -134,7 +131,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     /// <exception cref="FakeVerifyException"></exception>
     internal void VerifyTotalCalls(Times times)
     {
-        ArgumentGuard.ThrowIfNull(times, nameof(times));
+        ArgumentGuard.ThrowIfNull(times);
 
         if (!times.IsInRange(_log.Count))
         {

@@ -20,8 +20,8 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         Exception taskException
     )
     {
-        ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
-        ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
+        ArgumentGuard.ThrowIfNull(testOrigin);
+        ArgumentGuard.ThrowIfNull(taskException);
 
         Options.Asserter.Fail(
             taskException,

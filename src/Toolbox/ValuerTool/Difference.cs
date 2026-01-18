@@ -34,7 +34,7 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     public Difference(MemberInfo member, Difference difference)
         : this("." + member?.Name, difference)
     {
-        ArgumentGuard.ThrowIfNull(member, nameof(member));
+        ArgumentGuard.ThrowIfNull(member);
     }
 
     /// <inheritdoc cref="Difference"/>
@@ -48,8 +48,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     /// <param name="difference">Found difference for the compared objects.</param>
     public Difference(string access, Difference difference)
     {
-        ArgumentGuard.ThrowIfNull(access, nameof(access));
-        ArgumentGuard.ThrowIfNull(difference, nameof(difference));
+        ArgumentGuard.ThrowIfNull(access);
+        ArgumentGuard.ThrowIfNull(difference);
 
         _message = new Lazy<string>(() => access + difference);
     }

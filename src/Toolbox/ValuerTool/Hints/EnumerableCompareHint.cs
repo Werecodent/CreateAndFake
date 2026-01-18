@@ -16,9 +16,9 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
-        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(expected);
+        ArgumentGuard.ThrowIfNull(actual);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return LazyCompare(expected, actual, valuer);
     }
@@ -88,9 +88,9 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
-        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(expected);
+        ArgumentGuard.ThrowIfNull(actual);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
@@ -145,8 +145,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     /// <inheritdoc/>
     protected override int GetHashCode(IEnumerable? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(item);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
@@ -163,8 +163,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(item);
+        ArgumentGuard.ThrowIfNull(valuer);
 
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)

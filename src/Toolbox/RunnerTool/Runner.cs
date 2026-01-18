@@ -27,7 +27,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         List<RunResult> results = [];
         foreach (
@@ -65,7 +65,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(data, nameof(data));
+        ArgumentGuard.ThrowIfNull(data);
 
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -138,7 +138,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         params IEnumerable<object?>? values
     )
     {
-        ArgumentGuard.ThrowIfNull(method, nameof(method));
+        ArgumentGuard.ThrowIfNull(method);
 
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -241,7 +241,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
     /// <inheritdoc/>
     public IRunner WithOptions(RunnerMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Runner(optionConfiguration.Invoke(Options));
     }
 }

@@ -12,7 +12,7 @@ public class ValuerEquatableSample : IValuerEquatable
 
     public virtual bool ValuesEqual(object? other, IValuer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return (other is ValuerEquatableSample sample)
             && valuer.Equals(StringValue, sample.StringValue)

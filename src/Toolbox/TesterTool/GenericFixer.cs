@@ -15,8 +15,8 @@ internal static class GenericFixer
     /// <returns>Method with all generics defined.</returns>
     internal static MethodInfo FixMethod(MethodInfo method, TesterOptions options)
     {
-        ArgumentGuard.ThrowIfNull(method, nameof(method));
-        ArgumentGuard.ThrowIfNull(options, nameof(options));
+        ArgumentGuard.ThrowIfNull(method);
+        ArgumentGuard.ThrowIfNull(options);
 
         return method.IsGenericMethodDefinition
             ? method.MakeGenericMethod([
@@ -32,7 +32,7 @@ internal static class GenericFixer
     /// <returns>Created arg <see cref="Type"/>.</returns>
     private static Type CreateArg(Type type, MethodInfo method, TesterOptions options)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         bool newNeeded = type.GenericParameterAttributes.HasFlag(
             GenericParameterAttributes.DefaultConstructorConstraint

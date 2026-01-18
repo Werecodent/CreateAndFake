@@ -11,7 +11,7 @@ public sealed class ObjectExtractHint : ExtractHint<object>
     /// <inheritdoc/>
     protected override bool Extract(object value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         if (extractor.AddFoundValue(value))
         {

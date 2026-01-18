@@ -163,7 +163,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc/>
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Valuer(optionConfiguration.Invoke(Options));
     }
 }

@@ -13,8 +13,7 @@ public sealed class ValuerComparableCompareHint : CompareHint<IValuerComparable>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+        ArgumentGuard.ThrowIfNull(valuer, expected);
 
         return expected.Compare(actual, valuer);
     }
@@ -22,8 +21,7 @@ public sealed class ValuerComparableCompareHint : CompareHint<IValuerComparable>
     /// <inheritdoc/>
     protected override int GetHashCode(IValuerComparable? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(item, valuer);
 
         return item.GetValueHash(valuer);
     }

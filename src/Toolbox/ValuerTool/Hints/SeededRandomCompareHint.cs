@@ -14,7 +14,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.Compare(ExtractInternals(expected, valuer), ExtractInternals(actual, valuer));
     }
@@ -22,7 +22,7 @@ public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
     /// <inheritdoc/>
     protected override int GetHashCode(SeededRandom? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCode(ExtractInternals(item, valuer));
     }

@@ -32,7 +32,7 @@ internal sealed class CallData(
     /// <param name="argChanges">Created Args to substitute on the given values.</param>
     internal void ConvertArgs(Tuple<Arg, object>[] argChanges)
     {
-        ArgumentGuard.ThrowIfNull(argChanges, nameof(argChanges));
+        ArgumentGuard.ThrowIfNull(argChanges);
 
         List<Tuple<Arg, object>> changes = [.. argChanges];
         for (int i = 0; i < _args.Length; i++)
@@ -51,7 +51,7 @@ internal sealed class CallData(
     /// <returns><see langword="true"/> if matched, <see langword="false"/> otherwise.</returns>
     internal bool MatchesCall(CallData input)
     {
-        ArgumentGuard.ThrowIfNull(input, nameof(input));
+        ArgumentGuard.ThrowIfNull(input);
 
         return (_methodName == input._methodName)
             && GenericsMatch(input._generics)

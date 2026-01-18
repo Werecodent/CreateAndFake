@@ -12,7 +12,7 @@ public class ValuerComparableSample : IValuerComparable
 
     public virtual IEnumerable<Difference> Compare(object? other, IValuer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (other is ValuerComparableSample sample)
         {

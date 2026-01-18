@@ -12,7 +12,7 @@ public sealed class ExtractorEngine(IEnumerable<ExtractHint> defaultHints)
     /// <inheritdoc/>
     public bool Extract(object? value, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         ExtractHintResult? result = SelectHints(chainer)
             .Select(h => h.TryExtract(value, chainer))

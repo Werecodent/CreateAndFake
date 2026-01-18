@@ -120,7 +120,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <inheritdoc/>
     public IRandomizer WithOptions(RandomizerMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Randomizer(optionConfiguration.Invoke(Options));
     }
 

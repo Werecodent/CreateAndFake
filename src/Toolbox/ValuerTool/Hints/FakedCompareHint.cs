@@ -14,7 +14,7 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.Compare(expected?.FakeMeta, actual?.FakeMeta);
     }
@@ -22,7 +22,7 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
     /// <inheritdoc/>
     protected override int GetHashCode(IFaked? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCode(item?.FakeMeta);
     }

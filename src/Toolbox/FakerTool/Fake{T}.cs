@@ -129,7 +129,7 @@ public sealed class Fake<T> : Fake
         bool onlySetter
     )
     {
-        ArgumentGuard.ThrowIfNull(method, nameof(method));
+        ArgumentGuard.ThrowIfNull(method);
 
         if (!onlySetter && method.Body is MethodCallExpression methodCall)
         {

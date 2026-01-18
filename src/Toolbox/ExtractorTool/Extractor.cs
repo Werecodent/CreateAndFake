@@ -50,7 +50,7 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     /// <inheritdoc/>
     public IExtractor WithOptions(ExtractorMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Extractor(optionConfiguration.Invoke(Options));
     }
 }

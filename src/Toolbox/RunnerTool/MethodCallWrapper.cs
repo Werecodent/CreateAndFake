@@ -72,7 +72,7 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     /// <inheritdoc/>
     public IDuplicatable DeepClone(IDuplicator duplicator)
     {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(duplicator);
 
         return new MethodCallWrapper(duplicator.Copy(method), duplicator.Copy(_args));
     }

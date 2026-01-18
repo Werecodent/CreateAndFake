@@ -19,7 +19,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <returns>Found constructors.</returns>
     protected IEnumerable<ConstructorInfo> FindAllConstructors(Type type)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         BindingFlags scope = Options.IncludeInternals
             ? BindingFlags.Public | BindingFlags.NonPublic
@@ -35,7 +35,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <returns>Found methods.</returns>
     protected IEnumerable<MethodInfo> FindAllMethods(Type type, BindingFlags kind)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         BindingFlags scope = Options.IncludeInternals
             ? BindingFlags.Public | BindingFlags.NonPublic
@@ -57,7 +57,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         object instance
     )
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         foreach (
             MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
@@ -95,7 +95,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         MethodCallWrapper data
     )
     {
-        ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
+        ArgumentGuard.ThrowIfNull(testOrigin);
 
         RunResult result = await Options.Runner.Run(instance, data).ConfigureAwait(false);
         if (!result.ThrewException)

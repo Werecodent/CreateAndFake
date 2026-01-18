@@ -20,7 +20,7 @@ public sealed class ObjectCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         object? result =
             (type == null)

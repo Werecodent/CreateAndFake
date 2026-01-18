@@ -11,7 +11,7 @@ public sealed class EquatableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.Options.UseEquatableComparisons
             && expected != null
@@ -29,7 +29,7 @@ public sealed class EquatableCompareHint : CompareHint
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
+        ArgumentGuard.ThrowIfNull(expected);
 
         if (!expected.Equals(actual))
         {
@@ -44,7 +44,7 @@ public sealed class EquatableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
+        ArgumentGuard.ThrowIfNull(item);
 
         return item.GetHashCode();
     }

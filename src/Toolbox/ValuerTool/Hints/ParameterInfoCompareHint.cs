@@ -14,9 +14,7 @@ public sealed class ParameterInfoCompareHint : CompareHint<ParameterInfo>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, nameof(expected));
-        ArgumentGuard.ThrowIfNull(actual, nameof(actual));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
 
         if (expected.MetadataToken != actual.MetadataToken)
         {
@@ -31,8 +29,7 @@ public sealed class ParameterInfoCompareHint : CompareHint<ParameterInfo>
     /// <inheritdoc/>
     protected override int GetHashCode(ParameterInfo? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(item, valuer);
 
         return valuer.GetHashCode(item.MetadataToken);
     }

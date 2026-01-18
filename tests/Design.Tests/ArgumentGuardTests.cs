@@ -1,5 +1,7 @@
 ﻿namespace CreateAndFake.Design.Tests;
 
+#pragma warning disable S3236 // For testing the methods.
+
 public static class ArgumentGuardTests
 {
     [Fact]
@@ -32,3 +34,5 @@ public static class ArgumentGuardTests
         name.Assert(n => ArgumentGuard.ThrowIfNull(null, n)).Throws<ArgumentNullException>();
     }
 }
+
+#pragma warning restore S3236 // For testing the methods.

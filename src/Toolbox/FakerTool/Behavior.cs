@@ -40,7 +40,7 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <returns>Result of the call.</returns>
     internal object? Invoke(Delegate implementation, object[] args)
     {
-        ArgumentGuard.ThrowIfNull(implementation, nameof(implementation));
+        ArgumentGuard.ThrowIfNull(implementation);
 
         Calls++;
         try

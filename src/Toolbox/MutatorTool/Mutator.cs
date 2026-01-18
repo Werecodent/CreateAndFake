@@ -181,7 +181,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public IMutator WithOptions(MutatorMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Mutator(optionConfiguration.Invoke(Options));
     }
 }

@@ -9,7 +9,7 @@ public abstract class ExtractHint<T> : ExtractHint
     /// <inheritdoc/>
     public sealed override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         if (value is T supported)
         {

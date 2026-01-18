@@ -13,7 +13,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         if (ReferenceEquals(expected, actual))
         {
@@ -44,7 +44,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         IValuerChainer chainer
     )
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         if (ReferenceEquals(expected, actual))
         {
@@ -71,7 +71,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
     /// <inheritdoc/>
     public int GetHashCode(object? item, IValuerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         HashCodeHintResult? result = SelectHints(chainer)
             .Select(h => h.TryGetHashCode(item, chainer))
@@ -97,7 +97,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         HashCodeHintAsyncResult? result = SelectHints(chainer)
             .Select(h => h.TryAsyncGetHashCode(item, chainer, canceler))

@@ -66,7 +66,7 @@ public sealed class CreatorCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         if (
             type != null

@@ -9,7 +9,7 @@ public sealed class CloneableCopyHint : CopyHint<ICloneable>
     /// <inheritdoc/>
     protected override ICloneable Copy(ICloneable source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(source);
 
         return (ICloneable)source.Clone();
     }

@@ -10,7 +10,7 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
     /// <inheritdoc/>
     protected override bool Extract(IEnumerable value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         if (extractor.AddFoundValue(value))
         {

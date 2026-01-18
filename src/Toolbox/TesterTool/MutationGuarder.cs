@@ -18,7 +18,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         foreach (ConstructorInfo constructor in FindAllConstructors(type))
         {
@@ -32,7 +32,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <param name="canceler">Aborts execution if triggered.</param>
     internal async Task PreventsMutationOnMethods(object instance, CancellationToken canceler)
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
@@ -56,7 +56,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
@@ -121,7 +121,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         Exception taskException
     )
     {
-        ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
+        ArgumentGuard.ThrowIfNull(taskException);
 
         return Options.IgnoreAllExceptions
             || Options.IgnorableExceptions.Contains(taskException.GetType());

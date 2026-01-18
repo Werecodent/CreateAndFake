@@ -22,7 +22,7 @@ public abstract class CompareHint : IToolHint
     /// <returns>Possible result.</returns>
     public DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (Supports(expected, actual, valuer))
         {
@@ -59,7 +59,7 @@ public abstract class CompareHint : IToolHint
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         if (Supports(expected, actual, valuer))
         {
@@ -80,7 +80,7 @@ public abstract class CompareHint : IToolHint
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler, nameof(canceler));
+        ArgumentGuard.ThrowIfNull(canceler);
 
         await foreach (
             Difference diff in CompareAsync(expected, actual, valuer, canceler)

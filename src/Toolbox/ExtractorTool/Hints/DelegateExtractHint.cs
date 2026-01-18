@@ -9,7 +9,7 @@ public sealed class DelegateExtractHint : ExtractHint<Delegate>
     /// <inheritdoc/>
     protected override bool Extract(Delegate value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         return extractor.AddFoundValue(value);
     }

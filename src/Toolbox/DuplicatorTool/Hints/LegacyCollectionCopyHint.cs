@@ -76,8 +76,7 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(source, duplicator);
 
         if (
             _Copiers.TryGetValue(

@@ -10,8 +10,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(source, duplicator);
 
         if (source.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {

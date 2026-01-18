@@ -17,7 +17,7 @@ public sealed class FallbackCompareHint : CompareHint
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         Type? type = (expected ?? actual)?.GetType();
 

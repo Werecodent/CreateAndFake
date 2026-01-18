@@ -36,7 +36,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         NullGuarder checker = new(localOptions);
@@ -66,7 +66,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         NullGuarder checker = new(localOptions);
@@ -103,7 +103,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         MutationGuarder checker = new(localOptions);
@@ -135,7 +135,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         MutationGuarder checker = new(localOptions);
@@ -216,8 +216,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(codeAssembly, nameof(codeAssembly));
-        ArgumentGuard.ThrowIfNull(testAssembly, nameof(testAssembly));
+        ArgumentGuard.ThrowIfNull(codeAssembly, testAssembly);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -261,7 +260,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(testAssembly, nameof(testAssembly));
+        ArgumentGuard.ThrowIfNull(testAssembly);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
@@ -306,7 +305,7 @@ public class Tester(TesterOptions options) : ITester
     /// <inheritdoc/>
     public ITester WithOptions(TesterMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Tester(optionConfiguration.Invoke(Options));
     }
 }

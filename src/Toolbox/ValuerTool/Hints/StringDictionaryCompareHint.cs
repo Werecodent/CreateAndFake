@@ -15,7 +15,7 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.Compare(Convert(expected), Convert(actual));
     }
@@ -23,7 +23,7 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
     /// <inheritdoc/>
     protected override int GetHashCode(StringDictionary? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer, nameof(valuer));
+        ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCode(Convert(item));
     }
@@ -33,7 +33,7 @@ public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
     /// <returns>The converted dictionary.</returns>
     private static Dictionary<string, string?> Convert(StringDictionary? dict)
     {
-        ArgumentGuard.ThrowIfNull(dict, nameof(dict));
+        ArgumentGuard.ThrowIfNull(dict);
 
         return dict.Cast<DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string?)e.Value);
     }

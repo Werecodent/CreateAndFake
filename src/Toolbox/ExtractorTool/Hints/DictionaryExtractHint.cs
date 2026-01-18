@@ -10,7 +10,7 @@ public sealed class DictionaryExtractHint : ExtractHint<IDictionary>
     /// <inheritdoc/>
     protected override bool Extract(IDictionary value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         if (extractor.AddFoundValue(value))
         {

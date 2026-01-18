@@ -13,7 +13,7 @@ public sealed class GenericCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         if (type?.IsGenericTypeDefinition ?? false)
         {
@@ -44,8 +44,8 @@ public sealed class GenericCreateHint : CreateHint
     /// <returns>Created arg <see cref="Type"/>.</returns>
     internal static Type CreateArg(Type type, Type parent, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(type);
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         bool newNeeded = type.GenericParameterAttributes.HasFlag(
             GenericParameterAttributes.DefaultConstructorConstraint

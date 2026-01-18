@@ -9,8 +9,7 @@ public sealed class DuplicatableCopyHint : CopyHint<IDuplicatable>
     /// <inheritdoc/>
     protected override IDuplicatable Copy(IDuplicatable source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(source, duplicator);
 
         return source.DeepClone(duplicator);
     }

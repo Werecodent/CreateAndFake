@@ -38,7 +38,7 @@ public sealed class StatelessCompareHint : CompareHint
     /// <inheritdoc/>
     protected override int GetHashCode(object? item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, nameof(item));
+        ArgumentGuard.ThrowIfNull(item);
 
         return item.GetType().GetHashCode();
     }

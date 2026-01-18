@@ -19,8 +19,7 @@ public sealed class Injected<T>
     /// <param name="fakes">Fakes injected into the dummy.</param>
     public Injected(T dummy, IEnumerable<Fake> fakes)
     {
-        ArgumentGuard.ThrowIfNull(dummy, nameof(dummy));
-        ArgumentGuard.ThrowIfNull(fakes, nameof(fakes));
+        ArgumentGuard.ThrowIfNull(dummy, fakes);
 
         Dummy = dummy;
         Fakes = [.. fakes];

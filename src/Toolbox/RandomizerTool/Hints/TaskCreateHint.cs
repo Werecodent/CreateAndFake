@@ -9,7 +9,7 @@ public sealed class TaskCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         if (type.Inherits<Task>() || typeof(TaskCompletionSource<>).IsInheritedBy(type))
         {

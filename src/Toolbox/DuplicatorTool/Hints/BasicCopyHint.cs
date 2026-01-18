@@ -35,7 +35,7 @@ public sealed class BasicCopyHint : CopyHint
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
         if (

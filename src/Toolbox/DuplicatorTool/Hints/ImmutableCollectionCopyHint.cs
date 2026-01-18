@@ -51,7 +51,7 @@ public class ImmutableCollectionCopyHint : CopyHint
     /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, nameof(source));
+        ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
         Type? genericType = type.AsGenericBase();

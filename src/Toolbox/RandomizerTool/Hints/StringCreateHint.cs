@@ -9,7 +9,7 @@ public sealed class StringCreateHint : CreateHint<string>
     /// <inheritdoc/>
     protected override string Create(IRandomizerChainer randomizer)
     {
-        ArgumentGuard.ThrowIfNull(randomizer, nameof(randomizer));
+        ArgumentGuard.ThrowIfNull(randomizer);
 
         char[] data = new char[randomizer.Options.NextStringSize()];
         for (int i = 0; i < data.Length; i++)

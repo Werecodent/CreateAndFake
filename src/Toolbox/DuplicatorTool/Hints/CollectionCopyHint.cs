@@ -20,7 +20,7 @@ public sealed class CollectionCopyHint : CopyHint
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(duplicator, nameof(duplicator));
+        ArgumentGuard.ThrowIfNull(duplicator);
 
         if (source is IEnumerable collection)
         {

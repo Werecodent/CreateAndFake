@@ -25,7 +25,7 @@ public sealed class EndingExtractHint : ExtractHint
     /// <inheritdoc/>
     public override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)
     {
-        ArgumentGuard.ThrowIfNull(extractor, nameof(extractor));
+        ArgumentGuard.ThrowIfNull(extractor);
 
         Type? type = value?.GetType();
         if (

@@ -17,7 +17,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
     internal async Task PreventsNullRefExceptionOnConstructors(Type type, bool callAllMethods)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         foreach (ConstructorInfo constructor in FindAllConstructors(type))
         {
@@ -33,7 +33,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <param name="instance">Instance to test the methods on.</param>
     internal async Task PreventsNullRefExceptionOnMethods(object instance)
     {
-        ArgumentGuard.ThrowIfNull(instance, nameof(instance));
+        ArgumentGuard.ThrowIfNull(instance);
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
@@ -51,7 +51,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
     internal async Task PreventsNullRefExceptionOnStatics(Type type, bool callAllMethods)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
@@ -121,9 +121,9 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         Exception taskException
     )
     {
-        ArgumentGuard.ThrowIfNull(testOrigin, nameof(testOrigin));
-        ArgumentGuard.ThrowIfNull(testParam, nameof(testParam));
-        ArgumentGuard.ThrowIfNull(taskException, nameof(taskException));
+        ArgumentGuard.ThrowIfNull(testOrigin);
+        ArgumentGuard.ThrowIfNull(testParam);
+        ArgumentGuard.ThrowIfNull(taskException);
 
         string details = $"on method '{testOrigin.Name}' with parameter '{testParam.Name}'";
 

@@ -79,7 +79,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     /// <inheritdoc/>
     public IDuplicator WithOptions(DuplicatorMod optionConfiguration)
     {
-        ArgumentGuard.ThrowIfNull(optionConfiguration, nameof(optionConfiguration));
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
         return new Duplicator(optionConfiguration.Invoke(Options));
     }
 }

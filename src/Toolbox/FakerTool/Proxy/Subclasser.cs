@@ -50,7 +50,7 @@ public static class Subclasser
         params IEnumerable<Type> interfaces
     )
     {
-        ArgumentGuard.ThrowIfNull(options, nameof(options));
+        ArgumentGuard.ThrowIfNull(options);
 
         return (IFaked)
             CreateInfo(parent, interfaces)

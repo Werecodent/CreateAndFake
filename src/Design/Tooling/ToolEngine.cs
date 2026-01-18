@@ -19,7 +19,7 @@ public abstract class ToolEngine<THint>(IEnumerable<THint> defaultHints) : ITool
     protected IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions> chainer)
         where TOptions : IToolHintOptions<TOptions, THint>
     {
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(chainer);
 
         foreach (THint hint in chainer.Options.Hints)
         {

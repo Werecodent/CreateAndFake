@@ -15,8 +15,7 @@ public sealed class RandomizerEngine(IEnumerable<CreateHint> defaultHints)
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>
     public object Create(Type type, IRandomizerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
-        ArgumentGuard.ThrowIfNull(chainer, nameof(chainer));
+        ArgumentGuard.ThrowIfNull(type, chainer);
 
         CreateHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCreate(type, chainer))
@@ -39,7 +38,7 @@ public sealed class RandomizerEngine(IEnumerable<CreateHint> defaultHints)
     /// <inheritdoc cref="IRandomizer.Inject"/>
     public object Inject(Type type, IEnumerable<object?>? values, IRandomizerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(type, nameof(type));
+        ArgumentGuard.ThrowIfNull(type);
 
         List<Tuple<Type, object>> data =
         [
