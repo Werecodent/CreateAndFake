@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -20,6 +21,7 @@ public static class ValuerEngineTests
                     [
                         typeof(NotSupportedException),
                         typeof(InsufficientExecutionStackException),
+                        typeof(ToolException),
                     ],
                 }
         );
@@ -40,6 +42,7 @@ public static class ValuerEngineTests
                         typeof(NotSupportedException),
                         typeof(TargetException),
                         typeof(InsufficientExecutionStackException),
+                        typeof(ToolException),
                     ],
                 }
         );

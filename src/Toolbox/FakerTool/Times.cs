@@ -89,6 +89,9 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     /// <summary>Represents <c>1</c> allowed calls.</summary>
     public static Times Once { get; } = Exactly(1);
 
+    /// <summary>Represents any number of allowed calls.</summary>
+    public static Times Any { get; } = Min(0);
+
     /// <summary>Sets the expected bounds to exactly <paramref name="count"/>.</summary>
     /// <param name="count">Upper and lower bound.</param>
     /// <returns>Representation of the bounds.</returns>
@@ -120,12 +123,5 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     public static Times Max(int count)
     {
         return Between(0, count);
-    }
-
-    /// <summary>Sets the expected bounds to any number.</summary>
-    /// <returns>Representation of the bounds.</returns>
-    public static Times Any()
-    {
-        return Min(0);
     }
 }

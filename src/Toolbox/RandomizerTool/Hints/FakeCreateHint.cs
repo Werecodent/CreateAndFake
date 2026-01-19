@@ -122,19 +122,19 @@ public sealed class FakeCreateHint : CreateHint
                     .GetConstructor([typeof(Delegate), typeof(Times)])!
                     .Invoke([
                         randomizer.Create(_FuncTypes[withOut.Length]!.MakeGenericType(withOut)),
-                        Times.Any(),
+                        Times.Any,
                     ]);
         }
         else if (args.Length != 0)
         {
             return new Behavior<VoidType>(
                 (Delegate)randomizer.Create(_ActionTypes[args.Length].MakeGenericType(args))!,
-                Times.Any()
+                Times.Any
             );
         }
         else
         {
-            return Behavior.None(Times.Any());
+            return Behavior.None(Times.Any);
         }
     }
 

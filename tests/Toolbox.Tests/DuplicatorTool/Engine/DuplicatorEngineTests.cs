@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 
@@ -21,6 +22,7 @@ public static class DuplicatorEngineTests
                         typeof(ArgumentException),
                         typeof(TargetParameterCountException),
                         typeof(NotSupportedException),
+                        typeof(ToolException),
                     ],
                 }
         );
@@ -41,6 +43,7 @@ public static class DuplicatorEngineTests
                         typeof(ArgumentException),
                         typeof(TargetParameterCountException),
                         typeof(NotSupportedException),
+                        typeof(ToolException),
                     ],
                 }
         );

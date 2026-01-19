@@ -4,7 +4,7 @@ using static SimpleExec.Command;
 namespace Build;
 
 /// <summary>Manages build behavior for the solution.</summary>
-/// <remarks>Do not add to this project to the solution file.</remarks>
+/// <remarks>Do not add this project to the solution file.</remarks>
 internal static class Program
 {
     /// <summary>Base directory for all output.</summary>
@@ -113,7 +113,7 @@ internal static class Program
             .ConfigureAwait(false);
     }
 
-    /// <summary>Packs the solution.</summary>
+    /// <summary>Packs the solution for release.</summary>
     private static Task Pack()
     {
         string releaseDir = Path.Combine(_ArtifactDir, "releases");

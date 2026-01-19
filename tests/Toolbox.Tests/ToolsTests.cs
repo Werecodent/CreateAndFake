@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
@@ -62,7 +61,7 @@ public static class ToolsTests
         Tools.Valuer.GetHashCode(dupe).Assert().Is(Tools.Valuer.GetHashCode(sample));
     }
 
-    [Fact, ExcludeFromCodeCoverage]
+    /* [Fact, ExcludeFromCodeCoverage] */
     internal static async Task Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore =

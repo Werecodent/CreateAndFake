@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.RandomizerTool.Engine;
 
@@ -13,4 +14,10 @@ public abstract class CreateHint : IToolHint
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Possible result.</returns>
     public abstract CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer);
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

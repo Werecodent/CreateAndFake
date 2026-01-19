@@ -30,7 +30,9 @@ public sealed class CopierCopyHint : CopyHint
         new Copier<CancellationTokenSource>(
             (source, _) =>
             {
+#pragma warning disable S2930 // Must be GC when the resulting token is expired.
                 CancellationTokenSource result = new();
+#pragma warning restore S2930
                 if (source.IsCancellationRequested)
                 {
                     result.Cancel();

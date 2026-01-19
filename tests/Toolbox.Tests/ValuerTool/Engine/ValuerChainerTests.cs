@@ -1,4 +1,5 @@
-﻿using CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.Design.Tooling;
+using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.ValuerTool.Engine;
 
@@ -11,6 +12,7 @@ public static class ValuerChainerTests
             [
                 typeof(NotSupportedException),
                 typeof(InsufficientExecutionStackException),
+                typeof(ToolException),
             ],
         };
 

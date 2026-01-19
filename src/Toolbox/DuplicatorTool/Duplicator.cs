@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
@@ -72,7 +73,10 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         }
         catch (Exception e)
         {
-            throw new ToolException($"Issue duplicating type '{source!.GetType().Name}'.", e);
+            throw new ToolException(
+                $"Issue duplicating type '{TypeDescriber.ExpandedName(source?.GetType())}'.",
+                e
+            );
         }
     }
 

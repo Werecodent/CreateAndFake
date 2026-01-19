@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
@@ -91,9 +90,8 @@ public sealed class TypeInfoCreateHint : CreateHint
     private static readonly IDictionary<Type, ICreator> _CreatorsByType =
         TypeSupporter.GroupBySupportedType(_Creators);
 
-    /// <summary>Types that the hint can create.</summary>
-    internal static IEnumerable<Type> SupportedTypes { get; } =
-        _Creators.Select(c => c.SupportedType).ToFrozenSet();
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => _Creators.Select(c => c.SupportedType);
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)

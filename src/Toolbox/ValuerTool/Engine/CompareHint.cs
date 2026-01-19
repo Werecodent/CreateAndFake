@@ -189,6 +189,12 @@ public abstract class CompareHint : IToolHint
     {
         return Task.FromResult(GetHashCode(item, valuer));
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }
 
 #pragma warning restore MA0042 // Using sync behavior for async versions.

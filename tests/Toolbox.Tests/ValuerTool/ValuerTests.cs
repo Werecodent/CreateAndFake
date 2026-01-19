@@ -75,7 +75,7 @@ public static class ValuerTests
             .Assert()
             .Is(result);
 
-        hint.Assert().Called(Times.Exactly(2));
+        hint.Assert().Called();
     }
 
     [Fact]

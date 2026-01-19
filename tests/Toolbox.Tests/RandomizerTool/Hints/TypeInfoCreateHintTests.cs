@@ -10,7 +10,7 @@ public sealed class TypeInfoCreateHintTests : CreateHintTestBase<TypeInfoCreateH
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
     public TypeInfoCreateHintTests()
-        : base(_TestInstance, TypeInfoCreateHint.SupportedTypes, _InvalidTypes) { }
+        : base(_TestInstance, _TestInstance.SupportedTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void TryCreate_ContinuesUntilMemberFound()

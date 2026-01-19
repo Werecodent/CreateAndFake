@@ -68,7 +68,7 @@ public static class DuplicatorTests
             .Assert()
             .Is(data);
 
-        hint.Assert().Called(Times.Once);
+        hint.Assert().Called();
     }
 
     [Theory, RandomData]

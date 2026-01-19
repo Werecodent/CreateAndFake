@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.DuplicatorTool.Engine;
@@ -27,8 +26,8 @@ public sealed class TypeInfoCopyHint : CopyHint
         typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
     ];
 
-    /// <summary>Types that the hint can copy.</summary>
-    internal static IEnumerable<Type> SupportedTypes { get; } = _SupportedTypes.ToFrozenSet();
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => _SupportedTypes;
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)

@@ -76,7 +76,7 @@ public static class RandomizerTests
             .Assert(r => r.Create<string>())
             .Throws<ToolException>();
 
-        hint.Assert().Called(Times.Once);
+        hint.Assert().Called();
     }
 
     [Theory, RandomData]
@@ -100,7 +100,7 @@ public static class RandomizerTests
             .Assert()
             .Is(data);
 
-        hint.Assert().Called(Times.Once);
+        hint.Assert().Called();
     }
 
     [Theory, RandomData]

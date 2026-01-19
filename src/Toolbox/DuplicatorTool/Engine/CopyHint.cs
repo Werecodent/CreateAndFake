@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
 
@@ -13,4 +14,10 @@ public abstract class CopyHint : IToolHint
     /// <param name="duplicator">Handles cloning child values.</param>
     /// <returns>Possible result.</returns>
     public abstract CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator);
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

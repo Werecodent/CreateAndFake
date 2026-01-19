@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Content;
+using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
 using CreateAndFake.RunnerTool;
@@ -93,9 +95,13 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
     /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
     private static object? FixArg(object? arg)
     {
-        if (arg is IFaked and IReflectableType reflectable)
+        if (arg is IFaked faked)
         {
-            reflectable.GetTypeInfo().SetupReturn(typeof(Type));
+            if (arg is IReflectableType reflectable)
+            {
+                reflectable.GetTypeInfo().SetupReturn(typeof(Type));
+            }
+            faked.ToString().SetupReturn(TypeDescriber.ExpandedName(faked.GetType()), Times.Any);
         }
         return arg;
     }

@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ExtractorTool.Engine;
@@ -13,4 +14,10 @@ public abstract class ExtractHint : IToolHint
     /// <param name="extractor"></param>
     /// <returns></returns>
     public abstract ExtractHintResult TryExtract(object? value, IExtractorChainer extractor);
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

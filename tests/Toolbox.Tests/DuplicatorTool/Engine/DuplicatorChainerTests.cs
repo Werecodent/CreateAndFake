@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Engine;
@@ -13,6 +14,7 @@ public static class DuplicatorChainerTests
                 typeof(NotSupportedException),
                 typeof(TargetParameterCountException),
                 typeof(ArgumentException),
+                typeof(ToolException),
             ],
         };
 
