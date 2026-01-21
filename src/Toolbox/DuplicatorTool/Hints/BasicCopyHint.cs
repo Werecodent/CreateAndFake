@@ -16,6 +16,7 @@ public sealed class BasicCopyHint : CopyHint
     [
         typeof(string),
         typeof(object),
+        typeof(AssemblyName),
         typeof(MemberInfo),
         typeof(MethodBase),
         typeof(Type),

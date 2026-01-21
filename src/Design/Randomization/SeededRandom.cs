@@ -1,9 +1,4 @@
 ﻿using CreateAndFake.Design.Content;
-#if NET9_0_OR_GREATER
-using Lock = System.Threading.Lock;
-#else
-using Lock = System.Object;
-#endif
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -12,7 +7,7 @@ namespace CreateAndFake.Design.Randomization;
 /// <summary>For generating deterministic random values.</summary>
 public sealed class SeededRandom : ValueRandom, IDeepCloneable
 {
-    /// <summary>Lock to prevent thread collision with seeds.</summary>
+    /// <summary>Prevents concurrency issues for <see cref="_seed"/>.</summary>
     private readonly Lock _lock = new();
 
     /// <summary>Current seed to be used for the next randomized value.</summary>
@@ -77,7 +72,7 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <inheritdoc/>
     public IDeepCloneable DeepClone()
     {
-        return new SeededRandom(OnlyValidValues, InitialSeed, _seed);
+        return new SeededRandom(OnlyValidValues, InitialSeed, Seed);
     }
 }
 

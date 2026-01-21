@@ -7,6 +7,9 @@ namespace CreateAndFake.Design.Content;
 /// <summary>Finds details for types.</summary>
 public static class TypeDescriber
 {
+    /// <summary>Prevents concurrency issues for <see cref="_ClassTypeCache"/>.</summary>
+    private static readonly Lock _Lock = new();
+
     /// <summary>Caches every available <see cref="Type"/> per <see cref="Assembly"/>.</summary>
     private static readonly Dictionary<Assembly, ImmutableArray<Type>> _ClassTypeCache = [];
 
@@ -221,7 +224,7 @@ public static class TypeDescriber
         }
 
         ImmutableArray<Type> classTypes;
-        lock (_ClassTypeCache)
+        lock (_Lock)
         {
             if (!_ClassTypeCache.TryGetValue(assembly, out classTypes))
             {
@@ -255,7 +258,14 @@ public static class TypeDescriber
         }
     }
 
+    /// <summary>
+    ///     Determines if the <see cref="Type"/> is usable in the given <paramref name="assembly"/>.
+    /// </summary>
     /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Type"/> is visible to
+    ///     <paramref name="assembly"/>, <see langword="false"/> otherwise.
+    /// </returns>
     /// <inheritdoc cref="IsVisible(Type,AssemblyName)"/>
     public static bool IsVisible<T>(AssemblyName assembly)
     {
@@ -263,18 +273,18 @@ public static class TypeDescriber
     }
 
     /// <summary>
-    ///     Determines if <paramref name="type"/> (<see langword="this"/>)
-    ///     can be used by <paramref name="assembly"/>.
+    ///     Determines if the <paramref name="type"/> is
+    ///     usable in the given <paramref name="assembly"/>.
     /// </summary>
-    /// <param name="type"><see cref="Type"/> to check.</param>
+    /// <param name="type"><see cref="Type"/> to check access for.</param>
     /// <param name="assembly">Name of the <see cref="Assembly"/> to verify access for.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="type"/> is visible to
+    ///     <see langword="true"/> if the <paramref name="type"/> is visible to
     ///     <paramref name="assembly"/>, <see langword="false"/> otherwise.
     /// </returns>
     /// <remarks>
     ///     Mark the <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c> to
-    ///     return <see langword="true"/> for its <see langword="internal"/> types with this method.
+    ///     return <see langword="true"/> for its <see langword="internal"/> <see cref="Type"/>s.
     /// </remarks>
     public static bool IsVisible(Type? type, AssemblyName assembly)
     {

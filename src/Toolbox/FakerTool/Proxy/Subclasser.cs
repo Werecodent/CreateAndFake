@@ -7,11 +7,14 @@ namespace CreateAndFake.FakerTool.Proxy;
 /// <summary>Creates dynamic subclasses.</summary>
 public static class Subclasser
 {
-    /// <summary>Assembly used to contain the dynamic types.</summary>
-    public static AssemblyName AssemblyName => Emitter.AssemblyName;
+    /// <summary>Prevents concurrency issues for <see cref="_TypeCache"/>.</summary>
+    private static readonly Lock _Lock = new();
 
     /// <summary>Cache of already created types.</summary>
     private static readonly Dictionary<TypeInfo, Type[]> _TypeCache = [];
+
+    /// <summary>Assembly used to contain the dynamic types.</summary>
+    public static AssemblyName AssemblyName => Emitter.AssemblyName;
 
     /// <summary>Determines if the type can be faked.</summary>
     /// <typeparam name="T">Type to check.</typeparam>
@@ -168,7 +171,7 @@ public static class Subclasser
     /// <returns>The cached or created child type.</returns>
     private static TypeInfo FindOrBuildType(Type parent, Type[] interfaces)
     {
-        lock (_TypeCache)
+        lock (_Lock)
         {
             TypeInfo cachedType = _TypeCache
                 .Where(t => t.Key.BaseType == parent)

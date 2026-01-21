@@ -11,6 +11,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing objects in general for <see cref="IRandomizer"/>.</summary>
 public sealed class ObjectCreateHint : CreateHint
 {
+    /// <summary>Prevents concurrency issues for <see cref="_SubclassCache"/>.</summary>
+    private static readonly Lock _Lock = new();
+
     /// <summary>Caches found subclasses for types.</summary>
     private static readonly Dictionary<Type, ImmutableArray<Type>> _SubclassCache = new()
     {
@@ -218,7 +221,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static Type FindTypeToCreate(Type type, IRandomizerChainer randomizer)
     {
         ImmutableArray<Type> subclasses;
-        lock (_SubclassCache)
+        lock (_Lock)
         {
             if (!_SubclassCache.TryGetValue(type, out subclasses))
             {
@@ -229,8 +232,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         return randomizer.Options.Gen.NextItemOrDefault(
                 subclasses.Where(t => !randomizer.AlreadyCreated(t))
-            )
-            ?? type;
+            ) ?? type;
     }
 
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>

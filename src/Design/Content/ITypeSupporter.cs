@@ -1,8 +1,8 @@
 namespace CreateAndFake.Design.Content;
 
-/// <summary>Associates the class with a specific type.</summary>
+/// <summary>Provides a <see cref="Type"/> that the behavior is relevant for.</summary>
 public interface ITypeSupporter
 {
-    /// <summary>Specific type handled by <see langword="this"/>.</summary>
+    /// <summary>Specific <see cref="Type"/> <see langword="this"/> instance can handle.</summary>
     Type SupportedType { get; }
 }

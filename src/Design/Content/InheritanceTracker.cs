@@ -1,30 +1,31 @@
 using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
 public sealed class InheritanceTracker
 {
+    /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
+    private static readonly Lock _Lock = new();
+
     /// <summary>Caches every parent inherited per <see cref="Type"/>.</summary>
     private static readonly Dictionary<Type, InheritanceTracker> _InheritCache = [];
 
-    /// <summary>Tracker for null types.</summary>
+    /// <summary>Associates no parents for <see langword="null"/>.</summary>
     private static readonly InheritanceTracker _NullDescriber = new(null, []);
 
-    /// <summary>Finds the describer for <typeparamref name="T"/>.</summary>
-    /// <typeparam name="T">Type to describe.</typeparam>
-    /// <returns>Found describer.</returns>
+    /// <summary>Finds or loads inheritance data for <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T"><see cref="Type"/> to find inheritance for.</typeparam>
+    /// <returns>The found/loaded inheritance data.</returns>
     public static InheritanceTracker For<T>()
     {
         return For(typeof(T));
     }
 
-    /// <summary>Finds the describer for <paramref name="type"/>.</summary>
-    /// <param name="type">Type to describe.</param>
-    /// <returns>Found describer.</returns>
+    /// <summary>Finds or loads inheritance data for <paramref name="type"/>.</summary>
+    /// <param name="type"><see cref="Type"/> to find inheritance for.</param>
+    /// <returns>The found/loaded inheritance data.</returns>
     public static InheritanceTracker For(Type? type)
     {
         if (type == null)
@@ -33,83 +34,46 @@ public sealed class InheritanceTracker
         }
 
         InheritanceTracker? describer;
-        lock (_InheritCache)
+        lock (_Lock)
         {
             if (!_InheritCache.TryGetValue(type, out describer))
             {
                 HashSet<Type> parents = [];
                 FindInheritance(type, parents);
-                _InheritCache[type] = describer = new(type, parents);
+                describer = _InheritCache[type] = new(type, parents);
             }
         }
         return describer;
     }
 
-    /// <summary>Type being described.</summary>
+    /// <summary><see cref="Type"/> with the found inheritance.</summary>
     private readonly Type? _type;
 
-    /// <summary>All inherited types for the type.</summary>
+    /// <inheritdoc cref="InheritedTypes"/>
     private readonly FrozenSet<Type> _parents;
 
-    /// <inheritdoc cref="_parents"/>
+    /// <summary>All found inherited <see cref="Type"/>s.</summary>
     public IEnumerable<Type> InheritedTypes => _parents;
 
-    /// <summary><inheritdoc cref="TypeDescriber"/></summary>
+    /// <summary><inheritdoc cref="InheritanceTracker"/></summary>
     /// <param name="type"><inheritdoc cref="_type" path="/summary"/></param>
     /// <param name="parents"><inheritdoc cref="_parents" path="/summary"/></param>
-    internal InheritanceTracker(Type? type, IEnumerable<Type> parents)
+    private InheritanceTracker(Type? type, IEnumerable<Type> parents)
     {
         _type = type;
         _parents = parents.ToFrozenSet();
     }
 
     /// <summary>
-    ///     Determines if the type can be used by <paramref name="assembly"/>.
+    ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <see cref="Type"/>.
     /// </summary>
-    /// <param name="assembly">Name of the <see cref="Assembly"/> to verify access for.</param>
+    /// <typeparam name="T">
+    ///     Potential base <see langword="class"/>/<see langword="interface"/>
+    ///     for the <see cref="Type"/>.
+    /// </typeparam>
     /// <returns>
-    ///     <see langword="true"/> if the type is visible to
-    ///     <paramref name="assembly"/>, <see langword="false"/> otherwise.
-    /// </returns>
-    /// <remarks>
-    ///     Mark the <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c> to
-    ///     return <see langword="true"/> for its <see langword="internal"/> types with this method.
-    /// </remarks>
-    public bool IsVisibleTo(AssemblyName assembly)
-    {
-        return IsVisibleTo(_type, assembly);
-    }
-
-    /// <summary>
-    ///     Determines if <paramref name="type"/> (<see langword="this"/>)
-    ///     can be used by <paramref name="assembly"/>.
-    /// </summary>
-    /// <param name="type"><see cref="Type"/> to check.</param>
-    /// <param name="assembly">Name of the <see cref="Assembly"/> to verify access for.</param>
-    /// <returns>
-    ///     <see langword="true"/> if <paramref name="type"/> is visible to
-    ///     <paramref name="assembly"/>, <see langword="false"/> otherwise.
-    /// </returns>
-    /// <remarks>
-    ///     Mark the <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c> to
-    ///     return <see langword="true"/> for its <see langword="internal"/> types with this method.
-    /// </remarks>
-    public static bool IsVisibleTo(Type? type, AssemblyName assembly)
-    {
-        return type != null
-            && (
-                type.IsVisible
-                || type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                    .Any(a => a.AssemblyName == assembly.Name)
-            );
-    }
-
-    /// <summary>
-    ///     Checks if this type (<see langword="this"/>) inherits <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T"> Potential child <see cref="Type"/> of this type.</typeparam>
-    /// <returns>
-    ///     <see langword="true"/> if this type inherits <typeparamref name="T"/>,
+    ///     <see langword="true"/> if the <see cref="Type"/> inherits <typeparamref name="T"/>,
     ///     <see langword="false"/> otherwise.
     /// </returns>
     public bool Inherits<T>()
@@ -118,26 +82,28 @@ public sealed class InheritanceTracker
     }
 
     /// <summary>
-    ///     Checks if the type (<see langword="this"/>) inherits <paramref name="parent"/>.
+    ///     Checks if <paramref name="parent"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <see cref="Type"/>.
     /// </summary>
-    /// <param name="parent">Potential child of the type.</param>
+    /// <param name="parent">
+    ///     Potential base <see langword="class"/>/<see langword="interface"/>
+    ///     for the <see cref="Type"/>.
+    /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the type inherits <paramref name="parent"/>,
+    ///     <see langword="true"/> if the <see cref="Type"/> inherits <paramref name="parent"/>,
     ///     <see langword="false"/> otherwise.
     /// </returns>
     public bool Inherits([NotNullWhen(true)] Type? parent)
     {
-        if (parent == null || _type == null)
-        {
-            return false;
-        }
-        return _parents.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
+        return parent != null && _parents.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
     }
 
-    /// <summary>Finds every <see cref="Type"/> that <paramref name="type"/> inherits.</summary>
-    /// <param name="type"><see cref="Type"/> to find children for.</param>
-    /// <param name="foundParents">Collection to find all children to.</param>
-    /// <returns>Every found <see cref="Type"/> inherited by <paramref name="type"/>.</returns>
+    /// <summary>
+    ///     Finds every <see cref="Type"/> that <paramref name="type"/>
+    ///     inherits and adds them to <paramref name="foundParents"/>.
+    /// </summary>
+    /// <param name="type"><see cref="Type"/> to find base classes/interfaces for.</param>
+    /// <param name="foundParents">Collection to add all found base classes/interfaces to.</param>
     private static void FindInheritance(Type? type, ISet<Type> foundParents)
     {
         if (type != null && foundParents.Add(type))
