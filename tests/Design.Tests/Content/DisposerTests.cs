@@ -40,7 +40,7 @@ public static class DisposerTests
     )
     {
         item1.Setup(m => m.Dispose(), Behavior.None(Times.Once));
-        item2.Setup(m => m.DisposeAsync(), Behavior.Returns(ValueTask.CompletedTask, Times.Once));
+        item2.Setup(m => m.DisposeAsync(), Behavior.Returns<ValueTask>(default, Times.Once));
         await Disposer.CleanupAsync(item1.Dummy, new object(), item2.Dummy, "");
         item1.VerifyAll();
         item2.VerifyAll();
@@ -50,7 +50,7 @@ public static class DisposerTests
     internal static async Task CleanupAsync_PrioritizesAsync()
     {
         Fake<IAsyncDisposable> item = Tools.Faker.Mock<IAsyncDisposable>(typeof(IDisposable));
-        item.Setup(m => m.DisposeAsync(), Behavior.Returns(ValueTask.CompletedTask, Times.Once));
+        item.Setup(m => m.DisposeAsync(), Behavior.Returns<ValueTask>(default, Times.Once));
 
         await Disposer.CleanupAsync(item.Dummy);
 
