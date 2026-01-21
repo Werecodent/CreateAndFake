@@ -23,6 +23,14 @@ public static class AssertExtensions
         return new AssertEnumerable(Tools.Asserter, collection);
     }
 
+    /// <inheritdoc cref="AssertAsyncEnumerable{T}"/>
+    /// <param name="collection"><inheritdoc cref="AssertAsyncEnumerableBase{T,T}.Collection" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
+    public static AssertAsyncEnumerable<T> Assert<T>(this IAsyncEnumerable<T> collection)
+    {
+        return new AssertAsyncEnumerable<T>(Tools.Asserter, collection);
+    }
+
     /// <inheritdoc cref="AssertString"/>
     /// <param name="text"><inheritdoc cref="AssertStringBase{T}.Text" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="text"/> with.</returns>

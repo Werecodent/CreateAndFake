@@ -18,6 +18,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     [
         new TaskCompareHint(),
         new AsyncEnumerableCompareHint(),
+        new SyncAsyncEnumerableCompareHint(),
         new EarlyFailCompareHint(),
         new FallbackCompareHint(),
         new FakedCompareHint(),

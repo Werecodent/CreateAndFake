@@ -5,12 +5,10 @@ using System.Runtime.CompilerServices;
 
 namespace CreateAndFake.Design.Content;
 
-/// <summary>Finds details for types.</summary>
+/// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
 public sealed class InheritanceTracker
 {
-    /// <summary>
-    ///     Caches every child <see cref="Type"/> inherited per parent <see cref="Type"/>.
-    /// </summary>
+    /// <summary>Caches every parent inherited per <see cref="Type"/>.</summary>
     private static readonly Dictionary<Type, InheritanceTracker> _InheritCache = [];
 
     /// <summary>Tracker for null types.</summary>
@@ -39,9 +37,9 @@ public sealed class InheritanceTracker
         {
             if (!_InheritCache.TryGetValue(type, out describer))
             {
-                HashSet<Type> children = [];
-                FindInheritance(type, children);
-                _InheritCache[type] = describer = new(type, children);
+                HashSet<Type> parents = [];
+                FindInheritance(type, parents);
+                _InheritCache[type] = describer = new(type, parents);
             }
         }
         return describer;
@@ -51,18 +49,18 @@ public sealed class InheritanceTracker
     private readonly Type? _type;
 
     /// <summary>All inherited types for the type.</summary>
-    private readonly FrozenSet<Type> _children;
+    private readonly FrozenSet<Type> _parents;
 
-    /// <inheritdoc cref="_children"/>
-    public IEnumerable<Type> InheritedTypes => _children;
+    /// <inheritdoc cref="_parents"/>
+    public IEnumerable<Type> InheritedTypes => _parents;
 
     /// <summary><inheritdoc cref="TypeDescriber"/></summary>
     /// <param name="type"><inheritdoc cref="_type" path="/summary"/></param>
-    /// <param name="children"><inheritdoc cref="_children" path="/summary"/></param>
-    internal InheritanceTracker(Type? type, IEnumerable<Type> children)
+    /// <param name="parents"><inheritdoc cref="_parents" path="/summary"/></param>
+    internal InheritanceTracker(Type? type, IEnumerable<Type> parents)
     {
         _type = type;
-        _children = children.ToFrozenSet();
+        _parents = parents.ToFrozenSet();
     }
 
     /// <summary>
@@ -120,41 +118,41 @@ public sealed class InheritanceTracker
     }
 
     /// <summary>
-    ///     Checks if the type (<see langword="this"/>) inherits <paramref name="child"/>.
+    ///     Checks if the type (<see langword="this"/>) inherits <paramref name="parent"/>.
     /// </summary>
-    /// <param name="child">Potential child of the type.</param>
+    /// <param name="parent">Potential child of the type.</param>
     /// <returns>
-    ///     <see langword="true"/> if the type inherits <paramref name="child"/>,
+    ///     <see langword="true"/> if the type inherits <paramref name="parent"/>,
     ///     <see langword="false"/> otherwise.
     /// </returns>
-    public bool Inherits([NotNullWhen(true)] Type? child)
+    public bool Inherits([NotNullWhen(true)] Type? parent)
     {
-        if (child == null || _type == null)
+        if (parent == null || _type == null)
         {
             return false;
         }
-        return _children.Contains(Nullable.GetUnderlyingType(child) ?? child);
+        return _parents.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
     }
 
     /// <summary>Finds every <see cref="Type"/> that <paramref name="type"/> inherits.</summary>
     /// <param name="type"><see cref="Type"/> to find children for.</param>
-    /// <param name="foundChildren">Collection to find all children to.</param>
+    /// <param name="foundParents">Collection to find all children to.</param>
     /// <returns>Every found <see cref="Type"/> inherited by <paramref name="type"/>.</returns>
-    private static void FindInheritance(Type? type, ISet<Type> foundChildren)
+    private static void FindInheritance(Type? type, ISet<Type> foundParents)
     {
-        if (type != null && foundChildren.Add(type))
+        if (type != null && foundParents.Add(type))
         {
             if (type.IsGenericType)
             {
-                FindInheritance(type.GetGenericTypeDefinition(), foundChildren);
+                FindInheritance(type.GetGenericTypeDefinition(), foundParents);
             }
 
             foreach (Type child in type.GetInterfaces())
             {
-                FindInheritance(child, foundChildren);
+                FindInheritance(child, foundParents);
             }
 
-            FindInheritance(type.BaseType, foundChildren);
+            FindInheritance(type.BaseType, foundParents);
         }
     }
 

@@ -1,16 +1,36 @@
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
-/// <typeparam name="T"><see cref="IAsyncEnumerable{T}"/> content type.</typeparam>
+/// <typeparam name="T">
+///     <inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/>
+/// </typeparam>
 public static class AsyncEnumHelper<T>
 {
-    /// <summary>Cached enumerator with no elements.</summary>
-    public static IAsyncEnumerable<T> Empty { get; } = CreateEmpty();
+    /// <summary>Cached series with no elements.</summary>
+    public static IAsyncEnumerable<T> Empty { get; } = new EmptyAsyncEnumerator();
 
-    /// <summary>Creates an enumerator with no elements.</summary>
-    /// <returns>The created enumerator.</returns>
-    private static async IAsyncEnumerable<T> CreateEmpty()
+    /// <summary>Represents a series with no elements.</summary>
+    private sealed class EmptyAsyncEnumerator : IAsyncEnumerable<T>, IAsyncEnumerator<T>
     {
-        yield break;
+        /// <inheritdoc/>
+        public T Current => default!;
+
+        /// <inheritdoc/>
+        public ValueTask<bool> MoveNextAsync()
+        {
+            return new ValueTask<bool>(false);
+        }
+
+        /// <inheritdoc/>
+        public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        {
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public ValueTask DisposeAsync()
+        {
+            return default;
+        }
     }
 }

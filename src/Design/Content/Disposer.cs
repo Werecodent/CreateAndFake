@@ -1,10 +1,10 @@
 namespace CreateAndFake.Design.Content;
 
-/// <summary>Disposes generated objects.</summary>
+/// <summary>Cleans <see cref="IDisposable"/> and <see cref="IAsyncDisposable"/> objects.</summary>
 public static class Disposer
 {
-    /// <summary>Tries to dispose <paramref name="items"/>.</summary>
-    /// <param name="items">Potential disposables to clean up.</param>
+    /// <summary>Disposes all <see cref="IDisposable"/>s in <paramref name="items"/>.</summary>
+    /// <param name="items">Series with potential <see cref="IDisposable"/>s to clean up.</param>
     public static void Cleanup(params IEnumerable<object?>? items)
     {
         foreach (object? item in items ?? [])
@@ -16,8 +16,18 @@ public static class Disposer
         }
     }
 
-    /// <returns>Awaitable <see cref="Task"/> handling the disposal.</returns>
-    /// <inheritdoc cref="Cleanup"/>
+    /// <summary>
+    ///     Disposes all <see cref="IAsyncDisposable"/>s and
+    ///     <see cref="IDisposable"/>s in <paramref name="items"/>.
+    /// </summary>
+    /// <param name="items">
+    ///     Series with potential <see cref="IAsyncDisposable"/>s
+    ///     and/or <see cref="IDisposable"/>s to clean up.
+    /// </param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <remarks>
+    ///     <see cref="IAsyncDisposable"/>s are prioritized over <see cref="IDisposable"/>s.
+    /// </remarks>
     public static async Task CleanupAsync(params IEnumerable<object?>? items)
     {
         foreach (object? item in items ?? [])

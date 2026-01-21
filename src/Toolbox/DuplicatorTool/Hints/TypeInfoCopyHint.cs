@@ -35,7 +35,7 @@ public sealed class TypeInfoCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
-        if (_SupportedTypes.Any(t => type.Inherits(t)))
+        if (_SupportedTypes.Any(type.Inherits))
         {
             return new(source);
         }

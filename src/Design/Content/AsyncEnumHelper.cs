@@ -4,52 +4,89 @@ using System.Runtime.CompilerServices;
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
+/// <remarks>Manually required as .NET 10 breaks <c>System.Linq.Async</c> compatibility.</remarks>
 public static class AsyncEnumHelper
 {
-    /// <summary>Asynchronous cancellation not available in all versions.</summary>
-    private static readonly bool _CanAsyncCancel =
-        typeof(CancellationTokenSource).GetMethod("CancelAsync") != null;
+    /// <summary>Delegate for triggering asynchronous cancellation.</summary>
+    /// <remarks><see langword="null"/> when unavailable for the executing .NET version.</remarks>
+    private static readonly Func<CancellationTokenSource, Task>? _CancelAsyncForCancellationToken =
+        (Func<CancellationTokenSource, Task>?)
+            typeof(CancellationTokenSource)
+                .GetMethod("CancelAsync")
+                ?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
 
-    /// <summary>Converts <paramref name="values"/> to an async collection.</summary>
-    /// <typeparam name="T">Collection content type.</typeparam>
-    /// <param name="values">Collection to convert.</param>
-    /// <returns>The converted collection.</returns>
-    [return: NotNullIfNotNull(nameof(values))]
-    public static IAsyncEnumerable<T>? CreateFrom<T>(IEnumerable<T>? values)
+    /// <summary>
+    ///     Converts <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.
+    /// </summary>
+    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Values to convert via iteration.</param>
+    /// <returns>Asynchronous iteration of <paramref name="collection"/>.</returns>
+    [return: NotNullIfNotNull(nameof(collection))]
+    public static IAsyncEnumerable<T>? CreateFrom<T>(IEnumerable<T>? collection)
     {
-        if (values == null)
+        if (collection == null)
         {
             return null;
         }
         else
         {
-            return IterateAsync(values);
+            return IterateAsync(collection);
         }
     }
 
     /// <inheritdoc cref="CreateFrom{T}"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     private static async IAsyncEnumerable<T> IterateAsync<T>(
-        IEnumerable<T> values,
+        IEnumerable<T> collection,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        foreach (T value in values)
+        foreach (T value in collection)
         {
             canceler.ThrowIfCancellationRequested();
             yield return value;
         }
     }
 
-    /// <summary>Determines if <paramref name="values"/> has any elements.</summary>
-    /// <typeparam name="T">Collection content type.</typeparam>
-    /// <param name="values">Collection to check.</param>
+    /// <summary>Determines if <paramref name="collection"/> has any items.</summary>
+    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Collection to check for items via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="values"/> has
-    ///     at least one element, <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <paramref name="collection"/>
+    ///     has at least one item, <see langword="false"/> otherwise.
     /// </returns>
     public static async Task<bool> HasAnyAsync<T>(
-        IAsyncEnumerable<T>? values,
+        [NotNullWhen(true)] IAsyncEnumerable<T>? collection,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(canceler);
+
+        canceler.ThrowIfCancellationRequested();
+        if (collection == null)
+        {
+            return false;
+        }
+        await foreach (T _ in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            return true;
+        }
+
+        canceler.ThrowIfCancellationRequested();
+        return false;
+    }
+
+    /// <summary>Converts <paramref name="collection"/> to an <see cref="IList{T}"/>.</summary>
+    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Collection to convert via iteration.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns>
+    ///     Contents of <paramref name="collection"/> as an <see cref="IList{T}"/>;
+    ///     an empty list if <paramref name="collection"/> is <see langword="null"/>.
+    /// </returns>
+    public static async Task<IList<T>> ToListAsync<T>(
+        IAsyncEnumerable<T>? collection,
         CancellationToken canceler
     )
     {
@@ -57,83 +94,91 @@ public static class AsyncEnumHelper
 
         canceler.ThrowIfCancellationRequested();
 
-        if (values == null)
-        {
-            return false;
-        }
-        await foreach (T _ in values.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>Converts <paramref name="values"/> to a list.</summary>
-    /// <typeparam name="T">Content type.</typeparam>
-    /// <param name="values">Collection to convert.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <returns>The created list.</returns>
-    public static async Task<IList<T>> ToListAsync<T>(
-        IAsyncEnumerable<T>? values,
-        CancellationToken canceler
-    )
-    {
-        ArgumentGuard.ThrowIfNull(canceler);
-
         List<T> results = [];
-        if (values != null)
+        if (collection != null)
         {
-            await foreach (T value in values.WithCancellation(canceler).ConfigureAwait(false))
+            await foreach (T value in collection.WithCancellation(canceler).ConfigureAwait(false))
             {
                 results.Add(value);
                 canceler.ThrowIfCancellationRequested();
             }
         }
+
+        canceler.ThrowIfCancellationRequested();
         return results;
     }
 
     /// <summary>
-    ///     Converts <paramref name="values"/> to an async collection but triggers
-    ///     cancellation via <paramref name="source"/> after the first yielded value.
+    ///     Creates an empty <see cref="IAsyncEnumerable{T}"/> that triggers
+    ///     cancellation via <paramref name="source"/> upon attempted iteration.
     /// </summary>
-    /// <typeparam name="T">Collection content type.</typeparam>
-    /// <param name="values">Collection to convert.</param>
-    /// <param name="source">Source of the cancellation token to cancel.</param>
-    /// <returns>The converted collection.</returns>
+    /// <returns>Empty asynchronous iteration.</returns>
+    /// <inheritdoc cref="CreateFrom{T}"/>
+    /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
     public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
-        IEnumerable<T> values,
         CancellationTokenSource source
     )
     {
-        ArgumentGuard.ThrowIfNull(values, source);
+        ArgumentGuard.ThrowIfNull(source);
+        await TriggerCancellationAsync(source).ConfigureAwait(false);
+        yield break;
+    }
 
-        foreach (T value in values)
+    /// <summary>
+    ///     Converts <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>
+    ///     and triggers cancellation via <paramref name="source"/> after the first yielded value.
+    /// </summary>
+    /// <returns>Asynchronous iteration of <paramref name="collection"/>.</returns>
+    /// <inheritdoc cref="CreateCancelingIteration{T}(CancellationTokenSource)"/>
+    public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
+        IEnumerable<T> collection,
+        CancellationTokenSource source
+    )
+    {
+        ArgumentGuard.ThrowIfNull(collection, source);
+
+        bool notCanceled = true;
+        foreach (T value in collection)
         {
             yield return value;
-            if (!source.IsCancellationRequested)
+            if (notCanceled)
             {
                 await TriggerCancellationAsync(source).ConfigureAwait(false);
+                notCanceled = false;
             }
         }
     }
 
     /// <summary>Handles canceling via <paramref name="source"/> using async if possible.</summary>
-    /// <param name="source">Source of the cancellation token to cancel.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    public static async Task TriggerCancellationAsync(CancellationTokenSource source)
+    /// <param name="source">Owner of the <see cref="CancellationToken"/> to cancel.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <remarks>Asynchronous cancellation requires .NET 8 or later.</remarks>
+    public static Task TriggerCancellationAsync(CancellationTokenSource source)
+    {
+        return TriggerCancellationAsync(_CancelAsyncForCancellationToken, source);
+    }
+
+    /// <param name="cancelAsyncMethod">Delegate for canceling async if available.</param>
+    /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
+    internal static async Task TriggerCancellationAsync(
+        Func<CancellationTokenSource, Task>? cancelAsyncMethod,
+        CancellationTokenSource source
+    )
     {
         ArgumentGuard.ThrowIfNull(source);
 
-        if (_CanAsyncCancel)
+        if (!source.IsCancellationRequested)
         {
-            await ((dynamic)source).CancelAsync().ConfigureAwait(false);
-        }
-        else
-        {
+            if (cancelAsyncMethod != null)
+            {
+                await cancelAsyncMethod(source).ConfigureAwait(false);
+            }
+            else
+            {
 #pragma warning disable AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
-            source.Cancel();
-#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
+                source.Cancel();
+#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103
+            }
         }
     }
 }
