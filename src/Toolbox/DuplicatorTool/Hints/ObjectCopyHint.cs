@@ -33,7 +33,7 @@ public sealed class ObjectCopyHint : CopyHint
 
         foreach (
             FieldInfo field in TypeDescriber
-                .GetAllFields(source.GetType(), BindingFlags.Public)
+                .GetAllFields(source.GetType(), true)
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -43,7 +43,7 @@ public sealed class ObjectCopyHint : CopyHint
 
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(source.GetType(), BindingFlags.Public)
+                .GetAllProperties(source.GetType(), true)
                 .Where(p => p.CanRead && p.CanWrite)
                 .Where(p => p.GetIndexParameters().Length == 0)
         )

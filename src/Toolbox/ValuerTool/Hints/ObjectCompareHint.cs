@@ -7,8 +7,8 @@ using CreateAndFake.ValuerTool.Engine;
 namespace CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing objects for <see cref="IValuer"/>.</summary>
-/// <param name="scope">Flags used to find properties and fields.</param>
-public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
+/// <param name="onlyPublic">If private members are excluded.</param>
+public sealed class ObjectCompareHint(bool onlyPublic) : CompareHint
 {
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
@@ -19,8 +19,8 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
         }
 
         Type type = expected.GetType();
-        return TypeDescriber.GetAllProperties(type, scope).Any(p => p.CanRead)
-            || TypeDescriber.GetAllFields(type, scope).Any();
+        return TypeDescriber.GetAllProperties(type, onlyPublic).Any(p => p.CanRead)
+            || TypeDescriber.GetAllFields(type, onlyPublic).Any();
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, scope)
+                .GetAllProperties(type, onlyPublic)
                 .Where(p => p.CanRead)
         )
         {
@@ -63,7 +63,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             foreach (
                 Difference diff in valuer.Compare(field.GetValue(expected), field.GetValue(actual))
@@ -90,7 +90,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, scope)
+                .GetAllProperties(type, onlyPublic)
                 .Where(p => p.CanRead)
         )
         {
@@ -105,7 +105,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             await foreach (
                 Difference diff in valuer
@@ -130,7 +130,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, scope)
+                .GetAllProperties(type, onlyPublic)
                 .Where(p => p.CanRead)
         )
         {
@@ -138,7 +138,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
                 hash * ValueComparer.HashMultiplier + valuer.GetHashCode(property.GetValue(item));
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(field.GetValue(item));
         }
@@ -161,7 +161,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
 
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, scope)
+                .GetAllProperties(type, onlyPublic)
                 .Where(p => p.CanRead)
         )
         {
@@ -172,7 +172,7 @@ public sealed class ObjectCompareHint(BindingFlags scope) : CompareHint
                     .ConfigureAwait(false);
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             hash =
                 hash * ValueComparer.HashMultiplier

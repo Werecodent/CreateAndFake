@@ -15,20 +15,21 @@ public sealed class ObjectExtractHint : ExtractHint<object>
 
         if (extractor.AddFoundValue(value))
         {
-            BindingFlags scope = extractor.Options.ExtractPrivateMembers
-                ? BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic
-                : BindingFlags.Public | BindingFlags.Instance;
-
             Type type = value.GetType();
             foreach (
                 PropertyInfo property in TypeDescriber
-                    .GetAllProperties(type, scope)
+                    .GetAllProperties(type, !extractor.Options.ExtractPrivateMembers)
                     .Where(p => p.CanRead)
             )
             {
                 _ = extractor.InnerExtract(property.GetValue(value));
             }
-            foreach (FieldInfo field in TypeDescriber.GetAllFields(type, scope))
+            foreach (
+                FieldInfo field in TypeDescriber.GetAllFields(
+                    type,
+                    !extractor.Options.ExtractPrivateMembers
+                )
+            )
             {
                 _ = extractor.InnerExtract(field.GetValue(value));
             }

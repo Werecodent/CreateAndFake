@@ -126,7 +126,7 @@ internal static class Emitter
             .Where(t => t != typeof(IFaked))
             .SelectMany(i =>
                 TypeDescriber
-                    .GetAllProperties(i, _MemberFinder)
+                    .GetAllProperties(i)
                     .Where(p => IsVisible(p.GetMethod))
                     .Concat(FindImplementableProperties(i.GetInterfaces()))
             )

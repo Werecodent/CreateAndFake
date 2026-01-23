@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -8,10 +7,6 @@ namespace CreateAndFake.ValuerTool.Hints;
 /// <summary>Handles comparing stateless objects for <see cref="IValuer"/>.</summary>
 public sealed class StatelessCompareHint : CompareHint
 {
-    /// <summary>Flags used to find properties and fields.</summary>
-    private const BindingFlags _Scope =
-        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
@@ -21,8 +16,8 @@ public sealed class StatelessCompareHint : CompareHint
         }
 
         Type type = expected.GetType();
-        return !TypeDescriber.GetAllProperties(type, _Scope).Any(p => p.CanRead)
-            && !TypeDescriber.GetAllFields(type, _Scope).Any();
+        return !TypeDescriber.GetAllProperties(type).Any(p => p.CanRead)
+            && !TypeDescriber.GetAllFields(type).Any();
     }
 
     /// <inheritdoc/>

@@ -13,7 +13,7 @@ public static class LimiterBaseTests
     {
         foreach (
             PropertyInfo info in TypeDescriber
-                .GetAllProperties(typeof(Limiter), BindingFlags.Public)
+                .GetAllProperties(typeof(Limiter), true)
                 .Where(p => p.PropertyType == typeof(Limiter))
         )
         {

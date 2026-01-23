@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
@@ -22,6 +21,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new EarlyFailCompareHint(),
         new FallbackCompareHint(),
         new FakedCompareHint(),
+        new AssemblyNameCompareHint(),
         new ValueEquatableCompareHint(),
         new ValuerAsyncComparableCompareHint(),
         new ValuerComparableCompareHint(),
@@ -34,8 +34,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new MemberInfoCompareHint(),
         new MethodBaseCompareHint(),
         new ParameterInfoCompareHint(),
-        new ObjectCompareHint(BindingFlags.Public | BindingFlags.Instance),
-        new ObjectCompareHint(BindingFlags.NonPublic | BindingFlags.Instance),
+        new ObjectCompareHint(true),
+        new ObjectCompareHint(false),
         new StatelessCompareHint(),
     ];
 

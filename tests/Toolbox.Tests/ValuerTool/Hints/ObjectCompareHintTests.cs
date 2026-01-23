@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CreateAndFake.Samples.Scenarios;
+﻿using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -7,9 +6,7 @@ namespace CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class ObjectCompareHintTests : CompareHintTestBase<ObjectCompareHint>
 {
-    private static readonly ObjectCompareHint _TestInstance = new(
-        BindingFlags.Public | BindingFlags.Instance
-    );
+    private static readonly ObjectCompareHint _TestInstance = new(true);
 
     private static readonly Type[] _ValidTypes =
     [

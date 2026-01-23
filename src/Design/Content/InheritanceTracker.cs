@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
-public sealed class InheritanceTracker
+public sealed class InheritanceTracker : ITypeSupporter
 {
     /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
     private static readonly Lock _Lock = new();
@@ -16,15 +16,15 @@ public sealed class InheritanceTracker
     private static readonly InheritanceTracker _NullDescriber = new(null, []);
 
     /// <summary>Finds or loads inheritance data for <typeparamref name="T"/>.</summary>
-    /// <typeparam name="T"><see cref="Type"/> to find inheritance for.</typeparam>
+    /// <typeparam name="T">The <see cref="Type"/> to find inheritance for.</typeparam>
     /// <returns>The found/loaded inheritance data.</returns>
     public static InheritanceTracker For<T>()
     {
         return For(typeof(T));
     }
 
-    /// <summary>Finds or loads inheritance data for <paramref name="type"/>.</summary>
-    /// <param name="type"><see cref="Type"/> to find inheritance for.</param>
+    /// <summary>Finds or loads inheritance data for the <paramref name="type"/>.</summary>
+    /// <param name="type">The <see cref="Type"/> to find inheritance for.</param>
     /// <returns>The found/loaded inheritance data.</returns>
     public static InheritanceTracker For(Type? type)
     {
@@ -46,35 +46,32 @@ public sealed class InheritanceTracker
         return describer;
     }
 
-    /// <summary><see cref="Type"/> with the found inheritance.</summary>
-    private readonly Type? _type;
-
-    /// <inheritdoc cref="InheritedTypes"/>
-    private readonly FrozenSet<Type> _parents;
+    /// <inheritdoc/>
+    public Type? SupportedType { get; }
 
     /// <summary>All found inherited <see cref="Type"/>s.</summary>
-    public IEnumerable<Type> InheritedTypes => _parents;
+    public IEnumerable<Type> InheritedTypes { get; }
 
     /// <summary><inheritdoc cref="InheritanceTracker"/></summary>
-    /// <param name="type"><inheritdoc cref="_type" path="/summary"/></param>
-    /// <param name="parents"><inheritdoc cref="_parents" path="/summary"/></param>
+    /// <param name="type"><inheritdoc cref="SupportedType" path="/summary"/></param>
+    /// <param name="parents"><inheritdoc cref="InheritedTypes" path="/summary"/></param>
     private InheritanceTracker(Type? type, IEnumerable<Type> parents)
     {
-        _type = type;
-        _parents = parents.ToFrozenSet();
+        SupportedType = type;
+        InheritedTypes = parents.ToFrozenSet();
     }
 
     /// <summary>
     ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/>
-    ///     or <see langword="interface"/> for the <see cref="Type"/>.
+    ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
     /// <typeparam name="T">
     ///     Potential base <see langword="class"/>/<see langword="interface"/>
-    ///     for the <see cref="Type"/>.
+    ///     for the <see cref="SupportedType"/>.
     /// </typeparam>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Type"/> inherits <typeparamref name="T"/>,
-    ///     <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
+    ///     <typeparamref name="T"/>, <see langword="false"/> otherwise.
     /// </returns>
     public bool Inherits<T>()
     {
@@ -83,26 +80,27 @@ public sealed class InheritanceTracker
 
     /// <summary>
     ///     Checks if <paramref name="parent"/> is a base <see langword="class"/>
-    ///     or <see langword="interface"/> for the <see cref="Type"/>.
+    ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
     /// <param name="parent">
     ///     Potential base <see langword="class"/>/<see langword="interface"/>
-    ///     for the <see cref="Type"/>.
+    ///     for the <see cref="SupportedType"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Type"/> inherits <paramref name="parent"/>,
-    ///     <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
+    ///     <paramref name="parent"/>, <see langword="false"/> otherwise.
     /// </returns>
     public bool Inherits([NotNullWhen(true)] Type? parent)
     {
-        return parent != null && _parents.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
+        return parent != null
+            && InheritedTypes.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
     }
 
     /// <summary>
-    ///     Finds every <see cref="Type"/> that <paramref name="type"/>
+    ///     Finds every <see cref="Type"/> that the <paramref name="type"/>
     ///     inherits and adds them to <paramref name="foundParents"/>.
     /// </summary>
-    /// <param name="type"><see cref="Type"/> to find base classes/interfaces for.</param>
+    /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
     /// <param name="foundParents">Collection to add all found base classes/interfaces to.</param>
     private static void FindInheritance(Type? type, ISet<Type> foundParents)
     {
@@ -125,6 +123,6 @@ public sealed class InheritanceTracker
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{TypeDescriber.ExpandedName(GetType())}({TypeDescriber.ExpandedName(_type)})";
+        return $"{nameof(InheritanceTracker)}({TypeDescriber.ExpandedName(SupportedType)})";
     }
 }

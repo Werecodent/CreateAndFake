@@ -17,7 +17,10 @@ public static class TypeSupporter
         Dictionary<Type, T> results = [];
         foreach (T handler in typeHandlers ?? [])
         {
-            results.Add(handler.SupportedType, handler);
+            if (handler.SupportedType != null)
+            {
+                results.Add(handler.SupportedType, handler);
+            }
         }
         return results.ToFrozenDictionary(p => p.Key, p => p.Value);
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
@@ -102,14 +103,11 @@ internal abstract class BaseGuarder(TesterOptions options)
         {
             return result.Result;
         }
-        else if (HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
+        else if (!HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
         {
-            return null;
+            ExceptionDispatchInfo.Capture((Exception)result.Result!).Throw();
         }
-        else
-        {
-            throw (Exception)result.Result!;
-        }
+        return null;
     }
 
     /// <summary>Checks data for disposables and disposes them.</summary>

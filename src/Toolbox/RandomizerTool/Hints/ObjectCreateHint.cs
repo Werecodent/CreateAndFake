@@ -76,7 +76,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         foreach (
             FieldInfo field in TypeDescriber
-                .GetAllFields(dataType, BindingFlags.Public)
+                .GetAllFields(dataType, true)
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -86,7 +86,7 @@ public sealed class ObjectCreateHint : CreateHint
         }
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(dataType, BindingFlags.Public)
+                .GetAllProperties(dataType, true)
                 .Where(p => p.CanWrite)
                 .Where(p => p.GetSetMethod() != null)
         )

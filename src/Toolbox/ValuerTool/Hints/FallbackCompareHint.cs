@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
@@ -10,9 +9,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class FallbackCompareHint : CompareHint
 {
     /// <summary>Compares by value if regular equality fails for expanded details.</summary>
-    private static readonly ObjectCompareHint _NestedHint = new(
-        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-    );
+    private static readonly ObjectCompareHint _NestedHint = new(false);
 
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)

@@ -91,7 +91,7 @@ public sealed class TypeInfoCreateHint : CreateHint
         TypeSupporter.GroupBySupportedType(_Creators);
 
     /// <inheritdoc/>
-    public override IEnumerable<Type> SupportedTypes => _Creators.Select(c => c.SupportedType);
+    public override IEnumerable<Type> SupportedTypes => _Creators.Select(c => c.SupportedType!);
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)

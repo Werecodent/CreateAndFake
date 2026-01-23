@@ -4,5 +4,5 @@ namespace CreateAndFake.Design.Content;
 public interface ITypeSupporter
 {
     /// <summary>Specific <see cref="Type"/> <see langword="this"/> instance can handle.</summary>
-    Type SupportedType { get; }
+    Type? SupportedType { get; }
 }

@@ -125,7 +125,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         bool modified = false;
 
         Type type = instance.GetType();
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, BindingFlags.Public))
+        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, true))
         {
             try
             {
@@ -147,7 +147,7 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         }
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, BindingFlags.Public)
+                .GetAllProperties(type, true)
                 .Where(p => p.CanWrite && p.CanRead)
                 .Where(p => p.GetGetMethod() != null)
                 .Where(p => p.GetSetMethod() != null)

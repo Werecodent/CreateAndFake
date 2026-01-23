@@ -30,6 +30,10 @@ public sealed class CreatorCreateHint : CreateHint
         new Creator<Assembly>(rand =>
             rand.Options.Gen.NextItem(AppDomain.CurrentDomain.GetAssemblies())
         ),
+        new Creator(
+            AppDomain.CurrentDomain.GetAssemblies()[0].GetType(),
+            rand => rand.Create<Assembly>()
+        ),
         new Creator<CultureInfo>(rand =>
             rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures))
         ),

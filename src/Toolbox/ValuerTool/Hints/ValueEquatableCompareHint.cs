@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -9,9 +8,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 {
     /// <summary>Compares equatables by value as well.</summary>
-    private static readonly ObjectCompareHint _NestedHint = new(
-        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-    );
+    private static readonly ObjectCompareHint _NestedHint = new(false);
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(

@@ -3,11 +3,15 @@ namespace CreateAndFake.Design.Content;
 /// <summary>Cleans <see cref="IDisposable"/> and <see cref="IAsyncDisposable"/> objects.</summary>
 public static class Disposer
 {
-    /// <summary>Disposes all <see cref="IDisposable"/>s in <paramref name="items"/>.</summary>
-    /// <param name="items">Series with potential <see cref="IDisposable"/>s to clean up.</param>
-    public static void Cleanup(params IEnumerable<object?>? items)
+    /// <summary>
+    ///     Disposes all <see cref="IDisposable"/>s in the <paramref name="series"/>.
+    /// </summary>
+    /// <param name="series">
+    ///     Collection with potential <see cref="IDisposable"/>s to clean up.
+    /// </param>
+    public static void Cleanup(params IEnumerable<object?>? series)
     {
-        foreach (object? item in items ?? [])
+        foreach (object? item in series ?? [])
         {
             if (item is IDisposable disposable)
             {
@@ -18,19 +22,19 @@ public static class Disposer
 
     /// <summary>
     ///     Disposes all <see cref="IAsyncDisposable"/>s and
-    ///     <see cref="IDisposable"/>s in <paramref name="items"/>.
+    ///     <see cref="IDisposable"/>s in the <paramref name="series"/>.
     /// </summary>
-    /// <param name="items">
-    ///     Series with potential <see cref="IAsyncDisposable"/>s
+    /// <param name="series">
+    ///     Collection with potential <see cref="IAsyncDisposable"/>s
     ///     and/or <see cref="IDisposable"/>s to clean up.
     /// </param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>
-    ///     <see cref="IAsyncDisposable"/>s are prioritized over <see cref="IDisposable"/>s.
+    ///     Will dispose an instance via <see cref="IAsyncDisposable"/> if both are inherited.
     /// </remarks>
-    public static async Task CleanupAsync(params IEnumerable<object?>? items)
+    public static async Task CleanupAsync(params IEnumerable<object?>? series)
     {
-        foreach (object? item in items ?? [])
+        foreach (object? item in series ?? [])
         {
             if (item is IAsyncDisposable asyncDisposable)
             {

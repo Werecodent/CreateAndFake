@@ -32,4 +32,13 @@ public static class AsyncEnumHelper_T_Tests
             .Empty.Assert()
             .IsEmptyAsync(TestContext.Current.CancellationToken);
     }
+
+    [Fact]
+    internal static async Task Empty_DefaultCurrent()
+    {
+        await using IAsyncEnumerator<int> series = AsyncEnumHelper<int>.Empty.GetAsyncEnumerator(
+            TestContext.Current.CancellationToken
+        );
+        series.Current.Assert().Is(default(int));
+    }
 }

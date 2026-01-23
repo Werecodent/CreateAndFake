@@ -16,11 +16,11 @@ public static class AsyncEnumHelper
                 ?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
 
     /// <summary>
-    ///     Converts <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.
+    ///     Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.
     /// </summary>
-    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
-    /// <param name="collection">Values to convert via iteration.</param>
-    /// <returns>Asynchronous iteration of <paramref name="collection"/>.</returns>
+    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Series to convert via iteration.</param>
+    /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
     [return: NotNullIfNotNull(nameof(collection))]
     public static IAsyncEnumerable<T>? CreateFrom<T>(IEnumerable<T>? collection)
     {
@@ -48,12 +48,12 @@ public static class AsyncEnumHelper
         }
     }
 
-    /// <summary>Determines if <paramref name="collection"/> has any items.</summary>
-    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
-    /// <param name="collection">Collection to check for items via iteration.</param>
+    /// <summary>Determines if the <paramref name="collection"/> has any items.</summary>
+    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Series to check for an item via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="collection"/>
+    ///     <see langword="true"/> if the <paramref name="collection"/>
     ///     has at least one item, <see langword="false"/> otherwise.
     /// </returns>
     public static async Task<bool> HasAnyAsync<T>(
@@ -77,13 +77,13 @@ public static class AsyncEnumHelper
         return false;
     }
 
-    /// <summary>Converts <paramref name="collection"/> to an <see cref="IList{T}"/>.</summary>
-    /// <typeparam name="T"><paramref name="collection"/> item <see cref="Type"/>.</typeparam>
-    /// <param name="collection">Collection to convert via iteration.</param>
+    /// <summary>Converts the <paramref name="collection"/> to an <see cref="IList{T}"/>.</summary>
+    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Series to convert via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
-    ///     Contents of <paramref name="collection"/> as an <see cref="IList{T}"/>;
-    ///     an empty list if <paramref name="collection"/> is <see langword="null"/>.
+    ///     Contents of the <paramref name="collection"/> as an <see cref="IList{T}"/>;
+    ///     an empty list if the <paramref name="collection"/> is <see langword="null"/>.
     /// </returns>
     public static async Task<IList<T>> ToListAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -110,9 +110,9 @@ public static class AsyncEnumHelper
 
     /// <summary>
     ///     Creates an empty <see cref="IAsyncEnumerable{T}"/> that triggers
-    ///     cancellation via <paramref name="source"/> upon attempted iteration.
+    ///     cancellation via the <paramref name="source"/> upon attempted iteration.
     /// </summary>
-    /// <returns>Empty asynchronous iteration.</returns>
+    /// <returns>An empty asynchronous series.</returns>
     /// <inheritdoc cref="CreateFrom{T}"/>
     /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
     public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
@@ -125,10 +125,10 @@ public static class AsyncEnumHelper
     }
 
     /// <summary>
-    ///     Converts <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>
-    ///     and triggers cancellation via <paramref name="source"/> after the first yielded value.
+    ///     Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/> and
+    ///     triggers cancellation via the <paramref name="source"/> after the first yielded value.
     /// </summary>
-    /// <returns>Asynchronous iteration of <paramref name="collection"/>.</returns>
+    /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
     /// <inheritdoc cref="CreateCancelingIteration{T}(CancellationTokenSource)"/>
     public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
         IEnumerable<T> collection,
@@ -149,7 +149,9 @@ public static class AsyncEnumHelper
         }
     }
 
-    /// <summary>Handles canceling via <paramref name="source"/> using async if possible.</summary>
+    /// <summary>
+    ///     Handles canceling a token via its <paramref name="source"/> using async if possible.
+    /// </summary>
     /// <param name="source">Owner of the <see cref="CancellationToken"/> to cancel.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>Asynchronous cancellation requires .NET 8 or later.</remarks>
@@ -158,7 +160,7 @@ public static class AsyncEnumHelper
         return TriggerCancellationAsync(_CancelAsyncForCancellationToken, source);
     }
 
-    /// <param name="cancelAsyncMethod">Delegate for canceling async if available.</param>
+    /// <param name="cancelAsyncMethod">Delegate for canceling via async if available.</param>
     /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
     internal static async Task TriggerCancellationAsync(
         Func<CancellationTokenSource, Task>? cancelAsyncMethod,

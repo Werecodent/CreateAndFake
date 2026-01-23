@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool.Engine;
 
@@ -17,6 +18,8 @@ public sealed class BasicCopyHint : CopyHint
         typeof(string),
         typeof(object),
         typeof(AssemblyName),
+        typeof(Assembly),
+        AppDomain.CurrentDomain.GetAssemblies()[0].GetType(),
         typeof(MemberInfo),
         typeof(MethodBase),
         typeof(Type),
@@ -31,6 +34,7 @@ public sealed class BasicCopyHint : CopyHint
         typeof(string).GetFields()[0].GetType(),
         typeof(ParameterInfo),
         typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
+        typeof(InheritanceTracker),
     ];
 
     /// <inheritdoc/>

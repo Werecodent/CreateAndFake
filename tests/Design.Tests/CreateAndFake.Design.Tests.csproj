@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Samples\CreateAndFake.Samples.csproj" />
     <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
     <ProjectReference Include="..\..\src\Design\CreateAndFake.Design.csproj" />
     <ProjectReference Include="..\..\src\xUnit.v3\CreateAndFake.xUnit.v3.csproj" />

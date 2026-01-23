@@ -26,6 +26,7 @@ public static class TypeSupporterTests
                     IgnorableExceptions =
                     [
                         typeof(ArgumentNullException),
+                        typeof(ArgumentException),
                         typeof(FakeCallException),
                     ],
                 }
