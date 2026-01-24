@@ -19,16 +19,7 @@ public static class ValueComparer_T_Tests
     {
         return Tools.Tester.PreventsParameterMutation(
             typeof(ValueComparer<>),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(MemberAccessException),
-                        typeof(InvalidOperationException),
-                    ],
-                }
+            TestContext.Current.CancellationToken
         );
     }
 

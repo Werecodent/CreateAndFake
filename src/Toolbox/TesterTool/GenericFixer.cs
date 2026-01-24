@@ -9,6 +9,22 @@ namespace CreateAndFake.TesterTool;
 /// <summary>Handles generic resolution.</summary>
 internal static class GenericFixer
 {
+    /// <summary>Defines any generics in a type.</summary>
+    /// <param name="type">Type to fix.</param>
+    /// <param name="options"></param>
+    /// <returns>Type with all generics defined.</returns>
+    internal static Type FixType(Type type, TesterOptions options)
+    {
+        ArgumentGuard.ThrowIfNull(type);
+        ArgumentGuard.ThrowIfNull(options);
+
+        return type.IsGenericTypeDefinition
+            ? type.MakeGenericType([
+                .. type.GetGenericArguments().Select(arg => CreateArg(arg, type, options)),
+            ])
+            : type;
+    }
+
     /// <summary>Defines any generics in a method.</summary>
     /// <param name="method">Method to fix.</param>
     /// <param name="options"></param>
@@ -27,10 +43,10 @@ internal static class GenericFixer
 
     /// <summary>Creates a concrete arg type from the given generic arg.</summary>
     /// <param name="type">Generic arg to create.</param>
-    /// <param name="method">Method with the generics.</param>
+    /// <param name="source">Source being converted.</param>
     /// <param name="options"></param>
     /// <returns>Created arg <see cref="Type"/>.</returns>
-    private static Type CreateArg(Type type, MethodInfo method, TesterOptions options)
+    private static Type CreateArg(Type type, object source, TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type);
 
@@ -72,10 +88,10 @@ internal static class GenericFixer
         if (!isValidArg())
         {
             _ = Limiter.Few.Retry(
-                $"Creating generic arguments of type '{type}' for method '{method}' [Retry]",
+                $"Creating generic arguments of type '{type}' for '{source}' [Retry]",
                 () =>
                     Limiter.Few.StallUntil(
-                        $"Trying arguments of type '{type}' for method '{method}' [Stall]",
+                        $"Trying arguments of type '{type}' for '{source}' [Stall]",
                         () => arg = CreateArgViaConstraint(constraints, options),
                         isValidArg
                     )

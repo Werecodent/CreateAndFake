@@ -1,11 +1,13 @@
 ﻿namespace CreateAndFake.Design.Content;
 
 /// <summary>
-///     Compares objects/collections of <see cref="Type"/> <typeparamref name="T"/> by value.
+///     Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.
 /// </summary>
-/// <typeparam name="T"><see cref="Type"/> of the objects to compare.</typeparam>
+/// <typeparam name="T">The supported <see cref="IValueEquatable"/> <see cref="Type"/>.</typeparam>
+/// <remarks>Not reflection based.</remarks>
 public sealed class ValueComparer<T>
-    : IComparer<T>,
+    : ITypeSupporter,
+        IComparer<T>,
         IComparer<IEnumerable<T>>,
         IEqualityComparer<T>,
         IEqualityComparer<IEnumerable<T>>
@@ -13,6 +15,9 @@ public sealed class ValueComparer<T>
 {
     /// <inheritdoc cref="ValueComparer.Use"/>
     public static ValueComparer<T> Use { get; } = new ValueComparer<T>();
+
+    /// <inheritdoc/>
+    public Type? SupportedType { get; } = typeof(T);
 
     /// <inheritdoc cref="ValueComparer.Equals(object,object)"/>
     public bool Equals(T? x, T? y)

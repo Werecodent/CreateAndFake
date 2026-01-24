@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -72,7 +73,7 @@ public sealed class CollectionCreateHint : CreateHint
             return internalData;
         }
 #if LEGACY // Constructor missing in .NET full.
-        else if (newType.AsGenericBase() == typeof(Dictionary<,>))
+        else if (TypeDescriber.AsGenericBase(newType) == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(newType);
             foreach (dynamic item in internalData)

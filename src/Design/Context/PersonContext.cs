@@ -4,22 +4,14 @@ using CreateAndFake.Design.Randomization;
 namespace CreateAndFake.Design.Context;
 
 /// <summary>Bundled random values for a person.</summary>
-public sealed class PersonContext : BaseDataContext
+/// <inheritdoc/>
+public sealed class PersonContext(IRandom gen) : BaseDataContext(gen)
 {
     /// <summary>Name fragment.</summary>
-    private readonly Lazy<string> _firstName,
-        _middleName,
-        _lastName;
-
-    /// <inheritdoc cref="PersonContext"/>
-    /// <inheritdoc/>
-    public PersonContext(IRandom gen)
-        : base(gen)
-    {
-        _firstName = new(() => Gen.NextItem(NameData.Values));
-        _middleName = new(() => Gen.NextItem(NameData.Values));
-        _lastName = new(() => Gen.NextItem(NameData.Values));
-    }
+    private readonly Lazy<string> //.
+        _firstName = new(() => gen.NextItem(NameData.Values)),
+        _middleName = new(() => gen.NextItem(NameData.Values)),
+        _lastName = new(() => gen.NextItem(NameData.Values));
 
     /// <summary>First name for the person.</summary>
     public string FirstName => _firstName.Value;

@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
@@ -54,7 +55,7 @@ public class ImmutableCollectionCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
-        Type? genericType = type.AsGenericBase();
+        Type? genericType = TypeDescriber.AsGenericBase(type);
 
         if (genericType != null && _Collections.TryGetValue(genericType, out MethodInfo? match))
         {

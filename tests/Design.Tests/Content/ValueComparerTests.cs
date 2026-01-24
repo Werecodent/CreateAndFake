@@ -4,7 +4,7 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Design.Tests.Content;
 
-#pragma warning disable CA1859 // Needed for generic resolution.
+#pragma warning disable CA1859 // False positive; needed for generic resolution.
 
 public static class ValueComparerTests
 {

@@ -4,7 +4,7 @@ namespace CreateAndFake.Design.Randomization;
 
 #pragma warning disable CA1716 // Matches the Random convention.
 
-/// <summary>Provides the core functionality for generic randomization.</summary>
+/// <summary>Provides the core functionality for generic value randomization.</summary>
 public interface IRandom
 {
     /// <summary>Initial seed used to begin generating values.</summary>

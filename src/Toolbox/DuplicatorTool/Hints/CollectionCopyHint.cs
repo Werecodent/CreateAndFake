@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
@@ -54,7 +55,7 @@ public sealed class CollectionCopyHint : CopyHint
             source,
             itemType,
             duplicator,
-            _ReverseCases.Contains(type.AsGenericBase() ?? type)
+            _ReverseCases.Contains(TypeDescriber.AsGenericBase(type) ?? type)
         );
 
         return MakeCollection(contents, type, itemType, duplicator);
@@ -71,7 +72,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             return contents;
         }
-        else if (collectionType.AsGenericBase() == typeof(Dictionary<,>))
+        else if (TypeDescriber.AsGenericBase(collectionType) == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(collectionType)!;
             foreach (dynamic item in contents)

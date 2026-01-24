@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -22,7 +23,7 @@ public sealed class FrozenCollectionCreateHint : CreateHint
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
-        Type? asGeneric = type.AsGenericBase();
+        Type? asGeneric = TypeDescriber.AsGenericBase(type);
 
         if (asGeneric == typeof(FrozenSet<>))
         {

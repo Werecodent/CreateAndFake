@@ -9,19 +9,6 @@ namespace CreateAndFake;
 public static class TypeExtensions
 {
     /// <summary>
-    ///     Attempts to cast <paramref name="type"/> (<see langword="this"/>)
-    ///     to its generic <see cref="Type"/> definition.
-    /// </summary>
-    /// <param name="type"><see cref="Type"/> to cast.</param>
-    /// <returns>
-    ///     The casted <paramref name="type"/> if generic, <see langword="null"/> otherwise.
-    /// </returns>
-    public static Type? AsGenericBase(this Type? type)
-    {
-        return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
-    }
-
-    /// <summary>
     ///     Checks if <paramref name="child"/>
     ///     (<see langword="this"/>) inherits <typeparamref name="T"/>.
     /// </summary>

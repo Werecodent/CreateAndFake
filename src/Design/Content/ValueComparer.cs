@@ -3,8 +3,10 @@
 namespace CreateAndFake.Design.Content;
 
 /// <summary>
-///     Compares objects/collections by value via <see cref="IValueEquatable"/> if possible.
+///     Compares <see langword="object"/>s/collections
+///     by value via <see cref="IValueEquatable"/> if possible.
 /// </summary>
+/// <remarks>Not reflection based.</remarks>
 public sealed class ValueComparer
     : IComparer,
         IComparer<object>,
@@ -26,12 +28,12 @@ public sealed class ValueComparer
     /// <summary>Multiplier for computing hash codes.</summary>
     public static int HashMultiplier { get; } = 92821;
 
-    /// <summary>Default instance to use for comparing objects by value.</summary>
+    /// <summary>Default instance to use for comparing by value.</summary>
     public static ValueComparer Use { get; } = new ValueComparer();
 
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
-    /// <param name="x">Object to compare with <paramref name="y"/>.</param>
-    /// <param name="y">Object to compare with <paramref name="x"/>.</param>
+    /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
+    /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals
     ///     <paramref name="y"/> by value, <see langword="false"/> otherwise.
@@ -148,7 +150,9 @@ public sealed class ValueComparer
     /// <summary>
     ///     Computes an identifying hash code for <paramref name="items"/> based upon value.
     /// </summary>
-    /// <param name="items">Bundled objects to generate a single hash code for.</param>
+    /// <param name="items">
+    ///     Bundled <see langword="object"/>s to generate a single hash code for.
+    /// </param>
     /// <returns>The value computed hash code for <paramref name="items"/>.</returns>
     public int GetHashCode(params IEnumerable<object?>? items)
     {
@@ -158,7 +162,7 @@ public sealed class ValueComparer
     /// <summary>
     ///     Computes an identifying hash code for <paramref name="obj"/> based upon value.
     /// </summary>
-    /// <param name="obj">Object to generate a hash code for.</param>
+    /// <param name="obj">The <see langword="object"/> to generate a hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="obj"/>.</returns>
     public int GetHashCode(object? obj)
     {
@@ -232,8 +236,8 @@ public sealed class ValueComparer
     /// <summary>
     ///     Compares <paramref name="x"/> and <paramref name="y"/> by their value hash for sorting.
     /// </summary>
-    /// <param name="x">Object to compare with <paramref name="y"/>.</param>
-    /// <param name="y">Object to compare with <paramref name="x"/>.</param>
+    /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
+    /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
     /// <returns><list type="bullet">
     ///     <item>Positive value if <paramref name="x"/> &gt; <paramref name="y"/>.</item>
     ///     <item>Zero if <paramref name="x"/> = <paramref name="y"/>.</item>

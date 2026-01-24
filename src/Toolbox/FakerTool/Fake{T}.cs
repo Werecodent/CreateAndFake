@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
@@ -193,7 +194,7 @@ public sealed class Fake<T> : Fake
     private static object ResolveArgLambda(MethodCallExpression call)
     {
         Type innerType =
-            (call.Method.ReturnType.AsGenericBase() == typeof(OutRef<>))
+            (TypeDescriber.AsGenericBase(call.Method.ReturnType) == typeof(OutRef<>))
                 ? call.Method.ReturnType.GetGenericArguments().Single()
                 : call.Method.ReturnType;
 

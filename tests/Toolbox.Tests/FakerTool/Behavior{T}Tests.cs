@@ -11,6 +11,7 @@ public static class Behavior_T_Tests
             [
                 typeof(MemberAccessException),
                 typeof(InvalidOperationException),
+                typeof(NotImplementedException),
             ],
         };
 
@@ -30,7 +31,7 @@ public static class Behavior_T_Tests
         return Tools.Tester.PreventsParameterMutation(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
-            config
+            opt => config(opt) with { MethodsToIgnore = ["Throw"] }
         );
     }
 

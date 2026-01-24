@@ -20,7 +20,9 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     {
         ArgumentGuard.ThrowIfNull(type);
 
-        foreach (ConstructorInfo constructor in FindAllConstructors(type))
+        foreach (
+            ConstructorInfo constructor in FindAllConstructors(GenericFixer.FixType(type, Options))
+        )
         {
             await PreventsMutation(null, constructor, callAllMethods, canceler)
                 .ConfigureAwait(false);
@@ -56,14 +58,14 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(type);
+        Type specificType = GenericFixer.FixType(type, Options);
 
-        foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
+        foreach (MethodInfo method in FindAllMethods(specificType, BindingFlags.Static))
         {
             await PreventsMutation(
                     null,
                     GenericFixer.FixMethod(method, Options),
-                    callAllMethods && method.ReturnType.Inherits(type),
+                    callAllMethods && method.ReturnType.Inherits(specificType),
                     canceler
                 )
                 .ConfigureAwait(false);

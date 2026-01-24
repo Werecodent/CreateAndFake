@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.FakerTool;
@@ -50,7 +51,11 @@ public static class BehaviorTests
             Type type = info.GetParameters()[0].ParameterType;
 
             Type[] generics =
-                type.AsGenericBase()?.GetGenericArguments().Select(_ => typeof(string)).ToArray()
+                TypeDescriber
+                    .AsGenericBase(type)
+                    ?.GetGenericArguments()
+                    .Select(_ => typeof(string))
+                    .ToArray()
                 ?? Type.EmptyTypes;
 
             MethodInfo caller = (generics.Length != 0) ? info.MakeGenericMethod(generics) : info;

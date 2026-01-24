@@ -57,6 +57,20 @@ public static class TypeDescriber
             );
     }
 
+    /// <summary>
+    ///     Attempts to convert the <paramref name="type"/>
+    ///     to its generic <see cref="Type"/> definition.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to convert.</param>
+    /// <returns>
+    ///     The generic <see cref="Type"/> definition for <paramref name="type"/> if it's generic,
+    ///     <see langword="null"/> otherwise.
+    /// </returns>
+    public static Type? AsGenericBase(Type? type)
+    {
+        return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
+    }
+
     /// <typeparam name="T">The <see cref="Type"/> to find fields on.</typeparam>
     /// <inheritdoc cref="GetAllFields(Type,bool)"/>
     public static IEnumerable<FieldInfo> GetAllFields<T>(bool onlyPublic = false)

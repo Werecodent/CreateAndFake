@@ -1,7 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Context;
-using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.Design.Tests.Context;
 
@@ -17,10 +16,7 @@ public abstract class DataContextTestBase<T>
     [Fact]
     public Task DataContext_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { InjectionValues = [new FastRandom()] }
-        );
+        return Tools.Tester.PreventsParameterMutation<T>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

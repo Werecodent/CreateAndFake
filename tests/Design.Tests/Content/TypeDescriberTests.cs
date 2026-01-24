@@ -45,11 +45,23 @@ public static class TypeDescriberTests
     internal static void FindConcreteInterface_ThrowsWhenMissing()
     {
         typeof(List<>)
-            .Assert(t => TypeDescriber.FindConcreteInterface<IList<int>>(t))
+            .Assert(TypeDescriber.FindConcreteInterface<IList<int>>)
             .Throws<NotSupportedException>();
         typeof(int)
-            .Assert(t => TypeDescriber.FindConcreteInterface<string>(t))
+            .Assert(TypeDescriber.FindConcreteInterface<string>)
             .Throws<NotSupportedException>();
+    }
+
+    [Fact]
+    internal static void AsGenericBase_ConvertsGenerics()
+    {
+        TypeDescriber.AsGenericBase(typeof(List<int>)).Assert().Is(typeof(List<>));
+    }
+
+    [Fact]
+    internal static void AsGenericBase_NullForNonGeneric()
+    {
+        TypeDescriber.AsGenericBase(typeof(string)).Assert().Is(null);
     }
 
     [Fact]
