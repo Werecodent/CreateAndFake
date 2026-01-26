@@ -7,7 +7,7 @@ public static class LimiterTests
 {
     private static readonly FrozenSet<Type> ignorableExceptions =
     [
-        typeof(NotSupportedException),
+        typeof(ArgumentException),
         typeof(TimeoutException),
         typeof(FormatException),
     ];

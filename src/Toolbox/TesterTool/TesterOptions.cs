@@ -80,6 +80,14 @@ public sealed record TesterOptions : IToolOptions
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
+    /// <summary>If all PreventsNullRefException tests immediately pass instead.</summary>
+    [ConfigurableOption]
+    public bool DisableNullRefExceptionTests { get; init; } = false;
+
+    /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
+    [ConfigurableOption]
+    public bool DisableParameterMutationTests { get; init; } = false;
+
     /// <summary>
     ///     Creates options from <see langword="this"/>
     ///     overridden with values from <paramref name="config"/>.
@@ -117,7 +125,8 @@ public sealed record TesterOptions : IToolOptions
             ),
             TestClassNameGenericSubstitutes =
                 GetSectionList<string>(section, nameof(TestClassNameGenericSubstitutes))
-                    ?.ToImmutableArray() ?? TestClassNameGenericSubstitutes,
+                    ?.ToImmutableArray()
+                ?? TestClassNameGenericSubstitutes,
             TestDisplayNameConverter = section.GetValue(
                 nameof(TestDisplayNameConverter),
                 TestDisplayNameConverter
@@ -131,6 +140,14 @@ public sealed record TesterOptions : IToolOptions
             IgnoreAllExceptions = section.GetValue(
                 nameof(IgnoreAllExceptions),
                 IgnoreAllExceptions
+            ),
+            DisableNullRefExceptionTests = section.GetValue(
+                nameof(DisableNullRefExceptionTests),
+                DisableNullRefExceptionTests
+            ),
+            DisableParameterMutationTests = section.GetValue(
+                nameof(DisableParameterMutationTests),
+                DisableParameterMutationTests
             ),
         };
     }

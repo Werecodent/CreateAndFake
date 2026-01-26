@@ -3,7 +3,8 @@ namespace CreateAndFake.Design.Reiteration;
 /// <summary>Provides the core functionality for synchronous repetition.</summary>
 public interface ISyncLimiter
 {
-    /// <inheritdoc cref="Repeat{TResult}(string,Func{TResult},CancellationToken?)"/>
+    /// <summary>Repeats <paramref name="behavior"/> until the limit is reached.</summary>
+    /// <inheritdoc cref="Attempt(string,Action,Action,CancellationToken?)"/>
     void Repeat(string message, Action? behavior, CancellationToken? canceler = null);
 
     /// <summary>Repeats <paramref name="behavior"/> until the limit is reached.</summary>

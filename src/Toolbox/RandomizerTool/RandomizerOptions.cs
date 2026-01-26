@@ -143,7 +143,8 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
         }
         else
         {
-            min = max = setMax;
+            min = setMax;
+            max = setMin;
         }
 
         if (max == int.MaxValue)

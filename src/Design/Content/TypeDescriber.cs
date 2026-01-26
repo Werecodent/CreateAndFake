@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Content;
 
@@ -37,7 +38,7 @@ public static class TypeDescriber
     ///     Generic <see cref="Type"/> definition without generics specified.
     /// </param>
     /// <returns>The found inherited <see cref="Type"/>.</returns>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="InvalidOperationException">
     ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
     /// </exception>
     /// <remarks><example><c>
@@ -52,7 +53,7 @@ public static class TypeDescriber
                 .GetInterfaces()
                 .Where(i => i.IsGenericType)
                 .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase)
-            ?? throw new NotSupportedException(
+            ?? throw new InvalidOperationException(
                 $"Type {child} doesn't inherit {genericBase} as a generic base class."
             );
     }

@@ -7,15 +7,15 @@ namespace CreateAndFake.Design.Randomization;
 /// <param name="gen"><inheritdoc cref="IRandom" path="/summary"/></param>
 public sealed class DataRandom(IRandom gen)
 {
-    /// <summary>Supported searchable property names for values.</summary>
+    /// <summary>Supported searchable names for values.</summary>
     private static readonly FrozenDictionary<string, Func<DataRandom, string>> _Matcher =
         new Dictionary<string, Func<DataRandom, string>>()
         {
-            { "FIRSTNAME", gen => gen.Person.FirstName },
-            { "MIDDLENAME", gen => gen.Person.MiddleName },
-            { "LASTNAME", gen => gen.Person.LastName },
-            { "FULLNAME", gen => gen.Person.FullName },
-            { "INITIALS", gen => gen.Person.Initials },
+            { "FIRSTNAME", dat => dat.Person.FirstName },
+            { "MIDDLENAME", dat => dat.Person.MiddleName },
+            { "LASTNAME", dat => dat.Person.LastName },
+            { "FULLNAME", dat => dat.Person.FullName },
+            { "INITIALS", dat => dat.Person.Initials },
         }.ToFrozenDictionary();
 
     /// <summary>All searchable names.</summary>
@@ -32,7 +32,7 @@ public sealed class DataRandom(IRandom gen)
     /// </summary>
     /// <param name="name">Name to find a value for.</param>
     /// <returns>
-    ///     The value representing <paramref name="name"/> if found,
+    ///     A value representing the <paramref name="name"/> if found,
     ///     <see langword="null"/> otherwise.
     /// </returns>
     public string? Find(string? name)
@@ -42,9 +42,9 @@ public sealed class DataRandom(IRandom gen)
             : null;
     }
 
-    /// <summary>Converts <paramref name="value"/> to uppercase letters only.</summary>
+    /// <summary>Converts the <paramref name="value"/> to uppercase letters only.</summary>
     /// <param name="value">Text to convert.</param>
-    /// <returns>The uppercase converted text.</returns>
+    /// <returns>The uppercase equivalent of the <paramref name="value"/>'s letters.</returns>
     private static string ToUpperOnly(string? value)
     {
         return string.Concat(value?.ToUpperInvariant().Where(c => c is >= 'A' and <= 'Z') ?? []);

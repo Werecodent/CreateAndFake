@@ -13,7 +13,7 @@ public sealed class SecureRandom(bool onlyValidValues = true) : ValueRandom(only
     private static readonly RandomNumberGenerator _Gen = RandomNumberGenerator.Create();
 
     /// <inheritdoc/>
-    protected override byte[] NextBytes(short length)
+    public override byte[] NextBytes(short length)
     {
         byte[] buffer = new byte[length];
         _Gen.GetBytes(buffer);

@@ -1,25 +1,29 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Content;
 
-#pragma warning disable IDE0130 // To be included for entire library.
+namespace CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake;
-
-/// <summary>Inheritance methods to extend the <see cref="Type"/> <see langword="class"/>.</summary>
+/// <summary>
+///     Extends the <see cref="Type"/> <see langword="class"/> with inheritance methods.
+/// </summary>
 public static class TypeExtensions
 {
     /// <summary>
-    ///     Checks if <paramref name="child"/>
-    ///     (<see langword="this"/>) inherits <typeparamref name="T"/>.
+    ///     Checks if the <see langword="this"/> <see cref="Type"/> is a base
+    ///     <see langword="class"/> or <see langword="interface"/> for <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">
-    ///     Potential parent <see cref="Type"/> of <paramref name="child"/>.
+    ///     Potential parent <see cref="Type"/> being inherited by the
+    ///     <paramref name="child"/> <see cref="Type"/> (<see langword="this"/>).
     /// </typeparam>
-    /// <param name="child">Potential child of <typeparamref name="T"/>.</param>
+    /// <param name="child">
+    ///     The <see cref="Type"/> potentially inheriting <typeparamref name="T"/>.
+    /// </param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="child"/> inherits <typeparamref name="T"/>,
-    ///     <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <see langword="this"/> <see cref="Type"/>
+    ///     inherits <typeparamref name="T"/>, <see langword="false"/> otherwise.
     /// </returns>
+    /// <inheritdoc cref="Inherits"/>
     public static bool Inherits<T>([NotNullWhen(true)] this Type? child)
     {
         if (child == null)
@@ -37,15 +41,22 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if <paramref name="child"/>
-    ///     (<see langword="this"/>) inherits <paramref name="parent"/>.
+    ///     Checks if <see langword="this"/> <see cref="Type"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <paramref name="parent"/>.
     /// </summary>
-    /// <param name="child">Potential child of <paramref name="parent"/>.</param>
-    /// <param name="parent">Potential parent of <paramref name="child"/>.</param>
+    /// <param name="child">
+    ///     <see cref="Type"/> potentially inheriting the <paramref name="parent"/>.
+    /// </param>
+    /// <param name="parent">
+    ///     <see cref="Type"/> potentially inherited by the
+    ///     <paramref name="child"/> <see cref="Type"/> (<see langword="this"/>).
+    /// </param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="child"/> inherits <paramref name="parent"/>,
-    ///     <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <see langword="this"/> <see cref="Type"/> inherits the
+    ///     <paramref name="parent"/> <see cref="Type"/>, <see langword="false"/> otherwise.
     /// </returns>
+    /// <remarks>Supports generic <see cref="Type"/> definitions.</remarks>
+    /// <seealso cref="InheritanceTracker.Inherits{T}"/>
     public static bool Inherits(
         [NotNullWhen(true)] this Type? child,
         [NotNullWhen(true)] Type? parent
@@ -66,17 +77,20 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if <typeparamref name="T"/> inherits
-    ///     <paramref name="parent"/> (<see langword="this"/>).
+    ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
     /// </summary>
-    /// <typeparam name="T">
-    ///     Potential child <see cref="Type"/> of <paramref name="parent"/>.
+    /// <typeparam name="T">Potential child <see cref="Type"/> inheriting the
+    ///     <paramref name="parent"/> <see cref="Type"/> (<see langword="this"/>).
     /// </typeparam>
-    /// <param name="parent">Potential parent of <typeparamref name="T"/>.</param>
+    /// <param name="parent">
+    ///     <see cref="Type"/> potentially inherited by <typeparamref name="T"/>.
+    /// </param>
     /// <returns>
-    ///     <see langword="true"/> if <typeparamref name="T"/> inherits <paramref name="parent"/>,
-    ///     <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <typeparamref name="T"/> inherits
+    ///     <see langword="this"/> <see cref="Type"/>, <see langword="false"/> otherwise.
     /// </returns>
+    /// <inheritdoc cref="IsInheritedBy(Type,Type)"/>
     public static bool IsInheritedBy<T>([NotNullWhen(true)] this Type? parent)
     {
         if (parent == null)
@@ -94,10 +108,21 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if <paramref name="child"/> inherits
-    ///     <paramref name="parent"/> (<see langword="this"/>).
+    ///     Checks if the <paramref name="child"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
     /// </summary>
-    /// <inheritdoc cref="Inherits"/>
+    /// <param name="parent">
+    ///     <see cref="Type"/> potentially inherited by the <paramref name="child"/>.
+    /// </param>
+    /// <param name="child">
+    ///     <see cref="Type"/> potentially inheriting the
+    ///     <paramref name="parent"/> <see cref="Type"/> (<see langword="this"/>).
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <paramref name="child"/> <see cref="Type"/> inherits
+    ///     <see langword="this"/> <see cref="Type"/>, <see langword="false"/> otherwise.
+    /// </returns>
+    /// <inheritdoc cref="Inherits(Type,Type)"/>
     public static bool IsInheritedBy(
         [NotNullWhen(true)] this Type? parent,
         [NotNullWhen(true)] Type? child
@@ -117,5 +142,3 @@ public static class TypeExtensions
         }
     }
 }
-
-#pragma warning restore IDE0130

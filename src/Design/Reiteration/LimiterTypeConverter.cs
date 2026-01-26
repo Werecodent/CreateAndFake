@@ -30,8 +30,9 @@ public sealed class LimiterTypeConverter : TypeConverter
         }
         else
         {
-            throw new NotSupportedException(
-                $"Cannot convert {nameof(Limiter)} from type: {value?.GetType()}"
+            throw new ArgumentException(
+                $"Cannot convert {nameof(Limiter)} from type: {value?.GetType()}",
+                nameof(value)
             );
         }
     }

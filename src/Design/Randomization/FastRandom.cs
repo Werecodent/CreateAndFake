@@ -9,14 +9,14 @@ public sealed class FastRandom(bool onlyValidValues = true) : ValueRandom(onlyVa
     /// <summary>Prevents concurrency issues for <see cref="_Gen"/>.</summary>
     private static readonly Lock _Lock = new();
 
-    /// <summary>Source generator used for random bytes.</summary>
+    /// <summary>Source generator used for random <see cref="byte"/>s.</summary>
     private static readonly Random _Gen = new();
 
     /// <inheritdoc/>
     public override int? InitialSeed { get; } = null;
 
     /// <inheritdoc/>
-    protected override byte[] NextBytes(short length)
+    public override byte[] NextBytes(short length)
     {
         byte[] buffer = new byte[length];
         lock (_Lock)

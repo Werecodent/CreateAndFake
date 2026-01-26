@@ -36,6 +36,11 @@ public class Tester(TesterOptions options) : ITester
         ArgumentGuard.ThrowIfNull(type);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        if (localOptions.DisableNullRefExceptionTests)
+        {
+            return;
+        }
+
         NullGuarder checker = new(localOptions);
 
         if (localOptions.IncludeConstructors)
@@ -66,6 +71,11 @@ public class Tester(TesterOptions options) : ITester
         ArgumentGuard.ThrowIfNull(instance);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        if (localOptions.DisableNullRefExceptionTests)
+        {
+            return;
+        }
+
         NullGuarder checker = new(localOptions);
 
         if (localOptions.IncludeConstructors)
@@ -103,6 +113,11 @@ public class Tester(TesterOptions options) : ITester
         ArgumentGuard.ThrowIfNull(type);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        if (localOptions.DisableParameterMutationTests)
+        {
+            return;
+        }
+
         MutationGuarder checker = new(localOptions);
 
         if (localOptions.IncludeConstructors)
@@ -135,6 +150,11 @@ public class Tester(TesterOptions options) : ITester
         ArgumentGuard.ThrowIfNull(instance);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        if (localOptions.DisableParameterMutationTests)
+        {
+            return;
+        }
+
         MutationGuarder checker = new(localOptions);
 
         if (localOptions.IncludeConstructors)

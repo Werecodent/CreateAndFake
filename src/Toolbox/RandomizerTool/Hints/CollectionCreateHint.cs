@@ -3,8 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
+#if LEGACY // Constructor missing in .NET full.
+using CreateAndFake.Design.Content;
+#endif
 
 namespace CreateAndFake.RandomizerTool.Hints;
 

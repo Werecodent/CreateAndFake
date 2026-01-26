@@ -10,10 +10,10 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <summary>Prevents concurrency issues for <see cref="_seed"/>.</summary>
     private readonly Lock _lock = new();
 
-    /// <summary>Current seed to be used for the next randomized value.</summary>
+    /// <inheritdoc cref="Seed"/>
     private int _seed;
 
-    /// <inheritdoc cref="_seed"/>
+    /// <summary>Current seed to be used for the next randomized value.</summary>
     public int Seed
     {
         get
@@ -41,12 +41,10 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
         _seed = InitialSeed.Value;
     }
 
-    /// <inheritdoc cref="SeededRandom"/>
-    /// <param name="onlyValidValues">
-    ///     <inheritdoc cref="ValueRandom.OnlyValidValues" path="/summary"/>
-    /// </param>
     /// <param name="initialSeed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
     /// <param name="seed"><inheritdoc cref="_seed" path="/summary"/></param>
+    /// <inheritdoc cref="SeededRandom"/>
+    /// <inheritdoc cref="ValueRandom(bool)"/>
     private SeededRandom(bool onlyValidValues, int? initialSeed, int seed)
         : base(onlyValidValues)
     {
@@ -55,7 +53,7 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     }
 
     /// <inheritdoc/>
-    protected override byte[] NextBytes(short length)
+    public override byte[] NextBytes(short length)
     {
         Random gen;
         lock (_lock)

@@ -14,7 +14,7 @@ public static class TypeDescriberTests
         return Tools.Tester.PreventsNullRefException(
             typeof(TypeDescriber),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] }
+            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
         );
     }
 
@@ -24,7 +24,7 @@ public static class TypeDescriberTests
         return Tools.Tester.PreventsParameterMutation(
             typeof(TypeDescriber),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] }
+            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
         );
     }
 
@@ -46,10 +46,10 @@ public static class TypeDescriberTests
     {
         typeof(List<>)
             .Assert(TypeDescriber.FindConcreteInterface<IList<int>>)
-            .Throws<NotSupportedException>();
+            .Throws<InvalidOperationException>();
         typeof(int)
             .Assert(TypeDescriber.FindConcreteInterface<string>)
-            .Throws<NotSupportedException>();
+            .Throws<InvalidOperationException>();
     }
 
     [Fact]

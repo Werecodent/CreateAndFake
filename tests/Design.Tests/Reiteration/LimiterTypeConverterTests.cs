@@ -7,7 +7,7 @@ public class LimiterTypeConverterTests
 {
     private static readonly FrozenSet<Type> ignorableExceptions =
     [
-        typeof(NotSupportedException),
+        typeof(ArgumentException),
         typeof(InvalidCastException),
     ];
 

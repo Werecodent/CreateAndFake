@@ -55,7 +55,9 @@
                 "A",
                 "B"
             ],
-            "IgnoreAllExceptions": true
+            "IgnoreAllExceptions": true,
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true
         },
         "Valuer": {
             "UseEquatableComparisons": false,

@@ -12,7 +12,6 @@ public abstract class ValueRandomTestBase<T>
     [
         typeof(NotSupportedException),
         typeof(ArgumentOutOfRangeException),
-        typeof(InvalidOperationException),
         typeof(OverflowException),
     ];
 
@@ -37,117 +36,186 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
-    public void Supports_TypeCoverage()
-    {
-        _TestInstance.Supports<int>().Assert().Is(true);
-        _TestInstance.Supports<uint>().Assert().Is(true);
-        _TestInstance.Supports<long>().Assert().Is(true);
-        _TestInstance.Supports<char>().Assert().Is(true);
-        _TestInstance.Supports<byte>().Assert().Is(true);
-        _TestInstance.Supports<bool>().Assert().Is(true);
-        _TestInstance.Supports<ulong>().Assert().Is(true);
-        _TestInstance.Supports<float>().Assert().Is(true);
-        _TestInstance.Supports<short>().Assert().Is(true);
-        _TestInstance.Supports<sbyte>().Assert().Is(true);
-        _TestInstance.Supports<double>().Assert().Is(true);
-        _TestInstance.Supports<ushort>().Assert().Is(true);
-        _TestInstance.Supports<decimal>().Assert().Is(true);
-    }
-
-    [Fact]
     public void Supports_InvalidTypeFalse()
     {
         _TestInstance.Supports(typeof(object)).Assert().Is(false);
     }
 
     [Fact]
-    public void Next_TypeCoverage()
+    public void Supports_Int()
     {
-        _TestInstance.Next<int>();
-        _TestInstance.Next<bool>();
-        _TestInstance.Next<uint>();
-        _TestInstance.Next<long>();
-        _TestInstance.Next<char>();
-        _TestInstance.Next<byte>();
-        _TestInstance.Next<ulong>();
-        _TestInstance.Next<float>();
-        _TestInstance.Next<short>();
-        _TestInstance.Next<sbyte>();
-        _TestInstance.Next<double>();
-        _TestInstance.Next<ushort>();
-        _TestInstance.Next<decimal>();
+        TestBasicSupport<int>(default);
+        TestNextRange(int.MinValue, int.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(int.MinValue / 2 - 1, int.MaxValue / 2 + 1);
     }
 
     [Fact]
-    public void Next_MaxTypeCoverage()
+    public void Supports_UInt()
     {
-        _TestInstance.Next(true);
-        _TestInstance.Next(int.MaxValue);
-        _TestInstance.Next(byte.MaxValue);
-        _TestInstance.Next(uint.MaxValue);
-        _TestInstance.Next(long.MaxValue);
-        _TestInstance.Next(char.MaxValue);
-        _TestInstance.Next(ulong.MaxValue);
-        _TestInstance.Next(float.MaxValue);
-        _TestInstance.Next(short.MaxValue);
-        _TestInstance.Next(sbyte.MaxValue);
-        _TestInstance.Next(double.MaxValue);
-        _TestInstance.Next(ushort.MaxValue);
-        _TestInstance.Next(decimal.MaxValue);
+        TestBasicSupport<uint>(default);
+        TestNextRange(uint.MinValue, uint.MaxValue, v => v + 1, v => v - 1);
     }
 
     [Fact]
-    public void Next_MinTypeCoverage()
+    public void Supports_Long()
     {
-        _TestInstance.Next(false, true);
-        _TestInstance.Next(int.MinValue, int.MaxValue);
-        _TestInstance.Next(byte.MinValue, byte.MaxValue);
-        _TestInstance.Next(uint.MinValue, uint.MaxValue);
-        _TestInstance.Next(long.MinValue, long.MaxValue);
-        _TestInstance.Next(char.MinValue, char.MaxValue);
-        _TestInstance.Next(ulong.MinValue, ulong.MaxValue);
-        _TestInstance.Next(float.MinValue, float.MaxValue);
-        _TestInstance.Next(short.MinValue, short.MaxValue);
-        _TestInstance.Next(sbyte.MinValue, sbyte.MaxValue);
-        _TestInstance.Next(double.MinValue, double.MaxValue);
-        _TestInstance.Next(ushort.MinValue, ushort.MaxValue);
-        _TestInstance.Next(decimal.MinValue, decimal.MaxValue);
+        TestBasicSupport<long>(default);
+        TestNextRange(long.MinValue, long.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(long.MinValue / 2 - 1, long.MaxValue / 2 + 1);
     }
 
     [Fact]
-    public void Next_StumbleWorks()
+    public void Supports_ULong()
     {
-        const int min = int.MinValue / 2 - 1;
-        const int max = int.MaxValue / 2 + 1;
+        TestBasicSupport<ulong>(default);
+        TestNextRange(ulong.MinValue, ulong.MaxValue, v => v + 1, v => v - 1);
+    }
 
-        Limiter.Myriad.Repeat(
-            "Testing stumble behavior.",
-            () => _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max)
+    [Fact]
+    public void Supports_Short()
+    {
+        TestBasicSupport<short>(default);
+        TestNextRange(short.MinValue, short.MaxValue, v => (short)(v + 1), v => (short)(v - 1));
+        TestNextOverflow((short)(short.MinValue / 2 - 1), (short)(short.MaxValue / 2 + 1));
+    }
+
+    [Fact]
+    public void Supports_UShort()
+    {
+        TestBasicSupport<ushort>(default);
+        TestNextRange(ushort.MinValue, ushort.MaxValue, v => (ushort)(v + 1), v => (ushort)(v - 1));
+    }
+
+    [Fact]
+    public void Supports_Byte()
+    {
+        TestBasicSupport<byte>(default);
+        TestNextRange(byte.MinValue, byte.MaxValue, v => (byte)(v + 1), v => (byte)(v - 1));
+    }
+
+    [Fact]
+    public void Supports_SByte()
+    {
+        TestBasicSupport<sbyte>(default);
+        TestNextRange(sbyte.MinValue, sbyte.MaxValue, v => (sbyte)(v + 1), v => (sbyte)(v - 1));
+        TestNextOverflow((sbyte)(sbyte.MinValue / 2 - 1), (sbyte)(sbyte.MaxValue / 2 + 1));
+    }
+
+    [Fact]
+    public void Supports_Bool()
+    {
+        TestBasicSupport<bool>(default);
+        TestNext(false, true);
+        _TestInstance.Assert(t => t.Next(true, false)).Throws<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Supports_Char()
+    {
+        TestBasicSupport<char>(default);
+        TestNextRange(char.MinValue, char.MaxValue, v => (char)(v + 1), v => (char)(v - 1));
+    }
+
+    [Fact]
+    public void Supports_Float()
+    {
+        TestBasicSupport<float>(default);
+        TestNextRange(float.MinValue, float.MaxValue, float.BitIncrement, float.BitDecrement);
+        TestNextOverflow(float.MinValue / 2 - 1, float.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_Double()
+    {
+        TestBasicSupport<double>(default);
+        TestNextRange(double.MinValue, double.MaxValue, double.BitIncrement, double.BitDecrement);
+        TestNextOverflow(double.MinValue / 2 - 1, double.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_Decimal()
+    {
+        TestBasicSupport<decimal>(default);
+        TestNextRange(decimal.MinValue, decimal.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(decimal.MinValue / 2 - 1, decimal.MaxValue / 2 + 1);
+    }
+
+    private static void TestBasicSupport<TValueType>(TValueType zero)
+        where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
+    {
+        _TestInstance.Supports<TValueType>().Assert().Is(true);
+        _TestInstance.Supports(typeof(TValueType)).Assert().Is(true);
+        _TestInstance.Next<TValueType>().Assert().IsNotNull();
+        _TestInstance.Next(typeof(TValueType)).Assert().IsNotNull();
+        _TestInstance.Next(zero).Assert().Is(zero);
+
+        TValueType sample = _TestInstance.Next<TValueType>();
+        Limiter.Hundred.StallUntil(
+            "Variance testing.",
+            () => !sample.Equals(_TestInstance.Next<TValueType>())
         );
     }
 
-    [Fact]
-    public void Next_InvalidTypeThrows()
+    private static void TestNextRange<TValueType>(
+        TValueType min,
+        TValueType max,
+        Func<TValueType, TValueType> addSome,
+        Func<TValueType, TValueType> subtractSome
+    )
+        where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
-        _TestInstance.Assert(t => t.Next(typeof(object))).Throws<NotSupportedException>();
+        TestNext(min, max);
+        TestNext(min, addSome(min));
+        TestNext(subtractSome(max), max);
+
+        min.Assert(m => _TestInstance.Next(max, m)).Throws<ArgumentOutOfRangeException>();
+
+        Limiter.Myriad.Repeat(
+            "Minimal range adherence testing.",
+            () =>
+            {
+                TValueType sample = _TestInstance.Next(addSome(min), max);
+                TestNext(subtractSome(sample), sample);
+                TestNext(sample, addSome(sample));
+            }
+        );
+
+        Limiter.Myriad.Repeat(
+            "Random range testing.",
+            () =>
+            {
+                TValueType sample1 = _TestInstance.Next<TValueType>();
+                TValueType sample2 = _TestInstance.Next<TValueType>();
+                if (sample1.CompareTo(sample2) < 0)
+                {
+                    TestNext(sample1, sample2);
+                }
+                else if (sample1.CompareTo(sample2) > 0)
+                {
+                    TestNext(sample2, sample1);
+                }
+            }
+        );
     }
 
-    [Fact]
-    public void Next_SameMinMaxWorks()
+    private static void TestNextOverflow<TValueType>(TValueType halfMin, TValueType halfMax)
+        where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
-        _TestInstance.Next(0, 0).Assert().Is(0);
+        Limiter.Myriad.Repeat("Potential overflow testing.", () => TestNext(halfMin, halfMax));
     }
 
-    [Fact]
-    public void Next_Variation()
+    private static void TestNext<TValueType>(TValueType min, TValueType max)
+        where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
-        _TestInstance.Next<long>().Assert().IsNot(_TestInstance.Next<long>());
+        min.Assert().LessThan(max, "Difference was too small for next randomization.");
+        _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
     }
 
     [Theory, RandomData]
     public void Next_UnsupportedTypeThrows(StructSample sample)
     {
         _TestInstance.Assert(t => t.Next<StructSample>()).Throws<NotSupportedException>();
+        _TestInstance.Assert(t => t.Next(typeof(StructSample))).Throws<NotSupportedException>();
         _TestInstance.Assert(t => t.Next(sample)).Throws<NotSupportedException>();
     }
 
@@ -175,12 +243,6 @@ public abstract class ValueRandomTestBase<T>
         }
     }
 
-    [Fact]
-    public void Next_MinGreaterMaxThrows()
-    {
-        _TestInstance.Assert(t => t.Next(0, -1)).Throws<ArgumentOutOfRangeException>();
-    }
-
     [Theory, RandomData]
     public void NextItem_CollectionsWork(ICollection<string> data)
     {
@@ -196,15 +258,15 @@ public abstract class ValueRandomTestBase<T>
     [Fact]
     public void NextItem_YieldWorks()
     {
-        _TestInstance.NextItem(CreateEnum(1)).Assert().IsNot(null);
-        _TestInstance.NextItem(CreateEnum(2)).Assert().IsNot(null);
-        _TestInstance.NextItem(CreateEnum(3)).Assert().IsNot(null);
+        _TestInstance.NextItem(CreateSeries(1)).Assert().IsNot(null);
+        _TestInstance.NextItem(CreateSeries(2)).Assert().IsNot(null);
+        _TestInstance.NextItem(CreateSeries(3)).Assert().IsNot(null);
     }
 
     [Fact]
     public void NextItem_EmptyThrows()
     {
-        _TestInstance.Assert(t => t.NextItem(CreateEnum(0))).Throws<InvalidOperationException>();
+        _TestInstance.Assert(t => t.NextItem(CreateSeries(0))).Throws<InvalidOperationException>();
         _TestInstance
             .Assert(t => t.NextItem(Array.Empty<object>()))
             .Throws<InvalidOperationException>();
@@ -214,12 +276,12 @@ public abstract class ValueRandomTestBase<T>
     public void NextItemOrDefault_EmptyGivesDefault()
     {
         _TestInstance.NextItemOrDefault((int[])null).Assert().Is(0);
-        _TestInstance.NextItemOrDefault(CreateEnum(0)).Assert().Is(null);
+        _TestInstance.NextItemOrDefault(CreateSeries(0)).Assert().Is(null);
         _TestInstance.NextItemOrDefault((object[])null).Assert().Is(null);
         _TestInstance.NextItemOrDefault(Array.Empty<object>()).Assert().Is(null);
     }
 
-    private static IEnumerable<object> CreateEnum(int size)
+    private static IEnumerable<object> CreateSeries(int size)
     {
         for (int i = 0; i < size; i++)
         {
