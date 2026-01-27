@@ -1,6 +1,6 @@
 using CreateAndFake.Design.Content;
 
-namespace CreateAndFake.Design.Randomization;
+namespace CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handle randomizing a specific value type.</summary>
 internal interface IValueHandler : ITypeSupporter
@@ -9,13 +9,21 @@ internal interface IValueHandler : ITypeSupporter
     ///     Generates a random value of the <see cref="ITypeSupporter.SupportedType"/>.
     /// </summary>
     /// <param name="gen">Handles randomizing supporting values.</param>
-    /// <returns>The generated value.</returns>
+    /// <inheritdoc cref="IRandom.Next{T}()"/>
     object CreateSupported(IRandom gen);
+
+    /// <summary>
+    ///     Generates a positive constrained value of
+    ///     the <see cref="ITypeSupporter.SupportedType"/>.
+    /// </summary>
+    /// <param name="gen">Handles randomizing supporting values.</param>
+    /// <inheritdoc cref="IRandom.Next{T}(T)"/>
+    object CreateSupported(IRandom gen, object max);
 
     /// <summary>
     ///     Generates a constrained value of the <see cref="ITypeSupporter.SupportedType"/>.
     /// </summary>
-    /// <param name="percent">Random [0,1) value for calculating the value.</param>
+    /// <param name="gen">Handles randomizing supporting values.</param>
     /// <inheritdoc cref="IRandom.Next{T}(T, T)"/>
-    object CreateSupported(object min, object max, double percent);
+    object CreateSupported(IRandom gen, object min, object max);
 }

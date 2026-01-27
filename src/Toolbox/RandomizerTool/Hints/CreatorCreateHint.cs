@@ -51,10 +51,10 @@ public sealed class CreatorCreateHint : CreateHint
             rand.Options with
             {
                 Gen = rand.Create<SeededRandom>(),
-                CollectionMinSize = rand.Options.Gen.Next(0, 2),
-                CollectionMaxSize = rand.Options.Gen.Next(0, 5),
-                StringMinSize = rand.Options.Gen.Next(0, 4),
-                StringMaxSize = rand.Options.Gen.Next(0, 10),
+                CollectionMinSize = rand.Options.Gen.Next(0, 1),
+                CollectionMaxSize = rand.Options.Gen.Next(0, 4),
+                StringMinSize = rand.Options.Gen.Next(0, 3),
+                StringMaxSize = rand.Options.Gen.Next(0, 9),
             }
         ),
         new Creator<UriBuilder>(rand => new UriBuilder(

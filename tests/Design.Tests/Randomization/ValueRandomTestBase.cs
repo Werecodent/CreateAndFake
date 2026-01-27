@@ -102,14 +102,6 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
-    public void Supports_Bool()
-    {
-        TestBasicSupport<bool>(default);
-        TestNext(false, true);
-        _TestInstance.Assert(t => t.Next(true, false)).Throws<ArgumentOutOfRangeException>();
-    }
-
-    [Fact]
     public void Supports_Char()
     {
         TestBasicSupport<char>(default);
@@ -136,8 +128,25 @@ public abstract class ValueRandomTestBase<T>
     public void Supports_Decimal()
     {
         TestBasicSupport<decimal>(default);
-        TestNextRange(decimal.MinValue, decimal.MaxValue, v => v + 1, v => v - 1);
+        TestNextRange(decimal.MinValue, decimal.MaxValue, v => v + 1m, v => v - 1m);
         TestNextOverflow(decimal.MinValue / 2 - 1, decimal.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_Bool()
+    {
+        TestBasicSupport<bool>(default);
+        TestNext(false, true);
+
+        bool sample = _TestInstance.Next(false, true);
+        Limiter.Hundred.StallUntil(
+            "Variance testing.",
+            () => sample != _TestInstance.Next(false, true)
+        );
+
+        _TestInstance.Next(false, false).Assert().Is(false);
+        _TestInstance.Next(true, true).Assert().Is(true);
+        _TestInstance.Assert(t => t.Next(true, false)).Throws<ArgumentOutOfRangeException>();
     }
 
     private static void TestBasicSupport<TValueType>(TValueType zero)
@@ -154,6 +163,18 @@ public abstract class ValueRandomTestBase<T>
             "Variance testing.",
             () => !sample.Equals(_TestInstance.Next<TValueType>())
         );
+
+        Limiter.Myriad.Repeat(
+            "Random max testing.",
+            () =>
+            {
+                TValueType sample = _TestInstance.Next<TValueType>();
+                if (sample.CompareTo(zero) > 0)
+                {
+                    TestNext(sample);
+                }
+            }
+        );
     }
 
     private static void TestNextRange<TValueType>(
@@ -164,6 +185,7 @@ public abstract class ValueRandomTestBase<T>
     )
         where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
+        TestNext(max);
         TestNext(min, max);
         TestNext(min, addSome(min));
         TestNext(subtractSome(max), max);
@@ -174,7 +196,7 @@ public abstract class ValueRandomTestBase<T>
             "Minimal range adherence testing.",
             () =>
             {
-                TValueType sample = _TestInstance.Next(addSome(min), max);
+                TValueType sample = _TestInstance.Next(addSome(min), subtractSome(max));
                 TestNext(subtractSome(sample), sample);
                 TestNext(sample, addSome(sample));
             }
@@ -204,11 +226,17 @@ public abstract class ValueRandomTestBase<T>
         Limiter.Myriad.Repeat("Potential overflow testing.", () => TestNext(halfMin, halfMax));
     }
 
+    private static void TestNext<TValueType>(TValueType max)
+        where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
+    {
+        TValueType min = default;
+        _TestInstance.Next(max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
+    }
+
     private static void TestNext<TValueType>(TValueType min, TValueType max)
         where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
-        min.Assert().LessThan(max, "Difference was too small for next randomization.");
-        _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
+        _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThanOrEqualTo(max);
     }
 
     [Theory, RandomData]
@@ -217,30 +245,47 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Assert(t => t.Next<StructSample>()).Throws<NotSupportedException>();
         _TestInstance.Assert(t => t.Next(typeof(StructSample))).Throws<NotSupportedException>();
         _TestInstance.Assert(t => t.Next(sample)).Throws<NotSupportedException>();
+        _TestInstance.Assert(t => t.Next(sample, sample)).Throws<NotSupportedException>();
     }
 
     [Fact]
-    public void Next_MaxDoubleExcluded()
+    public void Next_SignedMinValueIncluded()
     {
-        const double min = 9.9999999;
-        const double max = 10;
+        const sbyte min = sbyte.MinValue / 2 - 1;
+        const sbyte max = sbyte.MaxValue / 2 + 1;
 
-        for (int i = 0; i < 25000; i++)
-        {
-            _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
-        }
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) == default);
+        Limiter.Myriad.StallUntil("Finding min value.", () => _TestInstance.Next(min, max) == min);
     }
 
     [Fact]
-    public void Next_MaxDecimalExcluded()
+    public void Next_UnsignedMinValueIncluded()
     {
-        const decimal min = 9.9999999M;
-        const decimal max = 10;
+        const byte min = byte.MaxValue / 4;
+        const byte max = byte.MaxValue / 4 * 3;
 
-        for (int i = 0; i < 25000; i++)
-        {
-            _TestInstance.Next(min, max).Assert().GreaterThanOrEqualTo(min).And.LessThan(max);
-        }
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) == default);
+        Limiter.Myriad.StallUntil("Finding min value.", () => _TestInstance.Next(min, max) == min);
+    }
+
+    [Fact]
+    public void Next_SignedMaxValueIncludedOnlyWithMin()
+    {
+        const sbyte min = sbyte.MinValue / 2 - 1;
+        const sbyte max = sbyte.MaxValue / 2 + 1;
+
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) != max);
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(min, max) == max);
+    }
+
+    [Fact]
+    public void Next_UnsignedMaxValueIncludedOnlyWithMin()
+    {
+        const byte min = byte.MaxValue / 4;
+        const byte max = byte.MaxValue / 4 * 3;
+
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) != max);
+        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(min, max) == max);
     }
 
     [Theory, RandomData]

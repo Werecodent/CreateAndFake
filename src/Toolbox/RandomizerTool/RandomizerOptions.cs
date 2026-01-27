@@ -134,23 +134,6 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     /// <returns>The next size to use.</returns>
     private int NextSize(int setMin, int setMax)
     {
-        int min,
-            max;
-        if (setMin <= setMax)
-        {
-            min = setMin;
-            max = setMax;
-        }
-        else
-        {
-            min = setMax;
-            max = setMin;
-        }
-
-        if (max == int.MaxValue)
-        {
-            max -= 1;
-        }
-        return Math.Max(0, Gen.Next(min, max + 1));
+        return Math.Max(0, (setMax < setMin) ? Gen.Next(setMax, setMin) : Gen.Next(setMin, setMax));
     }
 }

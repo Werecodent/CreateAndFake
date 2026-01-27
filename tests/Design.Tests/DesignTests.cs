@@ -25,7 +25,6 @@ public static class DesignTests
                         "NotNullIfNotNullAttribute",
                         "NotNullWhenAttribute",
                         "SetsRequiredMembersAttribute",
-                        "ValueHandler`1",
                     ]),
                 }
         );

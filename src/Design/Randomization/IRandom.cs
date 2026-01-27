@@ -72,11 +72,10 @@ public interface IRandom
     /// <summary>Generates a constrained <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
     /// <param name="min">Inclusive lower boundary for the value.</param>
-    /// <param name="max">Exclusive upper boundary for the value.</param>
+    /// <param name="max">Inclusive upper boundary for the value.</param>
     /// <returns>
-    ///     The generated <typeparamref name="T"/> value <c>&gt;=</c> <paramref name="min"/> and
-    ///     <c>&lt;</c> <paramref name="max"/>. If <paramref name="min"/> <c>==</c>
-    ///     <paramref name="max"/>, <paramref name="min"/> is returned instead.
+    ///     The generated <typeparamref name="T"/> value <c>&lt;=</c>
+    ///     <paramref name="max"/> and <c>&gt;=</c> <paramref name="min"/>.
     /// </returns>
     /// <exception cref="NotSupportedException">
     ///     If <typeparamref name="T"/> isn't supported.

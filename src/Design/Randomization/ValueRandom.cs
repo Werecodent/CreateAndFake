@@ -1,6 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization.Handlers;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -8,101 +9,22 @@ namespace CreateAndFake.Design.Randomization;
 /// <param name="onlyValidValues"><inheritdoc cref="OnlyValidValues" path="/summary"/></param>
 public abstract class ValueRandom(bool onlyValidValues) : IRandom
 {
-    /// <summary>Abnormal double values to potentially exclude.</summary>
-    private static readonly FrozenSet<double> _SpecialDoubles = FrozenSet.Create(
-        double.NaN,
-        double.NegativeInfinity,
-        double.PositiveInfinity
-    );
-
-    /// <summary>Abnormal float values to potentially exclude.</summary>
-    private static readonly FrozenSet<float> _SpecialFloats = FrozenSet.Create(
-        float.NaN,
-        float.NegativeInfinity,
-        float.PositiveInfinity
-    );
-
     /// <summary>Handlers for all the supported types.</summary>
     private static readonly IValueHandler[] _Handlers =
     [
-        new ValueHandler<ushort>(
-            gen => BitConverter.ToUInt16(gen.NextBytes(2), 0),
-            (min, max, percent) => (ushort)Math.Floor(percent * (max - min) + min)
-        ),
-        new ValueHandler<ulong>(
-            gen => BitConverter.ToUInt64(gen.NextBytes(8), 0),
-            (min, max, percent) => (ulong)(percent * (max - min) + min)
-        ),
-        new ValueHandler<short>(
-            gen => BitConverter.ToInt16(gen.NextBytes(2), 0),
-            (min, max, percent) => (short)Math.Floor(percent * (max * 1.0 - min) + min)
-        ),
-        new ValueHandler<uint>(
-            gen => BitConverter.ToUInt32(gen.NextBytes(4), 0),
-            (min, max, percent) => (uint)(percent * (max - min) + min)
-        ),
-        new ValueHandler<long>(
-            gen => BitConverter.ToInt64(gen.NextBytes(8), 0),
-            (min, max, percent) => (long)Math.Floor(percent * (max * 1.0 - min) + min)
-        ),
-        new ValueHandler<char>(
-            gen => BitConverter.ToChar(gen.NextBytes(2), 0),
-            (min, max, percent) => (char)(percent * (max - min) + min)
-        ),
-        new ValueHandler<int>(
-            gen => BitConverter.ToInt32(gen.NextBytes(4), 0),
-            (min, max, percent) => (int)Math.Floor(percent * (max * 1.0 - min) + min)
-        ),
-        new ValueHandler<byte>(
-            gen => gen.NextBytes(1)[0],
-            (min, max, percent) => (byte)(percent * (max - min) + min)
-        ),
-        new ValueHandler<sbyte>(
-            gen => (sbyte)gen.NextBytes(1)[0],
-            (min, max, percent) => (sbyte)Math.Floor(percent * (max * 1.0 - min) + min)
-        ),
-        new ValueHandler<bool>(
-            gen => gen.NextBytes(1)[0] > byte.MaxValue / 2,
-            (_, __, ___) => default
-        ),
-        new ValueHandler<decimal>(
-            gen => new decimal(
-                gen.Next<int>(),
-                gen.Next<int>(),
-                gen.Next<int>(),
-                gen.Next<bool>(),
-                gen.Next<byte>(29)
-            ),
-            (min, max, percent) =>
-            {
-                decimal result = max * (decimal)percent + min * (1 - (decimal)percent);
-                return result.CompareTo(min) > 0 ? result : min;
-            }
-        ),
-        new ValueHandler<double>(
-            gen =>
-            {
-                double value;
-                do
-                {
-                    value = BitConverter.ToDouble(gen.NextBytes(8), 0);
-                } while (gen.OnlyValidValues && _SpecialDoubles.Contains(value));
-                return value;
-            },
-            (min, max, percent) => max * percent + min * (1 - percent)
-        ),
-        new ValueHandler<float>(
-            gen =>
-            {
-                float value;
-                do
-                {
-                    value = BitConverter.ToSingle(gen.NextBytes(4), 0);
-                } while (gen.OnlyValidValues && _SpecialFloats.Contains(value));
-                return value;
-            },
-            (min, max, percent) => (float)(max * percent + min * (1 - percent))
-        ),
+        new DecimalValueHandler(),
+        new DoubleValueHandler(),
+        new FloatValueHandler(),
+        new BoolValueHandler(),
+        new IntegralValueHandler<long>(8, BitConverter.ToInt64),
+        new IntegralValueHandler<ulong>(8, BitConverter.ToUInt64),
+        new IntegralValueHandler<int>(4, BitConverter.ToInt32),
+        new IntegralValueHandler<uint>(4, BitConverter.ToUInt32),
+        new IntegralValueHandler<short>(2, BitConverter.ToInt16),
+        new IntegralValueHandler<ushort>(2, BitConverter.ToUInt16),
+        new IntegralValueHandler<char>(2, BitConverter.ToChar),
+        new IntegralValueHandler<byte>(1, (bytes, _) => bytes[0]),
+        new IntegralValueHandler<sbyte>(1, (bytes, _) => (sbyte)bytes[0]),
     ];
 
     /// <summary>Supported types paired with the handler used to generate them.</summary>
@@ -112,22 +34,19 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     /// <summary>All supported value types.</summary>
     public static IEnumerable<Type> ValueTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
 
-    /// <summary>Flag to prevent generating invalid values (NaN, -∞ and +∞).</summary>
+    /// <inheritdoc/>
     public bool OnlyValidValues { get; } = onlyValidValues;
 
     /// <inheritdoc/>
     public abstract int? InitialSeed { get; }
 
-    /// <summary>Generates a <see langword="byte"/> array filled with random bytes.</summary>
-    /// <param name="length">Length of the <see langword="byte"/> array to generate.</param>
-    /// <returns>The generated <see langword="byte"/> array.</returns>
+    /// <inheritdoc/>
     public abstract byte[] NextBytes(short length);
 
-    /// <summary>Generates a [0,1) value for scaling.</summary>
-    /// <returns>The generated value <c>&gt;= 0</c> and <c>&lt; 1</c>.</returns>
+    /// <inheritdoc/>
     public double NextPercent()
     {
-        return (Next<ulong>() >> 11) * (1.0 / (1ul << 53)); // * (1.0 / (int.MaxValue - 1));
+        return (Next<ulong>() >> 11) * (1.0 / (1ul << 53));
     }
 
     /// <inheritdoc/>
@@ -167,7 +86,29 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     public T Next<T>(T max)
         where T : struct, IComparable, IComparable<T>, IEquatable<T>
     {
-        return Next(default, max);
+        if (_HandlersByType.TryGetValue(typeof(T), out IValueHandler? gen))
+        {
+            T min = default;
+            if (min.CompareTo(max) > 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(max),
+                    max,
+                    $"Must be greater than or equal to: '{min}'."
+                );
+            }
+            else
+            {
+                T result = (T)gen.CreateSupported(this, max);
+
+                // Prevent any issues stemming from scaling imprecision.
+                return result.CompareTo(max) < 0 ? result : min;
+            }
+        }
+        else
+        {
+            throw new NotSupportedException($"Type '{typeof(T).Name}' not supported.");
+        }
     }
 
     /// <inheritdoc/>
@@ -176,24 +117,20 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     {
         if (_HandlersByType.TryGetValue(typeof(T), out IValueHandler? gen))
         {
-            if (min.Equals(max))
-            {
-                return min;
-            }
-            else if (min.CompareTo(max) >= 0)
+            if (min.CompareTo(max) > 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(max),
                     max,
-                    $"Value must be greater than the specified min: '{min}'."
+                    $"Must be greater than or equal to the specified min: '{min}'."
                 );
             }
             else
             {
-                T result = (T)gen.CreateSupported(min, max, NextPercent());
+                T result = (T)gen.CreateSupported(this, min, max);
 
                 // Prevent any issues stemming from scaling imprecision.
-                return result.CompareTo(max) < 0 ? result : min;
+                return result.CompareTo(max) <= 0 ? result : min;
             }
         }
         else
