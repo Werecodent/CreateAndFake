@@ -56,7 +56,7 @@ public static class DataRandomTests
     }
 
     [Theory, RandomData]
-    internal static void Find_MissingName(DataRandom testInstance, string name)
+    internal static void Find_NullWithMissingName(DataRandom testInstance, string name)
     {
         testInstance.Find(name).Assert().Is(null);
     }

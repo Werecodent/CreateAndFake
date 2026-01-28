@@ -61,7 +61,7 @@ internal static class GenericFixer
             )
         )
         {
-            arg = options.Gen.NextItem(ValueRandom.ValueTypes);
+            arg = options.Gen.NextItem(ValueRandom.SupportedTypes);
         }
         else if (newNeeded)
         {

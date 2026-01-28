@@ -7,7 +7,7 @@ public sealed class ValueCreateHintTests : CreateHintTestBase<ValueCreateHint>
 {
     private static readonly ValueCreateHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [.. ValueRandom.ValueTypes];
+    private static readonly Type[] _ValidTypes = [.. ValueRandom.SupportedTypes];
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 

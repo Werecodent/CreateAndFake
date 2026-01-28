@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace CreateAndFake.Design.Reiteration;
 
-/// <summary>Handles conversion for <see cref="ILimiter"/>.</summary>
+/// <summary>Handles serialization/deserialization for <see cref="ILimiter"/>.</summary>
 public sealed class LimiterTypeConverter : TypeConverter
 {
     /// <inheritdoc/>

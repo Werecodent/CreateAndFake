@@ -109,6 +109,14 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
+    public void Supports_Decimal()
+    {
+        TestBasicSupport<decimal>(default);
+        TestNextRange(decimal.MinValue, decimal.MaxValue, v => v + 1m, v => v - 1m);
+        TestNextOverflow(decimal.MinValue / 2 - 1, decimal.MaxValue / 2 + 1);
+    }
+
+    [Fact]
     public void Supports_Float()
     {
         TestBasicSupport<float>(default);
@@ -125,11 +133,31 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
-    public void Supports_Decimal()
+    public void Supports_TimeSpan()
     {
-        TestBasicSupport<decimal>(default);
-        TestNextRange(decimal.MinValue, decimal.MaxValue, v => v + 1m, v => v - 1m);
-        TestNextOverflow(decimal.MinValue / 2 - 1, decimal.MaxValue / 2 + 1);
+        TestBasicSupport<TimeSpan>(default);
+        TestNextRange(
+            TimeSpan.MinValue,
+            TimeSpan.MaxValue,
+            v => v.Add(TimeSpan.FromTicks(1)),
+            v => v.Subtract(TimeSpan.FromTicks(1))
+        );
+        TestNextOverflow(
+            TimeSpan.FromTicks(TimeSpan.MinValue.Ticks / 2 - 1),
+            TimeSpan.FromTicks(TimeSpan.MaxValue.Ticks / 2 + 1)
+        );
+    }
+
+    [Fact]
+    public void Supports_DateTime()
+    {
+        TestBasicSupport<DateTime>(default);
+        TestNextRange(
+            DateTime.MinValue,
+            DateTime.MaxValue,
+            v => v.AddTicks(1),
+            v => v.AddTicks(-1)
+        );
     }
 
     [Fact]
@@ -141,7 +169,8 @@ public abstract class ValueRandomTestBase<T>
         bool sample = _TestInstance.Next(false, true);
         Limiter.Hundred.StallUntil(
             "Variance testing.",
-            () => sample != _TestInstance.Next(false, true)
+            () => sample != _TestInstance.Next(false, true),
+            TestContext.Current.CancellationToken
         );
 
         _TestInstance.Next(false, false).Assert().Is(false);
@@ -157,11 +186,13 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.Next<TValueType>().Assert().IsNotNull();
         _TestInstance.Next(typeof(TValueType)).Assert().IsNotNull();
         _TestInstance.Next(zero).Assert().Is(zero);
+        _TestInstance.Next(zero, zero).Assert().Is(zero);
 
         TValueType sample = _TestInstance.Next<TValueType>();
         Limiter.Hundred.StallUntil(
             "Variance testing.",
-            () => !sample.Equals(_TestInstance.Next<TValueType>())
+            () => !sample.Equals(_TestInstance.Next<TValueType>()),
+            TestContext.Current.CancellationToken
         );
 
         Limiter.Myriad.Repeat(
@@ -173,7 +204,8 @@ public abstract class ValueRandomTestBase<T>
                 {
                     TestNext(sample);
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
     }
 
@@ -198,8 +230,10 @@ public abstract class ValueRandomTestBase<T>
             {
                 TValueType sample = _TestInstance.Next(addSome(min), subtractSome(max));
                 TestNext(subtractSome(sample), sample);
+                TestNext(sample, sample);
                 TestNext(sample, addSome(sample));
-            }
+            },
+            TestContext.Current.CancellationToken
         );
 
         Limiter.Myriad.Repeat(
@@ -216,14 +250,19 @@ public abstract class ValueRandomTestBase<T>
                 {
                     TestNext(sample2, sample1);
                 }
-            }
+            },
+            TestContext.Current.CancellationToken
         );
     }
 
     private static void TestNextOverflow<TValueType>(TValueType halfMin, TValueType halfMax)
         where TValueType : struct, IComparable, IComparable<TValueType>, IEquatable<TValueType>
     {
-        Limiter.Myriad.Repeat("Potential overflow testing.", () => TestNext(halfMin, halfMax));
+        Limiter.Myriad.Repeat(
+            "Potential overflow testing.",
+            () => TestNext(halfMin, halfMax),
+            TestContext.Current.CancellationToken
+        );
     }
 
     private static void TestNext<TValueType>(TValueType max)
@@ -254,8 +293,16 @@ public abstract class ValueRandomTestBase<T>
         const sbyte min = sbyte.MinValue / 2 - 1;
         const sbyte max = sbyte.MaxValue / 2 + 1;
 
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) == default);
-        Limiter.Myriad.StallUntil("Finding min value.", () => _TestInstance.Next(min, max) == min);
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(max) == default,
+            TestContext.Current.CancellationToken
+        );
+        Limiter.Myriad.StallUntil(
+            "Finding min value.",
+            () => _TestInstance.Next(min, max) == min,
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
@@ -264,8 +311,16 @@ public abstract class ValueRandomTestBase<T>
         const byte min = byte.MaxValue / 4;
         const byte max = byte.MaxValue / 4 * 3;
 
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) == default);
-        Limiter.Myriad.StallUntil("Finding min value.", () => _TestInstance.Next(min, max) == min);
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(max) == default,
+            TestContext.Current.CancellationToken
+        );
+        Limiter.Myriad.StallUntil(
+            "Finding min value.",
+            () => _TestInstance.Next(min, max) == min,
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
@@ -274,8 +329,16 @@ public abstract class ValueRandomTestBase<T>
         const sbyte min = sbyte.MinValue / 2 - 1;
         const sbyte max = sbyte.MaxValue / 2 + 1;
 
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) != max);
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(min, max) == max);
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(max) != max,
+            TestContext.Current.CancellationToken
+        );
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(min, max) == max,
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
@@ -284,8 +347,55 @@ public abstract class ValueRandomTestBase<T>
         const byte min = byte.MaxValue / 4;
         const byte max = byte.MaxValue / 4 * 3;
 
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(max) != max);
-        Limiter.Myriad.StallUntil("Finding max value.", () => _TestInstance.Next(min, max) == max);
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(max) != max,
+            TestContext.Current.CancellationToken
+        );
+        Limiter.Myriad.StallUntil(
+            "Finding max value.",
+            () => _TestInstance.Next(min, max) == max,
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    public void Next_HandlesDoubleSpecialValues()
+    {
+        TestNext(double.NegativeInfinity, double.NegativeInfinity);
+        TestNext(double.PositiveInfinity, double.PositiveInfinity);
+
+        _TestInstance.Next(0, double.PositiveInfinity).Assert().LessThanOrEqualTo(double.MaxValue);
+        _TestInstance
+            .Next(double.NegativeInfinity, 0)
+            .Assert()
+            .GreaterThanOrEqualTo(double.MinValue);
+        _TestInstance
+            .Next(double.NegativeInfinity, double.PositiveInfinity)
+            .Assert()
+            .GreaterThanOrEqualTo(double.MinValue)
+            .And.LessThanOrEqualTo(double.MaxValue);
+
+        _TestInstance.Next(double.NaN, 0).Assert().Is(double.NaN);
+        _TestInstance.Next(double.NaN, double.NaN).Assert().Is(double.NaN);
+    }
+
+    [Fact]
+    public void Next_HandlesFloatSpecialValues()
+    {
+        TestNext(float.NegativeInfinity, float.NegativeInfinity);
+        TestNext(float.PositiveInfinity, float.PositiveInfinity);
+
+        _TestInstance.Next(0, float.PositiveInfinity).Assert().LessThanOrEqualTo(float.MaxValue);
+        _TestInstance.Next(float.NegativeInfinity, 0).Assert().GreaterThanOrEqualTo(float.MinValue);
+        _TestInstance
+            .Next(float.NegativeInfinity, float.PositiveInfinity)
+            .Assert()
+            .GreaterThanOrEqualTo(float.MinValue)
+            .And.LessThanOrEqualTo(float.MaxValue);
+
+        _TestInstance.Next(float.NaN, 0).Assert().Is(float.NaN);
+        _TestInstance.Next(float.NaN, float.NaN).Assert().Is(float.NaN);
     }
 
     [Theory, RandomData]

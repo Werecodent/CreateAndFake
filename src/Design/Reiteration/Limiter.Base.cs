@@ -14,33 +14,33 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     : ILimiter,
         IEquatable<Limiter>
 {
-    /// <summary>Instance that defaults to a single attempt.</summary>
+    /// <summary>Instance set to 1 attempt.</summary>
     public static Limiter Once { get; } = new Limiter(1);
 
-    /// <summary>Instance that defaults to five attempts.</summary>
+    /// <summary>Instance set to 5 attempts.</summary>
     public static Limiter Few { get; } = new Limiter(5);
 
-    /// <summary>Instance that defaults to a dozen attempts.</summary>
+    /// <summary>Instance set to 12 attempts.</summary>
     public static Limiter Dozen { get; } = new Limiter(12);
 
-    /// <summary>Instance that defaults to a twenty attempts.</summary>
+    /// <summary>Instance set to 20 attempts.</summary>
     public static Limiter Score { get; } = new Limiter(20);
 
-    /// <summary>Instance that defaults to a hundred attempts.</summary>
+    /// <summary>Instance set to 100 attempts.</summary>
     public static Limiter Hundred { get; } = new Limiter(100);
 
-    /// <summary>Instance that defaults to a thousand attempts.</summary>
-    public static Limiter Myriad { get; } = new Limiter(1000);
+    /// <summary>Instance set to 10,000 attempts.</summary>
+    public static Limiter Myriad { get; } = new Limiter(10000);
 
-    /// <summary>Instance that defaults to 25 ms with a minimal delay.</summary>
+    /// <summary>Instance set to 25ms with a 1ms delay.</summary>
     public static Limiter Quick { get; } =
         new Limiter(new TimeSpan(0, 0, 0, 0, 25), new TimeSpan(0, 0, 0, 0, 1));
 
-    /// <summary>Instance that defaults to half a second with a small delay.</summary>
+    /// <summary>Instance set to 0.5 seconds with a 20ms delay.</summary>
     public static Limiter Fast { get; } =
         new Limiter(new TimeSpan(0, 0, 0, 0, 500), new TimeSpan(0, 0, 0, 0, 20));
 
-    /// <summary>Instance that defaults to five seconds with a large delay.</summary>
+    /// <summary>Instance set to 5 seconds with a 200ms delay.</summary>
     public static Limiter Slow { get; } =
         new Limiter(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 0, 0, 200));
 
@@ -65,13 +65,30 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     );
 
     /// <summary>Maximum attempts to try.</summary>
-    private readonly int _tries = tries;
+    private readonly int _tries =
+        (tries > 0)
+            ? tries
+            : throw new ArgumentOutOfRangeException(
+                nameof(tries),
+                tries,
+                "Minimum number of attempts is 1."
+            );
 
     /// <summary>Maximum duration to attempt for.</summary>
-    private readonly TimeSpan _timeout = timeout;
+    private readonly TimeSpan _timeout =
+        (timeout > TimeSpan.Zero)
+            ? timeout
+            : throw new ArgumentOutOfRangeException(
+                nameof(timeout),
+                timeout,
+                "Duration must be greater than 0."
+            );
 
-    /// <summary>Delay between attempts.</summary>
-    private readonly TimeSpan _delay = delay ?? TimeSpan.Zero;
+    /// <summary>Delay between attempts; no delay by default.</summary>
+    private readonly TimeSpan _delay =
+        (delay == null || delay >= TimeSpan.Zero)
+            ? delay ?? TimeSpan.Zero
+            : throw new ArgumentOutOfRangeException(nameof(delay), delay, "Minimum delay is 0.");
 
     /// <inheritdoc cref="Limiter(TimeSpan,int,TimeSpan?)"/>
     public Limiter(int tries, TimeSpan? delay = null)
@@ -84,35 +101,28 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <inheritdoc/>
     public TimeSpan GetMaxDurationEstimate()
     {
-        if (_tries == int.MaxValue)
+        double duration = _delay.TotalMilliseconds + 1;
+        double totalTimeout = _timeout.TotalMilliseconds;
+
+        double result;
+        if (totalTimeout / duration > _tries)
         {
-            if (_delay > TimeSpan.Zero)
+            double leftover = totalTimeout % duration;
+            if (leftover > 1)
             {
-                return TimeSpan.FromMilliseconds(
-                    Math.Round(_timeout.TotalMilliseconds / _delay.TotalMilliseconds)
-                        * _delay.TotalMilliseconds
-                );
+                result = totalTimeout + duration;
             }
             else
             {
-                return _timeout;
-            }
-        }
-        else if (_delay > TimeSpan.Zero)
-        {
-            if (TimeSpan.MaxValue.TotalMilliseconds / _delay.TotalMilliseconds > _tries)
-            {
-                return TimeSpan.FromMilliseconds(_tries * _delay.TotalMilliseconds);
-            }
-            else
-            {
-                return TimeSpan.MaxValue;
+                result = totalTimeout;
             }
         }
         else
         {
-            return TimeSpan.FromMilliseconds(_tries);
+            result = duration * _tries - _delay.TotalMilliseconds;
         }
+
+        return TimeSpan.FromMilliseconds(Math.Min(result, TimeSpan.MaxValue.TotalMilliseconds));
     }
 
     /// <summary>Compares <see langword="this"/> to <paramref name="obj"/> by value.</summary>
@@ -232,6 +242,25 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         else
         {
             throw new TimeoutException(error + details);
+        }
+    }
+
+    /// <summary>Throws a <see cref="OperationCanceledException"/>.</summary>
+    /// <param name="error">Issue causing the <see cref="OperationCanceledException"/>.</param>
+    /// <param name="message">Details to include in the <see cref="OperationCanceledException"/>.</param>
+    /// <param name="ex">Encountered exception causing the <see cref="OperationCanceledException"/>.</param>
+    /// <exception cref="OperationCanceledException">With the error and message details.</exception>
+    [DoesNotReturn]
+    private static void CancelFault(string error, string message, Exception? ex = null)
+    {
+        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
+        if (ex != null)
+        {
+            throw new OperationCanceledException(error + details, ex);
+        }
+        else
+        {
+            throw new OperationCanceledException(error + details);
         }
     }
 

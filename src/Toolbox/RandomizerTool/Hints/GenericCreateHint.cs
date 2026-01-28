@@ -58,7 +58,7 @@ public sealed class GenericCreateHint : CreateHint
             )
         )
         {
-            arg = randomizer.Options.Gen.NextItem(ValueRandom.ValueTypes);
+            arg = randomizer.Options.Gen.NextItem(ValueRandom.SupportedTypes);
         }
         else if (newNeeded)
         {

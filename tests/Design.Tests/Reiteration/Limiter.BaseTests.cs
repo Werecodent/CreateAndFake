@@ -21,13 +21,16 @@ public static class LimiterBaseTests
         }
     }
 
-    [Theory, RandomData]
-    internal static void Equality_MatchesValue(int tries, TimeSpan elapsed)
+    [Fact]
+    internal static void Equality_MatchesValue()
     {
+        int tries = Tools.Gen.Next(int.MaxValue);
+        TimeSpan elapsed = Tools.Gen.Next(TimeSpan.MaxValue);
+
         Limiter original = new(tries, elapsed);
         Limiter dupe = new(tries, elapsed);
-        Limiter variant1 = new(tries.CreateVariant(), elapsed);
-        Limiter variant2 = new(tries, elapsed.CreateVariant());
+        Limiter variant1 = new(Tools.Gen.Next(int.MaxValue), elapsed);
+        Limiter variant2 = new(tries, Tools.Gen.Next(TimeSpan.MaxValue));
 
         true
             .Assert()
@@ -42,9 +45,13 @@ public static class LimiterBaseTests
             .And.IsNot(variant2.GetHashCode());
     }
 
-    [Theory, RandomData]
-    internal static void ToString_Readable(int tries, TimeSpan timeout, TimeSpan delay)
+    [Fact]
+    internal static void ToString_Readable()
     {
+        int tries = Tools.Gen.Next(int.MaxValue);
+        TimeSpan timeout = Tools.Gen.Next(TimeSpan.MaxValue);
+        TimeSpan delay = Tools.Gen.Next(TimeSpan.MaxValue);
+
         new Limiter(timeout, tries, delay).ToString().Assert().Is($"{tries}-{timeout}-{delay}");
     }
 }

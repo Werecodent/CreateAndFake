@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Reiteration;
 public sealed partial class Limiter : ISyncLimiter
 {
     /// <inheritdoc/>
-    public void Repeat(string message, Action? behavior, CancellationToken? canceler = null)
+    public void Repeat(string message, Action? behavior, CancellationToken canceler = default)
     {
         _ = Repeat(
             message,
@@ -23,7 +23,7 @@ public sealed partial class Limiter : ISyncLimiter
     public IReadOnlyCollection<T> Repeat<T>(
         string message,
         Func<T> behavior,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         ArgumentGuard.ThrowIfNull(behavior);
@@ -40,7 +40,11 @@ public sealed partial class Limiter : ISyncLimiter
     }
 
     /// <inheritdoc/>
-    public void StallUntil(string message, Func<bool> behavior, CancellationToken? canceler = null)
+    public void StallUntil(
+        string message,
+        Func<bool> behavior,
+        CancellationToken canceler = default
+    )
     {
         StallUntil(message, null, behavior, canceler);
     }
@@ -50,7 +54,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Action? behavior,
         Func<bool> checkState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         _ = StallUntil(
@@ -70,7 +74,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Func<T> behavior,
         Func<bool> checkState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         ArgumentGuard.ThrowIfNull(checkState);
@@ -83,7 +87,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Func<T> behavior,
         Func<T, bool> checkState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         ArgumentGuard.ThrowIfNull(behavior, checkState);
@@ -109,7 +113,7 @@ public sealed partial class Limiter : ISyncLimiter
     }
 
     /// <inheritdoc/>
-    public void Retry(string message, Action behavior, CancellationToken? canceler = null)
+    public void Retry(string message, Action behavior, CancellationToken canceler = default)
     {
         Retry<Exception>(message, behavior, null, canceler);
     }
@@ -119,14 +123,14 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Action behavior,
         Action resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         Retry<Exception>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc/>
-    public void Retry<TError>(string message, Action behavior, CancellationToken? canceler = null)
+    public void Retry<TError>(string message, Action behavior, CancellationToken canceler = default)
         where TError : Exception
     {
         Retry<TError>(message, behavior, null, canceler);
@@ -137,7 +141,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Action behavior,
         Action? resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -157,7 +161,7 @@ public sealed partial class Limiter : ISyncLimiter
     public TResult Retry<TResult>(
         string message,
         Func<TResult> behavior,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         return Retry<Exception, TResult>(message, behavior, null, canceler);
@@ -168,7 +172,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Func<TResult> behavior,
         Action resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         return Retry<Exception, TResult>(message, behavior, resetState, canceler);
@@ -178,7 +182,7 @@ public sealed partial class Limiter : ISyncLimiter
     public TResult Retry<TError, TResult>(
         string message,
         Func<TResult> behavior,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -190,7 +194,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Func<TResult> behavior,
         Action? resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -214,7 +218,7 @@ public sealed partial class Limiter : ISyncLimiter
     }
 
     /// <inheritdoc/>
-    public void Attempt(string message, Action behavior, CancellationToken? canceler = null)
+    public void Attempt(string message, Action behavior, CancellationToken canceler = default)
     {
         Attempt<Exception>(message, behavior, null, canceler);
     }
@@ -224,14 +228,18 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Action behavior,
         Action resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         Attempt<Exception>(message, behavior, resetState, canceler);
     }
 
     /// <inheritdoc/>
-    public void Attempt<TError>(string message, Action behavior, CancellationToken? canceler = null)
+    public void Attempt<TError>(
+        string message,
+        Action behavior,
+        CancellationToken canceler = default
+    )
         where TError : Exception
     {
         Attempt<TError>(message, behavior, null, canceler);
@@ -242,7 +250,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Action? behavior,
         Action? resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -262,7 +270,7 @@ public sealed partial class Limiter : ISyncLimiter
     public TResult? Attempt<TResult>(
         string message,
         Func<TResult> behavior,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
     {
         return Attempt<Exception, TResult>(message, behavior, null, canceler);
@@ -272,8 +280,8 @@ public sealed partial class Limiter : ISyncLimiter
     public TResult? Attempt<TResult>(
         string message,
         Func<TResult> behavior,
-        Action resetState,
-        CancellationToken? canceler = null
+        Action? resetState,
+        CancellationToken canceler = default
     )
     {
         return Attempt<Exception, TResult>(message, behavior, resetState, canceler);
@@ -283,7 +291,7 @@ public sealed partial class Limiter : ISyncLimiter
     public TResult? Attempt<TError, TResult>(
         string message,
         Func<TResult> behavior,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -295,7 +303,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         Func<TResult> behavior,
         Action? resetState,
-        CancellationToken? canceler = null
+        CancellationToken canceler = default
     )
         where TError : Exception
     {
@@ -330,7 +338,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         TimeSpan elapsed,
         int tries,
-        CancellationToken? canceler
+        CancellationToken canceler
     )
     {
         if (tries < _tries && elapsed < _timeout)
@@ -356,7 +364,7 @@ public sealed partial class Limiter : ISyncLimiter
         string message,
         TimeSpan elapsed,
         int tries,
-        CancellationToken? canceler,
+        CancellationToken canceler,
         Exception? ex = null
     )
     {
@@ -378,17 +386,15 @@ public sealed partial class Limiter : ISyncLimiter
     /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="canceler">Token indicating behavior should be canceled.</param>
     /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
-    private void DelayOrCancel(string message, CancellationToken? canceler)
+    private void DelayOrCancel(string message, CancellationToken canceler)
     {
-        CancellationToken token = canceler ?? CancellationToken.None;
         if (_delay > TimeSpan.Zero)
         {
-            //Thread.Sleep(_delay);
-            _ = token.WaitHandle.WaitOne(_delay);
+            _ = canceler.WaitHandle.WaitOne(_delay);
         }
-        if (token.IsCancellationRequested)
+        if (canceler.IsCancellationRequested)
         {
-            Fault("Operation canceled via token", message);
+            CancelFault("Operation canceled via token", message);
         }
     }
 }

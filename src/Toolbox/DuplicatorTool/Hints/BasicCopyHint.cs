@@ -46,7 +46,7 @@ public sealed class BasicCopyHint : CopyHint
         if (
             type.IsPrimitive
             || type.IsEnum
-            || ValueRandom.ValueTypes.Contains(type)
+            || ValueRandom.SupportedTypes.Contains(type)
             || _SupportedTypes.Contains(type)
             || type.Inherits<IObjectReference>()
         )

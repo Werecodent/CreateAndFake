@@ -13,122 +13,6 @@ public static class LimiterAsyncTests
 
     private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
 
-    [Fact]
-    internal static async Task RepeatAsync_AtLeastOnce()
-    {
-        int attempts = 0;
-
-        await new Limiter(0).RepeatAsync(
-            null,
-            () => attempts++,
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(1);
-
-        await new Limiter(TimeSpan.MinValue).RepeatAsync(
-            "Message",
-            () => attempts++,
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(2);
-    }
-
-    [Fact]
-    internal static async Task StallUntilAsync_AtLeastOnce()
-    {
-        int attempts = 0;
-
-        await new Limiter(0)
-            .Assert(l =>
-                l.StallUntilAsync(
-                    "",
-                    () => attempts++,
-                    () => false,
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>();
-        attempts.Assert().Is(1);
-
-        await new Limiter(TimeSpan.MinValue)
-            .Assert(l =>
-                l.StallUntilAsync(
-                    "",
-                    () => attempts++,
-                    () => false,
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>();
-        attempts.Assert().Is(2);
-    }
-
-    [Theory, RandomData]
-    internal static async Task RetryAsync_AtLeastOnce(Exception exception)
-    {
-        int attempts = 0;
-
-        (
-            await new Limiter(0)
-                .Assert(l =>
-                    l.RetryAsync(
-                        "",
-                        () =>
-                        {
-                            attempts++;
-                            throw exception;
-                        },
-                        TestContext.Current.CancellationToken
-                    )
-                )
-                .Throws<TimeoutException>()
-        ).InnerException.Assert().Is(exception).Also(attempts).Is(1);
-
-        (
-            await new Limiter(TimeSpan.MinValue)
-                .Assert(l =>
-                    l.RetryAsync(
-                        "",
-                        () =>
-                        {
-                            attempts++;
-                            throw exception;
-                        },
-                        TestContext.Current.CancellationToken
-                    )
-                )
-                .Throws<TimeoutException>()
-        ).InnerException.Assert().Is(exception).Also(attempts).Is(2);
-    }
-
-    [Theory, RandomData]
-    internal static async Task AttemptAsync_AtLeastOnce(Exception exception)
-    {
-        int attempts = 0;
-
-        await new Limiter(0).AttemptAsync(
-            "",
-            () =>
-            {
-                attempts++;
-                throw exception;
-            },
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(1);
-
-        await new Limiter(TimeSpan.MinValue).AttemptAsync(
-            "",
-            () =>
-            {
-                attempts++;
-                throw exception;
-            },
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(2);
-    }
-
     [Theory, InlineData(1), InlineData(3)]
     internal static async Task RepeatAsync_TryLimited(int tries)
     {
@@ -354,15 +238,15 @@ public static class LimiterAsyncTests
         {
             await Limiter
                 .Few.Assert(l => l.RepeatAsync("", () => tokenSource.Cancel(), tokenSource.Token))
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         await Limiter
             .Few.Assert(l => l.RepeatAsync("Test", () => { }, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         await Limiter
             .Quick.Assert(l => l.RepeatAsync("", () => { }, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Fact]
@@ -379,15 +263,15 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         await Limiter
             .Few.Assert(l => l.StallUntilAsync("Test", () => false, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         await Limiter
             .Fast.Assert(l => l.StallUntilAsync("", () => false, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]
@@ -404,17 +288,17 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         await Limiter
             .Few.Assert(l =>
                 l.RetryAsync("Test", () => throw exception, new CancellationToken(true))
             )
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         await Limiter
             .Quick.Assert(l => l.RetryAsync("", () => throw exception, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]
@@ -431,19 +315,19 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         await Limiter
             .Few.Assert(l =>
                 l.AttemptAsync(null, () => throw exception, new CancellationToken(true))
             )
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         await Limiter
             .Quick.Assert(l =>
                 l.AttemptAsync("", () => throw exception, new CancellationToken(true))
             )
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
 #pragma warning restore AsyncFixer02
@@ -767,33 +651,6 @@ public static class LimiterAsyncTests
         {
             info.GetValue(null).Assert().IsNot(null);
         }
-    }
-
-    [Theory, RandomData]
-    internal static void Equality_MatchesValue(int tries, TimeSpan elapsed)
-    {
-        Limiter original = new(tries, elapsed);
-        Limiter dupe = new(tries, elapsed);
-        Limiter variant1 = new(tries.CreateVariant(), elapsed);
-        Limiter variant2 = new(tries, elapsed.CreateVariant());
-
-        true
-            .Assert()
-            .Is(original.Equals(original))
-            .And.Is(original.Equals(dupe))
-            .And.IsNot(original.Equals(variant1))
-            .And.IsNot(original.Equals(variant2))
-            .Also(original.GetHashCode())
-            .Is(original.GetHashCode())
-            .And.Is(dupe.GetHashCode())
-            .And.IsNot(variant1.GetHashCode())
-            .And.IsNot(variant2.GetHashCode());
-    }
-
-    [Theory, RandomData]
-    internal static void ToString_Readable(int tries, TimeSpan timeout, TimeSpan delay)
-    {
-        new Limiter(timeout, tries, delay).ToString().Assert().Is($"{tries}-{timeout}-{delay}");
     }
 }
 

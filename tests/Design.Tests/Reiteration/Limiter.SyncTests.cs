@@ -11,122 +11,6 @@ public static class LimiterSyncTests
 
     private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
 
-    [Fact]
-    internal static void Repeat_AtLeastOnce()
-    {
-        int attempts = 0;
-
-        new Limiter(0).Repeat(null, () => attempts++, TestContext.Current.CancellationToken);
-        attempts.Assert().Is(1);
-
-        new Limiter(TimeSpan.MinValue).Repeat(
-            "Message",
-            () => attempts++,
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(2);
-    }
-
-    [Fact]
-    internal static void StallUntil_AtLeastOnce()
-    {
-        int attempts = 0;
-
-        new Limiter(0)
-            .Assert(l =>
-                l.StallUntil(
-                    "",
-                    () => attempts++,
-                    () => false,
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>();
-        attempts.Assert().Is(1);
-
-        new Limiter(TimeSpan.MinValue)
-            .Assert(l =>
-                l.StallUntil(
-                    "",
-                    () => attempts++,
-                    () => false,
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>();
-        attempts.Assert().Is(2);
-    }
-
-    [Theory, RandomData]
-    internal static void Retry_AtLeastOnce(Exception exception)
-    {
-        int attempts = 0;
-
-        new Limiter(0)
-            .Assert(l =>
-                l.Retry(
-                    "",
-                    () =>
-                    {
-                        attempts++;
-                        throw exception;
-                    },
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>()
-            .InnerException.Assert()
-            .Is(exception)
-            .Also(attempts)
-            .Is(1);
-
-        new Limiter(TimeSpan.MinValue)
-            .Assert(l =>
-                l.Retry(
-                    "",
-                    () =>
-                    {
-                        attempts++;
-                        throw exception;
-                    },
-                    TestContext.Current.CancellationToken
-                )
-            )
-            .Throws<TimeoutException>()
-            .InnerException.Assert()
-            .Is(exception)
-            .Also(attempts)
-            .Is(2);
-    }
-
-    [Theory, RandomData]
-    internal static void Attempt_AtLeastOnce(Exception exception)
-    {
-        int attempts = 0;
-
-        new Limiter(0).Attempt(
-            "",
-            () =>
-            {
-                attempts++;
-                throw exception;
-            },
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(1);
-
-        new Limiter(TimeSpan.MinValue).Attempt(
-            "",
-            () =>
-            {
-                attempts++;
-                throw exception;
-            },
-            TestContext.Current.CancellationToken
-        );
-        attempts.Assert().Is(2);
-    }
-
     [Theory, InlineData(1), InlineData(3)]
     internal static void Repeat_TryLimited(int tries)
     {
@@ -340,15 +224,15 @@ public static class LimiterSyncTests
         {
             Limiter
                 .Few.Assert(l => l.Repeat("", () => tokenSource.Cancel(), tokenSource.Token))
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         Limiter
             .Few.Assert(l => l.Repeat("Test", () => { }, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         Limiter
             .Quick.Assert(l => l.Repeat("", () => { }, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Fact]
@@ -360,15 +244,15 @@ public static class LimiterSyncTests
                 .Few.Assert(l =>
                     l.StallUntil("", () => tokenSource.Cancel(), () => false, tokenSource.Token)
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         Limiter
             .Few.Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         Limiter
             .Fast.Assert(l => l.StallUntil("", () => false, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]
@@ -385,15 +269,15 @@ public static class LimiterSyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         Limiter
             .Few.Assert(l => l.Retry("Test", () => throw exception, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         Limiter
             .Quick.Assert(l => l.Retry("", () => throw exception, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]
@@ -410,15 +294,15 @@ public static class LimiterSyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<TimeoutException>();
+                .Throws<OperationCanceledException>();
         }
         Limiter
             .Few.Assert(l => l.Attempt(null, () => throw exception, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
 
         Limiter
             .Quick.Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)))
-            .Throws<TimeoutException>();
+            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]

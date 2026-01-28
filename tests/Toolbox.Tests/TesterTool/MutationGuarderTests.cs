@@ -109,7 +109,8 @@ public static class MutationGuarderTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<TimeoutException>()
+                .Throws<TimeoutException>(),
+            TestContext.Current.CancellationToken
         );
     }
 

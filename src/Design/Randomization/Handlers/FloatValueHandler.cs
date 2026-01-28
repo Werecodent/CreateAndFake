@@ -26,6 +26,10 @@ internal sealed class FloatValueHandler : ValueHandler<float>
     /// <inheritdoc/>
     protected override float Create(IRandom gen, float min, float max)
     {
-        return (float)(gen.NextPercent() * (max - min) + min);
+        float usefulMin = float.IsNegativeInfinity(min) ? float.MinValue : min;
+        float usefulMax = float.IsPositiveInfinity(max) ? float.MaxValue : max;
+
+        double percent = gen.NextPercent();
+        return (float)(usefulMax * percent + usefulMin * (1 - percent));
     }
 }

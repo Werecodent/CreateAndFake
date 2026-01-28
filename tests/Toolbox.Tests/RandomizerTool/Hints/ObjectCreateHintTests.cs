@@ -49,7 +49,8 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
                             {
                                 ObjectCreateAttempts = Limiter.Once,
                             }
-                        )
+                        ),
+                    TestContext.Current.CancellationToken
                 )
             )
             .Throws<ToolException>();

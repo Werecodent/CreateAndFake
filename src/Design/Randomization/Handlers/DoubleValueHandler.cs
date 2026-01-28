@@ -26,7 +26,11 @@ internal sealed class DoubleValueHandler : ValueHandler<double>
     /// <inheritdoc/>
     protected override double Create(IRandom gen, double min, double max)
     {
+        double usefulMin = double.IsNegativeInfinity(min) ? double.MinValue : min;
+        double usefulMax = double.IsPositiveInfinity(max) ? double.MaxValue : max;
+
         double percent = gen.NextPercent();
-        return max * percent + min * (1 - percent);
+        double result = usefulMax * percent + usefulMin * (1 - percent);
+        return result.CompareTo(min) > 0 ? result : min;
     }
 }

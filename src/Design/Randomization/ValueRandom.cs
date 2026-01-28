@@ -12,6 +12,8 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     /// <summary>Handlers for all the supported types.</summary>
     private static readonly IValueHandler[] _Handlers =
     [
+        new DateTimeValueHandler(),
+        new TimeSpanValueHandler(),
         new DecimalValueHandler(),
         new DoubleValueHandler(),
         new FloatValueHandler(),
@@ -32,7 +34,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         TypeSupporter.GroupBySupportedType(_Handlers);
 
     /// <summary>All supported value types.</summary>
-    public static IEnumerable<Type> ValueTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
+    public static IEnumerable<Type> SupportedTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
 
     /// <inheritdoc/>
     public bool OnlyValidValues { get; } = onlyValidValues;
@@ -59,7 +61,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     /// <inheritdoc/>
     public bool Supports([NotNullWhen(true)] Type? type)
     {
-        return (type != null) && ValueTypes.Contains(type);
+        return (type != null) && SupportedTypes.Contains(type);
     }
 
     /// <inheritdoc/>

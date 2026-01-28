@@ -1,7 +1,12 @@
 namespace CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for repetition.</summary>
-public interface ILimiter : IAsyncLimiter, ISyncLimiter, IEquatable<ILimiter>, IComparable<ILimiter>
+public interface ILimiter
+    : ITaskLimiter,
+        IAsyncLimiter,
+        ISyncLimiter,
+        IEquatable<ILimiter>,
+        IComparable<ILimiter>
 {
     /// <summary>Calculates how long the <see cref="ILimiter"/> constrains to.</summary>
     /// <returns>The calculated duration.</returns>
