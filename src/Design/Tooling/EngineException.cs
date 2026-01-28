@@ -3,8 +3,8 @@ using System.Runtime.Serialization;
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>
-///     <see cref="Exception"/> <see cref="Type"/> for fatal errors
-///     occurring within <see cref="CreateAndFake"/> tool engines.
+///     <see cref="Exception"/> <see cref="Type"/> for fatal errors occurring
+///     within a <see cref="CreateAndFake"/> <see cref="IToolEngine{T}"/>.
 /// </summary>
 [Serializable, KnownType(typeof(Exception))]
 public sealed class EngineException : Exception

@@ -2,7 +2,7 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Possible result from a tool hint.</summary>
+/// <summary>Execution result of a tool hint with potential data if successful.</summary>
 /// <typeparam name="T">Result <see cref="Type"/> for the hint.</typeparam>
 /// <param name="hasData"><inheritdoc cref="HasData" path="/summary"/></param>
 /// <param name="data"><inheritdoc cref="Data" path="/summary"/></param>

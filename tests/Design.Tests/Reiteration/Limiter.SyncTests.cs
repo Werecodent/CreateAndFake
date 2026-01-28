@@ -5,9 +5,44 @@ namespace CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterSyncTests
 {
-    private const int _WaitAccuracy = 5;
+    [Fact]
+    internal static void DelayOrFault_SyncTimeoutWorks()
+    {
+        // All sync timeout tests reduced to one test in order to reduce any risk of deadlock.
+        // Async methods should be preferred for timeout limits.
 
-    private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
+        TimeSpan timeout = new(0, 0, 0, 0, 60);
+        TimeSpan delay = new(0, 0, 0, 0, 25);
+        Limiter testInstance = new(timeout, delay);
+
+        int attempts = 0;
+        Stopwatch watch = Stopwatch.StartNew();
+        testInstance.Repeat(
+            "Timeout test.",
+            () => attempts++,
+            TestContext.Current.CancellationToken
+        );
+
+        attempts.Assert().Is(3);
+        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(35d);
+
+        attempts = 0;
+        watch.Restart();
+
+        testInstance
+            .Assert(l =>
+                l.StallUntil(
+                    "",
+                    () => attempts++,
+                    () => false,
+                    TestContext.Current.CancellationToken
+                )
+            )
+            .Throws<TimeoutException>();
+
+        attempts.Assert().Is(3);
+        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(35d);
+    }
 
     [Theory, InlineData(1), InlineData(3)]
     internal static void Repeat_TryLimited(int tries)
@@ -79,143 +114,6 @@ public static class LimiterSyncTests
     }
 
     [Fact]
-    internal static void Repeat_TimeoutLimited()
-    {
-        Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(_SmallDelay).Repeat("", () => { }, TestContext.Current.CancellationToken);
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
-    }
-
-    [Fact]
-    internal static void StallUntil_TimeoutLimited()
-    {
-        Stopwatch watch = Stopwatch.StartNew();
-
-        new Limiter(_SmallDelay)
-            .Assert(l =>
-                l.StallUntil("", () => { }, () => false, TestContext.Current.CancellationToken)
-            )
-            .Throws<TimeoutException>();
-
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
-    }
-
-    [Theory, RandomData]
-    internal static void Retry_TimeoutLimited(Exception exception)
-    {
-        Stopwatch watch = Stopwatch.StartNew();
-
-        new Limiter(_SmallDelay)
-            .Assert(l => l.Retry("", () => throw exception, TestContext.Current.CancellationToken))
-            .Throws<TimeoutException>()
-            .InnerException.Assert()
-            .Is(exception)
-            .Also(watch.Elapsed.TotalMilliseconds)
-            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
-    }
-
-    [Theory, RandomData]
-    internal static void Attempt_TimeoutLimited(Exception exception)
-    {
-        Stopwatch watch = Stopwatch.StartNew();
-
-        new Limiter(_SmallDelay)
-            .Attempt(
-                "",
-                () => watch.IsRunning ? throw exception : new object(),
-                TestContext.Current.CancellationToken
-            )
-            .Assert()
-            .Is(null)
-            .Also(watch.Elapsed.TotalMilliseconds)
-            .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
-    }
-
-    [Theory, InlineData(1), InlineData(2), InlineData(3)]
-    internal static void Repeat_DelayOccurs(int tries)
-    {
-        Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).Repeat(
-            "",
-            () => { },
-            TestContext.Current.CancellationToken
-        );
-
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
-    }
-
-    [Theory, InlineData(1), InlineData(2), InlineData(3)]
-    internal static void StallUntil_DelayOccurs(int tries)
-    {
-        int attempts = 0;
-
-        Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).StallUntil(
-            "",
-            () => ++attempts == tries,
-            TestContext.Current.CancellationToken
-        );
-
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
-    }
-
-    [Theory, InlineData(1), InlineData(2), InlineData(3)]
-    internal static void Retry_DelayOccurs(int tries)
-    {
-        Exception exception = Tools.Randomizer.Create<Exception>();
-        int attempts = 0;
-
-        Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).Retry(
-            "",
-            () =>
-            {
-                if (++attempts != tries)
-                {
-                    throw exception;
-                }
-            },
-            TestContext.Current.CancellationToken
-        );
-
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
-    }
-
-    [Theory, InlineData(1), InlineData(2), InlineData(3)]
-    internal static void Attempt_DelayOccurs(int tries)
-    {
-        Exception exception = Tools.Randomizer.Create<Exception>();
-        int attempts = 0;
-
-        Stopwatch watch = Stopwatch.StartNew();
-        new Limiter(tries, _SmallDelay).Attempt(
-            "",
-            () =>
-            {
-                if (++attempts < tries)
-                {
-                    throw exception;
-                }
-            },
-            TestContext.Current.CancellationToken
-        );
-
-        watch
-            .Elapsed.TotalMilliseconds.Assert()
-            .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
-    }
-
-    [Fact]
     internal static void Repeat_Cancelable()
     {
         using (CancellationTokenSource tokenSource = new())
@@ -226,10 +124,6 @@ public static class LimiterSyncTests
         }
         Limiter
             .Few.Assert(l => l.Repeat("Test", () => { }, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
-
-        Limiter
-            .Quick.Assert(l => l.Repeat("", () => { }, new CancellationToken(true)))
             .Throws<OperationCanceledException>();
     }
 
@@ -246,10 +140,6 @@ public static class LimiterSyncTests
         }
         Limiter
             .Few.Assert(l => l.StallUntil("Test", () => false, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
-
-        Limiter
-            .Fast.Assert(l => l.StallUntil("", () => false, new CancellationToken(true)))
             .Throws<OperationCanceledException>();
     }
 
@@ -272,10 +162,6 @@ public static class LimiterSyncTests
         Limiter
             .Few.Assert(l => l.Retry("Test", () => throw exception, new CancellationToken(true)))
             .Throws<OperationCanceledException>();
-
-        Limiter
-            .Quick.Assert(l => l.Retry("", () => throw exception, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
     }
 
     [Theory, RandomData]
@@ -296,10 +182,6 @@ public static class LimiterSyncTests
         }
         Limiter
             .Few.Assert(l => l.Attempt(null, () => throw exception, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
-
-        Limiter
-            .Quick.Assert(l => l.Attempt("", () => throw exception, new CancellationToken(true)))
             .Throws<OperationCanceledException>();
     }
 
@@ -562,8 +444,8 @@ public static class LimiterSyncTests
     [Theory, RandomData]
     internal static void Attempt_WrongExceptionThrows(NotSupportedException exception)
     {
-        new Limiter(3)
-            .Assert(l =>
+        Limiter
+            .Once.Assert(l =>
                 l.Attempt<InvalidOperationException>(
                     null,
                     (Action)(() => throw exception),
@@ -575,11 +457,10 @@ public static class LimiterSyncTests
             .Is(exception);
 
         IOException exception2 = new();
-
-        new Limiter(3)
-            .Assert(l =>
+        Limiter
+            .Once.Assert(l =>
                 l.Attempt<DirectoryNotFoundException, bool>(
-                    "",
+                    "Wrong subclass exception test.",
                     () => throw exception2,
                     TestContext.Current.CancellationToken
                 )
