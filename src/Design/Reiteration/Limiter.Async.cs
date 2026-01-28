@@ -328,7 +328,7 @@ public sealed partial class Limiter : IAsyncLimiter
         CancellationToken canceler
     )
     {
-        if (tries < _tries && elapsed < _timeout)
+        if (tries < _tries && elapsed + _delay < _timeout)
         {
             await DelayOrCancelAsync(message, canceler).ConfigureAwait(false);
             return true;
@@ -351,11 +351,11 @@ public sealed partial class Limiter : IAsyncLimiter
     {
         if (tries >= _tries)
         {
-            Fault($"Reached max Attempts of '{_tries}'", message, ex);
+            Fault($"Reached max attempts after '{elapsed}'", message, ex);
         }
-        else if (elapsed >= _timeout)
+        else if (elapsed + _delay >= _timeout)
         {
-            Fault($"Reached timeout of '{_timeout}'", message, ex);
+            Fault($"Reached timeout after '{elapsed}'", message, ex);
         }
         else
         {

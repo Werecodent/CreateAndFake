@@ -341,7 +341,7 @@ public sealed partial class Limiter : ISyncLimiter
         CancellationToken canceler
     )
     {
-        if (tries < _tries && elapsed < _timeout)
+        if (tries < _tries && elapsed + _delay < _timeout)
         {
             DelayOrCancel(message, canceler);
             return true;
@@ -370,11 +370,11 @@ public sealed partial class Limiter : ISyncLimiter
     {
         if (tries >= _tries)
         {
-            Fault($"Reached max tries of '{_tries}'", message, ex);
+            Fault($"Reached max attempts after '{elapsed}'", message, ex);
         }
-        else if (elapsed >= _timeout)
+        else if (elapsed + _delay >= _timeout)
         {
-            Fault($"Reached timeout of '{_timeout}'", message, ex);
+            Fault($"Reached timeout after '{elapsed}'", message, ex);
         }
         else
         {

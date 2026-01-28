@@ -4,8 +4,6 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
-#pragma warning disable xUnit1031 // Ensures blocking code works for library.
-
 public static class LimiterBaseTests
 {
     [Fact]
@@ -55,5 +53,3 @@ public static class LimiterBaseTests
         new Limiter(timeout, tries, delay).ToString().Assert().Is($"{tries}-{timeout}-{delay}");
     }
 }
-
-#pragma warning restore xUnit1031

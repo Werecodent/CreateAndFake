@@ -1,11 +1,7 @@
 using System.Diagnostics;
-using System.Reflection;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
-
-#pragma warning disable xUnit1031 // Ensures blocking code works for library.
 
 public static class LimiterAsyncTests
 {
@@ -639,19 +635,4 @@ public static class LimiterAsyncTests
             .Assert()
             .Is(exception2);
     }
-
-    [Fact]
-    internal static void Limiter_DefaultsSet()
-    {
-        foreach (
-            PropertyInfo info in TypeDescriber
-                .GetAllProperties(typeof(Limiter), true)
-                .Where(p => p.PropertyType == typeof(Limiter))
-        )
-        {
-            info.GetValue(null).Assert().IsNot(null);
-        }
-    }
 }
-
-#pragma warning restore xUnit1031

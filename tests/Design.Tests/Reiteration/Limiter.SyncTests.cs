@@ -3,8 +3,6 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
-#pragma warning disable xUnit1031 // Ensures blocking code works for library.
-
 public static class LimiterSyncTests
 {
     private const int _WaitAccuracy = 5;
@@ -591,5 +589,3 @@ public static class LimiterSyncTests
             .Is(exception2);
     }
 }
-
-#pragma warning restore xUnit1031

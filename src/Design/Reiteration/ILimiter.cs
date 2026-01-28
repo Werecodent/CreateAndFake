@@ -2,9 +2,9 @@ namespace CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for repetition.</summary>
 public interface ILimiter
-    : ITaskLimiter,
-        IAsyncLimiter,
+    : IAsyncLimiter,
         ISyncLimiter,
+        ITaskLimiter,
         IEquatable<ILimiter>,
         IComparable<ILimiter>
 {

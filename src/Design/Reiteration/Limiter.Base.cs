@@ -102,20 +102,12 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     public TimeSpan GetMaxDurationEstimate()
     {
         double duration = _delay.TotalMilliseconds + 1;
-        double totalTimeout = _timeout.TotalMilliseconds;
+        double timeTries = Math.Floor(_timeout.TotalMilliseconds / duration) + 1;
 
         double result;
-        if (totalTimeout / duration > _tries)
+        if (timeTries > _tries)
         {
-            double leftover = totalTimeout % duration;
-            if (leftover > 1)
-            {
-                result = totalTimeout + duration;
-            }
-            else
-            {
-                result = totalTimeout;
-            }
+            result = (timeTries - 1) * duration + 1;
         }
         else
         {
@@ -232,9 +224,11 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <param name="ex">Encountered exception causing the <see cref="TimeoutException"/>.</param>
     /// <exception cref="TimeoutException">With the error and message details.</exception>
     [DoesNotReturn]
-    private static void Fault(string error, string message, Exception? ex = null)
+    private void Fault(string error, string message, Exception? ex = null)
     {
-        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
+        string details =
+            $" with Limiter '{ToString()}'"
+            + (string.IsNullOrWhiteSpace(message) ? "." : $": {message}");
         if (ex != null)
         {
             throw new TimeoutException(error + details, ex);
@@ -251,9 +245,11 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <param name="ex">Encountered exception causing the <see cref="OperationCanceledException"/>.</param>
     /// <exception cref="OperationCanceledException">With the error and message details.</exception>
     [DoesNotReturn]
-    private static void CancelFault(string error, string message, Exception? ex = null)
+    private void CancelFault(string error, string message, Exception? ex = null)
     {
-        string details = string.IsNullOrWhiteSpace(message) ? "." : $": {message}";
+        string details =
+            $" with Limiter '{ToString()}'"
+            + (string.IsNullOrWhiteSpace(message) ? "." : $": {message}");
         if (ex != null)
         {
             throw new OperationCanceledException(error + details, ex);

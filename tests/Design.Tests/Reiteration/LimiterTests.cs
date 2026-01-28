@@ -7,7 +7,6 @@ public static class LimiterTests
 {
     private static readonly FrozenSet<Type> ignorableExceptions =
     [
-        typeof(ArgumentException),
         typeof(ArgumentOutOfRangeException),
         typeof(TimeoutException),
         typeof(FormatException),
@@ -23,12 +22,13 @@ public static class LimiterTests
         );
     }
 
-    /*[Fact]
+    [Fact]
     internal static Task Limiter_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation(
             Limiter.Few,
+            TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
-    }*/
+    }
 }
