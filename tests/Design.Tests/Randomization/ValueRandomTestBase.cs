@@ -117,19 +117,24 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
-    public void Supports_Float()
-    {
-        TestBasicSupport<float>(default);
-        TestNextRange(float.MinValue, float.MaxValue, float.BitIncrement, float.BitDecrement);
-        TestNextOverflow(float.MinValue / 2 - 1, float.MaxValue / 2 + 1);
-    }
-
-    [Fact]
     public void Supports_Double()
     {
         TestBasicSupport<double>(default);
-        TestNextRange(double.MinValue, double.MaxValue, double.BitIncrement, double.BitDecrement);
+        TestNextRange(double.MinValue, double.MaxValue, Math.BitIncrement, Math.BitDecrement);
         TestNextOverflow(double.MinValue / 2 - 1, double.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_Float()
+    {
+        TestBasicSupport<float>(default);
+        TestNextRange(
+            float.MinValue,
+            float.MaxValue,
+            v => (float)Math.BitIncrement(v),
+            v => (float)Math.BitDecrement(v)
+        );
+        TestNextOverflow(float.MinValue / 2 - 1, float.MaxValue / 2 + 1);
     }
 
     [Fact]

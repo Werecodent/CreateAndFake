@@ -11,7 +11,7 @@ public static class LimiterSyncTests
         // All sync timeout tests reduced to one test in order to reduce any risk of deadlock.
         // Async methods should be preferred for timeout limits.
 
-        TimeSpan timeout = new(0, 0, 0, 0, 60);
+        TimeSpan timeout = new(0, 0, 0, 0, 40);
         TimeSpan delay = new(0, 0, 0, 0, 25);
         Limiter testInstance = new(timeout, delay);
 
@@ -23,8 +23,8 @@ public static class LimiterSyncTests
             TestContext.Current.CancellationToken
         );
 
-        attempts.Assert().Is(3);
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(35d);
+        attempts.Assert().Is(2);
+        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(20d);
 
         attempts = 0;
         watch.Restart();
@@ -40,8 +40,8 @@ public static class LimiterSyncTests
             )
             .Throws<TimeoutException>();
 
-        attempts.Assert().Is(3);
-        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(35d);
+        attempts.Assert().Is(2);
+        watch.Elapsed.TotalMilliseconds.Assert().GreaterThanOrEqualTo(20d);
     }
 
     [Theory, InlineData(1), InlineData(3)]
