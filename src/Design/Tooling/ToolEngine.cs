@@ -10,7 +10,7 @@ public abstract class ToolEngine<THint>(IEnumerable<THint> defaultHints) : ITool
 {
     /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes =>
-        defaultHints.SelectMany(h => h.SupportedTypes);
+        defaultHints?.SelectMany(h => h.SupportedTypes) ?? [];
 
     /// <summary>Picks hints to use for the tool based upon chainer options.</summary>
     /// <typeparam name="TOptions">Test</typeparam>

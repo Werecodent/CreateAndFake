@@ -26,6 +26,7 @@ internal sealed class IntegralValueHandler<T>(short byteSize, Func<byte[], int, 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object min, object max)
     {
-        return (T)Math.Floor(gen.NextPercent() * (1.0 + (dynamic)max - (T)min) + (T)min);
+        T result = (T)Math.Floor(gen.NextPercent() * (1.0 + (dynamic)max - (T)min) + (T)min);
+        return result.CompareTo(min) > 0 ? result : min;
     }
 }
