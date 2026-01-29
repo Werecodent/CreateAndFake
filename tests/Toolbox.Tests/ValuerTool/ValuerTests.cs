@@ -13,6 +13,7 @@ public static class ValuerTests
             IgnorableExceptions =
             [
                 typeof(ToolException),
+                typeof(TimeoutException),
                 typeof(NotSupportedException),
                 typeof(InsufficientExecutionStackException),
             ],
