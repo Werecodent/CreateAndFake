@@ -37,8 +37,8 @@ public static class TypeSupporterTests
         TypeSupporter
             .GroupBySupportedType([item, item2])
             .Assert()
-            .Contains(KeyValuePair.Create(item.SupportedType, item))
-            .And.Contains(KeyValuePair.Create(item2.SupportedType, item2));
+            .Contains(new KeyValuePair<Type, ITypeSupporter>(item.SupportedType, item))
+            .And.Contains(new KeyValuePair<Type, ITypeSupporter>(item2.SupportedType, item2));
     }
 
     [Fact]
