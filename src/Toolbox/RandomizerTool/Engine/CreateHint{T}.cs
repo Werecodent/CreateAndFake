@@ -7,6 +7,9 @@ namespace CreateAndFake.RandomizerTool.Engine;
 public abstract class CreateHint<T> : CreateHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(T)];
+
+    /// <inheritdoc/>
     public sealed override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

@@ -79,14 +79,19 @@ public abstract class CompareHintTestBase<T>(
             object data = Tools.Randomizer.Create(type);
             try
             {
-                DifferenceHintResult result = TestInstance.TryCompare(data, data, CreateChainer());
+                DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+                    data,
+                    data,
+                    CreateChainer()
+                );
 
                 result
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                result
+                await result
                     .Data.Assert()
-                    .IsEmpty(
+                    .IsEmptyAsync(
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' found differences with same '{type.Name}' of '{data.GetType()}'."
                     );
             }
@@ -110,15 +115,19 @@ public abstract class CompareHintTestBase<T>(
                 one = Tools.Randomizer.Create(type);
                 two = Tools.Mutator.Variant(one.GetType(), one);
 
-                DifferenceHintResult result = TestInstance.TryCompare(one, two, CreateChainer());
+                DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+                    one,
+                    two,
+                    CreateChainer()
+                );
 
                 result
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                result
-                    .Data.ToArray()
-                    .Assert()
-                    .IsNotEmpty(
+                await result
+                    .Data.Assert()
+                    .IsNotEmptyAsync(
+                        TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' didn't find differences with two random '{type.Name}'."
                     );
             }
@@ -143,10 +152,10 @@ public abstract class CompareHintTestBase<T>(
                 two = Tools.Randomizer.Create(one.GetType());
 
                 await TestInstance
-                    .TryCompare(one, two, CreateChainer())
+                    .TryAsyncCompare(one, two, CreateChainer())
                     .Assert()
                     .IsAsync(
-                        DifferenceHintResult.None,
+                        DifferenceHintAsyncResult.None,
                         TestContext.Current.CancellationToken,
                         $"Hint '{typeof(T).Name}' should not support type '{type.Name}'."
                     );
@@ -212,12 +221,20 @@ public abstract class CompareHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 dataDiffer = Tools.Mutator.Variant(data);
 
-                HashCodeHintResult dataHash = TestInstance.TryGetHashCode(data, CreateChainer());
+                HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
+                    data,
+                    CreateChainer(),
+                    TestContext.Current.CancellationToken
+                );
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
                 await TestInstance
-                    .TryGetHashCode(dataDiffer, CreateChainer())
+                    .TryAsyncGetHashCode(
+                        dataDiffer,
+                        CreateChainer(),
+                        TestContext.Current.CancellationToken
+                    )
                     .Assert()
                     .IsNotAsync(
                         dataHash,

@@ -7,9 +7,9 @@ using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
-public sealed class CreatorCreateHintTests : CreateHintTestBase<CreatorCreateHint>
+public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHint>
 {
-    private static readonly CreatorCreateHint _TestInstance = new();
+    private static readonly HandlerCreateHint _TestInstance = new();
 
     private static readonly Type[] _ValidTypes =
     [
@@ -29,7 +29,7 @@ public sealed class CreatorCreateHintTests : CreateHintTestBase<CreatorCreateHin
 
     private static readonly Type[] _InvalidTypes = [typeof(object)];
 
-    public CreatorCreateHintTests()
+    public HandlerCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]

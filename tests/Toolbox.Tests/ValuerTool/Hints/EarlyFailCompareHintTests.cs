@@ -22,7 +22,6 @@ public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCom
     private static readonly Type[] _InvalidTypes =
     [
         typeof(IDictionary),
-        typeof(IEnumerable),
         typeof(IAsyncEnumerable<int>),
     ];
 

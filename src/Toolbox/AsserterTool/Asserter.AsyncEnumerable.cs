@@ -80,7 +80,14 @@ public partial class Asserter : IAsyncEnumerableAsserter
             );
         }
 
+        bool hasItems = false;
         await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            hasItems = true;
+            break;
+        }
+
+        if (!hasItems)
         {
             throw new AssertException(
                 "Expected collection with elements, but was empty.",

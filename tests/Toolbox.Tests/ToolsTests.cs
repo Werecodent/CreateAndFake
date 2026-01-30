@@ -1,17 +1,19 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Extensions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.RandomizerTool.Handlers;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
+using Microsoft.Extensions.Configuration;
 using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
@@ -34,6 +36,34 @@ public static class ToolsTests
             Assembly.GetExecutingAssembly(),
             TestContext.Current.CancellationToken
         );
+    }
+
+    [Fact]
+    internal static async Task Tools_AllSupportedTypesValid()
+    {
+        Type[] ignore =
+        [
+            typeof(IConfiguration),
+            typeof(IConfigurationSection),
+            typeof(CancellationToken),
+            typeof(AssemblyName),
+            typeof(StringBuilder),
+        ];
+
+        Dictionary<Type, Exception> failures = [];
+
+        foreach (Type type in Tools.Randomizer.SupportedTypes.Where(t => !ignore.Contains(t)))
+        {
+            try
+            {
+                await TestTrip(type);
+            }
+            catch (Exception e)
+            {
+                failures.Add(type, e.Unwrap());
+            }
+        }
+        failures.Assert().IsEmpty();
     }
 
     [Theory, RandomData]
@@ -74,7 +104,7 @@ public static class ToolsTests
             typeof(AnyGeneric),
             typeof(Injected<>),
             typeof(Behavior<>),
-            typeof(Creator<>),
+            typeof(FactoryCreateHandler<>),
             typeof(Copier<>),
             typeof(ToolSet),
             typeof(Tools),

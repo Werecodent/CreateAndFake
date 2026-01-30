@@ -1,9 +1,11 @@
-namespace CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.RandomizerTool.Engine;
 
-/// <inheritdoc cref="ICreator"/>
+namespace CreateAndFake.RandomizerTool.Handlers;
+
+/// <inheritdoc cref="ICreateHandler"/>
 /// <typeparam name="T"><inheritdoc cref="SupportedType" path="/summary"/></typeparam>
 /// <param name="factory">Behavior handling creation of the supported type.</param>
-internal sealed class Creator<T>(Func<IRandomizerChainer, T> factory) : ICreator
+internal sealed class FactoryCreateHandler<T>(Func<IRandomizerChainer, T> factory) : ICreateHandler
 {
     /// <inheritdoc/>
     public Type SupportedType { get; } = typeof(T);

@@ -22,7 +22,8 @@ public sealed class AsyncCollectionCreateHint : CreateHint
                 || (
                     type.FullName?.Contains(
                         $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItemsCancelable)}>"
-                    ) ?? false
+                    )
+                    ?? false
                 )
             )
         )

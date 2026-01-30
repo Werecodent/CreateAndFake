@@ -42,6 +42,31 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
             .ConfigureAwait(false);
         return ToChainer();
     }
+
+    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.IsNotEmptyAsync(Collection, canceler, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .IsNotEmptyAsync(Collection, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+        return ToChainer();
+    }
 }
 
 #pragma warning restore CA1068

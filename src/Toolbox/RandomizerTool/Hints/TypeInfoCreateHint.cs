@@ -3,6 +3,7 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
+using CreateAndFake.RandomizerTool.Handlers;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
@@ -32,12 +33,15 @@ public sealed class TypeInfoCreateHint : CreateHint
     ];
 
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly ICreator[] _Creators =
+    private static readonly ICreateHandler[] _Creators =
     [
-        new Creator(typeof(Type).GetType(), rand => rand.Options.Gen.NextItem(_PossibleTypes)),
-        new Creator<Type>(rand => rand.Options.Gen.NextItem(_PossibleTypes)),
-        new Creator<MemberInfo>(rand => rand.Create<MethodBase>()),
-        new Creator<MethodBase>(rand =>
+        new FactoryCreateHandler(
+            typeof(Type).GetType(),
+            rand => rand.Options.Gen.NextItem(_PossibleTypes)
+        ),
+        new FactoryCreateHandler<Type>(rand => rand.Options.Gen.NextItem(_PossibleTypes)),
+        new FactoryCreateHandler<MemberInfo>(rand => rand.Create<MethodBase>()),
+        new FactoryCreateHandler<MethodBase>(rand =>
             FindTypeInfo(
                 rand,
                 t =>
@@ -50,10 +54,10 @@ public sealed class TypeInfoCreateHint : CreateHint
                         .Where(m => m.IsPublic)
             )
         ),
-        new Creator<ConstructorInfo>(rand =>
+        new FactoryCreateHandler<ConstructorInfo>(rand =>
             FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
         ),
-        new Creator<MethodInfo>(rand =>
+        new FactoryCreateHandler<MethodInfo>(rand =>
             FindTypeInfo(
                 rand,
                 t =>
@@ -63,31 +67,37 @@ public sealed class TypeInfoCreateHint : CreateHint
                         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
             )
         ),
-        new Creator<PropertyInfo>(rand => FindTypeInfo(rand, t => t.GetProperties())),
-        new Creator<FieldInfo>(rand =>
+        new FactoryCreateHandler<PropertyInfo>(rand => FindTypeInfo(rand, t => t.GetProperties())),
+        new FactoryCreateHandler<FieldInfo>(rand =>
             FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
         ),
-        new Creator<ParameterInfo>(rand =>
+        new FactoryCreateHandler<ParameterInfo>(rand =>
             FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
         ),
-        new Creator(
+        new FactoryCreateHandler(
             typeof(string).GetConstructors()[0].GetType(),
             rand => rand.Create<ConstructorInfo>()
         ),
-        new Creator(typeof(string).GetMethods()[0].GetType(), rand => rand.Create<MethodInfo>()),
-        new Creator(
+        new FactoryCreateHandler(
+            typeof(string).GetMethods()[0].GetType(),
+            rand => rand.Create<MethodInfo>()
+        ),
+        new FactoryCreateHandler(
             typeof(string).GetProperties()[0].GetType(),
             rand => rand.Create<PropertyInfo>()
         ),
-        new Creator(typeof(string).GetFields()[0].GetType(), rand => rand.Create<FieldInfo>()),
-        new Creator(
+        new FactoryCreateHandler(
+            typeof(string).GetFields()[0].GetType(),
+            rand => rand.Create<FieldInfo>()
+        ),
+        new FactoryCreateHandler(
             typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
             rand => rand.Create<ParameterInfo>()
         ),
     ];
 
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly IDictionary<Type, ICreator> _CreatorsByType =
+    private static readonly IDictionary<Type, ICreateHandler> _CreatorsByType =
         TypeSupporter.GroupBySupportedType(_Creators);
 
     /// <inheritdoc/>
@@ -98,7 +108,7 @@ public sealed class TypeInfoCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        if (type != null && _CreatorsByType.TryGetValue(type, out ICreator? gen))
+        if (type != null && _CreatorsByType.TryGetValue(type, out ICreateHandler? gen))
         {
             return new(gen.CreateSupported(randomizer));
         }

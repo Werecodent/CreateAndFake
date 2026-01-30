@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
@@ -21,6 +22,7 @@ public sealed class CopierCopyHint : CopyHint
         new Copier<NumberFormatInfo>(
             (source, _) => source.IsReadOnly ? source : (NumberFormatInfo)source.Clone()
         ),
+        new Copier<StringBuilder>((source, _) => new StringBuilder(source.ToString())),
         new Copier<Uri>((source, _) => new Uri(source.OriginalString)),
         new Copier<Guid>((source, _) => new Guid(source.ToByteArray())),
         new Copier<WeakReference>(

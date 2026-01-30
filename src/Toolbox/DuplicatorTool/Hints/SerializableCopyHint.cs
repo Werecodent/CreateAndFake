@@ -55,6 +55,10 @@ public sealed class SerializableCopyHint : CopyHint
         {
             yield return typeof(Exception[]);
         }
+        if (source is Exception)
+        {
+            yield return typeof(string[]);
+        }
     }
 }
 

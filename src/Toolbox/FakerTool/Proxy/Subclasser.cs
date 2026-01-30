@@ -159,6 +159,42 @@ public static class Subclasser
                 )
             );
         }
+        else if (
+            parent
+                .GetMethods(
+                    BindingFlags.FlattenHierarchy
+                        | BindingFlags.Public
+                        | BindingFlags.NonPublic
+                        | BindingFlags.Static
+                )
+                .Any(m => m.IsAbstract)
+        )
+        {
+            return (
+                false,
+                new ArgumentException("Static virtual members not yet supported.", nameof(parent))
+            );
+        }
+        else if (parent.Namespace == "System.Numerics")
+        {
+            return (
+                false,
+                new ArgumentException(
+                    "Numerics private static virtual members not supported.",
+                    nameof(parent)
+                )
+            );
+        }
+        else if (parent == typeof(ObjectDisposedException))
+        {
+            return (
+                false,
+                new ArgumentException(
+                    $"{typeof(ObjectDisposedException)} not allowed.",
+                    nameof(parent)
+                )
+            );
+        }
         else
         {
             return (true, null);

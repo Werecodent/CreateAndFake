@@ -27,6 +27,8 @@ internal sealed class IntegralValueHandler<T>(short byteSize, Func<byte[], int, 
     public object CreateSupported(IRandom gen, object min, object max)
     {
         T result = (T)Math.Floor(gen.NextPercent() * (1.0 + (dynamic)max - (T)min) + (T)min);
+
+        // Algorithm can rarely produce an overflow in .NET 4.8.
         return result.CompareTo(min) > 0 ? result : min;
     }
 }
