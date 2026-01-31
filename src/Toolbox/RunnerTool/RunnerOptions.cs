@@ -13,7 +13,7 @@ namespace CreateAndFake.RunnerTool;
 /// <summary>Configuration for controlling run behavior.</summary>
 public sealed record RunnerOptions : IToolOptions
 {
-    /// <summary>Value generator used for base randomization.</summary>
+    /// <inheritdoc/>
     public required IRandom Gen { get; init; }
 
     /// <summary>Handles randomization.</summary>
@@ -50,7 +50,7 @@ public sealed record RunnerOptions : IToolOptions
 
     /// <summary>How long to wait for methods to complete.</summary>
     [ConfigurableOption]
-    public TimeSpan Timeout { get; init; } = new(0, 1, 0);
+    public TimeSpan Timeout { get; init; } = new(0, 0, 30);
 
     /// <summary>Values to inject into called methods.</summary>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];

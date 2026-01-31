@@ -9,7 +9,7 @@ namespace CreateAndFake.AsserterTool;
 /// <summary>Configuration for controlling assert behavior.</summary>
 public sealed record AsserterOptions : IToolOptions
 {
-    /// <summary>Core randomizer with a potential seed for logging.</summary>
+    /// <inheritdoc/>
     public required IRandom Gen { get; init; }
 
     /// <summary>Handles context extraction for comparisons.</summary>

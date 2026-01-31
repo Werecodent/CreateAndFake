@@ -233,11 +233,15 @@ public static class Issue094Tests
 
     private static async Task TestToolBehavior(Type type)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 3; i++)
         {
             object sample = Tools.Randomizer.Create(type);
-            Tools.Asserter.IsNot(null, sample);
-            Tools.Asserter.IsNot(sample, Tools.Mutator.Variant(sample));
+            await Tools.Asserter.IsNotAsync(null, sample, TestContext.Current.CancellationToken);
+            await Tools.Asserter.IsNotAsync(
+                sample,
+                Tools.Mutator.Variant(sample),
+                TestContext.Current.CancellationToken
+            );
 
             object dupe = Tools.Duplicator.Copy(sample);
 

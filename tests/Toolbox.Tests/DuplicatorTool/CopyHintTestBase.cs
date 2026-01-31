@@ -85,7 +85,8 @@ public abstract class CopyHintTestBase<T>(
                     new CopyHintResult(data),
                     result,
                     TestContext.Current.CancellationToken,
-                    "Hint '" + typeof(T).Name + "' failed to clone type '" + type.Name + "'."
+                    $"Hint '{typeof(T).Name}' failed to clone type "
+                        + $"'{type.Name}'. Actual type: '{data?.GetType()}'."
                 );
 
                 if (_copiesByRef || data is string)
@@ -94,11 +95,8 @@ public abstract class CopyHintTestBase<T>(
                         .Data.Assert()
                         .ReferenceEqual(
                             data,
-                            "Hint '"
-                                + typeof(T).Name
-                                + "' expected to copy value types by ref of type '"
-                                + type.Name
-                                + "'."
+                            $"Hint '{typeof(T).Name}' expected to copy value types by ref of "
+                                + $"type '{type.Name}'. Actual type '{data?.GetType()}'."
                         );
                 }
                 else
@@ -107,11 +105,8 @@ public abstract class CopyHintTestBase<T>(
                         .Data.Assert()
                         .ReferenceNotEqual(
                             data,
-                            "Hint '"
-                                + typeof(T).Name
-                                + "' copied by ref instead of a deep clone of type '"
-                                + type.Name
-                                + "'."
+                            $"Hint '{typeof(T).Name}' copied by ref instead of a deep clone of "
+                                + $"type '{type.Name}'. Actual type '{data?.GetType()}'."
                         );
                 }
             }

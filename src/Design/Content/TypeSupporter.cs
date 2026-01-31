@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Content;
 
@@ -54,6 +55,7 @@ public static class TypeSupporter
                 Type type in InheritanceTracker
                     .For(handler.SupportedType)
                     .InheritedTypes.Where(t => !t.IsGenericTypeDefinition)
+                    .Where(t => !t.Inherits<Delegate>() || t == handler.SupportedType)
             )
             {
                 if (results.TryGetValue(type, out IList<T>? values))

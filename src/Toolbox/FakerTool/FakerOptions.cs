@@ -8,7 +8,7 @@ namespace CreateAndFake.FakerTool;
 /// <summary>Configuration for controlling faking behavior.</summary>
 public sealed record FakerOptions : IToolOptions
 {
-    /// <summary>Value generator used for base randomization.</summary>
+    /// <inheritdoc/>
     public required IRandom Gen { get; init; }
 
     /// <summary>Handles comparisons.</summary>

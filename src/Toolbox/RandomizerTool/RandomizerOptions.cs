@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
@@ -12,9 +12,6 @@ namespace CreateAndFake.RandomizerTool;
 /// <summary>Configuration for controlling randomization behavior.</summary>
 public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, CreateHint>
 {
-    /// <summary>Value generator used for base randomization.</summary>
-    public required IRandom Gen { get; init; }
-
     /// <summary>Provides stubs.</summary>
     public required IFaker Faker { get; init; }
 
@@ -134,6 +131,8 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     /// <returns>The next size to use.</returns>
     private int NextSize(int setMin, int setMax)
     {
+        ArgumentGuard.ThrowIfNull(Gen);
+
         return Math.Max(0, (setMax < setMin) ? Gen.Next(setMax, setMin) : Gen.Next(setMin, setMax));
     }
 }

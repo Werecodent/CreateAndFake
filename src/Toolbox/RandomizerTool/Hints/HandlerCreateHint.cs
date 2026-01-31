@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Text;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool.Engine;
@@ -48,22 +47,13 @@ public sealed class HandlerCreateHint : CreateHint
         new FactoryCreateHandler<IConfigurationSection>(rand =>
             rand.Create<Fake<IConfigurationSection>>().Dummy
         ),
-        new FactoryCreateHandler<RandomizerOptions>(rand =>
-            rand.Options with
-            {
-                Gen = rand.Create<SeededRandom>(),
-                CollectionMinSize = rand.Options.Gen.Next(0, 1),
-                CollectionMaxSize = rand.Options.Gen.Next(0, 4),
-                StringMinSize = rand.Options.Gen.Next(0, 3),
-                StringMaxSize = rand.Options.Gen.Next(0, 9),
-            }
-        ),
         new FactoryCreateHandler<UriBuilder>(rand => new UriBuilder(
             rand.Create<bool>() ? "http" : "https",
             rand.Create<string>(),
             rand.Options.Gen.Next(-1, 65535)
         )),
         new StringCreateHandler(),
+        new ConfigurationSectionCreateHandler(),
     ];
 
     private static readonly IDictionary<Type, ICreateHandler[]> _CreatorsByType =
@@ -72,6 +62,7 @@ public sealed class HandlerCreateHint : CreateHint
                 .Concat(ValueCreateHandlers.Handlers)
                 .Concat(ExceptionCreateHandlers.Handlers)
                 .Concat(ReflectionCreateHandlers.Handlers)
+                .Concat(SelfCreateHandlers.Handlers)
         );
 
     /// <inheritdoc/>
@@ -85,7 +76,6 @@ public sealed class HandlerCreateHint : CreateHint
         if (
             type != null
             && type != typeof(object)
-            && type != typeof(ICloneable)
             && _CreatorsByType.TryGetValue(type, out ICreateHandler[]? creators)
         )
         {

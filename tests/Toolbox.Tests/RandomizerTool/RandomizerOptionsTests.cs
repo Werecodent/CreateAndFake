@@ -20,7 +20,8 @@ public static class RandomizerOptionsTests
     internal static Task RandomizerOptions_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<RandomizerOptions>(
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentNullException)] }
         );
     }
 

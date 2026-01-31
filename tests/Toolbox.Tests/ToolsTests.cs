@@ -218,7 +218,11 @@ public static class ToolsTests
                 }
             }
 
-            if (Tools.Faker.Supports(type) && !type.Inherits<IDisposable>())
+            if (
+                Tools.Faker.Supports(type)
+                && !type.Inherits<IDisposable>()
+                && !type.Inherits<IToolOptions>()
+            )
             {
                 Tools.Faker.Mock(type);
             }

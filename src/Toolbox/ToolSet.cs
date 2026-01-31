@@ -81,13 +81,18 @@ public sealed class ToolSet(
     private static ToolSet Create(int seed, IConfigurationSection? config)
     {
         IRandom gen = new SeededRandom(seed);
-        Valuer valuer = new(new ValuerOptions().WithConfig(config));
+        Valuer valuer = new(new ValuerOptions { Gen = gen }.WithConfig(config));
         Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer }.WithConfig(config));
         Randomizer randomizer = new(
             new RandomizerOptions { Gen = gen, Faker = faker }.WithConfig(config)
         );
         Extractor extractor = new(
-            new ExtractorOptions { Randomizer = randomizer, Valuer = valuer }.WithConfig(config)
+            new ExtractorOptions
+            {
+                Gen = gen,
+                Randomizer = randomizer,
+                Valuer = valuer,
+            }.WithConfig(config)
         );
         Mutator mutator = new(
             new MutatorOptions
@@ -107,7 +112,12 @@ public sealed class ToolSet(
             }.WithConfig(config)
         );
         Duplicator duplicator = new(
-            new DuplicatorOptions { Asserter = asserter, Extractor = extractor }.WithConfig(config)
+            new DuplicatorOptions
+            {
+                Gen = gen,
+                Asserter = asserter,
+                Extractor = extractor,
+            }.WithConfig(config)
         );
         Runner runner = new(
             new RunnerOptions

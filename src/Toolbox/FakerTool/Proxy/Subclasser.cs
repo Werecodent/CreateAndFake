@@ -159,6 +159,13 @@ public static class Subclasser
                 )
             );
         }
+        else if (parent.Inherits<Delegate>())
+        {
+            return (
+                false,
+                new ArgumentException($"Cannot subclass delegate '{parent}' type.", nameof(parent))
+            );
+        }
         else if (
             parent
                 .GetMethods(

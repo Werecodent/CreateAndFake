@@ -14,7 +14,7 @@ namespace CreateAndFake.TesterTool;
 /// <summary>Configuration for controlling automated testing behavior.</summary>
 public sealed record TesterOptions : IToolOptions
 {
-    /// <summary>Core value random handler.</summary>
+    /// <inheritdoc/>
     public required IRandom Gen { get; init; }
 
     /// <summary>Creates objects and populates them with random values.</summary>

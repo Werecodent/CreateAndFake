@@ -11,7 +11,7 @@ namespace CreateAndFake.MutatorTool;
 /// <summary>Configuration for controlling mutating behavior.</summary>
 public sealed record MutatorOptions : IToolOptions
 {
-    /// <summary>Value generator used for base randomization.</summary>
+    /// <inheritdoc/>
     public required IRandom Gen { get; init; }
 
     /// <summary>Handles randomization.</summary>

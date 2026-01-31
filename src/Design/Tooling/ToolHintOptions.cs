@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.Design.Tooling;
 
@@ -8,6 +9,9 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
     where TSelf : IToolHintOptions<TSelf, THint>
     where THint : IToolHint
 {
+    /// <inheritdoc/>
+    public required IRandom Gen { get; init; }
+
     /// <inheritdoc/>
     [ConfigurableOption]
     public int MaxHintRecursion { get; init; } = 20;

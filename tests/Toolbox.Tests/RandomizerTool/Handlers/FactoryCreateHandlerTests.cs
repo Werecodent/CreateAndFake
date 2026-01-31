@@ -1,6 +1,6 @@
 using CreateAndFake.RandomizerTool.Handlers;
 
-namespace CreateAndFake.Tests.RandomizerTool.Engine;
+namespace CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class FactoryCreateHandlerTests
 {
