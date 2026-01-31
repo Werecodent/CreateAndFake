@@ -20,6 +20,7 @@ public sealed class EndingExtractHint : ExtractHint
         typeof(Assembly),
         typeof(string),
         typeof(Type),
+        typeof(Lock),
     ]);
 
     /// <inheritdoc/>

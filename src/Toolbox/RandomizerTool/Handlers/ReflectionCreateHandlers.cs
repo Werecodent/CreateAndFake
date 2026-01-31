@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Reflection;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Handlers;
@@ -62,6 +63,14 @@ internal static class ReflectionCreateHandlers
             typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
             rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
         ),
+        new FactoryCreateHandler( // RuntimeAssembly
+            AppDomain.CurrentDomain.GetAssemblies()[0].GetType(),
+            rand =>
+                rand.Options.Gen.NextItem(
+                    AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic)
+                )
+        ),
+        new FactoryCreateHandler<AssemblyName>(rand => rand.Create<Assembly>().GetName()),
     ];
 
     /// <summary>Finds a random member info.</summary>

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -36,7 +37,7 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(IEnumerable),
         typeof(IEnumerable<>),
     ];

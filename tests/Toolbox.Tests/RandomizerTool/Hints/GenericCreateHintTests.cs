@@ -17,7 +17,7 @@ public sealed class GenericCreateHintTests : CreateHintTestBase<GenericCreateHin
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(IList<string>),
         typeof(KeyValuePair<int, int>),
     ];

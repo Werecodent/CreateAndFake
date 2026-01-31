@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using CreateAndFake.DuplicatorTool.Hints;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -17,7 +18,7 @@ public sealed class CollectionCopyHintTests : CopyHintTestBase<CollectionCopyHin
         typeof(Array),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public CollectionCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

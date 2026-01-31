@@ -3,6 +3,7 @@ using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.RandomizerTool.Hints;
@@ -19,6 +20,7 @@ internal static class SelfCreateHandlers
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
+        new FactoryCreateHandler<IFaked>(rand => (IFaked)rand.Options.Faker.Stub<object>().Dummy),
         new FactoryCreateHandler<ToolSet>(rand =>
             ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>())
         ),

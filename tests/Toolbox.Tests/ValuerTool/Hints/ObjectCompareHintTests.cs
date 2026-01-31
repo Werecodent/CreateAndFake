@@ -8,12 +8,7 @@ public sealed class ObjectCompareHintTests : CompareHintTestBase<ObjectCompareHi
 {
     private static readonly ObjectCompareHint _TestInstance = new(true);
 
-    private static readonly Type[] _ValidTypes =
-    [
-        typeof(object),
-        typeof(DataHolderSample),
-        typeof(FieldSample),
-    ];
+    private static readonly Type[] _ValidTypes = [typeof(DataHolderSample), typeof(FieldSample)];
 
     private static readonly Type[] _InvalidTypes = Type.EmptyTypes;
 

@@ -24,7 +24,7 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     {
         FastRandom random = new(false);
 
-        Limiter.Myriad.StallUntil(
+        new Limiter(20000).StallUntil(
             "Trying to create bad double.",
             () => _BadDoubles.Contains(random.Next<double>()),
             TestContext.Current.CancellationToken

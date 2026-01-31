@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -15,7 +16,7 @@ public sealed class LegacyCollectionCreateHintTests : CreateHintTestBase<LegacyC
         typeof(IDictionary),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public LegacyCollectionCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

@@ -1,13 +1,19 @@
 ﻿using System.Runtime.Serialization;
 using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
 public sealed class SerializableCopyHintTests : CopyHintTestBase<SerializableCopyHint>
 {
-    private static readonly Type[] _ValidTypes = [typeof(Exception), typeof(AggregateException)];
+    private static readonly Type[] _ValidTypes =
+    [
+        typeof(Exception),
+        typeof(AggregateException),
+        typeof(IOException),
+    ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public SerializableCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

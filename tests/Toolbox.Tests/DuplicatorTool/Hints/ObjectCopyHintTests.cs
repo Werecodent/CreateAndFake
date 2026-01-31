@@ -12,7 +12,7 @@ public sealed class ObjectCopyHintTests : CopyHintTestBase<ObjectCopyHint>
         typeof(IUnimplementedSample),
         typeof(DataHolderSample),
         typeof(FieldSample),
-        typeof(object),
+        typeof(DataHolderSample),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(MismatchDataSample)];

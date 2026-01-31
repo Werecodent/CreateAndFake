@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
@@ -90,6 +91,6 @@ public static class DuplicatorTests
             .Assert(d => d.Copy(instance))
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(instance.GetType().Name);
+            .Contains(TypeDescriber.ExpandedName(instance.GetType()));
     }
 }

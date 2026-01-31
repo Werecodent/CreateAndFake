@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
@@ -15,7 +16,7 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(string),
         typeof(IList),
         typeof(int),

@@ -4,6 +4,7 @@ using System.Text;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -27,7 +28,7 @@ public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHin
         typeof(RandomizerOptions),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public HandlerCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Frozen;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
@@ -10,7 +11,7 @@ public sealed class FallbackCompareHintTests : CompareHintTestBase<FallbackCompa
 
     private static readonly Type[] _ValidTypes = [];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
     public FallbackCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

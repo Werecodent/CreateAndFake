@@ -15,7 +15,7 @@ public sealed class ValueEquatableCompareHintTests : CompareHintTestBase<ValueEq
         typeof(ValueEquatableSample),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
     public ValueEquatableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

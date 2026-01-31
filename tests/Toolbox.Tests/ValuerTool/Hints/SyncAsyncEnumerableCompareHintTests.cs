@@ -1,5 +1,6 @@
 using System.Collections;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -12,7 +13,7 @@ public sealed class SyncAsyncEnumerableCompareHintTests
 
     private static readonly Type[] _ValidTypes = [];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(DataHolderSample)];
 
     public SyncAsyncEnumerableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

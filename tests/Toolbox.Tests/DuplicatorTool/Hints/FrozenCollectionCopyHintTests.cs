@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -11,7 +12,7 @@ public sealed class FrozenCollectionCopyHintTests : CopyHintTestBase<FrozenColle
         typeof(FrozenDictionary<string, int>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public FrozenCollectionCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

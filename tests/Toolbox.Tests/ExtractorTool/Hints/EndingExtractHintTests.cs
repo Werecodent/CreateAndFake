@@ -1,4 +1,5 @@
 using CreateAndFake.ExtractorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.ExtractorTool.Hints;
 
@@ -8,7 +9,7 @@ public sealed class EndingExtractHintTests : ExtractHintTestBase<EndingExtractHi
 
     private static readonly Type[] _ValidTypes = [typeof(int), typeof(string), typeof(Type)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public EndingExtractHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

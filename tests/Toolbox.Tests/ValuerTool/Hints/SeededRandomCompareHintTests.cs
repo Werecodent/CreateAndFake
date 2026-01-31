@@ -1,4 +1,5 @@
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -10,7 +11,7 @@ public sealed class SeededRandomCompareHintTests : CompareHintTestBase<SeededRan
 
     private static readonly Type[] _ValidTypes = [typeof(SeededRandom)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(FastRandom), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(FastRandom), typeof(DataHolderSample)];
 
     public SeededRandomCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

@@ -2,6 +2,7 @@
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -59,7 +60,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Action),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public DelegateCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

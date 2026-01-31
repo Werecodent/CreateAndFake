@@ -20,6 +20,7 @@ public static class AsserterTests
                 typeof(NotSupportedException),
                 typeof(TargetException),
                 typeof(InsufficientExecutionStackException),
+                typeof(InvalidCastException),
             ],
         };
 

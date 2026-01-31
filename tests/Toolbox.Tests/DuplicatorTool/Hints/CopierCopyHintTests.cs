@@ -1,5 +1,6 @@
 ﻿using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -9,11 +10,12 @@ public sealed class CopierCopyHintTests : CopyHintTestBase<CopierCopyHint>
     [
         typeof(Guid),
         typeof(IntPtr),
+        typeof(UIntPtr),
         typeof(TimeSpan),
         typeof(Uri),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public CopierCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

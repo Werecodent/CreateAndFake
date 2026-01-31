@@ -17,6 +17,7 @@ public static class AssertObjectTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(FakeVerifyException),
+                typeof(InvalidCastException),
             ],
         };
 

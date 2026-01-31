@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -15,7 +16,7 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
         typeof(List<KeyValuePair<int, int>>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(int)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample), typeof(int)];
 
     public EnumerableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

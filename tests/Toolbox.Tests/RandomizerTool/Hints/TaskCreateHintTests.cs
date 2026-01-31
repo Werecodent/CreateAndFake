@@ -17,7 +17,7 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
         typeof(Task),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public TaskCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

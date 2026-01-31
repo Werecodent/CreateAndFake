@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -14,7 +15,7 @@ public sealed class ValuerAsyncComparableCompareHintTests
     [ //typeof(IValuerAsyncComparable)
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
     public ValuerAsyncComparableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

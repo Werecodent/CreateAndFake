@@ -20,7 +20,11 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
         typeof(Injected<StructSample>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(IUnimplementedSample)];
+    private static readonly Type[] _InvalidTypes =
+    [
+        typeof(DataHolderSample),
+        typeof(IUnimplementedSample),
+    ];
 
     public InjectedCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

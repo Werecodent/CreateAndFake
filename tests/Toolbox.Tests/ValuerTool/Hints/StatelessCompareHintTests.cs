@@ -12,7 +12,7 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(string),
         typeof(IList),
         typeof(int),

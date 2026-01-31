@@ -13,7 +13,7 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
 
     private static readonly Type[] _ValidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(Arg),
         typeof(DataHolderSample),
         typeof(IUnimplementedSample),

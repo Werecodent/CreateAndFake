@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -12,7 +13,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         typeof(IAsyncEnumerable<object>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object), typeof(IEnumerable)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample), typeof(IEnumerable)];
 
     public AsyncCollectionCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

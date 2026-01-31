@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -8,7 +9,7 @@ public sealed class TypeInfoCopyHintTests : CopyHintTestBase<TypeInfoCopyHint>
 {
     private static readonly Type[] _ValidTypes = [];
 
-    private static readonly Type[] _InvalidTypes = [typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public TypeInfoCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

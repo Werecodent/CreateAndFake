@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Frozen;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -26,7 +27,7 @@ public sealed class FrozenCollectionCreateHintTests : CreateHintTestBase<FrozenC
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(IEnumerable),
         typeof(IEnumerable<>),
     ];

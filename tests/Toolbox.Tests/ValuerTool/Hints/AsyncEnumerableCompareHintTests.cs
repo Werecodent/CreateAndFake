@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
@@ -16,7 +17,7 @@ public sealed class AsyncEnumerableCompareHintTests
         // typeof(IAsyncEnumerable<object>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(DataHolderSample)];
 
     public AsyncEnumerableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

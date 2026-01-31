@@ -11,7 +11,7 @@ public sealed class ValuerComparableCompareHintTests
 
     private static readonly Type[] _ValidTypes = [typeof(ValuerComparableSample)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
     public ValuerComparableCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

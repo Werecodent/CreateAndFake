@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -33,7 +34,7 @@ public sealed class ImmutableCollectionCreateHintTests
 
     private static readonly Type[] _InvalidTypes =
     [
-        typeof(object),
+        typeof(DataHolderSample),
         typeof(IEnumerable),
         typeof(IEnumerable<>),
     ];

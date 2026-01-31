@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Specialized;
+using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
@@ -11,7 +12,7 @@ public sealed class StringDictionaryCompareHintTests
 
     private static readonly Type[] _ValidTypes = [typeof(StringDictionary)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(object)];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
     public StringDictionaryCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
