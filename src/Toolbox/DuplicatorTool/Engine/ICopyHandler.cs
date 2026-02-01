@@ -3,7 +3,7 @@ using CreateAndFake.Design.Content;
 namespace CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Handles cloning of a specific type.</summary>
-internal interface ICopier : ITypeSupporter
+internal interface ICopyHandler : ITypeSupporter
 {
     /// <summary>Copies an instance of the specific type.</summary>
     /// <param name="source">Object to clone.</param>

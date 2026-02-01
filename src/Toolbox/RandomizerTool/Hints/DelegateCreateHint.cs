@@ -12,6 +12,45 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing <see cref="Delegate"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class DelegateCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes =>
+        [
+            typeof(Action),
+            typeof(Action<>),
+            typeof(Action<,>),
+            typeof(Action<,,>),
+            typeof(Action<,,,>),
+            typeof(Action<,,,,>),
+            typeof(Action<,,,,,>),
+            typeof(Action<,,,,,,>),
+            typeof(Action<,,,,,,,>),
+            typeof(Action<,,,,,,,,>),
+            typeof(Action<,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,,,,,>),
+            typeof(Action<,,,,,,,,,,,,,,,>),
+            typeof(Func<>),
+            typeof(Func<,>),
+            typeof(Func<,,>),
+            typeof(Func<,,,>),
+            typeof(Func<,,,,>),
+            typeof(Func<,,,,,>),
+            typeof(Func<,,,,,,>),
+            typeof(Func<,,,,,,,>),
+            typeof(Func<,,,,,,,,>),
+            typeof(Func<,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,,,,,>),
+            typeof(Func<,,,,,,,,,,,,,,,,>),
+        ];
+
     /// <summary>Methods used to match delegates.</summary>
     private static readonly ImmutableArray<MethodInfo> _Delegators =
     [

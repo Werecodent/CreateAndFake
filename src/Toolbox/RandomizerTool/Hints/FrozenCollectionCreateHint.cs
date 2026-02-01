@@ -21,6 +21,10 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         .Single(m => m.GetParameters().Length == 2);
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes =>
+        [typeof(FrozenSet<>), typeof(FrozenDictionary<,>)];
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         Type? asGeneric = TypeDescriber.AsGenericBase(type);

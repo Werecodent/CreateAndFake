@@ -55,9 +55,13 @@ internal static class ReflectionCreateHandlers
             typeof(string).GetProperties()[0].GetType(),
             rand => FindTypeInfo(rand, t => t.GetProperties())
         ),
-        new FactoryCreateHandler( // RuntimeFieldInfo
+        new FactoryCreateHandler( // RtFieldInfo
             typeof(string).GetFields()[0].GetType(),
             rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
+        ),
+        new FactoryCreateHandler( // MdFieldInfo
+            typeof(int).GetFields()[0].GetType(),
+            rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic && f.IsStatic))
         ),
         new FactoryCreateHandler( // RuntimeParameterInfo
             typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),

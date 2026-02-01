@@ -18,11 +18,11 @@ public sealed class HandlerCreateHint : CreateHint
     private static readonly IDictionary<Type, ICreateHandler[]> _CreatorsByType =
         TypeSupporter.GroupByInheritance(
             _Creators
+                .Concat(SelfCreateHandlers.Handlers)
                 .Concat(ValueCreateHandlers.Handlers)
+                .Concat(SystemCreateHandlers.Handlers)
                 .Concat(ExceptionCreateHandlers.Handlers)
                 .Concat(ReflectionCreateHandlers.Handlers)
-                .Concat(SelfCreateHandlers.Handlers)
-                .Concat(SystemCreateHandlers.Handlers)
         );
 
     /// <inheritdoc/>

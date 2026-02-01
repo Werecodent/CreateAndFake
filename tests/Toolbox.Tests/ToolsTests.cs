@@ -4,7 +4,7 @@ using System.Text;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Extensions;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool.Engine;
+using CreateAndFake.DuplicatorTool.Handlers;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Handlers;
 using CreateAndFake.RunnerTool;
@@ -105,7 +105,7 @@ public static class ToolsTests
             typeof(Injected<>),
             typeof(Behavior<>),
             typeof(FactoryCreateHandler<>),
-            typeof(Copier<>),
+            typeof(FactoryCopyHandler<>),
             typeof(ToolSet),
             typeof(Tools),
             typeof(BaseGuarder),

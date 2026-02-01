@@ -15,7 +15,7 @@ public sealed class SerializableCopyHint : CopyHint
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 
-        if (source is ISerializable) // && HasSerializationConstructor(source))
+        if (source is ISerializable) // && source.GetType().IsSerializable) // && HasSerializationConstructor(source))
         {
             IContentMap contents = duplicator.Options.Extractor.Extract(source);
 
@@ -70,10 +70,7 @@ public sealed class SerializableCopyHint : CopyHint
         {
             yield return typeof(Exception[]);
         }
-        if (source is Exception)
-        {
-            yield return typeof(string[]);
-        }
+        yield return typeof(string[]);
     }
 }
 

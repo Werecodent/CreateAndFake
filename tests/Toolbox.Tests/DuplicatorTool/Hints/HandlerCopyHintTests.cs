@@ -4,7 +4,7 @@ using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
-public sealed class CopierCopyHintTests : CopyHintTestBase<CopierCopyHint>
+public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
 {
     private static readonly Type[] _ValidTypes =
     [
@@ -17,7 +17,7 @@ public sealed class CopierCopyHintTests : CopyHintTestBase<CopierCopyHint>
 
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
-    public CopierCopyHintTests()
+    public HandlerCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
@@ -25,7 +25,7 @@ public sealed class CopierCopyHintTests : CopyHintTestBase<CopierCopyHint>
     {
         WeakReference original = new(data);
 
-        CopyHintResult result = new CopierCopyHint().TryCopy(original, CreateChainer());
+        CopyHintResult result = new HandlerCopyHint().TryCopy(original, CreateChainer());
 
         result.HasData.Assert().Is(true);
         result.Data.Assert().Is(original);

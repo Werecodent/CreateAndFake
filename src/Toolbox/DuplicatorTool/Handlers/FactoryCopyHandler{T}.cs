@@ -1,9 +1,11 @@
-namespace CreateAndFake.DuplicatorTool.Engine;
+using CreateAndFake.DuplicatorTool.Engine;
 
-/// <inheritdoc cref="ICopier"/>
+namespace CreateAndFake.DuplicatorTool.Handlers;
+
+/// <inheritdoc cref="ICopyHandler"/>
 /// <typeparam name="T"><inheritdoc cref="SupportedType" path="/summary"/></typeparam>
 /// <param name="factory">Behavior handling creation of the supported type.</param>
-internal sealed class Copier<T>(Func<T, IDuplicatorChainer, T> factory) : ICopier
+internal sealed class FactoryCopyHandler<T>(Func<T, IDuplicatorChainer, T> factory) : ICopyHandler
 {
     /// <inheritdoc/>
     public Type SupportedType { get; } = typeof(T);

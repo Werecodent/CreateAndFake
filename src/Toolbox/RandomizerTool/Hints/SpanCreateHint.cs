@@ -7,6 +7,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class SpanCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(Span<>), typeof(ReadOnlySpan<>)];
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

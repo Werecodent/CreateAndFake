@@ -3,34 +3,37 @@ using System.Text;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
+using CreateAndFake.DuplicatorTool.Handlers;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning common types for <see cref="IDuplicator"/> .</summary>
-public sealed class CopierCopyHint : CopyHint
+public sealed class HandlerCopyHint : CopyHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly ICopier[] _Copiers =
+    private static readonly ICopyHandler[] _Copiers =
     [
-        new Copier<TimeSpan>((source, copier) => new TimeSpan(copier.Copy(source.Ticks))),
-        new Copier<CultureInfo>(
+        new FactoryCopyHandler<TimeSpan>(
+            (source, copier) => new TimeSpan(copier.Copy(source.Ticks))
+        ),
+        new FactoryCopyHandler<CultureInfo>(
             (source, _) => source.IsReadOnly ? source : (CultureInfo)source.Clone()
         ),
-        new Copier<DateTimeFormatInfo>(
+        new FactoryCopyHandler<DateTimeFormatInfo>(
             (source, _) => source.IsReadOnly ? source : (DateTimeFormatInfo)source.Clone()
         ),
-        new Copier<NumberFormatInfo>(
+        new FactoryCopyHandler<NumberFormatInfo>(
             (source, _) => source.IsReadOnly ? source : (NumberFormatInfo)source.Clone()
         ),
-        new Copier<StringBuilder>((source, _) => new StringBuilder(source.ToString())),
-        new Copier<Uri>((source, _) => new Uri(source.OriginalString)),
-        new Copier<Guid>((source, _) => new Guid(source.ToByteArray())),
-        new Copier<WeakReference>(
+        new FactoryCopyHandler<StringBuilder>((source, _) => new StringBuilder(source.ToString())),
+        new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
+        new FactoryCopyHandler<Guid>((source, _) => new Guid(source.ToByteArray())),
+        new FactoryCopyHandler<WeakReference>(
             (source, _) => new WeakReference(source.Target, source.TrackResurrection)
         ),
-        new Copier<UIntPtr>((source, _) => new UIntPtr((uint)source)),
-        new Copier<IntPtr>((source, _) => new IntPtr((int)source)),
-        new Copier<CancellationTokenSource>(
+        new FactoryCopyHandler<UIntPtr>((source, _) => new UIntPtr((uint)source)),
+        new FactoryCopyHandler<IntPtr>((source, _) => new IntPtr((int)source)),
+        new FactoryCopyHandler<CancellationTokenSource>(
             (source, _) =>
             {
 #pragma warning disable S2930 // Must be GC when the resulting token is expired.
@@ -45,15 +48,18 @@ public sealed class CopierCopyHint : CopyHint
         ),
     ];
 
-    private static readonly IDictionary<Type, ICopier> _CopiersByType =
-        TypeSupporter.GroupBySupportedType(_Copiers);
+    private static readonly IDictionary<Type, ICopyHandler> _CopiersByType =
+        TypeSupporter.GroupBySupportedType(_Copiers.Concat(ReflectionCopyHandlers.Handlers));
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 
-        if (source != null && _CopiersByType.TryGetValue(source.GetType(), out ICopier? copier))
+        if (
+            source != null
+            && _CopiersByType.TryGetValue(source.GetType(), out ICopyHandler? copier)
+        )
         {
             return new(copier.CopySupported(source, duplicator));
         }

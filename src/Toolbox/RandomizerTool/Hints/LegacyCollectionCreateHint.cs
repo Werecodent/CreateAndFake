@@ -49,6 +49,9 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         _Creators.Select(i => i.Item1).ToFrozenSet();
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => PotentialCollections;
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

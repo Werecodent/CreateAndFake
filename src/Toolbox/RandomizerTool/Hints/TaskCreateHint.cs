@@ -7,6 +7,10 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class TaskCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes =>
+        [typeof(Task), typeof(TaskCompletionSource<>)];
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

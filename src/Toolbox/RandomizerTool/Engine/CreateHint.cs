@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Engine;
 public abstract class CreateHint : IToolHint
 {
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+    public abstract IEnumerable<Type> SupportedTypes { get; }
 
     /// <summary>Tries to create a random instance of the given <paramref name="type"/>.</summary>
     /// <param name="type"><see cref="Type"/> to generate.</param>

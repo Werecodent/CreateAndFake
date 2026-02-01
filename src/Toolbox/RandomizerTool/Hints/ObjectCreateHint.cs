@@ -21,6 +21,9 @@ public sealed class ObjectCreateHint : CreateHint
     };
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(object)];
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

@@ -27,6 +27,9 @@ public sealed class CollectionCreateHint : CreateHint
         typeof(ConcurrentDictionary<,>),
     ];
 
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => PotentialCollections;
+
     /// <summary>Collections that the hint can create.</summary>
     internal static IEnumerable<Type> PotentialCollections { get; } =
         _Collections.Select(i => i).ToFrozenSet();

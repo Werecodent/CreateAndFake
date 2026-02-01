@@ -11,6 +11,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class AsyncCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(IAsyncEnumerable<>)];
+
+    /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
