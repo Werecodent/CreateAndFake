@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
@@ -33,8 +34,9 @@ public sealed class DuplicatorEngine(IEnumerable<CopyHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{source.GetType().FullName}' not supported by the duplicator. "
-                    + "Create a hint to generate the type and pass it to the duplicator."
+                $"Type '{TypeDescriber.ExpandedName(source.GetType())}' "
+                    + "not supported by the duplicator. Create a hint to "
+                    + "generate the type and pass it to the duplicator."
             );
         }
     }

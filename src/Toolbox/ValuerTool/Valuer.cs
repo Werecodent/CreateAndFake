@@ -20,6 +20,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new SyncAsyncEnumerableCompareHint(),
         new EarlyFailCompareHint(),
         new FallbackCompareHint(),
+        new HandlerCompareHint(),
         new FakedCompareHint(),
         new AssemblyNameCompareHint(),
         new ValueEquatableCompareHint(),

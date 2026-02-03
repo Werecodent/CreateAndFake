@@ -31,8 +31,8 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{expected?.GetType().FullName}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
+                $"Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by the "
+                    + "valuer. Create a hint to generate the type and pass it to the valuer."
             );
         }
     }
@@ -62,8 +62,8 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{expected?.GetType().FullName}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
+                $"Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by the "
+                    + "valuer. Create a hint to generate the type and pass it to the valuer."
             );
         }
     }
@@ -84,8 +84,8 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{item?.GetType().FullName}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
+                $"Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer."
+                    + " Create a hint to generate the type and pass it to the valuer."
             );
         }
     }
@@ -110,7 +110,7 @@ public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{item?.GetType().FullName}' not supported by the valuer. "
+                $"Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }

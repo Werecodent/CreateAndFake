@@ -124,4 +124,17 @@ public interface ITester : ITool<TesterOptions>
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
+
+    /// <summary>Validates the state of the <c>CreateAndFake</c> framework as configured.</summary>
+    /// <param name="tools">Tools being used. Likely <see cref="ToolSet.DefaultSet"/>.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
+    /// </param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    Task VerifyToolSetIntegrity(
+        ToolSet tools,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 }

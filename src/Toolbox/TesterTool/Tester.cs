@@ -2,6 +2,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.RunnerTool.Attributes;
@@ -316,6 +317,92 @@ public class Tester(TesterOptions options) : ITester
             {
                 await Disposer.CleanupAsync(data?.Args).ConfigureAwait(false);
             }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task VerifyToolSetIntegrity(
+        ToolSet tools,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(tools);
+
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        Dictionary<Type, Exception> failures = [];
+
+        foreach (
+            Type type in Tools.Randomizer.SupportedTypes.Where(t =>
+                !localOptions.IntegrityIgnorableTypes.Contains(t)
+            )
+        )
+        {
+            try
+            {
+                await VerifyToolSetIntegrity(tools, type, canceler).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                failures.Add(type, e);
+            }
+        }
+        tools.Asserter.IsEmpty(failures);
+    }
+
+    /// <summary>Verifies the <paramref name="type"/> works with the tools.</summary>
+    /// <param name="type">The <see cref="Type"/> to test with.</param>
+    /// <inheritdoc cref="VerifyToolSetIntegrity(ToolSet,CancellationToken,TesterMod)"/>
+    private static async Task VerifyToolSetIntegrity(
+        ToolSet tools,
+        Type type,
+        CancellationToken canceler
+    )
+    {
+        string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
+        object? original = null,
+            variant = null,
+            dupe = null;
+        try
+        {
+            original = tools.Randomizer.Create(type);
+            dupe = tools.Duplicator.Copy(original);
+
+            await tools
+                .Asserter.ValuesEqualAsync(original, dupe, canceler, failMessage)
+                .ConfigureAwait(false);
+
+            if (
+                TypeDescriber.GetAllProperties(type).Any() || TypeDescriber.GetAllFields(type).Any()
+            )
+            {
+                variant = tools.Mutator.Variant(type, original);
+
+                await tools
+                    .Asserter.ValuesNotEqualAsync(original, variant, canceler, failMessage)
+                    .ConfigureAwait(false);
+
+                if (tools.Mutator.Modify(original))
+                {
+                    await tools
+                        .Asserter.ValuesNotEqualAsync(dupe, original, canceler)
+                        .ConfigureAwait(false);
+                }
+            }
+
+            if (
+                tools.Faker.Supports(type)
+                && !type.Inherits<IDisposable>()
+                && !type.Inherits<IToolOptions>()
+            )
+            {
+                _ = tools.Faker.Mock(type);
+            }
+        }
+        finally
+        {
+            await Disposer.CleanupAsync(original, variant, dupe).ConfigureAwait(false);
         }
     }
 

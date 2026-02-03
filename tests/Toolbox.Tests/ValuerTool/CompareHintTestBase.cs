@@ -36,6 +36,7 @@ public abstract class CompareHintTestBase<T>(
                 typeof(ArgumentException),
                 typeof(FakeCallException),
                 typeof(TimeoutException),
+                typeof(KeyNotFoundException),
             ],
         };
 

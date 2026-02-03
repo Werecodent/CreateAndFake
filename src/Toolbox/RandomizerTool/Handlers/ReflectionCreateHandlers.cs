@@ -1,5 +1,7 @@
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Handlers;
@@ -28,47 +30,67 @@ internal static class ReflectionCreateHandlers
         typeof(ValueTuple<Guid, long, string>),
     ];
 
+    private static readonly FrozenSet<ConstructorInfo> _Constructors = _PossibleTypes
+        .SelectMany(t => t.GetConstructors())
+        .ToFrozenSet();
+
+    private static readonly FrozenSet<MethodInfo> _Methods = _PossibleTypes
+        .SelectMany(t => t.GetMethods())
+        .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
+        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+        .ToFrozenSet();
+
+    private static readonly FrozenSet<PropertyInfo> _Properties = _PossibleTypes
+        .SelectMany(t => t.GetProperties())
+        .ToFrozenSet();
+
+    private static readonly FrozenSet<FieldInfo> _Fields = _PossibleTypes
+        .SelectMany(t => t.GetFields())
+        .ToFrozenSet();
+
+    private static readonly FrozenSet<FieldInfo> _ConstFields = _PossibleTypes
+        .SelectMany(t => t.GetFields())
+        .Where(f => f.IsLiteral && !f.IsInitOnly)
+        .ToFrozenSet();
+
+    private static readonly FrozenSet<ParameterInfo> _Parameters = _PossibleTypes
+        .SelectMany(t => t.GetMethods())
+        .SelectMany(m => m.GetParameters())
+        .ToFrozenSet();
+
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
-        new FactoryCreateHandler( // RuntimeType
-            typeof(Type).GetType(),
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimeType,
             rand => rand.Options.Gen.NextItem(_PossibleTypes)
         ),
-        new FactoryCreateHandler( // RuntimeConstructorInfo
-            typeof(string).GetConstructors()[0].GetType(),
-            rand => FindTypeInfo(rand, t => t.GetConstructors().Where(c => c.IsPublic))
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimeConstructorInfoType,
+            rand => rand.Options.Gen.NextItem(_Constructors)
         ),
-        new FactoryCreateHandler( // RuntimeMethodInfo
-            typeof(string).GetMethods()[0].GetType(),
-            rand =>
-                FindTypeInfo(
-                    rand,
-                    t =>
-                        t.GetMethods()
-                            .Where(m => m.IsPublic)
-                            .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
-                            .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-                )
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimeMethodInfoType,
+            rand => rand.Options.Gen.NextItem(_Methods)
         ),
-        new FactoryCreateHandler( // RuntimePropertyInfo
-            typeof(string).GetProperties()[0].GetType(),
-            rand => FindTypeInfo(rand, t => t.GetProperties())
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimePropertyInfoType,
+            rand => rand.Options.Gen.NextItem(_Properties)
         ),
-        new FactoryCreateHandler( // RtFieldInfo
-            typeof(string).GetFields()[0].GetType(),
-            rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic))
+        new FactoryCreateHandler(
+            RuntimeDetails.RtFieldInfoType,
+            rand => rand.Options.Gen.NextItem(_Fields)
         ),
-        new FactoryCreateHandler( // MdFieldInfo
-            typeof(int).GetFields()[0].GetType(),
-            rand => FindTypeInfo(rand, t => t.GetFields().Where(f => f.IsPublic && f.IsStatic))
+        new FactoryCreateHandler(
+            RuntimeDetails.MdFieldInfoType,
+            rand => rand.Options.Gen.NextItem(_ConstFields)
         ),
-        new FactoryCreateHandler( // RuntimeParameterInfo
-            typeof(string).GetMethods().SelectMany(m => m.GetParameters()).First().GetType(),
-            rand => FindTypeInfo(rand, t => t.GetMethods().SelectMany(m => m.GetParameters()))
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimeParameterInfoType,
+            rand => rand.Options.Gen.NextItem(_Parameters)
         ),
-        new FactoryCreateHandler( // RuntimeAssembly
-            AppDomain.CurrentDomain.GetAssemblies()[0].GetType(),
+        new FactoryCreateHandler(
+            RuntimeDetails.RuntimeAssemblyType,
             rand =>
                 rand.Options.Gen.NextItem(
                     AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic)
@@ -76,24 +98,4 @@ internal static class ReflectionCreateHandlers
         ),
         new FactoryCreateHandler<AssemblyName>(rand => rand.Create<Assembly>().GetName()),
     ];
-
-    /// <summary>Finds a random member info.</summary>
-    /// <typeparam name="T"><see cref="Type"/> being found.</typeparam>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <param name="grabber">How members are found on a <see cref="Type"/>.</param>
-    /// <returns>The found member.</returns>
-    private static T FindTypeInfo<T>(
-        IRandomizerChainer randomizer,
-        Func<Type, IEnumerable<T>> grabber
-    )
-    {
-        T[] result;
-        do
-        {
-            Type foundType = randomizer.Options.Gen.NextItem(_PossibleTypes);
-            result = foundType.IsPublic ? [.. grabber.Invoke(foundType)] : [];
-        } while (result.Length == 0);
-
-        return randomizer.Options.Gen.NextItem(result);
-    }
 }

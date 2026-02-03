@@ -6,14 +6,7 @@ namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
 public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
 {
-    private static readonly Type[] _ValidTypes =
-    [
-        typeof(Guid),
-        typeof(IntPtr),
-        typeof(UIntPtr),
-        typeof(TimeSpan),
-        typeof(Uri),
-    ];
+    private static readonly Type[] _ValidTypes = [typeof(Guid), typeof(TimeSpan), typeof(Uri)];
 
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 

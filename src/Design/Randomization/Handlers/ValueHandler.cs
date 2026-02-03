@@ -1,7 +1,7 @@
 namespace CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handles randomizing <typeparamref name="T"/> values.</summary>
-/// <typeparam name="T">The value <see cref="Type"/> to handle.</typeparam>
+/// <typeparam name="T">The <see cref="SupportedType"/>.</typeparam>
 internal abstract class ValueHandler<T> : IValueHandler
     where T : struct, IComparable, IComparable<T>, IEquatable<T>
 {

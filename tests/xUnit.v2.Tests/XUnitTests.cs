@@ -5,7 +5,13 @@ namespace CreateAndFake.xUnit.v2.Tests;
 public static class XUnitTests
 {
     [Fact]
-    internal static void XUnit_TestClassCoverage()
+    internal static Task XUnit_v2_VerifyIntegrity()
+    {
+        return Tools.Tester.VerifyToolSetIntegrity(ToolSet.DefaultSet, CancellationToken.None);
+    }
+
+    [Fact]
+    internal static void XUnit_v2_TestClassCoverage()
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(RandomDataAttribute)),
@@ -14,7 +20,7 @@ public static class XUnitTests
     }
 
     [Fact]
-    internal static Task XUnit_ValidateRandomDataParameters()
+    internal static Task XUnit_v2_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParameters(
             Assembly.GetExecutingAssembly(),

@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Extensions;
 using CreateAndFake.Design.Tooling;
@@ -13,7 +12,6 @@ using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
-using Microsoft.Extensions.Configuration;
 using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
@@ -39,31 +37,12 @@ public static class ToolsTests
     }
 
     [Fact]
-    internal static async Task Tools_AllSupportedTypesValid()
+    internal static Task Tools_AllSupportedTypesValid()
     {
-        Type[] ignore =
-        [
-            typeof(IConfiguration),
-            typeof(IConfigurationSection),
-            typeof(CancellationToken),
-            typeof(AssemblyName),
-            typeof(StringBuilder),
-        ];
-
-        Dictionary<Type, Exception> failures = [];
-
-        foreach (Type type in Tools.Randomizer.SupportedTypes.Where(t => !ignore.Contains(t)))
-        {
-            try
-            {
-                await TestTrip(type);
-            }
-            catch (Exception e)
-            {
-                failures.Add(type, e.Unwrap());
-            }
-        }
-        failures.Assert().IsEmpty();
+        return Tools.Tester.VerifyToolSetIntegrity(
+            ToolSet.DefaultSet,
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

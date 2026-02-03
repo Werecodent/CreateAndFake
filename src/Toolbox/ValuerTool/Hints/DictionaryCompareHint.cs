@@ -45,12 +45,15 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             {
                 foreach (Difference diff in valuer.Compare(expected[key], actual[match]))
                 {
-                    yield return new Difference($"[{key}]", diff);
+                    yield return new Difference($"[{TryDescribe(key)}]", diff);
                 }
             }
             else
             {
-                yield return new Difference($"[{key}]", new Difference(expected[key], "'null'"));
+                yield return new Difference(
+                    $"[{TryDescribe(key)}]",
+                    new Difference(expected[key], "'null'")
+                );
             }
         }
 
@@ -58,7 +61,10 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         {
             if (!expectedKeys.Any(k => valuer.Equals(key, k)))
             {
-                yield return new Difference($"[{key}]", new Difference("'null'", actual[key]));
+                yield return new Difference(
+                    $"[{TryDescribe(key)}]",
+                    new Difference("'null'", actual[key])
+                );
             }
         }
     }
@@ -104,12 +110,15 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
                         .ConfigureAwait(false)
                 )
                 {
-                    yield return new Difference($"[{key}]", diff);
+                    yield return new Difference($"[{TryDescribe(key)}]", diff);
                 }
             }
             else
             {
-                yield return new Difference($"[{key}]", new Difference(expected[key], "'null'"));
+                yield return new Difference(
+                    $"[{TryDescribe(key)}]",
+                    new Difference(expected[key], "'null'")
+                );
             }
         }
 
@@ -127,9 +136,17 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
             if (match == null)
             {
-                yield return new Difference($"[{key}]", new Difference("'null'", actual[key]));
+                yield return new Difference(
+                    $"[{TryDescribe(key)}]",
+                    new Difference("'null'", actual[key])
+                );
             }
         }
+    }
+
+    private static object TryDescribe(object item)
+    {
+        return (item is Type type) ? TypeDescriber.ExpandedName(type) : item;
     }
 
     /// <inheritdoc/>

@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.ExtractorTool.Hints;
@@ -9,19 +10,14 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class EndingExtractHint : ExtractHint
 {
     /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
-    private static readonly FrozenSet<Type> _ContentEndTypes = FrozenSet.ToFrozenSet([
-        Assembly.GetExecutingAssembly().GetType(),
-        typeof(Type).GetType(),
-        typeof(ParameterInfo),
-        typeof(PropertyInfo),
-        typeof(MemberInfo),
-        typeof(MethodInfo),
-        typeof(FieldInfo),
-        typeof(Assembly),
-        typeof(string),
-        typeof(Type),
-        typeof(Lock),
-    ]);
+    private static readonly FrozenSet<Type> _ContentEndTypes = RuntimeDetails
+        .RuntimeTypes.Concat([
+            Assembly.GetExecutingAssembly().GetType(),
+            typeof(string),
+            typeof(Type),
+            typeof(Lock),
+        ])
+        .ToFrozenSet();
 
     /// <inheritdoc/>
     public override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)

@@ -31,8 +31,8 @@ public sealed class HandlerCopyHint : CopyHint
         new FactoryCopyHandler<WeakReference>(
             (source, _) => new WeakReference(source.Target, source.TrackResurrection)
         ),
-        new FactoryCopyHandler<UIntPtr>((source, _) => new UIntPtr((uint)source)),
-        new FactoryCopyHandler<IntPtr>((source, _) => new IntPtr((int)source)),
+        new RefCopyHandler(typeof(UIntPtr)),
+        new RefCopyHandler(typeof(IntPtr)),
         new FactoryCopyHandler<CancellationTokenSource>(
             (source, _) =>
             {

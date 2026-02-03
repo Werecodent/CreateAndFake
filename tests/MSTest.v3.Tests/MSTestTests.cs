@@ -8,7 +8,16 @@ public class MSTestTests
     public TestContext TestContext { get; set; }
 
     [TestMethod]
-    public void MSTest_TestClassCoverage()
+    public Task MSTest_v3_VerifyIntegrity()
+    {
+        return Tools.Tester.VerifyToolSetIntegrity(
+            ToolSet.DefaultSet,
+            TestContext.CancellationToken
+        );
+    }
+
+    [TestMethod]
+    public void MSTest_v3_TestClassCoverage()
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(RandomDataAttribute)),
@@ -17,7 +26,7 @@ public class MSTestTests
     }
 
     [TestMethod]
-    public Task MSTest_ValidateRandomDataParameters()
+    public Task MSTest_v3_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParameters(
             Assembly.GetExecutingAssembly(),

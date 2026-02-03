@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ExtractorTool.Engine;
@@ -25,8 +26,8 @@ public sealed class ExtractorEngine(IEnumerable<ExtractHint> defaultHints)
         else
         {
             throw new NotSupportedException(
-                $"Type '{value?.GetType().FullName}' not supported by the extractor. "
-                    + "Create a hint to extract the type and pass it to the extractor."
+                $"Type '{TypeDescriber.ExpandedName(value?.GetType())}' not supported by the "
+                    + "extractor. Create a hint to extract the type and pass it to the extractor."
             );
         }
     }

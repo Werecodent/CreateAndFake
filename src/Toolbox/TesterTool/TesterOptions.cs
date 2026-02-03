@@ -1,5 +1,7 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
+using System.Reflection;
+using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
@@ -87,6 +89,16 @@ public sealed record TesterOptions : IToolOptions
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]
     public bool DisableParameterMutationTests { get; init; } = false;
+
+    /// <summary><see cref="Type"/>s to be excluded for the framework integrity test.</summary>
+    public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } =
+        FrozenSet.ToFrozenSet([
+            typeof(IConfiguration),
+            typeof(IConfigurationSection),
+            typeof(CancellationToken),
+            typeof(AssemblyName),
+            typeof(StringBuilder),
+        ]);
 
     /// <summary>
     ///     Creates options from <see langword="this"/>

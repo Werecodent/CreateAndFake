@@ -33,11 +33,7 @@ public sealed class HandlerCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        if (
-            type != null
-            && type != typeof(object)
-            && _CreatorsByType.TryGetValue(type, out ICreateHandler[]? creators)
-        )
+        if (type != null && _CreatorsByType.TryGetValue(type, out ICreateHandler[]? creators))
         {
             return new(randomizer.Options.Gen.NextItem(creators).CreateSupported(randomizer));
         }

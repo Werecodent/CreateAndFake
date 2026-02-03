@@ -6,7 +6,16 @@ namespace CreateAndFake.NUnit.v3.Tests;
 public static class NUnitTests
 {
     [Test]
-    public static void NUnit_TestClassCoverage()
+    public static Task NUnit_v3_VerifyIntegrity()
+    {
+        return Tools.Tester.VerifyToolSetIntegrity(
+            ToolSet.DefaultSet,
+            TestContext.CurrentContext.CancellationToken
+        );
+    }
+
+    [Test]
+    public static void NUnit_v3_TestClassCoverage()
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(RandomDataAttribute)),
@@ -15,7 +24,7 @@ public static class NUnitTests
     }
 
     [Test]
-    public static Task NUnit_ValidateRandomDataParameters()
+    public static Task NUnit_v3_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParameters(
             Assembly.GetExecutingAssembly(),

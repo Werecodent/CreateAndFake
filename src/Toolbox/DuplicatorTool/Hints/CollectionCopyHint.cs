@@ -33,8 +33,9 @@ public sealed class CollectionCopyHint : CopyHint
             else
             {
                 throw new NotSupportedException(
-                    $"Collection '{source.GetType().FullName}' not supported by the duplicator. "
-                        + "Create a hint to generate the type and pass it to the duplicator."
+                    $"Collection '{TypeDescriber.ExpandedName(source.GetType())}' "
+                        + "not supported by the duplicator. Create a hint to generate "
+                        + "the type and pass it to the duplicator."
                 );
             }
         }
