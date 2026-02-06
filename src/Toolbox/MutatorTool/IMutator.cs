@@ -3,47 +3,112 @@
     CreateAndFake.MutatorTool.MutatorOptions
 >;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.MutatorTool;
 
-/// <summary>Changes the value of objects or creates alternatives.</summary>
-public interface IMutator : ITool<MutatorOptions>
+/// <summary>Changes the value of <see cref="object"/>s or creates alternatives.</summary>
+public interface IMutator : IHintTool<MutatorOptions>
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <summary>
+    ///     Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.
+    /// </summary>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> for the new tool.
+    /// </param>
     /// <returns>The created tool.</returns>
     IMutator WithOptions(MutatorMod optionConfiguration);
 
-    /// <typeparam name="T"><see cref="Type"/> to create.</typeparam>
-    /// <inheritdoc cref="Variant"/>
-    T Variant<T>(T instance, params IEnumerable<T?>? extraInstances);
+    /// <summary>
+    ///     Creates a <typeparamref name="T"/> unequal by value to the <paramref name="instance"/>.
+    /// </summary>
+    /// <param name="instance">The <see cref="object"/> to differ from.</param>
+    /// <inheritdoc cref="VariantOf{T}"/>
+    T Variant<T>(T instance, MutatorMod? optionConfiguration = null);
 
-    /// <summary>Creates an object with different values.</summary>
-    /// <param name="type"><see cref="Type"/> to create.</param>
-    /// <param name="instance">Object to diverge from.</param>
-    /// <param name="extraInstances">Extra objects to diverge from.</param>
+    /// <summary>
+    ///     Creates an <see cref="object"/> unequal by value to the <paramref name="instance"/>.
+    /// </summary>
+    /// <param name="instance">The <see cref="object"/> to differ from.</param>
+    /// <inheritdoc cref="VariantOf"/>
+    object Variant(Type type, object? instance, MutatorMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Creates a <typeparamref name="T"/> unequal by value to the <paramref name="instances"/>.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> to create.</typeparam>
     /// <returns>
-    ///     The created object that differs from <paramref name="instance"/> and <paramref name="extraInstances"/>.
+    ///     The created <typeparamref name="T"/>.
     /// </returns>
-    object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances);
+    /// <inheritdoc cref="VariantOf"/>
+    T VariantOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null);
 
-    /// <typeparam name="T"><see cref="Type"/> to create.</typeparam>
-    /// <inheritdoc cref="Unique"/>
-    T Unique<T>(T instance, params IEnumerable<T?>? extraInstances);
+    /// <summary>
+    ///     Creates an <see cref="object"/> unequal by value to the <paramref name="instances"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to create.</param>
+    /// <param name="instances">The <see cref="object"/>s to differ from.</param>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
+    /// </param>
+    /// <returns>The created <see cref="object"/>.</returns>
+    object VariantOf(
+        Type type,
+        IEnumerable<object?> instances,
+        MutatorMod? optionConfiguration = null
+    );
 
-    /// <summary>Creates an object with completely different values.</summary>
-    /// <param name="type"><see cref="Type"/> to create.</param>
-    /// <param name="instance">Object to diverge from.</param>
-    /// <param name="extraInstances">Extra objects to diverge from.</param>
+    /// <summary>
+    ///     Creates a <typeparamref name="T"/> that shares
+    ///     no values with the <paramref name="instance"/>.
+    /// </summary>
+    /// <param name="instance">The <see cref="object"/> to share no values with.</param>
+    /// <inheritdoc cref="UniqueOf{T}"/>
+    T Unique<T>(T instance, MutatorMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Creates an <see cref="object"/> that shares
+    ///     no values with the <paramref name="instance"/>.
+    /// </summary>
+    /// <param name="instance">The <see cref="object"/> to share no values with.</param>
+    /// <inheritdoc cref="UniqueOf"/>
+    object Unique(Type type, object? instance, MutatorMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Creates a <typeparamref name="T"/> that shares
+    ///     no values with the <paramref name="instances"/>.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> to create.</typeparam>
     /// <returns>
-    ///     The created object that differs from <paramref name="instance"/> and <paramref name="extraInstances"/>.
+    ///     The created <typeparamref name="T"/>.
     /// </returns>
-    /// <remarks>Ignores types with too small of range for unique randomization.</remarks>
-    object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances);
+    /// <inheritdoc cref="UniqueOf"/>
+    T UniqueOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null);
 
-    /// <summary>Attempts to mutate an object.</summary>
-    /// <param name="instance">Object to modify.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
-    /// <returns><see langword="true"/> if <paramref name="instance"/> has been modified, <see langword="false"/> otherwise.</returns>
+    /// <summary>
+    ///     Creates an <see cref="object"/> that shares
+    ///     no values with the <paramref name="instances"/>.
+    /// </summary>
+    /// <param name="instances">The <see cref="object"/>s to share no values with.</param>
+    /// <remarks>
+    ///     Ignores <see cref="Type"/>s with too small of range.
+    ///     See <see cref="ExtractorOptions.UniqueIgnoredTypes"/>.
+    /// </remarks>
+    /// <inheritdoc cref="VariantOf"/>
+    object UniqueOf(
+        Type type,
+        IEnumerable<object?> instances,
+        MutatorMod? optionConfiguration = null
+    );
+
+    /// <summary>Attempts to mutate the <paramref name="instance"/>.</summary>
+    /// <param name="instance">The <see cref="object"/> to modify.</param>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <paramref name="instance"/>
+    ///     has been modified, <see langword="false"/> otherwise.
+    /// </returns>
     bool Modify(object? instance, MutatorMod? optionConfiguration = null);
 }

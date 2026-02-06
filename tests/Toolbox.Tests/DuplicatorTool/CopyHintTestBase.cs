@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.Serialization;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
@@ -31,6 +32,7 @@ public abstract class CopyHintTestBase<T>(
                 typeof(OverflowException),
                 typeof(ArgumentException),
                 typeof(ToolException),
+                typeof(SerializationException),
             ],
         };
 

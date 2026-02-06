@@ -33,10 +33,10 @@ public static class MutatorTests
     }
 
     [Theory, RandomData]
-    internal static void Variant_ManyValuesWorks(int value, [Size(10000)] int[] data)
+    internal static void VariantOf_ManyValuesWorks([Size(10000)] int[] data)
     {
-        int result = Tools.Mutator.Variant(value, data);
-        result.Assert().IsNot(value).Also(data).ContainsNot(result);
+        int result = Tools.Mutator.VariantOf(data);
+        data.Assert().ContainsNot(result);
     }
 
     [Theory, RandomData]
@@ -98,7 +98,7 @@ public static class MutatorTests
                 VariantAttempts = new Limiter(5),
             }
         )
-            .Variant(sample1, sample2)
+            .VariantOf([sample1, sample2])
             .Assert()
             .IsNot(null);
 
@@ -113,10 +113,10 @@ public static class MutatorTests
     }
 
     [Theory, RandomData]
-    internal static void Unique_ManyValuesWorks(int value, [Size(10000)] int[] data)
+    internal static void UniqueOf_ManyValuesWorks([Size(100)] int[] data)
     {
-        int result = Tools.Mutator.Unique(value, data);
-        result.Assert().IsNot(value).Also(data).ContainsNot(result);
+        int result = Tools.Mutator.UniqueOf(data);
+        data.Assert().ContainsNot(result);
     }
 
     [Theory, RandomData]
@@ -175,7 +175,7 @@ public static class MutatorTests
                 VariantAttempts = new Limiter(5),
             }
         )
-            .Unique(sample1, sample2)
+            .UniqueOf([sample1, sample2])
             .Assert()
             .IsNot(null);
     }

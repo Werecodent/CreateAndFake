@@ -1,178 +1,94 @@
-﻿using System.Collections;
-using System.Reflection;
+﻿using System.Collections.Immutable;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool;
+using CreateAndFake.MutatorTool.Engine;
+using CreateAndFake.MutatorTool.Hints;
 
 namespace CreateAndFake.MutatorTool;
 
 /// <inheritdoc cref="IMutator"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
-/// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
+    /// <summary>Default set of hints to use for mutation.</summary>
+    internal static readonly ImmutableArray<IMutateHint> DefaultHints =
+    [
+        new HandlerMutateHint(),
+        new CollectionMutateHint(),
+        new LegacyDictionaryMutateHint(),
+        new LegacyListMutateHint(),
+        new ObjectMutateHint(),
+    ];
+
+    /// <summary>Handles hint based mutation.</summary>
+    private static readonly MutatorEngine _engine = new(DefaultHints);
+
     /// <inheritdoc/>
     public MutatorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public T Variant<T>(T instance, params IEnumerable<T?>? extraInstances)
+    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+
+    /// <inheritdoc/>
+    public T Variant<T>(T instance, MutatorMod? optionConfiguration = null)
     {
-        return (T)Variant(typeof(T), instance, extraInstances?.Cast<object>());
+        return new MutatorChainer(Options, _engine).Variant(instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public object Variant(Type type, object? instance, params IEnumerable<object?>? extraInstances)
+    public object Variant(Type type, object? instance, MutatorMod? optionConfiguration = null)
     {
-        object?[] values = [.. (extraInstances ?? []).Prepend(instance)];
-        try
-        {
-            return Options
-                .VariantAttempts.StallUntil(
-                    $"Create variant of type '{type}'",
-                    () => Options.Randomizer.Create(type),
-                    result =>
-                    {
-                        if (
-                            values.All(o =>
-                                ArgumentGuard.IsAsynchronous(o)
-                                || !Options.Valuer.Equals(
-                                    result,
-                                    o,
-                                    opt => opt with { SkipAsyncValues = true }
-                                )
-                            )
-                        )
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            Disposer.Cleanup(result);
-                            return false;
-                        }
-                    }
-                )
-                .Last();
-        }
-        catch (TimeoutException e)
-        {
-            throw new ToolException($"Could not create different instance of type '{type}'.", e);
-        }
+        return new MutatorChainer(Options, _engine).Variant(type, instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public T Unique<T>(T instance, params IEnumerable<T?>? extraInstances)
+    public T VariantOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null)
     {
-        return (T)Unique(typeof(T), instance, extraInstances);
+        return new MutatorChainer(Options, _engine).VariantOf(instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public object Unique(Type type, object? instance, params IEnumerable<object?>? extraInstances)
+    public object VariantOf(
+        Type type,
+        IEnumerable<object?> instances,
+        MutatorMod? optionConfiguration = null
+    )
     {
-        IContentMap[] maps =
-        [
-            .. (extraInstances ?? [])
-                .Prepend(instance)
-                .Where(e => e != null)
-                .Select(e => Options.Extractor.Extract(e)),
-        ];
+        return new MutatorChainer(Options, _engine).VariantOf(type, instances, optionConfiguration);
+    }
 
-        try
-        {
-            return Options
-                .VariantAttempts.StallUntil(
-                    $"Create unique of type '{type}'",
-                    () => Options.Randomizer.Create(type),
-                    result =>
-                    {
-                        if (!Options.Extractor.Extract(result).HasSharedContent(maps))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            Disposer.Cleanup(result);
-                            return false;
-                        }
-                    }
-                )
-                .Last();
-        }
-        catch (TimeoutException e)
-        {
-            throw new ToolException($"Could not create unique instance of type '{type}'.", e);
-        }
+    /// <inheritdoc/>
+    public T Unique<T>(T instance, MutatorMod? optionConfiguration = null)
+    {
+        return new MutatorChainer(Options, _engine).Unique(instance, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public object Unique(Type type, object? instance, MutatorMod? optionConfiguration = null)
+    {
+        return new MutatorChainer(Options, _engine).Unique(type, instance, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public T UniqueOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null)
+    {
+        return new MutatorChainer(Options, _engine).UniqueOf(instances, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public object UniqueOf(
+        Type type,
+        IEnumerable<object?> instances,
+        MutatorMod? optionConfiguration = null
+    )
+    {
+        return new MutatorChainer(Options, _engine).UniqueOf(type, instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
-        MutatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-
-        if (instance == null)
-        {
-            return false;
-        }
-
-        if (instance.GetType().Inherits<IEnumerable>())
-        {
-            return false;
-        }
-
-        bool modified = false;
-
-        Type type = instance.GetType();
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, true))
-        {
-            try
-            {
-                object? smartData =
-                    (field.FieldType == typeof(string))
-                        ? new DataRandom(localOptions.Gen).Find(field.Name)
-                        : null;
-
-                field.SetValue(
-                    instance,
-                    smartData ?? Variant(field.FieldType, field.GetValue(instance))
-                );
-                modified = true;
-            }
-            catch (Exception)
-            {
-                // Failed to modify.
-            }
-        }
-        foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, true)
-                .Where(p => p.CanWrite && p.CanRead)
-                .Where(p => p.GetGetMethod() != null)
-                .Where(p => p.GetSetMethod() != null)
-        )
-        {
-            try
-            {
-                object? smartData =
-                    (property.PropertyType == typeof(string))
-                        ? new DataRandom(localOptions.Gen).Find(property.Name)
-                        : null;
-
-                property.SetValue(
-                    instance,
-                    smartData ?? Variant(property.PropertyType, property.GetValue(instance))
-                );
-                modified = true;
-            }
-            catch (Exception)
-            {
-                // Failed to modify.
-            }
-        }
-
-        return modified;
+        return new MutatorChainer(Options, _engine).Modify(instance, optionConfiguration);
     }
 
     /// <inheritdoc/>

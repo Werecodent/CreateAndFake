@@ -5,7 +5,7 @@ namespace CreateAndFake.Design.Tooling;
 public interface IHintTool<TOptions> : ITool<TOptions>
     where TOptions : IToolOptions
 {
-    /// <summary>Specific types that the hint can support.</summary>
+    /// <summary>Specific types that the tool can support.</summary>
     /// <remarks>Not inclusive and not required.</remarks>
     IEnumerable<Type> SupportedTypes { get; }
 }

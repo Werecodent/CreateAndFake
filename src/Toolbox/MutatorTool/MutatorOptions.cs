@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.MutatorTool.Engine;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
@@ -9,11 +9,8 @@ using Microsoft.Extensions.Configuration;
 namespace CreateAndFake.MutatorTool;
 
 /// <summary>Configuration for controlling mutating behavior.</summary>
-public sealed record MutatorOptions : IToolOptions
+public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHint>
 {
-    /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
-
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }
 
@@ -43,13 +40,8 @@ public sealed record MutatorOptions : IToolOptions
 
         return this with
         {
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             VariantAttempts = section.GetValue(nameof(VariantAttempts), VariantAttempts),
         };
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(MutatorOptions);
     }
 }

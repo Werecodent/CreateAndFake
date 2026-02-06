@@ -67,4 +67,25 @@ public static class TypeSupporterTests
     {
         TypeSupporter.GroupByInheritance([InheritanceTracker.For(null)]).Assert().IsEmpty();
     }
+
+    [Theory, RandomData]
+    internal static void GroupBySubclasses_JoinsWithSubclass(
+        [Stub] ITypeSupporter item1,
+        [Stub] ITypeSupporter item2
+    )
+    {
+        item1.SupportedType.SetupReturn(typeof(object));
+        item2.SupportedType.SetupReturn(typeof(string));
+        TypeSupporter
+            .GroupBySubclasses([item1, item2])[typeof(string)]
+            .Assert()
+            .Contains(item1)
+            .And.Contains(item2);
+    }
+
+    [Fact]
+    internal static void GroupBySubclasses_IgnoresNullSupportedType()
+    {
+        TypeSupporter.GroupBySubclasses([InheritanceTracker.For(null)]).Assert().IsEmpty();
+    }
 }

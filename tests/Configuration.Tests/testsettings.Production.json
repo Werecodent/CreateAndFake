@@ -14,7 +14,8 @@
         },
         "Faker": {},
         "Mutator": {
-            "VariantAttempts": 20
+            "VariantAttempts": 20,
+            "MaxHintRecursion": 8
         },
         "Randomizer": {
             "RandomizerCreateAttempts": "Few",

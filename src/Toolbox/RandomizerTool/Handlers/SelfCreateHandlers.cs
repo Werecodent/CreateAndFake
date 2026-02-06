@@ -57,7 +57,15 @@ internal static class SelfCreateHandlers
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
             }
         ),
-        new FactoryCreateHandler<MutatorOptions>(CreateRandomOptionsBase<MutatorOptions>),
+        new FactoryCreateHandler<MutatorOptions>(rand =>
+            CreateRandomOptionsBase<MutatorOptions>(rand) with
+            {
+                Hints = [],
+                NestedOptions = null,
+                IncludeDefaultHints = true,
+                MaxHintRecursion = rand.Options.Gen.Next(8, 12),
+            }
+        ),
         new FactoryCreateHandler<RandomizerOptions>(rand =>
             CreateRandomOptionsBase<RandomizerOptions>(rand) with
             {

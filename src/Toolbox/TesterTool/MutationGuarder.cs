@@ -22,6 +22,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
 
         foreach (
             ConstructorInfo constructor in FindAllConstructors(GenericFixer.FixType(type, Options))
+                .Where(c => c.GetParameters().Length > 0)
         )
         {
             await PreventsMutation(null, constructor, callAllMethods, canceler)
@@ -36,7 +37,10 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     {
         ArgumentGuard.ThrowIfNull(instance);
 
-        foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
+        foreach (
+            MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
+                .Where(c => c.GetParameters().Length > 0)
+        )
         {
             await PreventsMutation(
                     instance,
@@ -60,7 +64,10 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     {
         Type specificType = GenericFixer.FixType(type, Options);
 
-        foreach (MethodInfo method in FindAllMethods(specificType, BindingFlags.Static))
+        foreach (
+            MethodInfo method in FindAllMethods(specificType, BindingFlags.Static)
+                .Where(c => c.GetParameters().Length > 0)
+        )
         {
             await PreventsMutation(
                     null,
