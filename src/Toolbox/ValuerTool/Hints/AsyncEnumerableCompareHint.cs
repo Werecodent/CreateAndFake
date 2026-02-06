@@ -12,6 +12,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class AsyncEnumerableCompareHint : CompareHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.AsyncEnumerableHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         return (expected?.GetType()).Inherits(typeof(IAsyncEnumerable<>))

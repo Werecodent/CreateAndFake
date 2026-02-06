@@ -7,6 +7,9 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class CloneableCopyHint : CopyHint<ICloneable>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.CloneableHint;
+
+    /// <inheritdoc/>
     protected override ICloneable Copy(ICloneable source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

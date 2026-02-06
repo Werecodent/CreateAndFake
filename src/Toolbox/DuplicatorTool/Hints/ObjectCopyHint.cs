@@ -13,6 +13,9 @@ public sealed class ObjectCopyHint : CopyHint
         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.ObjectHint;
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, duplicator);

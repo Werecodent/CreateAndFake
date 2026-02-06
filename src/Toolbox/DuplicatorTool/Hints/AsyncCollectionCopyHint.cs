@@ -8,6 +8,9 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class AsyncCollectionCopyHint : CopyHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.AsyncCollectionHint;
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, duplicator);

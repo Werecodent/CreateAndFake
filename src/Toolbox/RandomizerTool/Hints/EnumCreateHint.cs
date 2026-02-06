@@ -7,6 +7,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class EnumCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.EnumHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => [];
 
     /// <inheritdoc/>

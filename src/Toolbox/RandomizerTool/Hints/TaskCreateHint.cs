@@ -7,6 +7,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class TaskCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.TaskHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes =>
         [typeof(Task), typeof(TaskCompletionSource<>)];
 

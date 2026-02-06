@@ -8,6 +8,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.EnumerableHint;
+
+    /// <inheritdoc/>
     protected override bool Extract(IEnumerable value, IExtractorChainer extractor)
     {
         ArgumentGuard.ThrowIfNull(extractor);

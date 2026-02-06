@@ -20,6 +20,9 @@ public sealed class BasicCopyHint : CopyHint
     ];
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.BasicHint;
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

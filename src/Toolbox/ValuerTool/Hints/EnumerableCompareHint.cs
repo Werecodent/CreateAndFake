@@ -10,6 +10,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.EnumerableHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         IEnumerable? expected,
         IEnumerable? actual,

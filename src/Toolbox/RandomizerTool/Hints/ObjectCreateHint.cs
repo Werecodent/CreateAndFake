@@ -21,6 +21,9 @@ public sealed class ObjectCreateHint : CreateHint
     };
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.ObjectHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => [typeof(object)];
 
     /// <inheritdoc/>

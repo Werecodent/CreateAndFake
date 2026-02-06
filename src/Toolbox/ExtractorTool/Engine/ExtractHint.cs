@@ -7,6 +7,9 @@ namespace CreateAndFake.ExtractorTool.Engine;
 public abstract class ExtractHint : IToolHint
 {
     /// <inheritdoc/>
+    public abstract int EnginePriority { get; }
+
+    /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <summary>Tries to extract content.</summary>

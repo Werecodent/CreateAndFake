@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class StringBuilderCompareHint : CompareHint<StringBuilder>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.StringBuilderHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         StringBuilder? expected,
         StringBuilder? actual,

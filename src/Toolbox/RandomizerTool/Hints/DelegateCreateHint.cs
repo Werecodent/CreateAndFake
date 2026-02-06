@@ -13,6 +13,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class DelegateCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.DelegateHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes =>
         [
             typeof(Action),

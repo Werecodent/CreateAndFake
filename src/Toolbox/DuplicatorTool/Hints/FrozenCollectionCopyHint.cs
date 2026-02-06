@@ -28,6 +28,9 @@ public class FrozenCollectionCopyHint : CopyHint
         )!;
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.FrozenCollectionHint;
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

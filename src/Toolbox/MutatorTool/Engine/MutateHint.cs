@@ -6,6 +6,9 @@ namespace CreateAndFake.MutatorTool.Engine;
 public abstract class MutateHint : IMutateHint
 {
     /// <inheritdoc/>
+    public abstract int EnginePriority { get; }
+
+    /// <inheritdoc/>
     public abstract IEnumerable<Type> SupportedTypes { get; }
 
     /// <inheritdoc/>

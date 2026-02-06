@@ -4,15 +4,15 @@ using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
 
-public sealed class ObjectCompareHintTests : CompareHintTestBase<ObjectCompareHint>
+public sealed class PublicObjectCompareHintTests : CompareHintTestBase<PublicObjectCompareHint>
 {
-    private static readonly ObjectCompareHint _TestInstance = new(true);
+    private static readonly PublicObjectCompareHint _TestInstance = new();
 
     private static readonly Type[] _ValidTypes = [typeof(DataHolderSample), typeof(FieldSample)];
 
     private static readonly Type[] _InvalidTypes = Type.EmptyTypes;
 
-    public ObjectCompareHintTests()
+    public PublicObjectCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]

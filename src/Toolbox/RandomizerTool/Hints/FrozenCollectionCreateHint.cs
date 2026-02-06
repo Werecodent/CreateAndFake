@@ -8,6 +8,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing frozen collections for <see cref="IRandomizer"/>.</summary>
 public sealed class FrozenCollectionCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.FrozenCollectionHint;
+
     /// <summary>Constructs frozen sets.</summary>
     private static readonly MethodInfo _SetMaker = typeof(FrozenSet).GetMethod(
         nameof(FrozenSet.ToFrozenSet),

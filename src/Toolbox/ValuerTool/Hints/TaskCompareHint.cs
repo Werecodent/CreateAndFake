@@ -7,6 +7,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class TaskCompareHint : CompareHint<Task>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.TaskHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         Task? expected,
         Task? actual,

@@ -7,6 +7,9 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 public abstract class CopyHint : IToolHint
 {
     /// <inheritdoc/>
+    public abstract int EnginePriority { get; }
+
+    /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <summary>Tries to deep clone <paramref name="source"/>.</summary>

@@ -9,6 +9,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class StringDictionaryCompareHint : CompareHint<StringDictionary>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.StringDictionaryHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         StringDictionary? expected,
         StringDictionary? actual,

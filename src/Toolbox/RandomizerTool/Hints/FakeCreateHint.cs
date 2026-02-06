@@ -10,6 +10,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing <see cref="Fake{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class FakeCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.FakeHint;
+
     /// <summary>Possible action types to use.</summary>
     private static readonly ImmutableArray<Type> _ActionTypes =
     [

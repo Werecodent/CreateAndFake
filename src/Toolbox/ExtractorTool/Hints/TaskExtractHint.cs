@@ -7,6 +7,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class TaskExtractHint : ExtractHint<Task>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.TaskHint;
+
+    /// <inheritdoc/>
     protected override bool Extract(Task value, IExtractorChainer extractor)
     {
         ArgumentGuard.ThrowIfNull(extractor);

@@ -8,6 +8,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class DictionaryExtractHint : ExtractHint<IDictionary>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.DictionaryHint;
+
+    /// <inheritdoc/>
     protected override bool Extract(IDictionary value, IExtractorChainer extractor)
     {
         ArgumentGuard.ThrowIfNull(extractor);

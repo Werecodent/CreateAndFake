@@ -9,6 +9,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class EquatableCompareHint : CompareHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.EquatableHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer);

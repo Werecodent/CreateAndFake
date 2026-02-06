@@ -8,6 +8,9 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class TaskCopyHint : CopyHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.TaskHint;
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

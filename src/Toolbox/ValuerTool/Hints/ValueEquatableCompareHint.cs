@@ -8,7 +8,10 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 {
     /// <summary>Compares equatables by value as well.</summary>
-    private static readonly ObjectCompareHint _NestedHint = new(false);
+    private static readonly PrivateObjectCompareHint _NestedHint = new();
+
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.ValueEquatableHint;
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(

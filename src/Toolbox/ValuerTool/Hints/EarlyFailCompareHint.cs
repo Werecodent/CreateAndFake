@@ -15,6 +15,9 @@ public sealed class EarlyFailCompareHint : CompareHint
     ]);
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.EarlyFailHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         return expected == null

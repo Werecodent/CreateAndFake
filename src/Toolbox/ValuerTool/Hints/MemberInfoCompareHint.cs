@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class MemberInfoCompareHint : CompareHint<MemberInfo>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.MemberInfoHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         MemberInfo? expected,
         MemberInfo? actual,

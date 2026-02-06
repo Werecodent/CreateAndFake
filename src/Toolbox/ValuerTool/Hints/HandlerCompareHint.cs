@@ -15,6 +15,9 @@ public sealed class HandlerCompareHint : CompareHint
         TypeSupporter.GroupBySupportedType(_Handlers.Concat(ReflectionCompareHandlers.Handlers));
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.HandlerHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         return expected != null

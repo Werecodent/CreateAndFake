@@ -52,6 +52,9 @@ public sealed class HandlerCopyHint : CopyHint
         TypeSupporter.GroupBySupportedType(_Copiers.Concat(ReflectionCopyHandlers.Handlers));
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.HandlerHint;
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

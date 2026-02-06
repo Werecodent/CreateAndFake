@@ -8,6 +8,9 @@ namespace CreateAndFake.MutatorTool.Hints;
 public sealed class LegacyDictionaryMutateHint : IMutateHint
 {
     /// <inheritdoc/>
+    public int EnginePriority => (int)MutatePriority.LegacyDictionaryHint;
+
+    /// <inheritdoc/>
     public IEnumerable<Type> SupportedTypes { get; } = [typeof(IDictionary)];
 
     /// <inheritdoc/>

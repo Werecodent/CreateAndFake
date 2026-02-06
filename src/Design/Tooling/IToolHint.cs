@@ -3,6 +3,9 @@ namespace CreateAndFake.Design.Tooling;
 /// <summary>Hint for controlling tool behavior.</summary>
 public interface IToolHint
 {
+    /// <summary>Determines running order for dynamically loaded hints.</summary>
+    int EnginePriority { get; }
+
     /// <summary>Specific types that the hint can support.</summary>
     /// <remarks>
     ///     Not inclusive and not required. Generic bases might only indicate

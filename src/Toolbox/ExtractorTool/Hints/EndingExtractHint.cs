@@ -9,6 +9,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 /// <summary>Handles extracting final values for <see cref="IExtractor"/>.</summary>
 public sealed class EndingExtractHint : ExtractHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.EndingHint;
+
     /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
     private static readonly FrozenSet<Type> _ContentEndTypes = RuntimeDetails
         .RuntimeTypes.Concat([

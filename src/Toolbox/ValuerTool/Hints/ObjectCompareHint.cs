@@ -8,7 +8,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing objects for <see cref="IValuer"/>.</summary>
 /// <param name="onlyPublic">If private members are excluded.</param>
-public sealed class ObjectCompareHint(bool onlyPublic) : CompareHint
+public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 {
     /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)

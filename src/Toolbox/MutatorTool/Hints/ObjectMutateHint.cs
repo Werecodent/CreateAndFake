@@ -11,6 +11,9 @@ namespace CreateAndFake.MutatorTool.Hints;
 public sealed class ObjectMutateHint : MutateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)MutatePriority.ObjectHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes { get; } = [typeof(object)];
 
     /// <inheritdoc/>

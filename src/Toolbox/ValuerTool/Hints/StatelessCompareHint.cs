@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class StatelessCompareHint : CompareHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.StatelessHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         if (expected == null || actual == null)

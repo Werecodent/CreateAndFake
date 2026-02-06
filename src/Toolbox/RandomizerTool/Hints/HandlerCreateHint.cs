@@ -8,6 +8,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing <see cref="ICreateHandler"/> supported types for <see cref="IRandomizer"/>.</summary>
 public sealed class HandlerCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.HandlerHint;
+
     /// <summary>Supported types and the methods used to generate them.</summary>
     private static readonly ICreateHandler[] _Creators =
     [

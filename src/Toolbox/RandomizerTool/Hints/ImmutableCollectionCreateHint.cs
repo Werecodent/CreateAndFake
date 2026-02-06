@@ -10,6 +10,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing immutable collections for <see cref="IRandomizer"/>.</summary>
 public sealed class ImmutableCollectionCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.ImmutableCollectionHint;
+
     /// <summary>Collections able to be randomized.</summary>
     private static readonly ImmutableArray<(Type, MethodInfo)> _Collections =
     [

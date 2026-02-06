@@ -11,6 +11,9 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class SerializableCopyHint : CopyHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.SerializableHint;
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

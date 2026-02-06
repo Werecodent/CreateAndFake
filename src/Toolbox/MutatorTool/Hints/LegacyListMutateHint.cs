@@ -8,6 +8,9 @@ namespace CreateAndFake.MutatorTool.Hints;
 public sealed class LegacyListMutateHint : IMutateHint
 {
     /// <inheritdoc/>
+    public int EnginePriority => (int)MutatePriority.LegacyListHint;
+
+    /// <inheritdoc/>
     public IEnumerable<Type> SupportedTypes { get; } = [typeof(IList)];
 
     /// <inheritdoc/>

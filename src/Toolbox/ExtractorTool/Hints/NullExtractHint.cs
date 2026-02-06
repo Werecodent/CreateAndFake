@@ -6,6 +6,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class NullExtractHint : ExtractHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.NullHint;
+
+    /// <inheritdoc/>
     public override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)
     {
         if (value == null)

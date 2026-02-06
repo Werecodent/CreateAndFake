@@ -7,6 +7,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class ValuerComparableCompareHint : CompareHint<IValuerComparable>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.ValuerComparableHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         IValuerComparable? expected,
         IValuerComparable? actual,

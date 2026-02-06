@@ -13,6 +13,9 @@ public sealed class CollectionMutateHint : MutateHint
     )!;
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)MutatePriority.CollectionHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes { get; } = [typeof(ICollection<>)];
 
     /// <inheritdoc/>

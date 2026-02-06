@@ -35,8 +35,8 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         new SeededRandomCompareHint(),
         new MemberInfoCompareHint(),
         new ParameterInfoCompareHint(),
-        new ObjectCompareHint(true),
-        new ObjectCompareHint(false),
+        new PublicObjectCompareHint(),
+        new PrivateObjectCompareHint(),
         new StatelessCompareHint(),
     ];
 

@@ -11,6 +11,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class AsyncCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.AsyncCollectionHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => [typeof(IAsyncEnumerable<>)];
 
     /// <inheritdoc/>

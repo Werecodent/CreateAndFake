@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class FakedCompareHint : CompareHint<IFaked>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.FakedHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         IFaked? expected,
         IFaked? actual,

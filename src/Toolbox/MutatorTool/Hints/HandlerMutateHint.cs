@@ -19,7 +19,10 @@ public sealed class HandlerMutateHint : IMutateHint
 
     /// <summary>All handlers by their supported type.</summary>
     private static readonly IDictionary<Type, IMutateHandler> _MutatorsByType =
-        TypeSupporter.GroupBySupportedType(_Creators);
+        TypeSupporter.GroupBySupportedType(_Creators.Concat(ReflectionMutateHandlers.Handlers));
+
+    /// <inheritdoc/>
+    public int EnginePriority => (int)MutatePriority.HandlerHint;
 
     /// <inheritdoc/>
     public IEnumerable<Type> SupportedTypes => _MutatorsByType.Keys;

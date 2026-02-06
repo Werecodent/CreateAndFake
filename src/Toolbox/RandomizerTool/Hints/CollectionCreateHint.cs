@@ -13,6 +13,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing collections for <see cref="IRandomizer"/>.</summary>
 public sealed class CollectionCreateHint : CreateHint
 {
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.CollectionHint;
+
     /// <summary>Collections able to be randomized.</summary>
     private static readonly ImmutableArray<Type> _Collections =
     [

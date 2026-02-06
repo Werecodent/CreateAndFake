@@ -50,6 +50,9 @@ public class ImmutableCollectionCopyHint : CopyHint
         )!;
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.ImmutableCollectionHint;
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

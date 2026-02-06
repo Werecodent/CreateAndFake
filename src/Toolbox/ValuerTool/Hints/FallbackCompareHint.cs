@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class FallbackCompareHint : CompareHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.FallbackHint;
+
+    /// <inheritdoc/>
     protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer);

@@ -74,6 +74,9 @@ public sealed class LegacyCollectionCopyHint : CopyHint
     }.ToFrozenDictionary();
 
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CopyPriority.LegacyCollectionHint;
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, duplicator);

@@ -9,6 +9,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class InjectedCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.InjectedHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => [];
 
     /// <inheritdoc/>

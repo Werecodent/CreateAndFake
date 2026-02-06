@@ -8,6 +8,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class SeededRandomCompareHint : CompareHint<SeededRandom>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.SeededRandomHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         SeededRandom? expected,
         SeededRandom? actual,

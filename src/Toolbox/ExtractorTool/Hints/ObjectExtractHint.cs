@@ -9,6 +9,9 @@ namespace CreateAndFake.ExtractorTool.Hints;
 public sealed class ObjectExtractHint : ExtractHint<object>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.ObjectHint;
+
+    /// <inheritdoc/>
     protected override bool Extract(object value, IExtractorChainer extractor)
     {
         ArgumentGuard.ThrowIfNull(extractor);

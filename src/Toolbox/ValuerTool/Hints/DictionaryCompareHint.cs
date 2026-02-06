@@ -10,6 +10,9 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.DictionaryHint;
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         IDictionary? expected,
         IDictionary? actual,

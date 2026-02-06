@@ -7,6 +7,9 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class SpanCreateHint : CreateHint
 {
     /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.SpanHint;
+
+    /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => [typeof(Span<>), typeof(ReadOnlySpan<>)];
 
     /// <inheritdoc/>

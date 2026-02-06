@@ -11,6 +11,9 @@ namespace CreateAndFake.ValuerTool.Engine;
 public abstract class CompareHint : IToolHint
 {
     /// <inheritdoc/>
+    public abstract int EnginePriority { get; }
+
+    /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <summary>
