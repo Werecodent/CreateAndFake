@@ -44,25 +44,16 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, Extrac
 
         return this with
         {
+            IncludeFrameworkHints = section.GetValue(
+                nameof(IncludeFrameworkHints),
+                IncludeFrameworkHints
+            ),
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             ExtractPrivateMembers = section.GetValue(
                 nameof(ExtractPrivateMembers),
                 ExtractPrivateMembers
             ),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
-    }
-
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return ValueComparer.Use.GetHashCode(
-            Randomizer,
-            Valuer,
-            IncludeDefaultHints,
-            Hints,
-            ExtractPrivateMembers,
-            UniqueIgnoredTypes,
-            ContentEndTypes
-        );
     }
 }

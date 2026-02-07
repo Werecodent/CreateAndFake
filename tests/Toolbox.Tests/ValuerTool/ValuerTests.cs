@@ -40,14 +40,14 @@ public static class ValuerTests
     [Fact]
     internal static void GetHashCode_MissingMatchThrows()
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(null))
             .Throws<ToolException>()
             .InnerException.GetType()
             .Assert()
             .Is(typeof(NotSupportedException));
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(new object()))
             .Throws<ToolException>()
             .InnerException.GetType()
@@ -71,7 +71,7 @@ public static class ValuerTests
                 Behavior.Returns(result, Times.Once)
             );
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint] })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .GetHashCode(data)
             .Assert()
             .Is(result);
@@ -82,14 +82,14 @@ public static class ValuerTests
     [Fact]
     internal static void Compare_MissingMatchThrows()
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.Compare(null, new object()))
             .Throws<ToolException>()
             .InnerException.GetType()
             .Assert()
             .Is(typeof(NotSupportedException));
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.Compare(new object(), new object()))
             .Throws<ToolException>()
             .InnerException.GetType()
@@ -100,7 +100,7 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void Compare_ReferenceNoDifferences(object data)
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Compare(data, data)
             .Assert()
             .IsEmpty();
@@ -147,7 +147,13 @@ public static class ValuerTests
             Behavior.Returns(hash, Times.Once)
         );
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint.Dummy],
+            }
+        )
             .Equals(data1, data2)
             .Assert()
             .Is(true);
@@ -184,7 +190,13 @@ public static class ValuerTests
             Behavior.Returns(hash, Times.Once)
         );
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint.Dummy],
+            }
+        )
             .Equals(data1, data2)
             .Assert()
             .Is(false);
@@ -205,7 +217,13 @@ public static class ValuerTests
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
         );
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint.Dummy],
+            }
+        )
             .Assert(v => v.Compare(item1, item2))
             .Throws<ToolException>()
             .Message.Assert()
@@ -221,7 +239,13 @@ public static class ValuerTests
             Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
         );
 
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false, Hints = [hint.Dummy] })
+        new Valuer(
+            Tools.Valuer.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint.Dummy],
+            }
+        )
             .Assert(v => v.GetHashCode(item))
             .Throws<ToolException>()
             .Message.Assert()
@@ -231,7 +255,7 @@ public static class ValuerTests
     [Fact]
     internal static void GetHashCode_CanNotSupportNull()
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(null))
             .Throws<ToolException>()
             .InnerException.GetType()
@@ -242,7 +266,7 @@ public static class ValuerTests
     [Fact]
     internal static void Compare_CanNotSupportNull()
     {
-        new Valuer(Tools.Valuer.Options with { IncludeDefaultHints = false })
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.Compare(null, new object()))
             .Throws<ToolException>()
             .InnerException.GetType()

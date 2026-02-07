@@ -5,10 +5,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ExtractorTool.Engine;
 
 /// <inheritdoc cref="IExtractor"/>
-/// <param name="defaultHints">Generators used to extract specific types.</param>
-public sealed class ExtractorEngine(IEnumerable<ExtractHint> defaultHints)
-    : ToolEngine<ExtractHint>(defaultHints),
-        IExtractorEngine
+public sealed class ExtractorEngine : ToolEngine<ExtractHint>, IExtractorEngine
 {
     /// <inheritdoc/>
     public bool Extract(object? value, IExtractorChainer chainer)

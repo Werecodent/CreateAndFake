@@ -18,7 +18,12 @@ public static class Issue052Tests
     [Theory, RandomData]
     internal static void Issue052_RandomizerPostCustomizable(Fake<CreateHint> hint)
     {
-        Randomizer randomizer = new(Tools.Randomizer.Options with { IncludeDefaultHints = false });
+        Randomizer randomizer = new(
+            Tools.Randomizer.Options with
+            {
+                IncludeFrameworkHints = false,
+            }
+        );
         Data testItem = new() { Item = "Sample" };
 
         hint.Setup(
@@ -36,7 +41,12 @@ public static class Issue052Tests
     [Theory, RandomData]
     internal static void Issue052_DuplicatorPostCustomizable(Fake<CopyHint> hint, Data item)
     {
-        Duplicator duplicator = new(Tools.Duplicator.Options with { IncludeDefaultHints = false });
+        Duplicator duplicator = new(
+            Tools.Duplicator.Options with
+            {
+                IncludeFrameworkHints = false,
+            }
+        );
 
         hint.Setup(
             d => d.TryCopy(item, Arg.Any<IDuplicatorChainer>()),
@@ -60,7 +70,7 @@ public static class Issue052Tests
         Valuer valuer = new(
             Tools.Valuer.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 IncludeValueHashInComparison = false,
             }
         );

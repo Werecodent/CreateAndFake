@@ -14,10 +14,15 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
 
     /// <inheritdoc/>
     [ConfigurableOption]
-    public int MaxHintRecursion { get; init; } = 20;
+    public bool IncludeFrameworkHints { get; init; } = true;
 
     /// <inheritdoc/>
-    public bool IncludeDefaultHints { get; init; } = true;
+    [ConfigurableOption]
+    public bool IncludeFoundHints { get; init; } = true;
+
+    /// <inheritdoc/>
+    [ConfigurableOption]
+    public int MaxHintRecursion { get; init; } = 20;
 
     /// <inheritdoc/>
     public ImmutableArray<THint> Hints { get; init; } = [];

@@ -96,9 +96,6 @@ public abstract class ExtractHintTestBase<T>(
     /// <param name="options">Options to pass via the chainer.</param>
     protected static IExtractorChainer CreateChainer(ExtractorOptions options = null)
     {
-        return new ExtractorChainer(
-            options ?? Tools.Extractor.Options,
-            new ExtractorEngine(Extractor.DefaultHints)
-        );
+        return new ExtractorChainer(options ?? Tools.Extractor.Options, new ExtractorEngine());
     }
 }

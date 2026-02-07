@@ -1,9 +1,7 @@
-﻿using System.Collections.Immutable;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
-using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.ValuerTool;
 
@@ -12,36 +10,8 @@ namespace CreateAndFake.ValuerTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Valuer(ValuerOptions options) : IValuer
 {
-    /// <summary>Default set of hints to use for comparisons.</summary>
-    internal static readonly ImmutableArray<CompareHint> DefaultHints =
-    [
-        new TaskCompareHint(),
-        new AsyncEnumerableCompareHint(),
-        new SyncAsyncEnumerableCompareHint(),
-        new EarlyFailCompareHint(),
-        new FallbackCompareHint(),
-        new HandlerCompareHint(),
-        new FakedCompareHint(),
-        new AssemblyNameCompareHint(),
-        new ValueEquatableCompareHint(),
-        new ValuerAsyncComparableCompareHint(),
-        new ValuerComparableCompareHint(),
-        new ValuerEquatableCompareHint(),
-        new EquatableCompareHint(),
-        new StringBuilderCompareHint(),
-        new StringDictionaryCompareHint(),
-        new DictionaryCompareHint(),
-        new EnumerableCompareHint(),
-        new SeededRandomCompareHint(),
-        new MemberInfoCompareHint(),
-        new ParameterInfoCompareHint(),
-        new PublicObjectCompareHint(),
-        new PrivateObjectCompareHint(),
-        new StatelessCompareHint(),
-    ];
-
     /// <summary>Handles hint based comparisons.</summary>
-    private static readonly ValuerEngine _engine = new(DefaultHints);
+    private static readonly ValuerEngine _engine = new();
 
     /// <inheritdoc/>
     public ValuerOptions Options { get; } =

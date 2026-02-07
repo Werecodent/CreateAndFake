@@ -1,7 +1,5 @@
-﻿using System.Collections.Immutable;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
 using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Hints;
 
 namespace CreateAndFake.MutatorTool;
 
@@ -9,18 +7,8 @@ namespace CreateAndFake.MutatorTool;
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
-    /// <summary>Default set of hints to use for mutation.</summary>
-    internal static readonly ImmutableArray<IMutateHint> DefaultHints =
-    [
-        new HandlerMutateHint(),
-        new CollectionMutateHint(),
-        new LegacyDictionaryMutateHint(),
-        new LegacyListMutateHint(),
-        new ObjectMutateHint(),
-    ];
-
     /// <summary>Handles hint based mutation.</summary>
-    private static readonly MutatorEngine _engine = new(DefaultHints);
+    private static readonly MutatorEngine _engine = new();
 
     /// <inheritdoc/>
     public MutatorOptions Options { get; } =

@@ -35,7 +35,7 @@ public static class DuplicatorTests
     [Fact]
     internal static void Copy_MissingMatchThrows()
     {
-        new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })
+        new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
             .Assert(d => d.Copy(new object()))
             .Throws<ToolException>()
             .InnerException.GetType()
@@ -46,7 +46,7 @@ public static class DuplicatorTests
     [Fact]
     internal static void Copy_NullWorks()
     {
-        new Duplicator(Tools.Duplicator.Options with { IncludeDefaultHints = false })
+        new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
             .Copy<object>(null)
             .Assert()
             .Is(null);
@@ -61,7 +61,7 @@ public static class DuplicatorTests
         new Duplicator(
             Tools.Duplicator.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 Hints = [hint],
             }
         )
@@ -84,7 +84,7 @@ public static class DuplicatorTests
         new Duplicator(
             Tools.Duplicator.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 Hints = [hint],
             }
         )

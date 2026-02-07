@@ -1,8 +1,6 @@
-using System.Collections.Immutable;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Engine;
-using CreateAndFake.ExtractorTool.Hints;
 
 namespace CreateAndFake.ExtractorTool;
 
@@ -11,20 +9,8 @@ namespace CreateAndFake.ExtractorTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
-    /// <summary>Default set of hints to use for copying.</summary>
-    internal static readonly ImmutableArray<ExtractHint> DefaultHints =
-    [
-        new NullExtractHint(),
-        new EndingExtractHint(),
-        new DictionaryExtractHint(),
-        new EnumerableExtractHint(),
-        new DelegateExtractHint(),
-        new TaskExtractHint(),
-        new ObjectExtractHint(),
-    ];
-
     /// <summary>Handles hint based extraction.</summary>
-    private static readonly ExtractorEngine _engine = new(DefaultHints);
+    private static readonly ExtractorEngine _engine = new();
 
     /// <inheritdoc/>
     public ExtractorOptions Options { get; } =

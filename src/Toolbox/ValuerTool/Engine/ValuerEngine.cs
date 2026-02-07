@@ -5,10 +5,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc cref="IValuer"/>
-/// <param name="defaultHints">Generators used to compare specific types.</param>
-public sealed class ValuerEngine(IEnumerable<CompareHint> defaultHints)
-    : ToolEngine<CompareHint>(defaultHints),
-        IValuerEngine
+public sealed class ValuerEngine : ToolEngine<CompareHint>, IValuerEngine
 {
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer)

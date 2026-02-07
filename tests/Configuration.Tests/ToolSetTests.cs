@@ -141,9 +141,12 @@ public static class ToolSetTests
         );
     }
 
-    [Theory, RandomData]
-    internal static void FindEnvironmentName_PrioritizesSetValue(string value1, string value2)
+    [Fact]
+    internal static void FindEnvironmentName_PrioritizesSetValue()
     {
+        string value1 = _PlainTools.Randomizer.Create<string>();
+        string value2 = _PlainTools.Randomizer.Create<string>();
+
         _PlainTools.Asserter.Is(ToolSet.FindEnvironmentName(), "Production");
         TestEnvironmentName("DOTNET_ENVIRONMENT", value1);
         TestEnvironmentName("ASPNETCORE_ENVIRONMENT", value2);

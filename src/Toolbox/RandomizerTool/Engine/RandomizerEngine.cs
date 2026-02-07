@@ -6,10 +6,7 @@ using CreateAndFake.FakerTool;
 namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <inheritdoc cref="IRandomizer"/>
-/// <param name="defaultHints">Generators used to randomize specific types.</param>
-public sealed class RandomizerEngine(IEnumerable<CreateHint> defaultHints)
-    : ToolEngine<CreateHint>(defaultHints),
-        IRandomizerEngine
+public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
 {
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>

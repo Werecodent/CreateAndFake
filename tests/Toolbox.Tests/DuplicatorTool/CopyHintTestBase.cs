@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.TesterTool;
 
@@ -151,7 +150,7 @@ public abstract class CopyHintTestBase<T>(
     {
         return new DuplicatorChainer(
             optionConfiguration?.Invoke(Tools.Duplicator.Options) ?? Tools.Duplicator.Options,
-            new DuplicatorEngine(Duplicator.DefaultHints)
+            new DuplicatorEngine()
         );
     }
 }

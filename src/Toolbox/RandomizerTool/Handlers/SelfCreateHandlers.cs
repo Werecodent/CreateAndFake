@@ -44,7 +44,8 @@ internal static class SelfCreateHandlers
             {
                 Hints = [],
                 NestedOptions = null,
-                IncludeDefaultHints = true,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
             }
         ),
@@ -53,7 +54,8 @@ internal static class SelfCreateHandlers
             {
                 Hints = [],
                 NestedOptions = null,
-                IncludeDefaultHints = true,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
             }
         ),
@@ -62,7 +64,8 @@ internal static class SelfCreateHandlers
             {
                 Hints = [],
                 NestedOptions = null,
-                IncludeDefaultHints = true,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
             }
         ),
@@ -71,7 +74,8 @@ internal static class SelfCreateHandlers
             {
                 Hints = [],
                 NestedOptions = null,
-                IncludeDefaultHints = true,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
                 CollectionMinSize = rand.Options.Gen.Next(0, 1),
                 CollectionMaxSize = rand.Options.Gen.Next(0, 4),
@@ -91,7 +95,8 @@ internal static class SelfCreateHandlers
             {
                 Hints = [],
                 NestedOptions = null,
-                IncludeDefaultHints = true,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(8, 12),
                 AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 3), new TimeSpan(0, 0, 8)),
             }

@@ -22,7 +22,7 @@ public static class StringCreateHandlerTests
             StringMaxSize = 5,
         };
         StringCreateHandler hint = new();
-        RandomizerChainer chainer = new(options, new RandomizerEngine(Randomizer.DefaultHints));
+        RandomizerChainer chainer = new(options, new RandomizerEngine());
 
         for (int i = 0; i < 1000; i++)
         {
@@ -48,9 +48,7 @@ public static class StringCreateHandlerTests
         object value = "aaa";
         for (int i = 0; i < 100; i++)
         {
-            hint.CreateSupported(
-                    new RandomizerChainer(options, new RandomizerEngine(Randomizer.DefaultHints))
-                )
+            hint.CreateSupported(new RandomizerChainer(options, new RandomizerEngine()))
                 .Assert()
                 .Is(value);
         }
@@ -59,7 +57,7 @@ public static class StringCreateHandlerTests
         {
             StringCharacterSet = FrozenSet.ToFrozenSet("ab"),
         };
-        RandomizerChainer chainer = new(options2, new RandomizerEngine(Randomizer.DefaultHints));
+        RandomizerChainer chainer = new(options2, new RandomizerEngine());
         for (int i = 0; i < 100; i++)
         {
             ((string)hint.CreateSupported(chainer)).Trim('a', 'b').Length.Assert().Is(0);

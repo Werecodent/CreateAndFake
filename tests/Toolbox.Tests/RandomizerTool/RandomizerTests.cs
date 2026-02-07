@@ -51,7 +51,7 @@ public static class RandomizerTests
     [Fact]
     internal static void Create_NoRulesThrows()
     {
-        new Randomizer(Tools.Randomizer.Options with { IncludeDefaultHints = false })
+        new Randomizer(Tools.Randomizer.Options with { IncludeFrameworkHints = false })
             .Assert(r => r.Create<object>())
             .Throws<ToolException>();
     }
@@ -69,7 +69,7 @@ public static class RandomizerTests
         new Randomizer(
             Tools.Randomizer.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 Hints = [hint],
             }
         )
@@ -92,7 +92,7 @@ public static class RandomizerTests
         new Randomizer(
             Tools.Randomizer.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 Hints = [hint],
             }
         )
@@ -115,7 +115,7 @@ public static class RandomizerTests
         new Randomizer(
             Tools.Randomizer.Options with
             {
-                IncludeDefaultHints = false,
+                IncludeFrameworkHints = false,
                 Hints = [hint],
             }
         )

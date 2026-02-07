@@ -1,9 +1,7 @@
-﻿using System.Collections.Immutable;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Hints;
 
 namespace CreateAndFake.RandomizerTool;
 
@@ -12,27 +10,8 @@ namespace CreateAndFake.RandomizerTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 {
-    /// <summary>Default set of hints to use for randomization.</summary>
-    internal static readonly ImmutableArray<CreateHint> DefaultHints =
-    [
-        new HandlerCreateHint(),
-        new EnumCreateHint(),
-        new GenericCreateHint(),
-        new AsyncCollectionCreateHint(),
-        new CollectionCreateHint(),
-        new ImmutableCollectionCreateHint(),
-        new FrozenCollectionCreateHint(),
-        new LegacyCollectionCreateHint(),
-        new SpanCreateHint(),
-        new DelegateCreateHint(),
-        new TaskCreateHint(),
-        new InjectedCreateHint(),
-        new FakeCreateHint(),
-        new ObjectCreateHint(),
-    ];
-
     /// <summary>Handles hint based randomization.</summary>
-    private static readonly RandomizerEngine _engine = new(DefaultHints);
+    private static readonly RandomizerEngine _engine = new();
 
     /// <inheritdoc/>
     public RandomizerOptions Options { get; } =

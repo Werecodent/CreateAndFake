@@ -41,21 +41,13 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, Copy
 
         return this with
         {
-            VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
+            IncludeFrameworkHints = section.GetValue(
+                nameof(IncludeFrameworkHints),
+                IncludeFrameworkHints
+            ),
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
             MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
+            VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
         };
-    }
-
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return ValueComparer.Use.GetHashCode(
-            Asserter,
-            Extractor,
-            IncludeDefaultHints,
-            Hints,
-            VerifyCloneResult,
-            SerializableTypes
-        );
     }
 }

@@ -5,19 +5,28 @@
             "StringCompareOption": "CurrentCulture"
         },
         "Duplicator": {
-            "VerifyCloneResult": false,
-            "MaxHintRecursion": 9
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "VerifyCloneResult": false
         },
         "Extractor": {
-            "ExtractPrivateMembers": true,
-            "MaxHintRecursion": 9
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "ExtractPrivateMembers": true
         },
         "Faker": {},
         "Mutator": {
-            "VariantAttempts": 20,
-            "MaxHintRecursion": 8
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 8,
+            "VariantAttempts": 20
         },
         "Randomizer": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
             "RandomizerCreateAttempts": "Few",
             "ObjectCreateAttempts": "00:01:00",
             "CollectionAttempts": 5,
@@ -25,8 +34,7 @@
             "CollectionMaxSize": 4,
             "StringMinSize": 2,
             "StringMaxSize": 4,
-            "StringCharacterSet": "ABC1",
-            "MaxHintRecursion": 9
+            "StringCharacterSet": "ABC1"
         },
         "Runner": {
             "InheritIReflectableTypeOnFakedType": true,
@@ -61,13 +69,15 @@
             "DisableParameterMutationTests": true
         },
         "Valuer": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
             "UseEquatableComparisons": false,
             "CheckCollectionType": true,
             "IgnoreCurrentRandomSeed": false,
             "AsyncTimeout": "00:01:00",
             "SkipAsyncValues": true,
-            "IncludeValueHashInComparison": false,
-            "MaxHintRecursion": 9
+            "IncludeValueHashInComparison": false
         }
     }
 }

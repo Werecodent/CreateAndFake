@@ -6,10 +6,7 @@ using CreateAndFake.ExtractorTool;
 namespace CreateAndFake.MutatorTool.Engine;
 
 /// <inheritdoc cref="IMutator"/>
-/// <param name="defaultHints">Generators used to mutate specific types.</param>
-public sealed class MutatorEngine(IEnumerable<IMutateHint> defaultHints)
-    : ToolEngine<IMutateHint>(defaultHints),
-        IMutatorEngine
+public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
 {
     /// <inheritdoc/>
     public object Variant(Type type, object? instance, IMutatorChainer chainer)

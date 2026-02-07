@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
@@ -60,6 +59,12 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
 
         return this with
         {
+            IncludeFrameworkHints = section.GetValue(
+                nameof(IncludeFrameworkHints),
+                IncludeFrameworkHints
+            ),
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             UseEquatableComparisons = section.GetValue(
                 nameof(UseEquatableComparisons),
                 UseEquatableComparisons
@@ -78,23 +83,6 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
                 nameof(IncludeValueHashInComparison),
                 IncludeValueHashInComparison
             ),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
-    }
-
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return ValueComparer.Use.GetHashCode(
-            IncludeDefaultHints,
-            Hints,
-            UseEquatableComparisons,
-            CheckCollectionType,
-            IgnoreCurrentRandomSeed,
-            FallbackTypes,
-            AsyncTimeout,
-            SkipAsyncValues,
-            IncludeValueHashInComparison
-        );
     }
 }

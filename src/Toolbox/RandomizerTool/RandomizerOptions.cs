@@ -67,6 +67,12 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
 
         return this with
         {
+            IncludeFrameworkHints = section.GetValue(
+                nameof(IncludeFrameworkHints),
+                IncludeFrameworkHints
+            ),
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             RandomizerCreateAttempts = section.GetValue(
                 nameof(RandomizerCreateAttempts),
                 RandomizerCreateAttempts
@@ -85,28 +91,7 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
                 .ToCharArray()
                 .Distinct()
                 .ToFrozenSet(),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
         };
-    }
-
-    /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return ValueComparer.Use.GetHashCode(
-            Gen,
-            Faker,
-            RandomizerCreateAttempts,
-            ObjectCreateAttempts,
-            CollectionAttempts,
-            CollectionMinSize,
-            CollectionMaxSize,
-            StringMinSize,
-            StringMaxSize,
-            StringCharacterSet,
-            IncludeDefaultHints,
-            Hints,
-            FinalCondition
-        );
     }
 
     /// <inheritdoc cref="NextSize"/>

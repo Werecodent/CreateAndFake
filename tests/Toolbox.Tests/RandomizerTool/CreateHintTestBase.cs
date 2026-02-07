@@ -131,9 +131,6 @@ public abstract class CreateHintTestBase<T>(
     /// <param name="options">Options to pass via the chainer.</param>
     protected static IRandomizerChainer CreateChainer(RandomizerOptions options = null)
     {
-        return new RandomizerChainer(
-            options ?? Tools.Randomizer.Options,
-            new RandomizerEngine(Randomizer.DefaultHints)
-        );
+        return new RandomizerChainer(options ?? Tools.Randomizer.Options, new RandomizerEngine());
     }
 }

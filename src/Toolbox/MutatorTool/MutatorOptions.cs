@@ -40,6 +40,11 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
         return this with
         {
+            IncludeFrameworkHints = section.GetValue(
+                nameof(IncludeFrameworkHints),
+                IncludeFrameworkHints
+            ),
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
             MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             VariantAttempts = section.GetValue(nameof(VariantAttempts), VariantAttempts),
         };

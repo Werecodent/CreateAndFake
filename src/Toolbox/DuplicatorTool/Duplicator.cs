@@ -1,10 +1,8 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.DuplicatorTool.Hints;
 
 namespace CreateAndFake.DuplicatorTool;
 
@@ -13,26 +11,8 @@ namespace CreateAndFake.DuplicatorTool;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
 {
-    /// <summary>Default set of hints to use for copying.</summary>
-    internal static readonly ImmutableArray<CopyHint> DefaultHints =
-    [
-        new HandlerCopyHint(),
-        new TaskCopyHint(),
-        new DeepCloneableCopyHint(),
-        new DuplicatableCopyHint(),
-        new BasicCopyHint(),
-        new AsyncCollectionCopyHint(),
-        new FrozenCollectionCopyHint(),
-        new ImmutableCollectionCopyHint(),
-        new LegacyCollectionCopyHint(),
-        new CollectionCopyHint(),
-        new CloneableCopyHint(),
-        new SerializableCopyHint(),
-        new ObjectCopyHint(),
-    ];
-
     /// <summary>Handles hint based duplication.</summary>
-    private static readonly DuplicatorEngine _engine = new(DefaultHints);
+    private static readonly DuplicatorEngine _engine = new();
 
     /// <inheritdoc/>
     public DuplicatorOptions Options { get; } =

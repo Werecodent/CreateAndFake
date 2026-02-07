@@ -1,7 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.ValuerTool.Engine;
@@ -35,7 +34,7 @@ public static class ValuerEngineTests
             opt =>
                 opt with
                 {
-                    InjectionValues = [Tools.Valuer.Options, Valuer.DefaultHints],
+                    InjectionValues = [Tools.Valuer.Options],
                     MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
                     IgnorableExceptions =
                     [

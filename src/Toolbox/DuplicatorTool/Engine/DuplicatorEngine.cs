@@ -8,10 +8,7 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 #pragma warning disable RCS1165, S2955 // Checking for only null specifically.
 
 /// <inheritdoc cref="IDuplicator"/>
-/// <param name="defaultHints">Generators used to duplicate specific types.</param>
-public sealed class DuplicatorEngine(IEnumerable<CopyHint> defaultHints)
-    : ToolEngine<CopyHint>(defaultHints),
-        IDuplicatorEngine
+public sealed class DuplicatorEngine : ToolEngine<CopyHint>, IDuplicatorEngine
 {
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]

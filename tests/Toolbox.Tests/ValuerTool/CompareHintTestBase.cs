@@ -280,9 +280,6 @@ public abstract class CompareHintTestBase<T>(
     /// <param name="options">Options to pass via the chainer.</param>
     protected static IValuerChainer CreateChainer(ValuerOptions options = null)
     {
-        return new ValuerChainer(
-            options ?? Tools.Valuer.Options,
-            new ValuerEngine(Valuer.DefaultHints)
-        );
+        return new ValuerChainer(options ?? Tools.Valuer.Options, new ValuerEngine());
     }
 }

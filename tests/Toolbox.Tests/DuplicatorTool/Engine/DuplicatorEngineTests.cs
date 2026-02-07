@@ -1,7 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Engine;
@@ -36,7 +35,7 @@ public static class DuplicatorEngineTests
             opt =>
                 opt with
                 {
-                    InjectionValues = [Tools.Duplicator.Options, Duplicator.DefaultHints],
+                    InjectionValues = [Tools.Duplicator.Options],
                     MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
                     IgnorableExceptions =
                     [

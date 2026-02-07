@@ -1,22 +1,38 @@
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Runs the hint behavior pipeline.</summary>
 /// <typeparam name="THint">Hint type being used.</typeparam>
-/// <param name="defaultHints">Hints setup by the framework.</param>
-public abstract class ToolEngine<THint>(IEnumerable<THint> defaultHints) : IToolEngine<THint>
+public abstract class ToolEngine<THint> : IToolEngine<THint>
     where THint : IToolHint
 {
+    /// <summary>All found hints from all loaded assemblies.</summary>
+    private static readonly ImmutableArray<THint> _AllHints =
+    [
+        .. TypeDescriber
+            .FindLoadedSubclasses<THint>()
+            .Select(Activator.CreateInstance)
+            .Cast<THint>()
+            .OrderByDescending(h => h.EnginePriority),
+    ];
+
+    /// <summary>All <c>CreateAndFake</c> hints.</summary>
+    private static readonly FrozenSet<THint> _FrameworkHints = _AllHints
+        .Where(h => h.GetType().Assembly == typeof(THint).Assembly)
+        .ToFrozenSet();
+
     /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes =>
-        defaultHints?.SelectMany(h => h.SupportedTypes) ?? [];
+        _AllHints.SelectMany(h => h.SupportedTypes) ?? [];
 
     /// <summary>Picks hints to use for the tool based upon chainer options.</summary>
     /// <typeparam name="TOptions">Test</typeparam>
     /// <param name="chainer">Potentially modified configuration to use.</param>
     /// <returns>Hints to utilize.</returns>
-    protected IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions> chainer)
+    protected static IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions> chainer)
         where TOptions : IToolHintOptions<TOptions, THint>
     {
         ArgumentGuard.ThrowIfNull(chainer);
@@ -25,9 +41,16 @@ public abstract class ToolEngine<THint>(IEnumerable<THint> defaultHints) : ITool
         {
             yield return hint;
         }
-        if (chainer.Options.IncludeDefaultHints)
+        foreach (THint hint in _AllHints)
         {
-            foreach (THint hint in defaultHints ?? [])
+            if (_FrameworkHints.Contains(hint))
+            {
+                if (chainer.Options.IncludeFrameworkHints)
+                {
+                    yield return hint;
+                }
+            }
+            else if (chainer.Options.IncludeFoundHints)
             {
                 yield return hint;
             }

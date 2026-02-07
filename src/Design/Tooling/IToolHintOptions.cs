@@ -14,7 +14,12 @@ public interface IToolHintOptions<TSelf, THint> : IToolOptions
     int MaxHintRecursion { get; }
 
     /// <summary>If the default set of hints should be used by the tool.</summary>
-    bool IncludeDefaultHints { get; }
+    [ConfigurableOption]
+    bool IncludeFrameworkHints { get; }
+
+    /// <summary>If found custom hints are automatically used by the tool.</summary>
+    [ConfigurableOption]
+    bool IncludeFoundHints { get; }
 
     /// <summary>Custom handlers used for specific types.</summary>
     ImmutableArray<THint> Hints { get; }
