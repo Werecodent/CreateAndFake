@@ -1,13 +1,14 @@
 using System.Runtime.Serialization;
+using CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.Design.Tooling;
+namespace CreateAndFake.Design.Exceptions;
 
 /// <summary>
-///     <see cref="Exception"/> <see cref="Type"/> for fatal errors occurring
-///     within a <see cref="CreateAndFake"/> <see cref="IToolEngine{T}"/>.
+///     <see cref="Exception"/> <see cref="Type"/> for errors
+///     occurring within a <see cref="IToolEngine{T}"/>.
 /// </summary>
 [Serializable, KnownType(typeof(Exception))]
-public sealed class EngineException : Exception
+public sealed class EngineException : CreateAndFakeException
 {
     /// <inheritdoc cref="EngineException"/>
     /// <remarks>Serialization constructor.</remarks>

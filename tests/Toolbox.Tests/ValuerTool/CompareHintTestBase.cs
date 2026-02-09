@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
@@ -29,6 +29,7 @@ public abstract class CompareHintTestBase<T>(
                 typeof(InvalidCastException),
                 typeof(NotSupportedException),
                 typeof(ToolException),
+                typeof(EngineException),
                 typeof(TargetException),
                 typeof(InvalidOperationException),
                 typeof(TargetParameterCountException),

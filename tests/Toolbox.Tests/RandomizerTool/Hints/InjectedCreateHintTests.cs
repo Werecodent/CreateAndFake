@@ -1,4 +1,4 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.ErrorCases;

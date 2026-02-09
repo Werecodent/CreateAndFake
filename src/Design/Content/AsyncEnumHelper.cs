@@ -34,6 +34,8 @@ public static class AsyncEnumHelper
         }
     }
 
+#pragma warning disable IDE0390 // Purpose is to create async data from sync data.
+
     /// <inheritdoc cref="CreateFrom{T}"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     private static async IAsyncEnumerable<T> IterateAsync<T>(
@@ -47,6 +49,8 @@ public static class AsyncEnumHelper
             yield return value;
         }
     }
+
+#pragma warning restore IDE0390
 
     /// <summary>Determines if the <paramref name="collection"/> has any items.</summary>
     /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>

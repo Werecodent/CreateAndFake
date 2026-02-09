@@ -135,6 +135,7 @@ public sealed class ToolSet(
                 Gen = gen,
                 Randomizer = randomizer,
                 Duplicator = duplicator,
+                Extractor = extractor,
                 Asserter = asserter,
                 Runner = runner,
             }.WithConfig(config)

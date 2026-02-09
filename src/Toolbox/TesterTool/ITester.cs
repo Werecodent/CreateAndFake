@@ -16,6 +16,40 @@ public interface ITester : ITool<TesterOptions>
     /// <returns>The created tool.</returns>
     ITester WithOptions(TesterMod optionConfiguration);
 
+    /// <summary>Verifies <typeparamref name="T"/> can JSON serialize and deserialize.</summary>
+    /// <inheritdoc cref="VerifyJsonSerialization{T}(T,TesterMod)"/>
+    void VerifyJsonSerialization<T>(TesterMod? optionConfiguration = null);
+
+    /// <typeparam name="T">The <see cref="Type"/> to test.</typeparam>
+    /// <inheritdoc cref="VerifyJsonSerialization"/>
+    void VerifyJsonSerialization<T>(T instance, TesterMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Verifies the <paramref name="instance"/> can JSON serialize and deserialize.
+    /// </summary>
+    /// <param name="instance">The data to test.</param>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
+    /// </param>
+    void VerifyJsonSerialization(object instance, TesterMod? optionConfiguration = null);
+
+    /// <summary>Verifies <typeparamref name="T"/> can XML serialize and deserialize.</summary>
+    /// <inheritdoc cref="VerifyXmlSerialization{T}(T,TesterMod)"/>
+    void VerifyXmlSerialization<T>(TesterMod? optionConfiguration = null);
+
+    /// <typeparam name="T">The <see cref="Type"/> to test.</typeparam>
+    /// <inheritdoc cref="VerifyXmlSerialization"/>
+    void VerifyXmlSerialization<T>(T instance, TesterMod? optionConfiguration = null);
+
+    /// <summary>
+    ///     Verifies the <paramref name="instance"/> can XML serialize and deserialize.
+    /// </summary>
+    /// <param name="instance">The data to test.</param>
+    /// <param name="optionConfiguration">
+    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
+    /// </param>
+    void VerifyXmlSerialization(object instance, TesterMod? optionConfiguration = null);
+
     /// <inheritdoc cref="PreventsNullRefException(Type,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
     Task PreventsNullRefException<T>(

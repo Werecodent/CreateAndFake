@@ -11,14 +11,12 @@ namespace System.Diagnostics.CodeAnalysis;
 ///     when <paramref name="parameterName"/> is not <see langword="null"/>.
 /// </summary>
 /// <param name="parameterName"><inheritdoc cref="ParameterName" path="/summary"/></param>
-[
-    ExcludeFromCodeCoverage,
-    AttributeUsage(
-        AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue,
-        AllowMultiple = true,
-        Inherited = false
-    )
-]
+[ExcludeFromCodeCoverage]
+[AttributeUsage(
+    AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue,
+    AllowMultiple = true,
+    Inherited = false
+)]
 internal sealed class NotNullIfNotNullAttribute(string parameterName) : Attribute
 {
     /// <summary>Name of the associated parameter that matches nullability.</summary>

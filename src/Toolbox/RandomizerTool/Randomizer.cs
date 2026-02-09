@@ -1,6 +1,6 @@
 ﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool;
@@ -40,7 +40,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                         // Don't pass local options here.
                         return new RandomizerChainer(Options, _engine).Create(
                             type,
-                            optionConfiguration
+                            (optionConfiguration != null) ? _ => localOptions : null
                         );
                     },
                     result =>

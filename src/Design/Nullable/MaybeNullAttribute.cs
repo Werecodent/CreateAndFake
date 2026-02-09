@@ -7,16 +7,14 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>Specifies the attached data may actually be <see langword="null"/>.</summary>
-[
-    ExcludeFromCodeCoverage,
-    AttributeUsage(
-        AttributeTargets.Parameter
-            | AttributeTargets.Property
-            | AttributeTargets.Field
-            | AttributeTargets.ReturnValue,
-        Inherited = false
-    )
-]
+[ExcludeFromCodeCoverage]
+[AttributeUsage(
+    AttributeTargets.Parameter
+        | AttributeTargets.Property
+        | AttributeTargets.Field
+        | AttributeTargets.ReturnValue,
+    Inherited = false
+)]
 internal sealed class MaybeNullAttribute : Attribute;
 
 #pragma warning restore IDE0130

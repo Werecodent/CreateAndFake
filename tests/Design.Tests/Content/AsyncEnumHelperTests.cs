@@ -1,5 +1,5 @@
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.Design.Tests.Content;
 
@@ -221,7 +221,7 @@ public static class AsyncEnumHelperTests
         using CancellationTokenSource source = new();
         await AsyncEnumHelper.TriggerCancellationAsync(source);
         await AsyncEnumHelper.TriggerCancellationAsync(
-            _ => throw new ToolException("Cancellation triggered twice."),
+            _ => throw new EngineException("Cancellation triggered twice."),
             source
         );
     }

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Extensions;
-using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Design;
 
@@ -32,10 +32,10 @@ public static class ArgumentGuard
     /// <summary>
     ///     Prevents further execution if any of the values are <see langword="null"/>.
     /// </summary>
-    /// <param name="valueA">Passed parameter value.</param>
-    /// <param name="valueB">Passed parameter value.</param>
-    /// <param name="nameA">Name of the parameter.</param>
-    /// <param name="nameB">Name of the parameter.</param>
+    /// <param name="valueA">First passed parameter value.</param>
+    /// <param name="valueB">Second passed parameter value.</param>
+    /// <param name="nameA">Parameter name for <paramref name="valueA"/>.</param>
+    /// <param name="nameB">Parameter name for <paramref name="valueB"/>.</param>
     /// <exception cref="ArgumentNullException">If any value is null.</exception>
     [DebuggerStepThrough]
     public static void ThrowIfNull(
@@ -49,9 +49,9 @@ public static class ArgumentGuard
         ThrowIfNull(valueB, nameB);
     }
 
-    /// <inheritdoc cref="ThrowIfNull(object,object,string,string)"/>>
-    /// <param name="valueC">Passed parameter value.</param>
-    /// <param name="nameC">Name of the parameter.</param>
+    /// <inheritdoc cref="ThrowIfNull(object,object,string,string)"/>
+    /// <param name="valueC">Third passed parameter value.</param>
+    /// <param name="nameC">Parameter name for <paramref name="valueC"/>.</param>
     [DebuggerStepThrough]
     public static void ThrowIfNull(
         [NotNull] object? valueA,
@@ -67,9 +67,9 @@ public static class ArgumentGuard
         ThrowIfNull(valueC, nameC);
     }
 
-    /// <inheritdoc cref="ThrowIfNull(object,object,object,string,string,string)"/>>
-    /// <param name="valueD">Passed parameter value.</param>
-    /// <param name="nameD">Name of the parameter.</param>
+    /// <inheritdoc cref="ThrowIfNull(object,object,object,string,string,string)"/>
+    /// <param name="valueD">Fourth passed parameter value.</param>
+    /// <param name="nameD">Parameter name for <paramref name="valueD"/>.</param>
     [DebuggerStepThrough]
     public static void ThrowIfNull(
         [NotNull] object? valueA,
@@ -88,9 +88,9 @@ public static class ArgumentGuard
         ThrowIfNull(valueD, nameD);
     }
 
-    /// <inheritdoc cref="ThrowIfNull(object,object,object,string,string,string)"/>>
-    /// <param name="valueE">Passed parameter value.</param>
-    /// <param name="nameE">Name of the parameter.</param>
+    /// <inheritdoc cref="ThrowIfNull(object,object,object,object,string,string,string,string)"/>
+    /// <param name="valueE">Fifth passed parameter value.</param>
+    /// <param name="nameE">Parameter name for <paramref name="valueE"/>.</param>
     [DebuggerStepThrough]
     public static void ThrowIfNull(
         [NotNull] object? valueA,
@@ -112,6 +112,100 @@ public static class ArgumentGuard
         ThrowIfNull(valueE, nameE);
     }
 
+    /// <inheritdoc cref="ThrowIfNull(
+    ///     object,object,object,object,object,string,string,string,string,string)"/>
+    /// <param name="valueF">Sixth passed parameter value.</param>
+    /// <param name="nameF">Parameter name for <paramref name="valueF"/>.</param>
+    [DebuggerStepThrough]
+    public static void ThrowIfNull(
+        [NotNull] object? valueA,
+        [NotNull] object? valueB,
+        [NotNull] object? valueC,
+        [NotNull] object? valueD,
+        [NotNull] object? valueE,
+        [NotNull] object? valueF,
+        [CallerArgumentExpression(nameof(valueA))] string? nameA = null,
+        [CallerArgumentExpression(nameof(valueB))] string? nameB = null,
+        [CallerArgumentExpression(nameof(valueC))] string? nameC = null,
+        [CallerArgumentExpression(nameof(valueD))] string? nameD = null,
+        [CallerArgumentExpression(nameof(valueE))] string? nameE = null,
+        [CallerArgumentExpression(nameof(valueF))] string? nameF = null
+    )
+    {
+        ThrowIfNull(valueA, nameA);
+        ThrowIfNull(valueB, nameB);
+        ThrowIfNull(valueC, nameC);
+        ThrowIfNull(valueD, nameD);
+        ThrowIfNull(valueE, nameE);
+        ThrowIfNull(valueF, nameF);
+    }
+
+    /// <inheritdoc cref="ThrowIfNull(
+    ///     object,object,object,object,object,object,string,string,string,string,string,string)"/>
+    /// <param name="valueG">Seventh passed parameter value.</param>
+    /// <param name="nameG">Parameter name for <paramref name="valueG"/>.</param>
+    [DebuggerStepThrough]
+    public static void ThrowIfNull(
+        [NotNull] object? valueA,
+        [NotNull] object? valueB,
+        [NotNull] object? valueC,
+        [NotNull] object? valueD,
+        [NotNull] object? valueE,
+        [NotNull] object? valueF,
+        [NotNull] object? valueG,
+        [CallerArgumentExpression(nameof(valueA))] string? nameA = null,
+        [CallerArgumentExpression(nameof(valueB))] string? nameB = null,
+        [CallerArgumentExpression(nameof(valueC))] string? nameC = null,
+        [CallerArgumentExpression(nameof(valueD))] string? nameD = null,
+        [CallerArgumentExpression(nameof(valueE))] string? nameE = null,
+        [CallerArgumentExpression(nameof(valueF))] string? nameF = null,
+        [CallerArgumentExpression(nameof(valueG))] string? nameG = null
+    )
+    {
+        ThrowIfNull(valueA, nameA);
+        ThrowIfNull(valueB, nameB);
+        ThrowIfNull(valueC, nameC);
+        ThrowIfNull(valueD, nameD);
+        ThrowIfNull(valueE, nameE);
+        ThrowIfNull(valueF, nameF);
+        ThrowIfNull(valueG, nameG);
+    }
+
+    /// <inheritdoc cref="ThrowIfNull(
+    ///     object,object,object,object,object,object,object,
+    ///     string,string,string,string,string,string,string)"/>
+    /// <param name="valueH">Eighth passed parameter value.</param>
+    /// <param name="nameH">Parameter name for <paramref name="valueH"/>.</param>
+    [DebuggerStepThrough]
+    public static void ThrowIfNull(
+        [NotNull] object? valueA,
+        [NotNull] object? valueB,
+        [NotNull] object? valueC,
+        [NotNull] object? valueD,
+        [NotNull] object? valueE,
+        [NotNull] object? valueF,
+        [NotNull] object? valueG,
+        [NotNull] object? valueH,
+        [CallerArgumentExpression(nameof(valueA))] string? nameA = null,
+        [CallerArgumentExpression(nameof(valueB))] string? nameB = null,
+        [CallerArgumentExpression(nameof(valueC))] string? nameC = null,
+        [CallerArgumentExpression(nameof(valueD))] string? nameD = null,
+        [CallerArgumentExpression(nameof(valueE))] string? nameE = null,
+        [CallerArgumentExpression(nameof(valueF))] string? nameF = null,
+        [CallerArgumentExpression(nameof(valueG))] string? nameG = null,
+        [CallerArgumentExpression(nameof(valueH))] string? nameH = null
+    )
+    {
+        ThrowIfNull(valueA, nameA);
+        ThrowIfNull(valueB, nameB);
+        ThrowIfNull(valueC, nameC);
+        ThrowIfNull(valueD, nameD);
+        ThrowIfNull(valueE, nameE);
+        ThrowIfNull(valueF, nameF);
+        ThrowIfNull(valueG, nameG);
+        ThrowIfNull(valueH, nameH);
+    }
+
     /// <summary>
     ///     Checks if <paramref name="value"/> is an asynchronous <see cref="Type"/> .
     /// </summary>
@@ -128,13 +222,13 @@ public static class ArgumentGuard
     /// </summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="message">Error details for the potential <see cref="Exception"/>.</param>
-    /// <exception cref="ToolException">If <paramref name="value"/> is async.</exception>
+    /// <exception cref="EngineException">If <paramref name="value"/> is async.</exception>
     [DebuggerStepThrough]
     public static void ThrowIfAsynchronous(object? value, string message)
     {
         if (IsAsynchronous(value))
         {
-            throw new ToolException(message);
+            throw new EngineException(message);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent.AssertCalls;

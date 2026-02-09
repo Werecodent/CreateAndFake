@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -38,7 +38,7 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
         }
         else
         {
-            throw new ToolException(
+            throw new EngineException(
                 $"Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}. "
                     + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
             );

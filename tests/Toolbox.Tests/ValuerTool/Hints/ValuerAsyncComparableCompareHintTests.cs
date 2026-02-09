@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Hints;
@@ -25,7 +25,7 @@ public sealed class ValuerAsyncComparableCompareHintTests
     {
         TestInstance
             .Assert(hint => hint.TryCompare(data, data, CreateChainer()))
-            .Throws<ToolException>();
+            .Throws<EngineException>();
     }
 
     [Theory, RandomData]
@@ -33,6 +33,6 @@ public sealed class ValuerAsyncComparableCompareHintTests
     {
         TestInstance
             .Assert(hint => hint.TryGetHashCode(data, CreateChainer()))
-            .Throws<ToolException>();
+            .Throws<EngineException>();
     }
 }

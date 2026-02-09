@@ -1,13 +1,13 @@
 using System.Runtime.Serialization;
 
-namespace CreateAndFake.Design.Tooling;
+namespace CreateAndFake.Design.Exceptions;
 
 /// <summary>
 ///     <see cref="Exception"/> <see cref="Type"/> for fatal
 ///     errors occurring within <see cref="CreateAndFake"/> tools.
 /// </summary>
 [Serializable, KnownType(typeof(Exception))]
-public sealed class ToolException : Exception
+public sealed class ToolException : CreateAndFakeException
 {
     /// <inheritdoc cref="ToolException"/>
     /// <remarks>Serialization constructor.</remarks>

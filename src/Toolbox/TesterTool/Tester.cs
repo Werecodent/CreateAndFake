@@ -1,8 +1,11 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.RunnerTool.Attributes;
@@ -17,6 +20,116 @@ public class Tester(TesterOptions options) : ITester
     /// <inheritdoc/>
     public TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
+
+    /// <inheritdoc/>
+    public virtual void VerifyJsonSerialization<T>(TesterMod? optionConfiguration = null)
+    {
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        VerifyJsonSerialization(localOptions.Randomizer.Create<T>(), _ => localOptions);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyJsonSerialization<T>(
+        T instance,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        VerifyJsonSerialization(typeof(T), instance, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyJsonSerialization(
+        object instance,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(instance);
+        VerifyJsonSerialization(instance.GetType(), instance, optionConfiguration);
+    }
+
+    /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
+    /// <inheritdoc cref="VerifyJsonSerialization(object,TesterMod)"/>
+    private void VerifyJsonSerialization(
+        Type type,
+        object? instance,
+        TesterMod? optionConfiguration
+    )
+    {
+        DataContractJsonSerializer serializer = new(type);
+        VerifySerialization(type, instance, serializer, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyXmlSerialization<T>(TesterMod? optionConfiguration = null)
+    {
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        VerifyXmlSerialization(localOptions.Randomizer.Create<T>(), _ => localOptions);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyXmlSerialization<T>(T instance, TesterMod? optionConfiguration = null)
+    {
+        VerifyXmlSerialization(typeof(T), instance, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyXmlSerialization(
+        object instance,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(instance);
+        VerifyXmlSerialization(instance.GetType(), instance, optionConfiguration);
+    }
+
+    /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
+    /// <inheritdoc cref="VerifyXmlSerialization(object,TesterMod)"/>
+    private void VerifyXmlSerialization(Type type, object? instance, TesterMod? optionConfiguration)
+    {
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        IContentMap contents = localOptions.Extractor.Extract(instance);
+        DataContractSerializer serializer = new(
+            type,
+            contents.AllContent().Select(d => d.GetType()).Distinct()
+        );
+
+        VerifySerialization(type, instance, serializer, _ => localOptions);
+    }
+
+    /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
+    /// <inheritdoc cref="VerifyXmlSerialization(Type,object,TesterMod)"/>
+    private void VerifySerialization(
+        Type type,
+        object? instance,
+        XmlObjectSerializer serializer,
+        TesterMod? optionConfiguration
+    )
+    {
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        using MemoryStream stream = new();
+        object? result;
+        try
+        {
+            serializer.WriteObject(stream, instance);
+            _ = stream.Seek(0, SeekOrigin.Begin);
+            result = serializer.ReadObject(stream);
+        }
+        catch (Exception e) when (e is SerializationException or InvalidDataContractException)
+        {
+            throw new SerializationException(
+                $"Ran into problem trying to serialize type '{type}'.",
+                e
+            );
+        }
+
+        localOptions.Asserter.Is(
+            result,
+            instance,
+            $"Instance of type '{type}' did not deserialize with the same values."
+        );
+    }
 
     /// <inheritdoc/>
     public virtual Task PreventsNullRefException<T>(

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Extensions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Handlers;

@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.ValuerTool.Engine;

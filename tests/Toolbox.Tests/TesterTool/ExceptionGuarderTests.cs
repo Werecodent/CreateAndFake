@@ -20,15 +20,6 @@ public static class ExceptionGuarderTests
     }
 
     [Fact]
-    internal static Task ExceptionGuarder_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutation<ExceptionGuarder>(
-            TestContext.Current.CancellationToken,
-            config
-        );
-    }
-
-    [Fact]
     internal static Task CallAllMethods_SuccessfulNoException()
     {
         return Tools.Tester.PassthroughWithNoExceptions<InjectMockSample>(

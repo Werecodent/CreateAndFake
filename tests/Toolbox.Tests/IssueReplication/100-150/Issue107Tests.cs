@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Tooling;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Tests.IssueReplication;
 

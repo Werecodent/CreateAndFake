@@ -1,4 +1,4 @@
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.Tests.Extensions;
 

@@ -1,4 +1,5 @@
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.Design.Tooling;
 
@@ -49,7 +50,9 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
 
         if (_nestedDepth >= options.MaxHintRecursion)
         {
-            throw new ToolException($"Reached max recursion depth of '{options.MaxHintRecursion}'");
+            throw new EngineException(
+                $"Reached max recursion depth of '{options.MaxHintRecursion}'"
+            );
         }
     }
 

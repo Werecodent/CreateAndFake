@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Engine;
 using CreateAndFake.RandomizerTool;

@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;

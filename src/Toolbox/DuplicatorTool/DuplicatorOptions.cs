@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.ExtractorTool;

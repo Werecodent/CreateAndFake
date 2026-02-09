@@ -7,6 +7,7 @@ using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
+using CreateAndFake.ExtractorTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,9 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>Deep clones objects.</summary>
     public required IDuplicator Duplicator { get; init; }
+
+    /// <summary><inheritdoc cref="IExtractor"/></summary>
+    public required IExtractor Extractor { get; init; }
 
     /// <summary>Handles common test scenarios.</summary>
     public required IAsserter Asserter { get; init; }

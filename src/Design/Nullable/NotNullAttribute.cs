@@ -9,16 +9,14 @@ namespace System.Diagnostics.CodeAnalysis;
 /// <summary>
 ///     Specifies the attached data will not be <see langword="null"/> when the call returns.
 /// </summary>
-[
-    ExcludeFromCodeCoverage,
-    AttributeUsage(
-        AttributeTargets.Parameter
-            | AttributeTargets.Property
-            | AttributeTargets.Field
-            | AttributeTargets.ReturnValue,
-        Inherited = false
-    )
-]
+[ExcludeFromCodeCoverage]
+[AttributeUsage(
+    AttributeTargets.Parameter
+        | AttributeTargets.Property
+        | AttributeTargets.Field
+        | AttributeTargets.ReturnValue,
+    Inherited = false
+)]
 internal sealed class NotNullAttribute : Attribute;
 
 #pragma warning restore IDE0130

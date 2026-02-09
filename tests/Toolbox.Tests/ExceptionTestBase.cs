@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-
-namespace CreateAndFake.Tests;
+﻿namespace CreateAndFake.Tests;
 
 public abstract class ExceptionTestBase<T>
     where T : Exception
@@ -28,17 +25,7 @@ public abstract class ExceptionTestBase<T>
     [Theory, RandomData]
     public void Exception_XmlSerializes(T original)
     {
-        DataContractSerializer formatter = new(
-            typeof(T),
-            new[] { original.InnerException }.Where(t => t != null).Select(t => t.GetType())
-        );
-
-        using MemoryStream stream = new();
-
-        formatter.WriteObject(stream, original);
-        _ = stream.Seek(0, SeekOrigin.Begin);
-
-        formatter.ReadObject(stream).Assert().Is(original);
+        Tools.Tester.VerifyXmlSerialization(original);
     }
 
     [Fact]
@@ -50,12 +37,6 @@ public abstract class ExceptionTestBase<T>
             original = Tools.Randomizer.Create<T>();
         } while (original.InnerException != null);
 
-        DataContractJsonSerializer formatter = new(typeof(T));
-
-        using MemoryStream stream = new();
-        formatter.WriteObject(stream, original);
-        _ = stream.Seek(0, SeekOrigin.Begin);
-
-        formatter.ReadObject(stream).Assert().Is(original);
+        Tools.Tester.VerifyJsonSerialization(original);
     }
 }

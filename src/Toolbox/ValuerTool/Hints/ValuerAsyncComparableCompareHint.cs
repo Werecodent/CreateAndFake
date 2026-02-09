@@ -1,6 +1,6 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -26,7 +26,7 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         }
         else
         {
-            throw new ToolException(
+            throw new EngineException(
                 $"Cannot compare IValuerAsyncComparables in synchronous context using {nameof(IValuer)}. "
                     + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
             );
@@ -57,7 +57,7 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         }
         else
         {
-            throw new ToolException(
+            throw new EngineException(
                 $"Cannot hash IValuerAsyncComparable in synchronous context using {nameof(IValuer)}. "
                     + "Collect into a synchronous collection before attempting to hash."
             );

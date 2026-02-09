@@ -2,10 +2,10 @@ using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.Design.Tests.Tooling;
 
-public class ConfigurableOptionAttributeTests
+public static class ConfigurableOptionAttributeTests
 {
     [Fact]
-    public Task ConfigurableOptionAttribute_GuardsNulls()
+    public static Task ConfigurableOptionAttribute_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefException<ConfigurableOptionAttribute>(
             TestContext.Current.CancellationToken
@@ -13,7 +13,7 @@ public class ConfigurableOptionAttributeTests
     }
 
     [Fact]
-    public Task ConfigurableOptionAttribute_NoParameterMutation()
+    public static Task ConfigurableOptionAttribute_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation<ConfigurableOptionAttribute>(
             TestContext.Current.CancellationToken

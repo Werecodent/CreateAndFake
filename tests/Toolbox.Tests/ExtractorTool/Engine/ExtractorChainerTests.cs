@@ -1,5 +1,5 @@
 using System.Reflection;
-using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.Tests.ExtractorTool.Engine;
