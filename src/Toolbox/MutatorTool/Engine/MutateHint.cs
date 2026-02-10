@@ -2,7 +2,7 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc/>
+/// <inheritdoc cref="IMutateHint"/>
 public abstract class MutateHint : IMutateHint
 {
     /// <inheritdoc/>

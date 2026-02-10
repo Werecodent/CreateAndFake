@@ -27,9 +27,9 @@ public sealed class RandomizerChainer
     }
 
     /// <inheritdoc/>
-    protected override RandomizerChainer CreateSubChainer(RandomizerOptions options)
+    protected override RandomizerChainer CreateSubChainer(RandomizerOptions subOptions)
     {
-        return new RandomizerChainer(options, this);
+        return new RandomizerChainer(subOptions, this);
     }
 
     /// <inheritdoc/>

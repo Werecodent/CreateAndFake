@@ -15,6 +15,7 @@ public static class MutationGuarderTests
     private static readonly TesterMod config = opt =>
         opt with
         {
+            IncludeInternals = false,
             IgnorableExceptions =
             [
                 typeof(InvalidOperationException),

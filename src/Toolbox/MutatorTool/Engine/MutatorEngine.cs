@@ -108,7 +108,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
 
         MutateHintResult? result = SelectHints(chainer)
             .Select(h => h.TryModifying(instance, chainer))
-            .FirstOrDefault(r => r.HasData);
+            .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)
         {

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 namespace CreateAndFake.DuplicatorTool;
 
 /// <summary>Configuration for controlling duplication behavior.</summary>
-public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, CopyHint>
+public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICopyHint>
 {
     /// <summary>Verifies duplicates are valid.</summary>
     public required IAsserter Asserter { get; init; }

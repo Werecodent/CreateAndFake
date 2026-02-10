@@ -10,6 +10,7 @@ public class LimiterTypeConverterTests
         typeof(FormatException),
         typeof(ArgumentException),
         typeof(InvalidCastException),
+        typeof(ArgumentOutOfRangeException),
     ];
 
     [Fact]

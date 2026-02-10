@@ -3,11 +3,12 @@
     CreateAndFake.RandomizerTool.RandomizerOptions
 >;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
-public interface IRandomizer : IHintTool<RandomizerOptions>
+public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

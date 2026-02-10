@@ -5,7 +5,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ExtractorTool.Engine;
 
 /// <inheritdoc cref="IExtractor"/>
-public sealed class ExtractorEngine : ToolEngine<ExtractHint>, IExtractorEngine
+public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
 {
     /// <inheritdoc/>
     public bool Extract(object? value, IExtractorChainer chainer)
@@ -14,7 +14,7 @@ public sealed class ExtractorEngine : ToolEngine<ExtractHint>, IExtractorEngine
 
         ExtractHintResult? result = SelectHints(chainer)
             .Select(h => h.TryExtract(value, chainer))
-            .FirstOrDefault(r => r.HasData);
+            .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)
         {

@@ -9,7 +9,7 @@ namespace CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IValuer"/> to create child values.</summary>
 public sealed class ValuerChainer
-    : ToolChainer<ValuerChainer, IValuerEngine, ValuerOptions, CompareHint>,
+    : ToolChainer<ValuerChainer, IValuerEngine, ValuerOptions, ICompareHint>,
         IValuerChainer
 {
     /// <summary>History of hashes to match up references.</summary>
@@ -35,9 +35,9 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
-    protected override ValuerChainer CreateSubChainer(ValuerOptions options)
+    protected override ValuerChainer CreateSubChainer(ValuerOptions subOptions)
     {
-        return new ValuerChainer(options, this);
+        return new ValuerChainer(subOptions, this);
     }
 
     /// <summary>If <paramref name="item"/> can be tracked in history.</summary>

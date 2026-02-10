@@ -4,7 +4,7 @@ using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <inheritdoc/>
+/// <inheritdoc cref="IToolHintOptions{T,T}"/>
 public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, THint>
     where TSelf : IToolHintOptions<TSelf, THint>
     where THint : IToolHint
@@ -22,7 +22,7 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
 
     /// <inheritdoc/>
     [ConfigurableOption]
-    public int MaxHintRecursion { get; init; } = 20;
+    public int MaxHintRecursion { get; init; } = 99;
 
     /// <inheritdoc/>
     public ImmutableArray<THint> Hints { get; init; } = [];

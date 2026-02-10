@@ -2,7 +2,7 @@ using CreateAndFake.Design.Randomization;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Configuration for controlling tool behavior.</summary>
+/// <summary>Configuration for manipulating <see cref="ITool{T}"/> behavior.</summary>
 public interface IToolOptions
 {
     /// <summary>Value generator used for base randomization.</summary>

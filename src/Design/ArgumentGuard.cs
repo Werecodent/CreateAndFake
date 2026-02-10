@@ -222,13 +222,15 @@ public static class ArgumentGuard
     /// </summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="message">Error details for the potential <see cref="Exception"/>.</param>
-    /// <exception cref="EngineException">If <paramref name="value"/> is async.</exception>
+    /// <exception cref="AsynchronousAccessException">
+    ///     If <paramref name="value"/> is an asynchronous <see cref="Type"/>.
+    /// </exception>
     [DebuggerStepThrough]
     public static void ThrowIfAsynchronous(object? value, string message)
     {
         if (IsAsynchronous(value))
         {
-            throw new EngineException(message);
+            throw new AsynchronousAccessException(message);
         }
     }
 }

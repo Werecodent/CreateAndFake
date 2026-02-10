@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 namespace CreateAndFake.ValuerTool;
 
 /// <summary>Configuration for controlling comparison behavior.</summary>
-public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, CompareHint>
+public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint>
 {
     /// <summary>Allows <see cref="IEquatable{T}"/> to handle comparisons if applicable.</summary>
     [ConfigurableOption]

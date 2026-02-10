@@ -4,11 +4,15 @@
 >;
 using System.Collections;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool;
 
 /// <summary>Compares objects by value via reflection if needed.</summary>
-public interface IValuer : IHintTool<ValuerOptions>, IEqualityComparer<object>, IEqualityComparer
+public interface IValuer
+    : IHintTool<ValuerOptions, ICompareHint>,
+        IEqualityComparer<object>,
+        IEqualityComparer
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

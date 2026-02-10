@@ -10,7 +10,12 @@ namespace CreateAndFake.Tests.TesterTool;
 
 public static class NullGuarderTests
 {
-    private static readonly TesterMod config = opt => opt with { IgnoreAllExceptions = true };
+    private static readonly TesterMod config = opt =>
+        opt with
+        {
+            IgnoreAllExceptions = true,
+            IncludeInternals = false,
+        };
 
     private static readonly NullGuarder _ShortTestInstance = new(
         Tools.Tester.Options with

@@ -1,11 +1,15 @@
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Reflection tool that utilizes hints.</summary>
+#pragma warning disable S2326 // Marker for inheritance.
+
+/// <summary>Reflection tool that utilizes <see cref="IToolHint"/>s.</summary>
 /// <inheritdoc/>
-public interface IHintTool<TOptions> : ITool<TOptions>
-    where TOptions : IToolOptions
+public interface IHintTool<TOptions, THint> : ITool<TOptions>
+    where TOptions : IToolHintOptions<TOptions, THint>
+    where THint : IToolHint
 {
-    /// <summary>Specific types that the tool can support.</summary>
-    /// <remarks>Not inclusive and not required.</remarks>
+    /// <inheritdoc cref="IToolEngine{T}.SupportedTypes"/>
     IEnumerable<Type> SupportedTypes { get; }
 }
+
+#pragma warning restore S2326

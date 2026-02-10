@@ -1,7 +1,7 @@
 namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Reflection tool.</summary>
-/// <typeparam name="TOptions">Configuration <see cref="Type"/> for the tool.</typeparam>
+/// <typeparam name="TOptions">The configuration <see cref="Type"/> for the tool.</typeparam>
 public interface ITool<out TOptions>
     where TOptions : IToolOptions
 {

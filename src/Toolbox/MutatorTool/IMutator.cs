@@ -4,11 +4,12 @@
 >;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.MutatorTool.Engine;
 
 namespace CreateAndFake.MutatorTool;
 
 /// <summary>Changes the value of <see cref="object"/>s or creates alternatives.</summary>
-public interface IMutator : IHintTool<MutatorOptions>
+public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
 {
     /// <summary>
     ///     Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.

@@ -7,7 +7,7 @@ namespace CreateAndFake.Design.Exceptions;
 ///     <see cref="Exception"/> <see cref="Type"/> for errors
 ///     occurring within a <see cref="IToolEngine{T}"/>.
 /// </summary>
-[Serializable, KnownType(typeof(Exception))]
+[Serializable]
 public sealed class EngineException : CreateAndFakeException
 {
     /// <inheritdoc cref="EngineException"/>

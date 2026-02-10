@@ -5,7 +5,7 @@ namespace CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IExtractor"/> to extract child values.</summary>
 public sealed class ExtractorChainer
-    : ToolChainer<ExtractorChainer, IExtractorEngine, ExtractorOptions, ExtractHint>,
+    : ToolChainer<ExtractorChainer, IExtractorEngine, ExtractorOptions, IExtractHint>,
         IExtractorChainer
 {
     /// <summary>Flattened internal data.</summary>
@@ -26,9 +26,9 @@ public sealed class ExtractorChainer
     }
 
     /// <inheritdoc/>
-    protected override ExtractorChainer CreateSubChainer(ExtractorOptions options)
+    protected override ExtractorChainer CreateSubChainer(ExtractorOptions subOptions)
     {
-        return new ExtractorChainer(options, this);
+        return new ExtractorChainer(subOptions, this);
     }
 
     /// <inheritdoc/>

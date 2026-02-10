@@ -3,7 +3,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Extracts the contents of objects.</summary>
-public interface IExtractorEngine : IToolEngine<ExtractHint>
+public interface IExtractorEngine : IToolEngine<IExtractHint>
 {
     /// <summary>Temp</summary>
     /// <param name="value"></param>

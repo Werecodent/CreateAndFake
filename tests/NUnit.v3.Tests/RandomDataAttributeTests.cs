@@ -22,16 +22,17 @@ public static class RandomDataAttributeTests
     [RandomData]
     public static Task RandomDataAttribute_NoParameterMutation(
         [Stub] Test testStub,
-        [Stub] CopyHint<MethodWrapper> copyStub
+        [Stub] ICopyHint copyStub
     )
     {
         copyStub
-            .ToFake()
-            .Setup(
-                "Copy",
-                [Arg.LambdaAny<MethodWrapper>(), Arg.LambdaAny<IDuplicatorChainer>()],
-                Behavior.Set<MethodWrapper, IDuplicatorChainer, MethodWrapper>(
-                    (w, _) => new MethodWrapper(w.TypeInfo.Type, w.MethodInfo)
+            .TryCopy(Arg.Any<MethodWrapper>(), Arg.Any<IDuplicatorChainer>())
+            .SetupCall(
+                Behavior.Set<MethodWrapper, IDuplicatorChainer, CopyHintResult>(
+                    (w, _) =>
+                        (w != null)
+                            ? new(new MethodWrapper(w.TypeInfo.Type, w.MethodInfo))
+                            : CopyHintResult.None
                 )
             );
 

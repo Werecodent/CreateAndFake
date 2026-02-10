@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 namespace CreateAndFake.ExtractorTool;
 
 /// <summary>Configuration for controlling extraction behavior.</summary>
-public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, ExtractHint>
+public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtractHint>
 {
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }

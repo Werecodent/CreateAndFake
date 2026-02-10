@@ -1,6 +1,8 @@
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Handles recursive tool behavior.</summary>
+/// <summary>Handles the recursive portion of <see cref="IHintTool{T,T}"/> behavior.</summary>
 /// <typeparam name="TOptions">Type for the options.</typeparam>
-public interface IToolChainer<out TOptions> : ITool<TOptions>
-    where TOptions : IToolOptions;
+/// <typeparam name="THint">Type for the hint.</typeparam>
+public interface IToolChainer<TOptions, THint> : IHintTool<TOptions, THint>
+    where TOptions : IToolHintOptions<TOptions, THint>
+    where THint : IToolHint;

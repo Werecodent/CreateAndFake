@@ -114,6 +114,13 @@ public interface IRandom
     /// <summary>Generates random predefined data.</summary>>
     /// <returns>The generated group of random predefined data.</returns>
     DataRandom NextData();
+
+    /// <summary>Generates a randomized sequence of the <paramref name="items"/>.</summary>
+    /// <typeparam name="T"><see cref="Type"/> of the items being picked from.</typeparam>
+    /// <param name="items">The collection of items to pick from.</param>
+    /// <returns>The sequence of <paramref name="items"/> randomly ordered.</returns>
+    [return: NotNullIfNotNull(nameof(items))]
+    IEnumerable<T>? NextSequence<T>(IEnumerable<T>? items);
 }
 
 #pragma warning restore CA1716

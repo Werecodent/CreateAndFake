@@ -2,16 +2,15 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Execution result of a tool hint with potential data if successful.</summary>
-/// <typeparam name="T">Result <see cref="Type"/> for the hint.</typeparam>
+/// <inheritdoc cref="IHintResult{T}"/>
 /// <param name="hasData"><inheritdoc cref="HasData" path="/summary"/></param>
 /// <param name="data"><inheritdoc cref="Data" path="/summary"/></param>
-public abstract class HintResult<T>(bool hasData, T data)
+public abstract class HintResult<T>(bool hasData, T data) : IHintResult<T>
 {
-    /// <summary>If the hint was successful and <see cref="Data"/> is populated.</summary>
+    /// <inheritdoc/>
     public bool HasData { get; } = hasData;
 
-    /// <summary>Result of the hint if <see cref="HasData"/> is <see langword="true"/>.</summary>
+    /// <inheritdoc/>
     public T Data { get; } = data;
 
     /// <inheritdoc/>

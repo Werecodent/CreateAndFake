@@ -8,7 +8,7 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 #pragma warning disable RCS1165, S2955 // Checking for only null specifically.
 
 /// <inheritdoc cref="IDuplicator"/>
-public sealed class DuplicatorEngine : ToolEngine<CopyHint>, IDuplicatorEngine
+public sealed class DuplicatorEngine : ToolEngine<ICopyHint>, IDuplicatorEngine
 {
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]
@@ -20,9 +20,10 @@ public sealed class DuplicatorEngine : ToolEngine<CopyHint>, IDuplicatorEngine
         {
             return default!;
         }
+
         CopyHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCopy(source, chainer))
-            .FirstOrDefault(r => r.HasData);
+            .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)
         {

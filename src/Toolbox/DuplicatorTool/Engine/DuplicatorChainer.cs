@@ -10,7 +10,7 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IDuplicator"/> to create child values.</summary>
 public sealed class DuplicatorChainer
-    : ToolChainer<DuplicatorChainer, IDuplicatorEngine, DuplicatorOptions, CopyHint>,
+    : ToolChainer<DuplicatorChainer, IDuplicatorEngine, DuplicatorOptions, ICopyHint>,
         IDuplicatorChainer
 {
     /// <summary>History of clones to match up references.</summary>
@@ -31,9 +31,9 @@ public sealed class DuplicatorChainer
     }
 
     /// <inheritdoc/>
-    protected override DuplicatorChainer CreateSubChainer(DuplicatorOptions options)
+    protected override DuplicatorChainer CreateSubChainer(DuplicatorOptions subOptions)
     {
-        return new DuplicatorChainer(options, this);
+        return new DuplicatorChainer(subOptions, this);
     }
 
     /// <summary>Adds successful clone details to history.</summary>

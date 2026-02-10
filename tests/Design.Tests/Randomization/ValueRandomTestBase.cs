@@ -436,6 +436,21 @@ public abstract class ValueRandomTestBase<T>
         _TestInstance.NextItemOrDefault(Array.Empty<object>()).Assert().Is(null);
     }
 
+    [Theory, RandomData]
+    public void NextSeries_ShufflesValues([Size(3)] int[] items)
+    {
+        Limiter.Hundred.StallUntil(
+            "Testing shuffle randomization.",
+            () => _TestInstance.NextSequence(items).First() == items[0],
+            TestContext.Current.CancellationToken
+        );
+        Limiter.Hundred.StallUntil(
+            "Testing shuffle randomization.",
+            () => _TestInstance.NextSequence(items).First() == items[2],
+            TestContext.Current.CancellationToken
+        );
+    }
+
     private static IEnumerable<object> CreateSeries(int size)
     {
         for (int i = 0; i < size; i++)

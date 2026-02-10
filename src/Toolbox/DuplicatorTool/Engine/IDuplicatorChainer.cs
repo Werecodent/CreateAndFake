@@ -3,7 +3,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.DuplicatorTool.Engine;
 
 /// <inheritdoc cref="IDuplicator"/>
-public interface IDuplicatorChainer : IDuplicator, IToolChainer<DuplicatorOptions>
+public interface IDuplicatorChainer : IDuplicator, IToolChainer<DuplicatorOptions, ICopyHint>
 {
     /// <summary>Adds successful clone details to history.</summary>
     /// <param name="source">Object cloned.</param>

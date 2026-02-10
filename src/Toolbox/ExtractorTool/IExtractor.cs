@@ -3,11 +3,12 @@ global using ExtractorMod = System.Func<
     CreateAndFake.ExtractorTool.ExtractorOptions
 >;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.ExtractorTool;
 
 /// <summary>Extracts the contents of objects.</summary>
-public interface IExtractor : IHintTool<ExtractorOptions>
+public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>

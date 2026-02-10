@@ -5,7 +5,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc cref="IValuer"/>
-public sealed class ValuerEngine : ToolEngine<CompareHint>, IValuerEngine
+public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
 {
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer)
@@ -19,7 +19,7 @@ public sealed class ValuerEngine : ToolEngine<CompareHint>, IValuerEngine
 
         DifferenceHintResult? result = SelectHints(chainer)
             .Select(h => h.TryCompare(expected, actual, chainer))
-            .FirstOrDefault(r => r.HasData);
+            .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)
         {

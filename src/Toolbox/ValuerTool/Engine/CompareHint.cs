@@ -1,14 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 
-/// <summary>Handles comparing specific types for <see cref="IValuer"/>.</summary>
-public abstract class CompareHint : IToolHint
+/// <inheritdoc cref="ICompareHint"/>
+public abstract class CompareHint : ICompareHint
 {
     /// <inheritdoc/>
     public abstract int EnginePriority { get; }
@@ -16,13 +15,7 @@ public abstract class CompareHint : IToolHint
     /// <inheritdoc/>
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
-    /// <summary>
-    ///     Tries to find the differences between <paramref name="expected"/> and <paramref name="actual"/>.
-    /// </summary>
-    /// <param name="expected">Object to compare with <paramref name="actual"/>.</param>
-    /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
-    /// <param name="valuer">Handles comparing child values.</param>
-    /// <returns>Possible result.</returns>
+    /// <inheritdoc/>
     public DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer)
     {
         ArgumentGuard.ThrowIfNull(valuer);
@@ -55,7 +48,7 @@ public abstract class CompareHint : IToolHint
         }
     }
 
-    /// <inheritdoc cref="TryCompare"/>
+    /// <inheritdoc/>
     public DifferenceHintAsyncResult TryAsyncCompare(
         object? expected,
         object? actual,
@@ -115,10 +108,7 @@ public abstract class CompareHint : IToolHint
         }
     }
 
-    /// <summary>Tries to compute an identifying hash code for <paramref name="item"/> based upon value.</summary>
-    /// <param name="item">Object to generate a hash code for.</param>
-    /// <param name="valuer">Handles hashing behavior for child values.</param>
-    /// <returns>Possible result.</returns>
+    /// <inheritdoc/>
     public HashCodeHintResult TryGetHashCode(object? item, IValuerChainer valuer)
     {
         if (Supports(item, item, valuer))
@@ -131,8 +121,7 @@ public abstract class CompareHint : IToolHint
         }
     }
 
-    /// <inheritdoc cref="TryGetHashCode"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <inheritdoc/>
     public HashCodeHintAsyncResult TryAsyncGetHashCode(
         object? item,
         IValuerChainer valuer,

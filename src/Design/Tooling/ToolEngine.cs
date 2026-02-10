@@ -4,8 +4,7 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tooling;
 
-/// <summary>Runs the hint behavior pipeline.</summary>
-/// <typeparam name="THint">Hint type being used.</typeparam>
+/// <inheritdoc cref="IToolEngine{T}"/>
 public abstract class ToolEngine<THint> : IToolEngine<THint>
     where THint : IToolHint
 {
@@ -25,14 +24,15 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
         .ToFrozenSet();
 
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes =>
-        _AllHints.SelectMany(h => h.SupportedTypes) ?? [];
+    public virtual IEnumerable<Type> SupportedTypes => _AllHints.SelectMany(h => h.SupportedTypes);
 
-    /// <summary>Picks hints to use for the tool based upon chainer options.</summary>
-    /// <typeparam name="TOptions">Test</typeparam>
-    /// <param name="chainer">Potentially modified configuration to use.</param>
-    /// <returns>Hints to utilize.</returns>
-    protected static IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions> chainer)
+    /// <summary>Picks hints to use for the tool based upon configured options.</summary>
+    /// <typeparam name="TOptions">
+    ///     The <see cref="Type"/> managing configuration options.
+    /// </typeparam>
+    /// <param name="chainer">Holds the configured options to use.</param>
+    /// <returns>The selected hints to utilize in the order returned.</returns>
+    protected static IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions, THint> chainer)
         where TOptions : IToolHintOptions<TOptions, THint>
     {
         ArgumentGuard.ThrowIfNull(chainer);

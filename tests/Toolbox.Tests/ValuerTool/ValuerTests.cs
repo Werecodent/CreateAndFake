@@ -56,20 +56,9 @@ public static class ValuerTests
     }
 
     [Theory, RandomData]
-    internal static void GetHashCode_ValidHint(object data, int result, [Fake] CompareHint hint)
+    internal static void GetHashCode_ValidHint(object data, int result, [Stub] ICompareHint hint)
     {
-        hint.ToFake()
-            .Setup(
-                "Supports",
-                [data, data, Arg.LambdaAny<IValuerChainer>()],
-                Behavior.Returns(true, Times.Once)
-            );
-        hint.ToFake()
-            .Setup(
-                "GetHashCode",
-                [data, Arg.LambdaAny<IValuerChainer>()],
-                Behavior.Returns(result, Times.Once)
-            );
+        hint.TryGetHashCode(data, Arg.Any<IValuerChainer>()).SetupReturn(new(result));
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .GetHashCode(data)
@@ -122,86 +111,34 @@ public static class ValuerTests
     internal static void Equals_NoDifferencesTrue(
         object data1,
         object data2,
-        Fake<CompareHint> hint,
-        int hash
+        [Stub] ICompareHint hint
     )
     {
-        hint.Setup(
-            "Supports",
-            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(true, Times.Once)
-        );
-        hint.Setup(
-            "Compare",
-            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
-        );
-        hint.Setup(
-            "GetHashCode",
-            [data1, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(hash, Times.Once)
-        );
-        hint.Setup(
-            "GetHashCode",
-            [data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(hash, Times.Once)
-        );
+        hint.TryCompare(data1, data2, Arg.Any<IValuerChainer>()).SetupReturn(new([]));
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeFrameworkHints = false,
-                Hints = [hint.Dummy],
-            }
-        )
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Equals(data1, data2)
             .Assert()
             .Is(true);
-
-        hint.VerifyAll(Times.Exactly(4));
     }
 
     [Theory, RandomData]
     internal static void Equals_DifferencesFalse(
         object data1,
         object data2,
-        Fake<CompareHint> hint,
-        int hash
+        [Stub] ICompareHint hint,
+        IEnumerable<Difference> differences
     )
     {
-        hint.Setup(
-            "Supports",
-            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(true, Times.Once)
-        );
-        hint.Setup(
-            "Compare",
-            [data1, data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(Tools.Randomizer.Create<IEnumerable<Difference>>(), Times.Once)
-        );
-        hint.Setup(
-            "GetHashCode",
-            [data1, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(hash, Times.Once)
-        );
-        hint.Setup(
-            "GetHashCode",
-            [data2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(hash, Times.Once)
-        );
+        hint.TryCompare(data1, data2, Arg.Any<IValuerChainer>())
+            .SetupReturn(new(differences), Times.Once);
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeFrameworkHints = false,
-                Hints = [hint.Dummy],
-            }
-        )
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Equals(data1, data2)
             .Assert()
             .Is(false);
 
-        hint.VerifyAll(Times.Exactly(4));
+        hint.Assert().Called();
     }
 
     [Theory, RandomData]

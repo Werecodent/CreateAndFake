@@ -17,9 +17,9 @@ public sealed class MutatorChainer
         : base(options, prevChainer) { }
 
     /// <inheritdoc/>
-    protected override MutatorChainer CreateSubChainer(MutatorOptions options)
+    protected override MutatorChainer CreateSubChainer(MutatorOptions subOptions)
     {
-        return new MutatorChainer(options, this);
+        return new MutatorChainer(subOptions, this);
     }
 
     /// <inheritdoc/>

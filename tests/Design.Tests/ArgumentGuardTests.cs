@@ -3,8 +3,6 @@ using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Design.Tests;
 
-#pragma warning disable S3236 // For testing the methods.
-
 public static class ArgumentGuardTests
 {
     [Fact]
@@ -55,7 +53,7 @@ public static class ArgumentGuardTests
     {
         Task task = Task.Delay(100, TestContext.Current.CancellationToken);
         task.Assert(t => ArgumentGuard.ThrowIfAsynchronous(t, message))
-            .Throws<EngineException>()
+            .Throws<AsynchronousAccessException>()
             .Message.Assert()
             .Contains(message);
     }
@@ -67,7 +65,7 @@ public static class ArgumentGuardTests
     )
     {
         data.Assert(d => ArgumentGuard.ThrowIfAsynchronous(d, message))
-            .Throws<EngineException>()
+            .Throws<AsynchronousAccessException>()
             .Message.Assert()
             .Contains(message);
     }
@@ -325,5 +323,3 @@ public static class ArgumentGuardTests
             .Is(nameof(nullValue));
     }
 }
-
-#pragma warning restore S3236 // For testing the methods.

@@ -62,7 +62,7 @@ public static class Issue052Tests
 
     [Theory, RandomData]
     internal static void Issue052_ValuerPostCustomizable(
-        Fake<CompareHint> hint,
+        [Stub] ICompareHint hint,
         Data item1,
         Data item2
     )
@@ -75,18 +75,9 @@ public static class Issue052Tests
             }
         );
 
-        hint.Setup(
-            "Supports",
-            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(true, Times.Once)
-        );
-        hint.Setup(
-            "Compare",
-            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Returns(Enumerable.Empty<Difference>(), Times.Once)
-        );
+        hint.TryCompare(item1, item2, Arg.Any<IValuerChainer>()).SetupReturn(new([]), Times.Once);
 
-        valuer.Equals(item1, item2, opt => opt with { Hints = [hint.Dummy] }).Assert().Is(true);
-        hint.VerifyAll();
+        valuer.Equals(item1, item2, opt => opt with { Hints = [hint] }).Assert().Is(true);
+        hint.Assert().Called();
     }
 }

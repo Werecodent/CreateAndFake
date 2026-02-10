@@ -6,7 +6,10 @@ namespace CreateAndFake.Design.Exceptions;
 ///     <see cref="Exception"/> <see cref="Type"/> for errors
 ///     occurring within the <c>CreateAndFake</c> framework.
 /// </summary>
-[Serializable, KnownType(typeof(Exception))]
+[Serializable]
+[KnownType(typeof(Exception))]
+[KnownType(typeof(Exception[]))]
+[KnownType(typeof(string[]))]
 public abstract class CreateAndFakeException : Exception
 {
     /// <inheritdoc cref="CreateAndFakeException"/>

@@ -4,11 +4,12 @@
 >;
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool;
 
 /// <summary>Deep clones objects.</summary>
-public interface IDuplicator : IHintTool<DuplicatorOptions>
+public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">

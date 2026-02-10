@@ -13,6 +13,7 @@ internal static class ExceptionCreateHandlers
             .FindLoadedSubclasses<Exception>()
             .Where(t => t.IsVisible)
             .Where(t => t.IsSerializable)
+            .Where(t => t.Namespace?.StartsWith("System", StringComparison.Ordinal) == true)
             .Where(t =>
                 t.Namespace?.StartsWith("System.Security", StringComparison.Ordinal) != true
             )

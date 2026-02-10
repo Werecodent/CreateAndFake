@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Exceptions;
 ///     <see cref="Exception"/> <see cref="Type"/> for fatal
 ///     errors occurring within <see cref="CreateAndFake"/> tools.
 /// </summary>
-[Serializable, KnownType(typeof(Exception))]
+[Serializable]
 public sealed class ToolException : CreateAndFakeException
 {
     /// <inheritdoc cref="ToolException"/>

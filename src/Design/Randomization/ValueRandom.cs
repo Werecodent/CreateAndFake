@@ -156,7 +156,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         }
         else
         {
-            return items.OrderBy(_ => Next<int>()).First();
+            return NextSequence(items).First();
         }
     }
 
@@ -177,7 +177,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
         }
         else
         {
-            return items.OrderBy(_ => Next<int>()).FirstOrDefault();
+            return NextSequence(items).FirstOrDefault();
         }
     }
 
@@ -185,5 +185,12 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     public DataRandom NextData()
     {
         return new(this);
+    }
+
+    /// <inheritdoc/>
+    [return: NotNullIfNotNull(nameof(items))]
+    public IEnumerable<T>? NextSequence<T>(IEnumerable<T>? items)
+    {
+        return items?.OrderBy(_ => Next<int>());
     }
 }
