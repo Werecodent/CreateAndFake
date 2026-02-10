@@ -2,10 +2,10 @@ using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc/>
+/// <summary>Contains whether or not the <see cref="IMutateHint"/> modified the instance.</summary>
 public sealed class MutateHintResult : HintResult<bool>
 {
-    /// <summary>For when a hint doesn't support a type or fails to mutate it.</summary>
+    /// <summary>Result for when a hint doesn't support a <see cref="Type"/>.</summary>
     public static MutateHintResult None { get; } = new(false, default);
 
     /// <inheritdoc/>

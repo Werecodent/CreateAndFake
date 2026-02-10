@@ -42,7 +42,8 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
     /// <param name="prevChainer">Previous chainer to build upon.</param>
     /// <remarks>
-    ///     Not to be called directly. <see cref="GetSubChainer"/> should be called instead.
+    ///     Not to be called directly. <see cref="GetSubChainer"/>
+    ///     should be called instead. Implementation should be private.
     /// </remarks>
     /// <exception cref="EngineException">
     ///     Upon hitting the <see cref="IToolHintOptions{T,T}.MaxHintRecursion"/> depth.

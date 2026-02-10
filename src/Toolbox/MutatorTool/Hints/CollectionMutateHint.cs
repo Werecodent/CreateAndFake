@@ -4,9 +4,10 @@ using CreateAndFake.MutatorTool.Engine;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
-/// <inheritdoc/>
+/// <summary>Handles the mutation of <see cref="ICollection{T}"/>s.</summary>
 public sealed class CollectionMutateHint : MutateHint
 {
+    /// <summary>Handles modifying behavior once generics are specified.</summary>
     private static readonly MethodInfo _Modifier = typeof(CollectionMutateHint).GetMethod(
         nameof(Alter),
         BindingFlags.NonPublic | BindingFlags.Static
@@ -21,7 +22,7 @@ public sealed class CollectionMutateHint : MutateHint
     /// <inheritdoc/>
     protected override bool Supports(object instance)
     {
-        return InheritanceTracker.For(instance.GetType()).Inherits(typeof(ICollection<>));
+        return InheritanceTracker.For(instance?.GetType()).Inherits(typeof(ICollection<>));
     }
 
     /// <inheritdoc/>
@@ -38,16 +39,25 @@ public sealed class CollectionMutateHint : MutateHint
     }
 
     /// <inheritdoc cref="Modify"/>
-    private static bool Alter<T>(ICollection<T> values, IMutatorChainer chainer)
+    private static bool Alter<T>(ICollection<T> instance, IMutatorChainer chainer)
     {
-        if (values.IsReadOnly)
+        bool modified = false;
+        if (!instance.IsReadOnly)
         {
-            return false;
+            instance.Add(chainer.Options.Randomizer.Create<T>());
+            modified = true;
         }
-        else
+
+        foreach (T item in chainer.Options.Gen.NextSequence(instance))
         {
-            values.Add(chainer.Options.Randomizer.Create<T>());
-            return true;
+            if (modified && chainer.Options.Gen.Next<bool>())
+            {
+                break;
+            }
+
+            modified &= chainer.Modify(item);
         }
+
+        return modified;
     }
 }

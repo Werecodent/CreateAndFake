@@ -12,18 +12,14 @@ namespace CreateAndFake.DuplicatorTool;
 public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="ITool{T}.Options"/> for the new tool.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IDuplicator WithOptions(DuplicatorMod optionConfiguration);
 
     /// <summary>Deep clones <paramref name="source"/>.</summary>
     /// <typeparam name="T"><see cref="Type"/> being cloned.</typeparam>
     /// <param name="source">Object to clone.</param>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>
     /// <remarks>
     ///     Depending upon the <see cref="Type"/>, this may just

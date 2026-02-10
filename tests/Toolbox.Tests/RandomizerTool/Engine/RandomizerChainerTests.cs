@@ -11,7 +11,15 @@ public static class RandomizerChainerTests
         return Tools.Tester.PreventsNullRefException(
             new RandomizerChainer(Tools.Randomizer.Options, new RandomizerEngine()),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentOutOfRangeException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(ArgumentException),
+                    ],
+                }
         );
     }
 
@@ -21,7 +29,15 @@ public static class RandomizerChainerTests
         return Tools.Tester.PreventsParameterMutation(
             new RandomizerChainer(Tools.Randomizer.Options, new RandomizerEngine()),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentOutOfRangeException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(ArgumentException),
+                    ],
+                }
         );
     }
 

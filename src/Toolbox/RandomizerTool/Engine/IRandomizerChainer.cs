@@ -18,7 +18,7 @@ public interface IRandomizerChainer : IRandomizer, IToolChainer<RandomizerOption
     /// <summary>Calls the randomizer to create a random instance of the given <paramref name="type"/>.</summary>
     /// <param name="type">Type to create.</param>
     /// <param name="parent">Container of the instance to create.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created instance.</returns>
     object Create(Type type, object? parent, RandomizerMod? optionConfiguration = null);
 }

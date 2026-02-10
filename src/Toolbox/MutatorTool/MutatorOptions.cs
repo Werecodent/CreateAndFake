@@ -8,16 +8,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.MutatorTool;
 
-/// <summary>Configuration for controlling mutating behavior.</summary>
+/// <summary>Configuration for manipulating <see cref="IMutator"/> behavior.</summary>
 public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHint>
 {
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }
 
-    /// <summary>Ensures object variance.</summary>
+    /// <summary>Handles value comparison to ensure object variance.</summary>
     public required IValuer Valuer { get; init; }
 
-    /// <summary>Handles value extraction.</summary>
+    /// <summary>Handles value extraction for creating unique instances.</summary>
     public required IExtractor Extractor { get; init; }
 
     /// <summary>Limits attempts at creating variants.</summary>

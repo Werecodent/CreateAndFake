@@ -1,10 +1,11 @@
 ﻿using System.Runtime.Serialization;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Exception for call counts not matching expectations.</summary>
-[Serializable, KnownType(typeof(Exception))]
-public sealed class FakeVerifyException : Exception
+[Serializable]
+public sealed class FakeVerifyException : CreateAndFakeException
 {
     /// <inheritdoc cref="FakeVerifyException"/>
     /// <remarks>Serialization constructor.</remarks>

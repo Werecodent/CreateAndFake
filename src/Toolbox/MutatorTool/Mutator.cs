@@ -7,7 +7,7 @@ namespace CreateAndFake.MutatorTool;
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
-    /// <summary>Handles hint based mutation.</summary>
+    /// <inheritdoc cref="IMutatorEngine"/>
     private static readonly MutatorEngine _engine = new();
 
     /// <inheritdoc/>

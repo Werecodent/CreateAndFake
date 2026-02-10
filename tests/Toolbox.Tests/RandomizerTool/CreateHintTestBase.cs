@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;
 using CreateAndFake.TesterTool;
@@ -53,19 +52,7 @@ public abstract class CreateHintTestBase<T>(
         return Tools.Tester.PreventsParameterMutation(
             TestInstance,
             TestContext.Current.CancellationToken,
-            opt =>
-                config(opt) with
-                {
-                    InjectionValues =
-                    [
-                        CreateChainer(
-                            Tools.Randomizer.Options with
-                            {
-                                Gen = Tools.Randomizer.Create<FastRandom>(),
-                            }
-                        ),
-                    ],
-                }
+            opt => config(opt) with { InjectionValues = [CreateChainer()] }
         );
     }
 

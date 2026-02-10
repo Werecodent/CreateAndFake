@@ -1,44 +1,40 @@
 using System.Collections;
 using CreateAndFake.Design;
 using CreateAndFake.MutatorTool.Engine;
+using CreateAndFake.MutatorTool.Handlers;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
 /// <inheritdoc/>
-public sealed class LegacyDictionaryMutateHint : IMutateHint
+public sealed class LegacyDictionaryMutateHint : MutateHint<IDictionary>
 {
-    /// <inheritdoc/>
-    public int EnginePriority => (int)MutatePriority.LegacyDictionaryHint;
+    /// <summary>Handles mutating the collection's contents.</summary>
+    private static readonly CollectionInternalsMutateHandler _Handler = new();
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes { get; } = [typeof(IDictionary)];
+    public override int EnginePriority => (int)MutatePriority.LegacyDictionaryHint;
 
     /// <inheritdoc/>
-    public MutateHintResult TryModifying(object instance, IMutatorChainer chainer)
+    protected override bool Modify(IDictionary instance, IMutatorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
 
-        if (instance is IDictionary dict)
+        if (instance.IsReadOnly || (instance.Count == 0 && instance.IsFixedSize))
         {
-            if (dict.IsReadOnly || (dict.Count == 0 && dict.IsFixedSize))
-            {
-                return new(false);
-            }
+            return _Handler.ModifySupported(instance, chainer);
+        }
 
-            string key = (string)chainer.VariantOf(typeof(string), dict.Keys.Cast<object>());
-            if (dict.IsFixedSize || chainer.Options.Gen.Next<bool>())
-            {
-                dict[key] = chainer.Options.Randomizer.Create<string>();
-            }
-            else
-            {
-                dict.Add(key, chainer.Options.Randomizer.Create<string>());
-            }
-            return new(true);
-        }
-        else
+        object key =
+            instance.IsFixedSize || chainer.Options.Gen.Next<bool>()
+                ? chainer.Options.Gen.NextItem(instance.Keys.Cast<object>())
+                : chainer.VariantOf(typeof(string), instance.Keys.Cast<object>());
+
+        instance[key] = chainer.Options.Randomizer.Create<string>();
+
+        if (chainer.Options.Gen.Next<bool>())
         {
-            return MutateHintResult.None;
+            _ = _Handler.ModifySupported(instance, chainer);
         }
+        return true;
     }
 }

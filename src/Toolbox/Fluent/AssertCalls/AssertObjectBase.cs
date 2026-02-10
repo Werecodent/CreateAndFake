@@ -5,7 +5,7 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Fluent.AssertCalls;
 
-/// <summary>Handles common <see cref="object"/> assertion calls.</summary>
+/// <summary>Handles common <see langword="object"/> assertion calls.</summary>
 /// <typeparam name="T"></typeparam>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
 /// <param name="actual"><inheritdoc cref="Actual" path="/summary"/></param>

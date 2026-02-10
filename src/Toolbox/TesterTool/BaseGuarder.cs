@@ -26,7 +26,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
         return type.GetConstructors(BindingFlags.Instance | scope)
-            .Where(c => c.IsPublic || c.IsAssembly || c.IsFamilyOrAssembly)
+            .Where(c => c.IsPublic || c.IsAssembly)
             .Where(c => !c.IsPrivate);
     }
 
@@ -42,7 +42,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             ? BindingFlags.Public | BindingFlags.NonPublic
             : BindingFlags.Public;
         return type.GetMethods(kind | scope)
-            .Where(m => m.IsPublic || m.IsAssembly || m.IsFamily || m.IsFamilyOrAssembly)
+            .Where(m => m.IsPublic || m.IsAssembly)
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
             .Where(m => !m.IsPrivate)
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
@@ -62,7 +62,6 @@ internal abstract class BaseGuarder(TesterOptions options)
 
         foreach (
             MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance)
-                .Where(m => !m.IsFamily)
                 .Select(m => GenericFixer.FixMethod(m, options))
         )
         {

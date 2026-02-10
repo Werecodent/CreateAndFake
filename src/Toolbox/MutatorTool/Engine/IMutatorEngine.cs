@@ -2,7 +2,7 @@ using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc cref="IMutator"/>
+/// <inheritdoc/>
 public interface IMutatorEngine : IToolEngine<IMutateHint>
 {
     /// <param name="chainer">Handles callback behavior for child values.</param>

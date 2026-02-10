@@ -22,7 +22,7 @@ public interface IAsserter
         ITypeAsserter
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IAsserter WithOptions(AsserterMod optionConfiguration);
 
@@ -30,7 +30,7 @@ public interface IAsserter
     void Pass();
 
     /// <summary>Specifies the test is successful if it reaches this point.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void Pass(AsserterMod? optionConfiguration);
 
     /// <inheritdoc cref="Fail(AsserterMod,string,string)"/>

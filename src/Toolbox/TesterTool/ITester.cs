@@ -12,7 +12,7 @@ namespace CreateAndFake.TesterTool;
 public interface ITester : ITool<TesterOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
     /// <returns>The created tool.</returns>
     ITester WithOptions(TesterMod optionConfiguration);
 
@@ -28,9 +28,7 @@ public interface ITester : ITool<TesterOptions>
     ///     Verifies the <paramref name="instance"/> can JSON serialize and deserialize.
     /// </summary>
     /// <param name="instance">The data to test.</param>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void VerifyJsonSerialization(object instance, TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies <typeparamref name="T"/> can XML serialize and deserialize.</summary>
@@ -45,9 +43,7 @@ public interface ITester : ITool<TesterOptions>
     ///     Verifies the <paramref name="instance"/> can XML serialize and deserialize.
     /// </summary>
     /// <param name="instance">The data to test.</param>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void VerifyXmlSerialization(object instance, TesterMod? optionConfiguration = null);
 
     /// <inheritdoc cref="PreventsNullRefException(Type,CancellationToken,TesterMod)"/>
@@ -80,7 +76,7 @@ public interface ITester : ITool<TesterOptions>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     Task PreventsNullRefException<T>(
         T instance,
         CancellationToken canceler,
@@ -110,7 +106,7 @@ public interface ITester : ITool<TesterOptions>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     Task PreventsParameterMutation<T>(
         T instance,
         CancellationToken canceler,
@@ -127,7 +123,7 @@ public interface ITester : ITool<TesterOptions>
     /// <summary>Verifies no exceptions are thrown on any method when using injection and random data.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     Task PassthroughWithNoExceptions(
         object instance,
         CancellationToken canceler,
@@ -139,7 +135,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
     /// <param name="testAssembly">Assembly with the tests.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void ProvidesTestClassCoverage(
         Assembly codeAssembly,
         Assembly testAssembly,
@@ -152,7 +148,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="testAssembly">Assembly with the tests.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     Task ValidateRandomDataParameters(
         Assembly testAssembly,
         CancellationToken canceler,
@@ -162,9 +158,7 @@ public interface ITester : ITool<TesterOptions>
     /// <summary>Validates the state of the <c>CreateAndFake</c> framework as configured.</summary>
     /// <param name="tools">Tools being used. Likely <see cref="ToolSet.DefaultSet"/>.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="ITool{T}.Options"/> to apply for this call.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task VerifyToolSetIntegrity(
         ToolSet tools,

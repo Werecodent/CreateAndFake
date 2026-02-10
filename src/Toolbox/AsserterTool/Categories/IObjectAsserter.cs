@@ -1,4 +1,3 @@
-using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 
@@ -15,7 +14,7 @@ public interface IObjectAsserter
     /// <summary>Verifies <c>actual</c> equals <paramref name="expected"/> by value.</summary>
     /// <param name="expected">Instance to compare against.</param>
     /// <param name="actual">Instance to run assertion checks with.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <param name="details">Description to include in assertion failure messages.</param>
     /// <exception cref="AssertException">If the comparison fails to match the expected behavior.</exception>
     void Is(
@@ -30,7 +29,7 @@ public interface IObjectAsserter
 
     /// <summary>Verifies <c>actual</c> equals <see langword="null"/>.</summary>
     /// <param name="actual">Instance to run assertion checks with.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <param name="details">Description to include in assertion failure messages.</param>
     /// <exception cref="AssertException">If the comparison fails to match the expected behavior.</exception>
     void IsNull(object? actual, AsserterMod? optionConfiguration, string? details = null);
@@ -117,7 +116,7 @@ public interface IObjectAsserter
 
     /// <summary>Verifies all behaviors with associated times were called as expected.</summary>
     /// <param name="fake">Fake instance with behavior set.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <param name="total">Expected total number of calls to test as well.</param>
     /// <remarks>
     ///     For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.

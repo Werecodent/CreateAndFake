@@ -19,7 +19,7 @@ internal sealed class DecimalValueHandler : ValueHandler<decimal>
     protected override decimal Create(IRandom gen, decimal min, decimal max)
     {
         decimal percent = NextPercent(gen);
-        decimal result = max * percent + min * (1 - percent);
+        decimal result = max * percent + min * (1m - percent);
         return result.CompareTo(min) > 0 ? result : min;
     }
 

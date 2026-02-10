@@ -31,4 +31,8 @@
     <Using Include="CreateAndFake.xUnit.v3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MutatorTool/Hints/" />
+  </ItemGroup>
+
 </Project>

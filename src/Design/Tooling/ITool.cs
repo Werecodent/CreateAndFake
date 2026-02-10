@@ -5,6 +5,6 @@ namespace CreateAndFake.Design.Tooling;
 public interface ITool<out TOptions>
     where TOptions : IToolOptions
 {
-    /// <summary>Configured options being used by the tool.</summary>
+    /// <summary>Configured options for manipulating tool behavior.</summary>
     TOptions Options { get; }
 }

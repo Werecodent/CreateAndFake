@@ -1,10 +1,11 @@
 ﻿using System.Runtime.Serialization;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Exception for a call lacking behavior.</summary>
-[Serializable, KnownType(typeof(Exception))]
-public sealed class FakeCallException : Exception
+[Serializable]
+public sealed class FakeCallException : CreateAndFakeException
 {
     /// <inheritdoc cref="FakeCallException"/>
     /// <remarks>Serialization constructor.</remarks>

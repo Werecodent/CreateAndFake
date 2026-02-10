@@ -1,6 +1,7 @@
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc/>
+/// <summary>Handles <typeparamref name="T"/> mutations.</summary>
+/// <typeparam name="T">Specific <see cref="Type"/> the hint supports.</typeparam>
 public abstract class MutateHint<T> : MutateHint
 {
     /// <inheritdoc/>
@@ -11,4 +12,13 @@ public abstract class MutateHint<T> : MutateHint
     {
         return instance is T;
     }
+
+    /// <inheritdoc/>
+    protected sealed override bool Modify(object instance, IMutatorChainer chainer)
+    {
+        return Modify((T)instance, chainer);
+    }
+
+    /// <inheritdoc cref="Modify(object,IMutatorChainer)"/>
+    protected abstract bool Modify(T instance, IMutatorChainer chainer);
 }

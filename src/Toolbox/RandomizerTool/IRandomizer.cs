@@ -11,7 +11,7 @@ namespace CreateAndFake.RandomizerTool;
 public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IRandomizer WithOptions(RandomizerMod optionConfiguration);
 
@@ -23,7 +23,7 @@ public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
 
     /// <summary>Creates a randomized instance.</summary>
     /// <param name="type">Type to create.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created instance.</returns>
     /// <exception cref="NotSupportedException">If no hint supports generating the type.</exception>
     /// <exception cref="TimeoutException">If an instance couldn't be created to match the condition.</exception>
@@ -35,14 +35,14 @@ public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
     /// </summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <param name="values">Values to inject into the <typeparamref name="T"/> instance.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
     T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null);
 
     /// <summary>Creates an instance using <paramref name="values"/> or random data as needed.</summary>
     /// <param name="type">Type to create.</param>
     /// <param name="values">Values to inject into the instance.</param>
-    /// <param name="optionConfiguration">Modifications of <see cref="ITool{T}.Options"/> to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created instance.</returns>
     object Inject(
         Type type,

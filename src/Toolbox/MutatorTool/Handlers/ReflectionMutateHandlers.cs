@@ -4,9 +4,10 @@ using CreateAndFake.MutatorTool.Engine;
 
 namespace CreateAndFake.MutatorTool.Handlers;
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class ReflectionMutateHandlers
 {
-    /// <summary>Supported types and the methods used to generate them.</summary>
+    /// <summary>The collection of related handlers.</summary>
     internal static IEnumerable<IMutateHandler> Handlers { get; } =
         RuntimeDetails
             .RuntimeTypes.Select(t => new NoMutateHandler(t))

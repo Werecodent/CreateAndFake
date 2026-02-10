@@ -1,44 +1,43 @@
 using System.Collections;
 using CreateAndFake.Design;
 using CreateAndFake.MutatorTool.Engine;
+using CreateAndFake.MutatorTool.Handlers;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
 /// <inheritdoc/>
-public sealed class LegacyListMutateHint : IMutateHint
+public sealed class LegacyListMutateHint : MutateHint<IList>
 {
-    /// <inheritdoc/>
-    public int EnginePriority => (int)MutatePriority.LegacyListHint;
+    /// <summary>Handles mutating the collection's contents.</summary>
+    private static readonly CollectionInternalsMutateHandler _Handler = new();
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes { get; } = [typeof(IList)];
+    public override int EnginePriority => (int)MutatePriority.LegacyListHint;
 
     /// <inheritdoc/>
-    public MutateHintResult TryModifying(object instance, IMutatorChainer chainer)
+    protected override bool Modify(IList instance, IMutatorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
 
-        if (instance is IList list)
+        if (instance.IsReadOnly || (instance.Count == 0 && instance.IsFixedSize))
         {
-            if (list.IsReadOnly || (list.Count == 0 && list.IsFixedSize))
-            {
-                return new(false);
-            }
+            return _Handler.ModifySupported(instance, chainer);
+        }
 
-            if (
-                list.IsFixedSize
-                || chainer.Options.Gen.Next<bool>()
-                || list.Add(chainer.Options.Randomizer.Create<string>()) == -1
-            )
-            {
-                list[chainer.Options.Gen.Next(list.Count)] =
-                    chainer.Options.Randomizer.Create<string>();
-            }
-            return new(true);
-        }
-        else
+        string newValue = chainer.Options.Randomizer.Create<string>();
+        if (
+            instance.IsFixedSize
+            || chainer.Options.Gen.Next<bool>()
+            || instance.Add(newValue) == -1
+        )
         {
-            return MutateHintResult.None;
+            instance[chainer.Options.Gen.Next(instance.Count)] = newValue;
         }
+
+        if (chainer.Options.Gen.Next<bool>())
+        {
+            _ = _Handler.ModifySupported(instance, chainer);
+        }
+        return true;
     }
 }

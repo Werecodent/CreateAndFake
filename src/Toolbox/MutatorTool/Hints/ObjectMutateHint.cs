@@ -7,7 +7,7 @@ using CreateAndFake.MutatorTool.Engine;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
-/// <inheritdoc/>
+/// <summary>Handles the mutation of data classes.</summary>
 public sealed class ObjectMutateHint : MutateHint
 {
     /// <inheritdoc/>
@@ -32,22 +32,25 @@ public sealed class ObjectMutateHint : MutateHint
         bool modified = false;
 
         foreach (
-            FieldInfo field in TypeDescriber
-                .GetAllFields(type, true)
-                .OrderBy(_ => chainer.Options.Gen.Next<int>())
+            PropertyInfo property in chainer.Options.Gen.NextSequence(
+                TypeDescriber
+                    .GetAllProperties(type, true)
+                    .Where(p => p.CanWrite && p.CanRead)
+                    .Where(p => p.GetGetMethod() != null)
+                    .Where(p => p.GetSetMethod() != null)
+            )
         )
         {
             if (modified && chainer.Options.Gen.Next<bool>())
             {
                 break;
             }
-
-            object? smartData = (field.FieldType == typeof(string)) ? data.Find(field.Name) : null;
             try
             {
-                field.SetValue(
+                property.SetValue(
                     instance,
-                    smartData ?? chainer.Variant(field.FieldType, field.GetValue(instance))
+                    data.Find(property)
+                        ?? chainer.Variant(property.PropertyType, property.GetValue(instance))
                 );
                 modified = true;
             }
@@ -58,26 +61,20 @@ public sealed class ObjectMutateHint : MutateHint
         }
 
         foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, true)
-                .Where(p => p.CanWrite && p.CanRead)
-                .Where(p => p.GetGetMethod() != null)
-                .Where(p => p.GetSetMethod() != null)
-                .OrderBy(_ => chainer.Options.Gen.Next<int>())
+            FieldInfo field in chainer.Options.Gen.NextSequence(
+                TypeDescriber.GetAllFields(type, true)
+            )
         )
         {
             if (modified && chainer.Options.Gen.Next<bool>())
             {
                 break;
             }
-
-            object? smartData =
-                (property.PropertyType == typeof(string)) ? data.Find(property.Name) : null;
             try
             {
-                property.SetValue(
+                field.SetValue(
                     instance,
-                    smartData ?? chainer.Variant(property.PropertyType, property.GetValue(instance))
+                    data.Find(field) ?? chainer.Variant(field.FieldType, field.GetValue(instance))
                 );
                 modified = true;
             }

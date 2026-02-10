@@ -30,6 +30,6 @@ internal sealed class FloatValueHandler : ValueHandler<float>
         float usefulMax = float.IsPositiveInfinity(max) ? float.MaxValue : max;
 
         double percent = gen.NextPercent();
-        return (float)(usefulMax * percent + usefulMin * (1 - percent));
+        return (float)(usefulMax * percent + usefulMin * (1d - percent));
     }
 }

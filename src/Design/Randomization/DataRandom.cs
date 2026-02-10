@@ -1,5 +1,7 @@
 using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.Design.Context;
+using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -28,12 +30,37 @@ public sealed class DataRandom(IRandom gen)
     public PersonContext Person => _person.Value;
 
     /// <summary>
-    ///     Searches for a value representing the identifying <paramref name="name"/>.
+    ///     Searches for an identifying value representing the <paramref name="property"/>.
+    /// </summary>
+    /// <param name="property">Property with the name to find a value for.</param>
+    /// <returns>
+    ///     A value for the <paramref name="property"/> if found, <see langword="null"/> otherwise.
+    /// </returns>
+    public string? Find(PropertyInfo property)
+    {
+        ArgumentGuard.ThrowIfNull(property);
+        return property.PropertyType.IsInheritedBy<string>() ? Find(property.Name) : null;
+    }
+
+    /// <summary>
+    ///     Searches for an identifying value representing the <paramref name="field"/>.
+    /// </summary>
+    /// <param name="field">Field with the name to find a value for.</param>
+    /// <returns>
+    ///     A value for the <paramref name="field"/> if found, <see langword="null"/> otherwise.
+    /// </returns>
+    public string? Find(FieldInfo field)
+    {
+        ArgumentGuard.ThrowIfNull(field);
+        return field.FieldType.IsInheritedBy<string>() ? Find(field.Name) : null;
+    }
+
+    /// <summary>
+    ///     Searches for an identifying value representing the <paramref name="name"/>.
     /// </summary>
     /// <param name="name">Name to find a value for.</param>
     /// <returns>
-    ///     A value representing the <paramref name="name"/> if found,
-    ///     <see langword="null"/> otherwise.
+    ///     A value for the <paramref name="name"/> if found, <see langword="null"/> otherwise.
     /// </returns>
     public string? Find(string? name)
     {

@@ -60,4 +60,37 @@ public static class DataRandomTests
     {
         testInstance.Find(name).Assert().Is(null);
     }
+
+    [Theory, RandomData]
+    internal static void Find_FieldNamesWork(DataRandom testInstance)
+    {
+        Type type = typeof(SampleNameData);
+        testInstance.Find(type.GetField(nameof(SampleNameData._firstName))).Assert().IsNot(null);
+        testInstance.Find(type.GetField(nameof(SampleNameData._lastName))).Assert().IsNot(null);
+        testInstance.Find(type.GetField(nameof(SampleNameData._bad))).Assert().Is(null);
+    }
+
+    [Theory, RandomData]
+    internal static void Find_PropertyNamesWork(DataRandom testInstance)
+    {
+        Type type = typeof(SampleNameData);
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.FirstName))).Assert().IsNot(null);
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.LastName))).Assert().IsNot(null);
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.Bad))).Assert().Is(null);
+    }
+
+    private sealed class SampleNameData
+    {
+        public object _firstName = default;
+
+        public string _lastName = default;
+
+        public string _bad = default;
+
+        public object FirstName { get; } = default;
+
+        public string LastName { get; } = default;
+
+        public string Bad { get; } = default;
+    }
 }

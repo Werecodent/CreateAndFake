@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Frozen;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 
@@ -39,9 +38,8 @@ public sealed class FrozenCollectionCreateHintTests : CreateHintTestBase<FrozenC
     {
         if (type.IsGenericTypeDefinition)
         {
-            FastRandom random = new();
             return type.MakeGenericType([
-                .. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes)),
+                .. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes)),
             ]);
         }
         else

@@ -9,8 +9,8 @@ namespace CreateAndFake.Design.Extensions;
 public static class TypeExtensions
 {
     /// <summary>
-    ///     Checks if the <see langword="this"/> <see cref="Type"/> is a base
-    ///     <see langword="class"/> or <see langword="interface"/> for <typeparamref name="T"/>.
+    ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/> or
+    ///     <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
     /// </summary>
     /// <typeparam name="T">
     ///     Potential parent <see cref="Type"/> being inherited by the
@@ -41,8 +41,8 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if <see langword="this"/> <see cref="Type"/> is a base <see langword="class"/>
-    ///     or <see langword="interface"/> for the <paramref name="parent"/>.
+    ///     Checks if the <paramref name="parent"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
     /// </summary>
     /// <param name="child">
     ///     <see cref="Type"/> potentially inheriting the <paramref name="parent"/>.
@@ -77,8 +77,8 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/>
-    ///     or <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
+    ///     Checks if <see langword="this"/> <see cref="Type"/> is a base
+    ///     <see langword="class"/> or <see langword="interface"/> for <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">Potential child <see cref="Type"/> inheriting the
     ///     <paramref name="parent"/> <see cref="Type"/> (<see langword="this"/>).
@@ -108,8 +108,8 @@ public static class TypeExtensions
     }
 
     /// <summary>
-    ///     Checks if the <paramref name="child"/> is a base <see langword="class"/>
-    ///     or <see langword="interface"/> for <see langword="this"/> <see cref="Type"/>.
+    ///     Checks if <see langword="this"/> <see cref="Type"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <paramref name="child"/>.
     /// </summary>
     /// <param name="parent">
     ///     <see cref="Type"/> potentially inherited by the <paramref name="child"/>.

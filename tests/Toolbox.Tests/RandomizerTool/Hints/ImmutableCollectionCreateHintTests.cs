@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Immutable;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 
@@ -46,9 +45,8 @@ public sealed class ImmutableCollectionCreateHintTests
     {
         if (type.IsGenericTypeDefinition)
         {
-            FastRandom random = new();
             return type.MakeGenericType([
-                .. type.GetGenericArguments().Select(_ => random.NextItem(_ItemTypes)),
+                .. type.GetGenericArguments().Select(_ => Tools.Gen.NextItem(_ItemTypes)),
             ]);
         }
         else

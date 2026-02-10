@@ -6,7 +6,7 @@ using CreateAndFake.ExtractorTool;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc cref="IMutator"/>
+/// <inheritdoc/>
 public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
 {
     /// <inheritdoc/>
@@ -18,7 +18,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
     /// <inheritdoc/>
     public object VariantOf(Type type, IEnumerable<object?> instances, IMutatorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(instances, chainer);
+        ArgumentGuard.ThrowIfNull(type, instances, chainer);
         try
         {
             return chainer
@@ -64,7 +64,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
     /// <inheritdoc/>
     public object UniqueOf(Type type, IEnumerable<object?> instances, IMutatorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(instances, chainer);
+        ArgumentGuard.ThrowIfNull(type, instances, chainer);
 
         IContentMap[] maps =
         [

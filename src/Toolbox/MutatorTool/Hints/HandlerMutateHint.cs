@@ -6,12 +6,14 @@ using CreateAndFake.MutatorTool.Handlers;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
-/// <inheritdoc/>
+/// <summary>Combines and utilizes available handlers for mutations.</summary>
 public sealed class HandlerMutateHint : IMutateHint
 {
-    /// <summary>Supported types and the methods used to generate them.</summary>
+    /// <summary>Handlers to use that haven't already been specified.</summary>
     private static readonly IMutateHandler[] _Creators =
     [
+        new StringDictionaryMutateHandler(),
+        new NoMutateHandler(typeof(string)),
         new FactoryMutateHandler<StringBuilder>(
             (instance, mutator) => instance.Append(mutator.Options.Randomizer.Create<string>())
         ),

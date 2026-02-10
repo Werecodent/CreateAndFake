@@ -2,9 +2,9 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
-/// <inheritdoc/>
+/// <summary>Handles mutation of the <see cref="ITypeSupporter.SupportedType"/>.</summary>
 public interface IMutateHandler : ITypeSupporter
 {
-    /// <inheritdoc cref="IMutateHint.TryModifying(object, IMutatorChainer)"/>
-    bool ModifySupported(object instance, IMutatorChainer mutator);
+    /// <inheritdoc cref="MutateHint.Modify(object, IMutatorChainer)"/>
+    bool ModifySupported(object instance, IMutatorChainer chainer);
 }

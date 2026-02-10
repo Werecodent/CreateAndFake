@@ -1,10 +1,11 @@
 ﻿using System.Runtime.Serialization;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.AsserterTool;
 
 /// <summary>Exception for a failed <see cref="IAsserter"/> case.</summary>
-[Serializable, KnownType(typeof(Exception)), KnownType(typeof(Exception[]))]
-public sealed class AssertException : Exception
+[Serializable]
+public sealed class AssertException : CreateAndFakeException
 {
     /// <inheritdoc cref="AssertException"/>
     /// <remarks>Serialization constructor.</remarks>
