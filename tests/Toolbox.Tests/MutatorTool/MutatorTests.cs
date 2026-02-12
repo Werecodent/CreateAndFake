@@ -42,6 +42,7 @@ public static class MutatorTests
     [Theory, RandomData]
     internal static void Variant_TimesOut([Fake] IValuer fakeValuer, DataSample sample)
     {
+        fakeValuer.Options.SetupReturn(Tools.Valuer.Options);
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupReturn(true);
@@ -62,6 +63,7 @@ public static class MutatorTests
     [Theory, RandomData]
     internal static void Variant_RepeatsUntilUnequal([Fake] IValuer fakeValuer, DataSample sample)
     {
+        fakeValuer.Options.SetupReturn(Tools.Valuer.Options);
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(true, true, true, false));
@@ -87,6 +89,7 @@ public static class MutatorTests
         DataSample sample2
     )
     {
+        fakeValuer.Options.SetupReturn(Tools.Valuer.Options);
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
             .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));

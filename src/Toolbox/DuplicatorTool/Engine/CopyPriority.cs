@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Hints;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
@@ -5,6 +6,10 @@ namespace CreateAndFake.DuplicatorTool.Engine;
 /// <summary>Priorities for <see cref="CopyHint"/>s.</summary>
 public enum CopyPriority
 {
+    /// <summary>Priority for hints that won't automatically execute.</summary>
+    /// <remarks>Such hints only work if given to the tool via <see cref="IToolOptions"/>.</remarks>
+    Disabled = int.MinValue,
+
     /// <summary>Priority for custom hints that'll execute last.</summary>
     /// <remarks>Subtract from this priority for even lower priorities.</remarks>
     None = 0,

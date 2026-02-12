@@ -1,14 +1,23 @@
+using System.Collections.Immutable;
 using CreateAndFake.MutatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.MutatorTool.Hints;
 
-public static class ImmutableEnumerableMutateHintTests
+public sealed class ImmutableEnumerableMutateHintTests
+    : MutateHintTestBase<ImmutableEnumerableMutateHint>
 {
     [Fact]
-    internal static Task ImmutableEnumerableMutateHint_GuardsNulls()
+    public void Modify_ImmutableSamplesFalse()
     {
-        return Tools.Tester.PreventsNullRefException<ImmutableEnumerableMutateHint>(
-            TestContext.Current.CancellationToken
-        );
+        RunModifyTest<ImmutableQueue<int>>(false);
+        RunModifyTest<ImmutableQueue<int>>(false, 0);
+        RunModifyTest<ImmutableStack<DataSample>>(false, 0);
+    }
+
+    [Fact]
+    public void Modify_MutableSamplesTrue()
+    {
+        RunModifyTest<ImmutableStack<DataSample>>(true, 10);
     }
 }

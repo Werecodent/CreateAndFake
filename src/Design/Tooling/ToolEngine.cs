@@ -15,6 +15,7 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
             .FindLoadedSubclasses<THint>()
             .Select(Activator.CreateInstance)
             .Cast<THint>()
+            .Where(h => h.EnginePriority != int.MinValue)
             .OrderByDescending(h => h.EnginePriority),
     ];
 

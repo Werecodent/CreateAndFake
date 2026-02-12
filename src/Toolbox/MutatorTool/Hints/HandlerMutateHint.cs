@@ -43,4 +43,10 @@ public sealed class HandlerMutateHint : IMutateHint
             return MutateHintResult.None;
         }
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

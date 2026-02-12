@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.ValuerTool.Engine;
@@ -5,6 +6,10 @@ namespace CreateAndFake.ValuerTool.Engine;
 /// <summary>Priorities for <see cref="CompareHint"/>s.</summary>
 public enum ComparePriority
 {
+    /// <summary>Priority for hints that won't automatically execute.</summary>
+    /// <remarks>Such hints only work if given to the tool via <see cref="IToolOptions"/>.</remarks>
+    Disabled = int.MinValue,
+
     /// <summary>Priority for custom hints that'll execute last.</summary>
     /// <remarks>Subtract from this priority for even lower priorities.</remarks>
     None = 0,

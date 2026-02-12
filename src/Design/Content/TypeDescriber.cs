@@ -14,19 +14,48 @@ public static class TypeDescriber
     /// <summary>Caches every available <see cref="Type"/> per <see cref="Assembly"/>.</summary>
     private static readonly Dictionary<Assembly, ImmutableArray<Type>> _ClassTypeCache = [];
 
+    /// <returns>The found inherited <see cref="Type"/>.</returns>
+    /// <remarks>Example: <example><c>
+    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
+    ///     == typeof(IList&lt;int&gt;) // true
+    /// </c></example></remarks>
+    /// <inheritdoc cref="AsConcreteInterface(Type)"/>
+    /// <inheritdoc cref="FindConcreteInterface(Type,Type)"/>
+    public static Type FindConcreteInterface<T>(Type genericBase)
+    {
+        return FindConcreteInterface(typeof(T), genericBase);
+    }
+
+    /// <returns>The found inherited <see cref="Type"/>.</returns>
+    /// <exception cref="InvalidOperationException">
+    ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
+    /// </exception>
+    /// <remarks>Example: <example><c>
+    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
+    ///     == typeof(IList&lt;int&gt;) // true
+    /// </c></example></remarks>
+    /// <inheritdoc cref="AsConcreteInterface(Type,Type)"/>
+    public static Type FindConcreteInterface(Type child, Type genericBase)
+    {
+        return AsConcreteInterface(child, genericBase)
+            ?? throw new InvalidOperationException(
+                $"Type {child} doesn't inherit {genericBase} as a generic base class."
+            );
+    }
+
     /// <summary>
     ///     Finds the defined <paramref name="genericBase"/> with generics
     ///     specified that is inherited by <typeparamref name="T"/>.
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> to find the generic base of.</typeparam>
-    /// <remarks><example><c>
-    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
+    /// <remarks>Example: <example><c>
+    ///     AsConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    /// <inheritdoc cref="FindConcreteInterface(Type,Type)"/>
-    public static Type FindConcreteInterface<T>(Type genericBase)
+    /// <inheritdoc cref="AsConcreteInterface(Type,Type)"/>
+    public static Type? AsConcreteInterface<T>(Type genericBase)
     {
-        return FindConcreteInterface(typeof(T), genericBase);
+        return AsConcreteInterface(typeof(T), genericBase);
     }
 
     /// <summary>
@@ -37,25 +66,17 @@ public static class TypeDescriber
     /// <param name="genericBase">
     ///     Generic <see cref="Type"/> definition without generics specified.
     /// </param>
-    /// <returns>The found inherited <see cref="Type"/>.</returns>
-    /// <exception cref="InvalidOperationException">
-    ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
-    /// </exception>
-    /// <remarks><example><c>
-    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
+    /// <returns>The inherited <see cref="Type"/> if found, null otherwise.</returns>
+    /// <remarks>Example: <example><c>
+    ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    public static Type FindConcreteInterface(Type child, Type genericBase)
+    public static Type? AsConcreteInterface(Type? child, Type genericBase)
     {
-        ArgumentGuard.ThrowIfNull(child);
-
         return child
-                .GetInterfaces()
-                .Where(i => i.IsGenericType)
-                .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase)
-            ?? throw new InvalidOperationException(
-                $"Type {child} doesn't inherit {genericBase} as a generic base class."
-            );
+            ?.GetInterfaces()
+            .Where(i => i.IsGenericType)
+            .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
     }
 
     /// <summary>

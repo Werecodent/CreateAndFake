@@ -55,7 +55,7 @@ public sealed class CollectionMutateHint : MutateHint
                 break;
             }
 
-            modified &= chainer.Modify(item);
+            modified |= chainer.Modify(item);
         }
 
         return modified;

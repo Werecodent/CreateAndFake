@@ -3,6 +3,7 @@ using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.MutatorTool.Engine;
 
@@ -19,39 +20,43 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
     public object VariantOf(Type type, IEnumerable<object?> instances, IMutatorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(type, instances, chainer);
+
+        ValuerOptions compareOptions = chainer.Options.Valuer.Options with
+        {
+            SkipAsyncValues = true,
+        };
+
+        bool isVariantCheck(object result)
+        {
+            if (
+                instances.All(o =>
+                    ArgumentGuard.IsAsynchronous(o)
+                    || !chainer.Options.Valuer.Equals(result, o, _ => compareOptions)
+                )
+            )
+            {
+                return true;
+            }
+            else
+            {
+                Disposer.Cleanup(result);
+                return false;
+            }
+        }
+
         try
         {
             return chainer
                 .Options.VariantAttempts.StallUntil(
                     $"Create variant of type '{type}'",
                     () => chainer.Options.Randomizer.Create(type),
-                    result =>
-                    {
-                        if (
-                            instances.All(o =>
-                                ArgumentGuard.IsAsynchronous(o)
-                                || !chainer.Options.Valuer.Equals(
-                                    result,
-                                    o,
-                                    opt => opt with { SkipAsyncValues = true }
-                                )
-                            )
-                        )
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            Disposer.Cleanup(result);
-                            return false;
-                        }
-                    }
+                    isVariantCheck
                 )
                 .Last();
         }
-        catch (TimeoutException e)
+        catch (Exception e)
         {
-            throw new ToolException($"Could not create different instance of type '{type}'.", e);
+            throw WrapError(type, "create a variant", e);
         }
     }
 
@@ -70,30 +75,33 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         [
             .. instances.Where(e => e != null).Select(e => chainer.Options.Extractor.Extract(e)),
         ];
+
+        bool isUniqueCheck(object result)
+        {
+            if (!chainer.Options.Extractor.Extract(result).HasSharedContent(maps))
+            {
+                return true;
+            }
+            else
+            {
+                Disposer.Cleanup(result);
+                return false;
+            }
+        }
+
         try
         {
             return chainer
                 .Options.VariantAttempts.StallUntil(
                     $"Create unique of type '{type}'",
                     () => chainer.Options.Randomizer.Create(type),
-                    result =>
-                    {
-                        if (!chainer.Options.Extractor.Extract(result).HasSharedContent(maps))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            Disposer.Cleanup(result);
-                            return false;
-                        }
-                    }
+                    isUniqueCheck
                 )
                 .Last();
         }
-        catch (TimeoutException e)
+        catch (Exception e)
         {
-            throw new ToolException($"Could not create unique instance of type '{type}'.", e);
+            throw WrapError(type, "create a unique", e);
         }
     }
 
@@ -106,9 +114,17 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
             return false;
         }
 
-        MutateHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryModifying(instance, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        MutateHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryModifying(instance, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw WrapError(instance.GetType(), "modify", e);
+        }
 
         if (result != null)
         {
@@ -117,9 +133,37 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{instance.GetType()}' not supported by the mutator. "
-                    + "Create a hint to generate the type and pass it to the mutator."
+                $"Type '{instance.GetType()}' not supported by the {nameof(IMutator)}. "
+                    + $"Create a {nameof(IMutateHint)} to handle the {nameof(Type)}."
             );
         }
+    }
+
+    /// <summary>Adds details to encountered exceptions during mutation.</summary>
+    /// <param name="type">Relevant <see cref="Type"/> causing the issue.</param>
+    /// <param name="method">Method type that failed.</param>
+    /// <param name="e">Encountered exception.</param>
+    /// <returns>Exception to throw.</returns>
+    private static ToolException WrapError(Type type, string method, Exception e)
+    {
+        Exception error =
+            (e is AggregateException agg && agg.InnerExceptions.Count == 1)
+                ? agg.InnerException ?? e
+                : e;
+
+        string message;
+        if (error is InsufficientExecutionStackException)
+        {
+            message = $"Ran into infinite generation trying to {method} instance of type '{type}'.";
+        }
+        else if (error is TimeoutException)
+        {
+            message = $"Could not {method} instance of type '{type}' within the limit.";
+        }
+        else
+        {
+            message = $"Encountered issue trying to {method} instance of type '{type}'.";
+        }
+        return new ToolException(message, error);
     }
 }

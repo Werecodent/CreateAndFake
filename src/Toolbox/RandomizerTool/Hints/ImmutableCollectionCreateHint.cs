@@ -77,7 +77,7 @@ public sealed class ImmutableCollectionCreateHint : CreateHint
                 [
                     randomizer.Create(
                         typeof(IEnumerable<>).MakeGenericType(itemType),
-                        randomizer.Options
+                        _ => randomizer.Options
                     ),
                 ]
             );

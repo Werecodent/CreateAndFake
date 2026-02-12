@@ -1,14 +1,11 @@
+using System.Collections;
 using CreateAndFake.MutatorTool.Hints;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.MutatorTool.Hints;
 
-public static class ObjectMutateHintTests
+public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
 {
-    [Fact]
-    internal static Task ObjectMutateHint_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefException<ObjectMutateHint>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    public ObjectMutateHintTests()
+        : base([typeof(DataHolderSample)], [typeof(ICollection)]) { }
 }

@@ -53,6 +53,14 @@ public static class TypeDescriberTests
     }
 
     [Fact]
+    internal static void AsConcreteInterface_NullWhenMissing()
+    {
+        TypeDescriber.AsConcreteInterface<IList<int>>(typeof(List<>)).Assert().IsNull();
+        TypeDescriber.AsConcreteInterface<string>(typeof(int)).Assert().IsNull();
+        TypeDescriber.AsConcreteInterface(null, typeof(IEnumerable<>)).Assert().IsNull();
+    }
+
+    [Fact]
     internal static void AsGenericBase_ConvertsGenerics()
     {
         TypeDescriber.AsGenericBase(typeof(List<int>)).Assert().Is(typeof(List<>));

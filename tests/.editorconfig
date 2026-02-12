@@ -1,12 +1,14 @@
 [*.cs]
 
 # Needed for testing and cleaner tests.
+dotnet_diagnostic.CA1002.severity = none
 dotnet_diagnostic.CA1034.severity = none
 dotnet_diagnostic.CA1044.severity = none
 dotnet_diagnostic.CA1051.severity = none
 dotnet_diagnostic.CA1515.severity = none
 dotnet_diagnostic.CA1812.severity = none
 dotnet_diagnostic.CA2263.severity = none
+dotnet_diagnostic.MA0016.severity = none
 
 # Unnecessary for tests.
 dotnet_diagnostic.CA1062.severity = none

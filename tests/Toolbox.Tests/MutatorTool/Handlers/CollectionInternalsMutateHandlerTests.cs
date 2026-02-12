@@ -9,4 +9,10 @@ public static class CollectionInternalsMutateHandlerTests
     {
         typeof(CollectionInternalsMutateHandler).IsPublic.Assert().Is(false);
     }
+
+    [Fact]
+    internal static void SupportedType_SetAsInvalid()
+    {
+        new CollectionInternalsMutateHandler().SupportedType.Assert().IsNull();
+    }
 }

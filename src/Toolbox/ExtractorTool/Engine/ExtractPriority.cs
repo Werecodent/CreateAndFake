@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Hints;
 
 namespace CreateAndFake.ExtractorTool.Engine;
@@ -5,6 +6,10 @@ namespace CreateAndFake.ExtractorTool.Engine;
 /// <summary>Priorities for <see cref="ExtractHint"/>s.</summary>
 public enum ExtractPriority
 {
+    /// <summary>Priority for hints that won't automatically execute.</summary>
+    /// <remarks>Such hints only work if given to the tool via <see cref="IToolOptions"/>.</remarks>
+    Disabled = int.MinValue,
+
     /// <summary>Priority for custom hints that'll execute last.</summary>
     /// <remarks>Subtract from this priority for even lower priorities.</remarks>
     None = 0,

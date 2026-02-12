@@ -14,9 +14,10 @@ internal sealed class StringDictionaryMutateHandler : IMutateHandler
     {
         StringDictionary dict = (StringDictionary)instance;
 
-        string key = chainer.Options.Gen.Next<bool>()
-            ? chainer.Options.Gen.NextItem(dict.Keys.Cast<string>())
-            : chainer.VariantOf(dict.Keys.Cast<string>());
+        string key =
+            dict.Count > 0 && chainer.Options.Gen.Next<bool>()
+                ? chainer.Options.Gen.NextItem(dict.Keys.Cast<string>())
+                : chainer.VariantOf(dict.Keys.Cast<string>());
 
         dict[key] = chainer.Options.Randomizer.Create<string>();
         return true;
