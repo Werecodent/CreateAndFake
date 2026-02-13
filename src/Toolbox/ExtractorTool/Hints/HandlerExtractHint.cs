@@ -12,10 +12,10 @@ public sealed class HandlerExtractHint : IExtractHint
     /// <summary>Handlers to use that haven't already been specified.</summary>
     private static readonly IExtractHandler[] _Creators =
     [
-        new SelfExtractHandler<Lock>(),
-        new SelfExtractHandler<string>(),
-        new SelfExtractHandler<StringBuilder>(),
-        new SelfExtractHandler<CancellationToken>(),
+        new SelfExtractHandler(typeof(Lock)),
+        new SelfExtractHandler(typeof(string)),
+        new SelfExtractHandler(typeof(StringBuilder)),
+        new SelfExtractHandler(typeof(CancellationToken)),
     ];
 
     /// <summary>All handlers by their supported type.</summary>

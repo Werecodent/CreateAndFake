@@ -19,15 +19,17 @@ public static class ExtractPriorityTests
     [Fact]
     internal static void Highest_AtCap()
     {
-        ((int)ExtractPriority.Highest).Assert().Is(Enum.GetValues<ExtractPriority>().Length - 2);
+        ((int)ExtractPriority.Highest)
+            .Assert()
+            .Is(Enum.GetValues(typeof(ExtractPriority)).Length - 2);
     }
 
     [Fact]
     internal static void Values_AllPositive()
     {
-        Enum.GetValues<ExtractPriority>()
-            .Except([ExtractPriority.Disabled])
+        Enum.GetValues(typeof(ExtractPriority))
             .Cast<int>()
+            .Except([(int)ExtractPriority.Disabled])
             .Where(v => v < 0)
             .Assert()
             .IsEmpty();
@@ -36,10 +38,10 @@ public static class ExtractPriorityTests
     [Fact]
     internal static void Values_Unique()
     {
-        Enum.GetValues<ExtractPriority>()
+        Enum.GetValues(typeof(ExtractPriority))
             .Cast<int>()
             .ToHashSet()
             .Assert()
-            .HasCount(Enum.GetValues<ExtractPriority>().Length);
+            .HasCount(Enum.GetValues(typeof(ExtractPriority)).Length);
     }
 }

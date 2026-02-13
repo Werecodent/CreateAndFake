@@ -19,15 +19,17 @@ public static class CreatePriorityTests
     [Fact]
     internal static void Highest_AtCap()
     {
-        ((int)CreatePriority.Highest).Assert().Is(Enum.GetValues<CreatePriority>().Length - 2);
+        ((int)CreatePriority.Highest)
+            .Assert()
+            .Is(Enum.GetValues(typeof(CreatePriority)).Length - 2);
     }
 
     [Fact]
     internal static void Values_AllPositive()
     {
-        Enum.GetValues<CreatePriority>()
-            .Except([CreatePriority.Disabled])
+        Enum.GetValues(typeof(CreatePriority))
             .Cast<int>()
+            .Except([(int)CreatePriority.Disabled])
             .Where(v => v < 0)
             .Assert()
             .IsEmpty();
@@ -36,10 +38,10 @@ public static class CreatePriorityTests
     [Fact]
     internal static void Values_Unique()
     {
-        Enum.GetValues<CreatePriority>()
+        Enum.GetValues(typeof(CreatePriority))
             .Cast<int>()
             .ToHashSet()
             .Assert()
-            .HasCount(Enum.GetValues<CreatePriority>().Length);
+            .HasCount(Enum.GetValues(typeof(CreatePriority)).Length);
     }
 }

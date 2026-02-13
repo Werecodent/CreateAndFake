@@ -19,15 +19,15 @@ public static class CopyPriorityTests
     [Fact]
     internal static void Highest_AtCap()
     {
-        ((int)CopyPriority.Highest).Assert().Is(Enum.GetValues<CopyPriority>().Length - 2);
+        ((int)CopyPriority.Highest).Assert().Is(Enum.GetValues(typeof(CopyPriority)).Length - 2);
     }
 
     [Fact]
     internal static void Values_AllPositive()
     {
-        Enum.GetValues<CopyPriority>()
-            .Except([CopyPriority.Disabled])
+        Enum.GetValues(typeof(CopyPriority))
             .Cast<int>()
+            .Except([(int)CopyPriority.Disabled])
             .Where(v => v < 0)
             .Assert()
             .IsEmpty();
@@ -36,10 +36,10 @@ public static class CopyPriorityTests
     [Fact]
     internal static void Values_Unique()
     {
-        Enum.GetValues<CopyPriority>()
+        Enum.GetValues(typeof(CopyPriority))
             .Cast<int>()
             .ToHashSet()
             .Assert()
-            .HasCount(Enum.GetValues<CopyPriority>().Length);
+            .HasCount(Enum.GetValues(typeof(CopyPriority)).Length);
     }
 }

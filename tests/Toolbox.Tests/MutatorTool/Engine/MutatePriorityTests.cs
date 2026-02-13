@@ -19,15 +19,17 @@ public static class MutatePriorityTests
     [Fact]
     internal static void Highest_AtCap()
     {
-        ((int)MutatePriority.Highest).Assert().Is(Enum.GetValues<MutatePriority>().Length - 2);
+        ((int)MutatePriority.Highest)
+            .Assert()
+            .Is(Enum.GetValues(typeof(MutatePriority)).Length - 2);
     }
 
     [Fact]
     internal static void Values_AllPositive()
     {
-        Enum.GetValues<MutatePriority>()
-            .Except([MutatePriority.Disabled])
+        Enum.GetValues(typeof(MutatePriority))
             .Cast<int>()
+            .Except([(int)MutatePriority.Disabled])
             .Where(v => v < 0)
             .Assert()
             .IsEmpty();
@@ -36,10 +38,10 @@ public static class MutatePriorityTests
     [Fact]
     internal static void Values_Unique()
     {
-        Enum.GetValues<MutatePriority>()
+        Enum.GetValues(typeof(MutatePriority))
             .Cast<int>()
             .ToHashSet()
             .Assert()
-            .HasCount(Enum.GetValues<MutatePriority>().Length);
+            .HasCount(Enum.GetValues(typeof(MutatePriority)).Length);
     }
 }
