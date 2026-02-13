@@ -10,10 +10,10 @@ public sealed class TaskExtractHint : ExtractHint<Task>
     public override int EnginePriority => (int)ExtractPriority.TaskHint;
 
     /// <inheritdoc/>
-    protected override bool Extract(Task value, IExtractorChainer extractor)
+    protected override bool Extract(Task source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        return extractor.AddFoundValue(value);
+        return chainer.AddFoundValue(source);
     }
 }

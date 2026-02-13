@@ -11,6 +11,10 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
     public bool Extract(object? value, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
+        if (value == null)
+        {
+            return false;
+        }
 
         ExtractHintResult? result = SelectHints(chainer)
             .Select(h => h.TryExtract(value, chainer))

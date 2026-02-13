@@ -11,15 +11,15 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
     public override int EnginePriority => (int)ExtractPriority.EnumerableHint;
 
     /// <inheritdoc/>
-    protected override bool Extract(IEnumerable value, IExtractorChainer extractor)
+    protected override bool Extract(IEnumerable source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        if (extractor.AddFoundValue(value))
+        if (chainer.AddFoundValue(source))
         {
-            foreach (object item in value)
+            foreach (object item in source)
             {
-                _ = extractor.InnerExtract(item);
+                _ = chainer.InnerExtract(item);
             }
             return true;
         }

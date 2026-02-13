@@ -15,7 +15,7 @@ public abstract class ExtractHintTestBase<T>(
     IEnumerable<Type> validTypes,
     IEnumerable<Type> invalidTypes
 )
-    where T : ExtractHint
+    where T : IExtractHint
 {
     /// <summary>Instance to test with.</summary>
     protected T TestInstance { get; } = testInstance;

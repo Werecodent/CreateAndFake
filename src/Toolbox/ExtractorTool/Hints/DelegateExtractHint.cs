@@ -10,10 +10,10 @@ public sealed class DelegateExtractHint : ExtractHint<Delegate>
     public override int EnginePriority => (int)ExtractPriority.DelegateHint;
 
     /// <inheritdoc/>
-    protected override bool Extract(Delegate value, IExtractorChainer extractor)
+    protected override bool Extract(Delegate source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        return extractor.AddFoundValue(value);
+        return chainer.AddFoundValue(source);
     }
 }

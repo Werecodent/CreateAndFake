@@ -11,16 +11,16 @@ public sealed class DictionaryExtractHint : ExtractHint<IDictionary>
     public override int EnginePriority => (int)ExtractPriority.DictionaryHint;
 
     /// <inheritdoc/>
-    protected override bool Extract(IDictionary value, IExtractorChainer extractor)
+    protected override bool Extract(IDictionary source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        if (extractor.AddFoundValue(value))
+        if (chainer.AddFoundValue(source))
         {
-            foreach (DictionaryEntry item in value)
+            foreach (DictionaryEntry item in source)
             {
-                _ = extractor.InnerExtract(item.Key);
-                _ = extractor.InnerExtract(item.Value);
+                _ = chainer.InnerExtract(item.Key);
+                _ = chainer.InnerExtract(item.Value);
             }
             return true;
         }

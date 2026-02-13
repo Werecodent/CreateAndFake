@@ -12,29 +12,29 @@ public sealed class ObjectExtractHint : ExtractHint<object>
     public override int EnginePriority => (int)ExtractPriority.ObjectHint;
 
     /// <inheritdoc/>
-    protected override bool Extract(object value, IExtractorChainer extractor)
+    protected override bool Extract(object source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        if (extractor.AddFoundValue(value))
+        if (chainer.AddFoundValue(source))
         {
-            Type type = value.GetType();
+            Type type = source.GetType();
             foreach (
                 PropertyInfo property in TypeDescriber
-                    .GetAllProperties(type, !extractor.Options.ExtractPrivateMembers)
+                    .GetAllProperties(type, !chainer.Options.ExtractPrivateMembers)
                     .Where(p => p.CanRead)
             )
             {
-                _ = extractor.InnerExtract(property.GetValue(value));
+                _ = chainer.InnerExtract(property.GetValue(source));
             }
             foreach (
                 FieldInfo field in TypeDescriber.GetAllFields(
                     type,
-                    !extractor.Options.ExtractPrivateMembers
+                    !chainer.Options.ExtractPrivateMembers
                 )
             )
             {
-                _ = extractor.InnerExtract(field.GetValue(value));
+                _ = chainer.InnerExtract(field.GetValue(source));
             }
             return true;
         }

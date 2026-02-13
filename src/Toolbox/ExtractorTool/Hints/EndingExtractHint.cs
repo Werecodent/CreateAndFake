@@ -1,8 +1,5 @@
-using System.Collections.Frozen;
-using System.Reflection;
-using System.Text;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.ExtractorTool.Engine;
 
 namespace CreateAndFake.ExtractorTool.Hints;
@@ -13,34 +10,23 @@ public sealed class EndingExtractHint : ExtractHint
     /// <inheritdoc/>
     public override int EnginePriority => (int)ExtractPriority.EndingHint;
 
-    /// <inheritdoc cref="ExtractorOptions.ContentEndTypes"/>
-    private static readonly FrozenSet<Type> _ContentEndTypes = RuntimeDetails
-        .RuntimeTypes.Concat([
-            Assembly.GetExecutingAssembly().GetType(),
-            typeof(string),
-            typeof(StringBuilder),
-            typeof(Type),
-            typeof(Lock),
-        ])
-        .ToFrozenSet();
-
     /// <inheritdoc/>
-    public override ExtractHintResult TryExtract(object? value, IExtractorChainer extractor)
+    public override ExtractHintResult TryExtract(object? source, IExtractorChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(extractor);
+        ArgumentGuard.ThrowIfNull(chainer);
 
-        Type? type = value?.GetType();
+        Type? type = source?.GetType();
         if (
-            value != null
+            source != null
             && type != null
             && (
-                type.IsValueType
-                || _ContentEndTypes.Contains(type)
-                || extractor.Options.ContentEndTypes.Contains(type)
+                ValueRandom.SupportedTypes.Contains(type)
+                || type.IsEnum
+                || chainer.Options.ContentEndTypes.Contains(type)
             )
         )
         {
-            return new(extractor.AddFoundValue(value));
+            return new(chainer.AddFoundValue(source));
         }
         else
         {

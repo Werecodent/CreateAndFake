@@ -1,3 +1,4 @@
+using CreateAndFake.ExtractorTool.Engine;
 using CreateAndFake.ExtractorTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 
@@ -7,7 +8,7 @@ public sealed class EndingExtractHintTests : ExtractHintTestBase<EndingExtractHi
 {
     private static readonly EndingExtractHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(int), typeof(string), typeof(Type)];
+    private static readonly Type[] _ValidTypes = [typeof(ExtractPriority)];
 
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 

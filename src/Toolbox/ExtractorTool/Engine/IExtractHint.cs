@@ -6,8 +6,8 @@ namespace CreateAndFake.ExtractorTool.Engine;
 public interface IExtractHint : IToolHint
 {
     /// <summary>Tries to extract content.</summary>
-    /// <param name="value">Instance to extract content from.</param>
-    /// <param name="extractor">Extractor to use.</param>
+    /// <param name="source">Instance to extract content from.</param>
+    /// <param name="chainer">Extractor to use.</param>
     /// <returns>Hint result.</returns>
-    ExtractHintResult TryExtract(object? value, IExtractorChainer extractor);
+    ExtractHintResult TryExtract(object? source, IExtractorChainer chainer);
 }
