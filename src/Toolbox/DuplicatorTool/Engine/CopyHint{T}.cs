@@ -5,6 +5,9 @@
 public abstract class CopyHint<T> : CopyHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(T)];
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         if (source is T data)

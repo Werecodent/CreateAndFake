@@ -2,8 +2,8 @@ using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Handlers;
 
-/// <summary>...</summary>
-/// <param name="supportedType"></param>
+/// <summary>Prevents cloning of the <paramref name="supportedType"/>.</summary>
+/// <param name="supportedType">Specific <see cref="Type"/> to prevent cloning of.</param>
 internal sealed class RefCopyHandler(Type supportedType) : ICopyHandler
 {
     /// <inheritdoc/>

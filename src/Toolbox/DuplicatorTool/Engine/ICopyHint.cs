@@ -2,7 +2,7 @@ using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
 
-/// <summary>Handles cloning specific types for <see cref="IDuplicator"/> .</summary>
+/// <summary>Handles cloning of the <see cref="IToolHint.SupportedTypes"/>.</summary>
 public interface ICopyHint : IToolHint
 {
     /// <summary>Tries to deep clone <paramref name="source"/>.</summary>

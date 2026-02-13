@@ -10,6 +10,9 @@ public sealed class CloneableCopyHint : CopyHint<ICloneable>
     public override int EnginePriority => (int)CopyPriority.CloneableHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(ICloneable)];
+
+    /// <inheritdoc/>
     protected override ICloneable Copy(ICloneable source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

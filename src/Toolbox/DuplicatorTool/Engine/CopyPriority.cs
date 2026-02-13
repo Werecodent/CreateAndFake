@@ -26,34 +26,31 @@ public enum CopyPriority
     /// <summary>Priority for <see cref="CollectionCopyHint"/>.</summary>
     CollectionHint = 4,
 
-    /// <summary>Priority for <see cref="LegacyCollectionCopyHint"/>.</summary>
-    LegacyCollectionHint = 5,
-
     /// <summary>Priority for <see cref="ImmutableCollectionCopyHint"/>.</summary>
-    ImmutableCollectionHint = 6,
+    ImmutableCollectionHint = 5,
 
     /// <summary>Priority for <see cref="FrozenCollectionCopyHint"/>.</summary>
-    FrozenCollectionHint = 7,
+    FrozenCollectionHint = 6,
 
     /// <summary>Priority for <see cref="AsyncCollectionCopyHint"/>.</summary>
-    AsyncCollectionHint = 8,
+    AsyncCollectionHint = 7,
 
     /// <summary>Priority for <see cref="BasicCopyHint"/>.</summary>
-    BasicHint = 9,
+    BasicHint = 8,
 
     /// <summary>Priority for <see cref="DuplicatableCopyHint"/>.</summary>
-    DuplicatableHint = 10,
+    DuplicatableHint = 9,
 
     /// <summary>Priority for <see cref="DeepCloneableCopyHint"/>.</summary>
-    DeepCloneableHint = 11,
+    DeepCloneableHint = 10,
 
     /// <summary>Priority for <see cref="TaskCopyHint"/>.</summary>
-    TaskHint = 12,
+    TaskHint = 11,
 
     /// <summary>Priority for <see cref="HandlerCopyHint"/>.</summary>
-    HandlerHint = 13,
+    HandlerHint = 12,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 14,
+    Highest = 13,
 }

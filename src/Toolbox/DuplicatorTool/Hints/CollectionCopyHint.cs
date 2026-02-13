@@ -22,6 +22,9 @@ public sealed class CollectionCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.CollectionHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(IEnumerable)];
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

@@ -11,11 +11,9 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 /// <typeparam name="T">Copy hint to test.</typeparam>
 /// <param name="validTypes">Types that can be copied by the hint.</param>
 /// <param name="invalidTypes">Types that can't be copied by the hint.</param>
-/// <param name="copiesByRef">If the hint copies by reference instead for value types.</param>
 public abstract class CopyHintTestBase<T>(
     IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes,
-    bool copiesByRef = false
+    IEnumerable<Type> invalidTypes
 )
     where T : CopyHint, new()
 {
@@ -43,9 +41,6 @@ public abstract class CopyHintTestBase<T>(
 
     /// <summary>Types that can't be copied by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
-
-    /// <summary>If the hint copies by reference instead for value types.</summary>
-    private readonly bool _copiesByRef = copiesByRef;
 
     /// <inheritdoc cref="ITester.PreventsNullRefException"/>
     [Fact]
@@ -90,26 +85,14 @@ public abstract class CopyHintTestBase<T>(
                         + $"'{type.Name}'. Actual type: '{data?.GetType()}'."
                 );
 
-                if (_copiesByRef || data is string)
-                {
-                    result
-                        .Data.Assert()
-                        .ReferenceEqual(
-                            data,
-                            $"Hint '{typeof(T).Name}' expected to copy value types by ref of "
-                                + $"type '{type.Name}'. Actual type '{data?.GetType()}'."
-                        );
-                }
-                else
-                {
-                    result
-                        .Data.Assert()
-                        .ReferenceNotEqual(
-                            data,
-                            $"Hint '{typeof(T).Name}' copied by ref instead of a deep clone of "
-                                + $"type '{type.Name}'. Actual type '{data?.GetType()}'."
-                        );
-                }
+                await result
+                    .Data.Assert()
+                    .IsAsync(
+                        data,
+                        TestContext.Current.CancellationToken,
+                        $"Hint '{typeof(T).Name}' failed to create clone that's equal by value "
+                            + $"for type '{type.Name}'. Actual type '{data?.GetType()}'."
+                    );
             }
             finally
             {

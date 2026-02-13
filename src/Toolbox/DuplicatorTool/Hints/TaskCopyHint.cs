@@ -11,6 +11,9 @@ public sealed class TaskCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.TaskHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(Task), typeof(Task<>)];
+
+    /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

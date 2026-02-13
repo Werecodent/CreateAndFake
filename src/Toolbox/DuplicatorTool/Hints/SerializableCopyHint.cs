@@ -14,6 +14,9 @@ public sealed class SerializableCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.SerializableHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(ISerializable)];
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);

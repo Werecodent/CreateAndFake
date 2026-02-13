@@ -11,6 +11,9 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.AsyncCollectionHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(IAsyncEnumerable<>)];
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source, duplicator);

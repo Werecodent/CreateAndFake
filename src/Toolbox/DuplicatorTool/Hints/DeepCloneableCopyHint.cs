@@ -11,6 +11,9 @@ public sealed class DeepCloneableCopyHint : CopyHint<IDeepCloneable>
     public override int EnginePriority => (int)CopyPriority.DeepCloneableHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [typeof(IDeepCloneable)];
+
+    /// <inheritdoc/>
     protected override IDeepCloneable Copy(IDeepCloneable source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

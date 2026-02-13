@@ -6,7 +6,10 @@ namespace CreateAndFake.Tests.DuplicatorTool.Hints;
 
 public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
 {
-    private static readonly Type[] _ValidTypes = [typeof(Guid), typeof(TimeSpan), typeof(Uri)];
+    private static readonly Type[] _ValidTypes =
+    [
+        .. new HandlerCopyHint().SupportedTypes.Except([typeof(object)]),
+    ];
 
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
@@ -22,5 +25,15 @@ public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
 
         result.HasData.Assert().Is(true);
         result.Data.Assert().Is(original);
+    }
+
+    [Fact]
+    internal static void TryCopy_HandlesBaseObject()
+    {
+        object data = new();
+        CopyHintResult result = new HandlerCopyHint().TryCopy(data, CreateChainer());
+
+        result.Assert().Is(new CopyHintResult(data));
+        result.Data.Assert().ReferenceEqual(data);
     }
 }

@@ -9,7 +9,7 @@ public abstract class CopyHint : ICopyHint
     public abstract int EnginePriority { get; }
 
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+    public abstract IEnumerable<Type> SupportedTypes { get; }
 
     /// <inheritdoc/>
     public abstract CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator);

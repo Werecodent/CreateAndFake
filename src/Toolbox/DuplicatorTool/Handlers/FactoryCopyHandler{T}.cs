@@ -2,9 +2,11 @@ using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Handlers;
 
-/// <inheritdoc cref="ICopyHandler"/>
+/// <summary>
+///     Handles <typeparamref name="T"/> cloning via the <paramref name="factory"/>.
+/// </summary>
 /// <typeparam name="T"><inheritdoc cref="SupportedType" path="/summary"/></typeparam>
-/// <param name="factory">Behavior handling creation of the supported type.</param>
+/// <param name="factory">Behavior handling <typeparamref name="T"/> cloning.</param>
 internal sealed class FactoryCopyHandler<T>(Func<T, IDuplicatorChainer, T> factory) : ICopyHandler
 {
     /// <inheritdoc/>

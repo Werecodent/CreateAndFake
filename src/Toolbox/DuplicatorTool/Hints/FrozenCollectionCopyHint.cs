@@ -31,6 +31,10 @@ public class FrozenCollectionCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.FrozenCollectionHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes =>
+        [typeof(FrozenSet<>), typeof(FrozenDictionary<,>)];
+
+    /// <inheritdoc/>
     public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
         ArgumentGuard.ThrowIfNull(source);

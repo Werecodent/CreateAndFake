@@ -1,26 +1,19 @@
 ﻿using System.Runtime.Serialization;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool.Engine;
 
 #pragma warning disable SYSLIB0050 // 'IObjectReference' is obsolete: Still needed for compatibility.
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
-/// <summary>Handles cloning basic types for <see cref="IDuplicator"/> .</summary>
+/// <summary>Handles cloning basic types for <see cref="IDuplicator"/>.</summary>
 public sealed class BasicCopyHint : CopyHint
 {
-    /// <summary>Specific types to control via this hint.</summary>
-    private static readonly HashSet<Type> _SupportedTypes =
-    [
-        typeof(string),
-        typeof(object),
-        typeof(InheritanceTracker),
-    ];
-
     /// <inheritdoc/>
     public override int EnginePriority => (int)CopyPriority.BasicHint;
+
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes => [];
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
@@ -28,13 +21,7 @@ public sealed class BasicCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
-        if (
-            type.IsPrimitive
-            || type.IsEnum
-            || ValueRandom.SupportedTypes.Contains(type)
-            || _SupportedTypes.Contains(type)
-            || type.Inherits<IObjectReference>()
-        )
+        if (type.IsEnum || type.IsPrimitive || type.Inherits<IObjectReference>())
         {
             return new(source);
         }
