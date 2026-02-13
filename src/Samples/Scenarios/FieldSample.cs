@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.Samples.Scenarios;
+﻿using CreateAndFake.Design.Content;
+
+namespace CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public class FieldSample(string stringValue, string stringValue2)
@@ -12,4 +14,9 @@ public class FieldSample(string stringValue, string stringValue2)
     public int NumberValue;
 
     public IEnumerable<string?>? CollectionValue;
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

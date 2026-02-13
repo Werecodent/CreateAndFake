@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Samples.ErrorCases;
@@ -11,5 +12,10 @@ public class IsBadSample : IIsGoodOrBadSample
     {
         get => 0;
         set => throw new NotImplementedException();
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

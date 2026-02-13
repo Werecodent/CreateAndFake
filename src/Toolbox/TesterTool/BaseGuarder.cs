@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
@@ -44,6 +45,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         return type.GetMethods(kind | scope)
             .Where(m => m.IsPublic || m.IsAssembly)
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
+            .Where(m => !m.IsStatic || !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
             .Where(m => !m.IsPrivate)
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
     }

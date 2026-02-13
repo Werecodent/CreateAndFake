@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Scenarios;
@@ -51,5 +52,10 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
         ArgumentGuard.ThrowIfNull(valuer);
 
         return valuer.GetHashCodeAsync(new object?[] { StringValue, NumberValue }, canceler);
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

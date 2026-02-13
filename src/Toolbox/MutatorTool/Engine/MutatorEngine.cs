@@ -47,7 +47,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         try
         {
             return chainer
-                .Options.VariantAttempts.StallUntil(
+                .Options.CreateVariantAttemptLimit.StallUntil(
                     $"Create variant of type '{type}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isVariantCheck
@@ -56,7 +56,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw WrapError(type, "create a variant", e);
+            throw new ToolException($"Error creating a variant instance of type '{type}'.", e);
         }
     }
 
@@ -92,7 +92,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         try
         {
             return chainer
-                .Options.VariantAttempts.StallUntil(
+                .Options.CreateUniqueAttemptLimit.StallUntil(
                     $"Create unique of type '{type}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isUniqueCheck
@@ -101,7 +101,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw WrapError(type, "create a unique", e);
+            throw new ToolException($"Error creating a unique instance of type '{type}'.", e);
         }
     }
 
@@ -123,7 +123,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw WrapError(instance.GetType(), "modify", e);
+            throw new ToolException($"Error modifying instance of type '{instance.GetType()}'.", e);
         }
 
         if (result != null)
@@ -137,33 +137,5 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
                     + $"Create a {nameof(IMutateHint)} to handle the {nameof(Type)}."
             );
         }
-    }
-
-    /// <summary>Adds details to encountered exceptions during mutation.</summary>
-    /// <param name="type">Relevant <see cref="Type"/> causing the issue.</param>
-    /// <param name="method">Method type that failed.</param>
-    /// <param name="e">Encountered exception.</param>
-    /// <returns>Exception to throw.</returns>
-    private static ToolException WrapError(Type type, string method, Exception e)
-    {
-        Exception error =
-            (e is AggregateException agg && agg.InnerExceptions.Count == 1)
-                ? agg.InnerException ?? e
-                : e;
-
-        string message;
-        if (error is InsufficientExecutionStackException)
-        {
-            message = $"Ran into infinite generation trying to {method} instance of type '{type}'.";
-        }
-        else if (error is TimeoutException)
-        {
-            message = $"Could not {method} instance of type '{type}' within the limit.";
-        }
-        else
-        {
-            message = $"Encountered issue trying to {method} instance of type '{type}'.";
-        }
-        return new ToolException(message, error);
     }
 }

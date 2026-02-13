@@ -31,8 +31,15 @@ public sealed class ObjectMutateHint : MutateHint
         DataRandom data = chainer.Options.Gen.NextData();
         bool modified = false;
 
+        object getNewValue(Type memberType, object? originalValue, string? smartValue)
+        {
+            return (smartValue?.Equals(originalValue as string, StringComparison.Ordinal) != false)
+                ? chainer.Variant(memberType, originalValue)
+                : smartValue;
+        }
+
         foreach (
-            PropertyInfo property in chainer.Options.Gen.NextSequence(
+            PropertyInfo prop in chainer.Options.Gen.NextSequence(
                 TypeDescriber
                     .GetAllProperties(type, true)
                     .Where(p => p.CanWrite && p.CanRead)
@@ -47,10 +54,9 @@ public sealed class ObjectMutateHint : MutateHint
             }
             try
             {
-                property.SetValue(
+                prop.SetValue(
                     instance,
-                    data.Find(property)
-                        ?? chainer.Variant(property.PropertyType, property.GetValue(instance))
+                    getNewValue(prop.PropertyType, prop.GetValue(instance), data.Find(prop))
                 );
                 modified = true;
             }
@@ -62,7 +68,7 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             FieldInfo field in chainer.Options.Gen.NextSequence(
-                TypeDescriber.GetAllFields(type, true)
+                TypeDescriber.GetAllFields(type, true).Where(f => !f.IsInitOnly && !f.IsLiteral)
             )
         )
         {
@@ -70,18 +76,12 @@ public sealed class ObjectMutateHint : MutateHint
             {
                 break;
             }
-            try
-            {
-                field.SetValue(
-                    instance,
-                    data.Find(field) ?? chainer.Variant(field.FieldType, field.GetValue(instance))
-                );
-                modified = true;
-            }
-            catch (Exception)
-            {
-                // Failed to modify.
-            }
+
+            field.SetValue(
+                instance,
+                getNewValue(field.FieldType, field.GetValue(instance), data.Find(field))
+            );
+            modified = true;
         }
 
         return modified;

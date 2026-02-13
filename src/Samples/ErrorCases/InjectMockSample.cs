@@ -1,4 +1,5 @@
-﻿using CreateAndFake.ValuerTool;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.ErrorCases;
 
@@ -13,5 +14,10 @@ public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sa
     {
         _sample1.FailIfNotMocked();
         _sample2.FailIfNotMocked();
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

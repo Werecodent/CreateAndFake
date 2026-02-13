@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Samples.BasicData;
 
 /// <summary>Contains many concrete collections to test.</summary>
@@ -13,4 +15,9 @@ public class CollectionDto
     public CollectionDto<object>? ObjectCollectionValue { get; set; }
 
     public CollectionDto<DateTime>? DateTimeCollectionValue { get; set; }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

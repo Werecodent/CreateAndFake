@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Samples.SingleValue;
 
 [ValidSample]
@@ -8,4 +10,9 @@ public abstract class BaseHolder<T>(T value) : IReadableHolder<T>, IWriteableHol
     public abstract T ReadValue();
 
     public abstract void WriteValue(T value);
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

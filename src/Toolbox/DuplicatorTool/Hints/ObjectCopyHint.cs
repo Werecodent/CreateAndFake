@@ -52,7 +52,15 @@ public sealed class ObjectCopyHint : CopyHint
         )
         {
             object? value = property.GetValue(source);
-            property.SetValue(dupe, duplicator.Copy(value));
+
+            try
+            {
+                property.SetValue(dupe, duplicator.Copy(value));
+            }
+            catch (Exception)
+            {
+                // Bad setter.
+            }
         }
 
         return dupe;

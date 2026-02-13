@@ -36,4 +36,17 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
         // Prevents infinite loop from nested options.
         return TypeDescriber.ExpandedName(GetType());
     }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        // Prevents infinite loop from nested options.
+        return ValueComparer.Use.GetHashCode(
+            Gen,
+            IncludeFrameworkHints,
+            IncludeFoundHints,
+            MaxHintRecursion,
+            Hints
+        );
+    }
 }

@@ -21,7 +21,8 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxHintRecursion": 8,
-            "VariantAttempts": 20
+            "CreateVariantAttemptLimit": 16,
+            "CreateUniqueAttemptLimit": 18
         },
         "Randomizer": {
             "IncludeFrameworkHints": false,

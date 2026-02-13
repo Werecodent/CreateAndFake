@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Samples.BasicData;
 
 /// <summary>Assorted basic values.</summary>
@@ -13,4 +15,9 @@ public class SimpleDto
     public object? ObjectValue { get; set; }
 
     public DateTime DateValue { get; set; }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

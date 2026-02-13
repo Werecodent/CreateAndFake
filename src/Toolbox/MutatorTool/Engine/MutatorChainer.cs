@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.MutatorTool.Engine;
@@ -8,13 +9,22 @@ public sealed class MutatorChainer
     : ToolChainer<MutatorChainer, IMutatorEngine, MutatorOptions, IMutateHint>,
         IMutatorChainer
 {
+    /// <summary>Tracks recursion stack to prevent infinite loops.</summary>
+    private readonly ISet<object?> _modifyHistory;
+
     /// <inheritdoc/>
     public MutatorChainer(MutatorOptions options, IMutatorEngine engine)
-        : base(options, engine) { }
+        : base(options, engine)
+    {
+        _modifyHistory = new HashSet<object?>(ReferenceComparer.Use);
+    }
 
     /// <inheritdoc/>
     private MutatorChainer(MutatorOptions options, MutatorChainer prevChainer)
-        : base(options, prevChainer) { }
+        : base(options, prevChainer)
+    {
+        _modifyHistory = prevChainer._modifyHistory;
+    }
 
     /// <inheritdoc/>
     protected override MutatorChainer CreateSubChainer(MutatorOptions subOptions)
@@ -81,7 +91,21 @@ public sealed class MutatorChainer
     /// <inheritdoc/>
     public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
-        return Engine.Modify(instance, GetSubChainer(optionConfiguration));
+        if (_modifyHistory.Add(instance))
+        {
+            try
+            {
+                return Engine.Modify(instance, GetSubChainer(optionConfiguration));
+            }
+            finally
+            {
+                _ = _modifyHistory.Remove(instance);
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /// <inheritdoc/>

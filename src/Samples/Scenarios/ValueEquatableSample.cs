@@ -20,4 +20,9 @@ public class ValueEquatableSample : IValueEquatable
     {
         return ValueComparer.Use.GetHashCode(StringValue, NumberValue);
     }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

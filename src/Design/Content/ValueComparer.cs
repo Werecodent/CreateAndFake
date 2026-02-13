@@ -9,15 +9,15 @@ namespace CreateAndFake.Design.Content;
 /// <remarks>Not reflection based.</remarks>
 public sealed class ValueComparer
     : IComparer,
-        IComparer<object>,
-        IComparer<IValueEquatable>,
-        IComparer<IEnumerable>,
-        IComparer<IDictionary>,
+        IComparer<object?>,
+        IComparer<IValueEquatable?>,
+        IComparer<IEnumerable?>,
+        IComparer<IDictionary?>,
         IEqualityComparer,
-        IEqualityComparer<object>,
-        IEqualityComparer<IValueEquatable>,
-        IEqualityComparer<IEnumerable>,
-        IEqualityComparer<IDictionary>
+        IEqualityComparer<object?>,
+        IEqualityComparer<IValueEquatable?>,
+        IEqualityComparer<IEnumerable?>,
+        IEqualityComparer<IDictionary?>
 {
     /// <summary>Hash code used for <see langword="null"/> values.</summary>
     public static int NullHash { get; } = 0;
@@ -29,7 +29,7 @@ public sealed class ValueComparer
     public static int HashMultiplier { get; } = 92821;
 
     /// <summary>Default instance to use for comparing by value.</summary>
-    public static ValueComparer Use { get; } = new ValueComparer();
+    public static ValueComparer Use { get; } = new();
 
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
     /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>

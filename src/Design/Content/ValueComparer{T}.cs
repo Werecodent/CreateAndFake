@@ -14,7 +14,7 @@ public sealed class ValueComparer<T>
     where T : IValueEquatable
 {
     /// <inheritdoc cref="ValueComparer.Use"/>
-    public static ValueComparer<T> Use { get; } = new ValueComparer<T>();
+    public static ValueComparer<T> Use { get; } = new();
 
     /// <inheritdoc/>
     public Type? SupportedType { get; } = typeof(T);

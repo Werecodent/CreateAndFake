@@ -22,7 +22,11 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
     /// <summary>Limits attempts at creating variants.</summary>
     [ConfigurableOption]
-    public ILimiter VariantAttempts { get; init; } = Limiter.Score;
+    public ILimiter CreateVariantAttemptLimit { get; init; } = Limiter.Score;
+
+    /// <summary>Limits attempts at creating uniques.</summary>
+    [ConfigurableOption]
+    public ILimiter CreateUniqueAttemptLimit { get; init; } = Limiter.Score;
 
     /// <summary>
     ///     Creates options from <see langword="this"/>
@@ -40,13 +44,20 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
         return this with
         {
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
             IncludeFrameworkHints = section.GetValue(
                 nameof(IncludeFrameworkHints),
                 IncludeFrameworkHints
             ),
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            VariantAttempts = section.GetValue(nameof(VariantAttempts), VariantAttempts),
+            CreateVariantAttemptLimit = section.GetValue(
+                nameof(CreateVariantAttemptLimit),
+                CreateVariantAttemptLimit
+            ),
+            CreateUniqueAttemptLimit = section.GetValue(
+                nameof(CreateUniqueAttemptLimit),
+                CreateUniqueAttemptLimit
+            ),
         };
     }
 }

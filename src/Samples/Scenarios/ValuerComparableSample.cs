@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Scenarios;
@@ -35,5 +36,10 @@ public class ValuerComparableSample : IValuerComparable
     {
         return valuer?.GetHashCode(new object?[] { StringValue, NumberValue })
             ?? throw new ArgumentNullException(nameof(valuer));
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

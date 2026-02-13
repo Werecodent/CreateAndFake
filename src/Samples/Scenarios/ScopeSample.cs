@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Samples.Scenarios;
 
@@ -72,5 +73,10 @@ public class ScopeSample
     public string CallProtectMethod()
     {
         return ProtectMethod();
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

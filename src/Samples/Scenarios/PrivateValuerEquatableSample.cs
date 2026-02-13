@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Scenarios;
@@ -19,5 +20,10 @@ public class PrivateValuerEquatableSample(string stringValue) : IValuerEquatable
     public virtual int GetValueHash(IValuer valuer)
     {
         return valuer?.GetHashCode(StringValue) ?? throw new ArgumentNullException(nameof(valuer));
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

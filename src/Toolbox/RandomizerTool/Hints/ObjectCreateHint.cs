@@ -99,7 +99,17 @@ public sealed class ObjectCreateHint : CreateHint
         {
             string? smartValue =
                 (property.PropertyType == typeof(string)) ? smartData.Find(property.Name) : null;
-            property.SetValue(data, smartValue ?? randomizer.Create(property.PropertyType, data));
+
+            object newValue = smartValue ?? randomizer.Create(property.PropertyType, data);
+
+            //try
+            //{
+            property.SetValue(data, newValue);
+            //}
+            //catch (Exception)
+            //{
+            // Could not set.
+            //}
         }
     }
 

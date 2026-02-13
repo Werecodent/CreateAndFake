@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
+using System.Text;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ExtractorTool.Engine;
@@ -17,6 +18,7 @@ public sealed class EndingExtractHint : ExtractHint
         .RuntimeTypes.Concat([
             Assembly.GetExecutingAssembly().GetType(),
             typeof(string),
+            typeof(StringBuilder),
             typeof(Type),
             typeof(Lock),
         ])

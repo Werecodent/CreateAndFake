@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Content;
 using CreateAndFake.Samples.SingleValue;
 
 namespace CreateAndFake.Samples.DoubleValue;
@@ -15,4 +16,9 @@ public abstract class BaseWriteableHolder<T, TOther>
     }
 
     public abstract void WriteOtherValue(TOther otherValue);
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

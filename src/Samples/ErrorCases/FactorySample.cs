@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Samples.ErrorCases;
 
@@ -16,5 +17,10 @@ public sealed class FactorySample
     public static FactorySample Create(int data)
     {
         return new FactorySample("Value:" + data);
+    }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
     }
 }

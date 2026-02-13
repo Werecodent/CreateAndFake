@@ -1,3 +1,5 @@
+using CreateAndFake.Design.Content;
+
 namespace CreateAndFake.Samples.BasicData;
 
 /// <summary>Assorted collection types to test.</summary>
@@ -18,4 +20,9 @@ public class CollectionDto<T>
     public IDictionary<int, T>? DictValues { get; set; }
 
     public IDictionary<T, int>? IntDictValues { get; set; }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }

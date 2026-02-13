@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.Samples.Scenarios;
+﻿using CreateAndFake.Design.Content;
+
+namespace CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public abstract class ConstraintSample<TStruct, TClass>
@@ -8,4 +10,9 @@ public abstract class ConstraintSample<TStruct, TClass>
     public TStruct StructValue { get; set; }
 
     public TClass? ClassValue { get; set; }
+
+    public override string ToString()
+    {
+        return TypeDescriber.ExpandedName(GetType());
+    }
 }
