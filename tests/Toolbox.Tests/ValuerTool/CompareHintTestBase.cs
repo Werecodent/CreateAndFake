@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
@@ -63,7 +64,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
     [Fact]
-    public Task CompareHint_NoParameterMutation()
+    public virtual Task CompareHint_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutation(
             TestInstance,
@@ -115,7 +116,12 @@ public abstract class CompareHintTestBase<T>(
             try
             {
                 one = Tools.Randomizer.Create(type);
-                two = Tools.Mutator.Variant(one.GetType(), one);
+                await Limiter.Score.StallUntilAsync(
+                    "Variant of same type.",
+                    () => two = Tools.Mutator.Variant(one.GetType(), one),
+                    () => two.GetType() == one.GetType(),
+                    TestContext.Current.CancellationToken
+                );
 
                 DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
                     one,

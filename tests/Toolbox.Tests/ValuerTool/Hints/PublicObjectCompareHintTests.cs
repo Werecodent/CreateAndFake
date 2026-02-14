@@ -15,6 +15,15 @@ public sealed class PublicObjectCompareHintTests : CompareHintTestBase<PublicObj
     public PublicObjectCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
+    [Fact]
+    public override Task CompareHint_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsNullRefException<PublicObjectCompareHint>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [Tools.Randomizer.Create<DataHolderSample>()] }
+        );
+    }
+
     [Theory, RandomData]
     internal void Compare_DifferentObjectsDifferences(string value1, string value2)
     {

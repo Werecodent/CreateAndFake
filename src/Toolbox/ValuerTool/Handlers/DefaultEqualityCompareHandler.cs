@@ -3,7 +3,7 @@ using CreateAndFake.ValuerTool.Engine;
 namespace CreateAndFake.ValuerTool.Handlers;
 
 /// <inheritdoc cref="ICompareHandler"/>
-internal sealed class FallbackCompareHandler(Type supportedType) : ICompareHandler
+internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompareHandler
 {
     /// <inheritdoc/>
     public Type SupportedType { get; } = supportedType;
@@ -15,12 +15,13 @@ internal sealed class FallbackCompareHandler(Type supportedType) : ICompareHandl
         IValuerChainer valuer
     )
     {
-        if (expected != actual)
+        if (!expected.Equals(actual))
         {
             yield return new Difference(".equals", new Difference(expected, actual));
         }
     }
 
+    /// <inheritdoc/>
     public int HashSupported(object item, IValuerChainer valuer)
     {
         return item.GetHashCode();

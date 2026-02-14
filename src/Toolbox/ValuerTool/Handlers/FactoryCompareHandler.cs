@@ -24,6 +24,7 @@ internal sealed class FactoryCompareHandler(
         return compareFactory.Invoke(expected, actual, valuer);
     }
 
+    /// <inheritdoc/>
     public int HashSupported(object item, IValuerChainer valuer)
     {
         return hashFactory.Invoke(item, valuer);

@@ -13,9 +13,7 @@ public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCom
     private static readonly Type[] _ValidTypes =
     [
         typeof(int),
-        typeof(string),
         typeof(BindingFlags),
-        typeof(Type),
         typeof(Delegate),
     ];
 

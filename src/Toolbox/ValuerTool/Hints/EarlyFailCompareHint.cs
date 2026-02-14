@@ -10,7 +10,6 @@ public sealed class EarlyFailCompareHint : CompareHint
 {
     /// <summary>Specific types to control via this hint.</summary>
     private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet([
-        typeof(string),
         typeof(object),
     ]);
 
@@ -23,8 +22,7 @@ public sealed class EarlyFailCompareHint : CompareHint
         return expected == null
             || actual == null
             || Supports(expected.GetType(), actual.GetType())
-            || expected is Delegate
-            || expected is Type;
+            || expected is Delegate;
     }
 
     /// <inheritdoc cref="CompareHint.Supports"/>

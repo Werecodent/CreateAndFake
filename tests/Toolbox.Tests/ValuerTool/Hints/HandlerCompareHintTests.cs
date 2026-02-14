@@ -8,7 +8,7 @@ public sealed class HandlerCompareHintTests : CompareHintTestBase<HandlerCompare
 {
     private static readonly HandlerCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [];
+    private static readonly Type[] _ValidTypes = [.. _TestInstance.SupportedTypes];
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 
