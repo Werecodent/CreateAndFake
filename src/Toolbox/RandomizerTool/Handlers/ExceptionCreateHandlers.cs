@@ -16,9 +16,14 @@ internal static class ExceptionCreateHandlers
         "System.Diagnostics.Eventing.Reader.EventLogInvalidDataException",
         "System.Diagnostics.Eventing.Reader.EventLogNotFoundException",
         "System.Diagnostics.Eventing.Reader.EventLogReadingException",
+        "System.ComponentModel.DataAnnotations.ValidationException",
+        "System.Diagnostics.Eventing.Reader.EventLogException",
+        "System.Runtime.Serialization.SerializationException",
         "System.Configuration.ConfigurationErrorsException",
         "System.Net.NetworkInformation.PingException",
+        "System.Net.Http.HttpRequestException",
         "System.Security.SecurityException",
+        "System.Web.HttpParseException",
     ];
 
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
