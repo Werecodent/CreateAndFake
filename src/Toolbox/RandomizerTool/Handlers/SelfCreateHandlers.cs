@@ -28,7 +28,7 @@ internal static class SelfCreateHandlers
             rand.Options.Gen.Next<int>()
         )),
         new FactoryCreateHandler<Limiter>(rand =>
-            rand.Options.Gen.NextItem([Limiter.Once, Limiter.Few, Limiter.Dozen])
+            rand.Options.Gen.NextItem([Limiter.Few, Limiter.Dozen, Limiter.Score])
         ),
         new FactoryCreateHandler<IAsserter>(rand => rand.Create<ToolSet>().Asserter),
         new FactoryCreateHandler<IDuplicator>(rand => rand.Create<ToolSet>().Duplicator),
@@ -46,7 +46,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxHintRecursion = rand.Options.Gen.Next(90, 96),
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
             }
         ),
         new FactoryCreateHandler<ExtractorOptions>(rand =>
@@ -56,7 +56,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxHintRecursion = rand.Options.Gen.Next(90, 96),
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
             }
         ),
         new FactoryCreateHandler<MutatorOptions>(rand =>
@@ -66,7 +66,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxHintRecursion = rand.Options.Gen.Next(90, 96),
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
             }
         ),
         new FactoryCreateHandler<RandomizerOptions>(rand =>
@@ -76,7 +76,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxHintRecursion = rand.Options.Gen.Next(90, 96),
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
                 CollectionMinSize = rand.Options.Gen.Next(0, 1),
                 CollectionMaxSize = rand.Options.Gen.Next(0, 4),
                 StringMinSize = rand.Options.Gen.Next(0, 3),
@@ -97,7 +97,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxHintRecursion = rand.Options.Gen.Next(90, 96),
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
                 AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 3), new TimeSpan(0, 0, 8)),
             }
         ),
