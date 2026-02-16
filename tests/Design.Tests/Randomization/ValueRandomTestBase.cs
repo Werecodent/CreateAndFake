@@ -161,6 +161,20 @@ public abstract class ValueRandomTestBase<T>
     }
 
     [Fact]
+    public void Supports_DateTimeOffset()
+    {
+        TestNext(DateTimeOffset.MinValue, DateTimeOffset.MinValue);
+        TestNext(DateTimeOffset.MaxValue.AddTicks(-61), DateTimeOffset.MaxValue.AddTicks(-60));
+        TestBasicSupport<DateTimeOffset>(default);
+        TestNextRange(
+            DateTimeOffset.MinValue,
+            DateTimeOffset.MaxValue,
+            v => v.AddTicks(1),
+            v => v.AddTicks(-1)
+        );
+    }
+
+    [Fact]
     public void Supports_Bool()
     {
         TestBasicSupport<bool>(default);

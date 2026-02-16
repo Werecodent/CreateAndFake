@@ -12,8 +12,7 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     /// <summary>Handlers for all the supported types.</summary>
     private static readonly IValueHandler[] _Handlers =
     [
-        new DateTimeValueHandler(),
-        new TimeSpanValueHandler(),
+        .. TimeValueHandlers.Handlers,
         new DecimalValueHandler(),
         new DoubleValueHandler(),
         new FloatValueHandler(),

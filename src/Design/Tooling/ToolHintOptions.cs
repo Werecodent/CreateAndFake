@@ -22,7 +22,7 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
 
     /// <inheritdoc/>
     [ConfigurableOption]
-    public int MaxHintRecursion { get; init; } = 99;
+    public int MaxHintRecursion { get; init; } = 30;
 
     /// <inheritdoc/>
     public ImmutableArray<THint> Hints { get; init; } = [];

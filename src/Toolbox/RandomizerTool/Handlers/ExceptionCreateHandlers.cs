@@ -13,9 +13,8 @@ internal static class ExceptionCreateHandlers
             .FindLoadedSubclasses<Exception>()
             .Where(t => t.IsVisible)
             .Where(t => t.IsSerializable)
-            .Where(t => t.Namespace?.StartsWith("System", StringComparison.Ordinal) == true)
             .Where(t =>
-                t.Namespace?.StartsWith("System.Security", StringComparison.Ordinal) != true
+                t.Namespace?.StartsWith("NUnit.Framework", StringComparison.Ordinal) == false
             )
             .Select(t => t.GetConstructor([typeof(string)]))
             .Where(c => c != null)
