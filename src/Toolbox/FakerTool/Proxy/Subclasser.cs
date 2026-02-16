@@ -202,6 +202,18 @@ public static class Subclasser
                 )
             );
         }
+#if LEGACY // Required feature shipped with C# 14 / .NET 10.0
+        else if (parent == typeof(TypeInfo))
+        {
+            return (
+                false,
+                new ArgumentException(
+                    $"{typeof(TypeInfo)} itself has specific issues being faked.",
+                    nameof(parent)
+                )
+            );
+        }
+#endif
         else
         {
             return (true, null);

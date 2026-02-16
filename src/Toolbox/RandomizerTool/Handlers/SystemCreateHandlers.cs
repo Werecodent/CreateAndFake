@@ -32,11 +32,3 @@ internal static class SystemCreateHandlers
         )),
     ];
 }
-
-// EventLogReadingException (variant)
-// System.Reflection.TypeInfo (emit calling constructor)
-// ConfigurationErrorsException (duplicate compare infinite)
-// EventLogNotFoundException (variant)
-// EventLogInvalidDataException (variant)
-// EventLogProviderDisabledException (variant)
-// PingException (emit calling constructor)
