@@ -16,17 +16,17 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
     protected override IEnumerable<Difference> Compare(
         IValueEquatable expected,
         IValueEquatable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return LazyCompare(expected, actual, valuer);
+        return LazyCompare(expected, actual, chainer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
         IValueEquatable expected,
         IValueEquatable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         if (!expected.ValuesEqual(actual))
@@ -36,7 +36,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
                 new Difference(true, false)
             );
 
-            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, valuer);
+            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, chainer);
             if (byValues.HasData)
             {
                 foreach (Difference difference in byValues.Data!)
@@ -48,7 +48,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValueEquatable item, IValuerChainer valuer)
+    protected override int GetHashCode(IValueEquatable item, IValuerChainer chainer)
     {
         return ValueComparer.Use.GetHashCode(item);
     }

@@ -1,20 +1,33 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
-/// <summary>Handles comparing <see cref="IAsyncEnumerable{T}"/> collections for <see cref="IValuer"/>.</summary>
+/// <summary>Handles the comparing of <see cref="IAsyncEnumerable{T}"/>s.</summary>
 public sealed class AsyncEnumerableCompareHint : CompareHint
 {
+    /// <summary>Generic method for comparisons.</summary>
+    private static readonly MethodInfo _CompareAsyncHandler =
+        typeof(AsyncEnumerableCompareHint).GetMethod(
+            nameof(CompareAsyncHandler),
+            BindingFlags.Static | BindingFlags.NonPublic
+        )!;
+
+    /// <summary>Generic method for hashing.</summary>
+    private static readonly MethodInfo _GetHashCodeHandler =
+        typeof(AsyncEnumerableCompareHint).GetMethod(
+            nameof(GetHashCodeHandler),
+            BindingFlags.Static | BindingFlags.NonPublic
+        )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)ComparePriority.AsyncEnumerableHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected.GetType().Inherits(typeof(IAsyncEnumerable<>))
             && actual.GetType().Inherits(typeof(IAsyncEnumerable<>));
@@ -24,18 +37,21 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        if (valuer.Options.SkipAsyncValues)
+        if (chainer.Options.SkipAsyncValues)
         {
             return [];
         }
         else
         {
             throw new EngineException(
-                $"Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}. "
-                    + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
+                $"""
+                Cannot compare {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in 
+                synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} is {false}. 
+                Use an asynchronous method or override the setting.
+                """
             );
         }
     }
@@ -44,7 +60,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     protected override IAsyncEnumerable<Difference> CompareAsync(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
@@ -63,27 +79,26 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         }
 
         return (IAsyncEnumerable<Difference>)
-            GetType()
-                .GetMethod(
-                    nameof(CompareAsyncHandler),
-                    BindingFlags.Static | BindingFlags.NonPublic
-                )!
+            _CompareAsyncHandler
                 .MakeGenericMethod(expectedType.GetGenericArguments().Single())
-                .Invoke(null, [expected, actual, valuer, canceler])!;
+                .Invoke(null, [expected, actual, chainer, canceler])!;
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
-        if (valuer.Options.SkipAsyncValues)
+        if (chainer.Options.SkipAsyncValues)
         {
             return 0;
         }
         else
         {
             throw new EngineException(
-                $"Cannot hash IAsyncEnumerable in synchronous context using {nameof(IValuer)}. "
-                    + "Collect into a synchronous collection before attempting to hash."
+                $"""
+                Cannot hash {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in 
+                synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} is {false}. 
+                Use an asynchronous method or override the setting.
+                """
             );
         }
     }
@@ -91,30 +106,32 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
+        Type itemType = TypeDescriber.FindConcreteInterface(
+            item.GetType(),
+            typeof(IAsyncEnumerable<>)
+        );
+
         return (Task<int>)
-            GetType()
-                .GetMethod(
-                    nameof(GetHashCodeHandler),
-                    BindingFlags.Static | BindingFlags.NonPublic
-                )!
-                .MakeGenericMethod(item.GetType().GetGenericArguments().Single())
-                .Invoke(null, [item, valuer, canceler])!;
+            _GetHashCodeHandler
+                .MakeGenericMethod(itemType.GetGenericArguments().Single())
+                .Invoke(null, [item, chainer, canceler])!;
     }
 
     /// <inheritdoc cref="Compare"/>
-    /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
+    /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
     private static async IAsyncEnumerable<Difference> CompareAsyncHandler<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
-        IValuerChainer valuer,
-        [EnumeratorCancellation] CancellationToken canceler
+        IValuerChainer chainer,
+        [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        canceler.ThrowIfCancellationRequested();
+        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -127,18 +144,25 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             int index = 0;
             while (await expectedEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
+                canceler.ThrowIfCancellationRequested();
+
                 if (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
                 {
+                    canceler.ThrowIfCancellationRequested();
+
                     await foreach (
-                        Difference diff in valuer
-                            .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
-                            .WithCancellation(canceler)
+                        Difference diff in chainer
+                            .CompareAsync(
+                                expectedEnumerator.Current,
+                                actualEnumerator.Current,
+                                canceler
+                            )
                             .ConfigureAwait(false)
                     )
                     {
                         yield return new Difference(index, diff);
+                        canceler.ThrowIfCancellationRequested();
                     }
-                    canceler.ThrowIfCancellationRequested();
                 }
                 else
                 {
@@ -146,34 +170,46 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                         index,
                         new Difference(expectedEnumerator.Current, "'outofbounds'")
                     );
+                    canceler.ThrowIfCancellationRequested();
                 }
                 index++;
             }
+
+            canceler.ThrowIfCancellationRequested();
+
             while (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
             {
                 yield return new Difference(
                     index++,
                     new Difference("'outofbounds'", actualEnumerator.Current)
                 );
+                canceler.ThrowIfCancellationRequested();
             }
+
+            canceler.ThrowIfCancellationRequested();
         }
     }
 
     /// <inheritdoc cref="GetHashCodeAsync"/>
-    /// <typeparam name="T">Item <see cref="Type"/> being compared.</typeparam>
+    /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
     private static async Task<int> GetHashCodeHandler<T>(
         IAsyncEnumerable<T> item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
+        canceler.ThrowIfCancellationRequested();
+
         int hash = ValueComparer.BaseHash;
         await foreach (T current in item.WithCancellation(canceler).ConfigureAwait(false))
         {
+            canceler.ThrowIfCancellationRequested();
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
+                + await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
         }
+
+        canceler.ThrowIfCancellationRequested();
         return hash;
     }
 }

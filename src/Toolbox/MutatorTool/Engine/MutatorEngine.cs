@@ -133,8 +133,10 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{instance.GetType()}' not supported by the {nameof(IMutator)}. "
-                    + $"Create a {nameof(IMutateHint)} to handle the {nameof(Type)}."
+                $"""
+                Type '{instance.GetType()}' not supported by the {nameof(IMutator)}.
+                Create a {nameof(IMutateHint)} to handle the {nameof(Type)}.
+                """
             );
         }
     }

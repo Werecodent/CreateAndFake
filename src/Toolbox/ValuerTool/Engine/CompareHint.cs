@@ -16,22 +16,17 @@ public abstract class CompareHint : ICompareHint
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <inheritdoc/>
-    public DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer valuer)
+    public DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
+        ArgumentGuard.ThrowIfNull(expected, actual, chainer);
 
-        if (Supports(expected, actual, valuer))
+        if (Supports(expected, actual, chainer))
         {
-            IEnumerable<Difference> results = Compare(expected, actual, valuer);
-            if (
-                valuer.Options.IncludeValueHashInComparison
-                && !ReferenceEquals(expected, actual)
-                && expected is not null
-                && actual is not null
-            )
+            IEnumerable<Difference> results = Compare(expected, actual, chainer);
+            if (chainer.Options.IncludeValueHashInComparison)
             {
-                int expectedHash = GetHashCode(expected, valuer);
-                int actualHash = GetHashCode(actual, valuer);
+                int expectedHash = GetHashCode(expected, chainer);
+                int actualHash = GetHashCode(actual, chainer);
 
                 if (expectedHash != actualHash)
                 {
@@ -52,14 +47,15 @@ public abstract class CompareHint : ICompareHint
     public DifferenceHintAsyncResult TryAsyncCompare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer,
+        CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
+        ArgumentGuard.ThrowIfNull(expected, actual, chainer);
 
-        if (Supports(expected, actual, valuer))
+        if (Supports(expected, actual, chainer))
         {
-            return new(HandleAsyncCompare(expected, actual, valuer));
+            return new(HandleAsyncCompare(expected, actual, chainer, canceler));
         }
         else
         {
@@ -72,31 +68,28 @@ public abstract class CompareHint : ICompareHint
     private async IAsyncEnumerable<Difference> HandleAsyncCompare(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler);
-
         await foreach (
-            Difference diff in CompareAsync(expected, actual, valuer, canceler)
+            Difference diff in CompareAsync(expected, actual, chainer, canceler)
                 .ConfigureAwait(false)
         )
         {
+            canceler.ThrowIfCancellationRequested();
             yield return diff;
         }
-        canceler.ThrowIfCancellationRequested();
 
-        if (
-            valuer.Options.IncludeValueHashInComparison
-            && !ReferenceEquals(expected, actual)
-            && expected is not null
-            && actual is not null
-        )
+        if (chainer.Options.IncludeValueHashInComparison)
         {
-            int expectedHash = await GetHashCodeAsync(expected, valuer, canceler)
+            canceler.ThrowIfCancellationRequested();
+            int expectedHash = await GetHashCodeAsync(expected, chainer, canceler)
                 .ConfigureAwait(false);
-            int actualHash = await GetHashCodeAsync(actual, valuer, canceler).ConfigureAwait(false);
+
+            canceler.ThrowIfCancellationRequested();
+            int actualHash = await GetHashCodeAsync(actual, chainer, canceler)
+                .ConfigureAwait(false);
 
             if (expectedHash != actualHash)
             {
@@ -109,13 +102,13 @@ public abstract class CompareHint : ICompareHint
     }
 
     /// <inheritdoc/>
-    public HashCodeHintResult TryGetHashCode(object item, IValuerChainer valuer)
+    public HashCodeHintResult TryGetHashCode(object item, IValuerChainer chainer)
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
+        ArgumentGuard.ThrowIfNull(item, chainer);
 
-        if (Supports(item, item, valuer))
+        if (Supports(item, item, chainer))
         {
-            return new(GetHashCode(item, valuer));
+            return new(GetHashCode(item, chainer));
         }
         else
         {
@@ -126,15 +119,15 @@ public abstract class CompareHint : ICompareHint
     /// <inheritdoc/>
     public HashCodeHintAsyncResult TryAsyncGetHashCode(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
+        ArgumentGuard.ThrowIfNull(item, chainer);
 
-        if (Supports(item, item, valuer))
+        if (Supports(item, item, chainer))
         {
-            return new(GetHashCodeAsync(item, valuer, canceler));
+            return new(GetHashCodeAsync(item, chainer, canceler));
         }
         else
         {
@@ -147,7 +140,7 @@ public abstract class CompareHint : ICompareHint
     /// </summary>
     /// <returns><see langword="true"/> if the objects can be compared, <see langword="false"/> otherwise.</returns>
     /// <inheritdoc cref="TryCompare"/>
-    protected abstract bool Supports(object expected, object actual, IValuerChainer valuer);
+    protected abstract bool Supports(object expected, object actual, IValuerChainer chainer);
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <returns>The found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
@@ -155,7 +148,7 @@ public abstract class CompareHint : ICompareHint
     protected abstract IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     );
 
     /// <inheritdoc cref="Compare"/>
@@ -163,27 +156,27 @@ public abstract class CompareHint : ICompareHint
     protected virtual IAsyncEnumerable<Difference> CompareAsync(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
+        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, chainer));
     }
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
     /// <inheritdoc cref="TryGetHashCode"/>
-    protected abstract int GetHashCode(object item, IValuerChainer valuer);
+    protected abstract int GetHashCode(object item, IValuerChainer chainer);
 
     /// <inheritdoc cref="GetHashCode"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     protected virtual Task<int> GetHashCodeAsync(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return Task.FromResult(GetHashCode(item, valuer));
+        return Task.FromResult(GetHashCode(item, chainer));
     }
 
     /// <inheritdoc/>

@@ -13,6 +13,7 @@ public static class ValuerChainerTests
                 typeof(NotSupportedException),
                 typeof(InsufficientExecutionStackException),
                 typeof(ToolException),
+                typeof(EngineException),
             ],
         };
 

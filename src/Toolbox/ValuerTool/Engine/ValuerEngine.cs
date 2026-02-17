@@ -31,8 +31,10 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by the "
-                    + "valuer. Create a hint to generate the type and pass it to the valuer."
+                $"""
+                Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by 
+                the valuer. Create a hint to generate the type and pass it to the valuer.
+                """
             );
         }
     }
@@ -41,7 +43,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
     public IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer chainer
+        IValuerChainer chainer,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(chainer);
@@ -55,7 +58,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
 
         DifferenceHintAsyncResult? result = SelectHints(chainer)
-            .Select(h => h.TryAsyncCompare(expected, actual, chainer))
+            .Select(h => h.TryAsyncCompare(expected, actual, chainer, canceler))
             .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)
@@ -65,8 +68,10 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by the "
-                    + "valuer. Create a hint to generate the type and pass it to the valuer."
+                $"""
+                Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by 
+                the valuer. Create a hint to generate the type and pass it to the valuer.
+                """
             );
         }
     }
@@ -91,8 +96,10 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer."
-                    + " Create a hint to generate the type and pass it to the valuer."
+                $"""
+                Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer. 
+                Create a hint to generate the type and pass it to the valuer.
+                """
             );
         }
     }
@@ -121,8 +128,10 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer."
-                    + " Create a hint to generate the type and pass it to the valuer."
+                $"""
+                Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer.
+                Create a hint to generate the type and pass it to the valuer.
+                """
             );
         }
     }

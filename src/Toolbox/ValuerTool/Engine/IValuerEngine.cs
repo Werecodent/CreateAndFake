@@ -14,7 +14,8 @@ public interface IValuerEngine : IToolEngine<ICompareHint>
     IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
-        IValuerChainer chainer
+        IValuerChainer chainer,
+        CancellationToken canceler
     );
 
     /// <param name="chainer">Handles callback behavior for child values.</param>

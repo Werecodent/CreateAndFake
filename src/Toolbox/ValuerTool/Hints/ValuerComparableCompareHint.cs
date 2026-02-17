@@ -1,4 +1,3 @@
-using CreateAndFake.Design;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -13,15 +12,15 @@ public sealed class ValuerComparableCompareHint : CompareHint<IValuerComparable>
     protected override IEnumerable<Difference> Compare(
         IValuerComparable expected,
         IValuerComparable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return expected.Compare(actual, valuer);
+        return expected.Compare(actual, chainer);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerComparable item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerComparable item, IValuerChainer chainer)
     {
-        return item.GetValueHash(valuer);
+        return item.GetValueHash(chainer);
     }
 }

@@ -18,15 +18,15 @@ internal sealed class FactoryCompareHandler(
     public IEnumerable<Difference> CompareSupported(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return compareFactory.Invoke(expected, actual, valuer);
+        return compareFactory.Invoke(expected, actual, chainer);
     }
 
     /// <inheritdoc/>
-    public int HashSupported(object item, IValuerChainer valuer)
+    public int HashSupported(object item, IValuerChainer chainer)
     {
-        return hashFactory.Invoke(item, valuer);
+        return hashFactory.Invoke(item, chainer);
     }
 }

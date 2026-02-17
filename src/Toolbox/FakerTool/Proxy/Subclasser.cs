@@ -143,8 +143,10 @@ public static class Subclasser
             return (
                 false,
                 new ArgumentException(
-                    $"Cannot subclass with nonpublic type '{parent.Name}'. "
-                        + $"Think about adding 'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly.",
+                    $"""
+                    Cannot subclass with nonpublic type '{parent.Name}'. Think about adding 
+                    'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly.
+                    """,
                     nameof(parent)
                 )
             );

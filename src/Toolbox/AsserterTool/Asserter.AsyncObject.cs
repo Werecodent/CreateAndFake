@@ -77,7 +77,7 @@ public partial class Asserter : IAsyncObjectAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         IList<Difference> differences = await AsyncEnumHelper
-            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual), canceler)
+            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual, canceler), canceler)
             .ConfigureAwait(false);
 
         if (differences.Count > 0)

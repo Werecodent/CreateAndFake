@@ -44,8 +44,10 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
                                 }
                             ),
                         },
-                    $"Type '{source?.GetType()}' did not clone properly. "
-                        + "Verify/create a hint to generate the type and pass it to the duplicator."
+                    $"""
+                    Type '{source?.GetType()}' did not clone properly.
+                    Verify/create a hint to generate the type and pass it to the duplicator.
+                    """
                 );
             }
             return result;

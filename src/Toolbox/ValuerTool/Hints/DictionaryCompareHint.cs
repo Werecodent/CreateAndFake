@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
-/// <summary>Handles comparing <see cref="IDictionary"/> collections for <see cref="IValuer"/>.</summary>
+/// <inheritdoc/>
 public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 {
     /// <inheritdoc/>
@@ -16,20 +15,10 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     protected override IEnumerable<Difference> Compare(
         IDictionary expected,
         IDictionary actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return LazyCompare(expected, actual, valuer);
-    }
-
-    /// <inheritdoc cref="Compare"/>
-    private static IEnumerable<Difference> LazyCompare(
-        IDictionary expected,
-        IDictionary actual,
-        IValuerChainer valuer
-    )
-    {
-        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -39,10 +28,10 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
         foreach (object key in expectedKeys)
         {
-            object? match = actualKeys.FirstOrDefault(k => valuer.Equals(key, k));
+            object? match = actualKeys.FirstOrDefault(k => chainer.Equals(key, k));
             if (match != null)
             {
-                foreach (Difference diff in valuer.Compare(expected[key], actual[match]))
+                foreach (Difference diff in chainer.Compare(expected[key], actual[match]))
                 {
                     yield return new Difference($"[{TryDescribe(key)}]", diff);
                 }
@@ -58,7 +47,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
         foreach (object key in actualKeys)
         {
-            if (!expectedKeys.Any(k => valuer.Equals(key, k)))
+            if (!expectedKeys.Any(k => chainer.Equals(key, k)))
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
@@ -72,11 +61,11 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         IDictionary expected,
         IDictionary actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -89,7 +78,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             object? match = null;
             foreach (object potentialMatch in actualKeys)
             {
-                if (await valuer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
+                if (await chainer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
                 {
                     match = potentialMatch;
                     break;
@@ -99,8 +88,8 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             if (match != null)
             {
                 await foreach (
-                    Difference diff in valuer
-                        .CompareAsync(expected[key], actual[match])
+                    Difference diff in chainer
+                        .CompareAsync(expected[key], actual[match], canceler)
                         .WithCancellation(canceler)
                         .ConfigureAwait(false)
                 )
@@ -122,7 +111,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             object? match = null;
             foreach (object potentialMatch in expectedKeys)
             {
-                if (await valuer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
+                if (await chainer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
                 {
                     match = potentialMatch;
                     break;
@@ -145,12 +134,12 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IDictionary item, IValuerChainer valuer)
+    protected override int GetHashCode(IDictionary item, IValuerChainer chainer)
     {
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += valuer.GetHashCode(entry);
+            hash += chainer.GetHashCode(entry);
         }
         return hash;
     }
@@ -158,14 +147,14 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
         IDictionary item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += await valuer.GetHashCodeAsync(entry, canceler).ConfigureAwait(false);
+            hash += await chainer.GetHashCodeAsync(entry, canceler).ConfigureAwait(false);
         }
         return hash;
     }

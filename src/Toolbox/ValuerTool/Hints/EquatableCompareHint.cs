@@ -11,9 +11,9 @@ public sealed class EquatableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.EquatableHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
-        return valuer.Options.UseEquatableComparisons
+        return chainer.Options.UseEquatableComparisons
             && expected is not IStructuralEquatable
             && expected is not IToolOptions
             && expected
@@ -25,7 +25,7 @@ public sealed class EquatableCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         if (!expected.Equals(actual))
@@ -39,7 +39,7 @@ public sealed class EquatableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
         return item.GetHashCode();
     }

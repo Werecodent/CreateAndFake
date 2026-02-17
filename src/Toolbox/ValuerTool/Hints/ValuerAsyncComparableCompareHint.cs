@@ -1,5 +1,4 @@
 using CreateAndFake.AsserterTool;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -15,18 +14,21 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     protected override IEnumerable<Difference> Compare(
         IValuerAsyncComparable expected,
         IValuerAsyncComparable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        if (valuer.Options.SkipAsyncValues)
+        if (chainer.Options.SkipAsyncValues)
         {
             return [];
         }
         else
         {
             throw new EngineException(
-                $"Cannot compare IValuerAsyncComparables in synchronous context using {nameof(IValuer)}. "
-                    + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
+                $"""
+                Cannot compare IValuerAsyncComparables in synchronous context 
+                using {nameof(IValuer)}. Use {nameof(IAsserter)} to compare 
+                IAsyncEnumerables in asynchronous context.
+                """
             );
         }
     }
@@ -35,25 +37,27 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     protected override IAsyncEnumerable<Difference> CompareAsync(
         IValuerAsyncComparable expected,
         IValuerAsyncComparable actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return expected.CompareAsync(actual, valuer, canceler);
+        return expected.CompareAsync(actual, chainer, canceler);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerAsyncComparable item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerAsyncComparable item, IValuerChainer chainer)
     {
-        if (valuer.Options.SkipAsyncValues)
+        if (chainer.Options.SkipAsyncValues)
         {
             return 0;
         }
         else
         {
             throw new EngineException(
-                $"Cannot hash IValuerAsyncComparable in synchronous context using {nameof(IValuer)}. "
-                    + "Collect into a synchronous collection before attempting to hash."
+                $"""
+                Cannot hash IValuerAsyncComparable in synchronous context using {nameof(IValuer)}. 
+                Collect into a synchronous collection before attempting to hash.
+                """
             );
         }
     }
@@ -61,10 +65,10 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
         IValuerAsyncComparable item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return item.GetValueHashAsync(valuer, canceler);
+        return item.GetValueHashAsync(chainer, canceler);
     }
 }

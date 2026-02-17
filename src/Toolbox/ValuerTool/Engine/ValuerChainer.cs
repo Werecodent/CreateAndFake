@@ -94,10 +94,22 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
-    public async IAsyncEnumerable<Difference> CompareAsync(
+    public IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         ValuerMod? optionConfiguration = null
+    )
+    {
+        return HandleCompareAsync(expected, actual, optionConfiguration, canceler);
+    }
+
+    /// <inheritdoc/>
+    private async IAsyncEnumerable<Difference> HandleCompareAsync(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration,
+        [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
         RuntimeHelpers.EnsureSufficientExecutionStack();
@@ -115,7 +127,12 @@ public sealed class ValuerChainer
                     // Await & yield return is required here to prevent infinite loops.
                     await foreach (
                         Difference diff in Engine
-                            .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                            .CompareAsync(
+                                expected,
+                                actual,
+                                GetSubChainer(optionConfiguration),
+                                canceler
+                            )
                             .ConfigureAwait(false)
                     )
                     {
@@ -132,7 +149,7 @@ public sealed class ValuerChainer
         {
             await foreach (
                 Difference diff in Engine
-                    .CompareAsync(expected, actual, GetSubChainer(optionConfiguration))
+                    .CompareAsync(expected, actual, GetSubChainer(optionConfiguration), canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -229,7 +246,7 @@ public sealed class ValuerChainer
     )
     {
         return !await AsyncEnumHelper
-            .HasAnyAsync(CompareAsync(x, y, optionConfiguration), canceler)
+            .HasAnyAsync(CompareAsync(x, y, canceler, optionConfiguration), canceler)
             .ConfigureAwait(false);
     }
 

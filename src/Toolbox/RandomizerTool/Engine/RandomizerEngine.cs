@@ -25,8 +25,10 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
         else
         {
             throw new NotSupportedException(
-                $"Type '{type}' not supported by the randomizer. "
-                    + "Create a hint to generate the type and pass it to the randomizer."
+                $"""
+                Type '{type}' not supported by the randomizer.
+                Create a hint to generate the type and pass it to the randomizer.
+                """
             );
         }
     }

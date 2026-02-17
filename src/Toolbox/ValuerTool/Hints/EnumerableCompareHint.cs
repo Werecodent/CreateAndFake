@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -16,20 +15,20 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     protected override IEnumerable<Difference> Compare(
         IEnumerable expected,
         IEnumerable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return LazyCompare(expected, actual, valuer);
+        return LazyCompare(expected, actual, chainer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
         IEnumerable expected,
         IEnumerable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -47,7 +46,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 if (actualEnumerator.MoveNext())
                 {
                     foreach (
-                        Difference diff in valuer.Compare(
+                        Difference diff in chainer.Compare(
                             expectedEnumerator.Current,
                             actualEnumerator.Current
                         )
@@ -83,11 +82,11 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         IEnumerable expected,
         IEnumerable actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
+        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -105,8 +104,12 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 if (actualEnumerator.MoveNext())
                 {
                     await foreach (
-                        Difference diff in valuer
-                            .CompareAsync(expectedEnumerator.Current, actualEnumerator.Current)
+                        Difference diff in chainer
+                            .CompareAsync(
+                                expectedEnumerator.Current,
+                                actualEnumerator.Current,
+                                canceler
+                            )
                             .WithCancellation(canceler)
                             .ConfigureAwait(false)
                     )
@@ -138,12 +141,12 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IEnumerable item, IValuerChainer valuer)
+    protected override int GetHashCode(IEnumerable item, IValuerChainer chainer)
     {
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
-            hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(value);
+            hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(value);
         }
         return hash;
     }
@@ -151,7 +154,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
         IEnumerable item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
@@ -160,7 +163,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);
+                + await chainer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);
         }
         return hash;
     }

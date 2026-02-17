@@ -14,15 +14,15 @@ internal sealed class ConvertCompareHandler<T>(Func<T, IValuerChainer, object?> 
     public IEnumerable<Difference> CompareSupported(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return valuer.Compare(converter((T)expected, valuer), converter((T)actual, valuer));
+        return chainer.Compare(converter((T)expected, chainer), converter((T)actual, chainer));
     }
 
     /// <inheritdoc/>
-    public int HashSupported(object item, IValuerChainer valuer)
+    public int HashSupported(object item, IValuerChainer chainer)
     {
-        return valuer.GetHashCode(converter((T)item, valuer));
+        return chainer.GetHashCode(converter((T)item, chainer));
     }
 }

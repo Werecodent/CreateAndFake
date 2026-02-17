@@ -5,12 +5,14 @@ using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
+#pragma warning disable CA1062 // Temporary
+
 /// <summary>Handles comparing objects for <see cref="IValuer"/>.</summary>
 /// <param name="onlyPublic">If private members are excluded.</param>
 public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 {
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type type = expected.GetType();
         return TypeDescriber.GetAllProperties(type, onlyPublic).Any(p => p.CanRead)
@@ -21,17 +23,17 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return LazyCompare(expected, actual, valuer);
+        return LazyCompare(expected, actual, chainer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private IEnumerable<Difference> LazyCompare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         Type type = expected.GetType();
@@ -43,7 +45,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         )
         {
             foreach (
-                Difference diff in valuer.Compare(
+                Difference diff in chainer.Compare(
                     property.GetValue(expected),
                     property.GetValue(actual)
                 )
@@ -56,7 +58,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             foreach (
-                Difference diff in valuer.Compare(field.GetValue(expected), field.GetValue(actual))
+                Difference diff in chainer.Compare(field.GetValue(expected), field.GetValue(actual))
             )
             {
                 yield return new Difference(field, diff);
@@ -68,7 +70,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     protected override async IAsyncEnumerable<Difference> CompareAsync(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
@@ -81,8 +83,8 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         )
         {
             await foreach (
-                Difference diff in valuer
-                    .CompareAsync(property.GetValue(expected), property.GetValue(actual))
+                Difference diff in chainer
+                    .CompareAsync(property.GetValue(expected), property.GetValue(actual), canceler)
                     .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
@@ -94,8 +96,8 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
             await foreach (
-                Difference diff in valuer
-                    .CompareAsync(field.GetValue(expected), field.GetValue(actual))
+                Difference diff in chainer
+                    .CompareAsync(field.GetValue(expected), field.GetValue(actual), canceler)
                     .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
@@ -106,7 +108,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
@@ -118,12 +120,12 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         )
         {
             hash =
-                hash * ValueComparer.HashMultiplier + valuer.GetHashCode(property.GetValue(item));
+                hash * ValueComparer.HashMultiplier + chainer.GetHashCode(property.GetValue(item));
         }
 
         foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
         {
-            hash = hash * ValueComparer.HashMultiplier + valuer.GetHashCode(field.GetValue(item));
+            hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(field.GetValue(item));
         }
 
         return hash;
@@ -132,7 +134,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
@@ -147,7 +149,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer
+                + await chainer
                     .GetHashCodeAsync(property.GetValue(item), canceler)
                     .ConfigureAwait(false);
         }
@@ -156,7 +158,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         {
             hash =
                 hash * ValueComparer.HashMultiplier
-                + await valuer
+                + await chainer
                     .GetHashCodeAsync(field.GetValue(item), canceler)
                     .ConfigureAwait(false);
         }
@@ -164,3 +166,5 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         return hash;
     }
 }
+
+#pragma warning restore CA1062

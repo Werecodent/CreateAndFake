@@ -9,16 +9,16 @@ public sealed class FallbackCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.FallbackHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
-        return valuer.Options.FallbackTypes.Contains(expected.GetType());
+        return chainer.Options.FallbackTypes.Contains(expected.GetType());
     }
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         if (expected != actual)
@@ -28,7 +28,7 @@ public sealed class FallbackCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
         return item.GetHashCode();
     }

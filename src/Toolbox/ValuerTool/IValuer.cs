@@ -36,6 +36,7 @@ public interface IValuer
     IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     );
 

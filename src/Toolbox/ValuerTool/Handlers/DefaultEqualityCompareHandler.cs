@@ -12,7 +12,7 @@ internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompa
     public IEnumerable<Difference> CompareSupported(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         if (!expected.Equals(actual))
@@ -22,7 +22,7 @@ internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompa
     }
 
     /// <inheritdoc/>
-    public int HashSupported(object item, IValuerChainer valuer)
+    public int HashSupported(object item, IValuerChainer chainer)
     {
         return item.GetHashCode();
     }

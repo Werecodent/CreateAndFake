@@ -1,5 +1,4 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
@@ -16,27 +15,27 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     protected override IEnumerable<Difference> Compare(
         IValuerEquatable expected,
         IValuerEquatable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return LazyCompare(expected, actual, valuer);
+        return LazyCompare(expected, actual, chainer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
         IValuerEquatable expected,
         IValuerEquatable actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        if (!expected.ValuesEqual(actual, valuer))
+        if (!expected.ValuesEqual(actual, chainer))
         {
             yield return new Difference(
                 $".{nameof(IValuerEquatable.ValuesEqual)}",
                 new Difference(true, false)
             );
 
-            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, valuer);
+            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, chainer);
             if (byValues.HasData)
             {
                 foreach (Difference difference in byValues.Data!)
@@ -48,8 +47,8 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerEquatable item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerEquatable item, IValuerChainer chainer)
     {
-        return item.GetValueHash(valuer);
+        return item.GetValueHash(chainer);
     }
 }

@@ -15,21 +15,25 @@ internal abstract class CompareHandler<T> : ICompareHandler
     public IEnumerable<Difference> CompareSupported(
         object? expected,
         object? actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return Compare((T)expected!, (T)actual!, valuer);
+        return Compare((T)expected!, (T)actual!, chainer);
     }
 
     /// <inheritdoc cref="CompareSupported"/>
-    protected abstract IEnumerable<Difference> Compare(T expected, T actual, IValuerChainer valuer);
+    protected abstract IEnumerable<Difference> Compare(
+        T expected,
+        T actual,
+        IValuerChainer chainer
+    );
 
     /// <inheritdoc/>
-    public int HashSupported(object? item, IValuerChainer valuer)
+    public int HashSupported(object? item, IValuerChainer chainer)
     {
-        return Hash((T)item!, valuer);
+        return Hash((T)item!, chainer);
     }
 
     /// <inheritdoc cref="HashSupported"/>
-    protected abstract int Hash(T item, IValuerChainer valuer);
+    protected abstract int Hash(T item, IValuerChainer chainer);
 }

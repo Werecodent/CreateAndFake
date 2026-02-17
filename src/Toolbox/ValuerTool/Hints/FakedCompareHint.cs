@@ -1,5 +1,4 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.FakerTool.Proxy;
+﻿using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -14,15 +13,15 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
     protected override IEnumerable<Difference> Compare(
         IFaked expected,
         IFaked actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return valuer.Compare(expected.FakeMeta, actual.FakeMeta);
+        return chainer.Compare(expected.FakeMeta, actual.FakeMeta);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IFaked item, IValuerChainer valuer)
+    protected override int GetHashCode(IFaked item, IValuerChainer chainer)
     {
-        return valuer.GetHashCode(item.FakeMeta);
+        return chainer.GetHashCode(item.FakeMeta);
     }
 }

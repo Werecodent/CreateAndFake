@@ -65,8 +65,6 @@ public static class AsyncEnumHelper
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler);
-
         canceler.ThrowIfCancellationRequested();
         if (collection == null)
         {
@@ -94,8 +92,6 @@ public static class AsyncEnumHelper
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler);
-
         canceler.ThrowIfCancellationRequested();
 
         List<T> results = [];

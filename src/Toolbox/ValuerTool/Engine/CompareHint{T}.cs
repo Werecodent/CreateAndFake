@@ -4,12 +4,12 @@ namespace CreateAndFake.ValuerTool.Engine;
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 
-/// <typeparam name="T"><see cref="Type"/> being supported for comparisons.</typeparam>
-/// <inheritdoc/>
+/// <summary>Handles <typeparamref name="T"/> comparisons.</summary>
+/// <typeparam name="T">Specific <see cref="Type"/> the hint supports.</typeparam>
 public abstract class CompareHint<T> : CompareHint
 {
     /// <inheritdoc/>
-    protected sealed override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected sealed override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected is T && actual is T;
     }
@@ -18,64 +18,68 @@ public abstract class CompareHint<T> : CompareHint
     protected sealed override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return Compare((T)expected, (T)actual, valuer);
+        return Compare((T)expected, (T)actual, chainer);
     }
 
     /// <inheritdoc cref="Compare(object,object,IValuerChainer)"/>
-    protected abstract IEnumerable<Difference> Compare(T expected, T actual, IValuerChainer valuer);
+    protected abstract IEnumerable<Difference> Compare(
+        T expected,
+        T actual,
+        IValuerChainer chainer
+    );
 
     /// <inheritdoc/>
     protected sealed override IAsyncEnumerable<Difference> CompareAsync(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return CompareAsync((T)expected, (T)actual, valuer, canceler);
+        return CompareAsync((T)expected, (T)actual, chainer, canceler);
     }
 
     /// <inheritdoc cref="CompareAsync(object,object,IValuerChainer,CancellationToken)"/>
     protected virtual IAsyncEnumerable<Difference> CompareAsync(
         T expected,
         T actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, valuer));
+        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, chainer));
     }
 
     /// <inheritdoc/>
-    protected sealed override int GetHashCode(object item, IValuerChainer valuer)
+    protected sealed override int GetHashCode(object item, IValuerChainer chainer)
     {
-        return GetHashCode((T)item, valuer);
+        return GetHashCode((T)item, chainer);
     }
 
     /// <inheritdoc cref="GetHashCode(object,IValuerChainer)"/>
-    protected abstract int GetHashCode(T item, IValuerChainer valuer);
+    protected abstract int GetHashCode(T item, IValuerChainer chainer);
 
     /// <inheritdoc/>
     protected sealed override Task<int> GetHashCodeAsync(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return GetHashCodeAsync((T)item, valuer, canceler);
+        return GetHashCodeAsync((T)item, chainer, canceler);
     }
 
     /// <inheritdoc cref="GetHashCodeAsync(object,IValuerChainer,CancellationToken)"/>
     protected virtual Task<int> GetHashCodeAsync(
         T item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        return Task.FromResult(GetHashCode(item, valuer));
+        return Task.FromResult(GetHashCode(item, chainer));
     }
 }
 

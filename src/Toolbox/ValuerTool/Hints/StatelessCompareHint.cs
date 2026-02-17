@@ -10,7 +10,7 @@ public sealed class StatelessCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.StatelessHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type type = expected.GetType();
         return !TypeDescriber.GetAllProperties(type).Any(p => p.CanRead)
@@ -21,14 +21,14 @@ public sealed class StatelessCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
         return [];
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
         return item.GetType().GetHashCode();
     }

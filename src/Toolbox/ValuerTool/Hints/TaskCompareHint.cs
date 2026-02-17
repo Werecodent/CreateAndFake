@@ -12,16 +12,16 @@ public sealed class TaskCompareHint : CompareHint<Task>
     protected override IEnumerable<Difference> Compare(
         Task expected,
         Task actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        return valuer.Compare(ExtractResult(expected), ExtractResult(actual));
+        return chainer.Compare(ExtractResult(expected), ExtractResult(actual));
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(Task item, IValuerChainer valuer)
+    protected override int GetHashCode(Task item, IValuerChainer chainer)
     {
-        return valuer.GetHashCode(ExtractResult(item));
+        return chainer.GetHashCode(ExtractResult(item));
     }
 
     /// <summary>Retrieves the result from a task.</summary>

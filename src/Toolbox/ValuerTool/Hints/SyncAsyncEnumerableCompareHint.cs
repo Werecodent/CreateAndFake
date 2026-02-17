@@ -14,7 +14,7 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.SyncAsyncEnumerableHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected.GetType().Inherits(typeof(IEnumerable<>))
                 && actual.GetType().Inherits(typeof(IAsyncEnumerable<>))
@@ -26,18 +26,20 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
     protected override IEnumerable<Difference> Compare(
         object expected,
         object actual,
-        IValuerChainer valuer
+        IValuerChainer chainer
     )
     {
-        if (valuer.Options.SkipAsyncValues)
+        if (chainer.Options.SkipAsyncValues)
         {
             return [];
         }
         else
         {
             throw new EngineException(
-                $"Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}. "
-                    + $"Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context."
+                $"""
+                Cannot compare IAsyncEnumerables in synchronous context using {nameof(IValuer)}.
+                Use {nameof(IAsserter)} to compare IAsyncEnumerables in asynchronous context.
+                """
             );
         }
     }
@@ -46,17 +48,17 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
     protected override IAsyncEnumerable<Difference> CompareAsync(
         object expected,
         object actual,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
         if (expected.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {
-            return CompareAsync(expected, actual, true, valuer, canceler);
+            return CompareAsync(expected, actual, true, chainer, canceler);
         }
         else
         {
-            return CompareAsync(actual, expected, false, valuer, canceler);
+            return CompareAsync(actual, expected, false, chainer, canceler);
         }
     }
 
@@ -64,7 +66,7 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
         object asyncSeries,
         object syncSeries,
         bool isExpectedFirst,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
@@ -93,11 +95,11 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
                     BindingFlags.Static | BindingFlags.NonPublic
                 )!
                 .MakeGenericMethod(asyncType.GetGenericArguments().Single())
-                .Invoke(null, [asyncSeries, syncSeries, isExpectedFirst, valuer, canceler])!;
+                .Invoke(null, [asyncSeries, syncSeries, isExpectedFirst, chainer, canceler])!;
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer chainer)
     {
         return 0;
     }
@@ -105,7 +107,7 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
         object item,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         CancellationToken canceler
     )
     {
@@ -118,11 +120,11 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
         IAsyncEnumerable<T> asyncSeries,
         IEnumerable<T> syncSeries,
         bool isExpectedFirst,
-        IValuerChainer valuer,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        if (valuer.Options.CheckCollectionType)
+        if (chainer.Options.CheckCollectionType)
         {
             yield return CreateDiff(asyncSeries.GetType(), syncSeries.GetType(), isExpectedFirst);
         }
@@ -141,7 +143,8 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
                                 asyncEnumerator.Current,
                                 syncEnumerator.Current,
                                 isExpectedFirst,
-                                valuer
+                                chainer,
+                                canceler
                             )
                             .WithCancellation(canceler)
                             .ConfigureAwait(false)
@@ -174,12 +177,13 @@ public sealed class SyncAsyncEnumerableCompareHint : CompareHint
         object? firstValue,
         object? secondValue,
         bool isExpectedFirst,
-        IValuerChainer valuer
+        IValuerChainer chainer,
+        CancellationToken canceler
     )
     {
         return isExpectedFirst
-            ? valuer.CompareAsync(firstValue, secondValue)
-            : valuer.CompareAsync(secondValue, firstValue);
+            ? chainer.CompareAsync(firstValue, secondValue, canceler)
+            : chainer.CompareAsync(secondValue, firstValue, canceler);
     }
 
     private static Difference CreateDiff(

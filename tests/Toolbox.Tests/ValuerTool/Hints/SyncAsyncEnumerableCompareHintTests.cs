@@ -29,7 +29,8 @@ public sealed class SyncAsyncEnumerableCompareHintTests
         DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
             data2,
             data,
-            CreateChainer()
+            CreateChainer(),
+            TestContext.Current.CancellationToken
         );
 
         result.HasData.Assert().Is(true);
@@ -47,7 +48,8 @@ public sealed class SyncAsyncEnumerableCompareHintTests
         DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
             data,
             data2,
-            CreateChainer()
+            CreateChainer(),
+            TestContext.Current.CancellationToken
         );
 
         result.HasData.Assert().Is(true);

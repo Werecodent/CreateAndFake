@@ -9,11 +9,15 @@ internal interface ICompareHandler : ITypeSupporter
     ///     Compares instances of the <see cref="ITypeSupporter.SupportedType"/>.
     /// </summary>
     /// <inheritdoc cref="CompareHint.Compare(object?, object?, IValuerChainer)"/>
-    IEnumerable<Difference> CompareSupported(object expected, object actual, IValuerChainer valuer);
+    IEnumerable<Difference> CompareSupported(
+        object expected,
+        object actual,
+        IValuerChainer chainer
+    );
 
     /// <summary>
     ///     Computes the identifying hash code for the <see cref="ITypeSupporter.SupportedType"/>.
     /// </summary>
     /// <inheritdoc cref="CompareHint.GetHashCode(object?, IValuerChainer)"/>
-    int HashSupported(object item, IValuerChainer valuer);
+    int HashSupported(object item, IValuerChainer chainer);
 }

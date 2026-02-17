@@ -49,6 +49,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     public IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
+        CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     )
     {
@@ -58,6 +59,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
             return new ValuerChainer(Options, _engine).CompareAsync(
                 expected,
                 actual,
+                canceler,
                 optionConfiguration
             );
         }
@@ -128,7 +130,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     )
     {
         return !await AsyncEnumHelper
-            .HasAnyAsync(CompareAsync(x, y, optionConfiguration), canceler)
+            .HasAnyAsync(CompareAsync(x, y, canceler, optionConfiguration), canceler)
             .ConfigureAwait(false);
     }
 

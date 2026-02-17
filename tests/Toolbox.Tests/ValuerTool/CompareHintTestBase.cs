@@ -85,7 +85,8 @@ public abstract class CompareHintTestBase<T>(
                 DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
                     data,
                     data,
-                    CreateChainer()
+                    CreateChainer(),
+                    TestContext.Current.CancellationToken
                 );
 
                 result
@@ -126,7 +127,8 @@ public abstract class CompareHintTestBase<T>(
                 DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
                     one,
                     two,
-                    CreateChainer()
+                    CreateChainer(),
+                    TestContext.Current.CancellationToken
                 );
 
                 result
@@ -160,7 +162,12 @@ public abstract class CompareHintTestBase<T>(
                 two = Tools.Randomizer.Create(one.GetType());
 
                 await TestInstance
-                    .TryAsyncCompare(one, two, CreateChainer())
+                    .TryAsyncCompare(
+                        one,
+                        two,
+                        CreateChainer(),
+                        TestContext.Current.CancellationToken
+                    )
                     .Assert()
                     .IsAsync(
                         DifferenceHintAsyncResult.None,
