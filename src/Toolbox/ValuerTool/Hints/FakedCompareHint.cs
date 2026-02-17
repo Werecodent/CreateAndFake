@@ -12,21 +12,17 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IFaked? expected,
-        IFaked? actual,
+        IFaked expected,
+        IFaked actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
-        return valuer.Compare(expected?.FakeMeta, actual?.FakeMeta);
+        return valuer.Compare(expected.FakeMeta, actual.FakeMeta);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IFaked? item, IValuerChainer valuer)
+    protected override int GetHashCode(IFaked item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
-        return valuer.GetHashCode(item?.FakeMeta);
+        return valuer.GetHashCode(item.FakeMeta);
     }
 }

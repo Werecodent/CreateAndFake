@@ -14,15 +14,11 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IDictionary? expected,
-        IDictionary? actual,
+        IDictionary expected,
+        IDictionary actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return LazyCompare(expected, actual, valuer);
     }
 
@@ -74,16 +70,12 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
     /// <inheritdoc/>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
-        IDictionary? expected,
-        IDictionary? actual,
+        IDictionary expected,
+        IDictionary actual,
         IValuerChainer valuer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
@@ -153,11 +145,8 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IDictionary? item, IValuerChainer valuer)
+    protected override int GetHashCode(IDictionary item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
@@ -168,14 +157,11 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
-        IDictionary? item,
+        IDictionary item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {

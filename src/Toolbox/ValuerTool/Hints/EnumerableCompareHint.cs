@@ -14,15 +14,11 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IEnumerable? expected,
-        IEnumerable? actual,
+        IEnumerable expected,
+        IEnumerable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return LazyCompare(expected, actual, valuer);
     }
 
@@ -85,16 +81,12 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
     /// <inheritdoc/>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
-        IEnumerable? expected,
-        IEnumerable? actual,
+        IEnumerable expected,
+        IEnumerable actual,
         IValuerChainer valuer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
@@ -146,11 +138,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IEnumerable? item, IValuerChainer valuer)
+    protected override int GetHashCode(IEnumerable item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
@@ -161,14 +150,11 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
-        IEnumerable? item,
+        IEnumerable item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {

@@ -14,25 +14,21 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IValuerEquatable? expected,
-        IValuerEquatable? actual,
+        IValuerEquatable expected,
+        IValuerEquatable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return LazyCompare(expected, actual, valuer);
     }
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
-        IValuerEquatable? expected,
-        IValuerEquatable? actual,
+        IValuerEquatable expected,
+        IValuerEquatable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-
         if (!expected.ValuesEqual(actual, valuer))
         {
             yield return new Difference(
@@ -52,10 +48,8 @@ public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerEquatable? item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerEquatable item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
-
         return item.GetValueHash(valuer);
     }
 }

@@ -41,13 +41,6 @@ public static class ValuerTests
     internal static void GetHashCode_MissingMatchThrows()
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.GetHashCode(null))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
-
-        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(new object()))
             .Throws<ToolException>()
             .InnerException.GetType()
@@ -71,13 +64,6 @@ public static class ValuerTests
     [Fact]
     internal static void Compare_MissingMatchThrows()
     {
-        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.Compare(null, new object()))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
-
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.Compare(new object(), new object()))
             .Throws<ToolException>()
@@ -187,27 +173,5 @@ public static class ValuerTests
             .Throws<ToolException>()
             .Message.Assert()
             .Contains(item.GetType().Name);
-    }
-
-    [Fact]
-    internal static void GetHashCode_CanNotSupportNull()
-    {
-        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.GetHashCode(null))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
-    }
-
-    [Fact]
-    internal static void Compare_CanNotSupportNull()
-    {
-        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.Compare(null, new object()))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
     }
 }

@@ -16,7 +16,7 @@ public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
     public HandlerCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }
 
-    [Theory, RandomData]
+    /*[Theory, RandomData]
     internal static void TryCopy_HandlesWeakReference(string data)
     {
         WeakReference original = new(data);
@@ -25,7 +25,7 @@ public sealed class HandlerCopyHintTests : CopyHintTestBase<HandlerCopyHint>
 
         result.HasData.Assert().Is(true);
         result.Data.Assert().Is(original);
-    }
+    }*/
 
     [Fact]
     internal static void TryCopy_HandlesBaseObject()

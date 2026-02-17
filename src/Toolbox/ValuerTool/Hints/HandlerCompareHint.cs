@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.ValuerTool.Engine;
@@ -37,30 +36,25 @@ public sealed class HandlerCompareHint : CompareHint
     public override IEnumerable<Type> SupportedTypes => _HandlersByType.Keys;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        return expected != null
-            && expected.GetType() == actual?.GetType()
-            && _HandlersByType.ContainsKey(expected.GetType());
+        Type type = expected.GetType();
+        return _HandlersByType.ContainsKey(type) && type == actual.GetType();
     }
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
-
         return _HandlersByType[expected.GetType()].CompareSupported(expected, actual, valuer);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
-
         return _HandlersByType[item.GetType()].HashSupported(item, valuer);
     }
 }

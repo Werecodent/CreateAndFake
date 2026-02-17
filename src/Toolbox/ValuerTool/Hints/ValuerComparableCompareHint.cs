@@ -11,21 +11,17 @@ public sealed class ValuerComparableCompareHint : CompareHint<IValuerComparable>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IValuerComparable? expected,
-        IValuerComparable? actual,
+        IValuerComparable expected,
+        IValuerComparable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, expected);
-
         return expected.Compare(actual, valuer);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerComparable? item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerComparable item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
-
         return item.GetValueHash(valuer);
     }
 }

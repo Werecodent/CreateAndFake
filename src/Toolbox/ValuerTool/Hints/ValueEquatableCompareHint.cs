@@ -1,5 +1,4 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -15,8 +14,8 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IValueEquatable? expected,
-        IValueEquatable? actual,
+        IValueEquatable expected,
+        IValueEquatable actual,
         IValuerChainer valuer
     )
     {
@@ -25,13 +24,11 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
 
     /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> LazyCompare(
-        IValueEquatable? expected,
-        IValueEquatable? actual,
+        IValueEquatable expected,
+        IValueEquatable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-
         if (!expected.ValuesEqual(actual))
         {
             yield return new Difference(
@@ -51,7 +48,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValueEquatable? item, IValuerChainer valuer)
+    protected override int GetHashCode(IValueEquatable item, IValuerChainer valuer)
     {
         return ValueComparer.Use.GetHashCode(item);
     }

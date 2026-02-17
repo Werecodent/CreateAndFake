@@ -1,5 +1,4 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
@@ -11,34 +10,26 @@ public sealed class TaskCompareHint : CompareHint<Task>
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        Task? expected,
-        Task? actual,
+        Task expected,
+        Task actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return valuer.Compare(ExtractResult(expected), ExtractResult(actual));
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(Task? item, IValuerChainer valuer)
+    protected override int GetHashCode(Task item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return valuer.GetHashCode(ExtractResult(item));
     }
 
     /// <summary>Retrieves the result from a task.</summary>
     /// <param name="item">Given task.</param>
     /// <returns>Result if possible; status otherwise.</returns>
-    private static object? ExtractResult(Task? item)
+    private static object? ExtractResult(Task item)
     {
-        if (item == null)
-        {
-            return null;
-        }
-        else if (item.Status != TaskStatus.RanToCompletion || !item.GetType().IsGenericType)
+        if (item.Status != TaskStatus.RanToCompletion || !item.GetType().IsGenericType)
         {
             return (item.Status, item.Exception);
         }

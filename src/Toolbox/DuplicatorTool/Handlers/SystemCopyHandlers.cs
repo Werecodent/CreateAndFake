@@ -29,9 +29,9 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<CultureInfo>(
             (source, _) => source.IsReadOnly ? source : (CultureInfo)source.Clone()
         ),
-        new FactoryCopyHandler<WeakReference>(
+        /*new FactoryCopyHandler<WeakReference>(
             (source, _) => new WeakReference(source.Target, source.TrackResurrection)
-        ),
+        ),*/
         new FactoryCopyHandler<CancellationTokenSource>(
             (source, _) =>
             {

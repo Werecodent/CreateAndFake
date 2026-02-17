@@ -1,5 +1,4 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -11,13 +10,8 @@ public sealed class StatelessCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.StatelessHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        if (expected == null || actual == null)
-        {
-            return false;
-        }
-
         Type type = expected.GetType();
         return !TypeDescriber.GetAllProperties(type).Any(p => p.CanRead)
             && !TypeDescriber.GetAllFields(type).Any();
@@ -25,8 +19,8 @@ public sealed class StatelessCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
@@ -34,10 +28,8 @@ public sealed class StatelessCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item);
-
         return item.GetType().GetHashCode();
     }
 }

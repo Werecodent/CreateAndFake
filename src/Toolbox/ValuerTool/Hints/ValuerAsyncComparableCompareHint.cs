@@ -13,13 +13,11 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        IValuerAsyncComparable? expected,
-        IValuerAsyncComparable? actual,
+        IValuerAsyncComparable expected,
+        IValuerAsyncComparable actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.SkipAsyncValues)
         {
             return [];
@@ -35,22 +33,18 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
 
     /// <inheritdoc/>
     protected override IAsyncEnumerable<Difference> CompareAsync(
-        IValuerAsyncComparable? expected,
-        IValuerAsyncComparable? actual,
+        IValuerAsyncComparable expected,
+        IValuerAsyncComparable actual,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer, expected);
-
         return expected.CompareAsync(actual, valuer, canceler);
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(IValuerAsyncComparable? item, IValuerChainer valuer)
+    protected override int GetHashCode(IValuerAsyncComparable item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.SkipAsyncValues)
         {
             return 0;
@@ -66,13 +60,11 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
 
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
-        IValuerAsyncComparable? item,
+        IValuerAsyncComparable item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item, valuer);
-
         return item.GetValueHashAsync(valuer, canceler);
     }
 }

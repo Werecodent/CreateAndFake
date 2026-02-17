@@ -1,5 +1,3 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -11,19 +9,15 @@ public sealed class FallbackCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.FallbackHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
-        Type? type = (expected ?? actual)?.GetType();
-
-        return type != null && valuer.Options.FallbackTypes.Contains(type);
+        return valuer.Options.FallbackTypes.Contains(expected.GetType());
     }
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
@@ -34,8 +28,8 @@ public sealed class FallbackCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        return item?.GetHashCode() ?? ValueComparer.NullHash;
+        return item.GetHashCode();
     }
 }

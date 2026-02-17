@@ -12,12 +12,12 @@ public interface ICompareHint : IToolHint
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="valuer">Handles comparing child values.</param>
     /// <returns>Possible result.</returns>
-    DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer);
+    DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer valuer);
 
     /// <inheritdoc cref="TryCompare"/>
     DifferenceHintAsyncResult TryAsyncCompare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     );
 
@@ -25,12 +25,12 @@ public interface ICompareHint : IToolHint
     /// <param name="item">Object to generate a hash code for.</param>
     /// <param name="valuer">Handles hashing behavior for child values.</param>
     /// <returns>Possible result.</returns>
-    HashCodeHintResult TryGetHashCode(object? item, IValuerChainer valuer);
+    HashCodeHintResult TryGetHashCode(object item, IValuerChainer valuer);
 
     /// <inheritdoc cref="TryGetHashCode"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     HashCodeHintAsyncResult TryAsyncGetHashCode(
-        object? item,
+        object item,
         IValuerChainer valuer,
         CancellationToken canceler
     );

@@ -16,9 +16,9 @@ public abstract class CompareHint : ICompareHint
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <inheritdoc/>
-    public DifferenceHintResult TryCompare(object? expected, object? actual, IValuerChainer valuer)
+    public DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
+        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
 
         if (Supports(expected, actual, valuer))
         {
@@ -50,12 +50,12 @@ public abstract class CompareHint : ICompareHint
 
     /// <inheritdoc/>
     public DifferenceHintAsyncResult TryAsyncCompare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
+        ArgumentGuard.ThrowIfNull(expected, actual, valuer);
 
         if (Supports(expected, actual, valuer))
         {
@@ -70,8 +70,8 @@ public abstract class CompareHint : ICompareHint
     /// <inheritdoc cref="TryAsyncCompare"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     private async IAsyncEnumerable<Difference> HandleAsyncCompare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
@@ -109,8 +109,10 @@ public abstract class CompareHint : ICompareHint
     }
 
     /// <inheritdoc/>
-    public HashCodeHintResult TryGetHashCode(object? item, IValuerChainer valuer)
+    public HashCodeHintResult TryGetHashCode(object item, IValuerChainer valuer)
     {
+        ArgumentGuard.ThrowIfNull(item, valuer);
+
         if (Supports(item, item, valuer))
         {
             return new(GetHashCode(item, valuer));
@@ -123,11 +125,13 @@ public abstract class CompareHint : ICompareHint
 
     /// <inheritdoc/>
     public HashCodeHintAsyncResult TryAsyncGetHashCode(
-        object? item,
+        object item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(item, valuer);
+
         if (Supports(item, item, valuer))
         {
             return new(GetHashCodeAsync(item, valuer, canceler));
@@ -143,22 +147,22 @@ public abstract class CompareHint : ICompareHint
     /// </summary>
     /// <returns><see langword="true"/> if the objects can be compared, <see langword="false"/> otherwise.</returns>
     /// <inheritdoc cref="TryCompare"/>
-    protected abstract bool Supports(object? expected, object? actual, IValuerChainer valuer);
+    protected abstract bool Supports(object expected, object actual, IValuerChainer valuer);
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <returns>The found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
     /// <inheritdoc cref="TryCompare"/>
     protected abstract IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     );
 
     /// <inheritdoc cref="Compare"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     protected virtual IAsyncEnumerable<Difference> CompareAsync(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer,
         CancellationToken canceler
     )
@@ -169,12 +173,12 @@ public abstract class CompareHint : ICompareHint
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
     /// <inheritdoc cref="TryGetHashCode"/>
-    protected abstract int GetHashCode(object? item, IValuerChainer valuer);
+    protected abstract int GetHashCode(object item, IValuerChainer valuer);
 
     /// <inheritdoc cref="GetHashCode"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     protected virtual Task<int> GetHashCodeAsync(
-        object? item,
+        object item,
         IValuerChainer valuer,
         CancellationToken canceler
     )

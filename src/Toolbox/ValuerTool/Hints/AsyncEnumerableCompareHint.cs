@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.AsserterTool;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
@@ -15,21 +14,19 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.AsyncEnumerableHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        return (expected?.GetType()).Inherits(typeof(IAsyncEnumerable<>))
-            && (actual?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
+        return expected.GetType().Inherits(typeof(IAsyncEnumerable<>))
+            && actual.GetType().Inherits(typeof(IAsyncEnumerable<>));
     }
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.SkipAsyncValues)
         {
             return [];
@@ -45,19 +42,12 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override IAsyncEnumerable<Difference> CompareAsync(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
-        if (expected == null || actual == null)
-        {
-            return AsyncEnumHelper.CreateFrom([new Difference(expected, actual)]);
-        }
-
         Type expectedType = TypeDescriber.FindConcreteInterface(
             expected.GetType(),
             typeof(IAsyncEnumerable<>)
@@ -83,10 +73,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         if (valuer.Options.SkipAsyncValues)
         {
             return 0;
@@ -102,14 +90,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override Task<int> GetHashCodeAsync(
-        object? item,
+        object item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return (Task<int>)
             GetType()
                 .GetMethod(

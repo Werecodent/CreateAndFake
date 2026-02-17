@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -12,12 +11,9 @@ public sealed class EquatableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.EquatableHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return valuer.Options.UseEquatableComparisons
-            && expected != null
             && expected is not IStructuralEquatable
             && expected is not IToolOptions
             && expected
@@ -27,13 +23,11 @@ public sealed class EquatableCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-
         if (!expected.Equals(actual))
         {
             return [new Difference(expected, actual)];
@@ -45,10 +39,8 @@ public sealed class EquatableCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item);
-
         return item.GetHashCode();
     }
 }

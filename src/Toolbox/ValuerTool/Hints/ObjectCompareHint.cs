@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -11,13 +10,8 @@ namespace CreateAndFake.ValuerTool.Hints;
 public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 {
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        if (expected == null || actual == null)
-        {
-            return false;
-        }
-
         Type type = expected.GetType();
         return TypeDescriber.GetAllProperties(type, onlyPublic).Any(p => p.CanRead)
             || TypeDescriber.GetAllFields(type, onlyPublic).Any();
@@ -25,15 +19,11 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         return LazyCompare(expected, actual, valuer);
     }
 
@@ -76,16 +66,12 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 
     /// <inheritdoc/>
     protected override async IAsyncEnumerable<Difference> CompareAsync(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer,
         [EnumeratorCancellation] CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(expected);
-        ArgumentGuard.ThrowIfNull(actual);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         Type type = expected.GetType();
 
         foreach (
@@ -120,11 +106,8 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 
@@ -148,14 +131,11 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
 
     /// <inheritdoc/>
     protected override async Task<int> GetHashCodeAsync(
-        object? item,
+        object item,
         IValuerChainer valuer,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(item);
-        ArgumentGuard.ThrowIfNull(valuer);
-
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 

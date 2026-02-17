@@ -17,12 +17,9 @@ public sealed class EarlyFailCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.EarlyFailHint;
 
     /// <inheritdoc/>
-    protected override bool Supports(object? expected, object? actual, IValuerChainer valuer)
+    protected override bool Supports(object expected, object actual, IValuerChainer valuer)
     {
-        return expected == null
-            || actual == null
-            || Supports(expected.GetType(), actual.GetType())
-            || expected is Delegate;
+        return Supports(expected.GetType(), actual.GetType()) || expected is Delegate;
     }
 
     /// <inheritdoc cref="CompareHint.Supports"/>
@@ -39,20 +36,12 @@ public sealed class EarlyFailCompareHint : CompareHint
 
     /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
-        object? expected,
-        object? actual,
+        object expected,
+        object actual,
         IValuerChainer valuer
     )
     {
-        if (expected == null && actual == null)
-        {
-            yield break;
-        }
-        else if (expected == null || actual == null)
-        {
-            yield return new Difference(expected, actual);
-        }
-        else if (expected.GetType() != actual.GetType())
+        if (expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
@@ -63,7 +52,7 @@ public sealed class EarlyFailCompareHint : CompareHint
     }
 
     /// <inheritdoc/>
-    protected override int GetHashCode(object? item, IValuerChainer valuer)
+    protected override int GetHashCode(object item, IValuerChainer valuer)
     {
         return ValueComparer.Use.GetHashCode(item);
     }
