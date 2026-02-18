@@ -76,7 +76,7 @@
             "UseEquatableComparisons": false,
             "CheckCollectionType": true,
             "IgnoreCurrentRandomSeed": false,
-            "AsyncTimeout": "00:01:00",
+            "AsyncTimeout": "00:00:33",
             "SkipAsyncValues": true,
             "IncludeValueHashInComparison": false
         }
