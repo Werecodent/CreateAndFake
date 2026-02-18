@@ -28,7 +28,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>How long to wait for async comparisons to complete.</summary>
     [ConfigurableOption]
-    public TimeSpan AsyncTimeout { get; init; } = new(0, 0, 5);
+    public TimeSpan AsyncTimeout { get; init; } = new(0, 1, 0);
 
     /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
     [ConfigurableOption]

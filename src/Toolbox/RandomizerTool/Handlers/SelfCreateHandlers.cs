@@ -98,7 +98,7 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(28, 32),
-                AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 3), new TimeSpan(0, 0, 8)),
+                AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 50), new TimeSpan(0, 1, 0)),
             }
         ),
         new FactoryCreateHandler<AsserterMod>(rand => _ => rand.Create<AsserterOptions>()),
