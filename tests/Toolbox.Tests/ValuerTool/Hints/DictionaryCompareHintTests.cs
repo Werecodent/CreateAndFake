@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 
@@ -37,7 +38,9 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
             .Data.ToArray()
             .Assert()
             .IsNotEmpty(
-                "Hint didn't find differences with a modified key on '" + data.GetType().Name + "'."
+                "Hint didn't find differences with a modified key on '"
+                    + TypeDescriber.ExpandedName(data)
+                    + "'."
             );
     }
 }

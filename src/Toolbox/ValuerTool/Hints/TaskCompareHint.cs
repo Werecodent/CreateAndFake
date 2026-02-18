@@ -133,7 +133,8 @@ public sealed class TaskCompareHint : CompareHint<Task>
     {
         return TypeDescriber
                 .AsConcreteType(item.GetType(), typeof(Task<>))
-                ?.GetGenericArguments()[0]
+                ?.GetGenericArguments()
+                .Single()
                 .Name.Contains("VoidTaskResult", StringComparison.Ordinal) == false;
     }
 }

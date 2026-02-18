@@ -229,6 +229,7 @@ public abstract class CompareHintTestBase<T>(
     }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
+    /// <exception cref="EngineException">When an exception is encountered.</exception>
     [Fact]
     public async Task TryGetHashCode_SupportsDifferentValidTypes()
     {
@@ -240,7 +241,7 @@ public abstract class CompareHintTestBase<T>(
             try
             {
                 data = Tools.Randomizer.Create(type);
-                dataDiffer = Tools.Mutator.Variant(data);
+                dataDiffer = Tools.Mutator.Variant(type, data);
 
                 HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
                     data,
@@ -258,6 +259,13 @@ public abstract class CompareHintTestBase<T>(
                         ct,
                         $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
                     );
+            }
+            catch (Exception e)
+            {
+                throw new EngineException(
+                    $"Error while testing type {TypeDescriber.ExpandedName(type)}",
+                    e
+                );
             }
             finally
             {

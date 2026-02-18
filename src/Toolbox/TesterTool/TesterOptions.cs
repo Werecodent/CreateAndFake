@@ -1,7 +1,5 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using System.Reflection;
-using System.Text;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
@@ -100,8 +98,6 @@ public sealed record TesterOptions : IToolOptions
             typeof(IConfiguration),
             typeof(IConfigurationSection),
             typeof(CancellationToken),
-            typeof(AssemblyName),
-            typeof(StringBuilder),
         ]);
 
     /// <summary>

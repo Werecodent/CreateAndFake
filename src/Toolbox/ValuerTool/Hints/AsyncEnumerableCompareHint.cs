@@ -80,7 +80,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             );
         }
 
-        return ContentsCompareTimedAsync(convertedExpected, convertedActual, chainer, canceler);
+        return ContentsCompareAsync(convertedExpected, convertedActual, chainer, canceler);
     }
 
     /// <summary>Converts <paramref name="collection"/> to asynchronous if not already.</summary>
@@ -125,29 +125,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        return ContentsGetHashCodeTimedAsync(ConvertFromSync(item, canceler), chainer, canceler);
-    }
-
-    /// <inheritdoc cref="ContentsCompareAsync"/>
-    private static async IAsyncEnumerable<Difference> ContentsCompareTimedAsync<T>(
-        IAsyncEnumerable<T> expected,
-        IAsyncEnumerable<T> actual,
-        IValuerChainer chainer,
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        using CancellationTokenSource timeoutSource =
-            CancellationTokenSource.CreateLinkedTokenSource(canceler);
-
-        timeoutSource.CancelAfter(chainer.Options.AsyncTimeout);
-
-        await foreach (
-            Difference diff in ContentsCompareAsync(expected, actual, chainer, timeoutSource.Token)
-                .ConfigureAwait(false)
-        )
-        {
-            yield return diff;
-        }
+        return ContentsGetHashCodeAsync(ConvertFromSync(item, canceler), chainer, canceler);
     }
 
     /// <inheritdoc cref="Compare"/>
@@ -216,33 +194,6 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             }
 
             canceler.ThrowIfCancellationRequested();
-        }
-    }
-
-    /// <inheritdoc cref="ContentsGetHashCodeAsync"/>
-    private static async Task<int> ContentsGetHashCodeTimedAsync<T>(
-        IAsyncEnumerable<T> item,
-        IValuerChainer chainer,
-        CancellationToken canceler
-    )
-    {
-        Task<int> hasher = ContentsGetHashCodeAsync(item, chainer, canceler);
-        if (
-            await Task.WhenAny(hasher, Task.Delay(chainer.Options.AsyncTimeout, canceler))
-                .ConfigureAwait(false) == hasher
-        )
-        {
-            return await hasher.ConfigureAwait(false);
-        }
-        else
-        {
-            canceler.ThrowIfCancellationRequested();
-            throw new EngineException(
-                $"""
-                Attempting to iterate the {TypeDescriber.ExpandedName(item)} exceeded the timeout 
-                ({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'.
-                """
-            );
         }
     }
 

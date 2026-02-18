@@ -23,6 +23,7 @@ public sealed class ObjectExtractHint : ExtractHint<object>
                 PropertyInfo property in TypeDescriber
                     .GetAllProperties(type, !chainer.Options.ExtractPrivateMembers)
                     .Where(p => p.CanRead)
+                    .Where(p => source is not Exception || p.Name != "HResult")
             )
             {
                 _ = chainer.InnerExtract(property.GetValue(source));

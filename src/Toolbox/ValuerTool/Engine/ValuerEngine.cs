@@ -175,7 +175,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
 
         if (result != null)
         {
-            return result.Data!;
+            return WithErrorHandlingAsync(result.Data!, item);
         }
         else
         {
@@ -267,6 +267,24 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
                     yield return enumerator.Current;
                 }
             } while (hasNext);
+        }
+    }
+
+    /// <summary>Awaits the result and wraps any exception encountered with details.</summary>
+    /// <param name="result">Result of the tool hint being returned.</param>
+    /// <inheritdoc cref="GetHashCodeAsync"/>
+    private static async Task<T> WithErrorHandlingAsync<T>(Task<T> result, object? item)
+    {
+        try
+        {
+            return await result.ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                e
+            );
         }
     }
 }

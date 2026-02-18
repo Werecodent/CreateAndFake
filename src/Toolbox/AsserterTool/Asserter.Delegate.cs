@@ -136,7 +136,7 @@ public partial class Asserter : IDelegateAsserter
 
         return error as T
             ?? throw new AssertException(
-                errorMessage + e.GetType().Name,
+                errorMessage + TypeDescriber.ExpandedName(e),
                 details,
                 localOptions.Gen.InitialSeed,
                 e

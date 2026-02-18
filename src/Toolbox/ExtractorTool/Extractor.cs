@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ExtractorTool.Engine;
 
@@ -29,7 +30,10 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         }
         catch (Exception e)
         {
-            throw new ToolException($"Issue extracting type '{source?.GetType().Name}'.", e);
+            throw new ToolException(
+                $"Issue extracting type '{TypeDescriber.ExpandedName(source)}'.",
+                e
+            );
         }
     }
 

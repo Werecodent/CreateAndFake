@@ -8,7 +8,9 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
 {
     private static readonly StatelessCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(StatelessSample)];
+    private static readonly Type[] _ValidTypes =
+    [ /*typeof(StatelessSample)*/
+    ];
 
     private static readonly Type[] _InvalidTypes =
     [

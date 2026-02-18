@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
@@ -13,7 +12,7 @@ public sealed class ValuerChainer
         IValuerChainer
 {
     /// <summary>History of hashes to match up references.</summary>
-    private readonly Dictionary<int, object?> _hashHistory;
+    private readonly ISet<object?> _hashHistory;
 
     /// <summary>History of comparisons to match up references.</summary>
     private readonly HashSet<(int, int)> _compareHistory;
@@ -22,7 +21,7 @@ public sealed class ValuerChainer
     public ValuerChainer(ValuerOptions options, IValuerEngine engine)
         : base(options, engine)
     {
-        _hashHistory = [];
+        _hashHistory = new HashSet<object?>(ReferenceComparer.Use);
         _compareHistory = [];
     }
 
@@ -45,7 +44,7 @@ public sealed class ValuerChainer
     /// <returns><see langword="true"/> if tracking <paramref name="item"/> is possible, <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? item)
     {
-        return !(item == null || item is IFaked || item.GetType().IsValueType);
+        return item?.GetType().IsValueType == false;
     }
 
     /// <inheritdoc/>
@@ -65,16 +64,23 @@ public sealed class ValuerChainer
 
             if (_compareHistory.Add(refHash))
             {
-                // Yield return is required here to prevent infinite loops.
-                foreach (
-                    Difference diff in Engine.Compare(
-                        expected,
-                        actual,
-                        GetSubChainer(optionConfiguration)
-                    )
-                )
+                try
                 {
-                    yield return diff;
+                    // Yield return is required here to prevent infinite loops.
+                    foreach (
+                        Difference diff in Engine.Compare(
+                            expected,
+                            actual,
+                            GetSubChainer(optionConfiguration)
+                        )
+                    )
+                    {
+                        yield return diff;
+                    }
+                }
+                finally
+                {
+                    _ = _compareHistory.Remove(refHash);
                 }
             }
         }
@@ -173,20 +179,20 @@ public sealed class ValuerChainer
             return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
         }
 
-        int refHash = RuntimeHelpers.GetHashCode(item);
-        if (_hashHistory.TryGetValue(refHash, out object? stored) && ReferenceEquals(item, stored))
+        if (_hashHistory.Add(item))
+        {
+            try
+            {
+                return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
+            }
+            finally
+            {
+                _ = _hashHistory.Remove(item);
+            }
+        }
+        else
         {
             return 0;
-        }
-
-        _hashHistory[refHash] = item;
-        try
-        {
-            return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
-        }
-        finally
-        {
-            _ = _hashHistory.Remove(refHash);
         }
     }
 
@@ -205,23 +211,23 @@ public sealed class ValuerChainer
                 .ConfigureAwait(false);
         }
 
-        int refHash = RuntimeHelpers.GetHashCode(item);
-        if (_hashHistory.TryGetValue(refHash, out object? stored) && ReferenceEquals(item, stored))
+        if (_hashHistory.Add(item))
+        {
+            try
+            {
+                // Await is required here to prevent infinite loops.
+                return await Engine
+                    .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
+                    .ConfigureAwait(false);
+            }
+            finally
+            {
+                _ = _hashHistory.Remove(item);
+            }
+        }
+        else
         {
             return 0;
-        }
-
-        _hashHistory[refHash] = item;
-        try
-        {
-            // Await is required here to prevent infinite loops.
-            return await Engine
-                .GetHashCodeAsync(item, GetSubChainer(optionConfiguration), canceler)
-                .ConfigureAwait(false);
-        }
-        finally
-        {
-            _ = _hashHistory.Remove(refHash);
         }
     }
 

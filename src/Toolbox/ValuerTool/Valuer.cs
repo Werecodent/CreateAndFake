@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design;
+﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool;
@@ -36,12 +37,37 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         ValuerMod? optionConfiguration = null
     )
     {
-        return new ValuerChainer(Options, _engine).CompareAsync(
-            expected,
-            actual,
-            canceler,
-            optionConfiguration
-        );
+        return HandleCompareAsync(expected, actual, optionConfiguration, canceler);
+    }
+
+    /// <inheritdoc cref="CompareAsync"/>
+    private async IAsyncEnumerable<Difference> HandleCompareAsync(
+        object? expected,
+        object? actual,
+        ValuerMod? optionConfiguration,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        using CancellationTokenSource timeoutSource =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
+        timeoutSource.CancelAfter(localOptions.AsyncTimeout);
+
+        await foreach (
+            Difference diff in new ValuerChainer(Options, _engine)
+                .CompareAsync(
+                    expected,
+                    actual,
+                    timeoutSource.Token,
+                    (optionConfiguration != null) ? _ => localOptions : null
+                )
+                .ConfigureAwait(false)
+        )
+        {
+            yield return diff;
+        }
     }
 
     /// <inheritdoc/>
@@ -57,17 +83,26 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public Task<int> GetHashCodeAsync(
+    public async Task<int> GetHashCodeAsync(
         object? item,
         CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     )
     {
-        return new ValuerChainer(Options, _engine).GetHashCodeAsync(
-            item,
-            canceler,
-            optionConfiguration
-        );
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        using CancellationTokenSource timeoutSource =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
+        timeoutSource.CancelAfter(localOptions.AsyncTimeout);
+
+        return await new ValuerChainer(Options, _engine)
+            .GetHashCodeAsync(
+                item,
+                timeoutSource.Token,
+                (optionConfiguration != null) ? _ => localOptions : null
+            )
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -83,14 +118,28 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
-    public Task<bool> EqualsAsync(
+    public async Task<bool> EqualsAsync(
         object? x,
         object? y,
         CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     )
     {
-        return new ValuerChainer(Options, _engine).EqualsAsync(x, y, canceler, optionConfiguration);
+        ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        using CancellationTokenSource timeoutSource =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
+        timeoutSource.CancelAfter(localOptions.AsyncTimeout);
+
+        return await new ValuerChainer(Options, _engine)
+            .EqualsAsync(
+                x,
+                y,
+                timeoutSource.Token,
+                (optionConfiguration != null) ? _ => localOptions : null
+            )
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

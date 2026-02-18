@@ -149,6 +149,6 @@ public static class ValuerTests
             .Assert(v => v.GetHashCode(item))
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(item.GetType().Name);
+            .Contains(TypeDescriber.ExpandedName(item));
     }
 }
