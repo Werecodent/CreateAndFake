@@ -37,11 +37,11 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
         DifferenceHintResult result = TestInstance.TryCompare(original, variant, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
-        result.Data.Single().ToString().Assert().Contains("outofbounds");
+        result.Data.Single().ToString().Assert().Contains("'out of range'");
 
         result = TestInstance.TryCompare(variant, original, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
-        result.Data.Single().ToString().Assert().Contains("outofbounds");
+        result.Data.Single().ToString().Assert().Contains("'out of range'");
     }
 }

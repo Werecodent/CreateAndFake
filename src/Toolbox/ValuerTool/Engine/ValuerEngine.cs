@@ -54,7 +54,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else if (expected is null || actual is null)
         {
-            return AsyncEnumHelper.CreateFrom([new Difference(expected, actual)]);
+            return AsyncEnumHelper.CreateFromAsync([new Difference(expected, actual)], canceler);
         }
 
         DifferenceHintAsyncResult? result = SelectHints(chainer)

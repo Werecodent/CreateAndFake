@@ -59,7 +59,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 {
                     yield return new Difference(
                         index,
-                        new Difference(expectedEnumerator.Current, "'outofbounds'")
+                        new Difference(expectedEnumerator.Current, "'out of range'")
                     );
                 }
                 index++;
@@ -68,7 +68,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             {
                 yield return new Difference(
                     index++,
-                    new Difference("'outofbounds'", actualEnumerator.Current)
+                    new Difference("'out of range'", actualEnumerator.Current)
                 );
             }
         }
@@ -110,7 +110,6 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                                 actualEnumerator.Current,
                                 canceler
                             )
-                            .WithCancellation(canceler)
                             .ConfigureAwait(false)
                     )
                     {
@@ -121,7 +120,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 {
                     yield return new Difference(
                         index,
-                        new Difference(expectedEnumerator.Current, "'outofbounds'")
+                        new Difference(expectedEnumerator.Current, "'out of range'")
                     );
                 }
                 index++;
@@ -130,7 +129,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             {
                 yield return new Difference(
                     index++,
-                    new Difference("'outofbounds'", actualEnumerator.Current)
+                    new Difference("'out of range'", actualEnumerator.Current)
                 );
             }
         }

@@ -27,7 +27,7 @@ public static class AsyncEnumHelperTests
     internal static Task CreateFrom_ConvertsObjectsSuccessfully(IList<string> data)
     {
         return AsyncEnumHelper
-            .CreateFrom(data)
+            .CreateFromAsync(data, TestContext.Current.CancellationToken)
             .Assert()
             .IsAsync(data, TestContext.Current.CancellationToken);
     }
@@ -39,7 +39,7 @@ public static class AsyncEnumHelperTests
         {
             await foreach (
                 string value in AsyncEnumHelper
-                    .CreateFrom(data)
+                    .CreateFromAsync(data, TestContext.Current.CancellationToken)
                     .WithCancellation(new CancellationToken(true))
             )
             {

@@ -144,7 +144,8 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += chainer.GetHashCode(entry);
+            hash += chainer.GetHashCode(entry.Key);
+            hash += chainer.GetHashCode(entry.Value);
         }
         return hash;
     }

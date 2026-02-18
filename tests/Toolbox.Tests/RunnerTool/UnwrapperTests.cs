@@ -9,26 +9,40 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerable(List<int> data)
     {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => AsyncEnumHelper.CreateFrom(data)));
+        data.Assert()
+            .Is(
+                await Unwrapper.UnwrapResult(() =>
+                    AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+                )
+            );
     }
 
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerable(List<string> data)
     {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => AsyncEnumHelper.CreateFrom(data)));
+        data.Assert()
+            .Is(
+                await Unwrapper.UnwrapResult(() =>
+                    AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+                )
+            );
     }
 
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerableTask(List<int> data)
     {
-        Task<IAsyncEnumerable<int>> run = Task.Run(() => AsyncEnumHelper.CreateFrom(data));
+        Task<IAsyncEnumerable<int>> run = Task.Run(() =>
+            AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+        );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run));
     }
 
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerableTask(List<string> data)
     {
-        Task<IAsyncEnumerable<string>> run = Task.Run(() => AsyncEnumHelper.CreateFrom(data));
+        Task<IAsyncEnumerable<string>> run = Task.Run(() =>
+            AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+        );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run));
     }
 

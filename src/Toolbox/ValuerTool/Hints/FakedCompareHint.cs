@@ -3,7 +3,7 @@ using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
-/// <summary>Handles comparing <see cref="IFaked"/> instances for <see cref="IValuer"/>.</summary>
+/// <inheritdoc/>
 public sealed class FakedCompareHint : CompareHint<IFaked>
 {
     /// <inheritdoc/>

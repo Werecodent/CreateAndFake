@@ -12,6 +12,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class HandlerCompareHint : CompareHint
 {
     /// <summary>Supported types and the methods used to compare them.</summary>
+    /// <remarks>WARNING: Not async compatible. Internals must have no async content.</remarks>
     private static readonly ICompareHandler[] _Handlers =
     [
         new DefaultEqualityCompareHandler(typeof(string)),

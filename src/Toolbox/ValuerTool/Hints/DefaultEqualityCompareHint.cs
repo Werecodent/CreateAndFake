@@ -8,7 +8,7 @@ namespace CreateAndFake.ValuerTool.Hints;
 public sealed class DefaultEqualityCompareHint : CompareHint
 {
     /// <inheritdoc/>
-    public override int EnginePriority => (int)ComparePriority.EarlyFailHint;
+    public override int EnginePriority => (int)ComparePriority.DefaultEqualityHint;
 
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)

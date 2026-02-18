@@ -55,7 +55,7 @@ public abstract class CompareHint : ICompareHint
 
         if (Supports(expected, actual, chainer))
         {
-            return new(HandleAsyncCompare(expected, actual, chainer, canceler));
+            return new(HandleCompareAsync(expected, actual, chainer, canceler));
         }
         else
         {
@@ -65,7 +65,7 @@ public abstract class CompareHint : ICompareHint
 
     /// <inheritdoc cref="TryAsyncCompare"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    private async IAsyncEnumerable<Difference> HandleAsyncCompare(
+    private async IAsyncEnumerable<Difference> HandleCompareAsync(
         object expected,
         object actual,
         IValuerChainer chainer,
@@ -160,7 +160,7 @@ public abstract class CompareHint : ICompareHint
         CancellationToken canceler
     )
     {
-        return AsyncEnumHelper.CreateFrom(Compare(expected, actual, chainer));
+        return AsyncEnumHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
     }
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>

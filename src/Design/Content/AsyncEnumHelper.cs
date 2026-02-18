@@ -20,9 +20,13 @@ public static class AsyncEnumHelper
     /// </summary>
     /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
     [return: NotNullIfNotNull(nameof(collection))]
-    public static IAsyncEnumerable<T>? CreateFrom<T>(IEnumerable<T>? collection)
+    public static IAsyncEnumerable<T>? CreateFromAsync<T>(
+        IEnumerable<T>? collection,
+        CancellationToken canceler
+    )
     {
         if (collection == null)
         {
@@ -30,14 +34,13 @@ public static class AsyncEnumHelper
         }
         else
         {
-            return IterateAsync(collection);
+            return IterateAsync(collection, canceler);
         }
     }
 
 #pragma warning disable IDE0390 // Purpose is to create async data from sync data.
 
-    /// <inheritdoc cref="CreateFrom{T}"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <inheritdoc cref="CreateFromAsync{T}"/>
     private static async IAsyncEnumerable<T> IterateAsync<T>(
         IEnumerable<T> collection,
         [EnumeratorCancellation] CancellationToken canceler = default
@@ -113,7 +116,7 @@ public static class AsyncEnumHelper
     ///     cancellation via the <paramref name="source"/> upon attempted iteration.
     /// </summary>
     /// <returns>An empty asynchronous series.</returns>
-    /// <inheritdoc cref="CreateFrom{T}"/>
+    /// <inheritdoc cref="CreateFromAsync{T}"/>
     /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
     public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
         CancellationTokenSource source

@@ -23,32 +23,32 @@ public enum ComparePriority
     /// <summary>Priority for <see cref="PublicObjectCompareHint"/>.</summary>
     PublicObjectHint = 3,
 
-    /// <summary>Priority for <see cref="EnumerableCompareHint"/>.</summary>
-    EnumerableHint = 4,
-
-    /// <summary>Priority for <see cref="DictionaryCompareHint"/>.</summary>
-    DictionaryHint = 5,
-
     /// <summary>Priority for <see cref="EquatableCompareHint"/>.</summary>
-    EquatableHint = 6,
+    EquatableHint = 4,
 
     /// <summary>Priority for <see cref="ValuerEquatableCompareHint"/>.</summary>
-    ValuerEquatableHint = 7,
+    ValuerEquatableHint = 5,
 
     /// <summary>Priority for <see cref="ValuerComparableCompareHint"/>.</summary>
-    ValuerComparableHint = 8,
+    ValuerComparableHint = 6,
 
     /// <summary>Priority for <see cref="ValuerAsyncComparableCompareHint"/>.</summary>
-    ValuerAsyncComparableHint = 9,
+    ValuerAsyncComparableHint = 7,
 
     /// <summary>Priority for <see cref="ValueEquatableCompareHint"/>.</summary>
-    ValueEquatableHint = 10,
+    ValueEquatableHint = 8,
+
+    /// <summary>Priority for <see cref="EnumerableCompareHint"/>.</summary>
+    EnumerableHint = 9,
+
+    /// <summary>Priority for <see cref="DictionaryCompareHint"/>.</summary>
+    DictionaryHint = 10,
 
     /// <summary>Priority for <see cref="FakedCompareHint"/>.</summary>
     FakedHint = 11,
 
     /// <summary>Priority for <see cref="DefaultEqualityCompareHint"/>.</summary>
-    EarlyFailHint = 12,
+    DefaultEqualityHint = 12,
 
     /// <summary>Priority for <see cref="AsyncEnumerableCompareHint"/>.</summary>
     AsyncEnumerableHint = 13,

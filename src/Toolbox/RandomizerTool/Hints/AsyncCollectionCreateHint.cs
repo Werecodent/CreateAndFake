@@ -27,7 +27,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
                 type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>)
                 || (
                     type.FullName?.Contains(
-                        $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItemsCancelable)}>"
+                        $"{nameof(AsyncCollectionCreateHint)}+<{nameof(GetItemsCancelableAsync)}>"
                     )
                     ?? false
                 )
@@ -41,7 +41,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
             );
             return new(
                 GetType()
-                    .GetMethod(nameof(GetItems), BindingFlags.Static | BindingFlags.NonPublic)!
+                    .GetMethod(nameof(GetItemsAsync), BindingFlags.Static | BindingFlags.NonPublic)!
                     .MakeGenericMethod(itemType)
                     .Invoke(null, [backingData])
             );
@@ -52,10 +52,10 @@ public sealed class AsyncCollectionCreateHint : CreateHint
         }
     }
 
-    /// <inheritdoc cref="GetItemsCancelable"/>
-    private static IAsyncEnumerable<T> GetItems<T>(List<T> backing)
+    /// <inheritdoc cref="GetItemsCancelableAsync"/>
+    private static IAsyncEnumerable<T> GetItemsAsync<T>(List<T> backing)
     {
-        return GetItemsCancelable(backing);
+        return GetItemsCancelableAsync(backing);
     }
 
     /// <summary>Supplies collection items asynchronously.</summary>
@@ -63,7 +63,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     /// <param name="backing">Collection items to supply.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The collection made from <paramref name="backing"/>.</returns>
-    private static async IAsyncEnumerable<T> GetItemsCancelable<T>(
+    private static async IAsyncEnumerable<T> GetItemsCancelableAsync<T>(
         List<T> backing,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
