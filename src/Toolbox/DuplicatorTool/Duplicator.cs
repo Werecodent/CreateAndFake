@@ -55,7 +55,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         catch (Exception e)
         {
             throw new ToolException(
-                $"Issue duplicating type '{TypeDescriber.ExpandedName(source?.GetType())}'.",
+                $"Issue duplicating type '{TypeDescriber.ExpandedName(source)}'.",
                 e
             );
         }

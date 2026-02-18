@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.ValuerTool.Engine;
@@ -20,20 +22,34 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
             return [new Difference(expected, actual)];
         }
 
-        DifferenceHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryCompare(expected, actual, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        DifferenceHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryCompare(expected, actual, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"""
+                Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' 
+                with an instance of type '{TypeDescriber.ExpandedName(actual)}'.
+                """,
+                e
+            );
+        }
 
         if (result != null)
         {
-            return result.Data!;
+            return WithErrorHandling(result.Data!, expected, actual);
         }
         else
         {
             throw new NotSupportedException(
                 $"""
-                Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by 
-                the valuer. Create a hint to generate the type and pass it to the valuer.
+                Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. 
+                Create a hint to generate the type and pass it to the valuer.
                 """
             );
         }
@@ -57,20 +73,34 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
             return AsyncEnumHelper.CreateFromAsync([new Difference(expected, actual)], canceler);
         }
 
-        DifferenceHintAsyncResult? result = SelectHints(chainer)
-            .Select(h => h.TryAsyncCompare(expected, actual, chainer, canceler))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        DifferenceHintAsyncResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryAsyncCompare(expected, actual, chainer, canceler))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"""
+                Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' 
+                with an instance of type '{TypeDescriber.ExpandedName(actual)}'.
+                """,
+                e
+            );
+        }
 
         if (result != null)
         {
-            return result.Data!;
+            return WithErrorHandlingAsync(result.Data!, expected, actual, canceler);
         }
         else
         {
             throw new NotSupportedException(
                 $"""
-                Type '{TypeDescriber.ExpandedName(expected?.GetType())}' not supported by 
-                the valuer. Create a hint to generate the type and pass it to the valuer.
+                Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. 
+                Create a hint to generate the type and pass it to the valuer.
                 """
             );
         }
@@ -85,9 +115,20 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
             return ValueComparer.NullHash;
         }
 
-        HashCodeHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryGetHashCode(item, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        HashCodeHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryGetHashCode(item, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                e
+            );
+        }
 
         if (result != null)
         {
@@ -97,7 +138,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         {
             throw new NotSupportedException(
                 $"""
-                Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer. 
+                Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer. 
                 Create a hint to generate the type and pass it to the valuer.
                 """
             );
@@ -117,9 +158,20 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
             return Task.FromResult(ValueComparer.NullHash);
         }
 
-        HashCodeHintAsyncResult? result = SelectHints(chainer)
-            .Select(h => h.TryAsyncGetHashCode(item, chainer, canceler))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        HashCodeHintAsyncResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryAsyncGetHashCode(item, chainer, canceler))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                e
+            );
+        }
 
         if (result != null)
         {
@@ -129,10 +181,92 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         {
             throw new NotSupportedException(
                 $"""
-                Type '{TypeDescriber.ExpandedName(item?.GetType())}' not supported by the valuer.
+                Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer.
                 Create a hint to generate the type and pass it to the valuer.
                 """
             );
+        }
+    }
+
+    /// <summary>Iterates the result and wraps any exception encountered with details.</summary>
+    /// <param name="result">Result of the tool hint being returned.</param>
+    /// <inheritdoc cref="Compare"/>
+    private static IEnumerable<T> WithErrorHandling<T>(
+        IEnumerable<T> result,
+        object? expected,
+        object? actual
+    )
+    {
+        IEnumerator<T> enumerator = result.GetEnumerator();
+        try
+        {
+            bool hasNext;
+            do
+            {
+                try
+                {
+                    hasNext = enumerator.MoveNext();
+                }
+                catch (Exception e)
+                {
+                    throw new ToolException(
+                        $"""
+                        Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' 
+                        with an instance of type '{TypeDescriber.ExpandedName(actual)}'.
+                        """,
+                        e
+                    );
+                }
+
+                if (hasNext)
+                {
+                    yield return enumerator.Current;
+                }
+            } while (hasNext);
+        }
+        finally
+        {
+            Disposer.Cleanup(enumerator);
+        }
+    }
+
+    /// <summary>Iterates the result and wraps any exception encountered with details.</summary>
+    /// <param name="result">Result of the tool hint being returned.</param>
+    /// <inheritdoc cref="CompareAsync"/>
+    private static async IAsyncEnumerable<T> WithErrorHandlingAsync<T>(
+        IAsyncEnumerable<T> result,
+        object? expected,
+        object? actual,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        IAsyncEnumerator<T> enumerator = result.GetAsyncEnumerator(canceler);
+        await using (enumerator.ConfigureAwait(false))
+        {
+            bool hasNext;
+            do
+            {
+                try
+                {
+                    canceler.ThrowIfCancellationRequested();
+                    hasNext = await enumerator.MoveNextAsync().ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    throw new ToolException(
+                        $"""
+                        Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' 
+                        with an instance of type '{TypeDescriber.ExpandedName(actual)}'.
+                        """,
+                        e
+                    );
+                }
+
+                if (hasNext)
+                {
+                    yield return enumerator.Current;
+                }
+            } while (hasNext);
         }
     }
 }

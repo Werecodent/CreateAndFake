@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Exceptions;
+﻿using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
@@ -42,10 +43,7 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(new object()))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
+            .Throws<NotSupportedException>();
     }
 
     [Theory, RandomData]
@@ -65,11 +63,8 @@ public static class ValuerTests
     internal static void Compare_MissingMatchThrows()
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.Compare(new object(), new object()))
-            .Throws<ToolException>()
-            .InnerException.GetType()
-            .Assert()
-            .Is(typeof(NotSupportedException));
+            .Assert(v => v.Compare(new object(), new object()).ToList())
+            .Throws<NotSupportedException>();
     }
 
     [Theory, RandomData]
@@ -131,44 +126,26 @@ public static class ValuerTests
     internal static void Compare_InfiniteLoopDetails(
         object item1,
         object item2,
-        Fake<CompareHint> hint
+        [Fake] ICompareHint hint
     )
     {
-        hint.Setup(
-            "Supports",
-            [item1, item2, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
-        );
+        hint.TryCompare(item1, item2, Arg.Any<IValuerChainer>())
+            .SetupCall(Behavior<DifferenceHintResult>.Throw<InsufficientExecutionStackException>());
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeFrameworkHints = false,
-                Hints = [hint.Dummy],
-            }
-        )
-            .Assert(v => v.Compare(item1, item2))
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
+            .Assert(v => v.Compare(item1, item2).ToList())
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(item1.GetType().Name);
+            .Contains(TypeDescriber.ExpandedName(item1));
     }
 
     [Theory, RandomData]
-    internal static void GetHashCode_InfiniteLoopDetails(object item, Fake<CompareHint> hint)
+    internal static void GetHashCode_InfiniteLoopDetails(object item, [Fake] ICompareHint hint)
     {
-        hint.Setup(
-            "Supports",
-            [item, item, Arg.LambdaAny<IValuerChainer>()],
-            Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
-        );
+        hint.TryGetHashCode(item, Arg.Any<IValuerChainer>())
+            .SetupCall(Behavior<HashCodeHintResult>.Throw<InsufficientExecutionStackException>());
 
-        new Valuer(
-            Tools.Valuer.Options with
-            {
-                IncludeFrameworkHints = false,
-                Hints = [hint.Dummy],
-            }
-        )
+        new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Assert(v => v.GetHashCode(item))
             .Throws<ToolException>()
             .Message.Assert()

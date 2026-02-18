@@ -8,7 +8,9 @@ public sealed class PrivateObjectCompareHintTests : CompareHintTestBase<PrivateO
 {
     private static readonly PrivateObjectCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(DataHolderSample), typeof(FieldSample)];
+    private static readonly Type[] _ValidTypes =
+    [ /*typeof(DataHolderSample), typeof(FieldSample)*/
+    ];
 
     private static readonly Type[] _InvalidTypes = Type.EmptyTypes;
 

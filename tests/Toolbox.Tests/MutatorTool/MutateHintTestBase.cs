@@ -72,7 +72,7 @@ public abstract class MutateHintTestBase<T>(
     [Fact]
     public void ToString_Overridden()
     {
-        TestInstance.ToString().Assert().Is(TypeDescriber.ExpandedName(TestInstance.GetType()));
+        TestInstance.ToString().Assert().Is(TypeDescriber.ExpandedName(TestInstance));
     }
 
     /// <typeparam name="TData">The <see cref="Type"/> to test.</typeparam>

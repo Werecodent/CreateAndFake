@@ -356,6 +356,22 @@ public static class TypeDescriber
             );
     }
 
+    /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>
+    /// <param name="instance">The instance to create a <see cref="Type"/> name for.</param>
+    /// <returns>The built display name.</returns>
+    public static string ExpandedName(object? instance)
+    {
+        return ExpandedName(instance is Type type ? type : instance?.GetType());
+    }
+
+    /// <summary>Builds a <typeparamref name="T"/> name with any generics included.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to create a name for.</typeparam>
+    /// <returns>The built display name.</returns>
+    public static string ExpandedName<T>()
+    {
+        return ExpandedName(typeof(T));
+    }
+
     /// <summary>Builds a <paramref name="type"/> name with any generics included.</summary>
     /// <param name="type">The <see cref="Type"/> to create a name for.</param>
     /// <returns>The built display name.</returns>

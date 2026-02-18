@@ -56,7 +56,10 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw new ToolException($"Error creating a variant instance of type '{type}'.", e);
+            throw new ToolException(
+                $"Error creating a variant instance of type '{TypeDescriber.ExpandedName(type)}'.",
+                e
+            );
         }
     }
 
@@ -101,7 +104,10 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw new ToolException($"Error creating a unique instance of type '{type}'.", e);
+            throw new ToolException(
+                $"Error creating a unique instance of type '{TypeDescriber.ExpandedName(type)}'.",
+                e
+            );
         }
     }
 
@@ -123,7 +129,10 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         }
         catch (Exception e)
         {
-            throw new ToolException($"Error modifying instance of type '{instance.GetType()}'.", e);
+            throw new ToolException(
+                $"Error modifying instance of type '{TypeDescriber.ExpandedName(instance)}'.",
+                e
+            );
         }
 
         if (result != null)

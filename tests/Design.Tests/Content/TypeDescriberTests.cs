@@ -170,17 +170,23 @@ public static class TypeDescriberTests
             .Is(false);
     }
 
+    [Theory, RandomData]
+    internal static void ExpandedName_ObjectGetType(IList<int> data)
+    {
+        TypeDescriber.ExpandedName(data).Assert().Contains(nameof(Int32));
+    }
+
     [Fact]
     internal static void ExpandedName_SameWithoutGenerics()
     {
-        TypeDescriber.ExpandedName(typeof(DataSample)).Assert().Is(nameof(DataSample));
+        TypeDescriber.ExpandedName<DataSample>().Assert().Is(nameof(DataSample));
     }
 
     [Fact]
     internal static void ExpandedName_IncludesGenerics()
     {
         TypeDescriber
-            .ExpandedName(typeof(Dictionary<int, string>))
+            .ExpandedName<Dictionary<int, string>>()
             .Assert()
             .Contains(nameof(Int32))
             .And.Contains(nameof(String));

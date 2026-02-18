@@ -101,7 +101,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 reflectable.GetTypeInfo().SetupReturn(typeof(Type));
             }
-            faked.ToString().SetupReturn(TypeDescriber.ExpandedName(faked.GetType()), Times.Any);
+            faked.ToString().SetupReturn(TypeDescriber.ExpandedName(faked), Times.Any);
         }
         return arg;
     }

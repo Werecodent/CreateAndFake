@@ -239,8 +239,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             canceler.ThrowIfCancellationRequested();
             throw new EngineException(
                 $"""
-                Attempting to iterate the {TypeDescriber.ExpandedName(item.GetType())} exceeded the 
-                timeout ({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'.
+                Attempting to iterate the {TypeDescriber.ExpandedName(item)} exceeded the timeout 
+                ({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'.
                 """
             );
         }

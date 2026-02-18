@@ -28,7 +28,7 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
         {
             throw new NotSupportedException(
                 $"""
-                Type '{TypeDescriber.ExpandedName(value?.GetType())}' not supported by the
+                Type '{TypeDescriber.ExpandedName(value)}' not supported by the
                 extractor. Create a hint to extract the type and pass it to the extractor.
                 """
             );

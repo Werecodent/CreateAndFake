@@ -1,6 +1,4 @@
 ﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool;
@@ -27,22 +25,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         ValuerMod? optionConfiguration = null
     )
     {
-        string? typeName = (expected ?? actual)?.GetType().Name;
-        try
-        {
-            return
-            [
-                .. new ValuerChainer(Options, _engine).Compare(
-                    expected,
-                    actual,
-                    optionConfiguration
-                ),
-            ];
-        }
-        catch (Exception e)
-        {
-            throw new ToolException($"Issue comparing type '{typeName}'.", e);
-        }
+        return new ValuerChainer(Options, _engine).Compare(expected, actual, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -53,85 +36,61 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         ValuerMod? optionConfiguration = null
     )
     {
-        string? typeName = (expected ?? actual)?.GetType().Name;
-        try
-        {
-            return new ValuerChainer(Options, _engine).CompareAsync(
-                expected,
-                actual,
-                canceler,
-                optionConfiguration
-            );
-        }
-        catch (Exception e)
-        {
-            throw new ToolException($"Issue comparing type '{typeName}'.", e);
-        }
+        return new ValuerChainer(Options, _engine).CompareAsync(
+            expected,
+            actual,
+            canceler,
+            optionConfiguration
+        );
     }
 
     /// <inheritdoc/>
     public int GetHashCode(object? item)
     {
-        return GetHashCode(item, null);
+        return new ValuerChainer(Options, _engine).GetHashCode(item);
     }
 
     /// <inheritdoc/>
     public int GetHashCode(object? item, ValuerMod? optionConfiguration)
     {
-        string? typeName = item?.GetType().Name;
-        try
-        {
-            return new ValuerChainer(Options, _engine).GetHashCode(item, optionConfiguration);
-        }
-        catch (Exception e)
-        {
-            throw new ToolException($"Issue hashing type '{typeName}'.", e);
-        }
+        return new ValuerChainer(Options, _engine).GetHashCode(item, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public async Task<int> GetHashCodeAsync(
+    public Task<int> GetHashCodeAsync(
         object? item,
         CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     )
     {
-        string? typeName = item?.GetType().Name;
-        try
-        {
-            return await new ValuerChainer(Options, _engine)
-                .GetHashCodeAsync(item, canceler, optionConfiguration)
-                .ConfigureAwait(false);
-        }
-        catch (Exception e)
-        {
-            throw new ToolException($"Issue hashing type '{typeName}'.", e);
-        }
+        return new ValuerChainer(Options, _engine).GetHashCodeAsync(
+            item,
+            canceler,
+            optionConfiguration
+        );
     }
 
     /// <inheritdoc/>
     public new bool Equals(object? x, object? y)
     {
-        return !Compare(x, y).Any();
+        return new ValuerChainer(Options, _engine).Equals(x, y);
     }
 
     /// <inheritdoc/>
     public bool Equals(object? x, object? y, ValuerMod? optionConfiguration)
     {
-        return !Compare(x, y, optionConfiguration).Any();
+        return new ValuerChainer(Options, _engine).Equals(x, y, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> EqualsAsync(
+    public Task<bool> EqualsAsync(
         object? x,
         object? y,
         CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     )
     {
-        return !await AsyncEnumHelper
-            .HasAnyAsync(CompareAsync(x, y, canceler, optionConfiguration), canceler)
-            .ConfigureAwait(false);
+        return new ValuerChainer(Options, _engine).EqualsAsync(x, y, canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>

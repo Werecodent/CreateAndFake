@@ -96,7 +96,7 @@ public partial class Asserter : IDelegateAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{TypeDescriber.ExpandedName(typeof(T))}' but received: ";
+            $"Expected exception of type '{TypeDescriber.ExpandedName<T>()}' but received: ";
         try
         {
             if (behavior is Action action)
