@@ -9,17 +9,22 @@ namespace CreateAndFake.ValuerTool.Hints;
 /// <summary>Handles the comparing of <see cref="IAsyncEnumerable{T}"/>s.</summary>
 public sealed class AsyncEnumerableCompareHint : CompareHint
 {
+    /// <summary>Generic method to convert synchronous collections to asynchronous.</summary>
+    private static readonly MethodInfo _AsyncConverter = typeof(AsyncEnumHelper).GetMethod(
+        nameof(AsyncEnumHelper.CreateFrom)
+    )!;
+
     /// <summary>Generic method for comparisons.</summary>
     private static readonly MethodInfo _CompareAsyncHandler =
         typeof(AsyncEnumerableCompareHint).GetMethod(
-            nameof(CompareAsyncHandler),
+            nameof(ContentsCompareTimedAsync),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
 
     /// <summary>Generic method for hashing.</summary>
     private static readonly MethodInfo _GetHashCodeHandler =
         typeof(AsyncEnumerableCompareHint).GetMethod(
-            nameof(GetHashCodeHandler),
+            nameof(ContentsGetHashCodeTimedAsync),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
 
@@ -29,8 +34,19 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
-        return expected.GetType().Inherits(typeof(IAsyncEnumerable<>))
-            && actual.GetType().Inherits(typeof(IAsyncEnumerable<>));
+        Type expectedType = expected.GetType();
+        Type actualType = actual.GetType();
+
+        if (expectedType.Inherits(typeof(IAsyncEnumerable<>)))
+        {
+            return actualType.Inherits(typeof(IAsyncEnumerable<>))
+                || actualType.Inherits(typeof(IEnumerable<>));
+        }
+        else
+        {
+            return actualType.Inherits(typeof(IAsyncEnumerable<>))
+                && expectedType.Inherits(typeof(IEnumerable<>));
+        }
     }
 
     /// <inheritdoc/>
@@ -64,24 +80,48 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        Type expectedType = TypeDescriber.FindConcreteInterface(
-            expected.GetType(),
+        object convertedExpected = ConvertFromSync(expected);
+        object convertedActual = ConvertFromSync(actual);
+
+        Type expectedType = TypeDescriber.FindConcreteType(
+            convertedExpected.GetType(),
             typeof(IAsyncEnumerable<>)
         );
-        Type actualType = TypeDescriber.FindConcreteInterface(
-            actual.GetType(),
+        Type actualType = TypeDescriber.FindConcreteType(
+            convertedActual.GetType(),
             typeof(IAsyncEnumerable<>)
         );
 
         if (expectedType != actualType)
         {
-            return AsyncEnumHelper.CreateFrom([new Difference(expectedType, actualType)]);
+            return AsyncEnumHelper.CreateFrom([
+                new Difference(expected.GetType(), actual.GetType()),
+            ]);
         }
 
         return (IAsyncEnumerable<Difference>)
             _CompareAsyncHandler
                 .MakeGenericMethod(expectedType.GetGenericArguments().Single())
-                .Invoke(null, [expected, actual, chainer, canceler])!;
+                .Invoke(null, [convertedExpected, convertedActual, chainer, canceler])!;
+    }
+
+    /// <summary>Converts <paramref name="collection"/> to asynchronous if not already.</summary>
+    /// <param name="collection">Series to potentially convert.</param>
+    /// <returns>The asynchronous result.</returns>
+    private static object ConvertFromSync(object collection)
+    {
+        Type collectionType = collection.GetType();
+        if (collectionType.Inherits(typeof(IAsyncEnumerable<>)))
+        {
+            return collection;
+        }
+        else
+        {
+            Type contentType = TypeDescriber
+                .FindConcreteType(collectionType, typeof(IEnumerable<>))
+                .GetGenericArguments()[0];
+            return _AsyncConverter.MakeGenericMethod([contentType]).Invoke(null, [collection])!;
+        }
     }
 
     /// <inheritdoc/>
@@ -110,20 +150,43 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        Type itemType = TypeDescriber.FindConcreteInterface(
-            item.GetType(),
+        object convertedItem = ConvertFromSync(item);
+        Type itemType = TypeDescriber.FindConcreteType(
+            convertedItem.GetType(),
             typeof(IAsyncEnumerable<>)
         );
 
         return (Task<int>)
             _GetHashCodeHandler
                 .MakeGenericMethod(itemType.GetGenericArguments().Single())
-                .Invoke(null, [item, chainer, canceler])!;
+                .Invoke(null, [convertedItem, chainer, canceler])!;
+    }
+
+    /// <inheritdoc cref="ContentsCompareAsync"/>
+    private static async IAsyncEnumerable<Difference> ContentsCompareTimedAsync<T>(
+        IAsyncEnumerable<T> expected,
+        IAsyncEnumerable<T> actual,
+        IValuerChainer chainer,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        using CancellationTokenSource timeoutSource =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
+        timeoutSource.CancelAfter(chainer.Options.AsyncTimeout);
+
+        await foreach (
+            Difference diff in ContentsCompareAsync(expected, actual, chainer, timeoutSource.Token)
+                .ConfigureAwait(false)
+        )
+        {
+            yield return diff;
+        }
     }
 
     /// <inheritdoc cref="Compare"/>
     /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
-    private static async IAsyncEnumerable<Difference> CompareAsyncHandler<T>(
+    private static async IAsyncEnumerable<Difference> ContentsCompareAsync<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
         IValuerChainer chainer,
@@ -190,9 +253,36 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         }
     }
 
+    /// <inheritdoc cref="ContentsGetHashCodeAsync"/>
+    private static async Task<int> ContentsGetHashCodeTimedAsync<T>(
+        IAsyncEnumerable<T> item,
+        IValuerChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        Task<int> hasher = ContentsGetHashCodeAsync(item, chainer, canceler);
+        if (
+            await Task.WhenAny(hasher, Task.Delay(chainer.Options.AsyncTimeout, canceler))
+                .ConfigureAwait(false) == hasher
+        )
+        {
+            return await hasher.ConfigureAwait(false);
+        }
+        else
+        {
+            canceler.ThrowIfCancellationRequested();
+            throw new EngineException(
+                $"""
+                Attempting to iterate the {TypeDescriber.ExpandedName(item.GetType())} exceeded the 
+                timeout ({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'.
+                """
+            );
+        }
+    }
+
     /// <inheritdoc cref="GetHashCodeAsync"/>
     /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
-    private static async Task<int> GetHashCodeHandler<T>(
+    private static async Task<int> ContentsGetHashCodeAsync<T>(
         IAsyncEnumerable<T> item,
         IValuerChainer chainer,
         CancellationToken canceler

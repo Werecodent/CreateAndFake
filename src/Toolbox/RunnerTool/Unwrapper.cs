@@ -94,9 +94,7 @@ internal static class Unwrapper
     {
         return method
             .MakeGenericMethod(
-                TypeDescriber
-                    .FindConcreteInterface(result.GetType(), wrapperType)
-                    .GetGenericArguments()
+                TypeDescriber.FindConcreteType(result.GetType(), wrapperType).GetGenericArguments()
             )
             .Invoke(null, [result]);
     }

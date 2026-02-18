@@ -4,9 +4,10 @@ using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
 
-public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCompareHint>
+public sealed class DefaultEqualityCompareHintTests
+    : CompareHintTestBase<DefaultEqualityCompareHint>
 {
-    private static readonly EarlyFailCompareHint _TestInstance = new();
+    private static readonly DefaultEqualityCompareHint _TestInstance = new();
 
     private static readonly Type[] _ValidTypes =
     [
@@ -21,7 +22,7 @@ public sealed class EarlyFailCompareHintTests : CompareHintTestBase<EarlyFailCom
         typeof(IAsyncEnumerable<int>),
     ];
 
-    public EarlyFailCompareHintTests()
+    public DefaultEqualityCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]

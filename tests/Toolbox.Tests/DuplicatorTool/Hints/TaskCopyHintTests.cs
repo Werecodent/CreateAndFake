@@ -30,11 +30,11 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
     }
 
     [Fact]
-    internal void TryCopy_CompletedTaskSupport()
+    internal Task TryCopy_CompletedTaskSupport()
     {
-        TestInstance
+        return TestInstance
             .TryCopy(Task.CompletedTask, CreateChainer())
             .Assert()
-            .Is(new CopyHintResult(Task.CompletedTask));
+            .IsAsync(new CopyHintResult(Task.CompletedTask), TestContext.Current.CancellationToken);
     }
 }

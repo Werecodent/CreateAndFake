@@ -29,35 +29,33 @@ public static class TypeDescriberTests
     }
 
     [Fact]
-    internal static void FindConcreteInterface_FindsBaseClasses()
+    internal static void FindConcreteType_FindsBaseClasses()
     {
+        TypeDescriber.FindConcreteType<List<int>>(typeof(IList<>)).Assert().Is(typeof(IList<int>));
         TypeDescriber
-            .FindConcreteInterface<List<int>>(typeof(IList<>))
-            .Assert()
-            .Is(typeof(IList<int>));
-        TypeDescriber
-            .FindConcreteInterface<ISet<string>>(typeof(IEnumerable<>))
+            .FindConcreteType<ISet<string>>(typeof(IEnumerable<>))
             .Assert()
             .Is(typeof(IEnumerable<string>));
+        TypeDescriber.FindConcreteType<Task<string>>(typeof(Task<>));
     }
 
     [Fact]
-    internal static void FindConcreteInterface_ThrowsWhenMissing()
+    internal static void FindConcreteType_ThrowsWhenMissing()
     {
         typeof(List<>)
-            .Assert(TypeDescriber.FindConcreteInterface<IList<int>>)
+            .Assert(TypeDescriber.FindConcreteType<IList<int>>)
             .Throws<InvalidOperationException>();
         typeof(int)
-            .Assert(TypeDescriber.FindConcreteInterface<string>)
+            .Assert(TypeDescriber.FindConcreteType<string>)
             .Throws<InvalidOperationException>();
     }
 
     [Fact]
-    internal static void AsConcreteInterface_NullWhenMissing()
+    internal static void AsConcreteType_NullWhenMissing()
     {
-        TypeDescriber.AsConcreteInterface<IList<int>>(typeof(List<>)).Assert().IsNull();
-        TypeDescriber.AsConcreteInterface<string>(typeof(int)).Assert().IsNull();
-        TypeDescriber.AsConcreteInterface(null, typeof(IEnumerable<>)).Assert().IsNull();
+        TypeDescriber.AsConcreteType<IList<int>>(typeof(List<>)).Assert().IsNull();
+        TypeDescriber.AsConcreteType<string>(typeof(int)).Assert().IsNull();
+        TypeDescriber.AsConcreteType(null, typeof(IEnumerable<>)).Assert().IsNull();
     }
 
     [Fact]

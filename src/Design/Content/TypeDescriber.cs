@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Extensions;
+using Microsoft.CodeAnalysis;
 
 namespace CreateAndFake.Design.Content;
 
@@ -19,11 +20,11 @@ public static class TypeDescriber
     ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteInterface(Type)"/>
-    /// <inheritdoc cref="FindConcreteInterface(Type,Type)"/>
-    public static Type FindConcreteInterface<T>(Type genericBase)
+    /// <inheritdoc cref="AsConcreteType(Type)"/>
+    /// <inheritdoc cref="FindConcreteType(Type,Type)"/>
+    public static Type FindConcreteType<T>(Type genericBase)
     {
-        return FindConcreteInterface(typeof(T), genericBase);
+        return FindConcreteType(typeof(T), genericBase);
     }
 
     /// <returns>The found inherited <see cref="Type"/>.</returns>
@@ -34,10 +35,10 @@ public static class TypeDescriber
     ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteInterface(Type,Type)"/>
-    public static Type FindConcreteInterface(Type child, Type genericBase)
+    /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
+    public static Type FindConcreteType(Type child, Type genericBase)
     {
-        return AsConcreteInterface(child, genericBase)
+        return AsConcreteType(child, genericBase)
             ?? throw new InvalidOperationException(
                 $"Type {child} doesn't inherit {genericBase} as a generic base class."
             );
@@ -52,10 +53,10 @@ public static class TypeDescriber
     ///     AsConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteInterface(Type,Type)"/>
-    public static Type? AsConcreteInterface<T>(Type genericBase)
+    /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
+    public static Type? AsConcreteType<T>(Type genericBase)
     {
-        return AsConcreteInterface(typeof(T), genericBase);
+        return AsConcreteType(typeof(T), genericBase);
     }
 
     /// <summary>
@@ -71,10 +72,18 @@ public static class TypeDescriber
     ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
     ///     == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
-    public static Type? AsConcreteInterface(Type? child, Type genericBase)
+    public static Type? AsConcreteType(Type? child, Type genericBase)
     {
-        return child
-            ?.GetInterfaces()
+        List<Type> inheritance = child?.GetInterfaces().ToList() ?? [];
+
+        Type? current = child;
+        while (current != null)
+        {
+            inheritance.Add(current);
+            current = current.BaseType;
+        }
+
+        return inheritance
             .Where(i => i.IsGenericType)
             .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
     }

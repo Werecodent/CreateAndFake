@@ -24,12 +24,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>Types to use default equality/hashing.</summary>
     //[ConfigurableOption]
-    public FrozenSet<Type> FallbackTypes { get; init; } = [];
-
-    //typeof(CultureInfo),
-    //typeof(DateTimeFormatInfo),
-    //typeof(NumberFormatInfo),
-    //typeof(CompareInfo)
+    public FrozenSet<Type> DefaultEqualityTypes { get; init; } = [];
 
     /// <summary>How long to wait for async comparisons to complete.</summary>
     [ConfigurableOption]

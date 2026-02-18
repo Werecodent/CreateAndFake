@@ -47,25 +47,19 @@ public enum ComparePriority
     /// <summary>Priority for <see cref="FakedCompareHint"/>.</summary>
     FakedHint = 11,
 
-    /// <summary>Priority for <see cref="FallbackCompareHint"/>.</summary>
-    FallbackHint = 12,
-
-    /// <summary>Priority for <see cref="EarlyFailCompareHint"/>.</summary>
-    EarlyFailHint = 13,
-
-    /// <summary>Priority for <see cref="SyncAsyncEnumerableCompareHint"/>.</summary>
-    SyncAsyncEnumerableHint = 14,
+    /// <summary>Priority for <see cref="DefaultEqualityCompareHint"/>.</summary>
+    EarlyFailHint = 12,
 
     /// <summary>Priority for <see cref="AsyncEnumerableCompareHint"/>.</summary>
-    AsyncEnumerableHint = 15,
+    AsyncEnumerableHint = 13,
 
     /// <summary>Priority for <see cref="TaskCompareHint"/>.</summary>
-    TaskHint = 16,
+    TaskHint = 14,
 
     /// <summary>Priority for <see cref="HandlerCompareHint"/>.</summary>
-    HandlerHint = 17,
+    HandlerHint = 15,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 18,
+    Highest = 16,
 }

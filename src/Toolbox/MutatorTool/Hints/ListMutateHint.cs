@@ -27,7 +27,7 @@ public sealed class ListMutateHint : MutateHint<IList>
 
         Type itemType =
             TypeDescriber
-                .AsConcreteInterface(instance.GetType(), typeof(IEnumerable<>))
+                .AsConcreteType(instance.GetType(), typeof(IEnumerable<>))
                 ?.GetGenericArguments()[0]
             ?? instance.Cast<object>().Select(d => d?.GetType()).FirstOrDefault(t => t != null)
             ?? typeof(string);

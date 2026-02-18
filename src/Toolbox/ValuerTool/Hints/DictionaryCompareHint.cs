@@ -23,13 +23,16 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        object[] expectedKeys = [.. expected.Keys.Cast<object>()];
-        object[] actualKeys = [.. actual.Keys.Cast<object>()];
+        Dictionary<object, object> expectedKeys = expected
+            .Keys.Cast<object>()
+            .ToDictionary(e => e, e => e, chainer);
+        Dictionary<object, object> actualKeys = actual
+            .Keys.Cast<object>()
+            .ToDictionary(e => e, e => e, chainer);
 
-        foreach (object key in expectedKeys)
+        foreach (object key in expectedKeys.Keys)
         {
-            object? match = actualKeys.FirstOrDefault(k => chainer.Equals(key, k));
-            if (match != null)
+            if (actualKeys.TryGetValue(key, out object? match))
             {
                 foreach (Difference diff in chainer.Compare(expected[key], actual[match]))
                 {
@@ -40,94 +43,96 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
-                    new Difference(expected[key], "'null'")
+                    new Difference(expected[key], "'missing'")
                 );
             }
         }
 
-        foreach (object key in actualKeys)
+        foreach (object key in actualKeys.Keys)
         {
-            if (!expectedKeys.Any(k => chainer.Equals(key, k)))
+            if (!expectedKeys.ContainsKey(key))
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
-                    new Difference("'null'", actual[key])
+                    new Difference("'missing'", actual[key])
                 );
             }
         }
     }
 
     /// <inheritdoc/>
-    protected override async IAsyncEnumerable<Difference> CompareAsync(
+    protected override IAsyncEnumerable<Difference> CompareAsync(
         IDictionary expected,
         IDictionary actual,
         IValuerChainer chainer,
-        [EnumeratorCancellation] CancellationToken canceler
+        CancellationToken canceler
     )
     {
+        return HandleCompareAsync(expected, actual, chainer, canceler);
+    }
+
+    /// <inheritdoc cref="CompareAsync"/>
+    private static async IAsyncEnumerable<Difference> HandleCompareAsync(
+        IDictionary expected,
+        IDictionary actual,
+        IValuerChainer chainer,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        canceler.ThrowIfCancellationRequested();
         if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
         {
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        object[] expectedKeys = [.. expected.Keys.Cast<object>()];
-        object[] actualKeys = [.. actual.Keys.Cast<object>()];
+        Dictionary<object, object> expectedKeys = expected
+            .Keys.Cast<object>()
+            .ToDictionary(e => e, e => e, chainer);
+        Dictionary<object, object> actualKeys = actual
+            .Keys.Cast<object>()
+            .ToDictionary(e => e, e => e, chainer);
 
-        foreach (object key in expectedKeys)
+        foreach (object key in expectedKeys.Keys)
         {
-            object? match = null;
-            foreach (object potentialMatch in actualKeys)
-            {
-                if (await chainer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
-                {
-                    match = potentialMatch;
-                    break;
-                }
-            }
-
-            if (match != null)
+            if (actualKeys.TryGetValue(key, out object? match))
             {
                 await foreach (
                     Difference diff in chainer
                         .CompareAsync(expected[key], actual[match], canceler)
-                        .WithCancellation(canceler)
                         .ConfigureAwait(false)
                 )
                 {
                     yield return new Difference($"[{TryDescribe(key)}]", diff);
+                    canceler.ThrowIfCancellationRequested();
                 }
             }
             else
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
-                    new Difference(expected[key], "'null'")
+                    new Difference(expected[key], "'missing'")
                 );
             }
         }
 
-        foreach (object key in actualKeys)
+        foreach (object key in actualKeys.Keys)
         {
-            object? match = null;
-            foreach (object potentialMatch in expectedKeys)
-            {
-                if (await chainer.EqualsAsync(key, potentialMatch, canceler).ConfigureAwait(false))
-                {
-                    match = potentialMatch;
-                    break;
-                }
-            }
-
-            if (match == null)
+            if (!expectedKeys.ContainsKey(key))
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
-                    new Difference("'null'", actual[key])
+                    new Difference("'missing'", actual[key])
                 );
             }
         }
     }
 
+    /// <summary>Expands the <paramref name="item"/>'s name if it's a <see cref="Type"/>.</summary>
+    /// <param name="item">Potential <see cref="Type"/> to describe.</param>
+    /// <returns>
+    ///     Description of the <paramref name="item"/> if it's a <see cref="Type"/>,
+    ///     the <paramref name="item"/> otherwise.
+    /// </returns>
     private static object TryDescribe(object item)
     {
         return (item is Type type) ? TypeDescriber.ExpandedName(type) : item;
@@ -154,8 +159,12 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         int hash = ValueComparer.BaseHash;
         foreach (DictionaryEntry entry in item)
         {
-            hash += await chainer.GetHashCodeAsync(entry, canceler).ConfigureAwait(false);
+            canceler.ThrowIfCancellationRequested();
+            hash += chainer.GetHashCode(entry.Key);
+            hash += await chainer.GetHashCodeAsync(entry.Value, canceler).ConfigureAwait(false);
         }
+
+        canceler.ThrowIfCancellationRequested();
         return hash;
     }
 }

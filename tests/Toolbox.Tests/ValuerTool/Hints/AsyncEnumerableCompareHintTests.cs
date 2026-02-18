@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Hints;
 
 namespace CreateAndFake.Tests.ValuerTool.Hints;
@@ -36,5 +38,45 @@ public sealed class AsyncEnumerableCompareHintTests
         TestInstance
             .Assert(hint => hint.TryGetHashCode(data, CreateChainer()))
             .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal async Task TryCompare_NoDifferencesWhenEqual(IAsyncEnumerable<string> data)
+    {
+        IEnumerable<string> data2 = await AsyncEnumHelper.ToListAsync(
+            data,
+            TestContext.Current.CancellationToken
+        );
+
+        DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+            data2,
+            data,
+            CreateChainer(),
+            TestContext.Current.CancellationToken
+        );
+
+        result.HasData.Assert().Is(true);
+        (await AsyncEnumHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+            .Assert()
+            .IsEmpty();
+    }
+
+    [Theory, RandomData]
+    internal async Task TryCompare_FindsDifferences(
+        IAsyncEnumerable<string> data,
+        IEnumerable<string> data2
+    )
+    {
+        DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+            data,
+            data2,
+            CreateChainer(),
+            TestContext.Current.CancellationToken
+        );
+
+        result.HasData.Assert().Is(true);
+        (await AsyncEnumHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+            .Assert()
+            .IsNotEmpty();
     }
 }

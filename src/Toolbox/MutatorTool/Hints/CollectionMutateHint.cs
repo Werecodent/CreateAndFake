@@ -32,7 +32,7 @@ public sealed class CollectionMutateHint : MutateHint
             _Modifier
                 .MakeGenericMethod(
                     TypeDescriber
-                        .FindConcreteInterface(instance.GetType(), typeof(ICollection<>))
+                        .FindConcreteType(instance.GetType(), typeof(ICollection<>))
                         .GetGenericArguments()
                 )
                 .Invoke(null, [instance, chainer])!;

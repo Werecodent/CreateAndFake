@@ -1,37 +1,29 @@
 ﻿using System.Collections;
-using System.Collections.Frozen;
 using CreateAndFake.Design.Content;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles basic <see cref="Type"/> compare issues for <see cref="IValuer"/>.</summary>
-public sealed class EarlyFailCompareHint : CompareHint
+public sealed class DefaultEqualityCompareHint : CompareHint
 {
-    /// <summary>Specific types to control via this hint.</summary>
-    private static readonly FrozenSet<Type> _SupportedTypes = FrozenSet.ToFrozenSet([
-        typeof(object),
-    ]);
-
     /// <inheritdoc/>
     public override int EnginePriority => (int)ComparePriority.EarlyFailHint;
 
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
-        return Supports(expected.GetType(), actual.GetType()) || expected is Delegate;
-    }
-
-    /// <inheritdoc cref="CompareHint.Supports"/>
-    private static bool Supports(Type expected, Type actual)
-    {
+        Type expectedType = expected.GetType();
+        Type actualType = actual.GetType();
         return (
-                expected != actual
-                && !(expected.Inherits<IEnumerable>() && actual.Inherits<IEnumerable>())
+                expectedType != actualType
+                && !(expectedType.Inherits<IEnumerable>() && actualType.Inherits<IEnumerable>())
             )
-            || expected.IsPrimitive
-            || expected.IsEnum
-            || _SupportedTypes.Contains(expected);
+            || expectedType.IsPrimitive
+            || expectedType.IsEnum
+            || chainer.Options.DefaultEqualityTypes.Contains(expectedType)
+            || expected is Delegate
+            || expectedType == typeof(object);
     }
 
     /// <inheritdoc/>

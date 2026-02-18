@@ -186,6 +186,7 @@ public abstract class CompareHintTestBase<T>(
     [Fact]
     public async Task TryGetHashCode_SupportsSameValidTypes()
     {
+        CancellationToken ct = TestContext.Current.CancellationToken;
         foreach (Type type in _validTypes)
         {
             object data = null,
@@ -195,24 +196,28 @@ public abstract class CompareHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 dataCopy = Tools.Duplicator.Copy(data);
 
-                HashCodeHintResult dataHash = TestInstance.TryGetHashCode(data, CreateChainer());
+                HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
+                    data,
+                    CreateChainer(),
+                    ct
+                );
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
                 await TestInstance
-                    .TryGetHashCode(data, CreateChainer())
+                    .TryAsyncGetHashCode(data, CreateChainer(), ct)
                     .Assert()
                     .IsAsync(
                         dataHash,
-                        TestContext.Current.CancellationToken,
+                        ct,
                         $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'."
                     );
                 await TestInstance
-                    .TryGetHashCode(dataCopy, CreateChainer())
+                    .TryAsyncGetHashCode(dataCopy, CreateChainer(), ct)
                     .Assert()
                     .IsAsync(
                         dataHash,
-                        TestContext.Current.CancellationToken,
+                        ct,
                         $"Hint '{typeof(T).Name}' generated different hash for dupe '{type.Name}'."
                     );
             }
@@ -227,6 +232,7 @@ public abstract class CompareHintTestBase<T>(
     [Fact]
     public async Task TryGetHashCode_SupportsDifferentValidTypes()
     {
+        CancellationToken ct = TestContext.Current.CancellationToken;
         foreach (Type type in _validTypes)
         {
             object data = null,
@@ -239,21 +245,17 @@ public abstract class CompareHintTestBase<T>(
                 HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
                     data,
                     CreateChainer(),
-                    TestContext.Current.CancellationToken
+                    ct
                 );
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
                 await TestInstance
-                    .TryAsyncGetHashCode(
-                        dataDiffer,
-                        CreateChainer(),
-                        TestContext.Current.CancellationToken
-                    )
+                    .TryAsyncGetHashCode(dataDiffer, CreateChainer(), ct)
                     .Assert()
                     .IsNotAsync(
                         dataHash,
-                        TestContext.Current.CancellationToken,
+                        ct,
                         $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
                     );
             }
