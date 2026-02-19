@@ -88,10 +88,10 @@ internal static class GenericFixer
         if (!isValidArg())
         {
             _ = Limiter.Few.Retry(
-                $"Creating generic arguments of type '{type}' for '{source}' [Retry]",
+                $"Creating generic arguments of type '{TypeDescriber.ExpandedName(type)}' for '{source}' [Retry]",
                 () =>
                     Limiter.Few.StallUntil(
-                        $"Trying arguments of type '{type}' for '{source}' [Stall]",
+                        $"Trying arguments of type '{TypeDescriber.ExpandedName(type)}' for '{source}' [Stall]",
                         () => arg = CreateArgViaConstraint(constraints, options),
                         isValidArg
                     )

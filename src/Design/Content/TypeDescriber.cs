@@ -85,6 +85,7 @@ public static class TypeDescriber
 
         return inheritance
             .Where(i => i.IsGenericType)
+            .Where(i => !i.IsGenericTypeDefinition)
             .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
     }
 

@@ -48,7 +48,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateVariantAttemptLimit.StallUntil(
-                    $"Create variant of type '{type}'",
+                    $"Create variant of type '{TypeDescriber.ExpandedName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isVariantCheck
                 )
@@ -96,7 +96,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateUniqueAttemptLimit.StallUntil(
-                    $"Create unique of type '{type}'",
+                    $"Create unique of type '{TypeDescriber.ExpandedName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isUniqueCheck
                 )

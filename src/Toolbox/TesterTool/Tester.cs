@@ -119,7 +119,7 @@ public class Tester(TesterOptions options) : ITester
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)
         {
             throw new SerializationException(
-                $"Ran into problem trying to serialize type '{type}'.",
+                $"Ran into problem trying to serialize type '{TypeDescriber.ExpandedName(type)}'.",
                 e
             );
         }
@@ -127,7 +127,7 @@ public class Tester(TesterOptions options) : ITester
         localOptions.Asserter.Is(
             result,
             instance,
-            $"Instance of type '{type}' did not deserialize with the same values."
+            $"Instance of type '{TypeDescriber.ExpandedName(type)}' did not deserialize with the same values."
         );
     }
 

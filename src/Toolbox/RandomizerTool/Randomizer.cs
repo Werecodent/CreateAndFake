@@ -34,7 +34,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         {
             return localOptions
                 .RandomizerCreateAttempts.StallUntil(
-                    $"Trying to create instance of '{type}'",
+                    $"Trying to create instance of '{TypeDescriber.ExpandedName(type)}'",
                     () =>
                     {
                         // Don't pass local options here.
@@ -109,15 +109,18 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         string message;
         if (error is InsufficientExecutionStackException)
         {
-            message = $"Ran into infinite generation trying to randomize type '{type}'.";
+            message =
+                $"Ran into infinite generation trying to randomize type '{TypeDescriber.ExpandedName(type)}'.";
         }
         else if (error is TimeoutException)
         {
-            message = $"Could not create instance of type '{type}' matching condition.";
+            message =
+                $"Could not create instance of type '{TypeDescriber.ExpandedName(type)}' matching condition.";
         }
         else
         {
-            message = $"Encountered issue creating instance of type '{type}'.";
+            message =
+                $"Encountered issue creating instance of type '{TypeDescriber.ExpandedName(type)}'.";
         }
         return new ToolException(message, error);
     }

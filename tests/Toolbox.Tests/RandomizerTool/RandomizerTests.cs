@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
@@ -122,7 +123,7 @@ public static class RandomizerTests
             .Assert(r => r.Create(type))
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(type.Name);
+            .Contains(TypeDescriber.ExpandedName(type));
     }
 
     [Fact]

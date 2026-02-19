@@ -3,32 +3,30 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using CreateAndFake.Design;
-using CreateAndFake.RandomizerTool.Engine;
-#if LEGACY // Constructor missing in .NET full.
 using CreateAndFake.Design.Content;
-#endif
+using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing collections for <see cref="IRandomizer"/>.</summary>
 public sealed class CollectionCreateHint : CreateHint
 {
-    /// <inheritdoc/>
-    public override int EnginePriority => (int)CreatePriority.CollectionHint;
-
     /// <summary>Collections able to be randomized.</summary>
     private static readonly ImmutableArray<Type> _Collections =
     [
         typeof(List<>),
-        typeof(Dictionary<,>),
         typeof(Queue<>),
         typeof(Stack<>),
         typeof(HashSet<>),
         typeof(LinkedList<>),
+        typeof(Dictionary<,>),
         typeof(ConcurrentQueue<>),
         typeof(ConcurrentStack<>),
         typeof(ConcurrentDictionary<,>),
     ];
+
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)CreatePriority.CollectionHint;
 
     /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => PotentialCollections;
@@ -46,42 +44,39 @@ public sealed class CollectionCreateHint : CreateHint
             return CreateHintResult.None;
         }
 
-        return randomizer.Options.CollectionAttempts.Retry(
-            $"Generating '{type}' collection.",
-            () =>
-            {
-                int size = randomizer.Options.NextCollectionSize();
+        Type? itemType = TypeDescriber
+            .AsConcreteType(type, typeof(IEnumerable<>))
+            ?.GetGenericArguments()[0];
 
-                Type? itemType = GetItemType(type);
-                if (itemType != null && FindMatches(type, itemType).Any())
-                {
-                    return new(Create(type, size, itemType, randomizer));
-                }
-                else
-                {
-                    return CreateHintResult.None;
-                }
-            }
-        );
+        if (itemType != null && FindMatches(type, itemType).Any())
+        {
+            return randomizer.Options.CollectionAttempts.Retry(
+                $"Generating '{TypeDescriber.ExpandedName(type)}' collection.",
+                () => new CreateHintResult(Create(type, itemType, randomizer))
+            );
+        }
+        else
+        {
+            return CreateHintResult.None;
+        }
     }
 
-    /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, int size, Type itemType, IRandomizerChainer randomizer)
+    private static object? Create(Type type, Type itemType, IRandomizerChainer randomizer)
     {
+        Array internalData = CreateInternalData(itemType, randomizer);
+
         Type collection = randomizer.Options.Gen.NextItem(FindMatches(type, itemType));
         Type newType = MakeNewType(collection, itemType);
-
-        Array internalData = CreateInternalData(itemType, size, t => randomizer.Create(t));
 
         if (newType == typeof(Array) || newType == internalData.GetType())
         {
             return internalData;
         }
-#if LEGACY // Constructor missing in .NET full.
-        else if (TypeDescriber.AsGenericBase(newType) == typeof(Dictionary<,>))
+#if LEGACY // Constructor missing in .NET 4.8.
+        else if (collection == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(newType);
             foreach (dynamic item in internalData)
@@ -97,35 +92,6 @@ public sealed class CollectionCreateHint : CreateHint
         }
     }
 
-    /// <summary>Finds the <see cref="Type"/> to be contained by a created collection.</summary>
-    /// <param name="type">Collection <see cref="Type"/> being created..</param>
-    /// <returns><see langword="null"/> if not logical; <see cref="Type"/> for the collection otherwise.</returns>
-    private static Type? GetItemType(Type type)
-    {
-        Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
-
-        if (type.IsArray)
-        {
-            return type.GetElementType();
-        }
-        else if (type.IsGenericTypeDefinition)
-        {
-            return null;
-        }
-        else if (args.Length == 1)
-        {
-            return args[0];
-        }
-        else if (args.Length == 2)
-        {
-            return typeof(KeyValuePair<,>).MakeGenericType(args[0], args[1]);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     /// <summary>Finds potential collection matches for <paramref name="type"/>.</summary>
     /// <param name="type"><see cref="Type"/> to find matches for.</param>
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
@@ -136,14 +102,14 @@ public sealed class CollectionCreateHint : CreateHint
 
         if (
             type.IsArray
+            || type.IsInheritedBy<IList>()
             || typeAsGeneric.IsInheritedBy(typeof(IList<>))
-            || typeAsGeneric.IsInheritedBy<IList>()
         )
         {
             yield return typeof(Array);
         }
 
-        foreach (Type match in _Collections.Where(typeAsGeneric.IsInheritedBy))
+        foreach (Type match in PotentialCollections.Where(typeAsGeneric.IsInheritedBy))
         {
             if (!match.Inherits<IDictionary>() || itemType.Inherits(typeof(KeyValuePair<,>)))
             {
@@ -154,15 +120,14 @@ public sealed class CollectionCreateHint : CreateHint
 
     /// <summary>Creates basic structures for <paramref name="itemType"/>.</summary>
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
-    /// <param name="size">Number of <paramref name="itemType"/> items to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Data populated with random values.</returns>
-    private static Array CreateInternalData(Type itemType, int size, Func<Type, object?> randomizer)
+    private static Array CreateInternalData(Type itemType, IRandomizerChainer randomizer)
     {
-        Array data = Array.CreateInstance(itemType, size);
+        Array data = Array.CreateInstance(itemType, randomizer.Options.NextCollectionSize());
         for (int i = 0; i < data.Length; i++)
         {
-            data.SetValue(randomizer.Invoke(itemType), i);
+            data.SetValue(randomizer.Create(itemType), i);
         }
         return data;
     }

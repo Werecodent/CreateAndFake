@@ -35,7 +35,7 @@ public sealed class ObjectCreateHint : CreateHint
             (type == null)
                 ? null
                 : randomizer.Options.ObjectCreateAttempts.Attempt(
-                    $"Create object of type '{type}'",
+                    $"Create object of type '{TypeDescriber.ExpandedName(type)}'",
                     () => Create(FindTypeToCreate(type, randomizer), type, randomizer)
                 );
 

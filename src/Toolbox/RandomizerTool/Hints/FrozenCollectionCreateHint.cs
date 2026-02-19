@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
@@ -11,18 +10,6 @@ public sealed class FrozenCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.FrozenCollectionHint;
-
-    /// <summary>Constructs frozen sets.</summary>
-    private static readonly MethodInfo _SetMaker = typeof(FrozenSet).GetMethod(
-        nameof(FrozenSet.ToFrozenSet),
-        BindingFlags.Public | BindingFlags.Static
-    )!;
-
-    /// <summary>Constructs frozen dictionaries.</summary>
-    private static readonly MethodInfo _DictionaryMaker = typeof(FrozenDictionary)
-        .GetMethods(BindingFlags.Public | BindingFlags.Static)
-        .Where(m => m.Name == nameof(FrozenDictionary.ToFrozenDictionary))
-        .Single(m => m.GetParameters().Length == 2);
 
     /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes =>
@@ -37,37 +24,26 @@ public sealed class FrozenCollectionCreateHint : CreateHint
         if (asGeneric == typeof(FrozenSet<>))
         {
             return new(
-                _SetMaker
-                    .MakeGenericMethod(type.GetGenericArguments())
-                    .Invoke(
-                        null,
-                        [
-                            randomizer.Create(
-                                typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments()),
-                                _ => randomizer.Options
-                            ),
-                            null,
-                        ]
-                    )
+                FrozenSet.ToFrozenSet(
+                    (dynamic)
+                        randomizer.Create(
+                            typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments()),
+                            _ => randomizer.Options
+                        )
+                )
             );
         }
         else if (asGeneric == typeof(FrozenDictionary<,>))
         {
             Type itemType = typeof(KeyValuePair<,>).MakeGenericType(type.GetGenericArguments());
-
             return new(
-                _DictionaryMaker
-                    .MakeGenericMethod(type.GetGenericArguments())
-                    .Invoke(
-                        null,
-                        [
-                            randomizer.Create(
-                                typeof(IEnumerable<>).MakeGenericType(itemType),
-                                _ => randomizer.Options
-                            ),
-                            null,
-                        ]
-                    )
+                FrozenDictionary.ToFrozenDictionary(
+                    (dynamic)
+                        randomizer.Create(
+                            typeof(IEnumerable<>).MakeGenericType(itemType),
+                            _ => randomizer.Options
+                        )
+                )
             );
         }
         else

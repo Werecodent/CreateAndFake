@@ -18,6 +18,7 @@ public sealed class DelegateCreateHint : CreateHint
     /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes =>
         [
+            typeof(Delegate),
             typeof(Action),
             typeof(Action<>),
             typeof(Action<,>),
@@ -55,7 +56,7 @@ public sealed class DelegateCreateHint : CreateHint
         ];
 
     /// <summary>Methods used to match delegates.</summary>
-    private static readonly ImmutableArray<MethodInfo> _Delegators =
+    private static readonly ImmutableArray<MethodInfo> _DelegatorMethods =
     [
         .. typeof(Delegator)
             .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
@@ -90,7 +91,7 @@ public sealed class DelegateCreateHint : CreateHint
         MethodInfo info = type.GetMethod("Invoke")!;
         bool hasReturn = info.ReturnType != typeof(void);
 
-        MethodInfo match = _Delegators
+        MethodInfo match = _DelegatorMethods
             .Where(m => m.GetParameters().Length == info.GetParameters().Length)
             .Single(m => m.ReturnType != typeof(void) == hasReturn);
 

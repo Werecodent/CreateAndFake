@@ -59,6 +59,12 @@ public static class TypeDescriberTests
     }
 
     [Fact]
+    internal static void AsConcreteType_ExcludesGenericTypeDefinitions()
+    {
+        TypeDescriber.AsConcreteType(typeof(IList<>), typeof(IList<>)).Assert().IsNull();
+    }
+
+    [Fact]
     internal static void AsGenericBase_ConvertsGenerics()
     {
         TypeDescriber.AsGenericBase(typeof(List<int>)).Assert().Is(typeof(List<>));

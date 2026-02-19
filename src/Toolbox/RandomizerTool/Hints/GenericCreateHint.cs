@@ -91,10 +91,10 @@ public sealed class GenericCreateHint : CreateHint
         if (!isValidArg())
         {
             _ = Limiter.Few.Retry(
-                $"Creating generic arguments of type '{type}' for type '{parent}' [Retry]",
+                $"Creating generic arguments of type '{TypeDescriber.ExpandedName(type)}' for type '{TypeDescriber.ExpandedName(type)}' [Retry]",
                 () =>
                     Limiter.Few.StallUntil(
-                        $"Trying arguments of type '{type}' for type '{parent}' [Stall]",
+                        $"Trying arguments of type '{TypeDescriber.ExpandedName(type)}' for type '{TypeDescriber.ExpandedName(type)}' [Stall]",
                         () => arg = CreateArgViaConstraint(constraints, parent, randomizer),
                         isValidArg
                     )
