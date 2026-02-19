@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
@@ -44,7 +45,11 @@ public sealed class ObjectMutateHint : MutateHint
                     .GetAllProperties(type, true)
                     .Where(p => p.CanWrite && p.CanRead)
                     .Where(p => p.GetGetMethod() != null)
-                    .Where(p => p.GetSetMethod() != null)
+                    .Where(p =>
+                        p.GetSetMethod()
+                            ?.ReturnParameter.GetRequiredCustomModifiers()
+                            .Contains(typeof(IsExternalInit)) == false
+                    )
             )
         )
         {

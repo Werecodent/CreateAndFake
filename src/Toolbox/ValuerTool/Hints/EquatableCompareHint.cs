@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ValuerTool.Engine;
+﻿using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
 
@@ -14,8 +12,6 @@ public sealed class EquatableCompareHint : CompareHint
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return chainer.Options.UseEquatableComparisons
-            && expected is not IStructuralEquatable
-            && expected is not IToolOptions
             && expected
                 .GetType()
                 .Inherits(typeof(IEquatable<>).MakeGenericType(expected.GetType()));

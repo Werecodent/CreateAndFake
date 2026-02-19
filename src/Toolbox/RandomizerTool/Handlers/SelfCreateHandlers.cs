@@ -98,6 +98,7 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(28, 32),
+                IterationLimit = rand.Options.Gen.Next(900, 960),
                 AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 50), new TimeSpan(0, 1, 0)),
             }
         ),

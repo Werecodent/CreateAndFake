@@ -45,8 +45,7 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
             Gen,
             IncludeFrameworkHints,
             IncludeFoundHints,
-            MaxHintRecursion,
-            Hints
+            MaxHintRecursion
         );
     }
 }

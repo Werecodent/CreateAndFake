@@ -17,6 +17,7 @@ public sealed class HandlerCopyHint : CopyHint
     private static readonly IDictionary<Type, ICopyHandler> _CopiersByType =
         TypeSupporter.GroupBySupportedType(
             _Copiers
+                .Concat(SelfCopyHandlers.Handlers)
                 .Concat(SystemCopyHandlers.Handlers)
                 .Concat(ReflectionCopyHandlers.Handlers)
                 .Concat(LegacyCollectionCopyHandlers.Handlers)

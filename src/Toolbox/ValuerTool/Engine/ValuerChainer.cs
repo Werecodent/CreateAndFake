@@ -54,47 +54,33 @@ public sealed class ValuerChainer
         ValuerMod? optionConfiguration = null
     )
     {
-        RuntimeHelpers.EnsureSufficientExecutionStack();
-        if (CanTrack(expected) && CanTrack(actual))
-        {
-            (int, int) refHash = (
-                RuntimeHelpers.GetHashCode(expected),
-                RuntimeHelpers.GetHashCode(actual)
-            );
+        (int, int)? refHash =
+            (CanTrack(expected) && CanTrack(actual))
+                ? (RuntimeHelpers.GetHashCode(expected), RuntimeHelpers.GetHashCode(actual))
+                : null;
 
-            if (_compareHistory.Add(refHash))
+        if (refHash == null || _compareHistory.Add(refHash.Value))
+        {
+            try
             {
-                try
-                {
-                    // Yield return is required here to prevent infinite loops.
-                    foreach (
-                        Difference diff in Engine.Compare(
-                            expected,
-                            actual,
-                            GetSubChainer(optionConfiguration)
-                        )
+                // Yield return is required here to prevent infinite loops.
+                foreach (
+                    Difference diff in Engine.Compare(
+                        expected,
+                        actual,
+                        GetSubChainer(optionConfiguration)
                     )
-                    {
-                        yield return diff;
-                    }
-                }
-                finally
+                )
                 {
-                    _ = _compareHistory.Remove(refHash);
+                    yield return diff;
                 }
             }
-        }
-        else
-        {
-            foreach (
-                Difference diff in Engine.Compare(
-                    expected,
-                    actual,
-                    GetSubChainer(optionConfiguration)
-                )
-            )
+            finally
             {
-                yield return diff;
+                if (refHash != null)
+                {
+                    _ = _compareHistory.Remove(refHash.Value);
+                }
             }
         }
     }
@@ -118,48 +104,36 @@ public sealed class ValuerChainer
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        RuntimeHelpers.EnsureSufficientExecutionStack();
-        if (CanTrack(expected) && CanTrack(actual))
-        {
-            (int, int) refHash = (
-                RuntimeHelpers.GetHashCode(expected),
-                RuntimeHelpers.GetHashCode(actual)
-            );
+        (int, int)? refHash =
+            (CanTrack(expected) && CanTrack(actual))
+                ? (RuntimeHelpers.GetHashCode(expected), RuntimeHelpers.GetHashCode(actual))
+                : null;
 
-            if (_compareHistory.Add(refHash))
+        if (refHash == null || _compareHistory.Add(refHash.Value))
+        {
+            try
             {
-                try
+                // Await & yield return is required here to prevent infinite loops.
+                await foreach (
+                    Difference diff in Engine
+                        .CompareAsync(
+                            expected,
+                            actual,
+                            GetSubChainer(optionConfiguration),
+                            canceler
+                        )
+                        .ConfigureAwait(false)
+                )
                 {
-                    // Await & yield return is required here to prevent infinite loops.
-                    await foreach (
-                        Difference diff in Engine
-                            .CompareAsync(
-                                expected,
-                                actual,
-                                GetSubChainer(optionConfiguration),
-                                canceler
-                            )
-                            .ConfigureAwait(false)
-                    )
-                    {
-                        yield return diff;
-                    }
-                }
-                finally
-                {
-                    _ = _compareHistory.Remove(refHash);
+                    yield return diff;
                 }
             }
-        }
-        else
-        {
-            await foreach (
-                Difference diff in Engine
-                    .CompareAsync(expected, actual, GetSubChainer(optionConfiguration), canceler)
-                    .ConfigureAwait(false)
-            )
+            finally
             {
-                yield return diff;
+                if (refHash != null)
+                {
+                    _ = _compareHistory.Remove(refHash.Value);
+                }
             }
         }
     }
@@ -173,7 +147,6 @@ public sealed class ValuerChainer
     /// <inheritdoc/>
     public int GetHashCode(object? item, ValuerMod? optionConfiguration)
     {
-        RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
             return Engine.GetHashCode(item, GetSubChainer(optionConfiguration));
@@ -203,7 +176,6 @@ public sealed class ValuerChainer
         ValuerMod? optionConfiguration = null
     )
     {
-        RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(item))
         {
             return await Engine

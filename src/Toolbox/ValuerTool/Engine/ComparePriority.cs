@@ -38,28 +38,31 @@ public enum ComparePriority
     /// <summary>Priority for <see cref="ValueEquatableCompareHint"/>.</summary>
     ValueEquatableHint = 8,
 
+    /// <summary>Priority for <see cref="StructuralEquatableHint"/>.</summary>
+    StructuralEquatableHint = 9,
+
     /// <summary>Priority for <see cref="EnumerableCompareHint"/>.</summary>
-    EnumerableHint = 9,
+    EnumerableHint = 10,
 
     /// <summary>Priority for <see cref="DictionaryCompareHint"/>.</summary>
-    DictionaryHint = 10,
+    DictionaryHint = 11,
 
     /// <summary>Priority for <see cref="FakedCompareHint"/>.</summary>
-    FakedHint = 11,
+    FakedHint = 12,
 
     /// <summary>Priority for <see cref="DefaultEqualityCompareHint"/>.</summary>
-    DefaultEqualityHint = 12,
+    DefaultEqualityHint = 13,
 
     /// <summary>Priority for <see cref="AsyncEnumerableCompareHint"/>.</summary>
-    AsyncEnumerableHint = 13,
+    AsyncEnumerableHint = 14,
 
     /// <summary>Priority for <see cref="TaskCompareHint"/>.</summary>
-    TaskHint = 14,
+    TaskHint = 15,
 
     /// <summary>Priority for <see cref="HandlerCompareHint"/>.</summary>
-    HandlerHint = 15,
+    HandlerHint = 16,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 16,
+    Highest = 17,
 }

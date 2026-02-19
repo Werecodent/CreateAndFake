@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -41,7 +42,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             actualEnumerator = actual.GetEnumerator();
             int index = 0;
 
-            while (expectedEnumerator.MoveNext())
+            while (expectedEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
             {
                 if (actualEnumerator.MoveNext())
                 {
@@ -64,11 +65,21 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 }
                 index++;
             }
-            while (actualEnumerator.MoveNext())
+            while (actualEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
             {
                 yield return new Difference(
                     index++,
                     new Difference("'out of range'", actualEnumerator.Current)
+                );
+            }
+
+            if (index >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"""
+                    Reached {nameof(IEnumerable)} max iteration limit 
+                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
+                    """
                 );
             }
         }
@@ -99,7 +110,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             actualEnumerator = actual.GetEnumerator();
             int index = 0;
 
-            while (expectedEnumerator.MoveNext())
+            while (expectedEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
             {
                 if (actualEnumerator.MoveNext())
                 {
@@ -125,11 +136,21 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 }
                 index++;
             }
-            while (actualEnumerator.MoveNext())
+            while (actualEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
             {
                 yield return new Difference(
                     index++,
                     new Difference("'out of range'", actualEnumerator.Current)
+                );
+            }
+
+            if (index >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"""
+                    Reached {nameof(IEnumerable)} max iteration limit 
+                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
+                    """
                 );
             }
         }
@@ -142,9 +163,20 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
     /// <inheritdoc/>
     protected override int GetHashCode(IEnumerable item, IValuerChainer chainer)
     {
+        int index = 0;
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
+            if (index++ >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"""
+                    Reached {nameof(IEnumerable)} max iteration limit 
+                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
+                    """
+                );
+            }
+
             hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(value);
         }
         return hash;
@@ -157,9 +189,20 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         CancellationToken canceler
     )
     {
+        int index = 0;
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
+            if (index++ >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"""
+                    Reached {nameof(IEnumerable)} max iteration limit 
+                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
+                    """
+                );
+            }
+
             hash =
                 hash * ValueComparer.HashMultiplier
                 + await chainer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);

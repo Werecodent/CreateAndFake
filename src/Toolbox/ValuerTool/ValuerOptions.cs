@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Frozen;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
@@ -33,6 +34,10 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
     /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
     [ConfigurableOption]
     public bool SkipAsyncValues { get; init; } = false;
+
+    /// <summary>Cap to iterating <see cref="IEnumerable"/>s.</summary>
+    [ConfigurableOption]
+    public int IterationLimit { get; init; } = 5000;
 
     /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
     [ConfigurableOption]
@@ -73,6 +78,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
                 IgnoreCurrentRandomSeed
             ),
             AsyncTimeout = section.GetValue(nameof(AsyncTimeout), AsyncTimeout),
+            IterationLimit = section.GetValue(nameof(IterationLimit), IterationLimit),
             SkipAsyncValues = section.GetValue(nameof(SkipAsyncValues), SkipAsyncValues),
             IncludeValueHashInComparison = section.GetValue(
                 nameof(IncludeValueHashInComparison),

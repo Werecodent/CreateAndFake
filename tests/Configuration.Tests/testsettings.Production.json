@@ -78,7 +78,8 @@
             "IgnoreCurrentRandomSeed": false,
             "AsyncTimeout": "00:00:33",
             "SkipAsyncValues": true,
-            "IncludeValueHashInComparison": false
+            "IncludeValueHashInComparison": false,
+            "IterationLimit": 876
         }
     }
 }
