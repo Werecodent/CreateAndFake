@@ -1,6 +1,12 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories.
 root = true
 
+[*]
+end_of_line = lf
+
+[*.{cmd,bat}]
+end_of_line = crlf
+
 [*.cs]
 guidelines = 100
 max_line_length = 100
