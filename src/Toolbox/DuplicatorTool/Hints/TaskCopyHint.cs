@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
@@ -7,6 +8,11 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 /// <summary>Handles cloning <see cref="Task"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class TaskCopyHint : CopyHint
 {
+    private static readonly MethodInfo _GenericCloner = typeof(TaskCopyHint).GetMethod(
+        nameof(WrapTask),
+        BindingFlags.NonPublic | BindingFlags.Static
+    )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)CopyPriority.TaskHint;
 
@@ -18,18 +24,19 @@ public sealed class TaskCopyHint : CopyHint
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 
-        if (source == Task.CompletedTask)
+        if (source is Task task)
         {
-            return new(Task.CompletedTask);
-        }
-        else if (source is Task task)
-        {
-            if (task.GetType().IsGenericType)
+            Type? asGeneric = TypeDescriber.AsConcreteType(source.GetType(), typeof(Task<>));
+            if (
+                asGeneric
+                    ?.GetGenericArguments()
+                    .Single()
+                    .Name.Contains("VoidTaskResult", StringComparison.Ordinal) == false
+            )
             {
                 return new(
-                    typeof(TaskCopyHint)
-                        .GetMethod(nameof(WrapTask), BindingFlags.NonPublic | BindingFlags.Static)!
-                        .MakeGenericMethod(task.GetType().GetGenericArguments())
+                    _GenericCloner
+                        .MakeGenericMethod(asGeneric.GetGenericArguments())
                         .Invoke(null, [task, duplicator])
                 );
             }
@@ -66,9 +73,8 @@ public sealed class TaskCopyHint : CopyHint
 
 #pragma warning disable CA1849, MA0042, VSTHRD103 // Completion verified.
 
-    private static Task<T> WrapTask<T>(Task rawTask, IDuplicatorChainer duplicator)
+    private static Task<T> WrapTask<T>(Task<T> task, IDuplicatorChainer duplicator)
     {
-        Task<T> task = (Task<T>)rawTask;
         if (task.IsCanceled)
         {
             return Task.FromCanceled<T>(new CancellationToken(true));

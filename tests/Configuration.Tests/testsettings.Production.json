@@ -8,6 +8,7 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxHintRecursion": 9,
+            "IterationCopyLimit": 876,
             "VerifyCloneResult": false
         },
         "Extractor": {
@@ -28,6 +29,7 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxHintRecursion": 9,
+            "PreferLocalSubclasses": false,
             "RandomizerCreateAttempts": "Few",
             "ObjectCreateAttempts": "00:01:00",
             "CollectionAttempts": 5,

@@ -14,6 +14,7 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
         typeof(Task<string>),
         typeof(Task<int>),
         typeof(Task<bool>),
+        typeof(TaskCompletionSource<string>),
         typeof(Task),
     ];
 

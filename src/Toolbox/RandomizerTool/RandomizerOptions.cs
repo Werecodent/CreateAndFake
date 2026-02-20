@@ -18,6 +18,13 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     [ConfigurableOption]
     public Limiter RandomizerCreateAttempts { get; init; } = Limiter.Score;
 
+    /// <summary>
+    ///     When generating random objects, subclasses from the originating assembly are preferred
+    ///     if  <see langword="true"/>. Otherwise, subclasses from all loaded assemblies are used.
+    /// </summary>
+    [ConfigurableOption]
+    public bool PreferLocalSubclasses { get; init; } = true;
+
     /// <summary>Limits attempts at creating unspecific objects.</summary>
     [ConfigurableOption]
     public Limiter ObjectCreateAttempts { get; init; } = Limiter.Dozen;
@@ -66,12 +73,21 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
 
         return this with
         {
+            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
+            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
+            CollectionAttempts = section.GetValue(nameof(CollectionAttempts), CollectionAttempts),
+            CollectionMinSize = section.GetValue(nameof(CollectionMinSize), CollectionMinSize),
+            CollectionMaxSize = section.GetValue(nameof(CollectionMaxSize), CollectionMaxSize),
+            StringMinSize = section.GetValue(nameof(StringMinSize), StringMinSize),
+            StringMaxSize = section.GetValue(nameof(StringMaxSize), StringMaxSize),
             IncludeFrameworkHints = section.GetValue(
                 nameof(IncludeFrameworkHints),
                 IncludeFrameworkHints
             ),
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
+            PreferLocalSubclasses = section.GetValue(
+                nameof(PreferLocalSubclasses),
+                PreferLocalSubclasses
+            ),
             RandomizerCreateAttempts = section.GetValue(
                 nameof(RandomizerCreateAttempts),
                 RandomizerCreateAttempts
@@ -80,11 +96,6 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
                 nameof(ObjectCreateAttempts),
                 ObjectCreateAttempts
             ),
-            CollectionAttempts = section.GetValue(nameof(CollectionAttempts), CollectionAttempts),
-            CollectionMinSize = section.GetValue(nameof(CollectionMinSize), CollectionMinSize),
-            CollectionMaxSize = section.GetValue(nameof(CollectionMaxSize), CollectionMaxSize),
-            StringMinSize = section.GetValue(nameof(StringMinSize), StringMinSize),
-            StringMaxSize = section.GetValue(nameof(StringMaxSize), StringMaxSize),
             StringCharacterSet = section
                 .GetValue(nameof(StringCharacterSet), string.Join("", StringCharacterSet))
                 .ToCharArray()

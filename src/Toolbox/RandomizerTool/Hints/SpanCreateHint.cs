@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -17,23 +18,17 @@ public sealed class SpanCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        if (type.Inherits(typeof(Span<>)) || type.Inherits(typeof(ReadOnlySpan<>)))
+        Type? asGeneric = TypeDescriber.AsGenericBase(type);
+        if (asGeneric == typeof(Span<>) || asGeneric == typeof(ReadOnlySpan<>))
         {
-            return new(Create(type, randomizer));
+            Type content = type.GetGenericArguments().Single();
+            Type arrayType = Array.CreateInstance(content, 0).GetType();
+
+            return new(randomizer.Create(arrayType));
         }
         else
         {
             return CreateHintResult.None;
         }
-    }
-
-    /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, IRandomizerChainer randomizer)
-    {
-        Type content = type.GetGenericArguments().Single();
-        Type arrayType = Array.CreateInstance(content, 0).GetType();
-
-        return randomizer.Create(arrayType);
     }
 }

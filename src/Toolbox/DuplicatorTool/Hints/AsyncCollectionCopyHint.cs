@@ -1,8 +1,11 @@
-using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
+
+#pragma warning disable MA0079 // Should not cancel the source while canceling the clone.
 
 /// <summary>Handles cloning <see cref="IAsyncEnumerable{T}"/> collections for <see cref="IDuplicator"/> .</summary>
 public sealed class AsyncCollectionCopyHint : CopyHint
@@ -20,12 +23,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
 
         if (source.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {
-            return new(
-                typeof(AsyncCollectionCopyHint)
-                    .GetMethod(nameof(CopyAsync), BindingFlags.Static | BindingFlags.NonPublic)!
-                    .MakeGenericMethod(source.GetType().GetGenericArguments().Single())
-                    .Invoke(null, [source, duplicator])
-            );
+            return new(CopyAsync((dynamic)source, duplicator));
         }
         else
         {
@@ -33,19 +31,30 @@ public sealed class AsyncCollectionCopyHint : CopyHint
         }
     }
 
-    /// <summary>Deep clones <paramref name="source"/>.</summary>
     /// <typeparam name="T">Item type being copied.</typeparam>
-    /// <param name="source">Object to clone.</param>
-    /// <param name="duplicator">Handles callback behavior for child values.</param>
-    /// <returns>Clone of <paramref name="source"/>.</returns>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns>Iteration of cloned <paramref name="source"/> values.</returns>
+    /// <inheritdoc cref="TryCopy"/>
     private static async IAsyncEnumerable<T?> CopyAsync<T>(
         IAsyncEnumerable<T> source,
-        IDuplicatorChainer duplicator
+        IDuplicatorChainer duplicator,
+        [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
+        int index = 0;
         await foreach (T item in source.ConfigureAwait(false))
         {
+            if (index++ >= duplicator.Options.IterationCopyLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
+                        + $"from {nameof(DuplicatorOptions.IterationCopyLimit)}."
+                );
+            }
+            canceler.ThrowIfCancellationRequested();
             yield return duplicator.Copy(item);
         }
     }
 }
+
+#pragma warning restore MA0079

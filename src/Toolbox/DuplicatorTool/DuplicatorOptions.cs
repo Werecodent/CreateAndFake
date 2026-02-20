@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Frozen;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
@@ -19,6 +20,10 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
     /// <summary>If results are verified via the <see cref="Asserter"/>.</summary>
     [ConfigurableOption]
     public bool VerifyCloneResult { get; init; } = true;
+
+    /// <summary>Cap to iterating <see cref="IEnumerable"/>s.</summary>
+    [ConfigurableOption]
+    public int IterationCopyLimit { get; init; } = 5000;
 
     /// <summary>Types that need no further inspection for serialization/deserialization.</summary>
     public FrozenSet<Type> SerializableTypes { get; init; } =
@@ -46,6 +51,7 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
             ),
             IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
             MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
+            IterationCopyLimit = section.GetValue(nameof(IterationCopyLimit), IterationCopyLimit),
             VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
         };
     }

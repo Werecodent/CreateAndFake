@@ -49,8 +49,8 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     {
         for (int i = 0; i < backing.Count; i++)
         {
-            await Task.Delay(0, canceler).ConfigureAwait(false);
             canceler.ThrowIfCancellationRequested();
+            await Task.Delay(0, canceler).ConfigureAwait(false);
             yield return backing[i];
         }
     }

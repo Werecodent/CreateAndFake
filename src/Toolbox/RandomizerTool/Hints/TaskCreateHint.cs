@@ -1,7 +1,10 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
+
+#pragma warning disable CA1859 // False positive due to dynamic.
 
 /// <summary>Handles randomizing <see cref="Task{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class TaskCreateHint : CreateHint
@@ -11,39 +14,29 @@ public sealed class TaskCreateHint : CreateHint
 
     /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes =>
-        [typeof(Task), typeof(TaskCompletionSource<>)];
+        [typeof(Task), typeof(Task<>), typeof(TaskCompletionSource<>)];
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        if (type.Inherits<Task>() || typeof(TaskCompletionSource<>).IsInheritedBy(type))
+        Type? asGeneric = TypeDescriber.AsGenericBase(type);
+
+        if (asGeneric == typeof(Task<>) || asGeneric == typeof(TaskCompletionSource<>))
         {
-            return new(Create(type, randomizer));
+            Type content = type.GetGenericArguments().Single();
+            return new(Task.FromResult((dynamic)randomizer.Create(content)));
+        }
+        else if (type == typeof(Task))
+        {
+            return new(Task.FromResult(randomizer.Create<int>()));
         }
         else
         {
             return CreateHintResult.None;
         }
     }
-
-    /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object? Create(Type type, IRandomizerChainer randomizer)
-    {
-        if (type.IsGenericType)
-        {
-            Type content = type.GetGenericArguments().Single();
-
-            return typeof(Task)
-                .GetMethod(nameof(Task.FromResult))!
-                .MakeGenericMethod(content)
-                .Invoke(null, [randomizer.Create(content)]);
-        }
-        else
-        {
-            return Task.FromResult(randomizer.Create<int>());
-        }
-    }
 }
+
+#pragma warning restore CA1859

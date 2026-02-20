@@ -145,7 +145,10 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         await using (actualEnumerator.ConfigureAwait(false))
         {
             int index = 0;
-            while (await expectedEnumerator.MoveNextAsync().ConfigureAwait(false))
+            while (
+                await expectedEnumerator.MoveNextAsync().ConfigureAwait(false)
+                && index < chainer.Options.IterationLimit
+            )
             {
                 canceler.ThrowIfCancellationRequested();
 
@@ -180,7 +183,10 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
             canceler.ThrowIfCancellationRequested();
 
-            while (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
+            while (
+                await actualEnumerator.MoveNextAsync().ConfigureAwait(false)
+                && index < chainer.Options.IterationLimit
+            )
             {
                 yield return new Difference(
                     index++,
@@ -190,6 +196,14 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             }
 
             canceler.ThrowIfCancellationRequested();
+
+            if (index >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
+                        + $"from {nameof(ValuerOptions.IterationLimit)}."
+                );
+            }
         }
     }
 
@@ -203,9 +217,18 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     {
         canceler.ThrowIfCancellationRequested();
 
+        int index = 0;
         int hash = ValueComparer.BaseHash;
         await foreach (T current in item.WithCancellation(canceler).ConfigureAwait(false))
         {
+            if (index++ >= chainer.Options.IterationLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
+                        + $"from {nameof(ValuerOptions.IterationLimit)}."
+                );
+            }
+
             canceler.ThrowIfCancellationRequested();
             hash =
                 hash * ValueComparer.HashMultiplier

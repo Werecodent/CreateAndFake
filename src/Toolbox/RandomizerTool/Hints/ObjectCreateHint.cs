@@ -241,7 +241,7 @@ public sealed class ObjectCreateHint : CreateHint
         {
             if (!_SubclassCache.TryGetValue(type, out subclasses))
             {
-                subclasses = FindSelfAndSubclasses(type);
+                subclasses = FindSelfAndSubclasses(type, randomizer);
                 _SubclassCache.Add(type, subclasses);
             }
         }
@@ -253,37 +253,35 @@ public sealed class ObjectCreateHint : CreateHint
 
     /// <summary>Finds subclasses of <paramref name="type"/>.</summary>
     /// <param name="type">Parent <see cref="Type"/>.</param>
+    /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found subclasses.</returns>
-    private static ImmutableArray<Type> FindSelfAndSubclasses(Type type)
+    private static ImmutableArray<Type> FindSelfAndSubclasses(
+        Type type,
+        IRandomizerChainer randomizer
+    )
     {
         const BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
 
-        ImmutableArray<Type> subclasses =
-        [
-            .. TypeDescriber
-                .FindLocalSubclasses(type)
-                .Prepend(type)
-                .Where(t =>
-                    FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any()
-                ),
-        ];
-
-        if (subclasses.Length != 0)
-        {
-            return subclasses;
-        }
-        else
+        ImmutableArray<Type> filterTypes(IEnumerable<Type> types)
         {
             return
             [
-                .. TypeDescriber
-                    .FindLoadedSubclasses(type)
+                .. types
                     .Prepend(type)
                     .Where(t =>
-                        FindConstructors(t, anyScope).Any() || FindFactories(t, anyScope).Any()
+                        FindConstructors(t, anyScope, null).Any()
+                        || FindFactories(t, anyScope, null).Any()
                     ),
             ];
         }
+
+        ImmutableArray<Type> subclasses = randomizer.Options.PreferLocalSubclasses
+            ? filterTypes(TypeDescriber.FindLocalSubclasses(type))
+            : [];
+
+        return subclasses.Length == 0
+            ? filterTypes(TypeDescriber.FindLoadedSubclasses(type))
+            : subclasses;
     }
 
     /// <summary>Finds <see langword="public"/> or <see langword="internal"/> constructors.</summary>
@@ -294,7 +292,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static IEnumerable<ConstructorInfo> FindConstructors(
         Type type,
         BindingFlags scope,
-        IRandomizerChainer? randomizer = null
+        IRandomizerChainer? randomizer
     )
     {
         return type.GetConstructors(BindingFlags.Instance | scope)
@@ -313,7 +311,7 @@ public sealed class ObjectCreateHint : CreateHint
     private static IEnumerable<MethodInfo> FindFactories(
         Type type,
         BindingFlags scope,
-        IRandomizerChainer? randomizer = null
+        IRandomizerChainer? randomizer
     )
     {
         MethodInfo[] factories =
