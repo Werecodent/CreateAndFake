@@ -43,11 +43,9 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         else
         {
             throw new EngineException(
-                $"""
-                Cannot compare {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in 
-                synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} is {false}. 
-                Use an asynchronous method or override the setting.
-                """
+                $"Cannot compare {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in "
+                    + $"synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} "
+                    + $"is {false}. Use an asynchronous method or override the setting."
             );
         }
     }
@@ -109,11 +107,9 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         else
         {
             throw new EngineException(
-                $"""
-                Cannot hash {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in 
-                synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} is {false}. 
-                Use an asynchronous method or override the setting.
-                """
+                $"Cannot hash {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in "
+                    + $"synchronous context when {nameof(ValuerOptions.SkipAsyncValues)}  "
+                    + $"is {false}. Use an asynchronous method or override the setting."
             );
         }
     }

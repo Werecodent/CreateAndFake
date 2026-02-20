@@ -106,10 +106,8 @@ public sealed class TaskCompareHint : CompareHint<Task>
         {
             canceler.ThrowIfCancellationRequested();
             throw new EngineException(
-                $"""
-                Attempting to await the {TypeDescriber.ExpandedName(item)} exceeded the timeout 
-                ({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'.
-                """
+                $"Attempting to await the {TypeDescriber.ExpandedName(item)} exceeded the timeout "
+                    + $"({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'."
             );
         }
 

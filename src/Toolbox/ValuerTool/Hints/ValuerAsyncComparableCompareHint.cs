@@ -24,11 +24,9 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         else
         {
             throw new EngineException(
-                $"""
-                Cannot compare IValuerAsyncComparables in synchronous context 
-                using {nameof(IValuer)}. Use {nameof(IAsserter)} to compare 
-                IAsyncEnumerables in asynchronous context.
-                """
+                "Cannot compare IValuerAsyncComparables in synchronous context "
+                    + $"using {nameof(IValuer)}. Use {nameof(IAsserter)} to "
+                    + "compare IAsyncEnumerables in asynchronous context."
             );
         }
     }
@@ -54,10 +52,9 @@ public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncC
         else
         {
             throw new EngineException(
-                $"""
-                Cannot hash IValuerAsyncComparable in synchronous context using {nameof(IValuer)}. 
-                Collect into a synchronous collection before attempting to hash.
-                """
+                "Cannot hash IValuerAsyncComparable in synchronous "
+                    + $"context using {nameof(IValuer)}. Collect into a "
+                    + "synchronous collection before attempting to hash."
             );
         }
     }

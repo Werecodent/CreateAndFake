@@ -82,10 +82,8 @@ public abstract class CopyHintTestBase<T>(
                     new CopyHintResult(data),
                     result,
                     TestContext.Current.CancellationToken,
-                    $"""
-                    Hint '{typeof(T).Name}' failed to clone type '{type.Name}'.
-                    Actual type: '{data?.GetType()}'.
-                    """
+                    $"Hint '{typeof(T).Name}' failed to clone type '{type.Name}'."
+                        + $"Actual type: '{data?.GetType()}'."
                 );
 
                 await result
@@ -93,10 +91,8 @@ public abstract class CopyHintTestBase<T>(
                     .IsAsync(
                         data,
                         TestContext.Current.CancellationToken,
-                        $"""
-                        Hint '{typeof(T).Name}' failed to create clone that's equal by 
-                        value for type '{type.Name}'. Actual type '{data?.GetType()}'.
-                        """
+                        $"Hint '{typeof(T).Name}' failed to create clone that's equal by "
+                            + $"value for type '{type.Name}'. Actual type '{data?.GetType()}'."
                     );
             }
             finally

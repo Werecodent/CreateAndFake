@@ -76,10 +76,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             if (index >= chainer.Options.IterationLimit)
             {
                 throw new EngineException(
-                    $"""
-                    Reached {nameof(IEnumerable)} max iteration limit 
-                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
-                    """
+                    $"Reached {nameof(IEnumerable)} max iteration limit "
+                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
                 );
             }
         }
@@ -147,10 +145,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             if (index >= chainer.Options.IterationLimit)
             {
                 throw new EngineException(
-                    $"""
-                    Reached {nameof(IEnumerable)} max iteration limit 
-                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
-                    """
+                    $"Reached {nameof(IEnumerable)} max iteration limit "
+                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
                 );
             }
         }
@@ -170,10 +166,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             if (index++ >= chainer.Options.IterationLimit)
             {
                 throw new EngineException(
-                    $"""
-                    Reached {nameof(IEnumerable)} max iteration limit 
-                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
-                    """
+                    $"Reached {nameof(IEnumerable)} max iteration limit "
+                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
                 );
             }
 
@@ -196,10 +190,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             if (index++ >= chainer.Options.IterationLimit)
             {
                 throw new EngineException(
-                    $"""
-                    Reached {nameof(IEnumerable)} max iteration limit 
-                    ({index}) from {nameof(ValuerOptions.IterationLimit)}. 
-                    """
+                    $"Reached {nameof(IEnumerable)} max iteration limit ({index}) "
+                        + $"from {nameof(ValuerOptions.IterationLimit)}."
                 );
             }
 
