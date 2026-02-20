@@ -15,17 +15,13 @@ public static class Issue114Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue114_StringListSequencesEqualRegardlessOfType(
-        IEnumerable<string> sample
-    )
+    internal static void Issue114_StringListSequencesEqualRegardlessOfType(IList<string> sample)
     {
         sample.Assert().Is(sample.CreateDeepClone().ToList());
     }
 
     [Theory, RandomData]
-    internal static void Issue114_ObjectListSequencesEqualRegardlessOfType(
-        IEnumerable<object> sample
-    )
+    internal static void Issue114_ObjectListSequencesEqualRegardlessOfType(IList<object> sample)
     {
         sample.Assert().Is(sample.CreateDeepClone().ToList());
     }

@@ -12,28 +12,69 @@ namespace CreateAndFake.RandomizerTool.Hints;
 public sealed class CollectionCreateHint : CreateHint
 {
     /// <summary>Collections able to be randomized.</summary>
-    private static readonly ImmutableArray<Type> _Collections =
-    [
-        typeof(List<>),
-        typeof(Queue<>),
-        typeof(Stack<>),
-        typeof(HashSet<>),
-        typeof(LinkedList<>),
-        typeof(Dictionary<,>),
-        typeof(ConcurrentQueue<>),
-        typeof(ConcurrentStack<>),
-        typeof(ConcurrentDictionary<,>),
-    ];
+    private static readonly FrozenDictionary<Type, Func<Type, Array, object?>> _Collections =
+        new Dictionary<Type, Func<Type, Array, object?>>()
+        {
+            { typeof(List<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(Queue<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(Stack<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(HashSet<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(LinkedList<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(ConcurrentQueue<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(ConcurrentStack<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(FrozenSet<>), (_, data) => FrozenSet.ToFrozenSet((dynamic)data) },
+            { typeof(ImmutableList<>), (_, data) => ImmutableList.CreateRange((dynamic)data) },
+            { typeof(ImmutableArray<>), (_, data) => ImmutableArray.CreateRange((dynamic)data) },
+            { typeof(ImmutableQueue<>), (_, data) => ImmutableQueue.CreateRange((dynamic)data) },
+            { typeof(ImmutableStack<>), (_, data) => ImmutableStack.CreateRange((dynamic)data) },
+            {
+                typeof(ConcurrentDictionary<,>),
+                (type, data) => Activator.CreateInstance(type, data)
+            },
+            {
+                typeof(FrozenDictionary<,>),
+                (_, data) => FrozenDictionary.ToFrozenDictionary((dynamic)data)
+            },
+            {
+                typeof(ImmutableHashSet<>),
+                (_, data) => ImmutableHashSet.CreateRange((dynamic)data)
+            },
+            {
+                typeof(ImmutableDictionary<,>),
+                (_, data) => ImmutableDictionary.CreateRange((dynamic)data)
+            },
+            {
+                typeof(Dictionary<,>),
+                (type, data) =>
+                {
+#if LEGACY // Constructor missing in .NET 4.8.
+                    dynamic result = Activator.CreateInstance(type);
+                    foreach (dynamic item in data)
+                    {
+                        result.Add(item.Key, item.Value);
+                    }
+                    return result;
+#else
+                    return Activator.CreateInstance(type, data);
+#endif
+                }
+            },
+        }.ToFrozenDictionary();
+
+    /// <summary>Collections that the hint can create.</summary>
+    internal static IEnumerable<Type> PotentialCollections { get; } =
+        _Collections
+            .Keys.SelectMany(t => InheritanceTracker.For(t).InheritedTypes)
+            .Where(t => t.Inherits(typeof(IEnumerable<>)))
+            .Select(t => TypeDescriber.AsGenericBase(t) ?? t)
+            .Distinct()
+            .ToFrozenSet()!;
 
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.CollectionHint;
 
     /// <inheritdoc/>
     public override IEnumerable<Type> SupportedTypes => PotentialCollections;
-
-    /// <summary>Collections that the hint can create.</summary>
-    internal static IEnumerable<Type> PotentialCollections { get; } =
-        _Collections.Select(i => i).ToFrozenSet();
 
     /// <inheritdoc/>
     public override CreateHintResult TryCreate(Type type, IRandomizerChainer? randomizer)
@@ -75,20 +116,9 @@ public sealed class CollectionCreateHint : CreateHint
         {
             return internalData;
         }
-#if LEGACY // Constructor missing in .NET 4.8.
-        else if (collection == typeof(Dictionary<,>))
-        {
-            dynamic result = Activator.CreateInstance(newType);
-            foreach (dynamic item in internalData)
-            {
-                result.Add(item.Key, item.Value);
-            }
-            return result;
-        }
-#endif
         else
         {
-            return Activator.CreateInstance(newType, internalData);
+            return _Collections[collection].Invoke(newType, internalData);
         }
     }
 

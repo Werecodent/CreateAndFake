@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 
@@ -31,6 +33,12 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
                 typeof(int[]),
                 typeof(string[]),
                 typeof(object[]),
+                typeof(IImmutableList<>),
+                typeof(IImmutableQueue<>),
+                typeof(IImmutableStack<>),
+                typeof(IImmutableDictionary<,>),
+                typeof(FrozenSet<>),
+                typeof(FrozenDictionary<,>),
             ])
             .Select(MakeDefined),
     ];

@@ -23,14 +23,12 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        Dictionary<object, object> expectedKeys = expected
-            .Keys.Cast<object>()
-            .ToDictionary(e => e, e => e, chainer);
+        HashSet<object> expectedKeys = new(expected.Keys.Cast<object>(), chainer);
         Dictionary<object, object> actualKeys = actual
             .Keys.Cast<object>()
             .ToDictionary(e => e, e => e, chainer);
 
-        foreach (object key in expectedKeys.Keys)
+        foreach (object key in expectedKeys)
         {
             if (actualKeys.TryGetValue(key, out object? match))
             {
@@ -50,7 +48,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
         foreach (object key in actualKeys.Keys)
         {
-            if (!expectedKeys.ContainsKey(key))
+            if (!expectedKeys.Contains(key))
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",
@@ -85,14 +83,12 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        Dictionary<object, object> expectedKeys = expected
-            .Keys.Cast<object>()
-            .ToDictionary(e => e, e => e, chainer);
+        HashSet<object> expectedKeys = new(expected.Keys.Cast<object>(), chainer);
         Dictionary<object, object> actualKeys = actual
             .Keys.Cast<object>()
             .ToDictionary(e => e, e => e, chainer);
 
-        foreach (object key in expectedKeys.Keys)
+        foreach (object key in expectedKeys)
         {
             if (actualKeys.TryGetValue(key, out object? match))
             {
@@ -117,7 +113,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
 
         foreach (object key in actualKeys.Keys)
         {
-            if (!expectedKeys.ContainsKey(key))
+            if (!expectedKeys.Contains(key))
             {
                 yield return new Difference(
                     $"[{TryDescribe(key)}]",

@@ -229,6 +229,12 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
+    public IEqualityComparer<T> ToComparer<T>()
+    {
+        return new ByValuerComparer<T>(this);
+    }
+
+    /// <inheritdoc/>
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration);

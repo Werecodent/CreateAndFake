@@ -81,4 +81,9 @@ public interface IValuer
         CancellationToken canceler,
         ValuerMod? optionConfiguration = null
     );
+
+    /// <summary>...</summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    IEqualityComparer<T> ToComparer<T>();
 }

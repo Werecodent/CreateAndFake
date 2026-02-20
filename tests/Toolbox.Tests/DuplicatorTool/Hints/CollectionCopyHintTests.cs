@@ -1,6 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using CreateAndFake.DuplicatorTool.Hints;
-using CreateAndFake.RandomizerTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.DuplicatorTool.Hints;
@@ -9,7 +9,15 @@ public sealed class CollectionCopyHintTests : CopyHintTestBase<CollectionCopyHin
 {
     private static readonly Type[] _ValidTypes =
     [
-        .. CollectionCreateHint.PotentialCollections,
+        typeof(List<>),
+        typeof(Queue<>),
+        typeof(Stack<>),
+        typeof(HashSet<>),
+        typeof(LinkedList<>),
+        typeof(ConcurrentQueue<>),
+        typeof(ConcurrentStack<>),
+        typeof(ConcurrentDictionary<,>),
+        typeof(Dictionary<,>),
         typeof(int[]),
         typeof(string[]),
         typeof(ArrayList),

@@ -143,6 +143,12 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
+    public IEqualityComparer<T> ToComparer<T>()
+    {
+        return new ByValuerComparer<T>(this);
+    }
+
+    /// <inheritdoc/>
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration);

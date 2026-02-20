@@ -447,9 +447,11 @@ public class Tester(TesterOptions options) : ITester
         Dictionary<Type, Exception> failures = [];
 
         foreach (
-            Type type in Tools.Randomizer.SupportedTypes.Where(t =>
-                !localOptions.IntegrityIgnorableTypes.Contains(t)
-            )
+            Type type in Tools
+                .Randomizer.SupportedTypes.Where(t =>
+                    !localOptions.IntegrityIgnorableTypes.Contains(t)
+                )
+                .Distinct()
         )
         {
             try

@@ -17,8 +17,9 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     {
         _message = new Lazy<string>(() =>
             $"""
-            -> Expected type:<{TypeDescriber.ExpandedName(expectedType)}>, 
-            Actual type:<{TypeDescriber.ExpandedName(actualType)}>
+            -> Expected type:<{TypeDescriber.ExpandedName(
+                expectedType
+            )}>, Actual type:<{TypeDescriber.ExpandedName(actualType)}>
             """
         );
     }

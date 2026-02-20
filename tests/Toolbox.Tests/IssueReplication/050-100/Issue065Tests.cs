@@ -1,20 +1,37 @@
-﻿namespace CreateAndFake.Tests.IssueReplication;
+﻿using CreateAndFake.Design.Content;
+
+namespace CreateAndFake.Tests.IssueReplication;
 
 public static class Issue065Tests
 {
     internal sealed class InfiniteA
     {
         public ICollection<InfiniteB> Start { get; set; }
+
+        public override string ToString()
+        {
+            return TypeDescriber.ExpandedName(GetType());
+        }
     }
 
     internal sealed class InfiniteB
     {
         public InfiniteC Nested { get; set; }
+
+        public override string ToString()
+        {
+            return TypeDescriber.ExpandedName(GetType());
+        }
     }
 
     internal sealed class InfiniteC
     {
         public InfiniteA Back { get; set; }
+
+        public override string ToString()
+        {
+            return TypeDescriber.ExpandedName(GetType());
+        }
     }
 
     [Theory, RandomData]
