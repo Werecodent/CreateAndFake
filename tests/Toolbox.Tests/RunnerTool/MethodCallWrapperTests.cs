@@ -55,8 +55,10 @@ public static class MethodCallWrapperTests
         MethodBase method
     )
     {
-        runner.CreateFor(Arg.Any<MethodBase>(), Arg.Any<object[]>()).SetupReturn(wrapper);
-        runner.CreateFor(method).Assert().Is(wrapper);
+        runner
+            .CreateFor(Arg.Any<MethodBase>(), Arg.Any<CancellationToken>(), Arg.Any<object[]>())
+            .SetupReturn(wrapper);
+        runner.CreateFor(method, TestContext.Current.CancellationToken).Assert().Is(wrapper);
     }
 
     [Theory, RandomData]
@@ -73,7 +75,8 @@ public static class MethodCallWrapperTests
     internal static void ModifyArg_CanMutate(DataSample sample)
     {
         MethodCallWrapper wrapper = Tools.Runner.CreateFor(
-            typeof(DataHolderSample).GetMethod(nameof(DataHolderSample.HasNested))
+            typeof(DataHolderSample).GetMethod(nameof(DataHolderSample.HasNested)),
+            TestContext.Current.CancellationToken
         );
 
         wrapper.ModifyArg("value", sample);
@@ -84,7 +87,8 @@ public static class MethodCallWrapperTests
     internal static void InvokeOn_UsesArgs(DataSample sample)
     {
         MethodCallWrapper wrapper = Tools.Runner.CreateFor(
-            typeof(DataSample).GetMethod(nameof(Equals))
+            typeof(DataSample).GetMethod(nameof(Equals)),
+            TestContext.Current.CancellationToken
         );
 
         wrapper.InvokeOn(sample).Assert().Is(false);

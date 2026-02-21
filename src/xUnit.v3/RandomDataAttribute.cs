@@ -55,7 +55,8 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 MethodCallWrapper test = Tools.Runner.CreateFor(
                     testMethod,
-                    opt => opt with { InheritIReflectableTypeOnFakedType = true }
+                    default,
+                    (RunnerOptions opt) => opt with { InheritIReflectableTypeOnFakedType = true }
                 );
                 data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
             }

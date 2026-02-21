@@ -45,7 +45,7 @@ public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder, IRandomD
             MethodCallWrapper data;
             try
             {
-                data = Tools.Runner.CreateFor(method.MethodInfo);
+                data = Tools.Runner.CreateFor(method.MethodInfo, default);
             }
             catch (Exception e)
             {

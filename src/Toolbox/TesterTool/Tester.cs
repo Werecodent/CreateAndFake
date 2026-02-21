@@ -438,7 +438,7 @@ public class Tester(TesterOptions options) : ITester
             MethodCallWrapper? data = null;
             try
             {
-                data = localOptions.Runner.CreateFor(method);
+                data = localOptions.Runner.CreateFor(method, canceler);
                 foreach (object? item in data.Args)
                 {
                     _ = localOptions.TestDisplayNameConverter.Invoke(item);

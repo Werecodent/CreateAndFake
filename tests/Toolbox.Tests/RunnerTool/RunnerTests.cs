@@ -53,7 +53,12 @@ public static class RunnerTests
     )
     {
         Tools
-            .Runner.CreateFor(typeof(InjectMockSample).GetConstructors().Single(), fake, fake2)
+            .Runner.CreateFor(
+                typeof(InjectMockSample).GetConstructors().Single(),
+                TestContext.Current.CancellationToken,
+                fake,
+                fake2
+            )
             .Args.ToArray()
             .Assert()
             .Is(new object[] { fake.Dummy, fake2.Dummy });

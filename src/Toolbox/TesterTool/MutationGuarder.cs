@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool;
@@ -91,33 +92,38 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         CancellationToken canceler
     )
     {
+        using CancellationTokenSource cleanupCanceler =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
         MethodCallWrapper? data = null;
         MethodCallWrapper? copy = null;
         object? result = null;
         try
         {
-            data = Options.Runner.CreateFor(method, Options.InjectionValues);
+            data = Options.Runner.CreateFor(method, cleanupCanceler.Token, Options.InjectionValues);
             copy = Options.Duplicator.Copy(data);
 
-            result = await RunCheckAsync(method, null, instance, data, canceler)
+            result = await RunCheckAsync(method, null, instance, data, cleanupCanceler.Token)
                 .ConfigureAwait(false);
 
             if (result != null && callAllMethods)
             {
-                await CallAllMethodsAsync(method, null, result, canceler).ConfigureAwait(false);
+                await CallAllMethodsAsync(method, null, result, cleanupCanceler.Token)
+                    .ConfigureAwait(false);
             }
 
             await Options
                 .Asserter.ValuesEqualAsync(
                     copy,
                     data,
-                    canceler,
+                    cleanupCanceler.Token,
                     $"Parameter data was mutated when testing '{method.Name}'."
                 )
                 .ConfigureAwait(false);
         }
         finally
         {
+            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
             await DisposeAllButInjected(data?.Args).ConfigureAwait(false);
             await DisposeAllButInjected(copy?.Args).ConfigureAwait(false);
             await DisposeAllButInjected(result).ConfigureAwait(false);

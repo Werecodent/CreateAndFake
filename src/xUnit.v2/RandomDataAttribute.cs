@@ -46,7 +46,7 @@ public sealed class RandomDataAttribute : DataAttribute
         {
             try
             {
-                MethodCallWrapper data = Tools.Runner.CreateFor(testMethod);
+                MethodCallWrapper data = Tools.Runner.CreateFor(testMethod, default);
                 results.Add([.. data.Args.Select(FixArg)]);
             }
             catch (Exception e)

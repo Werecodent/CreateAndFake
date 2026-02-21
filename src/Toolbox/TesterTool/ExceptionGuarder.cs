@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.TesterTool;
 
@@ -8,9 +9,19 @@ namespace CreateAndFake.TesterTool;
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
     /// <inheritdoc cref="BaseGuarder.CallAllMethodsAsync(MethodBase,ParameterInfo,object,CancellationToken)"/>
-    internal Task CallAllMethodsAsync(object instance, CancellationToken canceler)
+    internal async Task CallAllMethodsAsync(object instance, CancellationToken canceler)
     {
-        return CallAllMethodsAsync(null, null, instance, canceler);
+        using CancellationTokenSource cleanupCanceler =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
+        try
+        {
+            await CallAllMethodsAsync(null, null, instance, canceler).ConfigureAwait(false);
+        }
+        finally
+        {
+            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
+        }
     }
 
     /// <inheritdoc/>

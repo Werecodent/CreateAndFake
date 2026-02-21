@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool;
@@ -97,10 +98,13 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         CancellationToken canceler
     )
     {
+        using CancellationTokenSource cleanupCanceler =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
         MethodCallWrapper? data = null;
         try
         {
-            data = Options.Runner.CreateFor(method, Options.InjectionValues);
+            data = Options.Runner.CreateFor(method, cleanupCanceler.Token, Options.InjectionValues);
 
             for (int i = 0; i < data.ArgCount; i++)
             {
@@ -117,12 +121,18 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                 object? result = null;
                 try
                 {
-                    result = await RunCheckAsync(method, param, instance, data, canceler)
+                    result = await RunCheckAsync(
+                            method,
+                            param,
+                            instance,
+                            data,
+                            cleanupCanceler.Token
+                        )
                         .ConfigureAwait(false);
 
                     if (result != null && callAllMethods)
                     {
-                        await CallAllMethodsAsync(method, param, result, canceler)
+                        await CallAllMethodsAsync(method, param, result, cleanupCanceler.Token)
                             .ConfigureAwait(false);
                     }
                 }
@@ -135,6 +145,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         }
         finally
         {
+            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
             await DisposeAllButInjected(data).ConfigureAwait(false);
         }
     }

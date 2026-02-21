@@ -54,8 +54,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
     {
         MethodCallWrapper data =
             optionConfiguration != null
-                ? CreateFor(method, optionConfiguration)
-                : CreateFor(method);
+                ? CreateFor(method, canceler, optionConfiguration)
+                : CreateFor(method, canceler);
 
         return RunAsync(instance, data, canceler, optionConfiguration);
     }
@@ -141,15 +141,20 @@ public sealed class Runner(RunnerOptions options) : IRunner
     }
 
     /// <inheritdoc/>
-    public MethodCallWrapper CreateFor(MethodBase method, params IEnumerable<object?>? values)
+    public MethodCallWrapper CreateFor(
+        MethodBase method,
+        CancellationToken canceler,
+        params IEnumerable<object?>? values
+    )
     {
-        return CreateFor(method, opt => opt, values);
+        return CreateFor(method, opt => opt, canceler, values);
     }
 
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(
         MethodBase method,
         RunnerMod optionConfiguration,
+        CancellationToken canceler,
         params IEnumerable<object?>? values
     )
     {
@@ -170,7 +175,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         foreach (ParameterInfo param in method.GetParameters())
         {
-            args.Add(param.Name ?? $"{args.Count}", ExtractArg(param, data, args, localOptions));
+            args.Add(
+                param.Name ?? $"{args.Count}",
+                ExtractArg(param, data, args, localOptions, canceler)
+            );
         }
 
         return new MethodCallWrapper(method, args);
@@ -181,12 +189,14 @@ public sealed class Runner(RunnerOptions options) : IRunner
     /// <param name="data">Canned data to prefer.</param>
     /// <param name="args">Already created parameter data.</param>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The created arg to fill the parameter with.</returns>
     private static object? ExtractArg(
         ParameterInfo param,
         List<Tuple<Type, object>> data,
         OrderedDictionary args,
-        RunnerOptions localOptions
+        RunnerOptions localOptions,
+        CancellationToken canceler
     )
     {
         Tuple<Type, object> match = data.Find(t => t.Item1.Inherits(param.ParameterType))!;
@@ -232,6 +242,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
                         NestedOptions = opt,
                     }
             );
+        }
+        else if (param.ParameterType == typeof(CancellationToken))
+        {
+            return canceler;
         }
         else if (match != default)
         {

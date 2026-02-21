@@ -45,7 +45,7 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource, IRandomDat
         {
             try
             {
-                MethodCallWrapper data = Tools.Runner.CreateFor(methodInfo);
+                MethodCallWrapper data = Tools.Runner.CreateFor(methodInfo, default);
                 results.Add([.. data.Args]);
             }
             catch (Exception e)

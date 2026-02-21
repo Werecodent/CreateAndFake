@@ -45,5 +45,8 @@ internal static class SystemCopyHandlers
                 return source;
             }
         ),
+        new FactoryCopyHandler<CancellationToken>(
+            (source, _) => new CancellationToken(source.IsCancellationRequested)
+        ),
     ];
 }

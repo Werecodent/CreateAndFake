@@ -9,13 +9,15 @@ internal static class SystemCreateHandlers
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
-        new FactoryCreateHandler<CancellationToken>(_ => new CancellationToken(false)),
         new FactoryCreateHandler<IntPtr>(rand => new IntPtr(rand.Options.Gen.Next<int>())),
         new FactoryCreateHandler<UIntPtr>(rand => new UIntPtr(rand.Options.Gen.Next<uint>())),
         new FactoryCreateHandler<Uri>(rand => rand.Create<UriBuilder>().Uri),
         new FactoryCreateHandler<Guid>(rand => new Guid(rand.Options.Gen.NextBytes(16))),
         new FactoryCreateHandler<StringBuilder>(rand => new StringBuilder(rand.Create<string>())),
         new FactoryCreateHandler<NumberFormatInfo>(rand => rand.Create<CultureInfo>().NumberFormat),
+        new FactoryCreateHandler<CancellationToken>(rand => new CancellationToken(
+            rand.Options.Gen.Next<bool>()
+        )),
         new FactoryCreateHandler<CultureInfo>(rand =>
             rand.Options.Gen.NextItem(CultureInfo.GetCultures(CultureTypes.AllCultures))
         ),
