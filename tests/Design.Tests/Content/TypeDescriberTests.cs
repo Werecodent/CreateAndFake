@@ -11,7 +11,7 @@ public static class TypeDescriberTests
     [Fact]
     internal static Task TypeDescriber_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(TypeDescriber),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
@@ -21,7 +21,7 @@ public static class TypeDescriberTests
     [Fact]
     internal static Task TypeDescriber_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(TypeDescriber),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }

@@ -13,7 +13,7 @@ public static class CreateExtensionsTests
     [Fact]
     internal static Task CreateExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(CreateExtensions),
             TestContext.Current.CancellationToken,
             config
@@ -23,7 +23,7 @@ public static class CreateExtensionsTests
     [Fact]
     internal static Task CreateExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(CreateExtensions),
             TestContext.Current.CancellationToken,
             config

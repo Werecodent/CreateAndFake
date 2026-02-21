@@ -7,7 +7,7 @@ public static class TypeExtensionsTests
     [Fact]
     internal static Task TypeExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(TypeExtensions),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class TypeExtensionsTests
     [Fact]
     internal static Task TypeExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(TypeExtensions),
             TestContext.Current.CancellationToken
         );

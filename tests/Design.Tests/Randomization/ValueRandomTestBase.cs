@@ -19,7 +19,7 @@ public abstract class ValueRandomTestBase<T>
     [Fact]
     public Task ValueRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<T>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
@@ -28,7 +28,7 @@ public abstract class ValueRandomTestBase<T>
     [Fact]
     public Task ValueRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<T>(
+        return Tools.Tester.PreventsParameterMutationAsync<T>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );

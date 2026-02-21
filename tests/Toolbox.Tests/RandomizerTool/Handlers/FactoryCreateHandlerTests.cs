@@ -7,7 +7,7 @@ public static class FactoryCreateHandlerTests
     [Fact]
     internal static Task FactoryCreateHandler_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FactoryCreateHandler>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<FactoryCreateHandler>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class FactoryCreateHandlerTests
     [Fact]
     internal static Task FactoryCreateHandler_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FactoryCreateHandler>(
+        return Tools.Tester.PreventsParameterMutationAsync<FactoryCreateHandler>(
             TestContext.Current.CancellationToken
         );
     }

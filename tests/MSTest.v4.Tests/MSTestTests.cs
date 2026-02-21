@@ -10,7 +10,7 @@ public class MSTestTests
     [TestMethod]
     public Task MSTest_v4_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrity(
+        return Tools.Tester.VerifyToolSetIntegrityAsync(
             ToolSet.DefaultSet,
             TestContext.CancellationToken
         );
@@ -28,7 +28,7 @@ public class MSTestTests
     [TestMethod]
     public Task MSTest_v4_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(
+        return Tools.Tester.ValidateRandomDataParametersAsync(
             Assembly.GetExecutingAssembly(),
             TestContext.CancellationToken
         );

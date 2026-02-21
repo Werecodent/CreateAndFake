@@ -9,7 +9,7 @@ public static class CallDataTests
     [Fact]
     internal static Task CallData_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<CallData>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<CallData>(
             TestContext.Current.CancellationToken
         );
     }
@@ -17,7 +17,7 @@ public static class CallDataTests
     [Fact]
     internal static Task CallData_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<CallData>(
+        return Tools.Tester.PreventsParameterMutationAsync<CallData>(
             TestContext.Current.CancellationToken
         );
     }

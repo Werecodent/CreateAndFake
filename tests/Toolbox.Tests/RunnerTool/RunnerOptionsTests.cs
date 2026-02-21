@@ -11,7 +11,7 @@ public static class RunnerOptionsTests
     [Fact]
     internal static Task RunnerOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RunnerOptions>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<RunnerOptions>(
             TestContext.Current.CancellationToken
         );
     }
@@ -19,7 +19,7 @@ public static class RunnerOptionsTests
     [Fact]
     internal static Task RunnerOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RunnerOptions>(
+        return Tools.Tester.PreventsParameterMutationAsync<RunnerOptions>(
             TestContext.Current.CancellationToken
         );
     }

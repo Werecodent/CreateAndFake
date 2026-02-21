@@ -7,10 +7,10 @@ namespace CreateAndFake.TesterTool;
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <inheritdoc cref="BaseGuarder.CallAllMethods(MethodBase,ParameterInfo,object)"/>
-    internal Task CallAllMethods(object instance)
+    /// <inheritdoc cref="BaseGuarder.CallAllMethodsAsync(MethodBase,ParameterInfo,object,CancellationToken)"/>
+    internal Task CallAllMethodsAsync(object instance, CancellationToken canceler)
     {
-        return CallAllMethods(null, null, instance);
+        return CallAllMethodsAsync(null, null, instance, canceler);
     }
 
     /// <inheritdoc/>

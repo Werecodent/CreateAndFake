@@ -19,7 +19,7 @@ public static class ValuerChainerTests
     [Fact]
     internal static Task IValuerChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<IValuerChainer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<IValuerChainer>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -28,7 +28,7 @@ public static class ValuerChainerTests
     [Fact]
     internal static Task IValuerChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<IValuerChainer>(
+        return Tools.Tester.PreventsParameterMutationAsync<IValuerChainer>(
             TestContext.Current.CancellationToken,
             config
         );

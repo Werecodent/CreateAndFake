@@ -7,7 +7,7 @@ public static class FactoryCreateHandler_T_Tests
     [Fact]
     internal static Task FactoryCreateHandler_T_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(FactoryCreateHandler<object>),
             TestContext.Current.CancellationToken
         );

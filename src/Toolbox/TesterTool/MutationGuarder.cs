@@ -12,7 +12,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    internal async Task PreventsMutationOnConstructors(
+    internal async Task PreventsMutationOnConstructorsAsync(
         Type type,
         bool callAllMethods,
         CancellationToken canceler
@@ -25,7 +25,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
                 .Where(c => c.GetParameters().Length > 0)
         )
         {
-            await PreventsMutation(null, constructor, callAllMethods, canceler)
+            await PreventsMutationAsync(null, constructor, callAllMethods, canceler)
                 .ConfigureAwait(false);
         }
     }
@@ -33,7 +33,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <summary>Verifies mutations are prevented on methods.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    internal async Task PreventsMutationOnMethods(object instance, CancellationToken canceler)
+    internal async Task PreventsMutationOnMethodsAsync(object instance, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(instance);
 
@@ -42,7 +42,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
                 .Where(c => c.GetParameters().Length > 0)
         )
         {
-            await PreventsMutation(
+            await PreventsMutationAsync(
                     instance,
                     GenericFixer.FixMethod(method, Options),
                     false,
@@ -56,7 +56,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    internal async Task PreventsMutationOnStatics(
+    internal async Task PreventsMutationOnStaticsAsync(
         Type type,
         bool callAllMethods,
         CancellationToken canceler
@@ -69,7 +69,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
                 .Where(c => c.GetParameters().Length > 0)
         )
         {
-            await PreventsMutation(
+            await PreventsMutationAsync(
                     null,
                     GenericFixer.FixMethod(method, Options),
                     callAllMethods && method.ReturnType.Inherits(specificType),
@@ -84,7 +84,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
     /// <param name="method">Method under test.</param>
     /// <param name="callAllMethods">If all instance methods should be called after the method.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    private async Task PreventsMutation(
+    private async Task PreventsMutationAsync(
         object? instance,
         MethodBase method,
         bool callAllMethods,
@@ -99,11 +99,12 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
             data = Options.Runner.CreateFor(method, Options.InjectionValues);
             copy = Options.Duplicator.Copy(data);
 
-            result = await RunCheck(method, null, instance, data).ConfigureAwait(false);
+            result = await RunCheckAsync(method, null, instance, data, canceler)
+                .ConfigureAwait(false);
 
             if (result != null && callAllMethods)
             {
-                await CallAllMethods(method, null, result).ConfigureAwait(false);
+                await CallAllMethodsAsync(method, null, result, canceler).ConfigureAwait(false);
             }
 
             await Options

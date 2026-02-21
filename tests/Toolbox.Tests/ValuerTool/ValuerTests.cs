@@ -22,7 +22,7 @@ public static class ValuerTests
     [Fact]
     internal static Task Valuer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Valuer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Valuer>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -31,7 +31,7 @@ public static class ValuerTests
     [Fact]
     internal static Task Valuer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Valuer>(
+        return Tools.Tester.PreventsParameterMutationAsync<Valuer>(
             TestContext.Current.CancellationToken,
             config
         );

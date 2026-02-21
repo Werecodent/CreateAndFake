@@ -45,7 +45,7 @@ public static class TesterTests
         Type nullType = null;
         await nullType
             .Assert(t =>
-                _ShortTestInstance.PreventsNullRefException(
+                _ShortTestInstance.PreventsNullRefExceptionAsync(
                     t,
                     TestContext.Current.CancellationToken
                 )
@@ -53,7 +53,7 @@ public static class TesterTests
             .Throws<ArgumentNullException>();
         await nullType
             .Assert(t =>
-                _ShortTestInstance.PreventsParameterMutation(
+                _ShortTestInstance.PreventsParameterMutationAsync(
                     t,
                     TestContext.Current.CancellationToken
                 )
@@ -71,7 +71,7 @@ public static class TesterTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            await _LongTestInstance.PreventsNullRefException<MockDisposableSample>(
+            await _LongTestInstance.PreventsNullRefExceptionAsync<MockDisposableSample>(
                 TestContext.Current.CancellationToken
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
@@ -94,7 +94,7 @@ public static class TesterTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            await _LongTestInstance.PreventsParameterMutation<MockDisposableSample>(
+            await _LongTestInstance.PreventsParameterMutationAsync<MockDisposableSample>(
                 TestContext.Current.CancellationToken
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);

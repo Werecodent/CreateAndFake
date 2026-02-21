@@ -9,7 +9,9 @@ public static class FakeTests
     [Fact]
     internal static Task Fake_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Fake>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsNullRefExceptionAsync<Fake>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

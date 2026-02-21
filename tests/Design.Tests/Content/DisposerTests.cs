@@ -8,7 +8,7 @@ public static class DisposerTests
     [Fact]
     internal static Task Disposer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Disposer),
             TestContext.Current.CancellationToken
         );
@@ -17,7 +17,7 @@ public static class DisposerTests
     [Fact]
     internal static Task Disposer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Disposer),
             TestContext.Current.CancellationToken
         );

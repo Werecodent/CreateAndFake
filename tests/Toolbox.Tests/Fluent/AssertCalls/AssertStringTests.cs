@@ -25,7 +25,7 @@ public static class AssertStringTests
     [Fact]
     internal static Task AssertString_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertString>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertString>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -34,7 +34,7 @@ public static class AssertStringTests
     [Fact]
     internal static Task AssertString_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertString>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertString>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -43,7 +43,10 @@ public static class AssertStringTests
     [Theory, RandomData]
     internal static async Task AssertString_CallsAndChains(Injected<AssertString> instance)
     {
-        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r =>

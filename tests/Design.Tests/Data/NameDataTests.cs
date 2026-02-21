@@ -7,7 +7,7 @@ public static class NameDataTests
     [Fact]
     public static Task NameData_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(NameData),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class NameDataTests
     [Fact]
     public static Task NameData_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(NameData),
             TestContext.Current.CancellationToken
         );

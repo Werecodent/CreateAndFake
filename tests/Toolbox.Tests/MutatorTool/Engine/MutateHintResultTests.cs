@@ -7,7 +7,7 @@ public static class MutateHintResultTests
     [Fact]
     internal static Task MutateHintResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<MutateHintResult>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<MutateHintResult>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class MutateHintResultTests
     [Fact]
     internal static Task MutateHintResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<MutateHintResult>(
+        return Tools.Tester.PreventsParameterMutationAsync<MutateHintResult>(
             TestContext.Current.CancellationToken
         );
     }

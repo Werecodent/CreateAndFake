@@ -21,7 +21,7 @@ public static class RandomizerTests
     [Fact]
     internal static Task Randomizer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Randomizer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Randomizer>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -30,7 +30,7 @@ public static class RandomizerTests
     [Fact]
     internal static Task Randomizer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Randomizer>(
+        return Tools.Tester.PreventsParameterMutationAsync<Randomizer>(
             TestContext.Current.CancellationToken,
             config
         );

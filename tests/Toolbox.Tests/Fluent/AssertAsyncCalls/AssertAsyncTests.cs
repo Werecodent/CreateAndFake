@@ -7,7 +7,7 @@ public static class AssertAsyncTests
     [Fact]
     internal static Task AssertAsync_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertAsync>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertAsync>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnoreAllExceptions = true }
         );
@@ -16,7 +16,7 @@ public static class AssertAsyncTests
     [Fact]
     internal static Task AssertAsync_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertAsync>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertAsync>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnoreAllExceptions = true }
         );

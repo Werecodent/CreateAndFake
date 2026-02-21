@@ -6,7 +6,7 @@ public static class StubAttributeTests
     [Test]
     public static Task StubAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<StubAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<StubAttribute>(
             TestContext.CurrentContext.CancellationToken
         );
     }
@@ -14,7 +14,7 @@ public static class StubAttributeTests
     [Test]
     public static Task StubAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<StubAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync<StubAttribute>(
             TestContext.CurrentContext.CancellationToken
         );
     }

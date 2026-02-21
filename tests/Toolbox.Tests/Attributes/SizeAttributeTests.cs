@@ -5,7 +5,7 @@ public static class SizeAttributeTests
     [Fact]
     internal static Task SizeAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<SizeAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<SizeAttribute>(
             TestContext.Current.CancellationToken
         );
     }
@@ -13,7 +13,7 @@ public static class SizeAttributeTests
     [Fact]
     internal static Task SizeAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<SizeAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync<SizeAttribute>(
             TestContext.Current.CancellationToken
         );
     }

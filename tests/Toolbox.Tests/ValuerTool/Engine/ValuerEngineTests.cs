@@ -10,7 +10,7 @@ public static class ValuerEngineTests
     [Fact]
     internal static Task ValuerEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ValuerEngine>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ValuerEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -24,7 +24,7 @@ public static class ValuerEngineTests
     [Fact]
     internal static Task ValuerEngine_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ValuerEngine>(
+        return Tools.Tester.PreventsParameterMutationAsync<ValuerEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with

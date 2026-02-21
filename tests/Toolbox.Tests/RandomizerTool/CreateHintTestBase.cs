@@ -34,22 +34,22 @@ public abstract class CreateHintTestBase<T>(
     /// <summary>Types that can't be created by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
     public Task CreateHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
             config
         );
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
     [Fact]
     public Task CreateHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
             opt => config(opt) with { InjectionValues = [CreateChainer()] }

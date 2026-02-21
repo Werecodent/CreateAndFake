@@ -7,7 +7,7 @@ public static class AsyncEnumHelper_T_Tests
     [Fact]
     internal static Task AsyncEnumHelper_T_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AsyncEnumHelper<>),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class AsyncEnumHelper_T_Tests
     [Fact]
     internal static Task AsyncEnumHelper_T_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncEnumHelper<string>),
             TestContext.Current.CancellationToken
         );

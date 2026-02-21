@@ -48,7 +48,7 @@ public static class MutationGuarderTests
     [Fact]
     internal static Task MutationGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
             config
@@ -60,7 +60,7 @@ public static class MutationGuarderTests
     {
         return Tools
             .Tester.Assert(t =>
-                t.PreventsParameterMutation(
+                t.PreventsParameterMutationAsync(
                     typeof(StaticMutationSample),
                     TestContext.Current.CancellationToken
                 )
@@ -71,7 +71,7 @@ public static class MutationGuarderTests
     [Fact]
     internal static Task PreventsParameterMutation_StatelessFine()
     {
-        return Tools.Tester.PreventsParameterMutation<StatelessSample>(
+        return Tools.Tester.PreventsParameterMutationAsync<StatelessSample>(
             TestContext.Current.CancellationToken
         );
     }
@@ -82,7 +82,7 @@ public static class MutationGuarderTests
         Fake<IOnlyMockSample> fake2
     )
     {
-        return Tools.Tester.PreventsParameterMutation<InjectMockSample>(
+        return Tools.Tester.PreventsParameterMutationAsync<InjectMockSample>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [fake1, fake2] }
         );
@@ -91,7 +91,7 @@ public static class MutationGuarderTests
     [Theory, RandomData]
     internal static Task PreventsParameterMutation_InjectsWithMethods(Fake<IOnlyMockSample> fake)
     {
-        return Tools.Tester.PreventsParameterMutation<MockMethodPassOnly>(
+        return Tools.Tester.PreventsParameterMutationAsync<MockMethodPassOnly>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [fake] }
         );
@@ -104,7 +104,7 @@ public static class MutationGuarderTests
             "Attempting to test timeout works.",
             _ShortTestInstance
                 .Assert(t =>
-                    t.PreventsMutationOnStatics(
+                    t.PreventsMutationOnStaticsAsync(
                         typeof(LongMethodSample),
                         false,
                         TestContext.Current.CancellationToken
@@ -125,7 +125,7 @@ public static class MutationGuarderTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
-            await _LongTestInstance.PreventsMutationOnConstructors(
+            await _LongTestInstance.PreventsMutationOnConstructorsAsync(
                 typeof(MockDisposableSample),
                 true,
                 TestContext.Current.CancellationToken
@@ -151,7 +151,7 @@ public static class MutationGuarderTests
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
             using MockDisposableSample sample = new(null);
-            await _LongTestInstance.PreventsMutationOnMethods(
+            await _LongTestInstance.PreventsMutationOnMethodsAsync(
                 sample,
                 TestContext.Current.CancellationToken
             );

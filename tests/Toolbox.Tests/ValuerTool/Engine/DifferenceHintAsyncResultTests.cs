@@ -7,7 +7,7 @@ public static class DifferenceHintAsyncResultTests
     [Fact]
     internal static Task DifferenceHintAsyncResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DifferenceHintAsyncResult>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<DifferenceHintAsyncResult>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class DifferenceHintAsyncResultTests
     [Fact]
     internal static Task DifferenceHintAsyncResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DifferenceHintAsyncResult>(
+        return Tools.Tester.PreventsParameterMutationAsync<DifferenceHintAsyncResult>(
             TestContext.Current.CancellationToken
         );
     }

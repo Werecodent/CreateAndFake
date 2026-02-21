@@ -11,7 +11,7 @@ public static class FakeExtensionsTests
     [Fact]
     internal static Task FakeExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
             config
@@ -21,7 +21,7 @@ public static class FakeExtensionsTests
     [Fact]
     internal static Task FakeExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
             config

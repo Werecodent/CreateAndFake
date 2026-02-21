@@ -5,7 +5,7 @@ public static class FakeAttributeTests
     [Fact]
     internal static Task FakeAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakeAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<FakeAttribute>(
             TestContext.Current.CancellationToken
         );
     }
@@ -13,7 +13,7 @@ public static class FakeAttributeTests
     [Fact]
     internal static Task FakeAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakeAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync<FakeAttribute>(
             TestContext.Current.CancellationToken
         );
     }

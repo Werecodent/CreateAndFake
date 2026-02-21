@@ -39,7 +39,7 @@ public static class NullGuarderTests
     [Fact]
     internal static Task NullGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
             config
@@ -49,7 +49,7 @@ public static class NullGuarderTests
     [Fact]
     internal static Task NullGuarder_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
             config
@@ -60,7 +60,13 @@ public static class NullGuarderTests
     internal static Task NullCheck_TimesOut()
     {
         return _ShortTestInstance
-            .Assert(t => t.PreventsNullRefExceptionOnStatics(typeof(LongMethodSample), false))
+            .Assert(t =>
+                t.PreventsNullRefExceptionOnStaticsAsync(
+                    typeof(LongMethodSample),
+                    false,
+                    TestContext.Current.CancellationToken
+                )
+            )
             .Throws<TimeoutException>();
     }
 
@@ -69,7 +75,11 @@ public static class NullGuarderTests
     {
         return _ShortTestInstance
             .Assert(t =>
-                t.PreventsNullRefExceptionOnConstructors(typeof(NullReferenceSample), true)
+                t.PreventsNullRefExceptionOnConstructorsAsync(
+                    typeof(NullReferenceSample),
+                    true,
+                    TestContext.Current.CancellationToken
+                )
             )
             .Throws<AssertException>();
     }
@@ -80,7 +90,7 @@ public static class NullGuarderTests
         Fake<IOnlyMockSample> fake2
     )
     {
-        return Tools.Tester.PreventsNullRefException<InjectMockSample>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<InjectMockSample>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [fake1, fake2] }
         );
@@ -89,7 +99,7 @@ public static class NullGuarderTests
     [Theory, RandomData]
     internal static Task PreventsNullRefException_InjectsWithMethods(Fake<IOnlyMockSample> fake)
     {
-        return Tools.Tester.PreventsNullRefException<MockMethodPassOnly>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<MockMethodPassOnly>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [fake] }
         );
@@ -100,7 +110,7 @@ public static class NullGuarderTests
     {
         return Tools
             .Tester.Assert(t =>
-                t.PreventsNullRefException(
+                t.PreventsNullRefExceptionAsync(
                     typeof(StaticMutationSample),
                     TestContext.Current.CancellationToken
                 )
@@ -111,7 +121,7 @@ public static class NullGuarderTests
     [Fact]
     internal static Task PreventsNullRefException_StatelessFine()
     {
-        return Tools.Tester.PreventsNullRefException<StatelessSample>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<StatelessSample>(
             TestContext.Current.CancellationToken
         );
     }
@@ -128,9 +138,10 @@ public static class NullGuarderTests
             MockDisposableSample._FinalizerDisposes = 0;
             MockDisposableSample._Fake = disposable.ToFake();
 
-            await _LongTestInstance.PreventsNullRefExceptionOnConstructors(
+            await _LongTestInstance.PreventsNullRefExceptionOnConstructorsAsync(
                 typeof(MockDisposableSample),
-                true
+                true,
+                TestContext.Current.CancellationToken
             );
             Tools.Asserter.Is(1, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
@@ -155,7 +166,10 @@ public static class NullGuarderTests
             MockDisposableSample._Fake = disposable.ToFake();
 
             using MockDisposableSample sample = new(null);
-            await _LongTestInstance.PreventsNullRefExceptionOnMethods(sample);
+            await _LongTestInstance.PreventsNullRefExceptionOnMethodsAsync(
+                sample,
+                TestContext.Current.CancellationToken
+            );
             Tools.Asserter.Is(0, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
             MockDisposableSample._Fake.Verify(Times.Once, d => d.Dispose());

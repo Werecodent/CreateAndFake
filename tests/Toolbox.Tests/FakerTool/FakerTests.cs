@@ -17,7 +17,7 @@ public static class FakerTests
     [Fact]
     internal static Task Faker_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Faker>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Faker>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -26,7 +26,7 @@ public static class FakerTests
     [Fact]
     internal static Task Faker_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Faker>(
+        return Tools.Tester.PreventsParameterMutationAsync<Faker>(
             TestContext.Current.CancellationToken,
             config
         );

@@ -8,7 +8,7 @@ public static class ArgumentGuardTests
     [Fact]
     public static Task ArgumentGuard_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ArgumentGuard),
             TestContext.Current.CancellationToken
         );
@@ -17,7 +17,7 @@ public static class ArgumentGuardTests
     [Fact]
     public static Task ArgumentGuard_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ArgumentGuard),
             TestContext.Current.CancellationToken
         );

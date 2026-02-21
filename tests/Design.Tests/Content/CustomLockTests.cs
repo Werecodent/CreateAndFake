@@ -7,7 +7,7 @@ public static class CustomLockTests
     [Fact]
     internal static Task CustomLock_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<CustomLock>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<CustomLock>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class CustomLockTests
     [Fact]
     internal static Task CustomLock_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<CustomLock>(
+        return Tools.Tester.PreventsParameterMutationAsync<CustomLock>(
             TestContext.Current.CancellationToken
         );
     }

@@ -10,7 +10,7 @@ public static class ContentMapTests
     [Fact]
     internal static Task ContentMap_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ContentMap>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ContentMap>(
             TestContext.Current.CancellationToken
         );
     }
@@ -18,7 +18,7 @@ public static class ContentMapTests
     [Fact]
     internal static Task ContentMap_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ContentMap>(
+        return Tools.Tester.PreventsParameterMutationAsync<ContentMap>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with

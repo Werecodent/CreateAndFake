@@ -25,11 +25,11 @@ public abstract class MutateHintTestBase<T>(
     /// <summary>Types that aren't supported by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? [typeof(DataHolderSample)];
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
     public Task MutateHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<T>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsNullRefExceptionAsync<T>(TestContext.Current.CancellationToken);
     }
 
     /// <summary>Ensure the hint supports all provided valid types.</summary>

@@ -7,7 +7,7 @@ public static class ByValuerComparerTests
     [Fact]
     internal static Task ByValuerComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ByValuerComparer<string>),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class ByValuerComparerTests
     [Fact]
     internal static Task ByValuerComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ByValuerComparer<string>),
             TestContext.Current.CancellationToken
         );

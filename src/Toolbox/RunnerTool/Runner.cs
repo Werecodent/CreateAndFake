@@ -19,8 +19,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public async Task<RunResults> CallMethodsOn(
+    public async Task<RunResults> CallMethodsOnAsync(
         object instance,
+        CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     )
     {
@@ -35,15 +36,19 @@ public sealed class Runner(RunnerOptions options) : IRunner
         )
         {
             // Sequentially executed to prevent concurrency issues; do not attempt to parallelize.
-            results.Add(await Run(instance, method, optionConfiguration).ConfigureAwait(false));
+            results.Add(
+                await RunAsync(instance, method, canceler, optionConfiguration)
+                    .ConfigureAwait(false)
+            );
         }
         return new(results);
     }
 
     /// <inheritdoc/>
-    public Task<RunResult> Run(
+    public Task<RunResult> RunAsync(
         object? instance,
         MethodInfo method,
+        CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     )
     {
@@ -52,13 +57,14 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 ? CreateFor(method, optionConfiguration)
                 : CreateFor(method);
 
-        return Run(instance, data, optionConfiguration);
+        return RunAsync(instance, data, canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public async Task<RunResult> Run(
+    public async Task<RunResult> RunAsync(
         object? instance,
         MethodCallWrapper data,
+        CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     )
     {
@@ -72,21 +78,28 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 : TimeSpan.FromMilliseconds(30000);
 
         Task<object?> task;
-        using (CancellationTokenSource stopper = new())
+        using (
+            CancellationTokenSource timeoutTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(canceler)
+        )
         {
             task = Task.Run(
                 async () =>
                     await Unwrapper
                         .UnwrapResult(() => data.InvokeOn(instance))
                         .ConfigureAwait(false),
-                stopper.Token
+                timeoutTokenSource.Token
             );
 
             bool timedOut =
-                (await Task.WhenAny(task, Task.Delay(timeout, stopper.Token)).ConfigureAwait(false))
-                != task;
+                (
+                    await Task.WhenAny(task, Task.Delay(timeout, timeoutTokenSource.Token))
+                        .ConfigureAwait(false)
+                ) != task;
 
-            await AsyncEnumHelper.TriggerCancellationAsync(stopper).ConfigureAwait(false);
+            await AsyncEnumHelper
+                .TriggerCancellationAsync(timeoutTokenSource)
+                .ConfigureAwait(false);
 
             if (timedOut)
             {

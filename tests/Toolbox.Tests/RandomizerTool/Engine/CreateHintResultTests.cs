@@ -7,7 +7,7 @@ public static class CreateHintResultTests
     [Fact]
     internal static Task CreateHintResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<CreateHintResult>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<CreateHintResult>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class CreateHintResultTests
     [Fact]
     internal static Task CreateHintResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<CreateHintResult>(
+        return Tools.Tester.PreventsParameterMutationAsync<CreateHintResult>(
             TestContext.Current.CancellationToken
         );
     }

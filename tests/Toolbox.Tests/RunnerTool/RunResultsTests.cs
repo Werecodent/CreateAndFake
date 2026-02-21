@@ -7,7 +7,7 @@ public static class RunResultsTests
     [Fact]
     internal static Task RunResults_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RunResults>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<RunResults>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class RunResultsTests
     [Fact]
     internal static Task RunResults_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RunResults>(
+        return Tools.Tester.PreventsParameterMutationAsync<RunResults>(
             TestContext.Current.CancellationToken
         );
     }

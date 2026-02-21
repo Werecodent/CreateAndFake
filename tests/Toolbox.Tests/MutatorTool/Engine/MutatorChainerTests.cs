@@ -8,7 +8,7 @@ public static class MutatorChainerTests
     [Fact]
     internal static Task MutatorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<MutatorChainer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<MutatorChainer>(
             TestContext.Current.CancellationToken
         );
     }
@@ -16,7 +16,7 @@ public static class MutatorChainerTests
     [Fact]
     internal static Task MutatorChainer_PassthroughWithNoExceptions()
     {
-        return Tools.Tester.PassthroughWithNoExceptions(
+        return Tools.Tester.PassthroughWithNoExceptionsAsync(
             new MutatorChainer(Tools.Mutator.Options, new MutatorEngine()),
             TestContext.Current.CancellationToken
         );

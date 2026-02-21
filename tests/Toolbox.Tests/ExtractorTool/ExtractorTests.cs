@@ -15,7 +15,7 @@ public static class ExtractorTests
     [Fact]
     internal static Task Extractor_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Extractor>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Extractor>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -24,7 +24,7 @@ public static class ExtractorTests
     [Fact]
     internal static Task Extractor_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Extractor>(
+        return Tools.Tester.PreventsParameterMutationAsync<Extractor>(
             TestContext.Current.CancellationToken,
             config
         );

@@ -7,7 +7,7 @@ public static class DifferenceTests
     [Fact]
     internal static Task Difference_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Difference>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Difference>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class DifferenceTests
     [Fact]
     internal static Task Difference_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Difference>(
+        return Tools.Tester.PreventsParameterMutationAsync<Difference>(
             TestContext.Current.CancellationToken
         );
     }

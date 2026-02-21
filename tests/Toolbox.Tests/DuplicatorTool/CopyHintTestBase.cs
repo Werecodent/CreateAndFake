@@ -41,22 +41,22 @@ public abstract class CopyHintTestBase<T>(
     /// <summary>Types that can't be copied by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
     public Task CopyHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
             config
         );
     }
 
-    /// <inheritdoc cref="ITester.PreventsParameterMutation"/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
     [Fact]
     public Task CopyHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
             config

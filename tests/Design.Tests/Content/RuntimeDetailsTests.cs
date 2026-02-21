@@ -7,7 +7,7 @@ public static class RuntimeDetailsTests
     [Fact]
     internal static Task RuntimeDetails_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(RuntimeDetails),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class RuntimeDetailsTests
     [Fact]
     internal static Task RuntimeDetails_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(RuntimeDetails),
             TestContext.Current.CancellationToken
         );

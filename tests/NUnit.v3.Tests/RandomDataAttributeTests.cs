@@ -12,7 +12,7 @@ public static class RandomDataAttributeTests
     [RandomData]
     public static Task RandomDataAttribute_GuardsNulls([Stub] Test testStub)
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             new RandomDataAttribute() { Trials = 3 },
             TestContext.CurrentContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod(), testStub] }
@@ -36,7 +36,7 @@ public static class RandomDataAttributeTests
                 )
             );
 
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             new RandomDataAttribute() { Trials = 3 },
             TestContext.CurrentContext.CancellationToken,
             opt =>

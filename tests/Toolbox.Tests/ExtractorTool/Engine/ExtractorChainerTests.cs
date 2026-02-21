@@ -20,7 +20,7 @@ public static class ExtractorChainerTests
     [Fact]
     internal static Task ExtractorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
             TestContext.Current.CancellationToken,
             config
@@ -30,7 +30,7 @@ public static class ExtractorChainerTests
     [Fact]
     internal static Task ExtractorChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
             TestContext.Current.CancellationToken,
             config

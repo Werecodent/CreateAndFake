@@ -16,7 +16,7 @@ public class LimiterTypeConverterTests
     [Fact]
     public Task LimiterTypeConverter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<LimiterTypeConverter>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<LimiterTypeConverter>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
@@ -25,7 +25,7 @@ public class LimiterTypeConverterTests
     [Fact]
     public Task LimiterTypeConverter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<LimiterTypeConverter>(
+        return Tools.Tester.PreventsParameterMutationAsync<LimiterTypeConverter>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );

@@ -18,7 +18,7 @@ public static class ExceptionGuarderTests
     [Fact]
     internal static Task ExceptionGuarder_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ExceptionGuarder>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ExceptionGuarder>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -27,7 +27,7 @@ public static class ExceptionGuarderTests
     [Fact]
     internal static Task CallAllMethods_SuccessfulNoException()
     {
-        return Tools.Tester.PassthroughWithNoExceptions<InjectMockSample>(
+        return Tools.Tester.PassthroughWithNoExceptionsAsync<InjectMockSample>(
             TestContext.Current.CancellationToken
         );
     }
@@ -37,7 +37,7 @@ public static class ExceptionGuarderTests
     {
         return Tools
             .Tester.Assert(t =>
-                t.PassthroughWithNoExceptions<MethodThrowsSample>(
+                t.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
                     TestContext.Current.CancellationToken
                 )
             )
@@ -56,7 +56,7 @@ public static class ExceptionGuarderTests
             {
                 Asserter = asserter,
             }
-        ).CallAllMethods(new MethodThrowsSample());
+        ).CallAllMethodsAsync(new MethodThrowsSample(), TestContext.Current.CancellationToken);
 
         asserter.Assert().Called();
     }

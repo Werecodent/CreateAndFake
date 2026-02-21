@@ -7,7 +7,7 @@ public static class InheritanceTrackerTests
     [Fact]
     internal static Task InheritanceTracker_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<InheritanceTracker>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<InheritanceTracker>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class InheritanceTrackerTests
     [Fact]
     internal static Task InheritanceTracker_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<InheritanceTracker>(
+        return Tools.Tester.PreventsParameterMutationAsync<InheritanceTracker>(
             TestContext.Current.CancellationToken
         );
     }

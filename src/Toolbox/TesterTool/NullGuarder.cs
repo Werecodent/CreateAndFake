@@ -15,13 +15,19 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
-    internal async Task PreventsNullRefExceptionOnConstructors(Type type, bool callAllMethods)
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    internal async Task PreventsNullRefExceptionOnConstructorsAsync(
+        Type type,
+        bool callAllMethods,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(type);
 
         foreach (ConstructorInfo constructor in FindAllConstructors(type))
         {
-            await PreventsNullRefException(null, constructor, callAllMethods).ConfigureAwait(false);
+            await PreventsNullRefExceptionAsync(null, constructor, callAllMethods, canceler)
+                .ConfigureAwait(false);
         }
     }
 
@@ -31,13 +37,22 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
     /// <param name="instance">Instance to test the methods on.</param>
-    internal async Task PreventsNullRefExceptionOnMethods(object instance)
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    internal async Task PreventsNullRefExceptionOnMethodsAsync(
+        object instance,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(instance);
 
         foreach (MethodInfo method in FindAllMethods(instance.GetType(), BindingFlags.Instance))
         {
-            await PreventsNullRefException(instance, GenericFixer.FixMethod(method, Options), false)
+            await PreventsNullRefExceptionAsync(
+                    instance,
+                    GenericFixer.FixMethod(method, Options),
+                    false,
+                    canceler
+                )
                 .ConfigureAwait(false);
         }
     }
@@ -49,16 +64,22 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
-    internal async Task PreventsNullRefExceptionOnStatics(Type type, bool callAllMethods)
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    internal async Task PreventsNullRefExceptionOnStaticsAsync(
+        Type type,
+        bool callAllMethods,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(type);
 
         foreach (MethodInfo method in FindAllMethods(type, BindingFlags.Static))
         {
-            await PreventsNullRefException(
+            await PreventsNullRefExceptionAsync(
                     null,
                     GenericFixer.FixMethod(method, Options),
-                    callAllMethods && method.ReturnType.Inherits(type)
+                    callAllMethods && method.ReturnType.Inherits(type),
+                    canceler
                 )
                 .ConfigureAwait(false);
         }
@@ -68,10 +89,12 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <param name="instance">Instance with the method under test.</param>
     /// <param name="method">Method under test.</param>
     /// <param name="callAllMethods">If all instance methods should be called after the method.</param>
-    private async Task PreventsNullRefException(
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    private async Task PreventsNullRefExceptionAsync(
         object? instance,
         MethodBase method,
-        bool callAllMethods
+        bool callAllMethods,
+        CancellationToken canceler
     )
     {
         MethodCallWrapper? data = null;
@@ -94,11 +117,13 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                 object? result = null;
                 try
                 {
-                    result = await RunCheck(method, param, instance, data).ConfigureAwait(false);
+                    result = await RunCheckAsync(method, param, instance, data, canceler)
+                        .ConfigureAwait(false);
 
                     if (result != null && callAllMethods)
                     {
-                        await CallAllMethods(method, param, result).ConfigureAwait(false);
+                        await CallAllMethodsAsync(method, param, result, canceler)
+                            .ConfigureAwait(false);
                     }
                 }
                 finally

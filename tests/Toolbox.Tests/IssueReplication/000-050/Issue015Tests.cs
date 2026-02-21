@@ -20,7 +20,10 @@ public static class Issue015Tests
     {
         return typeof(Sample)
             .Assert(t =>
-                Tools.Tester.PreventsParameterMutation(t, TestContext.Current.CancellationToken)
+                Tools.Tester.PreventsParameterMutationAsync(
+                    t,
+                    TestContext.Current.CancellationToken
+                )
             )
             .Throws<AssertException>();
     }

@@ -11,7 +11,7 @@ public static class RandomizerOptionsTests
     [Fact]
     internal static Task RandomizerOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RandomizerOptions>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerOptions>(
             TestContext.Current.CancellationToken
         );
     }
@@ -19,7 +19,7 @@ public static class RandomizerOptionsTests
     [Fact]
     internal static Task RandomizerOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RandomizerOptions>(
+        return Tools.Tester.PreventsParameterMutationAsync<RandomizerOptions>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(ArgumentNullException)] }
         );

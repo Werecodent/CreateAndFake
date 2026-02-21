@@ -11,7 +11,7 @@ public static class AsserterOptionsTests
     [Fact]
     internal static Task AsserterOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AsserterOptions>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AsserterOptions>(
             TestContext.Current.CancellationToken
         );
     }
@@ -19,7 +19,7 @@ public static class AsserterOptionsTests
     [Fact]
     internal static Task AsserterOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AsserterOptions>(
+        return Tools.Tester.PreventsParameterMutationAsync<AsserterOptions>(
             TestContext.Current.CancellationToken
         );
     }

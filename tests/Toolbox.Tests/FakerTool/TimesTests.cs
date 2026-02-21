@@ -7,13 +7,17 @@ public static class TimesTests
     [Fact]
     internal static Task Times_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Times>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsNullRefExceptionAsync<Times>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task Times_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Times>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsParameterMutationAsync<Times>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

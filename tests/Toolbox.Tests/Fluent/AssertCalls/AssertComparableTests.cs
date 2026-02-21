@@ -23,7 +23,7 @@ public static class AssertComparableTests
     [Fact]
     internal static Task AssertComparable_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertComparable>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertComparable>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -32,7 +32,7 @@ public static class AssertComparableTests
     [Fact]
     internal static Task AssertComparable_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertComparable>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertComparable>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -41,7 +41,10 @@ public static class AssertComparableTests
     [Theory, RandomData]
     internal static async Task AssertComparable_CallsAndChains(Injected<AssertComparable> instance)
     {
-        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertComparable>)

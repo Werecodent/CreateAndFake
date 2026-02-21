@@ -31,7 +31,7 @@ public static class ToolsTests
     [Fact]
     internal static Task CreateAndFake_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(
+        return Tools.Tester.ValidateRandomDataParametersAsync(
             Assembly.GetExecutingAssembly(),
             TestContext.Current.CancellationToken
         );
@@ -40,7 +40,7 @@ public static class ToolsTests
     [Fact]
     internal static Task Tools_AllSupportedTypesValid()
     {
-        return Tools.Tester.VerifyToolSetIntegrity(
+        return Tools.Tester.VerifyToolSetIntegrityAsync(
             ToolSet.DefaultSet,
             TestContext.Current.CancellationToken
         );

@@ -7,7 +7,7 @@ public static class TypeSupporterTests
     [Fact]
     internal static Task TypeSupporter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(TypeSupporter),
             TestContext.Current.CancellationToken
         );
@@ -16,7 +16,7 @@ public static class TypeSupporterTests
     [Fact]
     internal static Task TypeSupporter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(TypeSupporter),
             TestContext.Current.CancellationToken,
             opt =>

@@ -8,13 +8,17 @@ public static class ArgTests
     [Fact]
     internal static Task Arg_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Arg>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsNullRefExceptionAsync<Arg>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
     internal static Task Arg_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Arg>(TestContext.Current.CancellationToken);
+        return Tools.Tester.PreventsParameterMutationAsync<Arg>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

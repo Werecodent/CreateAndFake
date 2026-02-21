@@ -7,7 +7,7 @@ public static class RandomDataAttributeTests
     [Fact]
     internal static Task RandomDataAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             new RandomDataAttribute() { Trials = 3 },
             CancellationToken.None,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
@@ -17,7 +17,7 @@ public static class RandomDataAttributeTests
     [Fact]
     internal static Task RandomDataAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             new RandomDataAttribute() { Trials = 3 },
             CancellationToken.None,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }

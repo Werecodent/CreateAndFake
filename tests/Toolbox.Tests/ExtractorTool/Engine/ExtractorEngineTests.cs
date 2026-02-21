@@ -10,7 +10,7 @@ public static class ExtractorEngineTests
     [Fact]
     internal static Task ExtractorEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ExtractorEngine>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ExtractorEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -30,7 +30,7 @@ public static class ExtractorEngineTests
     [Fact]
     internal static Task ExtractorEngine_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ExtractorEngine>(
+        return Tools.Tester.PreventsParameterMutationAsync<ExtractorEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with

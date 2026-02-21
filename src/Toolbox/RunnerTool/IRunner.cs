@@ -17,9 +17,14 @@ public interface IRunner : ITool<RunnerOptions>
 
     /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
     /// <param name="instance">Instance whose methods to call.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Results of the method calls.</returns>
-    Task<RunResults> CallMethodsOn(object instance, RunnerMod? optionConfiguration = null);
+    Task<RunResults> CallMethodsOnAsync(
+        object instance,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
 
     /// <summary>
     ///     Constructs the parameters for <paramref name="method"/>.
@@ -49,18 +54,26 @@ public interface IRunner : ITool<RunnerOptions>
     /// <summary>Runs the given method on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
     /// <param name="method">Method to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Results of the run.</returns>
-    Task<RunResult> Run(object? instance, MethodInfo method, RunnerMod? optionConfiguration = null);
+    Task<RunResult> RunAsync(
+        object? instance,
+        MethodInfo method,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
 
     /// <summary>Runs the given method on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
     /// <param name="data">Method to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Results of the run.</returns>
-    Task<RunResult> Run(
+    Task<RunResult> RunAsync(
         object? instance,
         MethodCallWrapper data,
+        CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     );
 }

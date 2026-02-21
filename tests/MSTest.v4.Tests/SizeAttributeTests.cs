@@ -8,12 +8,16 @@ public class SizeAttributeTests
     [TestMethod]
     public Task SizeAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakeAttribute>(TestContext.CancellationToken);
+        return Tools.Tester.PreventsNullRefExceptionAsync<FakeAttribute>(
+            TestContext.CancellationToken
+        );
     }
 
     [TestMethod]
     public Task SizeAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakeAttribute>(TestContext.CancellationToken);
+        return Tools.Tester.PreventsParameterMutationAsync<FakeAttribute>(
+            TestContext.CancellationToken
+        );
     }
 }

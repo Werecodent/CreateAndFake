@@ -26,11 +26,11 @@ public abstract class ExtractHintTestBase<T>(
     /// <summary>Types that can't be created by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
 
-    /// <inheritdoc cref="ITester.PreventsNullRefException"/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
     public Task ExtractHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             TestInstance,
             TestContext.Current.CancellationToken
         );

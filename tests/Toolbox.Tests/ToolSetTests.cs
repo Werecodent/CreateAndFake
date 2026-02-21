@@ -5,7 +5,7 @@ public static class ToolSetTests
     [Fact]
     internal static Task ToolSet_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ToolSet>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ToolSet>(
             TestContext.Current.CancellationToken
         );
     }
@@ -13,7 +13,7 @@ public static class ToolSetTests
     [Fact]
     internal static Task ToolSet_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ToolSet>(
+        return Tools.Tester.PreventsParameterMutationAsync<ToolSet>(
             TestContext.Current.CancellationToken
         );
     }

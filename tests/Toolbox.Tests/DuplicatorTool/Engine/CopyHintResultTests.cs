@@ -7,7 +7,7 @@ public static class CopyHintResultTests
     [Fact]
     internal static Task CopyHintResult_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<CopyHintResult>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<CopyHintResult>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class CopyHintResultTests
     [Fact]
     internal static Task CopyHintResult_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<CopyHintResult>(
+        return Tools.Tester.PreventsParameterMutationAsync<CopyHintResult>(
             TestContext.Current.CancellationToken
         );
     }

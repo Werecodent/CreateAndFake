@@ -54,10 +54,12 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="instance">Instance whose methods to test.</param>
-    protected async Task CallAllMethods(
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    protected async Task CallAllMethodsAsync(
         MethodBase? testOrigin,
         ParameterInfo? testParam,
-        object instance
+        object instance,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(instance);
@@ -72,7 +74,13 @@ internal abstract class BaseGuarder(TesterOptions options)
             {
                 await Disposer
                     .CleanupAsync(
-                        await RunCheck(testOrigin ?? method, testParam, instance, data)
+                        await RunCheckAsync(
+                                testOrigin ?? method,
+                                testParam,
+                                instance,
+                                data,
+                                canceler
+                            )
                             .ConfigureAwait(false)
                     )
                     .ConfigureAwait(false);
@@ -89,17 +97,21 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="testParam">Parameter being set to null.</param>
     /// <param name="instance"></param>
     /// <param name="data">Call to invoke and test.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Returned result from the call.</returns>
-    protected async Task<object?> RunCheck(
+    protected async Task<object?> RunCheckAsync(
         MethodBase testOrigin,
         ParameterInfo? testParam,
         object? instance,
-        MethodCallWrapper data
+        MethodCallWrapper data,
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(testOrigin);
 
-        RunResult result = await Options.Runner.Run(instance, data).ConfigureAwait(false);
+        RunResult result = await Options
+            .Runner.RunAsync(instance, data, canceler)
+            .ConfigureAwait(false);
         if (!result.ThrewException)
         {
             return result.Result;

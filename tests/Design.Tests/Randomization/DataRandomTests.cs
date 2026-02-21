@@ -9,7 +9,7 @@ public static class DataRandomTests
     [Fact]
     internal static Task DataRandom_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DataRandom>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<DataRandom>(
             TestContext.Current.CancellationToken
         );
     }
@@ -17,7 +17,7 @@ public static class DataRandomTests
     [Fact]
     internal static Task DataRandom_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DataRandom>(
+        return Tools.Tester.PreventsParameterMutationAsync<DataRandom>(
             TestContext.Current.CancellationToken
         );
     }

@@ -22,7 +22,7 @@ public static class AssertTypeTests
     [Fact]
     internal static Task AssertType_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertType>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertType>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -31,7 +31,7 @@ public static class AssertTypeTests
     [Fact]
     internal static Task AssertType_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertType>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertType>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -40,7 +40,10 @@ public static class AssertTypeTests
     [Theory, RandomData]
     internal static async Task AssertType_CallsAndChains(Injected<AssertType> instance)
     {
-        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not Exception)

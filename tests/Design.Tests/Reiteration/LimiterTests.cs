@@ -15,7 +15,7 @@ public static class LimiterTests
     [Fact]
     internal static Task Limiter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             Limiter.Few,
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
@@ -25,7 +25,7 @@ public static class LimiterTests
     [Fact]
     internal static Task Limiter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             Limiter.Few,
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }

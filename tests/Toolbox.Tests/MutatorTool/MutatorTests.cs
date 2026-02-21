@@ -8,7 +8,7 @@ public static class MutatorTests
     [Fact]
     internal static Task Mutator_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Mutator>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Mutator>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
         );
@@ -17,7 +17,7 @@ public static class MutatorTests
     [Fact]
     internal static Task Mutator_PassthroughWithNoExceptions()
     {
-        return Tools.Tester.PassthroughWithNoExceptions(
+        return Tools.Tester.PassthroughWithNoExceptionsAsync(
             Tools.Mutator,
             TestContext.Current.CancellationToken
         );

@@ -8,7 +8,7 @@ public static class ValueComparer_T_Tests
     [Fact]
     internal static Task ValueComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ValueComparer<>),
             TestContext.Current.CancellationToken
         );
@@ -17,7 +17,7 @@ public static class ValueComparer_T_Tests
     [Fact]
     internal static Task ValueComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ValueComparer<>),
             TestContext.Current.CancellationToken
         );

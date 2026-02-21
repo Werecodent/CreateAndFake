@@ -46,9 +46,9 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void VerifyXmlSerialization(object instance, TesterMod? optionConfiguration = null);
 
-    /// <inheritdoc cref="PreventsNullRefException(Type,CancellationToken,TesterMod)"/>
+    /// <inheritdoc cref="PreventsNullRefExceptionAsync(Type,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PreventsNullRefException<T>(
+    Task PreventsNullRefExceptionAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
@@ -59,9 +59,9 @@ public interface ITester : ITool<TesterOptions>
     ///     Constructor and factory parameters are tested by running all methods.
     ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
-    /// <inheritdoc cref="PreventsNullRefException{T}(T,CancellationToken,TesterMod)"/>
+    /// <inheritdoc cref="PreventsNullRefExceptionAsync{T}(T,CancellationToken,TesterMod)"/>
     /// <param name="type">Type to verify.</param>
-    Task PreventsNullRefException(
+    Task PreventsNullRefExceptionAsync(
         Type type,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -77,22 +77,22 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
-    Task PreventsNullRefException<T>(
+    Task PreventsNullRefExceptionAsync<T>(
         T instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
 
-    /// <inheritdoc cref="PreventsParameterMutation{T}(T,CancellationToken,TesterMod)"/>
+    /// <inheritdoc cref="PreventsParameterMutationAsync{T}(T,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PreventsParameterMutation<T>(
+    Task PreventsParameterMutationAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
 
-    /// <inheritdoc cref="PreventsParameterMutation{T}(T,CancellationToken,TesterMod)"/>
+    /// <inheritdoc cref="PreventsParameterMutationAsync{T}(T,CancellationToken,TesterMod)"/>
     /// <param name="type">Type to verify.</param>
-    Task PreventsParameterMutation(
+    Task PreventsParameterMutationAsync(
         Type type,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -107,15 +107,15 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
-    Task PreventsParameterMutation<T>(
+    Task PreventsParameterMutationAsync<T>(
         T instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
 
-    /// <inheritdoc cref="PassthroughWithNoExceptions"/>
+    /// <inheritdoc cref="PassthroughWithNoExceptionsAsync"/>
     /// <typeparam name="T">Type to verify.</typeparam>
-    Task PassthroughWithNoExceptions<T>(
+    Task PassthroughWithNoExceptionsAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
@@ -124,7 +124,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
-    Task PassthroughWithNoExceptions(
+    Task PassthroughWithNoExceptionsAsync(
         object instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -149,7 +149,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="testAssembly">Assembly with the tests.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
-    Task ValidateRandomDataParameters(
+    Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -160,7 +160,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-    Task VerifyToolSetIntegrity(
+    Task VerifyToolSetIntegrityAsync(
         ToolSet tools,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null

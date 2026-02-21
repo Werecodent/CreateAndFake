@@ -5,7 +5,7 @@ public static class AssertExtensionsTests
     [Fact]
     internal static Task AssertExtensions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AssertExtensions),
             TestContext.Current.CancellationToken
         );
@@ -14,7 +14,7 @@ public static class AssertExtensionsTests
     [Fact]
     internal static Task AssertExtensions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AssertExtensions),
             TestContext.Current.CancellationToken
         );

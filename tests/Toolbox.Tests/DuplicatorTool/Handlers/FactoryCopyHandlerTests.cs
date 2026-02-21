@@ -7,7 +7,7 @@ public static class FactoryCopyHandlerTests
     [Fact]
     internal static Task FactoryCopyHandler_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FactoryCopyHandler>(
+        return Tools.Tester.PreventsParameterMutationAsync<FactoryCopyHandler>(
             TestContext.Current.CancellationToken
         );
     }

@@ -7,7 +7,7 @@ public static class XUnitTests
     [Fact]
     internal static Task XUnit_v2_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrity(ToolSet.DefaultSet, CancellationToken.None);
+        return Tools.Tester.VerifyToolSetIntegrityAsync(ToolSet.DefaultSet, CancellationToken.None);
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public static class XUnitTests
     [Fact]
     internal static Task XUnit_v2_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(
+        return Tools.Tester.ValidateRandomDataParametersAsync(
             Assembly.GetExecutingAssembly(),
             CancellationToken.None
         );

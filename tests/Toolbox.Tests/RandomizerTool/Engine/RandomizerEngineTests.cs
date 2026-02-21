@@ -8,7 +8,7 @@ public static class RandomizerEngineTests
     [Fact]
     internal static Task RandomizerEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             new RandomizerEngine(),
             TestContext.Current.CancellationToken,
             opt => opt with { MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]) }
@@ -18,7 +18,7 @@ public static class RandomizerEngineTests
     [Fact]
     internal static Task RandomizerEngine_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             new RandomizerEngine(),
             TestContext.Current.CancellationToken,
             opt =>

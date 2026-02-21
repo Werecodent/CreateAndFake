@@ -8,7 +8,7 @@ public static class ReferenceComparerTests
     [Fact]
     internal static Task ReferenceComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ReferenceComparer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ReferenceComparer>(
             TestContext.Current.CancellationToken
         );
     }
@@ -16,7 +16,7 @@ public static class ReferenceComparerTests
     [Fact]
     internal static Task ReferenceComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ReferenceComparer>(
+        return Tools.Tester.PreventsParameterMutationAsync<ReferenceComparer>(
             TestContext.Current.CancellationToken
         );
     }

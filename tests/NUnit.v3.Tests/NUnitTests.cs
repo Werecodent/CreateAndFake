@@ -8,7 +8,7 @@ public static class NUnitTests
     [Test]
     public static Task NUnit_v3_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrity(
+        return Tools.Tester.VerifyToolSetIntegrityAsync(
             ToolSet.DefaultSet,
             TestContext.CurrentContext.CancellationToken
         );
@@ -26,7 +26,7 @@ public static class NUnitTests
     [Test]
     public static Task NUnit_v3_ValidateRandomDataParameters()
     {
-        return Tools.Tester.ValidateRandomDataParameters(
+        return Tools.Tester.ValidateRandomDataParametersAsync(
             Assembly.GetExecutingAssembly(),
             TestContext.CurrentContext.CancellationToken
         );

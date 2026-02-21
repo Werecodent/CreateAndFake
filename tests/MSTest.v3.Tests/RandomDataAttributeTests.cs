@@ -10,7 +10,7 @@ public class RandomDataAttributeTests
     [TestMethod]
     public Task RandomDataAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             new RandomDataAttribute() { Trials = 3 },
             TestContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
@@ -20,7 +20,7 @@ public class RandomDataAttributeTests
     [TestMethod]
     public Task RandomDataAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             new RandomDataAttribute() { Trials = 3 },
             TestContext.CancellationToken,
             opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }

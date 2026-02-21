@@ -22,7 +22,7 @@ public static class BehaviorTests
     [Fact]
     internal static Task Behavior_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Behavior),
             TestContext.Current.CancellationToken,
             config
@@ -32,7 +32,7 @@ public static class BehaviorTests
     [Fact]
     internal static Task Behavior_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Behavior),
             TestContext.Current.CancellationToken,
             config

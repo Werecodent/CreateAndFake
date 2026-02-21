@@ -22,7 +22,7 @@ public static class AssertErrorTests
     [Fact]
     internal static Task AssertError_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertError>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertError>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -31,7 +31,7 @@ public static class AssertErrorTests
     [Fact]
     internal static Task AssertError_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertError>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertError>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -40,7 +40,10 @@ public static class AssertErrorTests
     [Theory, RandomData]
     internal static async Task AssertError_CallsAndChains(Injected<AssertError> instance)
     {
-        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertError>)

@@ -16,7 +16,7 @@ public static class MutatorEngineTests
     [Fact]
     internal static Task MutatorEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<MutatorEngine>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<MutatorEngine>(
             TestContext.Current.CancellationToken
         );
     }

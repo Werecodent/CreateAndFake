@@ -28,7 +28,7 @@ public static class AsserterTests
     [Fact]
     internal static Task Asserter_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<Asserter>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<Asserter>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -37,7 +37,7 @@ public static class AsserterTests
     [Fact]
     internal static Task Asserter_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<Asserter>(
+        return Tools.Tester.PreventsParameterMutationAsync<Asserter>(
             TestContext.Current.CancellationToken,
             config
         );

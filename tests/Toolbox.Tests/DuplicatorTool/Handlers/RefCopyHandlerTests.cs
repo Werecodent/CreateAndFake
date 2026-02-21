@@ -7,7 +7,7 @@ public static class RefCopyHandlerTests
     [Fact]
     internal static Task RefCopyHandler_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<RefCopyHandler>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<RefCopyHandler>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class RefCopyHandlerTests
     [Fact]
     internal static Task RefCopyHandler_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<RefCopyHandler>(
+        return Tools.Tester.PreventsParameterMutationAsync<RefCopyHandler>(
             TestContext.Current.CancellationToken
         );
     }

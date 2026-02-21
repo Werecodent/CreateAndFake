@@ -21,7 +21,7 @@ public static class FakeMetaProviderTests
     [Fact]
     internal static Task FakeMetaProvider_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<FakeMetaProvider>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<FakeMetaProvider>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -30,7 +30,7 @@ public static class FakeMetaProviderTests
     [Fact]
     internal static Task FakeMetaProvider_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<FakeMetaProvider>(
+        return Tools.Tester.PreventsParameterMutationAsync<FakeMetaProvider>(
             TestContext.Current.CancellationToken,
             config
         );

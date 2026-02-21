@@ -132,16 +132,16 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual Task PreventsNullRefException<T>(
+    public virtual Task PreventsNullRefExceptionAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
     {
-        return PreventsNullRefException(typeof(T), canceler, optionConfiguration);
+        return PreventsNullRefExceptionAsync(typeof(T), canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public virtual async Task PreventsNullRefException(
+    public virtual async Task PreventsNullRefExceptionAsync(
         Type type,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -159,24 +159,29 @@ public class Tester(TesterOptions options) : ITester
 
         if (localOptions.IncludeConstructors)
         {
-            await checker.PreventsNullRefExceptionOnConstructors(type, true).ConfigureAwait(false);
+            await checker
+                .PreventsNullRefExceptionOnConstructorsAsync(type, true, canceler)
+                .ConfigureAwait(false);
         }
 
         await CreateInstanceAndTestMethodsAsync(
                 type,
                 localOptions,
-                checker.PreventsNullRefExceptionOnMethods
+                checker.PreventsNullRefExceptionOnMethodsAsync,
+                canceler
             )
             .ConfigureAwait(false);
 
         if (localOptions.IncludeStaticMethods)
         {
-            await checker.PreventsNullRefExceptionOnStatics(type, true).ConfigureAwait(false);
+            await checker
+                .PreventsNullRefExceptionOnStaticsAsync(type, true, canceler)
+                .ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual async Task PreventsNullRefException<T>(
+    public virtual async Task PreventsNullRefExceptionAsync<T>(
         T instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -195,30 +200,34 @@ public class Tester(TesterOptions options) : ITester
         if (localOptions.IncludeConstructors)
         {
             await checker
-                .PreventsNullRefExceptionOnConstructors(typeof(T), false)
+                .PreventsNullRefExceptionOnConstructorsAsync(typeof(T), false, canceler)
                 .ConfigureAwait(false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            await checker.PreventsNullRefExceptionOnMethods(instance).ConfigureAwait(false);
+            await checker
+                .PreventsNullRefExceptionOnMethodsAsync(instance, canceler)
+                .ConfigureAwait(false);
         }
         if (localOptions.IncludeStaticMethods)
         {
-            await checker.PreventsNullRefExceptionOnStatics(typeof(T), false).ConfigureAwait(false);
+            await checker
+                .PreventsNullRefExceptionOnStaticsAsync(typeof(T), false, canceler)
+                .ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual Task PreventsParameterMutation<T>(
+    public virtual Task PreventsParameterMutationAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
     {
-        return PreventsParameterMutation(typeof(T), canceler, optionConfiguration);
+        return PreventsParameterMutationAsync(typeof(T), canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public virtual async Task PreventsParameterMutation(
+    public virtual async Task PreventsParameterMutationAsync(
         Type type,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -237,25 +246,28 @@ public class Tester(TesterOptions options) : ITester
         if (localOptions.IncludeConstructors)
         {
             await checker
-                .PreventsMutationOnConstructors(type, true, canceler)
+                .PreventsMutationOnConstructorsAsync(type, true, canceler)
                 .ConfigureAwait(false);
         }
 
         await CreateInstanceAndTestMethodsAsync(
                 type,
                 localOptions,
-                o => checker.PreventsMutationOnMethods(o, canceler)
+                checker.PreventsMutationOnMethodsAsync,
+                canceler
             )
             .ConfigureAwait(false);
 
         if (localOptions.IncludeStaticMethods)
         {
-            await checker.PreventsMutationOnStatics(type, true, canceler).ConfigureAwait(false);
+            await checker
+                .PreventsMutationOnStaticsAsync(type, true, canceler)
+                .ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual async Task PreventsParameterMutation<T>(
+    public virtual async Task PreventsParameterMutationAsync<T>(
         T instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -274,23 +286,23 @@ public class Tester(TesterOptions options) : ITester
         if (localOptions.IncludeConstructors)
         {
             await checker
-                .PreventsMutationOnConstructors(typeof(T), false, canceler)
+                .PreventsMutationOnConstructorsAsync(typeof(T), false, canceler)
                 .ConfigureAwait(false);
         }
         if (localOptions.IncludeInstanceMethods)
         {
-            await checker.PreventsMutationOnMethods(instance, canceler).ConfigureAwait(false);
+            await checker.PreventsMutationOnMethodsAsync(instance, canceler).ConfigureAwait(false);
         }
         if (localOptions.IncludeStaticMethods)
         {
             await checker
-                .PreventsMutationOnStatics(typeof(T), false, canceler)
+                .PreventsMutationOnStaticsAsync(typeof(T), false, canceler)
                 .ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public virtual Task PassthroughWithNoExceptions<T>(
+    public virtual Task PassthroughWithNoExceptionsAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
@@ -302,11 +314,11 @@ public class Tester(TesterOptions options) : ITester
         }
 
         object instance = localOptions.Randomizer.Create<Injected<T>>()!.Dummy!;
-        return new ExceptionGuarder(localOptions).CallAllMethods(instance);
+        return new ExceptionGuarder(localOptions).CallAllMethodsAsync(instance, canceler);
     }
 
     /// <inheritdoc/>
-    public virtual Task PassthroughWithNoExceptions(
+    public virtual Task PassthroughWithNoExceptionsAsync(
         object instance,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -318,17 +330,19 @@ public class Tester(TesterOptions options) : ITester
             return Task.CompletedTask;
         }
 
-        return new ExceptionGuarder(localOptions).CallAllMethods(instance);
+        return new ExceptionGuarder(localOptions).CallAllMethodsAsync(instance, canceler);
     }
 
     /// <summary>Attempts to test all methods.</summary>
     /// <param name="type">Type being tested.</param>
     /// <param name="localOptions">Configured options to use.</param>
     /// <param name="checker">Test to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     private static async Task CreateInstanceAndTestMethodsAsync(
         Type type,
         TesterOptions localOptions,
-        Func<object, Task> checker
+        Func<object, CancellationToken, Task> checker,
+        CancellationToken canceler
     )
     {
         if (localOptions.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
@@ -339,7 +353,7 @@ public class Tester(TesterOptions options) : ITester
                     : localOptions.Randomizer.Create(type);
             try
             {
-                await checker.Invoke(instance).ConfigureAwait(false);
+                await checker.Invoke(instance, canceler).ConfigureAwait(false);
             }
             finally
             {
@@ -393,7 +407,7 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual async Task ValidateRandomDataParameters(
+    public virtual async Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -442,7 +456,7 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual async Task VerifyToolSetIntegrity(
+    public virtual async Task VerifyToolSetIntegrityAsync(
         ToolSet tools,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
@@ -476,7 +490,7 @@ public class Tester(TesterOptions options) : ITester
 
     /// <summary>Verifies the <paramref name="type"/> works with the tools.</summary>
     /// <param name="type">The <see cref="Type"/> to test with.</param>
-    /// <inheritdoc cref="VerifyToolSetIntegrity(ToolSet,CancellationToken,TesterMod)"/>
+    /// <inheritdoc cref="VerifyToolSetIntegrityAsync(ToolSet,CancellationToken,TesterMod)"/>
     private static async Task VerifyToolSetIntegrity(
         ToolSet tools,
         Type type,

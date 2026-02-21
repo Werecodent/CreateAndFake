@@ -7,7 +7,7 @@ public static class GenericFixerTests
     [Fact]
     internal static Task GenericFixer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(GenericFixer),
             TestContext.Current.CancellationToken
         );

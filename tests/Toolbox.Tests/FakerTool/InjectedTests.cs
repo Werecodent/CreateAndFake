@@ -9,7 +9,7 @@ public static class InjectedTests
     [Theory, RandomData]
     internal static Task Injected_GuardsNulls(Injected<InjectSample> sample)
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             sample,
             TestContext.Current.CancellationToken,
             opt =>
@@ -24,7 +24,7 @@ public static class InjectedTests
     [Theory, RandomData]
     internal static Task Injected_NoParameterMutation(Injected<InjectSample> sample)
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             sample,
             TestContext.Current.CancellationToken,
             opt =>

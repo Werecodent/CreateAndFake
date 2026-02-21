@@ -11,7 +11,7 @@ public static class DuplicatorOptionsTests
     [Fact]
     internal static Task DuplicatorOptions_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DuplicatorOptions>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<DuplicatorOptions>(
             TestContext.Current.CancellationToken
         );
     }
@@ -19,7 +19,7 @@ public static class DuplicatorOptionsTests
     [Fact]
     internal static Task DuplicatorOptions_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DuplicatorOptions>(
+        return Tools.Tester.PreventsParameterMutationAsync<DuplicatorOptions>(
             TestContext.Current.CancellationToken
         );
     }

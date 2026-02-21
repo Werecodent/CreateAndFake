@@ -18,7 +18,7 @@ public static class Behavior_T_Tests
     [Fact]
     internal static Task Behavior_T_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
             config
@@ -28,7 +28,7 @@ public static class Behavior_T_Tests
     [Fact]
     internal static Task Behavior_T_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation(
+        return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
             opt => config(opt) with { MethodsToIgnore = ["Throw"] }

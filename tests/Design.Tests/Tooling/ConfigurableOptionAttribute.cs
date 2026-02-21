@@ -7,7 +7,7 @@ public static class ConfigurableOptionAttributeTests
     [Fact]
     public static Task ConfigurableOptionAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<ConfigurableOptionAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ConfigurableOptionAttribute>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class ConfigurableOptionAttributeTests
     [Fact]
     public static Task ConfigurableOptionAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<ConfigurableOptionAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync<ConfigurableOptionAttribute>(
             TestContext.Current.CancellationToken
         );
     }

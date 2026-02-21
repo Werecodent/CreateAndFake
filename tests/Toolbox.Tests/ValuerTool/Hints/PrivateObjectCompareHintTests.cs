@@ -20,7 +20,7 @@ public sealed class PrivateObjectCompareHintTests : CompareHintTestBase<PrivateO
     [Fact]
     public override Task CompareHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefException<PublicObjectCompareHint>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<PublicObjectCompareHint>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [Tools.Randomizer.Create<DataHolderSample>()] }
         );

@@ -26,7 +26,7 @@ public static class AssertEnumerableTests
     [Fact]
     internal static Task AssertEnumerable_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<AssertEnumerable>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertEnumerable>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -35,7 +35,7 @@ public static class AssertEnumerableTests
     [Fact]
     internal static Task AssertEnumerable_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<AssertEnumerable>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertEnumerable>(
             TestContext.Current.CancellationToken,
             config
         );
@@ -44,7 +44,10 @@ public static class AssertEnumerableTests
     [Theory, RandomData]
     internal static async Task AssertEnumerable_CallsAndChains(Injected<AssertEnumerable> instance)
     {
-        RunResults results = await Tools.Runner.CallMethodsOn(instance.Dummy);
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r =>

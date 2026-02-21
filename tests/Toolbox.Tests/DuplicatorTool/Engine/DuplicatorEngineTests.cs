@@ -10,7 +10,7 @@ public static class DuplicatorEngineTests
     [Fact]
     internal static Task DuplicatorEngine_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefException<DuplicatorEngine>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<DuplicatorEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -30,7 +30,7 @@ public static class DuplicatorEngineTests
     [Fact]
     internal static Task DuplicatorEngine_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutation<DuplicatorEngine>(
+        return Tools.Tester.PreventsParameterMutationAsync<DuplicatorEngine>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
