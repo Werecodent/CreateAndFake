@@ -55,7 +55,7 @@ public static class MutationGuarderTests
         );
     }
 
-    //[Fact]
+    [Fact]
     internal static Task PreventsParameterMutation_OnStatics()
     {
         return Tools

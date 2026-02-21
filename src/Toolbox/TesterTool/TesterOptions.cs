@@ -90,7 +90,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableParameterMutationTests { get; init; } = true;
+    public bool DisableParameterMutationTests { get; init; } = false;
 
     /// <summary>If all PassthroughWithNoExceptions tests immediately pass instead.</summary>
     [ConfigurableOption]

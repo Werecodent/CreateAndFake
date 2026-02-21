@@ -71,12 +71,17 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 ? localOptions.Timeout
                 : TimeSpan.FromMilliseconds(30000);
 
-        Task<object?> task = Task.Run(async () =>
-            await Unwrapper.UnwrapResult(() => data.InvokeOn(instance)).ConfigureAwait(false)
-        );
-
+        Task<object?> task;
         using (CancellationTokenSource stopper = new())
         {
+            task = Task.Run(
+                async () =>
+                    await Unwrapper
+                        .UnwrapResult(() => data.InvokeOn(instance))
+                        .ConfigureAwait(false),
+                stopper.Token
+            );
+
             bool timedOut =
                 (await Task.WhenAny(task, Task.Delay(timeout, stopper.Token)).ConfigureAwait(false))
                 != task;
