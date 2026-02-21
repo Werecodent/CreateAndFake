@@ -30,8 +30,10 @@ internal static class ExceptionCreateHandlers
     /// <summary>Exceptions that shouldn't be registered as supported.</summary>
     private static readonly FrozenSet<Type> _FatalExceptions =
     [
+        typeof(AppDomainUnloadedException),
         typeof(AccessViolationException),
         typeof(ExecutionEngineException),
+        typeof(BadImageFormatException),
         typeof(StackOverflowException),
         typeof(OutOfMemoryException),
         typeof(ThreadAbortException),

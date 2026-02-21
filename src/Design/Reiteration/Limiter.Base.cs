@@ -114,7 +114,7 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
             result = duration * _tries - _delay.TotalMilliseconds;
         }
 
-        return TimeSpan.FromMilliseconds(Math.Min(result, TimeSpan.MaxValue.TotalMilliseconds));
+        return TimeSpan.FromMilliseconds(Math.Min(result, TimeSpan.MaxValue.TotalMilliseconds - 1));
     }
 
     /// <summary>Compares <see langword="this"/> to <paramref name="obj"/> by value.</summary>
