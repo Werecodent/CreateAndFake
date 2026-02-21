@@ -90,11 +90,11 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableParameterMutationTests { get; init; } = false;
+    public bool DisableParameterMutationTests { get; init; } = true;
 
     /// <summary>If all PassthroughWithNoExceptions tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisablePassthroughTests { get; init; } = true;
+    public bool DisablePassthroughTests { get; init; } = false;
 
     /// <summary><see cref="Type"/>s to be excluded for the framework integrity test.</summary>
     public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } =

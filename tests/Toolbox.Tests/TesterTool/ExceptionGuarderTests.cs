@@ -32,7 +32,7 @@ public static class ExceptionGuarderTests
         );
     }
 
-    //[Fact]
+    [Fact]
     internal static Task CallAllMethods_FailsWithException()
     {
         return Tools
