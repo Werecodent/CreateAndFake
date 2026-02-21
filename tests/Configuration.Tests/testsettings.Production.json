@@ -70,7 +70,8 @@
             ],
             "IgnoreAllExceptions": true,
             "DisableNullRefExceptionTests": true,
-            "DisableParameterMutationTests": true
+            "DisableParameterMutationTests": true,
+            "DisablePassthroughTests": true
         },
         "Valuer": {
             "IncludeFrameworkHints": false,

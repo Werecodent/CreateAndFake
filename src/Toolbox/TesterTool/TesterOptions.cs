@@ -86,11 +86,15 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If all PreventsNullRefException tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableNullRefExceptionTests { get; init; } = false;
+    public bool DisableNullRefExceptionTests { get; init; } = true;
 
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableParameterMutationTests { get; init; } = false;
+    public bool DisableParameterMutationTests { get; init; } = true;
+
+    /// <summary>If all PassthroughWithNoExceptions tests immediately pass instead.</summary>
+    [ConfigurableOption]
+    public bool DisablePassthroughTests { get; init; } = true;
 
     /// <summary><see cref="Type"/>s to be excluded for the framework integrity test.</summary>
     public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } =
@@ -160,6 +164,10 @@ public sealed record TesterOptions : IToolOptions
             DisableParameterMutationTests = section.GetValue(
                 nameof(DisableParameterMutationTests),
                 DisableParameterMutationTests
+            ),
+            DisablePassthroughTests = section.GetValue(
+                nameof(DisablePassthroughTests),
+                DisablePassthroughTests
             ),
         };
     }

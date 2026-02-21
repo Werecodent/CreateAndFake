@@ -1,4 +1,5 @@
 using CreateAndFake.Design.Data;
+using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Tests.IssueReplication;
 
@@ -20,8 +21,13 @@ public static class Issue021Tests
     [Theory, RandomData]
     internal static void Issue021_MutatorUsesSmartData(Sample sample)
     {
-        string original = sample.FirstName;
-        Tools.Mutator.Modify(sample);
-        NameData.Values.Assert().Contains(sample.FirstName);
+        Limiter.Few.Retry(
+            "Retry if completely random name is used due to random smart name match.",
+            () =>
+            {
+                Tools.Mutator.Modify(sample).Assert().Is(true);
+                NameData.Values.Assert().Contains(sample.FirstName);
+            }
+        );
     }
 }

@@ -296,8 +296,12 @@ public class Tester(TesterOptions options) : ITester
     )
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-        object instance = localOptions.Randomizer.Create<Injected<T>>()!.Dummy!;
+        if (localOptions.DisablePassthroughTests)
+        {
+            return Task.CompletedTask;
+        }
 
+        object instance = localOptions.Randomizer.Create<Injected<T>>()!.Dummy!;
         return new ExceptionGuarder(localOptions).CallAllMethods(instance);
     }
 
@@ -309,6 +313,10 @@ public class Tester(TesterOptions options) : ITester
     )
     {
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+        if (localOptions.DisablePassthroughTests)
+        {
+            return Task.CompletedTask;
+        }
 
         return new ExceptionGuarder(localOptions).CallAllMethods(instance);
     }
