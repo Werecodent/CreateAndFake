@@ -18,6 +18,11 @@ public sealed class FastRandom(bool onlyValidValues = true) : ValueRandom(onlyVa
     /// <inheritdoc/>
     public override byte[] NextBytes(short length)
     {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Cannot be negative.");
+        }
+
         byte[] buffer = new byte[length];
         lock (_Lock)
         {

@@ -124,6 +124,11 @@ public partial class Asserter : IDelegateAsserter
     )
         where T : Exception
     {
+        if (localOptions.DisableAssertThrowCatching)
+        {
+            throw e;
+        }
+
         if (e is T noWrap)
         {
             return noWrap;

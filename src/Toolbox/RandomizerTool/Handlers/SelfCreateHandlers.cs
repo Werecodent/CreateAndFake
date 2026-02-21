@@ -38,7 +38,12 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<IRunner>(rand => rand.Create<ToolSet>().Runner),
         new FactoryCreateHandler<ITester>(rand => rand.Create<ToolSet>().Tester),
         new FactoryCreateHandler<IValuer>(rand => rand.Create<ToolSet>().Valuer),
-        new FactoryCreateHandler<AsserterOptions>(CreateRandomOptionsBase<AsserterOptions>),
+        new FactoryCreateHandler<AsserterOptions>(rand =>
+            CreateRandomOptionsBase<AsserterOptions>(rand) with
+            {
+                DisableAssertThrowCatching = false,
+            }
+        ),
         new FactoryCreateHandler<DuplicatorOptions>(rand =>
             CreateRandomOptionsBase<DuplicatorOptions>(rand) with
             {

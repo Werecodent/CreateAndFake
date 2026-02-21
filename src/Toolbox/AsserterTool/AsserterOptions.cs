@@ -23,6 +23,13 @@ public sealed record AsserterOptions : IToolOptions
     public StringComparison StringCompareOption { get; init; } = StringComparison.InvariantCulture;
 
     /// <summary>
+    ///     If set to <see langword="true"/>, all exceptions will be rethrown instead of
+    ///     successfully caught. Can be used to look at the exceptions being thrown during testing.
+    /// </summary>
+    [ConfigurableOption]
+    public bool DisableAssertThrowCatching { get; init; } = false;
+
+    /// <summary>
     ///     Creates options from <see langword="this"/>
     ///     overridden with values from <paramref name="config"/>.
     /// </summary>
@@ -38,6 +45,10 @@ public sealed record AsserterOptions : IToolOptions
 
         return this with
         {
+            DisableAssertThrowCatching = section.GetValue(
+                nameof(DisableAssertThrowCatching),
+                DisableAssertThrowCatching
+            ),
             StringCompareOption = section.GetValue(
                 nameof(StringCompareOption),
                 StringCompareOption

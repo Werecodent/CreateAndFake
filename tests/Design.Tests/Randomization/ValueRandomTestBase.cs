@@ -12,7 +12,6 @@ public abstract class ValueRandomTestBase<T>
     [
         typeof(NotSupportedException),
         typeof(ArgumentOutOfRangeException),
-        typeof(OverflowException),
     ];
 
     private static readonly ValueRandom _TestInstance = Tools.Randomizer.Create<T>();
@@ -33,6 +32,15 @@ public abstract class ValueRandomTestBase<T>
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = ignorableExceptions }
         );
+    }
+
+    [Fact]
+    public void NextBytes_PreventsNegatives()
+    {
+        Tools
+            .Gen.Next(short.MinValue, (short)-1)
+            .Assert(_TestInstance.NextBytes)
+            .Throws<ArgumentOutOfRangeException>();
     }
 
     [Fact]

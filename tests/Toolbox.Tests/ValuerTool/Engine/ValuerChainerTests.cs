@@ -11,7 +11,6 @@ public static class ValuerChainerTests
             IgnorableExceptions =
             [
                 typeof(NotSupportedException),
-                typeof(InsufficientExecutionStackException),
                 typeof(ToolException),
                 typeof(EngineException),
             ],

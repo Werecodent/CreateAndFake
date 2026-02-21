@@ -19,7 +19,6 @@ public static class AsserterTests
                 typeof(TimeoutException),
                 typeof(NotSupportedException),
                 typeof(TargetException),
-                typeof(InsufficientExecutionStackException),
                 typeof(InvalidCastException),
             ],
         };

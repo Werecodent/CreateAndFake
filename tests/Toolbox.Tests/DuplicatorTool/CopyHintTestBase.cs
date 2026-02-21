@@ -25,8 +25,6 @@ public abstract class CopyHintTestBase<T>(
             [
                 typeof(NotSupportedException),
                 typeof(TargetParameterCountException),
-                typeof(InsufficientExecutionStackException),
-                typeof(OverflowException),
                 typeof(ArgumentException),
                 typeof(ToolException),
                 typeof(SerializationException),

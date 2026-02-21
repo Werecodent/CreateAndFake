@@ -55,6 +55,11 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <inheritdoc/>
     public override byte[] NextBytes(short length)
     {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Cannot be negative.");
+        }
+
         Random gen;
         lock (_lock)
         {

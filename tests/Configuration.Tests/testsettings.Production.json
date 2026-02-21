@@ -2,7 +2,8 @@
     "CreateAndFake": {
         "Seed": 2,
         "Asserter": {
-            "StringCompareOption": "CurrentCulture"
+            "StringCompareOption": "CurrentCulture",
+            "DisableAssertThrowCatching": true
         },
         "Duplicator": {
             "IncludeFrameworkHints": false,

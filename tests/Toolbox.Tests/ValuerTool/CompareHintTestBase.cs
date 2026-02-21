@@ -34,7 +34,6 @@ public abstract class CompareHintTestBase<T>(
                 typeof(TargetException),
                 typeof(InvalidOperationException),
                 typeof(TargetParameterCountException),
-                typeof(InsufficientExecutionStackException),
                 typeof(ArgumentException),
                 typeof(FakeCallException),
                 typeof(TimeoutException),

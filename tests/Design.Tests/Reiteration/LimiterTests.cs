@@ -8,7 +8,6 @@ public static class LimiterTests
     private static readonly FrozenSet<Type> ignorableExceptions =
     [
         typeof(ArgumentOutOfRangeException),
-        typeof(OverflowException),
         typeof(TimeoutException),
         typeof(FormatException),
     ];

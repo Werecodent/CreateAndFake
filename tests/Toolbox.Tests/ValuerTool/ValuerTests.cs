@@ -16,7 +16,6 @@ public static class ValuerTests
                 typeof(ToolException),
                 typeof(TimeoutException),
                 typeof(NotSupportedException),
-                typeof(InsufficientExecutionStackException),
             ],
         };
 

@@ -15,6 +15,11 @@ public sealed class SecureRandom(bool onlyValidValues = true) : ValueRandom(only
     /// <inheritdoc/>
     public override byte[] NextBytes(short length)
     {
+        if (length < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), length, "Cannot be negative.");
+        }
+
         byte[] buffer = new byte[length];
         _Gen.GetBytes(buffer);
         return buffer;
