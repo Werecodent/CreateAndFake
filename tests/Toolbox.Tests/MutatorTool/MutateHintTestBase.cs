@@ -1,4 +1,4 @@
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.MutatorTool.Engine;
 using CreateAndFake.Samples.Scenarios;

@@ -1,4 +1,6 @@
-﻿namespace CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Types;
+
+namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>
 ///     Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.

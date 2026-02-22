@@ -37,7 +37,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>Cap to iterating <see cref="IEnumerable"/>s.</summary>
     [ConfigurableOption]
-    public int IterationLimit { get; init; } = 5000;
+    public int IterationLimit { get; init; } = 100000;
 
     /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
     [ConfigurableOption]

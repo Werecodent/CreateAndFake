@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Types;
 using CreateAndFake.ValuerTool.Engine;
 using CreateAndFake.ValuerTool.Handlers;
 

@@ -4,7 +4,8 @@ namespace CreateAndFake.Design.Randomization;
 
 /// <summary>For slowly generating cryptographically secure random values.</summary>
 /// <inheritdoc/>
-public sealed class SecureRandom(bool onlyValidValues = true) : ValueRandom(onlyValidValues)
+public sealed class SecureRandom(int iterationLimit = 100000, bool onlyValidValues = true)
+    : ValueRandom(iterationLimit, onlyValidValues)
 {
     /// <inheritdoc/>
     public override int? InitialSeed { get; } = null;

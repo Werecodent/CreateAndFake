@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.ValuerTool.Engine;
 

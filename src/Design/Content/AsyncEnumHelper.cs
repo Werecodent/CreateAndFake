@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.Design.Content;
 
@@ -18,7 +19,7 @@ public static class AsyncEnumHelper
     /// <summary>
     ///     Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.
     /// </summary>
-    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
@@ -56,7 +57,7 @@ public static class AsyncEnumHelper
 #pragma warning restore IDE0390
 
     /// <summary>Determines if the <paramref name="collection"/> has any items.</summary>
-    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to check for an item via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
@@ -82,8 +83,95 @@ public static class AsyncEnumHelper
         return false;
     }
 
+#pragma warning disable CA1068 // Token is relevant to the core functionality for the method.
+
+    /// <summary>
+    ///     Safely executes <paramref name="itemHandler"/> on
+    ///     the contents of the <paramref name="collection"/>.
+    /// </summary>
+    /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Series to iterate.</param>
+    /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="itemHandler">
+    ///     Behavior to run on each <paramref name="collection"/> item.
+    /// </param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <remarks>Properly handles cancellation and prevents infinite iteration.</remarks>
+    /// <exception cref="EngineException">
+    ///     If the <paramref name="collection"/> size is <c>&gt;= iterationLimit</c>.
+    /// </exception>
+    public static async Task ForEachAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        int iterationLimit,
+        CancellationToken canceler,
+        Action<T> itemHandler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(itemHandler);
+        if (collection == null)
+        {
+            return;
+        }
+
+        canceler.ThrowIfCancellationRequested();
+
+        int i = 0;
+        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            if (i++ >= iterationLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({iterationLimit}). "
+                        + "Increase via the ValuerOptions.IterationLimit."
+                );
+            }
+
+            canceler.ThrowIfCancellationRequested();
+            itemHandler.Invoke(item);
+        }
+
+        canceler.ThrowIfCancellationRequested();
+    }
+
+    /// <inheritdoc cref="ForEachAsync{T}(IAsyncEnumerable{T},int,CancellationToken,Action{T})"/>
+    public static async Task ForEachAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        int iterationLimit,
+        CancellationToken canceler,
+        Func<T, Task> itemHandler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(itemHandler);
+        if (collection == null)
+        {
+            return;
+        }
+
+        canceler.ThrowIfCancellationRequested();
+
+        int i = 0;
+        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            if (i++ >= iterationLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({iterationLimit}). "
+                        + "Increase via the ValuerOptions.IterationLimit."
+                );
+            }
+
+            canceler.ThrowIfCancellationRequested();
+            await itemHandler(item).ConfigureAwait(false);
+        }
+
+        canceler.ThrowIfCancellationRequested();
+    }
+
+#pragma warning restore CA1068
+
     /// <summary>Converts the <paramref name="collection"/> to an <see cref="IList{T}"/>.</summary>
-    /// <typeparam name="T">The <paramref name="collection"/> item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>

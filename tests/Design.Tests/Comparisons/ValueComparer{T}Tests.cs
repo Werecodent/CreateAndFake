@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Comparisons;
 using CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace CreateAndFake.Design.Tests.Comparisons;
 
 public static class ValueComparer_T_Tests
 {

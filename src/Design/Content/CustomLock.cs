@@ -1,5 +1,7 @@
 namespace CreateAndFake.Design.Content;
 
+#pragma warning disable IDE0001 // False positive, Lock is not always CustomLock.
+
 /// <summary>
 ///     Type for <see langword="lock"/>s to prevent
 ///     <see cref="object"/> <see cref="Type"/> conflicts.
@@ -23,3 +25,5 @@ public sealed class CustomLock(Guid? id = null)
         return Id.GetHashCode();
     }
 }
+
+#pragma warning restore IDE0001

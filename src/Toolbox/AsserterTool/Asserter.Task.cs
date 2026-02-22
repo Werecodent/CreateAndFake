@@ -1,5 +1,6 @@
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.AsserterTool;
 

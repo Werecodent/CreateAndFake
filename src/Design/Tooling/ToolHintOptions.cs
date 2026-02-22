@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Tooling;
 

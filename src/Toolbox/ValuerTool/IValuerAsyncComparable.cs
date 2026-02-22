@@ -1,4 +1,4 @@
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.ValuerTool;
 

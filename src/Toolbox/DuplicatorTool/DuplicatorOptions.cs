@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Frozen;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.DuplicatorTool;
@@ -17,13 +17,12 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
     /// <summary>Finds contents for objects.</summary>
     public required IExtractor Extractor { get; init; }
 
+    /// <summary>Handles value comparison to ensure object cloning.</summary>
+    public required IValuer Valuer { get; init; }
+
     /// <summary>If results are verified via the <see cref="Asserter"/>.</summary>
     [ConfigurableOption]
     public bool VerifyCloneResult { get; init; } = true;
-
-    /// <summary>Cap to iterating <see cref="IEnumerable"/>s.</summary>
-    [ConfigurableOption]
-    public int IterationCopyLimit { get; init; } = 5000;
 
     /// <summary>Types that need no further inspection for serialization/deserialization.</summary>
     public FrozenSet<Type> SerializableTypes { get; init; } =
@@ -51,7 +50,6 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
             ),
             IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
             MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            IterationCopyLimit = section.GetValue(nameof(IterationCopyLimit), IterationCopyLimit),
             VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
         };
     }

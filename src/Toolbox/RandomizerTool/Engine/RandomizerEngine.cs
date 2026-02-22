@@ -1,7 +1,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.RandomizerTool.Engine;

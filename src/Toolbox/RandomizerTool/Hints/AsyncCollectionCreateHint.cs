@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;

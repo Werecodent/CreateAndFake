@@ -1,6 +1,7 @@
 using System.Reflection;
+using CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Types;
 
 /// <summary>Provides information only available at runtime.</summary>
 public static class RuntimeDetails

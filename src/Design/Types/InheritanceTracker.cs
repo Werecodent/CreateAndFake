@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Types;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
 public sealed class InheritanceTracker : ITypeSupporter

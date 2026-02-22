@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.DuplicatorTool.Engine;
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>Compares <see langword="object"/>s by reference.</summary>
 /// <remarks>

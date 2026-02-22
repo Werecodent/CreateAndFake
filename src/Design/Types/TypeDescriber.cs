@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Extensions;
 using Microsoft.CodeAnalysis;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Types;
 
 /// <summary>Provides common <see cref="Type"/> patterns for getting additional details.</summary>
 public static class TypeDescriber

@@ -1,4 +1,4 @@
-﻿using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;

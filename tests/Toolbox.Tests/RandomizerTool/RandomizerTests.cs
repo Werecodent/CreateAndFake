@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RandomizerTool.Engine;

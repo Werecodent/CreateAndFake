@@ -1,13 +1,15 @@
 ﻿using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization.Handlers;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Randomization;
 
 /// <inheritdoc cref="IRandom"/>
+/// <param name="iterationLimit"><inheritdoc cref="IterationLimit" path="/summary"/></param>
 /// <param name="onlyValidValues"><inheritdoc cref="OnlyValidValues" path="/summary"/></param>
-public abstract class ValueRandom(bool onlyValidValues) : IRandom
+public abstract class ValueRandom(int iterationLimit, bool onlyValidValues) : IRandom
 {
     /// <summary>Handlers for all the supported types.</summary>
     private static readonly IValueHandler[] _Handlers =
@@ -34,6 +36,16 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
 
     /// <summary>All supported value types.</summary>
     public static IEnumerable<Type> SupportedTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
+
+    /// <summary>Max supported size for iterating uncollected sequences.</summary>
+    protected int IterationLimit { get; } =
+        (iterationLimit > 0)
+            ? iterationLimit
+            : throw new ArgumentOutOfRangeException(
+                nameof(iterationLimit),
+                iterationLimit,
+                "Limit must be positive."
+            );
 
     /// <inheritdoc/>
     public bool OnlyValidValues { get; } = onlyValidValues;
@@ -190,6 +202,28 @@ public abstract class ValueRandom(bool onlyValidValues) : IRandom
     [return: NotNullIfNotNull(nameof(items))]
     public IEnumerable<T>? NextSequence<T>(IEnumerable<T>? items)
     {
-        return items?.OrderBy(_ => Next<int>());
+        return items == null ? null : CapSize(items).OrderBy(_ => Next<int>());
+    }
+
+    /// <summary>Iterates <paramref name="items"/>.</summary>
+    /// <typeparam name="T">The collection's item <see cref="Type"/>.</typeparam>
+    /// <param name="items">Series to iterate.</param>
+    /// <returns><paramref name="items"/></returns>
+    /// <exception cref="EngineException">
+    ///     If the <paramref name="items"/> size is <c>&gt;= IterationLimit</c>.
+    /// </exception>
+    private IEnumerable<T> CapSize<T>(IEnumerable<T> items)
+    {
+        int i = 0;
+        foreach (T item in items)
+        {
+            if (i++ >= IterationLimit)
+            {
+                throw new EngineException(
+                    $"Reached {nameof(ValueRandom)} max iteration limit ({IterationLimit})."
+                );
+            }
+            yield return item;
+        }
     }
 }

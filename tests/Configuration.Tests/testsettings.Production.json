@@ -9,7 +9,6 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxHintRecursion": 9,
-            "IterationCopyLimit": 876,
             "VerifyCloneResult": false
         },
         "Extractor": {
@@ -38,7 +37,8 @@
             "CollectionMaxSize": 4,
             "StringMinSize": 2,
             "StringMaxSize": 4,
-            "StringCharacterSet": "ABC1"
+            "StringCharacterSet": "ABC1",
+            "IncludeInfinityAndNaNGeneration": true
         },
         "Runner": {
             "InheritIReflectableTypeOnFakedType": true,

@@ -2,6 +2,7 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.ValuerTool;
 

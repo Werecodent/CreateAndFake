@@ -80,7 +80,18 @@ public sealed class ToolSet(
     /// <returns>The created reflection tools.</returns>
     private static ToolSet Create(int seed, IConfigurationSection? config)
     {
-        IRandom gen = new SeededRandom(seed);
+        IRandom gen = new SeededRandom(
+            config
+                ?.GetSection(nameof(Valuer))
+                .GetValue(nameof(ValuerOptions.IterationLimit), 100000)
+                ?? 100000,
+            !config
+                ?.GetSection(nameof(Randomizer))
+                .GetValue(nameof(RandomizerOptions.IncludeInfinityAndNaNGeneration), false)
+                ?? false,
+            seed
+        );
+
         Valuer valuer = new(new ValuerOptions { Gen = gen }.WithConfig(config));
         Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer }.WithConfig(config));
         Randomizer randomizer = new(
@@ -117,6 +128,7 @@ public sealed class ToolSet(
                 Gen = gen,
                 Asserter = asserter,
                 Extractor = extractor,
+                Valuer = valuer,
             }.WithConfig(config)
         );
         Runner runner = new(

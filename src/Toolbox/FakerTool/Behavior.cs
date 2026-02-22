@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.FakerTool;
 

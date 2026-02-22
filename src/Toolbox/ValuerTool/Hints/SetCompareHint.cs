@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;

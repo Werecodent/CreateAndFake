@@ -1,10 +1,10 @@
 using System.Reflection;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace CreateAndFake.Design.Tests.Types;
 
 public static class TypeDescriberTests
 {

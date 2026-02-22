@@ -1,9 +1,10 @@
-﻿using CreateAndFake.Design.Randomization;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
-public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
+public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new FastRandom(10000))
 {
     private static readonly double[] _BadDoubles =
     [
@@ -22,7 +23,7 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     [Fact]
     internal static void Create_InvalidValuesPossible()
     {
-        FastRandom random = new(false);
+        FastRandom random = new(10, false);
 
         new Limiter(20000).StallUntil(
             "Trying to create bad double.",
@@ -39,7 +40,7 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
     [Fact]
     internal static void Create_OnlyValidValuesPreventsInvalids()
     {
-        FastRandom random = new(true);
+        FastRandom random = new(10, true);
 
         Limiter.Myriad.Repeat(
             "Trying to avoid bad doubles.",
@@ -51,5 +52,21 @@ public sealed class FastRandomTests : ValueRandomTestBase<FastRandom>
             () => _BadFloats.Assert().ContainsNot(random.Next<float>()),
             TestContext.Current.CancellationToken
         );
+    }
+
+    [Fact]
+    internal static void NextSequence_SizeCapped()
+    {
+        static IEnumerable<int> Generate(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                yield return i;
+            }
+        }
+
+        FastRandom gen = new(2);
+        gen.NextSequence(Generate(2)).Assert().HasCount(2);
+        gen.Assert(g => g.NextSequence(Generate(3)).Count()).Throws<EngineException>();
     }
 }

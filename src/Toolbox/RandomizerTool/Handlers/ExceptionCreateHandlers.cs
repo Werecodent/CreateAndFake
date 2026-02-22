@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Handlers;

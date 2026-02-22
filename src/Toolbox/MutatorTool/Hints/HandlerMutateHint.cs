@@ -1,6 +1,6 @@
 using System.Text;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.MutatorTool.Engine;
 using CreateAndFake.MutatorTool.Handlers;
 

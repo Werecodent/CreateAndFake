@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool.Hints;
 

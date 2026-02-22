@@ -1,5 +1,5 @@
-﻿using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;

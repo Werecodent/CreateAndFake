@@ -86,6 +86,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
             hasItems = true;
             break;
         }
+        canceler.ThrowIfCancellationRequested();
 
         if (!hasItems)
         {
@@ -117,11 +118,37 @@ public partial class Asserter : IAsyncEnumerableAsserter
         string? details = null
     )
     {
-        HasCount(
-            count,
-            await AsyncEnumHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
-            details
-        );
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '{count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        await AsyncEnumHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+            )
+            .ConfigureAwait(false);
+
+        if (i != count)
+        {
+            throw new AssertException(
+                $"Expected collection of '{count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -157,16 +184,21 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool found = false;
         StringBuilder contents = new();
-        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            found =
-                found
-                || await localOptions
-                    .Valuer.EqualsAsync(content, item, canceler)
-                    .ConfigureAwait(false);
+        await AsyncEnumHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                async item =>
+                {
+                    found |= await localOptions
+                        .Valuer.EqualsAsync(content, item, canceler)
+                        .ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
-        }
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+                }
+            )
+            .ConfigureAwait(false);
 
         if (!found)
         {
@@ -208,14 +240,21 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool notFound = true;
         StringBuilder contents = new();
-        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            notFound &= !await localOptions
-                .Valuer.EqualsAsync(content, item, canceler)
-                .ConfigureAwait(false);
+        await AsyncEnumHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                async item =>
+                {
+                    notFound &= !await localOptions
+                        .Valuer.EqualsAsync(content, item, canceler)
+                        .ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
-        }
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+                }
+            )
+            .ConfigureAwait(false);
 
         if (!notFound)
         {

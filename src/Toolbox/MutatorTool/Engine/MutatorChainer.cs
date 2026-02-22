@@ -1,5 +1,5 @@
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.MutatorTool.Engine;

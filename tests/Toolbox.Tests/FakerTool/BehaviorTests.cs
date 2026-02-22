@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.FakerTool;

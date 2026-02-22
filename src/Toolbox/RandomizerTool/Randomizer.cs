@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool;

@@ -1,5 +1,5 @@
-﻿using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;

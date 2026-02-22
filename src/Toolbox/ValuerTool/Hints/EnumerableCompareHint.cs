@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;

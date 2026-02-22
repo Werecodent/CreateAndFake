@@ -3,6 +3,7 @@ using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Engine;
 

@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Json;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;

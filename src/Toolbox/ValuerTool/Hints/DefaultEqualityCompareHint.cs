@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;

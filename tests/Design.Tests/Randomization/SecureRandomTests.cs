@@ -2,4 +2,5 @@
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
-public sealed class SecureRandomTests : ValueRandomTestBase<SecureRandom>;
+public sealed class SecureRandomTests()
+    : ValueRandomTestBase<SecureRandom>(new SecureRandom(10000));

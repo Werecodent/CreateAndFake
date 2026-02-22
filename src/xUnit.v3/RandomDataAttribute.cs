@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;

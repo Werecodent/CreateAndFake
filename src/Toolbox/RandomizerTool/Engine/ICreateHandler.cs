@@ -1,4 +1,4 @@
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.RandomizerTool.Engine;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace CreateAndFake.Design.Tests.Comparisons;
 
 #pragma warning disable CA1859 // False positive; needed for generic resolution.
 

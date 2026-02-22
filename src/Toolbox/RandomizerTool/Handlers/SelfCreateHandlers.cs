@@ -25,6 +25,8 @@ internal static class SelfCreateHandlers
             ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>())
         ),
         new FactoryCreateHandler<SeededRandom>(rand => new SeededRandom(
+            rand.Options.Gen.Next(7000, 8000),
+            false,
             rand.Options.Gen.Next<int>()
         )),
         new FactoryCreateHandler<Limiter>(rand =>

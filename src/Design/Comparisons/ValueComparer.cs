@@ -1,6 +1,7 @@
 ﻿using System.Collections;
+using CreateAndFake.Design.Content;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>
 ///     Compares <see langword="object"/>s/collections

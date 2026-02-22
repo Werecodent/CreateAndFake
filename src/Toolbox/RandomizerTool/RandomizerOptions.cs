@@ -54,6 +54,12 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     public FrozenSet<char> StringCharacterSet { get; init; } =
         FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
+    /// <summary>
+    ///     Flag to include generating invalid floating-point values (NaN, -∞ and +∞).
+    /// </summary>
+    [ConfigurableOption]
+    public bool IncludeInfinityAndNaNGeneration { get; init; } = false;
+
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;
 
@@ -80,6 +86,10 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
             CollectionMaxSize = section.GetValue(nameof(CollectionMaxSize), CollectionMaxSize),
             StringMinSize = section.GetValue(nameof(StringMinSize), StringMinSize),
             StringMaxSize = section.GetValue(nameof(StringMaxSize), StringMaxSize),
+            IncludeInfinityAndNaNGeneration = section.GetValue(
+                nameof(IncludeInfinityAndNaNGeneration),
+                IncludeInfinityAndNaNGeneration
+            ),
             IncludeFrameworkHints = section.GetValue(
                 nameof(IncludeFrameworkHints),
                 IncludeFrameworkHints

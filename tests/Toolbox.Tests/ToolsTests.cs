@@ -4,6 +4,7 @@ using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Extensions;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Handlers;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RandomizerTool.Handlers;

@@ -1,5 +1,5 @@
 ﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;

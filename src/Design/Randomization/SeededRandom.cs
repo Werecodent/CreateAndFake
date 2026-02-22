@@ -1,4 +1,4 @@
-﻿using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -28,14 +28,14 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <inheritdoc/>
     public override int? InitialSeed { get; }
 
-    /// <inheritdoc cref="SeededRandom(bool,int?)"/>
+    /// <inheritdoc cref="SeededRandom(int, bool,int?)"/>
     public SeededRandom(int? seed = null)
-        : this(true, seed) { }
+        : this(100000, true, seed) { }
 
     /// <param name="seed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
-    /// <inheritdoc cref="SeededRandom(bool, int?, int)"/>
-    public SeededRandom(bool onlyValidValues, int? seed = null)
-        : base(onlyValidValues)
+    /// <inheritdoc cref="SeededRandom(int, bool, int?, int)"/>
+    public SeededRandom(int iterationLimit, bool onlyValidValues, int? seed = null)
+        : base(iterationLimit, onlyValidValues)
     {
         InitialSeed = seed ?? Environment.TickCount;
         _seed = InitialSeed.Value;
@@ -44,9 +44,9 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <param name="initialSeed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
     /// <param name="seed"><inheritdoc cref="_seed" path="/summary"/></param>
     /// <inheritdoc cref="SeededRandom"/>
-    /// <inheritdoc cref="ValueRandom(bool)"/>
-    private SeededRandom(bool onlyValidValues, int? initialSeed, int seed)
-        : base(onlyValidValues)
+    /// <inheritdoc cref="ValueRandom(int,bool)"/>
+    private SeededRandom(int iterationLimit, bool onlyValidValues, int? initialSeed, int seed)
+        : base(iterationLimit, onlyValidValues)
     {
         InitialSeed = initialSeed;
         _seed = seed;
@@ -75,7 +75,7 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     /// <inheritdoc/>
     public IDeepCloneable DeepClone()
     {
-        return new SeededRandom(OnlyValidValues, InitialSeed, Seed);
+        return new SeededRandom(IterationLimit, OnlyValidValues, InitialSeed, Seed);
     }
 }
 

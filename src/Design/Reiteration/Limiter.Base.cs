@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.Design.Reiteration;
 

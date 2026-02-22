@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake.Design.Content;
+namespace CreateAndFake.Design.Types;
 
 /// <summary>Provides common <see cref="ITypeSupporter"/> patterns.</summary>
 public static class TypeSupporter

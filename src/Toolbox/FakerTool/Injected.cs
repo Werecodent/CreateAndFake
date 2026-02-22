@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.FakerTool;
 

@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Tooling;
 

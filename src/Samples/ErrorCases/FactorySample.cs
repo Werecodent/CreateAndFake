@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Samples.ErrorCases;
 

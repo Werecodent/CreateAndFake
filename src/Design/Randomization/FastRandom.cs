@@ -4,7 +4,8 @@
 
 /// <summary>For quickly generating cryptographically insecure random values.</summary>
 /// <inheritdoc/>
-public sealed class FastRandom(bool onlyValidValues = true) : ValueRandom(onlyValidValues)
+public sealed class FastRandom(int iterationLimit = 100000, bool onlyValidValues = true)
+    : ValueRandom(iterationLimit, onlyValidValues)
 {
     /// <summary>Prevents concurrency issues for <see cref="_Gen"/>.</summary>
     private static readonly Lock _Lock = new();

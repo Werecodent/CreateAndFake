@@ -2,6 +2,7 @@
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Reiteration;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;

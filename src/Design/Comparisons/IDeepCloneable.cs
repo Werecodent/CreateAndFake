@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Design.Content;
+﻿namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>Provides self copy-by-value functionality.</summary>
 public interface IDeepCloneable

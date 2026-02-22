@@ -1,4 +1,4 @@
-﻿using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design.Comparisons;
 using CreateAndFake.DuplicatorTool.Hints;
 using CreateAndFake.Samples.Scenarios;
 

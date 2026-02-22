@@ -3,9 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Reflection;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Engine;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
@@ -151,11 +152,11 @@ public sealed class CollectionCopyHint : CopyHint
         int index = 0;
         foreach (object item in source)
         {
-            if (index++ >= duplicator.Options.IterationCopyLimit)
+            if (index++ >= duplicator.Options.Valuer.Options.IterationLimit)
             {
                 throw new EngineException(
                     $"Reached {nameof(Enumerable)} max iteration limit ({index}) "
-                        + $"from {nameof(DuplicatorOptions.IterationCopyLimit)}."
+                        + $"from {nameof(ValuerOptions.IterationLimit)}."
                 );
             }
 

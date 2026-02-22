@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -125,7 +127,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc cref="Compare"/>
-    /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="T">The enumerable's item <see cref="Type"/>.</typeparam>
     private static async IAsyncEnumerable<Difference> ContentsCompareAsync<T>(
         IAsyncEnumerable<T> expected,
         IAsyncEnumerable<T> actual,
@@ -208,34 +210,27 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     }
 
     /// <inheritdoc cref="GetHashCodeAsync"/>
-    /// <typeparam name="T">The enumerable item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="T">The enumerable's item <see cref="Type"/>.</typeparam>
     private static async Task<int> ContentsGetHashCodeAsync<T>(
         IAsyncEnumerable<T> item,
         IValuerChainer chainer,
         CancellationToken canceler
     )
     {
-        canceler.ThrowIfCancellationRequested();
-
-        int index = 0;
         int hash = ValueComparer.BaseHash;
-        await foreach (T current in item.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            if (index++ >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
-                        + $"from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
+        await AsyncEnumHelper
+            .ForEachAsync(
+                item,
+                chainer.Options.IterationLimit,
+                canceler,
+                async current =>
+                {
+                    hash *= ValueComparer.HashMultiplier;
+                    hash += await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
+                }
+            )
+            .ConfigureAwait(false);
 
-            canceler.ThrowIfCancellationRequested();
-            hash =
-                hash * ValueComparer.HashMultiplier
-                + await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
-        }
-
-        canceler.ThrowIfCancellationRequested();
         return hash;
     }
 }

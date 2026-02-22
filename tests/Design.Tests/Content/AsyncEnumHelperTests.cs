@@ -19,7 +19,8 @@ public static class AsyncEnumHelperTests
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncEnumHelper),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(EngineException)] }
         );
     }
 
@@ -93,6 +94,115 @@ public static class AsyncEnumHelperTests
         using CancellationTokenSource source = new();
         await AsyncEnumHelper
             .HasAnyAsync(AsyncEnumHelper.CreateCancelingIteration<string>(source), source.Token)
+            .Assert()
+            .Throws<OperationCanceledException>();
+    }
+
+    [Theory, RandomData]
+    internal static async Task ForEachAsync_IteratesSuccessfully(
+        [Size(2)] IAsyncEnumerable<string> data
+    )
+    {
+        List<string> results = [];
+        await AsyncEnumHelper.ForEachAsync(data, 2, new CancellationToken(false), results.Add);
+        await data.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+
+        results.Clear();
+        await AsyncEnumHelper.ForEachAsync(
+            data,
+            2,
+            new CancellationToken(false),
+            v =>
+            {
+                results.Add(v);
+                return Task.CompletedTask;
+            }
+        );
+        await data.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task ForEachAsync_HasIterationLimit(
+        [Size(2)] IAsyncEnumerable<string> data
+    )
+    {
+        await AsyncEnumHelper
+            .ForEachAsync(data, 1, new CancellationToken(false), _ => { })
+            .Assert()
+            .Throws<EngineException>();
+
+        await AsyncEnumHelper
+            .ForEachAsync(data, 1, new CancellationToken(false), _ => Task.CompletedTask)
+            .Assert()
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal static async Task ForEachAsync_CanBeCanceledInitially(
+        [Size(0)] IAsyncEnumerable<string> data
+    )
+    {
+        await AsyncEnumHelper
+            .ForEachAsync(data, 0, new CancellationToken(true), _ => { })
+            .Assert()
+            .Throws<OperationCanceledException>();
+
+        await AsyncEnumHelper
+            .ForEachAsync(data, 0, new CancellationToken(true), _ => Task.CompletedTask)
+            .Assert()
+            .Throws<OperationCanceledException>();
+    }
+
+    [Fact]
+    internal static async Task ForEachAsync_CanBeCanceledAtIteration()
+    {
+        using CancellationTokenSource source = new();
+        await AsyncEnumHelper
+            .ForEachAsync(
+                AsyncEnumHelper.CreateCancelingIteration<string>(source),
+                10,
+                source.Token,
+                _ => { }
+            )
+            .Assert()
+            .Throws<OperationCanceledException>();
+
+        using CancellationTokenSource source2 = new();
+        await AsyncEnumHelper
+            .ForEachAsync(
+                AsyncEnumHelper.CreateCancelingIteration<string>(source2),
+                10,
+                source.Token,
+                _ => Task.CompletedTask
+            )
+            .Assert()
+            .Throws<OperationCanceledException>();
+    }
+
+    [Theory, RandomData]
+    internal static async Task ForEachAsync_CanBeCanceledAfterIterating(
+        [Size(1)] ICollection<string> data
+    )
+    {
+        using CancellationTokenSource source = new();
+        await AsyncEnumHelper
+            .ForEachAsync(
+                AsyncEnumHelper.CreateCancelingIteration(data, source),
+                data.Count,
+                source.Token,
+                _ => { }
+            )
+            .Assert()
+            .Throws<OperationCanceledException>();
+
+        using CancellationTokenSource source2 = new();
+        await AsyncEnumHelper
+            .ForEachAsync(
+                AsyncEnumHelper.CreateCancelingIteration(data, source2),
+                data.Count,
+                source.Token,
+                _ => Task.CompletedTask
+            )
             .Assert()
             .Throws<OperationCanceledException>();
     }
