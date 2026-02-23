@@ -91,6 +91,7 @@ public sealed class SetCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
+                chainer.Options.IterationLimit,
                 canceler
             );
         }

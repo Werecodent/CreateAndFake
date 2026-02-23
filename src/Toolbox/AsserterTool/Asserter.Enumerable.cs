@@ -2,6 +2,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.AsserterTool;
@@ -40,7 +41,8 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         throw new AssertException(
@@ -137,7 +139,8 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         if (i != count)
@@ -181,9 +184,11 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
-            found = found || localOptions.Valuer.Equals(content, item);
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            found |= localOptions.Valuer.Equals(content, item);
+
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -233,13 +238,13 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
-            found =
-                found
-                || await localOptions
-                    .Valuer.EqualsAsync(content, item, canceler)
-                    .ConfigureAwait(false);
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            found |= await localOptions
+                .Valuer.EqualsAsync(content, item, canceler)
+                .ConfigureAwait(false);
+
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -283,9 +288,11 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+
             notFound &= !localOptions.Valuer.Equals(content, item);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)
@@ -331,11 +338,13 @@ public partial class Asserter : IEnumerableAsserter
         int i = 0;
         foreach (object item in collection)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+
             notFound &= !await localOptions
                 .Valuer.EqualsAsync(content, item, canceler)
                 .ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)

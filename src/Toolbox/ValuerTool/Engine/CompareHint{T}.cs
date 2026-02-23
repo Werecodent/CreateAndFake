@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Content;
+﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.ValuerTool.Engine;
 
@@ -50,7 +51,13 @@ public abstract class CompareHint<T> : CompareHint
         CancellationToken canceler
     )
     {
-        return AsyncSeriesHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        return AsyncSeriesHelper.CreateFromAsync(
+            Compare(expected, actual, chainer),
+            chainer.Options.IterationLimit,
+            canceler
+        );
     }
 
     /// <inheritdoc/>

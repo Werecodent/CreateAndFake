@@ -25,7 +25,6 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(StringValue, sample.StringValue, canceler)
-                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {
@@ -34,7 +33,6 @@ public class ValuerAsyncComparableSample : IValuerAsyncComparable
             await foreach (
                 Difference diff in valuer
                     .CompareAsync(NumberValue, sample.NumberValue, canceler)
-                    .WithCancellation(canceler)
                     .ConfigureAwait(false)
             )
             {

@@ -61,8 +61,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        dynamic convertedExpected = ConvertFromSync(expected, canceler);
-        dynamic convertedActual = ConvertFromSync(actual, canceler);
+        dynamic convertedExpected = ConvertFromSync(expected, chainer, canceler);
+        dynamic convertedActual = ConvertFromSync(actual, chainer, canceler);
 
         Type expectedType = TypeDescriber.FindConcreteType(
             convertedExpected.GetType(),
@@ -77,6 +77,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
+                chainer.Options.IterationLimit,
                 canceler
             );
         }
@@ -86,9 +87,14 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
     /// <summary>Converts <paramref name="collection"/> to asynchronous if not already.</summary>
     /// <param name="collection">Series to potentially convert.</param>
+    /// <param name="chainer">Handles comparing child values.</param>
     /// <param name="canceler">Aborts execution if triggered</param>
     /// <returns>The asynchronous result.</returns>
-    private static dynamic ConvertFromSync(object collection, CancellationToken canceler)
+    private static dynamic ConvertFromSync(
+        object collection,
+        IValuerChainer chainer,
+        CancellationToken canceler
+    )
     {
         if (collection.GetType().Inherits(typeof(IAsyncEnumerable<>)))
         {
@@ -96,7 +102,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         }
         else
         {
-            return AsyncSeriesHelper.CreateFromAsync((dynamic)collection, canceler);
+            return AsyncSeriesHelper.CreateFromAsync(
+                (dynamic)collection,
+                chainer.Options.IterationLimit,
+                canceler
+            );
         }
     }
 
@@ -124,7 +134,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        return ContentsGetHashCodeAsync(ConvertFromSync(item, canceler), chainer, canceler);
+        return ContentsGetHashCodeAsync(
+            ConvertFromSync(item, chainer, canceler),
+            chainer,
+            canceler
+        );
     }
 
     /// <inheritdoc cref="Compare"/>

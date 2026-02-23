@@ -143,6 +143,7 @@ public sealed class ToolSet(
                 Randomizer = randomizer,
                 Mutator = mutator,
                 Duplicator = duplicator,
+                Valuer = valuer,
             }.WithConfig(config)
         );
         Tester tester = new(

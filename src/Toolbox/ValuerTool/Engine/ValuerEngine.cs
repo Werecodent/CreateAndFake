@@ -68,7 +68,11 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else if (expected is null || actual is null)
         {
-            return AsyncSeriesHelper.CreateFromAsync([new Difference(expected, actual)], canceler);
+            return AsyncSeriesHelper.CreateFromAsync(
+                [new Difference(expected, actual)],
+                chainer.Options.IterationLimit,
+                canceler
+            );
         }
 
         DifferenceHintAsyncResult? result;

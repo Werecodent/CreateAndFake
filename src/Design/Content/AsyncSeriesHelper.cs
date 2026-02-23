@@ -21,11 +21,13 @@ public static class AsyncSeriesHelper
     /// </summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
+    /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
     [return: NotNullIfNotNull(nameof(collection))]
     public static IAsyncEnumerable<T>? CreateFromAsync<T>(
         IEnumerable<T>? collection,
+        int iterationLimit,
         CancellationToken canceler
     )
     {
@@ -35,7 +37,7 @@ public static class AsyncSeriesHelper
         }
         else
         {
-            return IterateAsync(collection, canceler);
+            return IterateAsync(collection, iterationLimit, canceler);
         }
     }
 
@@ -44,11 +46,14 @@ public static class AsyncSeriesHelper
     /// <inheritdoc cref="CreateFromAsync{T}"/>
     private static async IAsyncEnumerable<T> IterateAsync<T>(
         IEnumerable<T> collection,
+        int iterationLimit,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
+        int i = 0;
         foreach (T value in collection)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
             canceler.ThrowIfCancellationRequested();
             yield return value;
         }
@@ -159,6 +164,7 @@ public static class AsyncSeriesHelper
     /// <summary>Converts the <paramref name="collection"/> to an <see cref="IList{T}"/>.</summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
+    /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
     ///     Contents of the <paramref name="collection"/> as an <see cref="IList{T}"/>;
@@ -166,6 +172,7 @@ public static class AsyncSeriesHelper
     /// </returns>
     public static async Task<IList<T>> ToListAsync<T>(
         IAsyncEnumerable<T>? collection,
+        int iterationLimit,
         CancellationToken canceler
     )
     {
@@ -174,8 +181,10 @@ public static class AsyncSeriesHelper
         List<T> results = [];
         if (collection != null)
         {
+            int i = 0;
             await foreach (T value in collection.WithCancellation(canceler).ConfigureAwait(false))
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
                 results.Add(value);
                 canceler.ThrowIfCancellationRequested();
             }

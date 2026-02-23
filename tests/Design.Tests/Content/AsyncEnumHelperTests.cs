@@ -1,5 +1,6 @@
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Tests.Content;
 
@@ -28,7 +29,7 @@ public static class AsyncEnumHelperTests
     internal static Task CreateFrom_ConvertsObjectsSuccessfully(IList<string> data)
     {
         return AsyncSeriesHelper
-            .CreateFromAsync(data, TestContext.Current.CancellationToken)
+            .CreateFromAsync(data, data.Count, TestContext.Current.CancellationToken)
             .Assert()
             .IsAsync(data, TestContext.Current.CancellationToken);
     }
@@ -40,7 +41,7 @@ public static class AsyncEnumHelperTests
         {
             await foreach (
                 string value in AsyncSeriesHelper
-                    .CreateFromAsync(data, TestContext.Current.CancellationToken)
+                    .CreateFromAsync(data, data.Count, TestContext.Current.CancellationToken)
                     .WithCancellation(new CancellationToken(true))
             )
             {
@@ -212,7 +213,11 @@ public static class AsyncEnumHelperTests
     {
         await data.Assert()
             .IsAsync(
-                await AsyncSeriesHelper.ToListAsync(data, TestContext.Current.CancellationToken),
+                await AsyncSeriesHelper.ToListAsync(
+                    data,
+                    DesignDefaults.IterationLimit,
+                    TestContext.Current.CancellationToken
+                ),
                 TestContext.Current.CancellationToken
             );
     }
@@ -221,7 +226,7 @@ public static class AsyncEnumHelperTests
     internal static Task ToListAsync_CanBeCanceledInitially([Size(0)] IAsyncEnumerable<string> data)
     {
         return AsyncSeriesHelper
-            .ToListAsync(data, new CancellationToken(true))
+            .ToListAsync(data, 0, new CancellationToken(true))
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -231,7 +236,11 @@ public static class AsyncEnumHelperTests
     {
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
-            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
+            .ToListAsync(
+                AsyncSeriesHelper.CreateCancelingIteration<string>(source),
+                DesignDefaults.IterationLimit,
+                source.Token
+            )
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -243,7 +252,7 @@ public static class AsyncEnumHelperTests
     {
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
-            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), source.Token)
+            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 2, source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -255,7 +264,7 @@ public static class AsyncEnumHelperTests
     {
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
-            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), source.Token)
+            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 1, source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }

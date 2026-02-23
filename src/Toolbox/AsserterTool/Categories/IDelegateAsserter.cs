@@ -5,7 +5,7 @@ public interface IDelegateAsserter
 {
     /// <summary>Runs each case and aggregates exceptions.</summary>
     /// <param name="cases">Assert cases.</param>
-    void CheckAll(params IEnumerable<Action> cases);
+    void CheckAll(params ICollection<Action> cases);
 
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     T Throws<T>(Action? behavior, string? details = null)

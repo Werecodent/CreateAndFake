@@ -17,8 +17,13 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
 
         if (chainer.AddFoundValue(source))
         {
+            int i = 0;
             foreach (object item in source)
             {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i++,
+                    chainer.Options.Valuer.Options.IterationLimit
+                );
                 _ = chainer.InnerExtract(item);
             }
             return true;

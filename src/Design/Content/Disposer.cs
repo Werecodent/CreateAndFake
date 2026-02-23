@@ -9,7 +9,7 @@ public static class Disposer
     /// <param name="series">
     ///     Collection with potential <see cref="IDisposable"/>s to clean up.
     /// </param>
-    public static void Cleanup(params IEnumerable<object?>? series)
+    public static void Cleanup(params ICollection<object?>? series)
     {
         foreach (object? item in series ?? [])
         {
@@ -32,7 +32,7 @@ public static class Disposer
     /// <remarks>
     ///     Will dispose an instance via <see cref="IAsyncDisposable"/> if both are inherited.
     /// </remarks>
-    public static async Task CleanupAsync(params IEnumerable<object?>? series)
+    public static async Task CleanupAsync(params ICollection<object?>? series)
     {
         foreach (object? item in series ?? [])
         {

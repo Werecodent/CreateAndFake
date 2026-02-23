@@ -77,7 +77,11 @@ public partial class Asserter : IAsyncObjectAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         IList<Difference> differences = await AsyncSeriesHelper
-            .ToListAsync(localOptions.Valuer.CompareAsync(expected, actual, canceler), canceler)
+            .ToListAsync(
+                localOptions.Valuer.CompareAsync(expected, actual, canceler),
+                localOptions.Valuer.Options.IterationLimit,
+                canceler
+            )
             .ConfigureAwait(false);
 
         if (differences.Count > 0)

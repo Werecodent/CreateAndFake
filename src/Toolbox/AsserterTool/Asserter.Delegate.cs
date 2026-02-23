@@ -8,7 +8,7 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IDelegateAsserter
 {
     /// <inheritdoc/>
-    public virtual void CheckAll(params IEnumerable<Action> cases)
+    public virtual void CheckAll(params ICollection<Action> cases)
     {
         if (cases == null)
         {

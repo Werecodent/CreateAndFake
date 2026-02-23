@@ -86,7 +86,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
             task = Task.Run(
                 async () =>
                     await Unwrapper
-                        .UnwrapResult(() => data.InvokeOn(instance))
+                        .UnwrapResult(() => data.InvokeOn(instance), localOptions)
                         .ConfigureAwait(false),
                 timeoutTokenSource.Token
             );

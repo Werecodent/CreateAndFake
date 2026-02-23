@@ -45,6 +45,7 @@ public sealed class AsyncEnumerableCompareHintTests
     {
         IEnumerable<string> data2 = await AsyncSeriesHelper.ToListAsync(
             data,
+            Tools.Valuer.Options.IterationLimit,
             TestContext.Current.CancellationToken
         );
 
@@ -56,7 +57,13 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (await AsyncSeriesHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+        (
+            await AsyncSeriesHelper.ToListAsync(
+                result.Data,
+                Tools.Valuer.Options.IterationLimit,
+                TestContext.Current.CancellationToken
+            )
+        )
             .Assert()
             .IsEmpty();
     }
@@ -75,7 +82,13 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (await AsyncSeriesHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+        (
+            await AsyncSeriesHelper.ToListAsync(
+                result.Data,
+                Tools.Valuer.Options.IterationLimit,
+                TestContext.Current.CancellationToken
+            )
+        )
             .Assert()
             .IsNotEmpty();
     }

@@ -25,8 +25,12 @@ public partial class Asserter : IAsyncEnumerableAsserter
         string? details = null
     )
     {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         Fail(
-            await AsyncSeriesHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
+            await AsyncSeriesHelper
+                .ToListAsync(collection, localOptions.Valuer.Options.IterationLimit, canceler)
+                .ConfigureAwait(false),
+            optionConfiguration != null ? _ => localOptions : null,
             details
         );
     }

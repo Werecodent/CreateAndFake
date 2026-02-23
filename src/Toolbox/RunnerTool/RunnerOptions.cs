@@ -6,6 +6,7 @@ using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool;
+using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.RunnerTool;
@@ -27,6 +28,9 @@ public sealed record RunnerOptions : IToolOptions
 
     /// <summary>Provides stubs.</summary>
     public required IFaker Faker { get; init; }
+
+    /// <summary>Provides equality.</summary>
+    public required IValuer Valuer { get; init; }
 
     /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
     [ConfigurableOption]

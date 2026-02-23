@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
 
@@ -20,8 +21,9 @@ internal static class Unwrapper
 
     /// <summary>Ensures the result is completed.</summary>
     /// <param name="call">Potentially wrapped data.</param>
+    /// <param name="options">Options for unwrapping.</param>
     /// <returns>The unwrapped result.</returns>
-    internal static async Task<object?> UnwrapResult(Func<object?> call)
+    internal static async Task<object?> UnwrapResult(Func<object?> call, RunnerOptions options)
     {
         object? result = call.Invoke();
 
@@ -46,7 +48,7 @@ internal static class Unwrapper
         if (resultType.Inherits(typeof(IAsyncEnumerable<>)))
         {
             return await UnwrapTask(
-                    RunGenericUnwrap(_EnumerateAsync, typeof(IAsyncEnumerable<>), result)!
+                    RunGenericUnwrap(_EnumerateAsync, typeof(IAsyncEnumerable<>), result, options)!
                 )
                 .ConfigureAwait(false);
         }
@@ -63,7 +65,7 @@ internal static class Unwrapper
         // Required to execute yield return methods.
         if (resultType.Inherits(typeof(IEnumerable<>)))
         {
-            return RunGenericUnwrap(_Enumerate, typeof(IEnumerable<>), result);
+            return RunGenericUnwrap(_Enumerate, typeof(IEnumerable<>), result, options);
         }
 
         return result;
@@ -91,24 +93,37 @@ internal static class Unwrapper
         }
     }
 
-    private static object? RunGenericUnwrap(MethodInfo method, Type wrapperType, object result)
+    private static object? RunGenericUnwrap(
+        MethodInfo method,
+        Type wrapperType,
+        object result,
+        RunnerOptions options
+    )
     {
         return method
             .MakeGenericMethod(
                 TypeDescriber.FindConcreteType(result.GetType(), wrapperType).GetGenericArguments()
             )
-            .Invoke(null, [result]);
+            .Invoke(null, [result, options]);
     }
 
-    private static IList<T> Enumerate<T>(object syncData)
+    private static List<T> Enumerate<T>(object syncData, RunnerOptions options)
     {
-        return [.. (IEnumerable<T>)syncData];
+        int i = 0;
+        List<T> results = [];
+        foreach (T item in (IEnumerable<T>)syncData)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, options.Valuer.Options.IterationLimit);
+            results.Add(item);
+        }
+        return results;
     }
 
-    private static Task<IList<T>> EnumerateAsync<T>(object asyncData)
+    private static Task<IList<T>> EnumerateAsync<T>(object asyncData, RunnerOptions options)
     {
         return AsyncSeriesHelper.ToListAsync(
             (IAsyncEnumerable<T>)asyncData,
+            options.Valuer.Options.IterationLimit,
             CancellationToken.None
         );
     }
