@@ -43,7 +43,7 @@ public sealed class AsyncEnumerableCompareHintTests
     [Theory, RandomData]
     internal async Task TryCompare_NoDifferencesWhenEqual(IAsyncEnumerable<string> data)
     {
-        IEnumerable<string> data2 = await AsyncEnumHelper.ToListAsync(
+        IEnumerable<string> data2 = await AsyncSeriesHelper.ToListAsync(
             data,
             TestContext.Current.CancellationToken
         );
@@ -56,7 +56,7 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (await AsyncEnumHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+        (await AsyncSeriesHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
             .Assert()
             .IsEmpty();
     }
@@ -75,7 +75,7 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (await AsyncEnumHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
+        (await AsyncSeriesHelper.ToListAsync(result.Data, TestContext.Current.CancellationToken))
             .Assert()
             .IsNotEmpty();
     }

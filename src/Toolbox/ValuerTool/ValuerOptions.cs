@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Frozen;
+using CreateAndFake.Design.Properties;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
@@ -35,9 +35,9 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
     [ConfigurableOption]
     public bool SkipAsyncValues { get; init; } = false;
 
-    /// <summary>Cap to iterating <see cref="IEnumerable"/>s.</summary>
+    /// <inheritdoc cref="DesignDefaults.IterationLimit"/>
     [ConfigurableOption]
-    public int IterationLimit { get; init; } = 100000;
+    public int IterationLimit { get; init; } = DesignDefaults.IterationLimit;
 
     /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
     [ConfigurableOption]

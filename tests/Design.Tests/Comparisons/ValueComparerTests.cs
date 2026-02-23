@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Design.Tests.Comparisons;
@@ -15,7 +16,8 @@ public static class ValueComparerTests
     [Fact]
     internal static Task ValueComparer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ValueComparer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            ValueComparer.Use,
             TestContext.Current.CancellationToken
         );
     }
@@ -23,8 +25,18 @@ public static class ValueComparerTests
     [Fact]
     internal static Task ValueComparer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<ValueComparer>(
-            TestContext.Current.CancellationToken
+        return Tools.Tester.PreventsParameterMutationAsync(
+            ValueComparer.Use,
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(IterationLimitException),
+                    ],
+                }
         );
     }
 

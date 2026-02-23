@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
 /// <remarks>Manually required as .NET 10 breaks <c>System.Linq.Async</c> compatibility.</remarks>
-public static class AsyncEnumHelper
+public static class AsyncSeriesHelper
 {
     /// <summary>Delegate for triggering asynchronous cancellation.</summary>
     /// <remarks><see langword="null"/> when unavailable for the executing .NET version.</remarks>
@@ -98,7 +98,7 @@ public static class AsyncEnumHelper
     /// </param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>Properly handles cancellation and prevents infinite iteration.</remarks>
-    /// <exception cref="EngineException">
+    /// <exception cref="IterationLimitException">
     ///     If the <paramref name="collection"/> size is <c>&gt;= iterationLimit</c>.
     /// </exception>
     public static async Task ForEachAsync<T>(
@@ -119,14 +119,7 @@ public static class AsyncEnumHelper
         int i = 0;
         await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
         {
-            if (i++ >= iterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({iterationLimit}). "
-                        + "Increase via the ValuerOptions.IterationLimit."
-                );
-            }
-
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
             canceler.ThrowIfCancellationRequested();
             itemHandler.Invoke(item);
         }
@@ -153,14 +146,7 @@ public static class AsyncEnumHelper
         int i = 0;
         await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
         {
-            if (i++ >= iterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({iterationLimit}). "
-                        + "Increase via the ValuerOptions.IterationLimit."
-                );
-            }
-
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
             canceler.ThrowIfCancellationRequested();
             await itemHandler(item).ConfigureAwait(false);
         }

@@ -233,6 +233,25 @@ public static class ArgumentGuard
             throw new AsynchronousAccessException(message);
         }
     }
+
+    /// <summary>
+    ///     Prevents further execution if the <paramref name="index"/>
+    ///     has exceeded the <paramref name="iterationLimit"/>.
+    /// </summary>
+    /// <param name="index">Current iteration count.</param>
+    /// <param name="iterationLimit">Max allowable index.</param>
+    /// <exception cref="IterationLimitException">If <c>index &gt;= iterationLimit</c>.</exception>
+    [DebuggerStepThrough]
+    public static void ThrowUponIterationLimit(int index, int iterationLimit)
+    {
+        if (index >= iterationLimit)
+        {
+            throw new IterationLimitException(
+                $"Index {index} reached max iteration limit ({iterationLimit})."
+                    + "Increase via 'ValuerOptions.IterationLimit'."
+            );
+        }
+    }
 }
 
 #pragma warning restore RCS1256

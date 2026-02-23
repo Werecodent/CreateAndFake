@@ -4,19 +4,19 @@ namespace CreateAndFake.Design.Exceptions;
 
 /// <summary>
 ///     <see cref="Exception"/> <see cref="Type"/> for errors occurring
-///     due to accessing asynchronous behavior in synchronous context.
+///     due trying to iterate past the configured iteration limit.
 /// </summary>
 [Serializable]
-public sealed class AsynchronousAccessException : CreateAndFakeException
+public sealed class IterationLimitException : CreateAndFakeException
 {
-    /// <inheritdoc cref="AsynchronousAccessException"/>
+    /// <inheritdoc cref="IterationLimitException"/>
     /// <remarks>Serialization constructor.</remarks>
-    private AsynchronousAccessException()
+    private IterationLimitException()
         : base() { }
 
-    /// <inheritdoc cref="AsynchronousAccessException"/>
+    /// <inheritdoc cref="IterationLimitException"/>
     /// <inheritdoc/>
-    public AsynchronousAccessException(string? message)
+    public IterationLimitException(string? message)
         : base(message) { }
 
     /// <inheritdoc/>
@@ -24,6 +24,6 @@ public sealed class AsynchronousAccessException : CreateAndFakeException
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif
-    private AsynchronousAccessException(SerializationInfo info, StreamingContext context)
+    private IterationLimitException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }
 }

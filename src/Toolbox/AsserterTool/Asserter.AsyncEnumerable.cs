@@ -26,7 +26,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
     )
     {
         Fail(
-            await AsyncEnumHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
+            await AsyncSeriesHelper.ToListAsync(collection, canceler).ConfigureAwait(false),
             details
         );
     }
@@ -131,7 +131,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
                 collection,
                 localOptions.Valuer.Options.IterationLimit,
@@ -184,7 +184,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool found = false;
         StringBuilder contents = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
                 collection,
                 localOptions.Valuer.Options.IterationLimit,
@@ -240,7 +240,7 @@ public partial class Asserter : IAsyncEnumerableAsserter
         int i = 0;
         bool notFound = true;
         StringBuilder contents = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
                 collection,
                 localOptions.Valuer.Options.IterationLimit,

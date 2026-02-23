@@ -4,7 +4,7 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
-public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new FastRandom(10000))
+public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
 {
     private static readonly double[] _BadDoubles =
     [
@@ -67,6 +67,6 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new Fast
 
         FastRandom gen = new(2);
         gen.NextSequence(Generate(2)).Assert().HasCount(2);
-        gen.Assert(g => g.NextSequence(Generate(3)).Count()).Throws<EngineException>();
+        gen.Assert(g => g.NextSequence(Generate(3)).Count()).Throws<IterationLimitException>();
     }
 }

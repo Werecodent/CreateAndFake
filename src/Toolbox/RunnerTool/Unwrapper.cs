@@ -107,6 +107,9 @@ internal static class Unwrapper
 
     private static Task<IList<T>> EnumerateAsync<T>(object asyncData)
     {
-        return AsyncEnumHelper.ToListAsync((IAsyncEnumerable<T>)asyncData, CancellationToken.None);
+        return AsyncSeriesHelper.ToListAsync(
+            (IAsyncEnumerable<T>)asyncData,
+            CancellationToken.None
+        );
     }
 }

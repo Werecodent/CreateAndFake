@@ -161,7 +161,7 @@ public abstract class CompareHint : ICompareHint
         CancellationToken canceler
     )
     {
-        return AsyncEnumHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
+        return AsyncSeriesHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
     }
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>

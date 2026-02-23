@@ -10,7 +10,8 @@ public static class ArgumentGuardTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ArgumentGuard),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
         );
     }
 
@@ -19,7 +20,8 @@ public static class ArgumentGuardTests
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ArgumentGuard),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
         );
     }
 
@@ -80,6 +82,17 @@ public static class ArgumentGuardTests
     public static void ThrowIfAsynchronous_PassWithSyncData(DataSample data, string message)
     {
         ArgumentGuard.ThrowIfAsynchronous(data, message);
+    }
+
+    [Theory, RandomData]
+    public static void ThrowUponIterationLimit_TestsLimit(int value)
+    {
+        value
+            .Assert(v => ArgumentGuard.ThrowUponIterationLimit(v - 1, v))
+            .ThrowsNo<IterationLimitException>();
+        value
+            .Assert(v => ArgumentGuard.ThrowUponIterationLimit(v, v))
+            .Throws<IterationLimitException>();
     }
 
     [Theory, RandomData]

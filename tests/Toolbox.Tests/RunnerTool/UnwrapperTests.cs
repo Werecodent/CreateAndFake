@@ -12,7 +12,7 @@ public static class UnwrapperTests
         data.Assert()
             .Is(
                 await Unwrapper.UnwrapResult(() =>
-                    AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+                    AsyncSeriesHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
                 )
             );
     }
@@ -23,7 +23,7 @@ public static class UnwrapperTests
         data.Assert()
             .Is(
                 await Unwrapper.UnwrapResult(() =>
-                    AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+                    AsyncSeriesHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
                 )
             );
     }
@@ -32,7 +32,7 @@ public static class UnwrapperTests
     internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerableTask(List<int> data)
     {
         Task<IAsyncEnumerable<int>> run = Task.Run(() =>
-            AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+            AsyncSeriesHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
         );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run));
     }
@@ -41,7 +41,7 @@ public static class UnwrapperTests
     internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerableTask(List<string> data)
     {
         Task<IAsyncEnumerable<string>> run = Task.Run(() =>
-            AsyncEnumHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
+            AsyncSeriesHelper.CreateFromAsync(data, TestContext.Current.CancellationToken)
         );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run));
     }

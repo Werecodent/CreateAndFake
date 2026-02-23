@@ -123,7 +123,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         }
         finally
         {
-            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
+            await AsyncSeriesHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
             await DisposeAllButInjected(data?.Args).ConfigureAwait(false);
             await DisposeAllButInjected(copy?.Args).ConfigureAwait(false);
             await DisposeAllButInjected(result).ConfigureAwait(false);

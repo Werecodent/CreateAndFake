@@ -89,7 +89,7 @@ public sealed class SetCompareHint : CompareHint
 
         if (expectedType != actualType)
         {
-            return AsyncEnumHelper.CreateFromAsync(
+            return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
                 canceler
             );

@@ -8,7 +8,7 @@ public static class AsyncEnumHelper_T_Tests
     internal static Task AsyncEnumHelper_T_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AsyncEnumHelper<>),
+            typeof(AsyncSeriesHelper<>),
             TestContext.Current.CancellationToken
         );
     }
@@ -17,7 +17,7 @@ public static class AsyncEnumHelper_T_Tests
     internal static Task AsyncEnumHelper_T_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AsyncEnumHelper<string>),
+            typeof(AsyncSeriesHelper<string>),
             TestContext.Current.CancellationToken
         );
     }
@@ -25,10 +25,10 @@ public static class AsyncEnumHelper_T_Tests
     [Fact]
     internal static async Task Empty_NoItemsRepeatably()
     {
-        await AsyncEnumHelper<string>
+        await AsyncSeriesHelper<string>
             .Empty.Assert()
             .IsEmptyAsync(TestContext.Current.CancellationToken);
-        await AsyncEnumHelper<string>
+        await AsyncSeriesHelper<string>
             .Empty.Assert()
             .IsEmptyAsync(TestContext.Current.CancellationToken);
     }
@@ -36,7 +36,7 @@ public static class AsyncEnumHelper_T_Tests
     [Fact]
     internal static async Task Empty_DefaultCurrent()
     {
-        await using IAsyncEnumerator<int> series = AsyncEnumHelper<int>.Empty.GetAsyncEnumerator(
+        await using IAsyncEnumerator<int> series = AsyncSeriesHelper<int>.Empty.GetAsyncEnumerator(
             TestContext.Current.CancellationToken
         );
         series.Current.Assert().Is(default(int));

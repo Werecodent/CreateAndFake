@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Design.Types;
+﻿using CreateAndFake.Design.Properties;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Comparisons;
 
@@ -6,17 +7,22 @@ namespace CreateAndFake.Design.Comparisons;
 ///     Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.
 /// </summary>
 /// <typeparam name="T">The supported <see cref="IValueEquatable"/> <see cref="Type"/>.</typeparam>
+/// <param name="iterationLimit">Max supported size for iterating sequences.</param>
 /// <remarks>Not reflection based.</remarks>
-public sealed class ValueComparer<T>
+public sealed class ValueComparer<T>(int iterationLimit)
     : ITypeSupporter,
         IComparer<T>,
         IComparer<IEnumerable<T>>,
         IEqualityComparer<T>,
-        IEqualityComparer<IEnumerable<T>>
+        IEqualityComparer<IEnumerable<T>>,
+        IDeepCloneable
     where T : IValueEquatable
 {
     /// <inheritdoc cref="ValueComparer.Use"/>
-    public static ValueComparer<T> Use { get; } = new();
+    public static ValueComparer<T> Use { get; } = new(DesignDefaults.IterationLimit);
+
+    /// <summary>Handles the actual comparisons.</summary>
+    private readonly ValueComparer _comparer = new(iterationLimit);
 
     /// <inheritdoc/>
     public Type? SupportedType { get; } = typeof(T);
@@ -24,55 +30,61 @@ public sealed class ValueComparer<T>
     /// <inheritdoc cref="ValueComparer.Equals(object,object)"/>
     public bool Equals(T? x, T? y)
     {
-        return ValueComparer.Use.Equals(x, y);
+        return _comparer.Equals(x, y);
     }
 
     /// <inheritdoc cref="ValueComparer.Equals(object,object)"/>
     public bool Equals(IEnumerable<T?>? x, IEnumerable<T?>? y)
     {
-        return ValueComparer.Use.Equals(x, y);
+        return _comparer.Equals(x, y);
     }
 
     /// <inheritdoc cref="ValueComparer.Equals(object,object)"/>
     public bool Equals<TKey>(IDictionary<TKey, T?>? x, IDictionary<TKey, T?>? y)
     {
-        return ValueComparer.Use.Equals(x, y);
+        return _comparer.Equals(x, y);
     }
 
     /// <inheritdoc cref="ValueComparer.GetHashCode(object)"/>
     public int GetHashCode(T? obj)
     {
-        return ValueComparer.Use.GetHashCode(obj);
+        return _comparer.GetHashCode(obj);
     }
 
     /// <inheritdoc cref="ValueComparer.GetHashCode(object)"/>
     public int GetHashCode(IEnumerable<T?>? obj)
     {
-        return ValueComparer.Use.GetHashCode(obj);
+        return _comparer.GetHashCode(obj);
     }
 
     /// <inheritdoc cref="ValueComparer.GetHashCode(object)"/>
     public int GetHashCode<TKey>(IDictionary<TKey, T?>? obj)
     {
-        return ValueComparer.Use.GetHashCode(obj);
+        return _comparer.GetHashCode(obj);
     }
 
     /// <inheritdoc cref="ValueComparer.Compare(object,object)"/>
     public int Compare(T? x, T? y)
     {
-        return ValueComparer.Use.Compare(x, y);
+        return _comparer.Compare(x, y);
     }
 
     /// <inheritdoc cref="ValueComparer.Compare(object,object)"/>
     public int Compare(IEnumerable<T?>? x, IEnumerable<T?>? y)
     {
-        return ValueComparer.Use.Compare(x, y);
+        return _comparer.Compare(x, y);
     }
 
     /// <inheritdoc cref="ValueComparer.Compare(object,object)"/>
     public int Compare<TKey>(IDictionary<TKey, T?>? x, IDictionary<TKey, T?>? y)
     {
-        return ValueComparer.Use.Compare(x, y);
+        return _comparer.Compare(x, y);
+    }
+
+    /// <inheritdoc/>
+    public IDeepCloneable DeepClone()
+    {
+        return new ValueComparer<T>(iterationLimit);
     }
 
     /// <inheritdoc/>

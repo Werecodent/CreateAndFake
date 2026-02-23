@@ -9,7 +9,7 @@ public static class AsyncEnumHelperTests
     internal static Task AsyncEnumHelper_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AsyncEnumHelper),
+            typeof(AsyncSeriesHelper),
             TestContext.Current.CancellationToken
         );
     }
@@ -18,16 +18,16 @@ public static class AsyncEnumHelperTests
     internal static Task AsyncEnumHelper_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AsyncEnumHelper),
+            typeof(AsyncSeriesHelper),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(EngineException)] }
+            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
         );
     }
 
     [Theory, RandomData]
     internal static Task CreateFrom_ConvertsObjectsSuccessfully(IList<string> data)
     {
-        return AsyncEnumHelper
+        return AsyncSeriesHelper
             .CreateFromAsync(data, TestContext.Current.CancellationToken)
             .Assert()
             .IsAsync(data, TestContext.Current.CancellationToken);
@@ -39,7 +39,7 @@ public static class AsyncEnumHelperTests
         try
         {
             await foreach (
-                string value in AsyncEnumHelper
+                string value in AsyncSeriesHelper
                     .CreateFromAsync(data, TestContext.Current.CancellationToken)
                     .WithCancellation(new CancellationToken(true))
             )
@@ -56,7 +56,7 @@ public static class AsyncEnumHelperTests
     [Fact]
     internal static async Task HasAnyAsync_FalseWhenGivenNull()
     {
-        (await AsyncEnumHelper.HasAnyAsync<string>(null, TestContext.Current.CancellationToken))
+        (await AsyncSeriesHelper.HasAnyAsync<string>(null, TestContext.Current.CancellationToken))
             .Assert()
             .Is(false);
     }
@@ -66,7 +66,7 @@ public static class AsyncEnumHelperTests
         [Size(0)] IAsyncEnumerable<string> data
     )
     {
-        (await AsyncEnumHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
+        (await AsyncSeriesHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
             .Assert()
             .Is(false);
     }
@@ -74,7 +74,7 @@ public static class AsyncEnumHelperTests
     [Theory, RandomData]
     internal static async Task HasAnyAsync_TrueWithValues(IAsyncEnumerable<string> data)
     {
-        (await AsyncEnumHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
+        (await AsyncSeriesHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
             .Assert()
             .Is(true);
     }
@@ -82,7 +82,7 @@ public static class AsyncEnumHelperTests
     [Theory, RandomData]
     internal static Task HasAnyAsync_CanBeCanceledInitially([Size(0)] IAsyncEnumerable<string> data)
     {
-        return AsyncEnumHelper
+        return AsyncSeriesHelper
             .HasAnyAsync(data, new CancellationToken(true))
             .Assert()
             .Throws<OperationCanceledException>();
@@ -92,8 +92,8 @@ public static class AsyncEnumHelperTests
     internal static async Task HasAnyAsync_CanBeCanceledAtIteration()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
-            .HasAnyAsync(AsyncEnumHelper.CreateCancelingIteration<string>(source), source.Token)
+        await AsyncSeriesHelper
+            .HasAnyAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -104,11 +104,11 @@ public static class AsyncEnumHelperTests
     )
     {
         List<string> results = [];
-        await AsyncEnumHelper.ForEachAsync(data, 2, new CancellationToken(false), results.Add);
+        await AsyncSeriesHelper.ForEachAsync(data, 2, new CancellationToken(false), results.Add);
         await data.Assert().IsAsync(data, TestContext.Current.CancellationToken);
 
         results.Clear();
-        await AsyncEnumHelper.ForEachAsync(
+        await AsyncSeriesHelper.ForEachAsync(
             data,
             2,
             new CancellationToken(false),
@@ -126,15 +126,15 @@ public static class AsyncEnumHelperTests
         [Size(2)] IAsyncEnumerable<string> data
     )
     {
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(data, 1, new CancellationToken(false), _ => { })
             .Assert()
-            .Throws<EngineException>();
+            .Throws<IterationLimitException>();
 
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(data, 1, new CancellationToken(false), _ => Task.CompletedTask)
             .Assert()
-            .Throws<EngineException>();
+            .Throws<IterationLimitException>();
     }
 
     [Theory, RandomData]
@@ -142,12 +142,12 @@ public static class AsyncEnumHelperTests
         [Size(0)] IAsyncEnumerable<string> data
     )
     {
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(data, 0, new CancellationToken(true), _ => { })
             .Assert()
             .Throws<OperationCanceledException>();
 
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(data, 0, new CancellationToken(true), _ => Task.CompletedTask)
             .Assert()
             .Throws<OperationCanceledException>();
@@ -157,9 +157,9 @@ public static class AsyncEnumHelperTests
     internal static async Task ForEachAsync_CanBeCanceledAtIteration()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncEnumHelper.CreateCancelingIteration<string>(source),
+                AsyncSeriesHelper.CreateCancelingIteration<string>(source),
                 10,
                 source.Token,
                 _ => { }
@@ -168,9 +168,9 @@ public static class AsyncEnumHelperTests
             .Throws<OperationCanceledException>();
 
         using CancellationTokenSource source2 = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncEnumHelper.CreateCancelingIteration<string>(source2),
+                AsyncSeriesHelper.CreateCancelingIteration<string>(source2),
                 10,
                 source.Token,
                 _ => Task.CompletedTask
@@ -185,9 +185,9 @@ public static class AsyncEnumHelperTests
     )
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncEnumHelper.CreateCancelingIteration(data, source),
+                AsyncSeriesHelper.CreateCancelingIteration(data, source),
                 data.Count,
                 source.Token,
                 _ => { }
@@ -196,9 +196,9 @@ public static class AsyncEnumHelperTests
             .Throws<OperationCanceledException>();
 
         using CancellationTokenSource source2 = new();
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncEnumHelper.CreateCancelingIteration(data, source2),
+                AsyncSeriesHelper.CreateCancelingIteration(data, source2),
                 data.Count,
                 source.Token,
                 _ => Task.CompletedTask
@@ -212,7 +212,7 @@ public static class AsyncEnumHelperTests
     {
         await data.Assert()
             .IsAsync(
-                await AsyncEnumHelper.ToListAsync(data, TestContext.Current.CancellationToken),
+                await AsyncSeriesHelper.ToListAsync(data, TestContext.Current.CancellationToken),
                 TestContext.Current.CancellationToken
             );
     }
@@ -220,7 +220,7 @@ public static class AsyncEnumHelperTests
     [Theory, RandomData]
     internal static Task ToListAsync_CanBeCanceledInitially([Size(0)] IAsyncEnumerable<string> data)
     {
-        return AsyncEnumHelper
+        return AsyncSeriesHelper
             .ToListAsync(data, new CancellationToken(true))
             .Assert()
             .Throws<OperationCanceledException>();
@@ -230,8 +230,8 @@ public static class AsyncEnumHelperTests
     internal static async Task ToListAsync_CanBeCanceledAtIteration()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
-            .ToListAsync(AsyncEnumHelper.CreateCancelingIteration<string>(source), source.Token)
+        await AsyncSeriesHelper
+            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -242,8 +242,8 @@ public static class AsyncEnumHelperTests
     )
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
-            .ToListAsync(AsyncEnumHelper.CreateCancelingIteration(data, source), source.Token)
+        await AsyncSeriesHelper
+            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -254,8 +254,8 @@ public static class AsyncEnumHelperTests
     )
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper
-            .ToListAsync(AsyncEnumHelper.CreateCancelingIteration(data, source), source.Token)
+        await AsyncSeriesHelper
+            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), source.Token)
             .Assert()
             .Throws<OperationCanceledException>();
     }
@@ -265,7 +265,7 @@ public static class AsyncEnumHelperTests
     {
         using CancellationTokenSource source = new();
         await foreach (
-            string _ in AsyncEnumHelper
+            string _ in AsyncSeriesHelper
                 .CreateCancelingIteration<string>(source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
@@ -282,7 +282,7 @@ public static class AsyncEnumHelperTests
     {
         using CancellationTokenSource source = new();
         await foreach (
-            string _ in AsyncEnumHelper
+            string _ in AsyncSeriesHelper
                 .CreateCancelingIteration(data, source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
@@ -300,7 +300,7 @@ public static class AsyncEnumHelperTests
         using CancellationTokenSource source = new();
         int i = 0;
         await foreach (
-            string _ in AsyncEnumHelper
+            string _ in AsyncSeriesHelper
                 .CreateCancelingIteration(data, source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
@@ -321,7 +321,7 @@ public static class AsyncEnumHelperTests
     internal static async Task TriggerCancellationAsync_Cancels()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper.TriggerCancellationAsync(source);
+        await AsyncSeriesHelper.TriggerCancellationAsync(source);
         source.IsCancellationRequested.Assert().Is(true);
     }
 
@@ -329,8 +329,8 @@ public static class AsyncEnumHelperTests
     internal static async Task TriggerCancellationAsync_CancelsOnce()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper.TriggerCancellationAsync(source);
-        await AsyncEnumHelper.TriggerCancellationAsync(
+        await AsyncSeriesHelper.TriggerCancellationAsync(source);
+        await AsyncSeriesHelper.TriggerCancellationAsync(
             _ => throw new EngineException("Cancellation triggered twice."),
             source
         );
@@ -340,7 +340,7 @@ public static class AsyncEnumHelperTests
     internal static async Task TriggerCancellationAsync_SyncFallbackCancels()
     {
         using CancellationTokenSource source = new();
-        await AsyncEnumHelper.TriggerCancellationAsync(null, source);
+        await AsyncSeriesHelper.TriggerCancellationAsync(null, source);
         source.IsCancellationRequested.Assert().Is(true);
     }
 }

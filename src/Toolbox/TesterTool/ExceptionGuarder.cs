@@ -20,7 +20,7 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         }
         finally
         {
-            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
+            await AsyncSeriesHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
         }
     }
 

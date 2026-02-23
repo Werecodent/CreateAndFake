@@ -64,11 +64,11 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         ArgumentGuard.ThrowIfNull(chainer);
         if (ReferenceEquals(expected, actual))
         {
-            return AsyncEnumHelper<Difference>.Empty;
+            return AsyncSeriesHelper<Difference>.Empty;
         }
         else if (expected is null || actual is null)
         {
-            return AsyncEnumHelper.CreateFromAsync([new Difference(expected, actual)], canceler);
+            return AsyncSeriesHelper.CreateFromAsync([new Difference(expected, actual)], canceler);
         }
 
         DifferenceHintAsyncResult? result;

@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -30,7 +31,8 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
 
     /// <inheritdoc cref="SeededRandom(int, bool,int?)"/>
     public SeededRandom(int? seed = null)
-        : this(100000, true, seed) { }
+        : this(DesignDefaults.IterationLimit, !DesignDefaults.IncludeInfinityAndNaNGeneration, seed)
+    { }
 
     /// <param name="seed"><inheritdoc cref="InitialSeed" path="/summary"/></param>
     /// <inheritdoc cref="SeededRandom(int, bool, int?, int)"/>

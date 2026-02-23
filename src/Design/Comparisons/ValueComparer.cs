@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Comparisons;
 
@@ -7,8 +8,9 @@ namespace CreateAndFake.Design.Comparisons;
 ///     Compares <see langword="object"/>s/collections
 ///     by value via <see cref="IValueEquatable"/> if possible.
 /// </summary>
+/// <param name="iterationLimit">Max supported size for iterating sequences.</param>
 /// <remarks>Not reflection based.</remarks>
-public sealed class ValueComparer
+public sealed class ValueComparer(int iterationLimit)
     : IComparer,
         IComparer<object?>,
         IComparer<IValueEquatable?>,
@@ -18,7 +20,8 @@ public sealed class ValueComparer
         IEqualityComparer<object?>,
         IEqualityComparer<IValueEquatable?>,
         IEqualityComparer<IEnumerable?>,
-        IEqualityComparer<IDictionary?>
+        IEqualityComparer<IDictionary?>,
+        IDeepCloneable
 {
     /// <summary>Hash code used for <see langword="null"/> values.</summary>
     public static int NullHash { get; } = 0;
@@ -30,7 +33,7 @@ public sealed class ValueComparer
     public static int HashMultiplier { get; } = 92821;
 
     /// <summary>Default instance to use for comparing by value.</summary>
-    public static ValueComparer Use { get; } = new();
+    public static ValueComparer Use { get; } = new(DesignDefaults.IterationLimit);
 
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
     /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
@@ -133,8 +136,10 @@ public sealed class ValueComparer
             xGen = x.GetEnumerator();
             yGen = y.GetEnumerator();
 
+            int i = 0;
             while (xGen.MoveNext())
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
                 if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
                 {
                     return false;
@@ -208,9 +213,11 @@ public sealed class ValueComparer
         }
         else
         {
+            int i = 0;
             int hash = BaseHash;
             foreach (object item in obj)
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
                 hash = hash * HashMultiplier + GetHashCode(item);
             }
             return hash;
@@ -265,5 +272,11 @@ public sealed class ValueComparer
     public int Compare(IDictionary? x, IDictionary? y)
     {
         return ReferenceEquals(x, y) ? 0 : GetHashCode(x).CompareTo(GetHashCode(y));
+    }
+
+    /// <inheritdoc/>
+    public IDeepCloneable DeepClone()
+    {
+        return new ValueComparer(iterationLimit);
     }
 }

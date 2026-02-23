@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Design.Tests.Comparisons;
@@ -10,7 +11,8 @@ public static class ValueComparer_T_Tests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ValueComparer<>),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
         );
     }
 
@@ -19,7 +21,8 @@ public static class ValueComparer_T_Tests
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ValueComparer<>),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
         );
     }
 

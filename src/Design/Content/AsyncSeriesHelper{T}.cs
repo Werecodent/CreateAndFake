@@ -4,7 +4,7 @@ namespace CreateAndFake.Design.Content;
 /// <typeparam name="T">
 ///     <inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/>
 /// </typeparam>
-public static class AsyncEnumHelper<T>
+public static class AsyncSeriesHelper<T>
 {
     /// <summary>Cached series with no elements.</summary>
     public static IAsyncEnumerable<T> Empty { get; } = new EmptyAsyncEnumerator();

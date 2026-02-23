@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
 using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.ValuerTool.Hints;
@@ -74,13 +74,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 );
             }
 
-            if (index >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IEnumerable)} max iteration limit "
-                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
         }
         finally
         {
@@ -143,13 +137,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 );
             }
 
-            if (index >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IEnumerable)} max iteration limit "
-                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
         }
         finally
         {
@@ -164,14 +152,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
-            if (index++ >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IEnumerable)} max iteration limit "
-                        + $"({index}) from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
-
+            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.IterationLimit);
             hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(value);
         }
         return hash;
@@ -188,14 +169,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
-            if (index++ >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IEnumerable)} max iteration limit ({index}) "
-                        + $"from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
-
+            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.IterationLimit);
             hash =
                 hash * ValueComparer.HashMultiplier
                 + await chainer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);

@@ -50,7 +50,7 @@ public abstract class CompareHint<T> : CompareHint
         CancellationToken canceler
     )
     {
-        return AsyncEnumHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
+        return AsyncSeriesHelper.CreateFromAsync(Compare(expected, actual, chainer), canceler);
     }
 
     /// <inheritdoc/>

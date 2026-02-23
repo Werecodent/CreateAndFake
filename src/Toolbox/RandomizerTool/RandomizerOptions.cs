@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Properties;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
@@ -54,11 +55,10 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     public FrozenSet<char> StringCharacterSet { get; init; } =
         FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
-    /// <summary>
-    ///     Flag to include generating invalid floating-point values (NaN, -∞ and +∞).
-    /// </summary>
+    /// <summary><inheritdoc cref="DesignDefaults.IncludeInfinityAndNaNGeneration"/></summary>
     [ConfigurableOption]
-    public bool IncludeInfinityAndNaNGeneration { get; init; } = false;
+    public bool IncludeInfinityAndNaNGeneration { get; init; } =
+        DesignDefaults.IncludeInfinityAndNaNGeneration;
 
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;

@@ -1,4 +1,5 @@
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Properties;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
@@ -83,12 +84,15 @@ public sealed class ToolSet(
         IRandom gen = new SeededRandom(
             config
                 ?.GetSection(nameof(Valuer))
-                .GetValue(nameof(ValuerOptions.IterationLimit), 100000)
-                ?? 100000,
+                .GetValue(nameof(ValuerOptions.IterationLimit), DesignDefaults.IterationLimit)
+                ?? DesignDefaults.IterationLimit,
             !config
                 ?.GetSection(nameof(Randomizer))
-                .GetValue(nameof(RandomizerOptions.IncludeInfinityAndNaNGeneration), false)
-                ?? false,
+                .GetValue(
+                    nameof(RandomizerOptions.IncludeInfinityAndNaNGeneration),
+                    DesignDefaults.IncludeInfinityAndNaNGeneration
+                )
+                ?? DesignDefaults.IncludeInfinityAndNaNGeneration,
             seed
         );
 

@@ -6,7 +6,6 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
@@ -139,7 +138,7 @@ public sealed class CollectionCopyHint : CopyHint
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <param name="reverse">If the copy process should reverse the order of items from the enumerator.</param>
     /// <returns>The duplicate object.</returns>
-    /// <exception cref="EngineException"></exception>
+    /// <exception cref="IterationLimitException"></exception>
     private static Array CopyContents(
         IEnumerable source,
         Type itemType,
@@ -152,14 +151,10 @@ public sealed class CollectionCopyHint : CopyHint
         int index = 0;
         foreach (object item in source)
         {
-            if (index++ >= duplicator.Options.Valuer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(Enumerable)} max iteration limit ({index}) "
-                        + $"from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
-
+            ArgumentGuard.ThrowUponIterationLimit(
+                index++,
+                duplicator.Options.Valuer.Options.IterationLimit
+            );
             copy.Add(duplicator.Copy(item));
         }
 

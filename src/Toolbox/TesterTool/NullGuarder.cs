@@ -145,7 +145,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         }
         finally
         {
-            await AsyncEnumHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
+            await AsyncSeriesHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
             await DisposeAllButInjected(data).ConfigureAwait(false);
         }
     }

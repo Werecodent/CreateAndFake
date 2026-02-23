@@ -97,7 +97,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                         .ConfigureAwait(false)
                 ) != task;
 
-            await AsyncEnumHelper
+            await AsyncSeriesHelper
                 .TriggerCancellationAsync(timeoutTokenSource)
                 .ConfigureAwait(false);
 

@@ -1,8 +1,6 @@
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
 using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
@@ -45,13 +43,10 @@ public sealed class AsyncCollectionCopyHint : CopyHint
         int index = 0;
         await foreach (T item in source.ConfigureAwait(false))
         {
-            if (index++ >= duplicator.Options.Valuer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
-                        + $"from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
+            ArgumentGuard.ThrowUponIterationLimit(
+                index++,
+                duplicator.Options.Valuer.Options.IterationLimit
+            );
             canceler.ThrowIfCancellationRequested();
             yield return duplicator.Copy(item);
         }

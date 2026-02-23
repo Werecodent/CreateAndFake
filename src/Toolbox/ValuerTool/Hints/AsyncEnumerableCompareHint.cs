@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using CreateAndFake.Design;
 using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
@@ -74,7 +75,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
         if (expectedType != actualType)
         {
-            return AsyncEnumHelper.CreateFromAsync(
+            return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
                 canceler
             );
@@ -95,7 +96,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         }
         else
         {
-            return AsyncEnumHelper.CreateFromAsync((dynamic)collection, canceler);
+            return AsyncSeriesHelper.CreateFromAsync((dynamic)collection, canceler);
         }
     }
 
@@ -199,13 +200,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
             canceler.ThrowIfCancellationRequested();
 
-            if (index >= chainer.Options.IterationLimit)
-            {
-                throw new EngineException(
-                    $"Reached {nameof(IAsyncEnumerable<>)} max iteration limit ({index}) "
-                        + $"from {nameof(ValuerOptions.IterationLimit)}."
-                );
-            }
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
         }
     }
 
@@ -218,7 +213,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     )
     {
         int hash = ValueComparer.BaseHash;
-        await AsyncEnumHelper
+        await AsyncSeriesHelper
             .ForEachAsync(
                 item,
                 chainer.Options.IterationLimit,

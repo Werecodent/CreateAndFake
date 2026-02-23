@@ -224,7 +224,7 @@ public sealed class ValuerChainer
         ValuerMod? optionConfiguration = null
     )
     {
-        return !await AsyncEnumHelper
+        return !await AsyncSeriesHelper
             .HasAnyAsync(CompareAsync(x, y, canceler, optionConfiguration), canceler)
             .ConfigureAwait(false);
     }

@@ -1,11 +1,15 @@
-﻿namespace CreateAndFake.Design.Randomization;
+﻿using CreateAndFake.Design.Properties;
+
+namespace CreateAndFake.Design.Randomization;
 
 #pragma warning disable CA5394 // Secure alternative provided.
 
 /// <summary>For quickly generating cryptographically insecure random values.</summary>
 /// <inheritdoc/>
-public sealed class FastRandom(int iterationLimit = 100000, bool onlyValidValues = true)
-    : ValueRandom(iterationLimit, onlyValidValues)
+public sealed class FastRandom(
+    int iterationLimit = DesignDefaults.IterationLimit,
+    bool onlyValidValues = !DesignDefaults.IncludeInfinityAndNaNGeneration
+) : ValueRandom(iterationLimit, onlyValidValues)
 {
     /// <summary>Prevents concurrency issues for <see cref="_Gen"/>.</summary>
     private static readonly Lock _Lock = new();
