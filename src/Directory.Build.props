@@ -36,10 +36,10 @@
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" />
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="3.2.0" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.267" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.15" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="5.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" version="17.14.15" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.17.0.131074" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.19.0.132793" PrivateAssets="All" />
   </ItemGroup>
 </Project>

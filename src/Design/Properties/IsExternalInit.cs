@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if LEGACY // Init type shipped with C# 7 / .NET 5.0
-#pragma warning disable IDE0130, MA0036 // Must match existing version & location.
+#pragma warning disable IDE0130, MA0036, MA0182 // Must match existing version & location.
 
 using System.ComponentModel;
 
@@ -15,5 +15,5 @@ namespace System.Runtime.CompilerServices;
 [EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class IsExternalInit;
 
-#pragma warning restore IDE0130, MA0036
+#pragma warning restore IDE0130, MA0036, MA0182
 #endif

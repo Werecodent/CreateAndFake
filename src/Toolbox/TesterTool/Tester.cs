@@ -402,7 +402,13 @@ public class Tester(TesterOptions options) : ITester
                         !testClasses.Contains(name + localOptions.TestClassNameSuffix)
                     );
                 })
-                .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name)),
+                .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name))
+                .Where(t =>
+                    !t.Namespace!.StartsWith(
+                        "Coverlet.Core.Instrumentation.Tracker",
+                        StringComparison.Ordinal
+                    )
+                ),
             $"Missing tests for classes from {codeAssembly} in {testAssembly}."
         );
     }

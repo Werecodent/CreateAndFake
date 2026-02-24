@@ -29,7 +29,11 @@ public sealed class HandlerCompareHint : CompareHint
     ];
 
     private static readonly IDictionary<Type, ICompareHandler> _HandlersByType =
-        TypeSupporter.GroupBySupportedType(_Handlers.Concat(ReflectionCompareHandlers.Handlers));
+        TypeSupporter.GroupBySupportedType(
+            _Handlers
+                .Concat(ValueCompareHandlers.Handlers)
+                .Concat(ReflectionCompareHandlers.Handlers)
+        );
 
     /// <inheritdoc/>
     public override int EnginePriority => (int)ComparePriority.HandlerHint;
