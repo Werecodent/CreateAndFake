@@ -127,17 +127,18 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
     private static Exception? UnwrapException(Exception? error)
     {
-        if (error is AggregateException multi && multi.InnerExceptions.Count == 1)
+        Exception? result = error;
+        if (result is AggregateException multi && multi.InnerExceptions.Count == 1)
         {
-            return UnwrapException(multi.InnerException);
+            result = multi.InnerException;
         }
 
-        if (error is TargetInvocationException ex)
+        if (result is TargetInvocationException ex)
         {
-            return UnwrapException(ex.InnerException);
+            result = ex.InnerException;
         }
 
-        return error;
+        return result;
     }
 
     /// <inheritdoc/>

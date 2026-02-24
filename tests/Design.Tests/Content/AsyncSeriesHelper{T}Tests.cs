@@ -2,10 +2,10 @@ using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Tests.Content;
 
-public static class AsyncEnumHelper_T_Tests
+public static class AsyncSeriesHelper_T_Tests
 {
     [Fact]
-    internal static Task AsyncEnumHelper_T_GuardsNulls()
+    internal static Task AsyncSeriesHelper_T_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AsyncSeriesHelper<>),
@@ -14,7 +14,7 @@ public static class AsyncEnumHelper_T_Tests
     }
 
     [Fact]
-    internal static Task AsyncEnumHelper_T_NoParameterMutation()
+    internal static Task AsyncSeriesHelper_T_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncSeriesHelper<string>),

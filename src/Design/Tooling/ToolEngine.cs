@@ -25,7 +25,8 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
         .ToFrozenSet();
 
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes => _AllHints.SelectMany(h => h.SupportedTypes);
+    public virtual ISet<Type> SupportedTypes { get; } =
+        _AllHints.SelectMany(h => h.SupportedTypes).Distinct().ToFrozenSet();
 
     /// <summary>Picks hints to use for the tool based upon configured options.</summary>
     /// <typeparam name="TOptions">

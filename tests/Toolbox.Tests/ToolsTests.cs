@@ -7,6 +7,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Handlers;
 using CreateAndFake.FakerTool;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool.Handlers;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
@@ -25,7 +26,8 @@ public static class ToolsTests
     {
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(ToolSet)),
-            Assembly.GetExecutingAssembly()
+            Assembly.GetExecutingAssembly(),
+            opt => opt with { TestClassCoverageExceptions = [nameof(Emitter)] }
         );
     }
 

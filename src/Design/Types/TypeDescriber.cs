@@ -275,7 +275,7 @@ public static class TypeDescriber
     ///     Every found <see langword="class"/> if the
     ///     <paramref name="assembly"/> loads, none otherwise.
     /// </returns>
-    internal static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
     {
         if (assembly == null)
         {

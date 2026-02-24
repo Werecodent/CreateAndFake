@@ -379,7 +379,7 @@ public class Tester(TesterOptions options) : ITester
         localOptions.Asserter.IsEmpty(
             TypeDescriber
                 .FindLoadedClassTypes(codeAssembly)
-                .Where(t => !t.IsAbstract)
+                .Where(t => !t.IsAbstract || t.IsSealed)
                 .Where(t => TypeDescriber.IsVisible(t, testAssembly.GetName()))
                 .Where(t =>
                 {

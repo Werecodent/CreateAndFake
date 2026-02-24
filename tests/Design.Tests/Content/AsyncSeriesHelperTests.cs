@@ -4,10 +4,10 @@ using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Tests.Content;
 
-public static class AsyncEnumHelperTests
+public static class AsyncSeriesHelperTests
 {
     [Fact]
-    internal static Task AsyncEnumHelper_GuardsNulls()
+    internal static Task AsyncSeriesHelper_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AsyncSeriesHelper),
@@ -16,7 +16,7 @@ public static class AsyncEnumHelperTests
     }
 
     [Fact]
-    internal static Task AsyncEnumHelper_NoParameterMutation()
+    internal static Task AsyncSeriesHelper_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncSeriesHelper),
