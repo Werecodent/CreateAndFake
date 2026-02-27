@@ -2,7 +2,6 @@ using System.Reflection;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Design.Tests.Types;
 
@@ -100,24 +99,6 @@ public static class TypeDescriberTests
     {
         TypeDescriber.GetAllProperties<InheritedPrivatesSample>(true).Assert().IsEmpty();
         TypeDescriber.GetAllProperties<InheritedPrivatesSample>().Assert().IsNotEmpty();
-    }
-
-    [Fact]
-    internal static void FindLocalSubclasses_ExcludesOtherAssemblies()
-    {
-        TypeDescriber
-            .FindLocalSubclasses<IValuerEquatable>()
-            .Assert()
-            .ContainsNot(typeof(PrivateValuerEquatableSample));
-    }
-
-    [Fact]
-    internal static void FindLoadedSubclasses_IncludesFromDifferentAssemblies()
-    {
-        TypeDescriber
-            .FindLoadedSubclasses<IValuerEquatable>()
-            .Assert()
-            .Contains(typeof(PrivateValuerEquatableSample));
     }
 
     [Fact]

@@ -43,8 +43,9 @@ internal static class ExceptionCreateHandlers
     ];
 
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
-        TypeDescriber
-            .FindLoadedSubclasses<Exception>()
+        InheritanceTracker
+            .For<Exception>()
+            .FindLoadedSubclasses()
             .Where(t => t.IsVisible)
             .Where(t => t.IsSerializable)
             .Where(t => t.Namespace!.StartsWith("System", StringComparison.Ordinal))

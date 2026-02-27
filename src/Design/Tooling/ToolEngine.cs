@@ -11,8 +11,9 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
     /// <summary>All found hints from all loaded assemblies.</summary>
     private static readonly ImmutableArray<THint> _AllHints =
     [
-        .. TypeDescriber
-            .FindLoadedSubclasses<THint>()
+        .. InheritanceTracker
+            .For<THint>()
+            .FindLoadedSubclasses()
             .Select(Activator.CreateInstance)
             .Cast<THint>()
             .Where(h => h.EnginePriority != int.MinValue)

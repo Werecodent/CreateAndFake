@@ -1,4 +1,6 @@
 using CreateAndFake.Design.Types;
+using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Design.Tests.Types;
 
@@ -57,5 +59,25 @@ public static class InheritanceTrackerTests
     internal static void Inherits_SelfIncluded()
     {
         InheritanceTracker.For<string>().Inherits<string>().Assert().Is(true);
+    }
+
+    [Fact]
+    internal static void FindLocalSubclasses_ExcludesOtherAssemblies()
+    {
+        InheritanceTracker
+            .For<IValuerEquatable>()
+            .FindLocalSubclasses()
+            .Assert()
+            .ContainsNot(typeof(PrivateValuerEquatableSample));
+    }
+
+    [Fact]
+    internal static void FindLoadedSubclasses_IncludesFromDifferentAssemblies()
+    {
+        InheritanceTracker
+            .For<IValuerEquatable>()
+            .FindLoadedSubclasses()
+            .Assert()
+            .Contains(typeof(PrivateValuerEquatableSample));
     }
 }

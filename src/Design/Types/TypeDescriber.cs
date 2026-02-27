@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Extensions;
 using Microsoft.CodeAnalysis;
 
 namespace CreateAndFake.Design.Types;
@@ -204,67 +203,6 @@ public static class TypeDescriber
                 currentType = currentType.BaseType;
             }
         }
-    }
-
-    /// <summary>
-    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
-    ///     inheriting <typeparamref name="T"/> in its defined <see cref="Assembly"/>.
-    /// </summary>
-    /// <inheritdoc cref="FindLoadedSubclasses{T}"/>
-    public static IEnumerable<Type> FindLocalSubclasses<T>()
-    {
-        return FindLocalSubclasses(typeof(T));
-    }
-
-    /// <summary>
-    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
-    ///     inheriting the <paramref name="type"/> in its defined <see cref="Assembly"/>.
-    /// </summary>
-    /// <inheritdoc cref="FindLoadedSubclasses"/>
-    public static IEnumerable<Type> FindLocalSubclasses(Type? type)
-    {
-        if (type == null)
-        {
-            return [];
-        }
-
-        return FindLoadedClassTypes(type.Assembly)
-            .Where(t => !t.IsAbstract)
-            .Where(t => t.Inherits(type))
-            .Where(t => IsVisible(t, Assembly.GetCallingAssembly().GetName()));
-    }
-
-    /// <summary>
-    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
-    ///     inheriting <typeparamref name="T"/> in all loaded assemblies.
-    /// </summary>
-    /// <typeparam name="T">The <see cref="Type"/> to find subclasses for.</typeparam>
-    /// <inheritdoc cref="FindLoadedSubclasses(Type)"/>
-    public static IEnumerable<Type> FindLoadedSubclasses<T>()
-    {
-        return FindLoadedSubclasses(typeof(T));
-    }
-
-    /// <summary>
-    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
-    ///     inheriting the <paramref name="type"/> in all loaded assemblies.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> to find subclasses for.</param>
-    /// <returns>The found creatable subclasses.</returns>
-    /// <remarks>
-    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
-    ///     to access its <see langword="internal"/> types for this method.
-    /// </remarks>
-    public static IEnumerable<Type> FindLoadedSubclasses(Type? type)
-    {
-        return AppDomain
-            .CurrentDomain.GetAssemblies()
-            .Where(a => !a.ReflectionOnly)
-            .Where(a => !a.IsDynamic)
-            .SelectMany(FindLoadedClassTypes)
-            .Where(t => !t.IsAbstract)
-            .Where(t => t.Inherits(type))
-            .Where(t => IsVisible(t, Assembly.GetCallingAssembly().GetName()));
     }
 
     /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>

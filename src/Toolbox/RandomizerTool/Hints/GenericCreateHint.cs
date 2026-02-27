@@ -36,7 +36,7 @@ public sealed class GenericCreateHint : CreateHint
     /// <inheritdoc cref="CreateHint.TryCreate"/>
     private static object Create(Type type, IRandomizerChainer randomizer)
     {
-        return randomizer.Create(
+        return randomizer.CreateSpecific(
             type.MakeGenericType([
                 .. type.GetGenericArguments().Select(a => CreateArg(a, type, randomizer)),
             ]),
@@ -121,7 +121,7 @@ public sealed class GenericCreateHint : CreateHint
         if (parent == constraint)
         {
             return randomizer.Options.Gen.NextItemOrDefault(
-                    TypeDescriber.FindLoadedSubclasses(parent)
+                    InheritanceTracker.For(parent).FindLoadedSubclasses()
                 )
                 ?? throw new InvalidOperationException(
                     $"Cannot create '{parent}' due to self-reference and no visible subclasses."

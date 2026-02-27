@@ -1,5 +1,8 @@
 using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Types;
 
@@ -39,7 +42,7 @@ public sealed class InheritanceTracker : ITypeSupporter
             if (!_InheritCache.TryGetValue(type, out describer))
             {
                 HashSet<Type> parents = [];
-                FindInheritance(type, parents);
+                FindParentInheritance(type, parents);
                 describer = _InheritCache[type] = new(type, parents);
             }
         }
@@ -49,8 +52,14 @@ public sealed class InheritanceTracker : ITypeSupporter
     /// <inheritdoc/>
     public Type? SupportedType { get; }
 
-    /// <summary>All found inherited <see cref="Type"/>s.</summary>
+    /// <summary>All found <see cref="Type"/>s the <see cref="SupportedType"/> inherits.</summary>
     public IEnumerable<Type> InheritedTypes { get; }
+
+    /// <summary>All found <see cref="Type"/>s inheriting the <see cref="SupportedType"/>.</summary>
+    public IEnumerable<Type> SubTypes => _subTypes.Value;
+
+    /// <inheritdoc cref="SubTypes"/>
+    private readonly Lazy<FrozenSet<Type>> _subTypes;
 
     /// <summary><inheritdoc cref="InheritanceTracker"/></summary>
     /// <param name="type"><inheritdoc cref="SupportedType" path="/summary"/></param>
@@ -59,6 +68,7 @@ public sealed class InheritanceTracker : ITypeSupporter
     {
         SupportedType = type;
         InheritedTypes = parents.ToFrozenSet();
+        _subTypes = new(() => FindLoadedChildren(type).ToFrozenSet());
     }
 
     /// <summary>
@@ -96,28 +106,85 @@ public sealed class InheritanceTracker : ITypeSupporter
             && InheritedTypes.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
     }
 
+    /// <inheritdoc cref="FindLocalSubclasses(AssemblyName)"/>
+    public IEnumerable<Type> FindLocalSubclasses()
+    {
+        return FindLocalSubclasses(Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds every non-<see langword="abstract"/> <see langword="class"/> inheriting
+    ///     the <see cref="SupportedType"/> in its defined <see cref="Assembly"/>.
+    /// </summary>
+    /// <inheritdoc cref="FindLoadedSubclasses(AssemblyName)"/>
+    private IEnumerable<Type> FindLocalSubclasses(AssemblyName assembly)
+    {
+        return FindLoadedSubclasses(assembly).Where(t => SupportedType?.Assembly == t.Assembly);
+    }
+
+    /// <inheritdoc cref="FindLoadedSubclasses(AssemblyName)"/>
+    public IEnumerable<Type> FindLoadedSubclasses()
+    {
+        return FindLoadedSubclasses(Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
+    ///     inheriting the <see cref="SupportedType"/> in all loaded assemblies.
+    /// </summary>
+    /// <param name="assembly">Accessing assembly to check visibility access for.</param>
+    /// <returns>The found creatable subclasses.</returns>
+    /// <remarks>
+    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     to access its <see langword="internal"/> types for the test framework.
+    /// </remarks>
+    private IEnumerable<Type> FindLoadedSubclasses(AssemblyName assembly)
+    {
+        return SubTypes.Where(t => !t.IsAbstract).Where(t => TypeDescriber.IsVisible(t, assembly));
+    }
+
     /// <summary>
     ///     Finds every <see cref="Type"/> that the <paramref name="type"/>
     ///     inherits and adds them to <paramref name="foundParents"/>.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
     /// <param name="foundParents">Collection to add all found base classes/interfaces to.</param>
-    private static void FindInheritance(Type? type, ISet<Type> foundParents)
+    private static void FindParentInheritance(Type? type, ISet<Type> foundParents)
     {
         if (type != null && foundParents.Add(type))
         {
             if (type.IsGenericType)
             {
-                FindInheritance(type.GetGenericTypeDefinition(), foundParents);
+                FindParentInheritance(type.GetGenericTypeDefinition(), foundParents);
             }
 
-            foreach (Type child in type.GetInterfaces())
+            foreach (Type parent in type.GetInterfaces())
             {
-                FindInheritance(child, foundParents);
+                FindParentInheritance(parent, foundParents);
             }
 
-            FindInheritance(type.BaseType, foundParents);
+            FindParentInheritance(type.BaseType, foundParents);
         }
+    }
+
+    /// <summary>
+    ///     Finds every child <paramref name="type"/> inheriting
+    ///     the <paramref name="type"/> in all loaded assemblies.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to find subclasses for.</param>
+    /// <returns>The found subclasses.</returns>
+    private static IEnumerable<Type> FindLoadedChildren(Type? type)
+    {
+        if (type == null)
+        {
+            return [];
+        }
+        return AppDomain
+            .CurrentDomain.GetAssemblies()
+            .Where(a => !a.ReflectionOnly)
+            .Where(a => !a.IsDynamic)
+            .SelectMany(TypeDescriber.FindLoadedTypes)
+            .Where(t => t.Inherits(type));
     }
 
     /// <inheritdoc/>

@@ -17,7 +17,7 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
 
     /// <summary>Limits attempts at matching conditions.</summary>
     [ConfigurableOption]
-    public Limiter RandomizerCreateAttempts { get; init; } = Limiter.Score;
+    public Limiter RandomizerCreateAttempts { get; init; } = Limiter.Dozen;
 
     /// <summary>
     ///     When generating random objects, subclasses from the originating assembly are preferred
@@ -28,7 +28,7 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
 
     /// <summary>Limits attempts at creating unspecific objects.</summary>
     [ConfigurableOption]
-    public Limiter ObjectCreateAttempts { get; init; } = Limiter.Dozen;
+    public Limiter ObjectCreateAttempts { get; init; } = Limiter.Few;
 
     /// <summary>Limits population attempts for collections when encountering problems.</summary>
     [ConfigurableOption]

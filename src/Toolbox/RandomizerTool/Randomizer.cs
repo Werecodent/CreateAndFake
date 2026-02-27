@@ -38,7 +38,6 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                     $"Trying to create instance of '{TypeDescriber.ExpandedName(type)}'",
                     () =>
                     {
-                        // Don't pass local options here.
                         return new RandomizerChainer(Options, _engine).Create(
                             type,
                             (optionConfiguration != null) ? _ => localOptions : null

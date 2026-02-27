@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
+﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 
 namespace CreateAndFake.RandomizerTool.Engine;
@@ -10,20 +10,24 @@ public sealed class RandomizerChainer
         IRandomizerChainer
 {
     /// <summary>Types not to create as to prevent infinite recursion.</summary>
-    private readonly IDictionary<Type, object> _history;
+    private readonly IDictionary<Type, object> _createHistory;
+
+    private readonly ISet<Type> _attemptHistory;
 
     /// <inheritdoc/>
     public RandomizerChainer(RandomizerOptions options, IRandomizerEngine engine)
         : base(options, engine)
     {
-        _history = new Dictionary<Type, object>();
+        _createHistory = new Dictionary<Type, object>();
+        _attemptHistory = new HashSet<Type>();
     }
 
     /// <inheritdoc/>
     private RandomizerChainer(RandomizerOptions options, RandomizerChainer prevChainer)
         : base(options, prevChainer)
     {
-        _history = prevChainer._history;
+        _createHistory = prevChainer._createHistory;
+        _attemptHistory = prevChainer._attemptHistory;
     }
 
     /// <inheritdoc/>
@@ -41,46 +45,75 @@ public sealed class RandomizerChainer
     /// <inheritdoc/>
     public bool AlreadyCreated(Type type)
     {
-        return _history.ContainsKey(type);
+        return _createHistory.ContainsKey(type) || _attemptHistory.Contains(type);
     }
 
     /// <inheritdoc/>
-    public object Create(Type type, object? parent, RandomizerMod? optionConfiguration = null)
+    public object CreateSpecific(Type type, Type parent, RandomizerMod? optionConfiguration = null)
     {
-        if (AlreadyCreated(type))
+        if (_attemptHistory.Add(type))
         {
-            return _history[type];
+            try
+            {
+                return Engine.Create(type, GetSubChainer(optionConfiguration));
+            }
+            finally
+            {
+                _ = _attemptHistory.Remove(type);
+            }
         }
-        else if (parent?.GetType() == type)
+        else
+        {
+            throw new EngineException($"{type} already created.");
+        }
+    }
+
+    /// <inheritdoc/>
+    public object CreateInternal(
+        Type type,
+        object parent,
+        RandomizerMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(type, parent);
+
+        if (_createHistory.TryGetValue(type, out object? previous))
+        {
+            return previous;
+        }
+        else if (parent.GetType() == type)
         {
             return parent;
         }
 
-        if (parent != null && !_history.ContainsKey(parent.GetType()))
+        if (!_createHistory.ContainsKey(parent.GetType()))
         {
-            _history.Add(parent.GetType(), parent);
+            _createHistory.Add(parent.GetType(), parent);
+            try
+            {
+                return Engine.Create(type, GetSubChainer(optionConfiguration));
+            }
+            finally
+            {
+                _ = _createHistory.Remove(parent.GetType());
+            }
         }
-
-        RuntimeHelpers.EnsureSufficientExecutionStack();
-        object result = Engine.Create(type, GetSubChainer(optionConfiguration));
-
-        if (parent != null)
+        else
         {
-            _ = _history.Remove(parent.GetType());
+            return Engine.Create(type, GetSubChainer(optionConfiguration));
         }
-        return result;
     }
 
     /// <inheritdoc/>
     public T Create<T>(RandomizerMod? optionConfiguration = null)
     {
-        return (T)Create(typeof(T), null, optionConfiguration);
+        return (T)Engine.Create(typeof(T), GetSubChainer(optionConfiguration));
     }
 
     /// <inheritdoc/>
     public object Create(Type type, RandomizerMod? optionConfiguration = null)
     {
-        return Create(type, null, optionConfiguration);
+        return Engine.Create(type, GetSubChainer(optionConfiguration));
     }
 
     /// <inheritdoc/>

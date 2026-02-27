@@ -90,7 +90,9 @@ public static class TypeSupporter
         Dictionary<Type, IList<T>> results = [];
         foreach (T handler in typeHandlers ?? [])
         {
-            foreach (Type type in TypeDescriber.FindLoadedSubclasses(handler.SupportedType))
+            foreach (
+                Type type in InheritanceTracker.For(handler.SupportedType).FindLoadedSubclasses()
+            )
             {
                 if (results.TryGetValue(type, out IList<T>? values))
                 {

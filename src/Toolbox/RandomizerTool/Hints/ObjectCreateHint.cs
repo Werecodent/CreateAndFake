@@ -89,7 +89,7 @@ public sealed class ObjectCreateHint : CreateHint
         {
             string? smartValue =
                 (field.FieldType == typeof(string)) ? smartData.Find(field.Name) : null;
-            field.SetValue(data, smartValue ?? randomizer.Create(field.FieldType, data));
+            field.SetValue(data, smartValue ?? randomizer.CreateInternal(field.FieldType, data));
         }
         foreach (
             PropertyInfo property in TypeDescriber
@@ -101,7 +101,7 @@ public sealed class ObjectCreateHint : CreateHint
             string? smartValue =
                 (property.PropertyType == typeof(string)) ? smartData.Find(property.Name) : null;
 
-            object newValue = smartValue ?? randomizer.Create(property.PropertyType, data);
+            object newValue = smartValue ?? randomizer.CreateInternal(property.PropertyType, data);
 
             //try
             //{
@@ -277,11 +277,11 @@ public sealed class ObjectCreateHint : CreateHint
         }
 
         ImmutableArray<Type> subclasses = randomizer.Options.PreferLocalSubclasses
-            ? filterTypes(TypeDescriber.FindLocalSubclasses(type))
+            ? filterTypes(InheritanceTracker.For(type).FindLocalSubclasses())
             : [];
 
         return subclasses.Length == 0
-            ? filterTypes(TypeDescriber.FindLoadedSubclasses(type))
+            ? filterTypes(InheritanceTracker.For(type).FindLoadedSubclasses())
             : subclasses;
     }
 
