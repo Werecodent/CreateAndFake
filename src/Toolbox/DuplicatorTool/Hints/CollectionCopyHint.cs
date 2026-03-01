@@ -89,8 +89,8 @@ public sealed class CollectionCopyHint : CopyHint
             return result;
         }
 
-        ConstructorInfo? constructor = collectionType
-            .GetConstructors()
+        ConstructorInfo? constructor = TypeDescriber
+            .GetPublicConstructors(collectionType)
             .Where(c => c.GetParameters().Length == 1)
             .FirstOrDefault(c => c.GetParameters()[0].ParameterType.Inherits<IEnumerable>());
 

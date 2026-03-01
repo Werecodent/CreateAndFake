@@ -2,6 +2,7 @@ using System.Collections;
 using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.FakerTool;
@@ -97,8 +98,8 @@ public static class ToolSetTests
     {
         Dictionary<PropertyInfo, object> invalids = [];
         foreach (
-            PropertyInfo prop in typeof(T)
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            PropertyInfo prop in TypeDescriber
+                .GetPublicProperties<T>()
                 .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
         )
         {
@@ -132,8 +133,8 @@ public static class ToolSetTests
                 .GetChildren()
                 .Select(c => c.Key)
                 .Except(
-                    typeof(T)
-                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    TypeDescriber
+                        .GetPublicProperties<T>()
                         .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
                         .Select(p => p.Name)
                 ),

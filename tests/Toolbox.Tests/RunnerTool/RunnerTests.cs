@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
@@ -54,7 +55,7 @@ public static class RunnerTests
     {
         Tools
             .Runner.CreateFor(
-                typeof(InjectMockSample).GetConstructors().Single(),
+                TypeDescriber.GetPublicConstructors<InjectMockSample>().Single(),
                 TestContext.Current.CancellationToken,
                 fake,
                 fake2

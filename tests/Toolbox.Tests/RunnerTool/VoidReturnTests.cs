@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 
@@ -9,9 +10,7 @@ public static class VoidReturnTests
     [Fact]
     internal static void VoidReturn_PrivateConstructor()
     {
-        ConstructorInfo constructor = typeof(VoidType)
-            .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-            .Single();
+        ConstructorInfo constructor = TypeDescriber.GetAllConstructors<VoidType>().Single();
 
         constructor.IsPrivate.Assert().Is(true);
         constructor.Invoke([]).Assert().Pass();

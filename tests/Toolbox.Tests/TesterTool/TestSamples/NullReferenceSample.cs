@@ -3,14 +3,9 @@ using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.Tests.TesterTool.TestSamples;
 
-public sealed class NullReferenceSample
+public sealed class NullReferenceSample(IValueEquatable data)
 {
-    private readonly IValueEquatable _data;
-
-    internal NullReferenceSample(IValueEquatable data)
-    {
-        _data = data;
-    }
+    private readonly IValueEquatable _data = data;
 
     [ExcludeFromCodeCoverage]
     public override string ToString()

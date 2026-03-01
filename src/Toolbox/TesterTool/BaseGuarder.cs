@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool;
@@ -23,12 +24,9 @@ internal abstract class BaseGuarder(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type);
 
-        BindingFlags scope = Options.IncludeInternals
-            ? BindingFlags.Public | BindingFlags.NonPublic
-            : BindingFlags.Public;
-        return type.GetConstructors(BindingFlags.Instance | scope)
-            .Where(c => c.IsPublic || c.IsAssembly)
-            .Where(c => !c.IsPrivate);
+        return Options.IncludeInternals
+            ? TypeDescriber.GetVisibleConstructors(type)
+            : TypeDescriber.GetPublicConstructors(type);
     }
 
     /// <summary>Gets all testable methods on a type.</summary>

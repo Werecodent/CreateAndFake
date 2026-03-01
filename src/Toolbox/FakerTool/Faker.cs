@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool.Proxy;
 
 namespace CreateAndFake.FakerTool;
@@ -194,8 +195,8 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The constructor best fitted to the types.</returns>
     private static ConstructorInfo? FindBestConstructor<T>(Type[] startingTypes)
     {
-        return typeof(T)
-            .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
+        return TypeDescriber
+            .GetPublicConstructors<T>()
             .GroupBy(c =>
                 c.GetParameters().Count(p => startingTypes.Any(t => t.Inherits(p.ParameterType)))
             )

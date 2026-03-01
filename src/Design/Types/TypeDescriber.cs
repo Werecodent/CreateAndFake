@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using CreateAndFake.Design.Extensions;
 using Microsoft.CodeAnalysis;
 
 namespace CreateAndFake.Design.Types;
@@ -154,12 +155,9 @@ public static class TypeDescriber
     /// <inheritdoc cref="GetAllFields(Type?)"/>
     private static IEnumerable<FieldInfo> GetVisibleFields(Type? type, AssemblyName assembly)
     {
-        if (
-            type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                .Any(a => a.AssemblyName == assembly.Name) == true
-        )
+        if (InternalsAreVisible(type, assembly))
         {
-            return GetAllFields(type).Where(f => !f.IsPrivate);
+            return GetAllFields(type).Where(f => f.IsPublic || f.IsAssembly);
         }
         else
         {
@@ -264,15 +262,16 @@ public static class TypeDescriber
     /// <inheritdoc cref="GetAllProperties(Type?)"/>
     public static IEnumerable<PropertyInfo> GetVisibleProperties(Type? type, AssemblyName assembly)
     {
-        if (
-            type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                .Any(a => a.AssemblyName == assembly.Name) == true
-        )
+        if (InternalsAreVisible(type, assembly))
         {
             return GetAllProperties(type)
                 .Where(p =>
-                    p.GetGetMethod()?.IsPrivate == false || p.GetSetMethod()?.IsPrivate == false
-                );
+                {
+                    MethodInfo? getMethod = p.GetGetMethod();
+                    MethodInfo? setMethod = p.GetSetMethod();
+                    return (getMethod != null && (getMethod.IsPublic || getMethod.IsAssembly))
+                        || (setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly));
+                });
         }
         else
         {
@@ -323,6 +322,170 @@ public static class TypeDescriber
             }
             currentType = currentType.BaseType;
         }
+    }
+
+    /// <summary>Finds <see langword="public"/> <typeparamref name="T"/> constructors.</summary>
+    /// <inheritdoc cref="GetPublicConstructors(Type?)"/>
+    /// <inheritdoc cref="GetAllConstructors{T}"/>
+    public static IEnumerable<ConstructorInfo> GetPublicConstructors<T>()
+    {
+        return GetPublicConstructors(typeof(T));
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> constructors on the <paramref name="type"/>.
+    /// </summary>
+    /// <remarks>Includes inherited <see langword="public"/> constructors.</remarks>
+    /// <inheritdoc cref="GetVisibleConstructors(Type?,AssemblyName)"/>
+    public static IEnumerable<ConstructorInfo> GetPublicConstructors(Type? type)
+    {
+        return type?.GetConstructors(BindingFlags.Instance | BindingFlags.Public) ?? [];
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     <typeparamref name="T"/> constructors.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleConstructors(Type?)"/>
+    /// <inheritdoc cref="GetAllConstructors{T}"/>
+    public static IEnumerable<ConstructorInfo> GetVisibleConstructors<T>()
+    {
+        return GetVisibleConstructors(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetVisibleConstructors(Type?,AssemblyName)"/>
+    public static IEnumerable<ConstructorInfo> GetVisibleConstructors(Type? type)
+    {
+        return GetVisibleConstructors(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     constructors on the <paramref name="type"/>.
+    /// </summary>
+    /// <param name="assembly">
+    ///     Name of the <see cref="Assembly"/> to determine visibility for.
+    /// </param>
+    /// <remarks>
+    ///     Finds <see langword="internal"/> constructors only if they are visible
+    ///     to the calling method's assembly. Mark an <see cref="Assembly"/> with
+    ///     <c>InternalsVisibleTo("CreateAndFake")</c> to access its
+    ///     <see langword="internal"/> constructors for the test framework.
+    /// </remarks>
+    /// <inheritdoc cref="GetAllConstructors(Type?)"/>
+    public static IEnumerable<ConstructorInfo> GetVisibleConstructors(
+        Type? type,
+        AssemblyName assembly
+    )
+    {
+        if (InternalsAreVisible(type, assembly))
+        {
+            return GetAllConstructors(type).Where(c => c.IsPublic || c.IsAssembly);
+        }
+        else
+        {
+            return GetPublicConstructors(type);
+        }
+    }
+
+    /// <summary>Finds all <typeparamref name="T"/> constructors.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to find constructors on.</typeparam>
+    /// <inheritdoc cref="GetAllConstructors(Type)"/>
+    public static IEnumerable<ConstructorInfo> GetAllConstructors<T>()
+    {
+        return GetAllConstructors(typeof(T));
+    }
+
+    /// <summary>Finds all constructors on the <paramref name="type"/>.</summary>
+    /// <param name="type">The <see cref="Type"/> to find constructors on.</param>
+    /// <returns>All found constructors on the <see cref="Type"/>.</returns>
+    public static IEnumerable<ConstructorInfo> GetAllConstructors(Type? type)
+    {
+        return type?.GetConstructors(
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+            ) ?? [];
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> static methods that create <typeparamref name="T"/>.
+    /// </summary>
+    /// <inheritdoc cref="GetPublicFactories(Type?)"/>
+    /// <inheritdoc cref="GetAllFactories{T}"/>
+    public static IEnumerable<MethodInfo> GetPublicFactories<T>()
+    {
+        return GetPublicFactories(typeof(T));
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> static methods that create the <paramref name="type"/>.
+    /// </summary>
+    /// <inheritdoc cref="GetAllFactories(Type?)"/>
+    public static IEnumerable<MethodInfo> GetPublicFactories(Type? type)
+    {
+        return type?.GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(m => m.ReturnType.Inherits(type))
+            ?? [];
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     static methods that create <typeparamref name="T"/>.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleFactories(Type?)"/>
+    /// <inheritdoc cref="GetAllFactories{T}"/>
+    public static IEnumerable<MethodInfo> GetVisibleFactories<T>()
+    {
+        return GetVisibleFactories(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetVisibleFactories(Type?,AssemblyName)"/>
+    public static IEnumerable<MethodInfo> GetVisibleFactories(Type? type)
+    {
+        return GetVisibleFactories(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     static methods that create the <paramref name="type"/>.
+    /// </summary>
+    /// <param name="assembly">
+    ///     Name of the <see cref="Assembly"/> to determine visibility for.
+    /// </param>
+    /// <remarks>
+    ///     Finds <see langword="internal"/> factories only if they are visible
+    ///     to the calling method's assembly. Mark an <see cref="Assembly"/> with
+    ///     <c>InternalsVisibleTo("CreateAndFake")</c> to access its
+    ///     <see langword="internal"/> factories for the test framework.
+    /// </remarks>
+    /// <inheritdoc cref="GetAllFactories(Type?)"/>
+    public static IEnumerable<MethodInfo> GetVisibleFactories(Type? type, AssemblyName assembly)
+    {
+        if (InternalsAreVisible(type, assembly))
+        {
+            return GetAllFactories(type).Where(c => !c.IsPrivate);
+        }
+        else
+        {
+            return GetPublicFactories(type);
+        }
+    }
+
+    /// <summary>Finds all static methods that create <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to find factories on.</typeparam>
+    /// <inheritdoc cref="GetAllFactories(Type)"/>
+    public static IEnumerable<MethodInfo> GetAllFactories<T>()
+    {
+        return GetAllFactories(typeof(T));
+    }
+
+    /// <summary>Finds all static methods that create the <paramref name="type"/>.</summary>
+    /// <param name="type">The <see cref="Type"/> to find factories on.</param>
+    /// <returns>All found factory methods on the <see cref="Type"/>.</returns>
+    public static IEnumerable<MethodInfo> GetAllFactories(Type? type)
+    {
+        return type?.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.ReturnType.Inherits(type))
+            ?? [];
     }
 
     /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
@@ -407,12 +570,29 @@ public static class TypeDescriber
     /// </remarks>
     public static bool IsVisible(Type? type, AssemblyName assembly)
     {
-        return type != null
-            && (
-                type.IsVisible
-                || type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                    .Any(a => a.AssemblyName == assembly.Name)
-            );
+        return type != null && (type.IsVisible || InternalsAreVisible(type, assembly));
+    }
+
+    /// <summary>
+    ///     Determines if the <paramref name="type"/>'s <see langword="internal"/>
+    ///     members are usable in the <paramref name="assembly"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to verify visibility for.</param>
+    /// <param name="assembly">
+    ///     Name of the <see cref="Assembly"/> to check scope privilege for.
+    /// </param>
+    /// <returns>
+    ///     <see langword="true"/> if the <see cref="Type"/>'s <see langword="internal"/>s
+    ///     are visible to the <paramref name="assembly"/>, <see langword="false"/> otherwise.
+    /// </returns>
+    /// <remarks>
+    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     to enable <see langword="internal"/> members visibility per this method.
+    /// </remarks>
+    private static bool InternalsAreVisible(Type? type, AssemblyName assembly)
+    {
+        return type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
+                .Any(a => a.AssemblyName == assembly.Name) == true;
     }
 
     /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>
