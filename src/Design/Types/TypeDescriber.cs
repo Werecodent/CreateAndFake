@@ -102,106 +102,226 @@ public static class TypeDescriber
         return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
     }
 
-    /// <typeparam name="T">The <see cref="Type"/> to find fields on.</typeparam>
-    /// <inheritdoc cref="GetAllFields(Type,bool)"/>
-    public static IEnumerable<FieldInfo> GetAllFields<T>(bool onlyPublic = false)
+    /// <summary>Finds <see langword="public"/> <typeparamref name="T"/> instance fields.</summary>
+    /// <inheritdoc cref="GetPublicFields(Type?)"/>
+    /// <inheritdoc cref="GetAllFields{T}"/>
+    public static IEnumerable<FieldInfo> GetPublicFields<T>()
     {
-        return GetAllFields(typeof(T), onlyPublic);
+        return GetPublicFields(typeof(T));
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> instance fields on the <paramref name="type"/>.
+    /// </summary>
+    /// <remarks>Includes inherited <see langword="public"/> fields.</remarks>
+    /// <inheritdoc cref="GetVisibleFields(Type?,AssemblyName)"/>
+    public static IEnumerable<FieldInfo> GetPublicFields(Type? type)
+    {
+        return type?.GetFields(
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy
+            ) ?? [];
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     <typeparamref name="T"/> instance fields.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleFields(Type?)"/>
+    /// <inheritdoc cref="GetAllFields{T}"/>
+    public static IEnumerable<FieldInfo> GetVisibleFields<T>()
+    {
+        return GetVisibleFields(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetVisibleFields(Type?,AssemblyName)"/>
+    public static IEnumerable<FieldInfo> GetVisibleFields(Type? type)
+    {
+        return GetVisibleFields(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     instance fields on the <paramref name="type"/>.
+    /// </summary>
+    /// <param name="assembly">
+    ///     Name of the <see cref="Assembly"/> to determine visibility for.
+    /// </param>
+    /// <remarks>
+    ///     Finds <see langword="internal"/> fields only if they are visible to the calling method's
+    ///     assembly. Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     to access its <see langword="internal"/> fields for the test framework.
+    /// </remarks>
+    /// <inheritdoc cref="GetAllFields(Type?)"/>
+    private static IEnumerable<FieldInfo> GetVisibleFields(Type? type, AssemblyName assembly)
+    {
+        if (
+            type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
+                .Any(a => a.AssemblyName == assembly.Name) == true
+        )
+        {
+            return GetAllFields(type).Where(f => !f.IsPrivate);
+        }
+        else
+        {
+            return GetPublicFields(type);
+        }
+    }
+
+    /// <summary>Finds all <typeparamref name="T"/> instance fields.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to find fields on.</typeparam>
+    /// <inheritdoc cref="GetAllFields(Type)"/>
+    public static IEnumerable<FieldInfo> GetAllFields<T>()
+    {
+        return GetAllFields(typeof(T));
     }
 
     /// <summary>Finds all instance fields on the <paramref name="type"/>.</summary>
     /// <param name="type">The <see cref="Type"/> to find fields on.</param>
-    /// <param name="onlyPublic">If only public fields are to be returned.</param>
     /// <returns>All found fields on the <see cref="Type"/>.</returns>
     /// <remarks>
-    ///     The <see langword="private"/> fields in inherited
-    ///     <see cref="Type"/>s included by default.
+    ///     The <see langword="private"/> fields in inherited <see cref="Type"/>s are included.
     /// </remarks>
-    public static IEnumerable<FieldInfo> GetAllFields(Type? type, bool onlyPublic = false)
+    public static IEnumerable<FieldInfo> GetAllFields(Type? type)
     {
         if (type == null)
         {
             yield break;
         }
 
-        foreach (
-            FieldInfo field in type.GetFields(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy
-            )
-        )
+        foreach (FieldInfo field in GetPublicFields(type))
         {
             yield return field;
         }
 
-        if (!onlyPublic)
+        Type? currentType = type;
+        HashSet<Type> completedTypes = [];
+        while (currentType != null && completedTypes.Add(currentType))
         {
-            Type? currentType = type;
-            HashSet<Type> completedTypes = [];
-            while (currentType != null && completedTypes.Add(currentType))
-            {
-                foreach (
-                    FieldInfo field in currentType.GetFields(
-                        BindingFlags.Instance | BindingFlags.NonPublic
-                    )
+            foreach (
+                FieldInfo field in currentType.GetFields(
+                    BindingFlags.Instance | BindingFlags.NonPublic
                 )
-                {
-                    yield return field;
-                }
-                currentType = currentType.BaseType;
+            )
+            {
+                yield return field;
             }
+            currentType = currentType.BaseType;
         }
     }
 
-    /// <typeparam name="T"><see cref="Type"/> to find properties on.</typeparam>
-    /// <inheritdoc cref="GetAllProperties(Type,bool)"/>
-    public static IEnumerable<PropertyInfo> GetAllProperties<T>(bool onlyPublic = false)
+    /// <summary>
+    ///     Finds <see langword="public"/> <typeparamref name="T"/> instance properties.
+    /// </summary>
+    /// <inheritdoc cref="GetPublicProperties(Type?)"/>
+    /// <inheritdoc cref="GetAllProperties{T}"/>
+    public static IEnumerable<PropertyInfo> GetPublicProperties<T>()
     {
-        return GetAllProperties(typeof(T), onlyPublic);
+        return GetPublicProperties(typeof(T));
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> instance properties on the <paramref name="type"/>.
+    /// </summary>
+    /// <remarks>Includes inherited <see langword="public"/> properties.</remarks>
+    /// <inheritdoc cref="GetVisibleProperties(Type?,AssemblyName)"/>
+    public static IEnumerable<PropertyInfo> GetPublicProperties(Type? type)
+    {
+        return type?.GetProperties(
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy
+            ) ?? [];
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     <typeparamref name="T"/> instance properties.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleProperties(Type?)"/>
+    /// <inheritdoc cref="GetAllProperties{T}"/>
+    public static IEnumerable<PropertyInfo> GetVisibleProperties<T>()
+    {
+        return GetVisibleProperties(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetVisibleProperties(Type?,AssemblyName)"/>
+    public static IEnumerable<PropertyInfo> GetVisibleProperties(Type? type)
+    {
+        return GetVisibleProperties(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     instance properties on the <paramref name="type"/>.
+    /// </summary>
+    /// <param name="assembly">
+    ///     Name of the <see cref="Assembly"/> to determine visibility for.
+    /// </param>
+    /// <remarks>
+    ///     Finds <see langword="internal"/> properties only if they are visible
+    ///     to the calling method's assembly. Mark an <see cref="Assembly"/> with
+    ///     <c>InternalsVisibleTo("CreateAndFake")</c> to access its
+    ///     <see langword="internal"/> properties for the test framework.
+    /// </remarks>
+    /// <inheritdoc cref="GetAllProperties(Type?)"/>
+    public static IEnumerable<PropertyInfo> GetVisibleProperties(Type? type, AssemblyName assembly)
+    {
+        if (
+            type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
+                .Any(a => a.AssemblyName == assembly.Name) == true
+        )
+        {
+            return GetAllProperties(type)
+                .Where(p =>
+                    p.GetGetMethod()?.IsPrivate == false || p.GetSetMethod()?.IsPrivate == false
+                );
+        }
+        else
+        {
+            return GetPublicProperties(type);
+        }
+    }
+
+    /// <summary>Finds all <typeparamref name="T"/> instance properties.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to find properties on.</typeparam>
+    /// <inheritdoc cref="GetAllProperties(Type)"/>
+    public static IEnumerable<PropertyInfo> GetAllProperties<T>()
+    {
+        return GetAllProperties(typeof(T));
     }
 
     /// <summary>Finds all instance properties on the <paramref name="type"/>.</summary>
     /// <param name="type">The <see cref="Type"/> to find properties on.</param>
-    /// <param name="onlyPublic">If only public properties are to be returned.</param>
     /// <returns>All found properties on the <see cref="Type"/>.</returns>
     /// <remarks>
-    ///     The <see langword="private"/> properties in
-    ///     inherited <see cref="Type"/>s included by default.
+    ///     The <see langword="private"/> properties in inherited <see cref="Type"/>s are included.
     /// </remarks>
-    public static IEnumerable<PropertyInfo> GetAllProperties(Type? type, bool onlyPublic = false)
+    public static IEnumerable<PropertyInfo> GetAllProperties(Type? type)
     {
         if (type == null)
         {
             yield break;
         }
 
-        foreach (
-            PropertyInfo prop in type.GetProperties(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy
-            )
-        )
+        foreach (PropertyInfo prop in GetPublicProperties(type))
         {
             yield return prop;
         }
 
-        if (!onlyPublic)
+        Type? currentType = type;
+        HashSet<Type> completedTypes = [];
+        while (currentType != null && completedTypes.Add(currentType))
         {
-            Type? currentType = type;
-            HashSet<Type> completedTypes = [];
-            while (currentType != null && completedTypes.Add(currentType))
-            {
-                foreach (
-                    PropertyInfo prop in currentType.GetProperties(
-                        BindingFlags.Instance | BindingFlags.NonPublic
-                    )
+            foreach (
+                PropertyInfo prop in currentType.GetProperties(
+                    BindingFlags.Instance | BindingFlags.NonPublic
                 )
+            )
+            {
+                if (prop.CanRead)
                 {
-                    if (prop.CanRead)
-                    {
-                        yield return prop;
-                    }
+                    yield return prop;
                 }
-                currentType = currentType.BaseType;
             }
+            currentType = currentType.BaseType;
         }
     }
 

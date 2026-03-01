@@ -16,8 +16,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type type = expected.GetType();
-        return TypeDescriber.GetAllProperties(type, onlyPublic).Any(p => p.CanRead)
-            || TypeDescriber.GetAllFields(type, onlyPublic).Any();
+        return GetAccessibleProperties(type).Any() || GetAccessibleFields(type).Any();
     }
 
     /// <inheritdoc/>
@@ -39,11 +38,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     {
         Type type = expected.GetType();
 
-        foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, onlyPublic)
-                .Where(p => p.CanRead)
-        )
+        foreach (PropertyInfo property in GetAccessibleProperties(type))
         {
             foreach (
                 Difference diff in chainer.Compare(
@@ -56,7 +51,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
+        foreach (FieldInfo field in GetAccessibleFields(type))
         {
             foreach (
                 Difference diff in chainer.Compare(field.GetValue(expected), field.GetValue(actual))
@@ -77,11 +72,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     {
         Type type = expected.GetType();
 
-        foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, onlyPublic)
-                .Where(p => p.CanRead)
-        )
+        foreach (PropertyInfo property in GetAccessibleProperties(type))
         {
             await foreach (
                 Difference diff in chainer
@@ -94,7 +85,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
             }
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
+        foreach (FieldInfo field in GetAccessibleFields(type))
         {
             await foreach (
                 Difference diff in chainer
@@ -114,17 +105,13 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 
-        foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, onlyPublic)
-                .Where(p => p.CanRead)
-        )
+        foreach (PropertyInfo property in GetAccessibleProperties(type))
         {
             hash =
                 hash * ValueComparer.HashMultiplier + chainer.GetHashCode(property.GetValue(item));
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
+        foreach (FieldInfo field in GetAccessibleFields(type))
         {
             hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(field.GetValue(item));
         }
@@ -142,11 +129,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         Type type = item.GetType();
         int hash = ValueComparer.BaseHash + type.GetHashCode();
 
-        foreach (
-            PropertyInfo property in TypeDescriber
-                .GetAllProperties(type, onlyPublic)
-                .Where(p => p.CanRead)
-        )
+        foreach (PropertyInfo property in GetAccessibleProperties(type))
         {
             hash =
                 hash * ValueComparer.HashMultiplier
@@ -155,7 +138,7 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
                     .ConfigureAwait(false);
         }
 
-        foreach (FieldInfo field in TypeDescriber.GetAllFields(type, onlyPublic))
+        foreach (FieldInfo field in GetAccessibleFields(type))
         {
             hash =
                 hash * ValueComparer.HashMultiplier
@@ -165,6 +148,20 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         }
 
         return hash;
+    }
+
+    private IEnumerable<PropertyInfo> GetAccessibleProperties(Type? type)
+    {
+        return (
+            onlyPublic
+                ? TypeDescriber.GetPublicProperties(type)
+                : TypeDescriber.GetAllProperties(type)
+        ).Where(p => p.CanRead);
+    }
+
+    private IEnumerable<FieldInfo> GetAccessibleFields(Type? type)
+    {
+        return onlyPublic ? TypeDescriber.GetPublicFields(type) : TypeDescriber.GetAllFields(type);
     }
 }
 

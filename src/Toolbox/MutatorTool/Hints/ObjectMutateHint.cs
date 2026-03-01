@@ -42,7 +42,7 @@ public sealed class ObjectMutateHint : MutateHint
         foreach (
             PropertyInfo prop in chainer.Options.Gen.NextSequence(
                 TypeDescriber
-                    .GetAllProperties(type, true)
+                    .GetPublicProperties(type)
                     .Where(p => p.CanWrite && p.CanRead)
                     .Where(p => p.GetGetMethod() != null)
                     .Where(p =>
@@ -73,7 +73,7 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             FieldInfo field in chainer.Options.Gen.NextSequence(
-                TypeDescriber.GetAllFields(type, true).Where(f => !f.IsInitOnly && !f.IsLiteral)
+                TypeDescriber.GetPublicFields(type).Where(f => !f.IsInitOnly && !f.IsLiteral)
             )
         )
         {

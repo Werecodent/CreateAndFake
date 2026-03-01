@@ -11,7 +11,7 @@ public static class LimiterBaseTests
     {
         foreach (
             PropertyInfo info in TypeDescriber
-                .GetAllProperties(typeof(Limiter), true)
+                .GetPublicProperties(typeof(Limiter))
                 .Where(p => p.PropertyType == typeof(Limiter))
         )
         {

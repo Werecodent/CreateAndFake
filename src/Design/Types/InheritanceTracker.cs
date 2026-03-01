@@ -168,7 +168,7 @@ public sealed class InheritanceTracker : ITypeSupporter
     }
 
     /// <summary>
-    ///     Finds every child <paramref name="type"/> inheriting
+    ///     Finds every child <see cref="Type"/> inheriting
     ///     the <paramref name="type"/> in all loaded assemblies.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> to find subclasses for.</param>
@@ -179,6 +179,7 @@ public sealed class InheritanceTracker : ITypeSupporter
         {
             return [];
         }
+
         return AppDomain
             .CurrentDomain.GetAssemblies()
             .Where(a => !a.ReflectionOnly)

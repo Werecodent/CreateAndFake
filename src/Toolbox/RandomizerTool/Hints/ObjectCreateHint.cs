@@ -12,15 +12,6 @@ namespace CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing objects in general for <see cref="IRandomizer"/>.</summary>
 public sealed class ObjectCreateHint : CreateHint
 {
-    /// <summary>Prevents concurrency issues for <see cref="_SubclassCache"/>.</summary>
-    private static readonly Lock _Lock = new();
-
-    /// <summary>Caches found subclasses for types.</summary>
-    private static readonly Dictionary<Type, ImmutableArray<Type>> _SubclassCache = new()
-    {
-        { typeof(object), [typeof(object)] },
-    };
-
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.ObjectHint;
 
@@ -83,7 +74,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         foreach (
             FieldInfo field in TypeDescriber
-                .GetAllFields(dataType, true)
+                .GetPublicFields(dataType)
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -93,7 +84,7 @@ public sealed class ObjectCreateHint : CreateHint
         }
         foreach (
             PropertyInfo property in TypeDescriber
-                .GetAllProperties(dataType, true)
+                .GetPublicProperties(dataType)
                 .Where(p => p.CanWrite)
                 .Where(p => p.GetSetMethod() != null)
         )
@@ -237,18 +228,8 @@ public sealed class ObjectCreateHint : CreateHint
     /// <returns><see cref="Type"/> to use.</returns>
     private static Type FindTypeToCreate(Type type, IRandomizerChainer randomizer)
     {
-        ImmutableArray<Type> subclasses;
-        lock (_Lock)
-        {
-            if (!_SubclassCache.TryGetValue(type, out subclasses))
-            {
-                subclasses = FindSelfAndSubclasses(type, randomizer);
-                _SubclassCache.Add(type, subclasses);
-            }
-        }
-
         return randomizer.Options.Gen.NextItemOrDefault(
-                subclasses.Where(t => !randomizer.AlreadyCreated(t))
+                FindSelfAndSubclasses(type, randomizer).Where(t => !randomizer.AlreadyCreated(t))
             ) ?? type;
     }
 
