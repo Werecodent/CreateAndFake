@@ -72,6 +72,16 @@ public static class InheritanceTrackerTests
     }
 
     [Fact]
+    internal static void FindLocalSubclasses_SelfExcluded()
+    {
+        InheritanceTracker
+            .For<IValuerEquatable>()
+            .FindLocalSubclasses()
+            .Assert()
+            .ContainsNot(typeof(IValuerEquatable));
+    }
+
+    [Fact]
     internal static void FindLoadedSubclasses_IncludesFromDifferentAssemblies()
     {
         InheritanceTracker
@@ -79,5 +89,15 @@ public static class InheritanceTrackerTests
             .FindLoadedSubclasses()
             .Assert()
             .Contains(typeof(PrivateValuerEquatableSample));
+    }
+
+    [Fact]
+    internal static void FindLoadedSubclasses_SelfExcluded()
+    {
+        InheritanceTracker
+            .For<IValuerEquatable>()
+            .FindLoadedSubclasses()
+            .Assert()
+            .ContainsNot(typeof(IValuerEquatable));
     }
 }

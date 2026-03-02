@@ -9,6 +9,13 @@ namespace CreateAndFake.Design.Types;
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
 public sealed class InheritanceTracker : ITypeSupporter
 {
+    /// <summary>Every possible specific type.</summary>
+    private static readonly FrozenSet<Type> _AllTypesFromAllAssemblies = FindAllAssemblies()
+        .Where(a => !a.ReflectionOnly)
+        .Where(a => !a.IsDynamic)
+        .SelectMany(TypeDescriber.FindLoadedTypes)
+        .ToFrozenSet();
+
     /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
     private static readonly Lock _Lock = new();
 
@@ -41,9 +48,7 @@ public sealed class InheritanceTracker : ITypeSupporter
         {
             if (!_InheritCache.TryGetValue(type, out describer))
             {
-                HashSet<Type> parents = [];
-                FindParentInheritance(type, parents);
-                describer = _InheritCache[type] = new(type, parents);
+                describer = _InheritCache[type] = new(type, FindParentInheritance(type));
             }
         }
         return describer;
@@ -144,30 +149,6 @@ public sealed class InheritanceTracker : ITypeSupporter
     }
 
     /// <summary>
-    ///     Finds every <see cref="Type"/> that the <paramref name="type"/>
-    ///     inherits and adds them to <paramref name="foundParents"/>.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
-    /// <param name="foundParents">Collection to add all found base classes/interfaces to.</param>
-    private static void FindParentInheritance(Type? type, ISet<Type> foundParents)
-    {
-        if (type != null && foundParents.Add(type))
-        {
-            if (type.IsGenericType)
-            {
-                FindParentInheritance(type.GetGenericTypeDefinition(), foundParents);
-            }
-
-            foreach (Type parent in type.GetInterfaces())
-            {
-                FindParentInheritance(parent, foundParents);
-            }
-
-            FindParentInheritance(type.BaseType, foundParents);
-        }
-    }
-
-    /// <summary>
     ///     Finds every child <see cref="Type"/> inheriting
     ///     the <paramref name="type"/> in all loaded assemblies.
     /// </summary>
@@ -175,17 +156,68 @@ public sealed class InheritanceTracker : ITypeSupporter
     /// <returns>The found subclasses.</returns>
     private static IEnumerable<Type> FindLoadedChildren(Type? type)
     {
-        if (type == null)
+        return (type == null) ? [] : _AllTypesFromAllAssemblies.Where(t => t.Inherits(type));
+    }
+
+    /// <summary>Finds every <see cref="Type"/> that the <paramref name="type"/> inherits.</summary>
+    /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
+    /// <returns>All found base classes/interfaces.</returns>
+    private static HashSet<Type> FindParentInheritance(Type type)
+    {
+        HashSet<Type> foundParents = [type];
+        Stack<Type> sourceTypes = new(foundParents);
+
+        void attemptAdd(Type? newType)
         {
-            return [];
+            if (newType != null && foundParents.Add(newType))
+            {
+                sourceTypes.Push(newType);
+            }
         }
 
-        return AppDomain
-            .CurrentDomain.GetAssemblies()
-            .Where(a => !a.ReflectionOnly)
-            .Where(a => !a.IsDynamic)
-            .SelectMany(TypeDescriber.FindLoadedTypes)
-            .Where(t => t.Inherits(type));
+        while (sourceTypes.Count > 0)
+        {
+            Type source = sourceTypes.Pop();
+            if (source.IsGenericType)
+            {
+                attemptAdd(source.GetGenericTypeDefinition());
+            }
+            foreach (Type parent in source.GetInterfaces())
+            {
+                attemptAdd(parent);
+            }
+            attemptAdd(source.BaseType);
+        }
+        return foundParents;
+    }
+
+    /// <summary>Finds all possible assemblies.</summary>
+    /// <returns>The found assemblies.</returns>
+    private static HashSet<Assembly> FindAllAssemblies()
+    {
+        HashSet<Assembly> foundAssemblies = [.. AppDomain.CurrentDomain.GetAssemblies()];
+
+        Stack<Assembly> sourceAssemblies = new(foundAssemblies);
+        while (sourceAssemblies.Count > 0)
+        {
+            Assembly assembly = sourceAssemblies.Pop();
+            foreach (AssemblyName referenced in assembly.GetReferencedAssemblies())
+            {
+                try
+                {
+                    Assembly loaded = Assembly.Load(referenced);
+                    if (foundAssemblies.Add(loaded))
+                    {
+                        sourceAssemblies.Push(loaded);
+                    }
+                }
+                catch
+                {
+                    // Ignore assemblies that can't be loaded.
+                }
+            }
+        }
+        return foundAssemblies;
     }
 
     /// <inheritdoc/>

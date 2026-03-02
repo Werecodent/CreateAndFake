@@ -533,11 +533,7 @@ public static class TypeDescriber
         {
             return assembly?.GetTypes() ?? Type.EmptyTypes;
         }
-        catch (FileNotFoundException)
-        {
-            return Type.EmptyTypes;
-        }
-        catch (ReflectionTypeLoadException)
+        catch
         {
             return Type.EmptyTypes;
         }
