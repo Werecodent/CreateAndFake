@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 
@@ -31,7 +32,7 @@ public sealed class DuplicatorEngine : ToolEngine<ICopyHint>, IDuplicatorEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(source)}' not supported by the duplicator. "
                     + "Create a hint to generate the type and pass it to the duplicator."
             );

@@ -39,7 +39,7 @@ public sealed class CollectionCopyHint : CopyHint
             }
             else
             {
-                throw new NotSupportedException(
+                throw new UnsupportedException(
                     $"Collection '{TypeDescriber.ExpandedName(source)}' not supported by the "
                         + "duplicator. Create a hint to generate the type."
                 );

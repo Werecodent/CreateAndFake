@@ -17,7 +17,7 @@ public static class AssertEnumerableTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(ArgumentException),
                 typeof(TargetException),
             ],

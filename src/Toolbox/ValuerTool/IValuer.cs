@@ -3,6 +3,7 @@
     CreateAndFake.ValuerTool.ValuerOptions
 >;
 using System.Collections;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ValuerTool.Engine;
 
@@ -24,7 +25,7 @@ public interface IValuer
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
-    /// <exception cref="NotSupportedException">If no hint supports comparing the objects.</exception>
+    /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     IEnumerable<Difference> Compare(
         object? expected,
@@ -50,7 +51,7 @@ public interface IValuer
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value, <see langword="false"/> otherwise.
     /// </returns>
-    /// <exception cref="NotSupportedException">If no hint supports comparing the objects.</exception>
+    /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
 
@@ -70,7 +71,7 @@ public interface IValuer
     /// <param name="item">Object to generate a hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
-    /// <exception cref="NotSupportedException">If no hint supports hashing the object.</exception>
+    /// <exception cref="UnsupportedException">If no hint supports hashing the object.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     int GetHashCode(object? item, ValuerMod? optionConfiguration);
 

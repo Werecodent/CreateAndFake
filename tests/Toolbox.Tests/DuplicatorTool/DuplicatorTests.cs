@@ -40,7 +40,7 @@ public static class DuplicatorTests
             .Throws<ToolException>()
             .InnerException.GetType()
             .Assert()
-            .Is(typeof(NotSupportedException));
+            .Is(typeof(UnsupportedException));
     }
 
     [Fact]

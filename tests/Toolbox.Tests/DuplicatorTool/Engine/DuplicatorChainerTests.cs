@@ -11,7 +11,7 @@ public static class DuplicatorChainerTests
         {
             IgnorableExceptions =
             [
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(TargetParameterCountException),
                 typeof(ArgumentException),
                 typeof(ToolException),

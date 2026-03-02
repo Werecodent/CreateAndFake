@@ -46,7 +46,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type."
             );
@@ -97,7 +97,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
@@ -134,7 +134,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
@@ -175,7 +175,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer."
                     + "Create a hint to generate the type and pass it to the valuer."
             );

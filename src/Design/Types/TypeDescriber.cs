@@ -260,7 +260,7 @@ public static class TypeDescriber
     ///     <see langword="internal"/> properties for the test framework.
     /// </remarks>
     /// <inheritdoc cref="GetAllProperties(Type?)"/>
-    public static IEnumerable<PropertyInfo> GetVisibleProperties(Type? type, AssemblyName assembly)
+    private static IEnumerable<PropertyInfo> GetVisibleProperties(Type? type, AssemblyName assembly)
     {
         if (InternalsAreVisible(type, assembly))
         {
@@ -373,7 +373,7 @@ public static class TypeDescriber
     ///     <see langword="internal"/> constructors for the test framework.
     /// </remarks>
     /// <inheritdoc cref="GetAllConstructors(Type?)"/>
-    public static IEnumerable<ConstructorInfo> GetVisibleConstructors(
+    private static IEnumerable<ConstructorInfo> GetVisibleConstructors(
         Type? type,
         AssemblyName assembly
     )
@@ -458,7 +458,7 @@ public static class TypeDescriber
     ///     <see langword="internal"/> factories for the test framework.
     /// </remarks>
     /// <inheritdoc cref="GetAllFactories(Type?)"/>
-    public static IEnumerable<MethodInfo> GetVisibleFactories(Type? type, AssemblyName assembly)
+    private static IEnumerable<MethodInfo> GetVisibleFactories(Type? type, AssemblyName assembly)
     {
         if (InternalsAreVisible(type, assembly))
         {

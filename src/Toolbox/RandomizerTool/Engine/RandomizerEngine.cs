@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
@@ -25,7 +26,7 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(type)}' not supported by the randomizer."
                     + "Create a hint to generate the type."
             );

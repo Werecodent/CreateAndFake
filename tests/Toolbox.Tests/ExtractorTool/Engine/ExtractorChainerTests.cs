@@ -11,7 +11,7 @@ public static class ExtractorChainerTests
         {
             IgnorableExceptions =
             [
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(ToolException),
                 typeof(TargetParameterCountException),
             ],

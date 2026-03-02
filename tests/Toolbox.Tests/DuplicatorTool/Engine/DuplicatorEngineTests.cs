@@ -20,7 +20,7 @@ public static class DuplicatorEngineTests
                     [
                         typeof(ArgumentException),
                         typeof(TargetParameterCountException),
-                        typeof(NotSupportedException),
+                        typeof(UnsupportedException),
                         typeof(ToolException),
                     ],
                 }
@@ -41,7 +41,7 @@ public static class DuplicatorEngineTests
                     [
                         typeof(ArgumentException),
                         typeof(TargetParameterCountException),
-                        typeof(NotSupportedException),
+                        typeof(UnsupportedException),
                         typeof(ToolException),
                     ],
                 }

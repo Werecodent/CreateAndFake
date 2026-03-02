@@ -184,7 +184,7 @@ public static class MutatorEngineTests
     {
         _TestInstance
             .Assert(d => d.Modify(data, CreateHintChainer(null)))
-            .Throws<NotSupportedException>();
+            .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
@@ -192,7 +192,7 @@ public static class MutatorEngineTests
     {
         _TestInstance
             .Assert(d => d.Modify(data, CreateHintChainer(hint)))
-            .Throws<NotSupportedException>();
+            .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]

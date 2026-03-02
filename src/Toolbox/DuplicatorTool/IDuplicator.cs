@@ -3,6 +3,7 @@
     CreateAndFake.DuplicatorTool.DuplicatorOptions
 >;
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 
@@ -25,7 +26,7 @@ public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
     ///     Depending upon the <see cref="Type"/>, this may just
     ///     return <paramref name="source"/> if not cloneable.
     /// </remarks>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="UnsupportedException">
     ///     If no hint supports cloning <paramref name="source"/>.
     /// </exception>
     /// <exception cref="InsufficientExecutionStackException">

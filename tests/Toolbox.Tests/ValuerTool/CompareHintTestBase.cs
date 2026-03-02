@@ -29,7 +29,7 @@ public abstract class CompareHintTestBase<T>(
             IgnorableExceptions =
             [
                 typeof(InvalidCastException),
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(ToolException),
                 typeof(EngineException),
                 typeof(TargetException),

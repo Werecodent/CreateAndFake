@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.IssueReplication;
@@ -21,7 +22,7 @@ public static class Issue099Tests
         int result
     )
     {
-        Tools.Asserter.Throws<NotSupportedException>(() =>
+        Tools.Asserter.Throws<UnsupportedException>(() =>
             sample.Setup(f => f.ExtendedCall(item), Behavior.Returns(result))
         );
     }

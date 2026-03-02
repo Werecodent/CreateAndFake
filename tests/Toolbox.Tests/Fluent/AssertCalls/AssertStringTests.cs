@@ -17,7 +17,7 @@ public static class AssertStringTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(TargetException),
             ],
         };

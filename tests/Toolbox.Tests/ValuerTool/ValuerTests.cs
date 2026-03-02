@@ -15,7 +15,7 @@ public static class ValuerTests
             [
                 typeof(ToolException),
                 typeof(TimeoutException),
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
             ],
         };
 
@@ -42,7 +42,7 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.GetHashCode(new object()))
-            .Throws<NotSupportedException>();
+            .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
@@ -63,7 +63,7 @@ public static class ValuerTests
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
             .Assert(v => v.Compare(new object(), new object()).ToList())
-            .Throws<NotSupportedException>();
+            .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]

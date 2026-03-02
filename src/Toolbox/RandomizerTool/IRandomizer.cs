@@ -2,6 +2,7 @@
     CreateAndFake.RandomizerTool.RandomizerOptions,
     CreateAndFake.RandomizerTool.RandomizerOptions
 >;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.RandomizerTool.Engine;
 
@@ -25,7 +26,7 @@ public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
     /// <param name="type">Type to create.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created instance.</returns>
-    /// <exception cref="NotSupportedException">If no hint supports generating the type.</exception>
+    /// <exception cref="UnsupportedException">If no hint supports generating the type.</exception>
     /// <exception cref="TimeoutException">If an instance couldn't be created to match the condition.</exception>
     /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     object Create(Type type, RandomizerMod? optionConfiguration = null);

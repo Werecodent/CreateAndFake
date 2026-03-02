@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.Design.Randomization;
 
@@ -39,7 +40,7 @@ public interface IRandom
     /// <summary>Generates a random <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
     /// <returns>The generated <typeparamref name="T"/> value.</returns>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="UnsupportedException">
     ///     If <typeparamref name="T"/> isn't supported.
     /// </exception>
     T Next<T>()
@@ -48,7 +49,7 @@ public interface IRandom
     /// <summary>Generates a random <paramref name="valueType"/> value.</summary>
     /// <param name="valueType">Value <see cref="Type"/> to generate.</param>
     /// <returns>The generated <paramref name="valueType"/> value.</returns>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="UnsupportedException">
     ///     If <paramref name="valueType"/> isn't supported.
     /// </exception>
     object Next(Type valueType);
@@ -60,7 +61,7 @@ public interface IRandom
     ///     The generated <typeparamref name="T"/> value <c>&lt;</c> <paramref name="max"/> and
     ///     <c>&gt;= 0</c>. If <paramref name="max"/> <c>== 0</c>, <c>0</c> is returned instead.
     /// </returns>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="UnsupportedException">
     ///     If <typeparamref name="T"/> isn't supported.
     /// </exception>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -77,7 +78,7 @@ public interface IRandom
     ///     The generated <typeparamref name="T"/> value <c>&lt;=</c>
     ///     <paramref name="max"/> and <c>&gt;=</c> <paramref name="min"/>.
     /// </returns>
-    /// <exception cref="NotSupportedException">
+    /// <exception cref="UnsupportedException">
     ///     If <typeparamref name="T"/> isn't supported.
     /// </exception>
     /// <exception cref="ArgumentOutOfRangeException">

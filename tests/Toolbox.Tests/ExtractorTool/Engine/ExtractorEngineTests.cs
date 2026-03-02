@@ -19,7 +19,7 @@ public static class ExtractorEngineTests
                     IgnorableExceptions =
                     [
                         typeof(ToolException),
-                        typeof(NotSupportedException),
+                        typeof(UnsupportedException),
                         typeof(TargetParameterCountException),
                         typeof(InvalidOperationException),
                     ],
@@ -40,7 +40,7 @@ public static class ExtractorEngineTests
                     IgnorableExceptions =
                     [
                         typeof(ToolException),
-                        typeof(NotSupportedException),
+                        typeof(UnsupportedException),
                         typeof(TargetParameterCountException),
                         typeof(InvalidOperationException),
                     ],

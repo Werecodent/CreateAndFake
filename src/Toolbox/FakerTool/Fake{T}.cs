@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool.Proxy;
 
@@ -123,7 +124,7 @@ public sealed class Fake<T> : Fake
     /// <param name="method">Expression to convert.</param>
     /// <param name="onlySetter">If only setter is allowed.</param>
     /// <returns>Method name, generics, and args.</returns>
-    /// <exception cref="NotSupportedException"></exception>
+    /// <exception cref="UnsupportedException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
     private static (MethodInfo, Type[], object?[]) ExtractCall(
         LambdaExpression method,
@@ -136,7 +137,7 @@ public sealed class Fake<T> : Fake
         {
             if (methodCall.Method.IsStatic)
             {
-                throw new NotSupportedException(
+                throw new UnsupportedException(
                     $"Method '{methodCall.Method.Name}' is static and not an actual member of '{typeof(T).Name}'."
                 );
             }

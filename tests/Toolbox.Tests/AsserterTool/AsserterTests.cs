@@ -17,7 +17,7 @@ public static class AsserterTests
                 typeof(ToolException),
                 typeof(FakeVerifyException),
                 typeof(TimeoutException),
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(TargetException),
                 typeof(InvalidCastException),
             ],

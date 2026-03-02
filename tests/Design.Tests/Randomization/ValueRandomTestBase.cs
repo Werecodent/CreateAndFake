@@ -13,7 +13,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     [
         typeof(ArgumentOutOfRangeException),
         typeof(IterationLimitException),
-        typeof(NotSupportedException),
+        typeof(UnsupportedException),
         typeof(EngineException),
     ];
 
@@ -306,10 +306,10 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     [Theory, RandomData]
     public void Next_UnsupportedTypeThrows(StructSample sample)
     {
-        TestInstance.Assert(t => t.Next<StructSample>()).Throws<NotSupportedException>();
-        TestInstance.Assert(t => t.Next(typeof(StructSample))).Throws<NotSupportedException>();
-        TestInstance.Assert(t => t.Next(sample)).Throws<NotSupportedException>();
-        TestInstance.Assert(t => t.Next(sample, sample)).Throws<NotSupportedException>();
+        TestInstance.Assert(t => t.Next<StructSample>()).Throws<UnsupportedException>();
+        TestInstance.Assert(t => t.Next(typeof(StructSample))).Throws<UnsupportedException>();
+        TestInstance.Assert(t => t.Next(sample)).Throws<UnsupportedException>();
+        TestInstance.Assert(t => t.Next(sample, sample)).Throws<UnsupportedException>();
     }
 
     [Fact]

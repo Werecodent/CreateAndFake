@@ -23,7 +23,7 @@ public abstract class CopyHintTestBase<T>(
         {
             IgnorableExceptions =
             [
-                typeof(NotSupportedException),
+                typeof(UnsupportedException),
                 typeof(TargetParameterCountException),
                 typeof(ArgumentException),
                 typeof(ToolException),

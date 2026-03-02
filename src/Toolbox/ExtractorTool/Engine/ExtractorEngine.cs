@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 
@@ -26,7 +27,7 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
         }
         else
         {
-            throw new NotSupportedException(
+            throw new UnsupportedException(
                 $"Type '{TypeDescriber.ExpandedName(value)}' not supported by the extractor. "
                     + "Create a hint to extract the type."
             );
