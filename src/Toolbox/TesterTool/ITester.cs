@@ -156,12 +156,22 @@ public interface ITester : ITool<TesterOptions>
     );
 
     /// <summary>Validates the state of the <c>CreateAndFake</c> framework as configured.</summary>
-    /// <param name="tools">Tools being used. Likely <see cref="ToolSet.DefaultSet"/>.</param>
+    /// <inheritdoc cref="VerifyToolSetSupportAsync"/>
+    Task VerifyToolSetIntegrityAsync(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
+
+    /// <summary>
+    ///     Validates the <paramref name="types"/> are
+    ///     fully compatible with the framework as configured.
+    /// </summary>
+    /// <param name="types"><see cref="Type"/>s to verify support for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-    Task VerifyToolSetIntegrityAsync(
-        ToolSet tools,
+    Task VerifyToolSetSupportAsync(
+        IEnumerable<Type> types,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );

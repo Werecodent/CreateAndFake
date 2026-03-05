@@ -14,6 +14,7 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<TimeSpan>((source, _) => new TimeSpan(source.Ticks)),
         new FactoryCopyHandler<Guid>((source, _) => new Guid(source.ToByteArray())),
         new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
+        new RefCopyHandler(typeof(TimeZoneInfo)),
         new RefCopyHandler(typeof(DateTime)),
         new RefCopyHandler(typeof(decimal)),
         new RefCopyHandler(typeof(UIntPtr)),

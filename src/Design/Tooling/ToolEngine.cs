@@ -25,9 +25,14 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
         .Where(h => h.GetType().Assembly == typeof(THint).Assembly)
         .ToFrozenSet();
 
+    /// <inheritdoc cref="SupportedTypes"/>
+    private static readonly FrozenSet<Type> _HintSupportedTypes = _AllHints
+        .SelectMany(h => h.SupportedTypes)
+        .Distinct()
+        .ToFrozenSet();
+
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes { get; } =
-        _AllHints.SelectMany(h => h.SupportedTypes).Distinct().ToFrozenSet();
+    public virtual IEnumerable<Type> SupportedTypes { get; } = _HintSupportedTypes;
 
     /// <summary>Picks hints to use for the tool based upon configured options.</summary>
     /// <typeparam name="TOptions">

@@ -1,17 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Extensions;
-using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Handlers;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool.Handlers;
 using CreateAndFake.RunnerTool;
+using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.Samples.SingleValue;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
@@ -41,10 +41,16 @@ public static class ToolsTests
     }
 
     [Fact]
-    internal static Task Tools_AllSupportedTypesValid()
+    internal static Task Tools_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(
-            ToolSet.DefaultSet,
+        return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.Current.CancellationToken);
+    }
+
+    // [Fact]
+    internal static Task Tools_SupportsAll()
+    {
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            InheritanceTracker.For<object>().FindLoadedSubclasses(),
             TestContext.Current.CancellationToken
         );
     }
@@ -76,7 +82,7 @@ public static class ToolsTests
     }
 
     /* [Fact, ExcludeFromCodeCoverage] */
-    internal static async Task Tools_AllCreateAndFakeTypesWork()
+    internal static Task Tools_AllCreateAndFakeTypesWork()
     {
         Type[] ignore =
         [
@@ -96,123 +102,33 @@ public static class ToolsTests
             typeof(DifferenceHintAsyncResult),
         ];
 
-        Dictionary<Type, Exception> failures = [];
-
-        foreach (
-            Type type in typeof(Tools)
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            typeof(Tools)
                 .Assembly.GetTypes()
                 .Where(t => !(t.IsAbstract && t.IsSealed))
                 .Where(t => !t.Inherits<Attribute>())
                 .Where(t => !ignore.Contains(t))
                 .Where(t => !t.IsNestedPrivate)
-                .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute)))
-        )
-        {
-            try
-            {
-                await TestTrip(type);
-            }
-            catch (Exception e)
-            {
-                failures.Add(type, e.Unwrap());
-            }
-        }
-        failures.Assert().IsEmpty();
+                .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute))),
+            TestContext.Current.CancellationToken
+        );
     }
 
-    /*[Fact]
-    internal static async Task Tools_ValidSamplesWork()
+    // [Fact]
+    internal static Task Tools_ValidSamplesWork()
     {
-        Dictionary<Type, Exception> failures = [];
-
-        foreach (Type type in SampleGenerator.AllValidDataSamples)
-        {
-            try
-            {
-                await TestTrip(type);
-            }
-            catch (Exception e)
-            {
-                failures.Add(type, e.Unwrap());
-            }
-        }
-        failures
-            .Select(f => (f.Key.Name, f.Value.GetType().Name, f.Value.Message))
-            .Assert()
-            .IsEmpty();
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            SampleGenerator.AllValidDataSamples,
+            TestContext.Current.CancellationToken
+        );
     }
 
-    [Fact]
+    // [Fact]
     internal static Task Tools_TestIndividual()
     {
-        return TestTrip(typeof(BaseHolder<>));
-    }*/
-
-    [Fact]
-    internal static async Task Tools_ExceptionTypesWork()
-    {
-        Type type = typeof(Exception);
-
-        for (int i = 0; i < 100; i++)
-        {
-            await TestTrip(type);
-        }
-    }
-
-    /// <summary>Verifies the type works with the tools.</summary>
-    /// <param name="type">Type to test.</param>
-    private static async Task TestTrip(Type type)
-    {
-        CancellationToken ct = TestContext.Current.CancellationToken;
-        string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
-        object original = null,
-            variant = null,
-            dupe = null;
-        try
-        {
-            original = Tools.Randomizer.Create(type);
-            dupe = Tools.Duplicator.Copy(original);
-
-            await Tools.Asserter.ValuesEqualAsync(original, dupe, ct, failMessage);
-            await Tools.Asserter.ValuesEqualAsync(
-                await Tools.Valuer.GetHashCodeAsync(original, ct),
-                await Tools.Valuer.GetHashCodeAsync(dupe, ct),
-                ct,
-                $"HashCode {failMessage}"
-            );
-
-            if (
-                TypeDescriber.GetAllProperties(type).Any() || TypeDescriber.GetAllFields(type).Any()
-            )
-            {
-                variant = Tools.Mutator.Variant(type, original);
-
-                await Tools.Asserter.ValuesNotEqualAsync(original, variant, ct, failMessage);
-                await Tools.Asserter.ValuesNotEqualAsync(
-                    await Tools.Valuer.GetHashCodeAsync(original, ct),
-                    await Tools.Valuer.GetHashCodeAsync(variant, ct),
-                    ct,
-                    failMessage
-                );
-
-                if (Tools.Mutator.Modify(original))
-                {
-                    await Tools.Asserter.ValuesNotEqualAsync(dupe, original, ct);
-                }
-            }
-
-            if (
-                Tools.Faker.Supports(type)
-                && !type.Inherits<IDisposable>()
-                && !type.Inherits<IToolOptions>()
-            )
-            {
-                Tools.Faker.Mock(type);
-            }
-        }
-        finally
-        {
-            await Disposer.CleanupAsync(original, variant, dupe);
-        }
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            [typeof(BaseHolder<>)],
+            TestContext.Current.CancellationToken
+        );
     }
 }

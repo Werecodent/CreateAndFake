@@ -10,10 +10,7 @@ public class MSTestTests
     [TestMethod]
     public Task MSTest_v3_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(
-            ToolSet.DefaultSet,
-            TestContext.CancellationToken
-        );
+        return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.CancellationToken);
     }
 
     [TestMethod]

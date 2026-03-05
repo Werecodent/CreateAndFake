@@ -1,7 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Reflection;
+﻿using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
@@ -28,7 +28,7 @@ public sealed class ObjectCreateHint : CreateHint
                 ? null
                 : randomizer.Options.ObjectCreateAttempts.Attempt(
                     $"Create object of type '{TypeDescriber.ExpandedName(type)}'",
-                    () => Create(FindTypeToCreate(type, randomizer), type, randomizer)
+                    () => Create(type, type, randomizer)
                 );
 
         return result != null ? new(result) : CreateHintResult.None;
@@ -51,25 +51,29 @@ public sealed class ObjectCreateHint : CreateHint
             return data;
         }
 
-        try
+        bool changed = Populate(data, smartData, randomizer);
+        if (changed || !randomizer.Options.ContentRandomizationRequired)
         {
-            Populate(data, smartData, randomizer);
+            return data;
         }
-        catch
+        else
         {
             Disposer.Cleanup(data);
-            throw;
+            throw new UnsupportedException(
+                $"Could not randomize content for '{TypeDescriber.ExpandedName(data)}'."
+            );
         }
-
-        return data;
     }
 
     /// <summary>Sets member data for a newly created instance.</summary>
     /// <param name="data">Instance to populate.</param>
     /// <param name="smartData">Smart data currently being utilized.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
-    private static void Populate(object data, DataRandom smartData, IRandomizerChainer randomizer)
+    /// <returns><see langword="true"/> if member data existed and was changed, <see langword="false"/> otherwise.</returns>
+    private static bool Populate(object data, DataRandom smartData, IRandomizerChainer randomizer)
     {
+        bool canChange = false;
+        bool changed = false;
         Type dataType = data.GetType();
 
         foreach (
@@ -78,9 +82,13 @@ public sealed class ObjectCreateHint : CreateHint
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
+            canChange = true;
+
             string? smartValue =
                 (field.FieldType == typeof(string)) ? smartData.Find(field.Name) : null;
             field.SetValue(data, smartValue ?? randomizer.CreateInternal(field.FieldType, data));
+
+            changed = true;
         }
         foreach (
             PropertyInfo property in TypeDescriber
@@ -89,20 +97,24 @@ public sealed class ObjectCreateHint : CreateHint
                 .Where(p => p.GetSetMethod() != null)
         )
         {
+            canChange = true;
+
             string? smartValue =
                 (property.PropertyType == typeof(string)) ? smartData.Find(property.Name) : null;
 
             object newValue = smartValue ?? randomizer.CreateInternal(property.PropertyType, data);
 
-            //try
-            //{
-            property.SetValue(data, newValue);
-            //}
-            //catch (Exception)
-            //{
-            // Could not set.
-            //}
+            try
+            {
+                property.SetValue(data, newValue);
+                changed = true;
+            }
+            catch (Exception)
+            {
+                // Could not set.
+            }
         }
+        return canChange == changed;
     }
 
     /// <summary>Creates a new instance of <paramref name="type"/>.</summary>
@@ -196,15 +208,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         if (creator is MethodInfo method && method.IsGenericMethodDefinition)
         {
-            creator = (T)
-                (object)
-                    method.MakeGenericMethod([
-                        .. method
-                            .GetGenericArguments()
-                            .Select(a =>
-                                GenericCreateHint.CreateArg(a, method.ReturnType, randomizer)
-                            ),
-                    ]);
+            creator = (T)(object)GenericResolver.OfConcrete(method, randomizer);
         }
 
         return invoker.Invoke(
@@ -220,50 +224,6 @@ public sealed class ObjectCreateHint : CreateHint
                     }),
             ]
         );
-    }
-
-    /// <summary>Finds a creatable <see cref="Type"/> of <paramref name="type"/>.</summary>
-    /// <param name="type">Parent <see cref="Type"/> being created.</param>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns><see cref="Type"/> to use.</returns>
-    private static Type FindTypeToCreate(Type type, IRandomizerChainer randomizer)
-    {
-        return randomizer.Options.Gen.NextItemOrDefault(
-                FindSelfAndSubclasses(type, randomizer).Where(t => !randomizer.AlreadyCreated(t))
-            ) ?? type;
-    }
-
-    /// <summary>Finds subclasses of <paramref name="type"/>.</summary>
-    /// <param name="type">Parent <see cref="Type"/>.</param>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns>Found subclasses.</returns>
-    private static ImmutableArray<Type> FindSelfAndSubclasses(
-        Type type,
-        IRandomizerChainer randomizer
-    )
-    {
-        const BindingFlags anyScope = BindingFlags.Public | BindingFlags.NonPublic;
-
-        ImmutableArray<Type> filterTypes(IEnumerable<Type> types)
-        {
-            return
-            [
-                .. types
-                    .Prepend(type)
-                    .Where(t =>
-                        FindConstructors(t, anyScope, null).Any()
-                        || FindFactories(t, anyScope, null).Any()
-                    ),
-            ];
-        }
-
-        ImmutableArray<Type> subclasses = randomizer.Options.PreferLocalSubclasses
-            ? filterTypes(InheritanceTracker.For(type).FindLocalSubclasses())
-            : [];
-
-        return subclasses.Length == 0
-            ? filterTypes(InheritanceTracker.For(type).FindLoadedSubclasses())
-            : subclasses;
     }
 
     /// <summary>Finds <see langword="public"/> or <see langword="internal"/> constructors.</summary>

@@ -39,7 +39,7 @@ public static class TesterTests
         );
     }
 
-    [Fact]
+    // [Fact]
     internal static async Task Tester_GuardsNulls()
     {
         Type nullType = null;

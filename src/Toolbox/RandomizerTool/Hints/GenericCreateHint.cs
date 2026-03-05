@@ -1,8 +1,5 @@
-﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
+﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 using CreateAndFake.RandomizerTool.Engine;
 
@@ -24,115 +21,30 @@ public sealed class GenericCreateHint : CreateHint
 
         if (type?.IsGenericTypeDefinition ?? false)
         {
-            return new(Create(type, randomizer));
+            foreach (Type defined in GenericResolver.CreateConcreteGenerics(type, randomizer))
+            {
+                try
+                {
+                    return new(
+                        randomizer.CreateSpecific(
+                            defined,
+                            type,
+                            opt => opt with { ContentRandomizationRequired = false }
+                        )
+                    );
+                }
+                catch (CreateAndFakeException)
+                {
+                    // Try next type.
+                }
+            }
+            throw new UnsupportedException(
+                $"Could not create generic '{TypeDescriber.ExpandedName(type)}'."
+            );
         }
         else
         {
             return CreateHintResult.None;
-        }
-    }
-
-    /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
-    private static object Create(Type type, IRandomizerChainer randomizer)
-    {
-        return randomizer.CreateSpecific(
-            type.MakeGenericType([
-                .. type.GetGenericArguments().Select(a => CreateArg(a, type, randomizer)),
-            ]),
-            type
-        );
-    }
-
-    /// <summary>Creates a concrete arg type from the given generic arg.</summary>
-    /// <param name="type">Generic arg to create.</param>
-    /// <param name="parent">Base <see cref="Type"/> being created.</param>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns>Created arg <see cref="Type"/>.</returns>
-    internal static Type CreateArg(Type type, Type parent, IRandomizerChainer randomizer)
-    {
-        ArgumentGuard.ThrowIfNull(type);
-        ArgumentGuard.ThrowIfNull(randomizer);
-
-        bool newNeeded = type.GenericParameterAttributes.HasFlag(
-            GenericParameterAttributes.DefaultConstructorConstraint
-        );
-
-        Type arg;
-        if (
-            type.GenericParameterAttributes.HasFlag(
-                GenericParameterAttributes.NotNullableValueTypeConstraint
-            )
-        )
-        {
-            arg = randomizer.Options.Gen.NextItem(ValueRandom.SupportedTypes);
-        }
-        else if (newNeeded)
-        {
-            arg = typeof(object);
-        }
-        else
-        {
-            arg = typeof(string);
-        }
-
-        Type[] constraints =
-        [
-            .. type.GetGenericParameterConstraints()
-                .Select(t => t.ContainsGenericParameters ? t.GetGenericTypeDefinition() : t),
-        ];
-
-        bool isValidArg()
-        {
-            return constraints.All(c =>
-                    arg.Inherits(c) || (arg.IsValueType && c == typeof(ValueType))
-                ) && (!newNeeded || arg.GetConstructor(Type.EmptyTypes) != null || arg.IsValueType);
-        }
-
-        if (!isValidArg())
-        {
-            _ = Limiter.Few.Retry(
-                $"Creating generic arguments of type '{TypeDescriber.ExpandedName(type)}' for type '{TypeDescriber.ExpandedName(type)}' [Retry]",
-                () =>
-                    Limiter.Few.StallUntil(
-                        $"Trying arguments of type '{TypeDescriber.ExpandedName(type)}' for type '{TypeDescriber.ExpandedName(type)}' [Stall]",
-                        () => arg = CreateArgViaConstraint(constraints, parent, randomizer),
-                        isValidArg
-                    )
-            );
-        }
-
-        return arg;
-    }
-
-    /// <summary>Creates an arg type from the given constraints.</summary>
-    /// <param name="constraints">Constraints limiting the arg type.</param>
-    /// <param name="parent">Base <see cref="Type"/> being created.</param>
-    /// <param name="randomizer">Handles randomizing child values.</param>
-    /// <returns>Created arg <see cref="Type"/>.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    private static Type CreateArgViaConstraint(
-        Type[] constraints,
-        Type parent,
-        IRandomizerChainer randomizer
-    )
-    {
-        Type constraint = randomizer.Options.Gen.NextItem(constraints);
-        if (parent == constraint)
-        {
-            return randomizer.Options.Gen.NextItemOrDefault(
-                    InheritanceTracker.For(parent).FindLoadedSubclasses()
-                )
-                ?? throw new InvalidOperationException(
-                    $"Cannot create '{parent}' due to self-reference and no visible subclasses."
-                );
-        }
-        else
-        {
-            object sample = randomizer.Create(constraint);
-            Type result = sample.GetType();
-            Disposer.Cleanup(sample);
-            return result;
         }
     }
 }

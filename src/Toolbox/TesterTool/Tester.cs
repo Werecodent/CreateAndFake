@@ -463,85 +463,117 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual async Task VerifyToolSetIntegrityAsync(
-        ToolSet tools,
+    public virtual Task VerifyToolSetIntegrityAsync(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
     {
-        ArgumentGuard.ThrowIfNull(tools);
+        return VerifyToolSetSupportAsync(
+            Tools.Randomizer.SupportedTypes,
+            canceler,
+            optionConfiguration
+        );
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task VerifyToolSetSupportAsync(
+        IEnumerable<Type> types,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(types);
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        Dictionary<Type, Exception> failures = [];
+        Type[] testTypes =
+        [
+            .. types.Where(t => !localOptions.IntegrityIgnorableTypes.Contains(t)).Distinct(),
+        ];
 
-        foreach (
-            Type type in Tools
-                .Randomizer.SupportedTypes.Where(t =>
-                    !localOptions.IntegrityIgnorableTypes.Contains(t)
-                )
-                .Distinct()
-        )
+        Dictionary<Type, Exception> failures = [];
+        for (int i = 0; i < testTypes.Length; i++)
         {
             try
             {
-                await VerifyToolSetIntegrity(tools, type, canceler).ConfigureAwait(false);
+                await VerifyToolSetSupportAsync(testTypes[i], localOptions, canceler)
+                    .ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                failures.Add(type, e);
+                failures.Add(testTypes[i], e);
             }
         }
-        tools.Asserter.IsEmpty(failures);
+        localOptions.Asserter.IsEmpty(failures, "Not all types were supported as expected.");
     }
 
-    /// <summary>Verifies the <paramref name="type"/> works with the tools.</summary>
+    /// <summary>
+    ///     Validates the <paramref name="type"/> is fully
+    ///     compatible with the framework as configured.
+    /// </summary>
     /// <param name="type">The <see cref="Type"/> to test with.</param>
-    /// <inheritdoc cref="VerifyToolSetIntegrityAsync(ToolSet,CancellationToken,TesterMod)"/>
-    private static async Task VerifyToolSetIntegrity(
-        ToolSet tools,
+    /// <inheritdoc
+    ///     cref="VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
+    private static async Task VerifyToolSetSupportAsync(
         Type type,
+        TesterOptions localOptions,
         CancellationToken canceler
     )
     {
-        string failMessage = "Behavior did not work for type '" + type.FullName + "'.";
+        string failMessage =
+            "Behavior did not work for type '" + TypeDescriber.ExpandedName(type) + "'.";
         object? original = null,
             variant = null,
             dupe = null;
         try
         {
-            original = tools.Randomizer.Create(type);
-            dupe = tools.Duplicator.Copy(original);
+            original = localOptions.Randomizer.Create(type);
+            dupe = localOptions.Duplicator.Copy(original);
 
-            await tools
-                .Asserter.ValuesEqualAsync(original, dupe, canceler, failMessage)
+            await localOptions
+                .Asserter.ValuesEqualAsync(
+                    original,
+                    dupe,
+                    canceler,
+                    failMessage + " Cloned data was not equal."
+                )
                 .ConfigureAwait(false);
 
             if (
                 TypeDescriber.GetAllProperties(type).Any() || TypeDescriber.GetAllFields(type).Any()
             )
             {
-                variant = tools.Mutator.Variant(type, original);
+                variant = localOptions.Mutator.Variant(type, original);
 
-                await tools
-                    .Asserter.ValuesNotEqualAsync(original, variant, canceler, failMessage)
+                await localOptions
+                    .Asserter.ValuesNotEqualAsync(
+                        original,
+                        variant,
+                        canceler,
+                        failMessage + " Variant data was still equal."
+                    )
                     .ConfigureAwait(false);
 
-                if (tools.Mutator.Modify(original))
+                if (localOptions.Mutator.Modify(original))
                 {
-                    await tools
-                        .Asserter.ValuesNotEqualAsync(dupe, original, canceler)
+                    await localOptions
+                        .Asserter.ValuesNotEqualAsync(
+                            dupe,
+                            original,
+                            canceler,
+                            failMessage + " Modified data was still equal."
+                        )
                         .ConfigureAwait(false);
                 }
             }
 
             if (
-                tools.Faker.Supports(type)
+                localOptions.Faker.Supports(type)
                 && !type.Inherits<IDisposable>()
                 && !type.Inherits<IToolOptions>()
             )
             {
-                _ = tools.Faker.Mock(type);
+                _ = localOptions.Faker.Mock(type);
             }
         }
         finally

@@ -20,7 +20,6 @@ internal static class ReflectionCreateHandlers
         typeof(string),
         typeof(object),
         typeof(DateTime),
-        typeof(TimeSpan),
         typeof(List<double>),
         typeof(ISet<string>),
         typeof(AggregateException),

@@ -42,7 +42,8 @@ internal static class ExceptionCreateHandlers
         typeof(SEHException),
     ];
 
-    internal static IEnumerable<ICreateHandler> Handlers { get; } =
+    /// <summary>Exception that the handlers can create.</summary>
+    internal static IEnumerable<Type> PotentialExceptions { get; } =
         InheritanceTracker
             .For<Exception>()
             .FindLoadedSubclasses()
@@ -51,8 +52,12 @@ internal static class ExceptionCreateHandlers
             .Where(t => t.Namespace!.StartsWith("System", StringComparison.Ordinal))
             .Where(t => !_UnsupportedExceptions.Contains(t.FullName!))
             .Where(t => !_FatalExceptions.Contains(t))
+            .Where(t => t.GetConstructor([typeof(string)]) != null)
+            .ToFrozenSet()!;
+
+    internal static IEnumerable<ICreateHandler> Handlers { get; } =
+        PotentialExceptions
             .Select(t => t.GetConstructor([typeof(string)]))
-            .Where(c => c != null)
             .Select(c => new ExceptionCreateHandler(c!));
 
     /// <inheritdoc cref="ICreateHandler"/>

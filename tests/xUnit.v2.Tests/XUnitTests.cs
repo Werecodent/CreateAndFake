@@ -7,7 +7,7 @@ public static class XUnitTests
     [Fact]
     internal static Task XUnit_v2_VerifyIntegrity()
     {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(ToolSet.DefaultSet, CancellationToken.None);
+        return Tools.Tester.VerifyToolSetIntegrityAsync(CancellationToken.None);
     }
 
     [Fact]

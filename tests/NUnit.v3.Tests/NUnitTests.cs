@@ -9,7 +9,6 @@ public static class NUnitTests
     public static Task NUnit_v3_VerifyIntegrity()
     {
         return Tools.Tester.VerifyToolSetIntegrityAsync(
-            ToolSet.DefaultSet,
             TestContext.CurrentContext.CancellationToken
         );
     }
