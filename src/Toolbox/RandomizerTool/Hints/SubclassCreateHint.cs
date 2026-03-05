@@ -65,7 +65,6 @@ public sealed class SubclassCreateHint : CreateHint
             catch (CreateAndFakeException)
             {
                 // Try next type.
-                Debug.Write(subclass);
             }
         }
 
