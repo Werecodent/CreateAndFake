@@ -1,7 +1,5 @@
 namespace CreateAndFake.Design.Tooling;
 
-#pragma warning disable S2326 // Marker for inheritance.
-
 /// <summary>Reflection tool that utilizes <see cref="IToolHint"/>s.</summary>
 /// <inheritdoc/>
 public interface IHintTool<TOptions, THint> : ITool<TOptions>
@@ -11,5 +9,3 @@ public interface IHintTool<TOptions, THint> : ITool<TOptions>
     /// <inheritdoc cref="IToolEngine{T}.SupportedTypes"/>
     IEnumerable<Type> SupportedTypes { get; }
 }
-
-#pragma warning restore S2326

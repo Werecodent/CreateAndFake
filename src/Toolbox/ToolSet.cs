@@ -151,6 +151,8 @@ public sealed class ToolSet(
             {
                 Gen = gen,
                 Randomizer = randomizer,
+                Mutator = mutator,
+                Faker = faker,
                 Duplicator = duplicator,
                 Extractor = extractor,
                 Asserter = asserter,

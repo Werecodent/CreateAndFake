@@ -38,10 +38,16 @@ public abstract class MutateHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
+            object data = type.CreateRandomInstance();
             TestInstance
-                .TryModifying(type.CreateRandomInstance(), CreateChainer())
+                .TryModifying(data, CreateChainer())
                 .HasData.Assert()
-                .Is(true);
+                .Is(
+                    true,
+                    $"Hint '{TypeDescriber.ExpandedName<T>()}' failed to modify type "
+                        + $"'{TypeDescriber.ExpandedName(type)}'. "
+                        + $"Actual type: '{TypeDescriber.ExpandedName(data)}'."
+                );
         }
     }
 
@@ -51,10 +57,16 @@ public abstract class MutateHintTestBase<T>(
     {
         foreach (Type type in _invalidTypes)
         {
+            object data = type.CreateRandomInstance();
             TestInstance
-                .TryModifying(type.CreateRandomInstance(), CreateChainer())
+                .TryModifying(data, CreateChainer())
                 .HasData.Assert()
-                .Is(false);
+                .Is(
+                    false,
+                    $"Hint '{TypeDescriber.ExpandedName<T>()}' modified type "
+                        + $"'{TypeDescriber.ExpandedName(type)}'. "
+                        + $"Actual type: '{TypeDescriber.ExpandedName(data)}'."
+                );
         }
     }
 

@@ -2,6 +2,7 @@ using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
 using CreateAndFake.MutatorTool.Engine;
+using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
@@ -44,20 +45,11 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
         return this with
         {
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            IncludeFrameworkHints = section.GetValue(
-                nameof(IncludeFrameworkHints),
-                IncludeFrameworkHints
-            ),
-            CreateVariantAttemptLimit = section.GetValue(
-                nameof(CreateVariantAttemptLimit),
-                CreateVariantAttemptLimit
-            ),
-            CreateUniqueAttemptLimit = section.GetValue(
-                nameof(CreateUniqueAttemptLimit),
-                CreateUniqueAttemptLimit
-            ),
+            CreateVariantAttemptLimit = Config.GetValue(section, CreateVariantAttemptLimit),
+            CreateUniqueAttemptLimit = Config.GetValue(section, CreateUniqueAttemptLimit),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
         };
     }
 }

@@ -6,6 +6,9 @@ using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.FakerTool;
+using CreateAndFake.MutatorTool;
+using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +29,12 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary><inheritdoc cref="IExtractor"/></summary>
     public required IExtractor Extractor { get; init; }
+
+    /// <summary><inheritdoc cref="IFaker"/></summary>
+    public required IFaker Faker { get; init; }
+
+    /// <summary><inheritdoc cref="IMutator"/></summary>
+    public required IMutator Mutator { get; init; }
 
     /// <summary>Handles common test scenarios.</summary>
     public required IAsserter Asserter { get; init; }
@@ -120,76 +129,25 @@ public sealed record TesterOptions : IToolOptions
 
         return this with
         {
-            Limiter = section.GetValue(nameof(Limiter), Limiter),
-            InjectionValues = section.GetValue(nameof(InjectionValues), InjectionValues),
-            IncludeConstructors = section.GetValue(
-                nameof(IncludeConstructors),
-                IncludeConstructors
-            ),
-            IncludeInstanceMethods = section.GetValue(
-                nameof(IncludeInstanceMethods),
-                IncludeInstanceMethods
-            ),
-            IncludeStaticMethods = section.GetValue(
-                nameof(IncludeStaticMethods),
-                IncludeStaticMethods
-            ),
-            IncludeInternals = section.GetValue(nameof(IncludeInternals), IncludeInternals),
-            TestClassNameSuffix = section.GetValue(
-                nameof(TestClassNameSuffix),
-                TestClassNameSuffix
-            ),
-            TestClassNameGenericSubstitutes =
-                GetSectionList<string>(section, nameof(TestClassNameGenericSubstitutes))
-                    ?.ToImmutableArray()
-                ?? TestClassNameGenericSubstitutes,
-            TestDisplayNameConverter = section.GetValue(
-                nameof(TestDisplayNameConverter),
-                TestDisplayNameConverter
-            ),
-            TestClassCoverageExceptions =
-                GetSectionList<string>(section, nameof(TestClassCoverageExceptions))?.ToFrozenSet()
-                ?? TestClassCoverageExceptions,
-            MethodsToIgnore =
-                GetSectionList<string>(section, nameof(MethodsToIgnore))?.ToFrozenSet()
-                ?? MethodsToIgnore,
-            IgnoreAllExceptions = section.GetValue(
-                nameof(IgnoreAllExceptions),
-                IgnoreAllExceptions
-            ),
-            DisableNullRefExceptionTests = section.GetValue(
-                nameof(DisableNullRefExceptionTests),
-                DisableNullRefExceptionTests
-            ),
-            DisableParameterMutationTests = section.GetValue(
-                nameof(DisableParameterMutationTests),
-                DisableParameterMutationTests
-            ),
-            DisablePassthroughTests = section.GetValue(
-                nameof(DisablePassthroughTests),
-                DisablePassthroughTests
+            DisableParameterMutationTests = Config.GetValue(section, DisableParameterMutationTests),
+            DisableNullRefExceptionTests = Config.GetValue(section, DisableNullRefExceptionTests),
+            TestClassCoverageExceptions = Config.GetSet(section, TestClassCoverageExceptions),
+            TestDisplayNameConverter = Config.GetValue(section, TestDisplayNameConverter),
+            DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
+            IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
+            IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
+            IgnoreAllExceptions = Config.GetValue(section, IgnoreAllExceptions),
+            IncludeConstructors = Config.GetValue(section, IncludeConstructors),
+            TestClassNameSuffix = Config.GetValue(section, TestClassNameSuffix),
+            IncludeInternals = Config.GetValue(section, IncludeInternals),
+            InjectionValues = Config.GetValue(section, InjectionValues),
+            MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),
+            Limiter = Config.GetValue(section, Limiter),
+            TestClassNameGenericSubstitutes = Config.GetArray(
+                section,
+                TestClassNameGenericSubstitutes
             ),
         };
-    }
-
-    /// <summary>Deserializes a list from the configuration.</summary>
-    /// <typeparam name="T">Object type for the list.</typeparam>
-    /// <param name="config">Root configuration section for the options.</param>
-    /// <param name="sectionName">Name of the subsection representing the list.</param>
-    /// <returns>The deserialized list if present, null otherwise.</returns>
-    private static List<T>? GetSectionList<T>(IConfigurationSection config, string sectionName)
-    {
-        IConfigurationSection section = config.GetSection(sectionName);
-        if (section.Exists())
-        {
-            List<T> bindResult = [];
-            section.Bind(bindResult);
-            return bindResult;
-        }
-        else
-        {
-            return null;
-        }
     }
 
     /// <inheritdoc/>

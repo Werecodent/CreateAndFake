@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using CreateAndFake.Design.Properties;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Properties;
 using CreateAndFake.ValuerTool.Engine;
 using Microsoft.Extensions.Configuration;
 
@@ -59,31 +60,16 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
         return this with
         {
-            IncludeFrameworkHints = section.GetValue(
-                nameof(IncludeFrameworkHints),
-                IncludeFrameworkHints
-            ),
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            UseEquatableComparisons = section.GetValue(
-                nameof(UseEquatableComparisons),
-                UseEquatableComparisons
-            ),
-            CheckCollectionType = section.GetValue(
-                nameof(CheckCollectionType),
-                CheckCollectionType
-            ),
-            IgnoreCurrentRandomSeed = section.GetValue(
-                nameof(IgnoreCurrentRandomSeed),
-                IgnoreCurrentRandomSeed
-            ),
-            AsyncTimeout = section.GetValue(nameof(AsyncTimeout), AsyncTimeout),
-            IterationLimit = section.GetValue(nameof(IterationLimit), IterationLimit),
-            SkipAsyncValues = section.GetValue(nameof(SkipAsyncValues), SkipAsyncValues),
-            IncludeValueHashInComparison = section.GetValue(
-                nameof(IncludeValueHashInComparison),
-                IncludeValueHashInComparison
-            ),
+            IncludeValueHashInComparison = Config.GetValue(section, IncludeValueHashInComparison),
+            IgnoreCurrentRandomSeed = Config.GetValue(section, IgnoreCurrentRandomSeed),
+            UseEquatableComparisons = Config.GetValue(section, UseEquatableComparisons),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            CheckCollectionType = Config.GetValue(section, CheckCollectionType),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            SkipAsyncValues = Config.GetValue(section, SkipAsyncValues),
+            IterationLimit = Config.GetValue(section, IterationLimit),
+            AsyncTimeout = Config.GetValue(section, AsyncTimeout),
         };
     }
 }

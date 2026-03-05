@@ -3,6 +3,7 @@ using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.Properties;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
@@ -44,13 +45,10 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
 
         return this with
         {
-            IncludeFrameworkHints = section.GetValue(
-                nameof(IncludeFrameworkHints),
-                IncludeFrameworkHints
-            ),
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            VerifyCloneResult = section.GetValue(nameof(VerifyCloneResult), VerifyCloneResult),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            VerifyCloneResult = Config.GetValue(section, VerifyCloneResult),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
         };
     }
 }

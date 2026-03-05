@@ -1,6 +1,7 @@
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.Properties;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
@@ -45,14 +46,8 @@ public sealed record AsserterOptions : IToolOptions
 
         return this with
         {
-            DisableAssertThrowCatching = section.GetValue(
-                nameof(DisableAssertThrowCatching),
-                DisableAssertThrowCatching
-            ),
-            StringCompareOption = section.GetValue(
-                nameof(StringCompareOption),
-                StringCompareOption
-            ),
+            DisableAssertThrowCatching = Config.GetValue(section, DisableAssertThrowCatching),
+            StringCompareOption = Config.GetValue(section, StringCompareOption),
         };
     }
 

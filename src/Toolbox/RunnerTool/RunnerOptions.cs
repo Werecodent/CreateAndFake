@@ -5,6 +5,7 @@ using CreateAndFake.Design.Tooling;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool;
+using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
@@ -75,21 +76,15 @@ public sealed record RunnerOptions : IToolOptions
 
         return this with
         {
-            InheritIReflectableTypeOnFakedType = section.GetValue(
-                nameof(InheritIReflectableTypeOnFakedType),
+            IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
+            IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
+            IncludeFinalize = Config.GetValue(section, IncludeFinalize),
+            IncludeDispose = Config.GetValue(section, IncludeDispose),
+            Timeout = Config.GetValue(section, Timeout),
+            InheritIReflectableTypeOnFakedType = Config.GetValue(
+                section,
                 InheritIReflectableTypeOnFakedType
             ),
-            IncludeFinalize = section.GetValue(nameof(IncludeFinalize), IncludeFinalize),
-            IncludeDispose = section.GetValue(nameof(IncludeDispose), IncludeDispose),
-            IncludeStaticMethods = section.GetValue(
-                nameof(IncludeStaticMethods),
-                IncludeStaticMethods
-            ),
-            IncludeInstanceMethods = section.GetValue(
-                nameof(IncludeInstanceMethods),
-                IncludeInstanceMethods
-            ),
-            Timeout = section.GetValue(nameof(Timeout), Timeout),
         };
     }
 

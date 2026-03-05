@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.ExtractorTool.Engine;
+using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
@@ -43,16 +44,10 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtra
 
         return this with
         {
-            IncludeFrameworkHints = section.GetValue(
-                nameof(IncludeFrameworkHints),
-                IncludeFrameworkHints
-            ),
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            ExtractPrivateMembers = section.GetValue(
-                nameof(ExtractPrivateMembers),
-                ExtractPrivateMembers
-            ),
+            ExtractPrivateMembers = Config.GetValue(section, ExtractPrivateMembers),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
         };
     }
 }

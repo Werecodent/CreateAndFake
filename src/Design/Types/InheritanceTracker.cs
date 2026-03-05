@@ -145,7 +145,10 @@ public sealed class InheritanceTracker : ITypeSupporter
     /// </remarks>
     private IEnumerable<Type> FindLoadedSubclasses(AssemblyName assembly)
     {
-        return SubTypes.Where(t => !t.IsAbstract).Where(t => TypeDescriber.IsVisible(t, assembly));
+        return SubTypes
+            .Where(t => !t.IsAbstract)
+            .Where(t => !t.IsGenericTypeDefinition)
+            .Where(t => TypeDescriber.IsVisible(t, assembly));
     }
 
     /// <summary>

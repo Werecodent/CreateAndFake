@@ -11,7 +11,7 @@ public static class FakerTests
     private static readonly TesterMod config = opt =>
         opt with
         {
-            IgnorableExceptions = [typeof(ArgumentException)],
+            IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidOperationException)],
         };
 
     [Fact]

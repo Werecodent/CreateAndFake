@@ -38,7 +38,8 @@
             "StringMinSize": 2,
             "StringMaxSize": 4,
             "StringCharacterSet": "ABC1",
-            "IncludeInfinityAndNaNGeneration": true
+            "IncludeInfinityAndNaNGeneration": true,
+            "ContentRandomizationRequired": false
         },
         "Runner": {
             "InheritIReflectableTypeOnFakedType": true,

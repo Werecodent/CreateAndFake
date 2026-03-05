@@ -8,7 +8,7 @@ public interface IToolEngine<out THint>
     where THint : IToolHint
 {
     /// <inheritdoc cref="IToolHint.SupportedTypes"/>
-    ISet<Type> SupportedTypes { get; }
+    IEnumerable<Type> SupportedTypes { get; }
 }
 
 #pragma warning restore S2326

@@ -247,7 +247,7 @@ public static class ArgumentGuard
         if (index >= iterationLimit)
         {
             throw new IterationLimitException(
-                $"Index {index} reached max iteration limit ({iterationLimit})."
+                $"Index {index} reached max iteration limit ({iterationLimit}). "
                     + "Increase via 'ValuerOptions.IterationLimit'."
             );
         }

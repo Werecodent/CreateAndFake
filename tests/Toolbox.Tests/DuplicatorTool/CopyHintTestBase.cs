@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.TesterTool;
 
@@ -80,8 +81,9 @@ public abstract class CopyHintTestBase<T>(
                     new CopyHintResult(data),
                     result,
                     TestContext.Current.CancellationToken,
-                    $"Hint '{typeof(T).Name}' failed to clone type '{type.Name}'."
-                        + $"Actual type: '{data?.GetType()}'."
+                    $"Hint '{TypeDescriber.ExpandedName<T>()}' failed to clone type "
+                        + $"'{TypeDescriber.ExpandedName(type)}'. "
+                        + $"Actual type: '{TypeDescriber.ExpandedName(data)}'."
                 );
 
                 await result
@@ -89,8 +91,9 @@ public abstract class CopyHintTestBase<T>(
                     .IsAsync(
                         data,
                         TestContext.Current.CancellationToken,
-                        $"Hint '{typeof(T).Name}' failed to create clone that's equal by "
-                            + $"value for type '{type.Name}'. Actual type '{data?.GetType()}'."
+                        $"Hint '{TypeDescriber.ExpandedName<T>()}' failed to create clone that's "
+                            + $"equal by value for type '{TypeDescriber.ExpandedName(type)}'. "
+                            + $"Actual type '{TypeDescriber.ExpandedName(data)}'."
                     );
             }
             finally

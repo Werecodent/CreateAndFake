@@ -4,6 +4,7 @@ using CreateAndFake.Design.Properties;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool.Engine;
 using Microsoft.Extensions.Configuration;
 
@@ -60,6 +61,16 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
     public bool IncludeInfinityAndNaNGeneration { get; init; } =
         DesignDefaults.IncludeInfinityAndNaNGeneration;
 
+    /// <summary>
+    ///     If object contents must also be randomized for randomization to be successful.
+    /// </summary>
+    /// <remarks>
+    ///     Generally disabled when creating the specific type
+    ///     provides randomization (such as picking a subclass).
+    /// </remarks>
+    [ConfigurableOption]
+    public bool ContentRandomizationRequired { get; init; } = true;
+
     /// <summary>Condition for the resulting randomized instance to match.</summary>
     public Func<object, bool>? FinalCondition { get; init; } = null;
 
@@ -79,38 +90,23 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, Crea
 
         return this with
         {
-            IncludeFoundHints = section.GetValue(nameof(IncludeFoundHints), IncludeFoundHints),
-            MaxHintRecursion = section.GetValue(nameof(MaxHintRecursion), MaxHintRecursion),
-            CollectionAttempts = section.GetValue(nameof(CollectionAttempts), CollectionAttempts),
-            CollectionMinSize = section.GetValue(nameof(CollectionMinSize), CollectionMinSize),
-            CollectionMaxSize = section.GetValue(nameof(CollectionMaxSize), CollectionMaxSize),
-            StringMinSize = section.GetValue(nameof(StringMinSize), StringMinSize),
-            StringMaxSize = section.GetValue(nameof(StringMaxSize), StringMaxSize),
-            IncludeInfinityAndNaNGeneration = section.GetValue(
-                nameof(IncludeInfinityAndNaNGeneration),
+            ContentRandomizationRequired = Config.GetValue(section, ContentRandomizationRequired),
+            RandomizerCreateAttempts = Config.GetValue(section, RandomizerCreateAttempts),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            PreferLocalSubclasses = Config.GetValue(section, PreferLocalSubclasses),
+            ObjectCreateAttempts = Config.GetValue(section, ObjectCreateAttempts),
+            CollectionAttempts = Config.GetValue(section, CollectionAttempts),
+            StringCharacterSet = Config.GetChars(section, StringCharacterSet),
+            CollectionMinSize = Config.GetValue(section, CollectionMinSize),
+            CollectionMaxSize = Config.GetValue(section, CollectionMaxSize),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            StringMinSize = Config.GetValue(section, StringMinSize),
+            StringMaxSize = Config.GetValue(section, StringMaxSize),
+            IncludeInfinityAndNaNGeneration = Config.GetValue(
+                section,
                 IncludeInfinityAndNaNGeneration
             ),
-            IncludeFrameworkHints = section.GetValue(
-                nameof(IncludeFrameworkHints),
-                IncludeFrameworkHints
-            ),
-            PreferLocalSubclasses = section.GetValue(
-                nameof(PreferLocalSubclasses),
-                PreferLocalSubclasses
-            ),
-            RandomizerCreateAttempts = section.GetValue(
-                nameof(RandomizerCreateAttempts),
-                RandomizerCreateAttempts
-            ),
-            ObjectCreateAttempts = section.GetValue(
-                nameof(ObjectCreateAttempts),
-                ObjectCreateAttempts
-            ),
-            StringCharacterSet = section
-                .GetValue(nameof(StringCharacterSet), string.Join("", StringCharacterSet))
-                .ToCharArray()
-                .Distinct()
-                .ToFrozenSet(),
         };
     }
 
