@@ -469,7 +469,13 @@ public class Tester(TesterOptions options) : ITester
     )
     {
         return VerifyToolSetSupportAsync(
-            Tools.Randomizer.SupportedTypes,
+            Enumerable
+                .Empty<Type>()
+                .Concat(Tools.Randomizer.SupportedTypes)
+                .Concat(Tools.Duplicator.SupportedTypes)
+                .Concat(Tools.Extractor.SupportedTypes)
+                .Concat(Tools.Mutator.SupportedTypes)
+                .Concat(Tools.Valuer.SupportedTypes),
             canceler,
             optionConfiguration
         );
@@ -520,8 +526,6 @@ public class Tester(TesterOptions options) : ITester
         CancellationToken canceler
     )
     {
-        string failMessage =
-            "Behavior did not work for type '" + TypeDescriber.ExpandedName(type) + "'.";
         object? original = null,
             variant = null,
             dupe = null;
@@ -529,6 +533,11 @@ public class Tester(TesterOptions options) : ITester
         {
             original = localOptions.Randomizer.Create(type);
             dupe = localOptions.Duplicator.Copy(original);
+
+            string failMessage =
+                "Behavior did not work for type '"
+                + TypeDescriber.ExpandedName(type)
+                + $"' randomized to '{TypeDescriber.ExpandedName(original)}'.";
 
             await localOptions
                 .Asserter.ValuesEqualAsync(
@@ -540,7 +549,13 @@ public class Tester(TesterOptions options) : ITester
                 .ConfigureAwait(false);
 
             if (
-                TypeDescriber.GetAllProperties(type).Any() || TypeDescriber.GetAllFields(type).Any()
+                TypeDescriber.IsMutable(type)
+                || TypeDescriber.HasInitializableOnlyState(type)
+                || type.IsAbstract
+                || (
+                    !type.IsSealed
+                    && InheritanceTracker.For(type).FindLoadedSubclasses().Skip(1).Any()
+                )
             )
             {
                 variant = localOptions.Mutator.Variant(type, original);
@@ -553,18 +568,18 @@ public class Tester(TesterOptions options) : ITester
                         failMessage + " Variant data was still equal."
                     )
                     .ConfigureAwait(false);
+            }
 
-                if (localOptions.Mutator.Modify(original))
-                {
-                    await localOptions
-                        .Asserter.ValuesNotEqualAsync(
-                            dupe,
-                            original,
-                            canceler,
-                            failMessage + " Modified data was still equal."
-                        )
-                        .ConfigureAwait(false);
-                }
+            if (localOptions.Mutator.Modify(original))
+            {
+                await localOptions
+                    .Asserter.ValuesNotEqualAsync(
+                        dupe,
+                        original,
+                        canceler,
+                        failMessage + " Modified data was still equal."
+                    )
+                    .ConfigureAwait(false);
             }
 
             if (

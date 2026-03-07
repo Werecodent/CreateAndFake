@@ -44,6 +44,10 @@ public sealed class CollectionCreateHint : CreateHint
                 (_, data) => ImmutableDictionary.CreateRange((dynamic)data)
             },
             {
+                typeof(ImmutableSortedDictionary<,>),
+                (_, data) => ImmutableSortedDictionary.CreateRange((dynamic)data)
+            },
+            {
                 typeof(Dictionary<,>),
                 (type, data) =>
                 {

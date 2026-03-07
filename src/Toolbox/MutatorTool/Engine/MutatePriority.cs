@@ -32,10 +32,13 @@ public enum MutatePriority
     /// <summary>Priority for <see cref="ObjectMutateHint"/>.</summary>
     ObjectHint = 6,
 
+    /// <summary>Priority for <see cref="UnmodifiableMutateHint"/>.</summary>
+    UnmodifiableHint = 7,
+
     /// <summary>Priority for <see cref="HandlerMutateHint"/>.</summary>
-    HandlerHint = 7,
+    HandlerHint = 8,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 8,
+    Highest = 9,
 }

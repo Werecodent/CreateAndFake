@@ -46,6 +46,7 @@
         "hasher",
         "Hashtable",
         "inheritdoc",
+        "Initializable",
         "LASTEXITCODE",
         "LASTNAME",
         "Ldarg",

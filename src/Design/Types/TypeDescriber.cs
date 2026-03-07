@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Extensions;
@@ -9,12 +8,6 @@ namespace CreateAndFake.Design.Types;
 /// <summary>Provides common <see cref="Type"/> patterns for getting additional details.</summary>
 public static class TypeDescriber
 {
-    /// <summary>Prevents concurrency issues for <see cref="_ClassTypeCache"/>.</summary>
-    private static readonly Lock _Lock = new();
-
-    /// <summary>Caches every available <see cref="Type"/> per <see cref="Assembly"/>.</summary>
-    private static readonly Dictionary<Assembly, ImmutableArray<Type>> _ClassTypeCache = [];
-
     /// <returns>The found inherited <see cref="Type"/>.</returns>
     /// <remarks>Example: <example><c>
     ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
@@ -101,6 +94,33 @@ public static class TypeDescriber
     public static Type? AsGenericBase(Type? type)
     {
         return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     instance fields on <typeparamref name="T"/> that can be written to.
+    /// </summary>
+    /// <inheritdoc cref="GetMutableFields(Type?)"/>
+    /// <inheritdoc cref="GetAllFields{T}"/>
+    public static IEnumerable<FieldInfo> GetMutableFields<T>()
+    {
+        return GetMutableFields(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetMutableFields(Type?,AssemblyName)"/>
+    public static IEnumerable<FieldInfo> GetMutableFields(Type? type)
+    {
+        return GetMutableFields(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     instance fields on the <paramref name="type"/> that can be written to.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleFields(Type?, AssemblyName)"/>
+    private static IEnumerable<FieldInfo> GetMutableFields(Type? type, AssemblyName assembly)
+    {
+        return GetVisibleFields(type, assembly).Where(f => !f.IsInitOnly && !f.IsLiteral);
     }
 
     /// <summary>Finds <see langword="public"/> <typeparamref name="T"/> instance fields.</summary>
@@ -207,6 +227,71 @@ public static class TypeDescriber
         }
     }
 
+    /// <inheritdoc cref="GetMutableProperties(Type?)"/>
+    /// <inheritdoc cref="GetAllProperties{T}"/>
+    public static IEnumerable<PropertyInfo> GetReadableMutableProperties<T>()
+    {
+        return GetReadableMutableProperties(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetReadableMutableProperties(Type?,AssemblyName)"/>
+    public static IEnumerable<PropertyInfo> GetReadableMutableProperties(Type? type)
+    {
+        return GetReadableMutableProperties(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetMutableProperties(Type?, AssemblyName)"/>
+    private static IEnumerable<PropertyInfo> GetReadableMutableProperties(
+        Type? type,
+        AssemblyName assembly
+    )
+    {
+        bool nonPublic = InternalsAreVisible(type, assembly);
+        return GetMutableProperties(type, assembly)
+            .Where(p =>
+            {
+                MethodInfo? getMethod = p.GetGetMethod(nonPublic);
+                return getMethod != null && (getMethod.IsPublic || getMethod.IsAssembly);
+            });
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     <typeparamref name="T"/> instance properties that can be written to.
+    /// </summary>
+    /// <inheritdoc cref="GetMutableProperties(Type?)"/>
+    /// <inheritdoc cref="GetAllProperties{T}"/>
+    public static IEnumerable<PropertyInfo> GetMutableProperties<T>()
+    {
+        return GetMutableProperties(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="GetMutableProperties(Type?,AssemblyName)"/>
+    public static IEnumerable<PropertyInfo> GetMutableProperties(Type? type)
+    {
+        return GetMutableProperties(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds <see langword="public"/> and <see langword="internal"/>
+    ///     instance properties on the <paramref name="type"/> that can be written to.
+    /// </summary>
+    /// <inheritdoc cref="GetVisibleProperties(Type?, AssemblyName)"/>
+    private static IEnumerable<PropertyInfo> GetMutableProperties(Type? type, AssemblyName assembly)
+    {
+        bool nonPublic = InternalsAreVisible(type, assembly);
+        return GetAllProperties(type)
+            .Where(p =>
+            {
+                MethodInfo? setMethod = p.GetSetMethod(nonPublic);
+                return setMethod != null
+                    && (setMethod.IsPublic || setMethod.IsAssembly)
+                    && setMethod
+                        .ReturnParameter?.GetRequiredCustomModifiers()
+                        .Contains(typeof(IsExternalInit)) != true;
+            });
+    }
+
     /// <summary>
     ///     Finds <see langword="public"/> <typeparamref name="T"/> instance properties.
     /// </summary>
@@ -267,8 +352,8 @@ public static class TypeDescriber
             return GetAllProperties(type)
                 .Where(p =>
                 {
-                    MethodInfo? getMethod = p.GetGetMethod();
-                    MethodInfo? setMethod = p.GetSetMethod();
+                    MethodInfo? getMethod = p.GetGetMethod(true);
+                    MethodInfo? setMethod = p.GetSetMethod(true);
                     return (getMethod != null && (getMethod.IsPublic || getMethod.IsAssembly))
                         || (setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly));
                 });
@@ -488,55 +573,53 @@ public static class TypeDescriber
             ?? [];
     }
 
-    /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see langword="class"/>es to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see langword="class"/> if the
-    ///     <paramref name="assembly"/> loads, none otherwise.
-    /// </returns>
-    public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    /// <summary>
+    ///     Determines if <typeparamref name="T"/> has any
+    ///     properties/fields only settable via a constructor.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> to verify initializable state for.</typeparam>
+    /// <inheritdoc cref="HasInitializableOnlyState(Type?)"/>
+    public static bool HasInitializableOnlyState<T>()
     {
-        if (assembly == null)
-        {
-            return [];
-        }
-
-        ImmutableArray<Type> classTypes;
-        lock (_Lock)
-        {
-            if (!_ClassTypeCache.TryGetValue(assembly, out classTypes))
-            {
-                IEnumerable<Type> types = FindLoadedTypes(assembly)
-                    .Where(t => t.IsClass)
-                    .Where(t => !t.IsNestedPrivate)
-                    .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false));
-
-                _ClassTypeCache[assembly] = classTypes = [.. types];
-            }
-        }
-        return classTypes;
+        return HasInitializableOnlyState(typeof(T));
     }
 
-    /// <summary>Finds every <see cref="Type"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see cref="Type"/>s to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see cref="Type"/> if the
-    ///     <paramref name="assembly"/> can load, none otherwise.
-    /// </returns>
-    internal static IEnumerable<Type> FindLoadedTypes(Assembly? assembly)
+    /// <summary>
+    ///     Determines if the <paramref name="type"/> has any
+    ///     properties/fields only settable via a constructor.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to verify initializable state for.</param>
+    /// <remarks>Beware that this does not always mean the value is changeable.</remarks>
+    public static bool HasInitializableOnlyState(Type? type)
     {
-        try
-        {
-            return assembly?.GetTypes() ?? Type.EmptyTypes;
-        }
-        catch
-        {
-            return Type.EmptyTypes;
-        }
+        return GetAllFields(type).Any(f => f.IsInitOnly && !f.IsLiteral)
+            && GetAllConstructors(type).Any(c => c.GetParameters().Length > 0);
+    }
+
+    /// <summary>
+    ///     Determines if <typeparamref name="T"/> has any modifiable properties/fields.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> to verify mutability for.</typeparam>
+    /// <inheritdoc cref="IsMutable(Type?, AssemblyName)"/>
+    public static bool IsMutable<T>()
+    {
+        return IsMutable(typeof(T), Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <inheritdoc cref="IsMutable(Type?, AssemblyName)"/>
+    public static bool IsMutable(Type? type)
+    {
+        return IsMutable(type, Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Determines if the <paramref name="type"/> has any modifiable properties/fields.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to verify mutability for.</param>
+    /// <inheritdoc cref="IsVisible(Type?, AssemblyName)"/>
+    private static bool IsMutable(Type? type, AssemblyName assembly)
+    {
+        return GetMutableProperties(type, assembly).Any() || GetMutableFields(type, assembly).Any();
     }
 
     /// <summary>
@@ -587,6 +670,8 @@ public static class TypeDescriber
     /// </remarks>
     private static bool InternalsAreVisible(Type? type, AssemblyName assembly)
     {
+        ArgumentGuard.ThrowIfNull(assembly);
+
         return type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
                 .Any(a => a.AssemblyName == assembly.Name) == true;
     }
@@ -643,6 +728,47 @@ public static class TypeDescriber
         else
         {
             return "";
+        }
+    }
+
+    /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
+    /// <param name="assembly">
+    ///     <see cref="Assembly"/> containing the <see langword="class"/>es to search for.
+    /// </param>
+    /// <returns>
+    ///     Every found <see langword="class"/> if the
+    ///     <paramref name="assembly"/> loads, none otherwise.
+    /// </returns>
+    public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    {
+        if (assembly == null)
+        {
+            return [];
+        }
+
+        return FindLoadedTypes(assembly)
+            .Where(t => t.IsClass)
+            .Where(t => !t.IsNestedPrivate)
+            .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false));
+    }
+
+    /// <summary>Finds every <see cref="Type"/> in the <paramref name="assembly"/>.</summary>
+    /// <param name="assembly">
+    ///     <see cref="Assembly"/> containing the <see cref="Type"/>s to search for.
+    /// </param>
+    /// <returns>
+    ///     Every found <see cref="Type"/> if the
+    ///     <paramref name="assembly"/> can load, none otherwise.
+    /// </returns>
+    internal static IEnumerable<Type> FindLoadedTypes(Assembly? assembly)
+    {
+        try
+        {
+            return assembly?.GetTypes() ?? Type.EmptyTypes;
+        }
+        catch
+        {
+            return Type.EmptyTypes;
         }
     }
 }

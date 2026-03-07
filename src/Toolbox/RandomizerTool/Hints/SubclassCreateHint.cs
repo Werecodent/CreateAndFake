@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
@@ -32,14 +31,10 @@ public sealed class SubclassCreateHint : CreateHint
             .. randomizer
                 .Options.Gen.NextSequence(
                     randomizer.Options.PreferLocalSubclasses
-                        ? inheritance.FindLocalSubclasses().Concat([type])
+                        ? inheritance.FindLocalSubclasses()
                         : []
                 )
-                .Concat(
-                    randomizer.Options.Gen.NextSequence(
-                        inheritance.FindLoadedSubclasses().Concat([type])
-                    )
-                )
+                .Concat(randomizer.Options.Gen.NextSequence(inheritance.FindLoadedSubclasses()))
                 .Where(t => !t.IsAbstract)
                 .Where(foundAlready.Add)
                 .Where(t => !randomizer.AlreadyCreated(t)),

@@ -175,32 +175,36 @@ public sealed class ToolSet(
     }
 
     /// <inheritdoc cref="IRandom"/>
-    public IRandom Gen { get; } = gen;
+    public IRandom Gen { get; } = gen ?? throw new ArgumentNullException(nameof(gen));
 
     /// <inheritdoc cref="IValuer"/>
-    public IValuer Valuer { get; } = valuer;
+    public IValuer Valuer { get; } = valuer ?? throw new ArgumentNullException(nameof(valuer));
 
     /// <inheritdoc cref="IFaker"/>
-    public IFaker Faker { get; } = faker;
+    public IFaker Faker { get; } = faker ?? throw new ArgumentNullException(nameof(faker));
 
     /// <inheritdoc cref="IRandomizer"/>
-    public IRandomizer Randomizer { get; } = randomizer;
+    public IRandomizer Randomizer { get; } =
+        randomizer ?? throw new ArgumentNullException(nameof(randomizer));
 
     /// <inheritdoc cref="IExtractor"/>
-    public IExtractor Extractor { get; } = extractor;
+    public IExtractor Extractor { get; } =
+        extractor ?? throw new ArgumentNullException(nameof(extractor));
 
     /// <inheritdoc cref="IMutator"/>
-    public IMutator Mutator { get; } = mutator;
+    public IMutator Mutator { get; } = mutator ?? throw new ArgumentNullException(nameof(mutator));
 
     /// <inheritdoc cref="IAsserter"/>
-    public IAsserter Asserter { get; } = asserter;
+    public IAsserter Asserter { get; } =
+        asserter ?? throw new ArgumentNullException(nameof(asserter));
 
     /// <inheritdoc cref="IDuplicator"/>
-    public IDuplicator Duplicator { get; } = duplicator;
+    public IDuplicator Duplicator { get; } =
+        duplicator ?? throw new ArgumentNullException(nameof(duplicator));
 
     /// <inheritdoc cref="IRunner"/>
-    public IRunner Runner { get; } = runner;
+    public IRunner Runner { get; } = runner ?? throw new ArgumentNullException(nameof(runner));
 
     /// <inheritdoc cref="ITester"/>
-    public ITester Tester { get; } = tester;
+    public ITester Tester { get; } = tester ?? throw new ArgumentNullException(nameof(tester));
 }

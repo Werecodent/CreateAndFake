@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using CreateAndFake.RandomizerTool.Engine;
 using static System.TimeZoneInfo;
@@ -25,6 +26,13 @@ internal static class SystemCreateHandlers
             .SelectMany(d => new[] { d.DaylightTransitionStart, d.DaylightTransitionEnd }),
     ];
 
+    private static readonly ECCurve[] _SupportedECDsaCurves =
+    [
+        ECCurve.NamedCurves.nistP256,
+        ECCurve.NamedCurves.nistP384,
+        ECCurve.NamedCurves.nistP521,
+    ];
+
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
@@ -34,6 +42,9 @@ internal static class SystemCreateHandlers
         new FactoryCreateHandler<Guid>(rand => new Guid(rand.Options.Gen.NextBytes(16))),
         new FactoryCreateHandler<StringBuilder>(rand => new StringBuilder(rand.Create<string>())),
         new FactoryCreateHandler<NumberFormatInfo>(rand => rand.Create<CultureInfo>().NumberFormat),
+        new FactoryCreateHandler<ECDsa>(rand =>
+            ECDsa.Create(rand.Options.Gen.NextItem(_SupportedECDsaCurves))
+        ),
         new FactoryCreateHandler<TimeZoneInfo>(rand =>
             rand.Options.Gen.NextItem(_PossibleTimeZoneInfos)
         ),

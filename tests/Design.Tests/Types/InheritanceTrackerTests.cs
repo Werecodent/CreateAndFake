@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Types;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool;
@@ -72,13 +73,13 @@ public static class InheritanceTrackerTests
     }
 
     [Fact]
-    internal static void FindLocalSubclasses_SelfExcluded()
+    internal static void FindLocalSubclasses_SelfIncluded()
     {
         InheritanceTracker
-            .For<IValuerEquatable>()
+            .For<ValueComparer>()
             .FindLocalSubclasses()
             .Assert()
-            .ContainsNot(typeof(IValuerEquatable));
+            .Contains(typeof(ValueComparer));
     }
 
     [Fact]
@@ -92,12 +93,12 @@ public static class InheritanceTrackerTests
     }
 
     [Fact]
-    internal static void FindLoadedSubclasses_SelfExcluded()
+    internal static void FindLoadedSubclasses_SelfIncluded()
     {
         InheritanceTracker
-            .For<IValuerEquatable>()
+            .For<ValueComparer>()
             .FindLoadedSubclasses()
             .Assert()
-            .ContainsNot(typeof(IValuerEquatable));
+            .Contains(typeof(ValueComparer));
     }
 }

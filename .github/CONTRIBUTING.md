@@ -8,7 +8,9 @@ Make sure to refer to and follow the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Quality Requirements
 
+* No AI-generated LLM code contributions.
 * No external dependencies.
+* Digitally signed (see DCO below).
 * 100% test coverage.
 * Proper comments.
 * Updated documentation.
@@ -17,14 +19,20 @@ Make sure to refer to and follow the [code of conduct](CODE_OF_CONDUCT.md).
 
 Pull requests will be reviewed thoroughly to maintain project quality.
 
-## Windows Environment Recommended Setup
+Note the ban on LLM-generated code. Developers do not have the right to submit LLM-generated code because that code can be incompatibly copyrighted or licensed elsewhere. Review the Developer Certificate of Origin adherence requirements below.
 
-1) Install [VS Community](https://visualstudio.microsoft.com/vs/community/).
-2) Clone the repository locally.
-3) To see build options, run from cmd prompt: "./build/run.cmd --help"
-4) Verify project state by running from cmd prompt: "./build/run.cmd test"
+## Mac Environment Recommended Setup
 
-May optionally use VS Code installs from other setups instead.
+1) Install Command Line Developer Tools via the Terminal:
+    A) Check if installed: ‘xcode-select -p’
+    B) If not, run: ‘code-select —install’
+    C) Verify git works: ‘git —version’
+2) Install VS Code: https://code.visualstudio.com/download
+3) Clone the repository in the editor, then:
+    A) Install all recommended extensions for the project.
+    B) Follow all prompts for signing in/downloads.
+    C) To see build options, run from terminal: "./build/run.sh --help"
+    D) Verify project state by running from terminal: "./build/run.sh test"
 
 ## Linux Environment Recommended Setup
 
@@ -32,34 +40,20 @@ May optionally use VS Code installs from other setups instead.
     A) [.NET frameworks](https://dotnet.microsoft.com/download/)
     B) [Mono](https://www.mono-project.com/download/stable/#download-lin/)
     C) [VS Code](https://code.visualstudio.com/download/)
-2) Install VS Code extensions:
-    A) C# Dev Kit
-    B) EditorConfig for VS Code
-    C) Code Spell Checker
-    D) GitHub Pull Request and Issues
-    E) GitHub Actions
-3) Clone the repository in the editor, then:
-    A) Run from terminal: "chmod +x ./build/run.sh"
-    B) To see build options, run from terminal: "./build/run.sh --help"
-    C) Verify project state by running from terminal: "./build/run.sh test"
+2) Clone the repository in the editor, then:
+    A) Install all recommended extensions for the project.
+    B) Run from terminal: "chmod +x ./build/run.sh"
+    C) To see build options, run from terminal: "./build/run.sh --help"
+    D) Verify project state by running from terminal: "./build/run.sh test"
 
-## Mac Dev Environment Recommended Setup
+## Windows Environment Optional Setup
 
-1) Install Command Line Developer Tools via the Terminal:
-    A) Check if installed: ‘xcode-select -p’
-    B) If not, run: ‘code-select —install’
-    C) Verify git works: ‘git —version’
-2) Install VS Code: https://code.visualstudio.com/download
-3) Install VS Code extensions:
-    A) C# Dev Kit
-    B) EditorConfig for VS Code
-    C) Code Spell Checker
-    D) GitHub Pull Request and Issues
-    E) GitHub Actions
-4) Clone the repository in the editor, then:
-    A) Follow all prompts for signing in/downloads.
-    B) To see build options, run from terminal: "./build/run.sh --help"
-    C) Verify project state by running from terminal: "./build/run.sh test"
+VS Code is still recommended (see above setups), but VS Community may be utilized instead:
+
+1) Install [VS Community](https://visualstudio.microsoft.com/vs/community/).
+2) Clone the repository locally.
+3) To see build options, run from cmd prompt: "./build/run.cmd --help"
+4) Verify project state by running from cmd prompt: "./build/run.cmd test"
 
 # Git & GPG Quick Setup Example
 

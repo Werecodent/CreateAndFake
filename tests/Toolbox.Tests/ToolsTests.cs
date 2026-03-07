@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Extensions;
@@ -11,11 +12,9 @@ using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.Samples.SingleValue;
 using CreateAndFake.TesterTool;
 using CreateAndFake.ValuerTool;
 using CreateAndFake.ValuerTool.Engine;
-using Xunit.Internal;
 
 namespace CreateAndFake.Tests;
 
@@ -81,36 +80,38 @@ public static class ToolsTests
         Tools.Valuer.GetHashCode(dupe).Assert().Is(Tools.Valuer.GetHashCode(sample));
     }
 
-    /* [Fact, ExcludeFromCodeCoverage] */
+    // [Fact]
     internal static Task Tools_AllCreateAndFakeTypesWork()
     {
-        Type[] ignore =
-        [
-            typeof(Arg),
-            typeof(Fake<>),
-            typeof(VoidType),
-            typeof(VoidReturn),
-            typeof(AnyGeneric),
-            typeof(Injected<>),
-            typeof(Behavior<>),
-            typeof(FactoryCreateHandler<>),
-            typeof(FactoryCopyHandler<>),
-            typeof(ToolSet),
-            typeof(Tools),
-            typeof(BaseGuarder),
-            typeof(IValuerAsyncComparable),
-            typeof(DifferenceHintAsyncResult),
-        ];
-
         return Tools.Tester.VerifyToolSetSupportAsync(
             typeof(Tools)
                 .Assembly.GetTypes()
                 .Where(t => !(t.IsAbstract && t.IsSealed))
                 .Where(t => !t.Inherits<Attribute>())
-                .Where(t => !ignore.Contains(t))
                 .Where(t => !t.IsNestedPrivate)
                 .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute))),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    IntegrityIgnorableTypes =
+                    [
+                        typeof(Arg),
+                        typeof(Fake<>),
+                        typeof(VoidType),
+                        typeof(VoidReturn),
+                        typeof(AnyGeneric),
+                        typeof(Injected<>),
+                        typeof(Behavior<>),
+                        typeof(FactoryCreateHandler<>),
+                        typeof(FactoryCopyHandler<>),
+                        typeof(ToolSet),
+                        typeof(Tools),
+                        typeof(BaseGuarder),
+                        typeof(IValuerAsyncComparable),
+                        typeof(DifferenceHintAsyncResult),
+                    ],
+                }
         );
     }
 
@@ -123,11 +124,11 @@ public static class ToolsTests
         );
     }
 
-    // [Fact]
+    [Fact]
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(BaseHolder<>)],
+            [typeof(ImmutableSortedDictionary<,>)],
             TestContext.Current.CancellationToken
         );
     }
