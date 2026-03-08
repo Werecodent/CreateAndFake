@@ -16,9 +16,9 @@ public static class MutatorChainerTests
     [Fact]
     internal static Task MutatorChainer_PassthroughWithNoExceptions()
     {
-        return Tools.Tester.PassthroughWithNoExceptionsAsync(
-            new MutatorChainer(Tools.Mutator.Options, new MutatorEngine()),
-            TestContext.Current.CancellationToken
+        return Tools.Tester.PassthroughWithNoExceptionsAsync<MutatorChainer>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] }
         );
     }
 

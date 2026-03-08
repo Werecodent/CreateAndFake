@@ -17,6 +17,7 @@ public sealed class HandlerCompareHint : CompareHint
     [
         new DefaultEqualityCompareHandler(typeof(string)),
         new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
+        new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
         new ConvertCompareHandler<CancellationToken>((s, _) => s.IsCancellationRequested),
         new ConvertCompareHandler<StringDictionary>(
             (dict, _) =>

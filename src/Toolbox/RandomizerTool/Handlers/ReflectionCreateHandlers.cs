@@ -37,6 +37,7 @@ internal static class ReflectionCreateHandlers
         .SelectMany(t => t.GetMethods())
         .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+        .Where(m => m.ReflectedType != typeof(string) || m.Name != nameof(string.Format))
         .ToFrozenSet();
 
     private static readonly FrozenSet<PropertyInfo> _Properties = _PossibleTypes
@@ -56,6 +57,9 @@ internal static class ReflectionCreateHandlers
         .SelectMany(t => t.GetMethods())
         .SelectMany(m => m.GetParameters())
         .ToFrozenSet();
+
+    internal static IEnumerable<MethodBase> PossibleMethods =>
+        Enumerable.Empty<MethodBase>().Concat(_Constructors).Concat(_Methods).Distinct();
 
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =

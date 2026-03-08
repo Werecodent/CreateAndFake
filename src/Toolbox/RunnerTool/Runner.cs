@@ -2,9 +2,12 @@ using System.Collections.Specialized;
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool.Attributes;
 
 namespace CreateAndFake.RunnerTool;
@@ -27,6 +30,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
     {
         ArgumentGuard.ThrowIfNull(instance);
 
+        RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
         List<RunResult> results = [];
         foreach (
             MethodInfo method in instance
@@ -37,7 +42,12 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             // Sequentially executed to prevent concurrency issues; do not attempt to parallelize.
             results.Add(
-                await RunAsync(instance, method, canceler, optionConfiguration)
+                await RunAsync(
+                        instance,
+                        GenericResolver.OfConcrete(method, localOptions.Randomizer),
+                        canceler,
+                        (optionConfiguration != null) ? _ => localOptions : null
+                    )
                     .ConfigureAwait(false)
             );
         }
@@ -52,10 +62,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerMod? optionConfiguration = null
     )
     {
-        MethodCallWrapper data =
-            optionConfiguration != null
-                ? CreateFor(method, canceler, optionConfiguration)
-                : CreateFor(method, canceler);
+        MethodCallWrapper data = CreateFor(method, optionConfiguration, canceler);
 
         return RunAsync(instance, data, canceler, optionConfiguration);
     }
@@ -154,12 +161,20 @@ public sealed class Runner(RunnerOptions options) : IRunner
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(
         MethodBase method,
-        RunnerMod optionConfiguration,
+        RunnerMod? optionConfiguration,
         CancellationToken canceler,
         params IEnumerable<object?>? values
     )
     {
         ArgumentGuard.ThrowIfNull(method);
+
+        if (method.IsGenericMethodDefinition)
+        {
+            throw new UnsupportedException(
+                $"Method '{TypeDescriber.BuildTestName(method)}' must have "
+                    + "generics specified before data can be populated for it."
+            );
+        }
 
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 

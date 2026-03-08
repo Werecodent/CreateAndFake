@@ -16,6 +16,7 @@ public static class AssertTypeTests
                 typeof(AssertException),
                 typeof(ToolException),
                 typeof(InvalidCastException),
+                typeof(UnsupportedException),
             ],
         };
 
@@ -46,7 +47,6 @@ public static class AssertTypeTests
         );
         results
             .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not Exception)
             .Where(r => r.Result is not AssertChainer<AssertType>)
             .Select(r => r.Method.Name)
             .Assert()

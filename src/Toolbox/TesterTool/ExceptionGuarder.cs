@@ -34,10 +34,16 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         ArgumentGuard.ThrowIfNull(testOrigin);
         ArgumentGuard.ThrowIfNull(taskException);
 
-        Options.Asserter.Fail(
-            taskException,
-            $"Exception encountered on method '{testOrigin.Name}'."
-        );
+        if (
+            !Options.IgnorableExceptions.Contains(taskException.GetType())
+            && !Options.IgnoreAllExceptions
+        )
+        {
+            Options.Asserter.Fail(
+                taskException,
+                $"Exception encountered on method '{testOrigin.Name}'."
+            );
+        }
         return true;
     }
 }

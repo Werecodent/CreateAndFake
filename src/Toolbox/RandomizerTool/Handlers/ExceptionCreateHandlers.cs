@@ -73,7 +73,7 @@ internal static class ExceptionCreateHandlers
     private sealed class ExceptionCreateHandler(ConstructorInfo constructor) : ICreateHandler
     {
         /// <inheritdoc/>
-        public Type? SupportedType => constructor.DeclaringType;
+        public Type? SupportedType => constructor.ReflectedType;
 
         /// <inheritdoc/>
         public object? CreateSupported(IRandomizerChainer randomizer)

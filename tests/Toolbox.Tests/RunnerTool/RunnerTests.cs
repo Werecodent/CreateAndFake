@@ -13,7 +13,12 @@ public static class RunnerTests
         opt with
         {
             InjectionValues = [GetGeneratableMethod()],
-            IgnorableExceptions = [typeof(ArgumentOutOfRangeException), typeof(ToolException)],
+            IgnorableExceptions =
+            [
+                typeof(ArgumentOutOfRangeException),
+                typeof(ToolException),
+                typeof(UnsupportedException),
+            ],
         };
 
     [Fact]
