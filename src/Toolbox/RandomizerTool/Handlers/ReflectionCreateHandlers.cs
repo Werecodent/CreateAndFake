@@ -19,7 +19,6 @@ internal static class ReflectionCreateHandlers
         typeof(double),
         typeof(string),
         typeof(object),
-        typeof(DateTime),
         typeof(List<double>),
         typeof(ISet<string>),
         typeof(AggregateException),
