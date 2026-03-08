@@ -65,7 +65,7 @@ internal static class SystemCreateHandlers
         )),
         new FactoryCreateHandler<UriBuilder>(rand => new UriBuilder(
             rand.Create<bool>() ? "http" : "https",
-            rand.Create<string>(),
+            rand.Create<string>().ToLowerInvariant(),
             rand.Options.Gen.Next(-1, 65535)
         )),
     ];

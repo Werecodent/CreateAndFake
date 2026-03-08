@@ -31,7 +31,6 @@ public abstract class CopyHintTestBase<T>(
                 typeof(SerializationException),
                 typeof(PlatformNotSupportedException),
                 typeof(NotSupportedException),
-                typeof(PlatformNotSupportedException),
             ],
         };
 
