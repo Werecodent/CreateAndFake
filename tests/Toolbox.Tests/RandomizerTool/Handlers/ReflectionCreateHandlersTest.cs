@@ -18,7 +18,6 @@ public static class ReflectionCreateHandlersTests
     [Fact]
     internal static async Task PossibleMethods_AllSupported()
     {
-        Dictionary<string, Exception> failures = [];
         foreach (MethodBase method in ReflectionCreateHandlers.PossibleMethods)
         {
             try
@@ -38,17 +37,7 @@ public static class ReflectionCreateHandlersTests
                     )
                 );
             }
-            catch (Exception e)
-            {
-                if (e is not UnsupportedException)
-                {
-                    failures.TryAdd(
-                        $"{method} - {TypeDescriber.ExpandedName(method.ReflectedType)}",
-                        e
-                    );
-                }
-            }
+            catch (UnsupportedException) { }
         }
-        failures.Assert().IsEmpty();
     }
 }
