@@ -9,7 +9,7 @@ public static class VoidTypeTests
     [Fact]
     internal static void VoidType_PrivateConstructor()
     {
-        ConstructorInfo constructor = TypeDescriber.GetAllConstructors<VoidType>().Single();
+        ConstructorInfo constructor = InheritanceTracker.For<VoidType>().AllConstructors.Single();
 
         constructor.IsPrivate.Assert().Is(true);
         constructor.Invoke([]).Assert().Pass();

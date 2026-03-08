@@ -154,14 +154,16 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     {
         return (
             onlyPublic
-                ? TypeDescriber.GetPublicProperties(type)
-                : TypeDescriber.GetAllProperties(type)
+                ? InheritanceTracker.For(type).GetPublicProperties()
+                : InheritanceTracker.For(type).AllProperties
         ).Where(p => p.CanRead);
     }
 
     private IEnumerable<FieldInfo> GetAccessibleFields(Type? type)
     {
-        return onlyPublic ? TypeDescriber.GetPublicFields(type) : TypeDescriber.GetAllFields(type);
+        return onlyPublic
+            ? InheritanceTracker.For(type).GetPublicFields()
+            : InheritanceTracker.For(type).AllFields;
     }
 }
 

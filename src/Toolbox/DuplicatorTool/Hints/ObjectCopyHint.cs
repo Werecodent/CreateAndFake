@@ -38,8 +38,9 @@ public sealed class ObjectCopyHint : CopyHint
         duplicator.AddToHistory(source, dupe);
 
         foreach (
-            FieldInfo field in TypeDescriber
-                .GetPublicFields(source.GetType())
+            FieldInfo field in InheritanceTracker
+                .For(source.GetType())
+                .GetPublicFields()
                 .Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
@@ -48,8 +49,9 @@ public sealed class ObjectCopyHint : CopyHint
         }
 
         foreach (
-            PropertyInfo property in TypeDescriber
-                .GetPublicProperties(source.GetType())
+            PropertyInfo property in InheritanceTracker
+                .For(source.GetType())
+                .GetPublicProperties()
                 .Where(p => p.CanRead && p.CanWrite)
                 .Where(p => p.GetIndexParameters().Length == 0)
         )
@@ -83,13 +85,14 @@ public sealed class ObjectCopyHint : CopyHint
         }
         else
         {
-            PropertyInfo[] props = [.. TypeDescriber.GetAllProperties(type)];
-            FieldInfo[] fields = [.. TypeDescriber.GetAllFields(type)];
+            InheritanceTracker describer = InheritanceTracker.For(type);
 
             return type.GetConstructors(_MemberFlags)
                 .Where(c => !c.IsPrivate)
                 .OrderByDescending(c => c.GetParameters().Length)
-                .Select(c => TryCreate(source, duplicator, c, props, fields))
+                .Select(c =>
+                    TryCreate(source, duplicator, c, describer.AllProperties, describer.AllFields)
+                )
                 .FirstOrDefault(o => o != null);
         }
     }

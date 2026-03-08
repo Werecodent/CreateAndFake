@@ -55,7 +55,7 @@ public static class RunnerTests
     {
         Tools
             .Runner.CreateFor(
-                TypeDescriber.GetPublicConstructors<InjectMockSample>().Single(),
+                InheritanceTracker.For<InjectMockSample>().GetPublicConstructors().Single(),
                 TestContext.Current.CancellationToken,
                 fake,
                 fake2

@@ -10,8 +10,9 @@ public static class LimiterBaseTests
     internal static void Limiter_DefaultsConvertible()
     {
         foreach (
-            PropertyInfo info in TypeDescriber
-                .GetPublicProperties(typeof(Limiter))
+            PropertyInfo info in InheritanceTracker
+                .For<Limiter>()
+                .GetPublicProperties()
                 .Where(p => p.PropertyType == typeof(Limiter))
         )
         {

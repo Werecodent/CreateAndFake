@@ -195,8 +195,9 @@ public sealed class Faker(FakerOptions options) : IFaker
     /// <returns>The constructor best fitted to the types.</returns>
     private static ConstructorInfo? FindBestConstructor<T>(Type[] startingTypes)
     {
-        return TypeDescriber
-            .GetPublicConstructors<T>()
+        return InheritanceTracker
+            .For<T>()
+            .GetPublicConstructors()
             .GroupBy(c =>
                 c.GetParameters().Count(p => startingTypes.Any(t => t.Inherits(p.ParameterType)))
             )

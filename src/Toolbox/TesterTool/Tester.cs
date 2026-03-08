@@ -549,9 +549,9 @@ public class Tester(TesterOptions options) : ITester
                 .ConfigureAwait(false);
 
             if (
-                TypeDescriber.IsMutable(type)
-                || TypeDescriber.HasInitializableOnlyState(type)
-                || type.IsAbstract
+                type.IsAbstract
+                || InheritanceTracker.For(type).IsMutable()
+                || InheritanceTracker.For(type).HasInitializableOnlyState()
                 || (
                     !type.IsSealed
                     && InheritanceTracker.For(type).FindLoadedSubclasses().Skip(1).Any()

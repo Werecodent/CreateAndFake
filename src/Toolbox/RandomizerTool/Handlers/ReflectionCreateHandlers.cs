@@ -31,7 +31,7 @@ internal static class ReflectionCreateHandlers
 
     private static readonly FrozenSet<ConstructorInfo> _Constructors = _PossibleTypes
         .Where(t => t != typeof(string))
-        .SelectMany(TypeDescriber.GetPublicConstructors)
+        .SelectMany(t => InheritanceTracker.For(t).GetPublicConstructors())
         .ToFrozenSet();
 
     private static readonly FrozenSet<MethodInfo> _Methods = _PossibleTypes

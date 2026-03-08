@@ -41,10 +41,9 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             PropertyInfo prop in chainer.Options.Gen.NextSequence(
-                TypeDescriber
-                    .GetPublicProperties(type)
-                    .Where(p => p.CanWrite && p.CanRead)
-                    .Where(p => p.GetGetMethod() != null)
+                InheritanceTracker
+                    .For(type)
+                    .GetReadableMutableProperties()
                     .Where(p =>
                         p.GetSetMethod()
                             ?.ReturnParameter.GetRequiredCustomModifiers()
@@ -73,7 +72,7 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             FieldInfo field in chainer.Options.Gen.NextSequence(
-                TypeDescriber.GetPublicFields(type).Where(f => !f.IsInitOnly && !f.IsLiteral)
+                InheritanceTracker.For(type).GetMutableFields()
             )
         )
         {

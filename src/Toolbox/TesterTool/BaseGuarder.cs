@@ -25,8 +25,8 @@ internal abstract class BaseGuarder(TesterOptions options)
         ArgumentGuard.ThrowIfNull(type);
 
         return Options.IncludeInternals
-            ? TypeDescriber.GetVisibleConstructors(type)
-            : TypeDescriber.GetPublicConstructors(type);
+            ? InheritanceTracker.For(type).GetVisibleConstructors()
+            : InheritanceTracker.For(type).GetPublicConstructors();
     }
 
     /// <summary>Gets all testable methods on a type.</summary>

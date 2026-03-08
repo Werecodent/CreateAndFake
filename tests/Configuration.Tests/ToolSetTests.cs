@@ -98,8 +98,9 @@ public static class ToolSetTests
     {
         Dictionary<PropertyInfo, object> invalids = [];
         foreach (
-            PropertyInfo prop in TypeDescriber
-                .GetPublicProperties<T>()
+            PropertyInfo prop in InheritanceTracker
+                .For<T>()
+                .GetPublicProperties()
                 .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
         )
         {
@@ -133,8 +134,9 @@ public static class ToolSetTests
                 .GetChildren()
                 .Select(c => c.Key)
                 .Except(
-                    TypeDescriber
-                        .GetPublicProperties<T>()
+                    InheritanceTracker
+                        .For<T>()
+                        .GetPublicProperties()
                         .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
                         .Select(p => p.Name)
                 ),
