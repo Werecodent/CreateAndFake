@@ -21,6 +21,7 @@ internal static class SystemCopyHandlers
         new RefCopyHandler(typeof(IntPtr)),
         new RefCopyHandler(typeof(string)),
         new RefCopyHandler(typeof(object)),
+        new FactoryCopyHandler<UriBuilder>((source, _) => new UriBuilder(source.Uri)),
         new FactoryCopyHandler<DateTimeFormatInfo>(
             (source, _) => source.IsReadOnly ? source : (DateTimeFormatInfo)source.Clone()
         ),
