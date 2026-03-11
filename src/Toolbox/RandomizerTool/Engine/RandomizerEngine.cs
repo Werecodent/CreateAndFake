@@ -27,7 +27,7 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(type)}' not supported by the randomizer. "
+                $"Type '{TypeHelper.ExpandedName(type)}' not supported by the randomizer. "
                     + "Create a hint to generate the type."
             );
         }

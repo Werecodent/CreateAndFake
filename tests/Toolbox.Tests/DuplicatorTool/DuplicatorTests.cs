@@ -91,6 +91,6 @@ public static class DuplicatorTests
             .Assert(d => d.Copy(instance))
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(TypeDescriber.ExpandedName(instance));
+            .Contains(TypeHelper.ExpandedName(instance));
     }
 }

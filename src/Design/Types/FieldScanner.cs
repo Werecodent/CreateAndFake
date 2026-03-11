@@ -10,8 +10,7 @@ public sealed class FieldScanner(Type? type) : MemberScanner<FieldInfo>(type)
     public override IEnumerable<FieldInfo> All { get; } = FindAllFields(type).ToFrozenSet();
 
     /// <inheritdoc/>
-    public override IEnumerable<FieldInfo> OnlyPublic =>
-        SupportedType?.GetFields(BindingFlags.Instance | BindingFlags.Public) ?? [];
+    public override IEnumerable<FieldInfo> OnlyPublic => All.Where(f => f.IsPublic);
 
     /// <inheritdoc/>
     public override IEnumerable<FieldInfo> PublicOrInternal =>

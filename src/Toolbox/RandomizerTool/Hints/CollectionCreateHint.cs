@@ -68,9 +68,9 @@ public sealed class CollectionCreateHint : CreateHint
     /// <summary>Collections that the hint can create.</summary>
     internal static IEnumerable<Type> PotentialCollections { get; } =
         _Collections
-            .Keys.SelectMany(t => InheritanceTracker.For(t).InheritedTypes)
+            .Keys.SelectMany(t => TypeDescriber.For(t).InheritedTypes)
             .Where(t => t.Inherits(typeof(IEnumerable<>)))
-            .Select(t => TypeDescriber.AsGenericBase(t) ?? t)
+            .Select(t => TypeHelper.AsGenericBase(t) ?? t)
             .Distinct()
             .ToFrozenSet()!;
 
@@ -89,14 +89,14 @@ public sealed class CollectionCreateHint : CreateHint
             return CreateHintResult.None;
         }
 
-        Type? itemType = TypeDescriber
+        Type? itemType = TypeHelper
             .AsConcreteType(type, typeof(IEnumerable<>))
             ?.GetGenericArguments()[0];
 
         if (itemType != null && FindMatches(type, itemType).Any())
         {
             return randomizer.Options.CollectionAttempts.Retry(
-                $"Generating '{TypeDescriber.ExpandedName(type)}' collection.",
+                $"Generating '{TypeHelper.ExpandedName(type)}' collection.",
                 () => new CreateHintResult(Create(type, itemType, randomizer))
             );
         }

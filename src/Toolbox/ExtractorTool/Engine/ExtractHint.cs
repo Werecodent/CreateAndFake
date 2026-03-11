@@ -17,6 +17,6 @@ public abstract class ExtractHint : IExtractHint
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

@@ -21,7 +21,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        Type? genericType = TypeDescriber.AsConcreteType(type, typeof(IAsyncEnumerable<>));
+        Type? genericType = TypeHelper.AsConcreteType(type, typeof(IAsyncEnumerable<>));
         if (genericType != null)
         {
             Type itemType = genericType.GetGenericArguments().Single();

@@ -132,7 +132,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     /// </returns>
     private static object TryDescribe(object item)
     {
-        return (item is Type type) ? TypeDescriber.ExpandedName(type) : item;
+        return (item is Type type) ? TypeHelper.ExpandedName(type) : item;
     }
 
     /// <inheritdoc/>

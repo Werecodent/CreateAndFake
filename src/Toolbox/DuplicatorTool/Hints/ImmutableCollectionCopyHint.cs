@@ -61,7 +61,7 @@ public class ImmutableCollectionCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source);
 
         Type type = source.GetType();
-        Type? genericType = TypeDescriber.AsGenericBase(type);
+        Type? genericType = TypeHelper.AsGenericBase(type);
 
         if (genericType != null && _Collections.TryGetValue(genericType, out MethodInfo? match))
         {

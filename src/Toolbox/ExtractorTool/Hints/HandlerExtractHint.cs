@@ -16,7 +16,7 @@ public sealed class HandlerExtractHint : IExtractHint
         new SelfExtractHandler(typeof(string)),
         new SelfExtractHandler(typeof(StringBuilder)),
         new SelfExtractHandler(typeof(CancellationToken)),
-        new SelfExtractHandler(typeof(InheritanceTracker)),
+        new SelfExtractHandler(typeof(TypeDescriber)),
     ];
 
     /// <summary>All handlers by their supported type.</summary>
@@ -54,6 +54,6 @@ public sealed class HandlerExtractHint : IExtractHint
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

@@ -34,8 +34,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' "
-                    + $"with an instance of type '{TypeDescriber.ExpandedName(actual)}'.",
+                $"Error comparing instance of type '{TypeHelper.ExpandedName(expected)}' "
+                    + $"with an instance of type '{TypeHelper.ExpandedName(actual)}'.",
                 e
             );
         }
@@ -47,7 +47,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. "
+                $"Type '{TypeHelper.ExpandedName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type."
             );
         }
@@ -85,8 +85,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}' "
-                    + $"with an instance of type '{TypeDescriber.ExpandedName(actual)}'.",
+                $"Error comparing instance of type '{TypeHelper.ExpandedName(expected)}' "
+                    + $"with an instance of type '{TypeHelper.ExpandedName(actual)}'.",
                 e
             );
         }
@@ -98,7 +98,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(expected)}' not supported by the valuer. "
+                $"Type '{TypeHelper.ExpandedName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -123,7 +123,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{TypeHelper.ExpandedName(item)}'.",
                 e
             );
         }
@@ -135,7 +135,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer. "
+                $"Type '{TypeHelper.ExpandedName(item)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -164,7 +164,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{TypeHelper.ExpandedName(item)}'.",
                 e
             );
         }
@@ -176,7 +176,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(item)}' not supported by the valuer. "
+                $"Type '{TypeHelper.ExpandedName(item)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -204,8 +204,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
                 catch (Exception e)
                 {
                     throw new ToolException(
-                        $"Error comparing instance of type '{TypeDescriber.ExpandedName(expected)}'"
-                            + $" with an instance of type '{TypeDescriber.ExpandedName(actual)}'.",
+                        $"Error comparing instance of type '{TypeHelper.ExpandedName(expected)}'"
+                            + $" with an instance of type '{TypeHelper.ExpandedName(actual)}'.",
                         e
                     );
                 }
@@ -247,8 +247,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
                 {
                     throw new ToolException(
                         "Error comparing instance of type "
-                            + $"'{TypeDescriber.ExpandedName(expected)}' with an "
-                            + $"instance of type '{TypeDescriber.ExpandedName(actual)}'.",
+                            + $"'{TypeHelper.ExpandedName(expected)}' with an "
+                            + $"instance of type '{TypeHelper.ExpandedName(actual)}'.",
                         e
                     );
                 }
@@ -273,7 +273,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{TypeDescriber.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{TypeHelper.ExpandedName(item)}'.",
                 e
             );
         }

@@ -80,6 +80,6 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{nameof(MethodCallWrapper)}({TypeDescriber.BuildTestName(method)})";
+        return $"{nameof(MethodCallWrapper)}({TypeHelper.BuildTestName(method)})";
     }
 }

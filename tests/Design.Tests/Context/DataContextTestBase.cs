@@ -24,7 +24,7 @@ public abstract class DataContextTestBase<T>
     [Theory, RandomData]
     public void DataContext_MaintainsValues(T testInstance)
     {
-        foreach (PropertyInfo prop in InheritanceTracker.For<T>().Properties.All)
+        foreach (PropertyInfo prop in TypeDescriber.For<T>().Properties.All)
         {
             prop.GetValue(testInstance).Assert().Is(prop.GetValue(testInstance));
         }

@@ -254,7 +254,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{TypeDescriber.ExpandedName(GetType())}({Identifier})";
+        return $"{TypeHelper.ExpandedName(GetType())}({Identifier})";
     }
 }
 

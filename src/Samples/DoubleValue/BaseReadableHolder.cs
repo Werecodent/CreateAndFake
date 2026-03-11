@@ -14,6 +14,6 @@ public abstract class BaseReadableHolder<T, TOther>(T value, TOther otherValue)
 
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

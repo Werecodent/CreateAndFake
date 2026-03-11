@@ -120,7 +120,7 @@ public class Tester(TesterOptions options) : ITester
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)
         {
             throw new SerializationException(
-                $"Ran into problem trying to serialize type '{TypeDescriber.ExpandedName(type)}'.",
+                $"Ran into problem trying to serialize type '{TypeHelper.ExpandedName(type)}'.",
                 e
             );
         }
@@ -128,7 +128,7 @@ public class Tester(TesterOptions options) : ITester
         localOptions.Asserter.Is(
             result,
             instance,
-            $"Instance of type '{TypeDescriber.ExpandedName(type)}' did not deserialize with the same values."
+            $"Instance of type '{TypeHelper.ExpandedName(type)}' did not deserialize with the same values."
         );
     }
 
@@ -377,10 +377,10 @@ public class Tester(TesterOptions options) : ITester
         FrozenSet<string> testClasses = testAssembly.GetTypes().Select(t => t.Name).ToFrozenSet();
 
         localOptions.Asserter.IsEmpty(
-            TypeDescriber
+            TypeHelper
                 .FindLoadedClassTypes(codeAssembly)
                 .Where(t => !t.IsAbstract || t.IsSealed)
-                .Where(t => TypeDescriber.IsVisible(t, testAssembly.GetName()))
+                .Where(t => TypeHelper.IsVisible(t, testAssembly.GetName()))
                 .Where(t =>
                 {
                     IEnumerable<string> possibleNames;
@@ -424,7 +424,7 @@ public class Tester(TesterOptions options) : ITester
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        IEnumerable<MethodInfo> testMethods = TypeDescriber
+        IEnumerable<MethodInfo> testMethods = TypeHelper
             .FindLoadedTypes(testAssembly)
             .Where(t => !t.IsGenericType)
             .SelectMany(t =>
@@ -536,8 +536,8 @@ public class Tester(TesterOptions options) : ITester
 
             string failMessage =
                 "Behavior did not work for type '"
-                + TypeDescriber.ExpandedName(type)
-                + $"' randomized to '{TypeDescriber.ExpandedName(original)}'.";
+                + TypeHelper.ExpandedName(type)
+                + $"' randomized to '{TypeHelper.ExpandedName(original)}'.";
 
             await localOptions
                 .Asserter.ValuesEqualAsync(
@@ -550,12 +550,9 @@ public class Tester(TesterOptions options) : ITester
 
             if (
                 type.IsAbstract
-                || InheritanceTracker.For(type).IsMutable()
-                || InheritanceTracker.For(type).HasInitializableOnlyState()
-                || (
-                    !type.IsSealed
-                    && InheritanceTracker.For(type).FindLoadedSubclasses().Skip(1).Any()
-                )
+                || TypeDescriber.For(type).IsMutable()
+                || TypeDescriber.For(type).HasInitializableOnlyState()
+                || (!type.IsSealed && TypeDescriber.For(type).FindLoadedSubclasses().Skip(1).Any())
             )
             {
                 variant = localOptions.Mutator.Variant(type, original);

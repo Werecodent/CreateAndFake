@@ -44,7 +44,7 @@ public static class TypeSupporterTests
     [Fact]
     internal static void GroupBySupportedType_IgnoresNullSupportedType()
     {
-        TypeSupporter.GroupBySupportedType([InheritanceTracker.For(null)]).Assert().IsEmpty();
+        TypeSupporter.GroupBySupportedType([TypeDescriber.For(null)]).Assert().IsEmpty();
     }
 
     [Theory, RandomData]
@@ -65,7 +65,7 @@ public static class TypeSupporterTests
     [Fact]
     internal static void GroupByInheritance_IgnoresNullSupportedType()
     {
-        TypeSupporter.GroupByInheritance([InheritanceTracker.For(null)]).Assert().IsEmpty();
+        TypeSupporter.GroupByInheritance([TypeDescriber.For(null)]).Assert().IsEmpty();
     }
 
     [Theory, RandomData]
@@ -86,6 +86,6 @@ public static class TypeSupporterTests
     [Fact]
     internal static void GroupBySubclasses_IgnoresNullSupportedType()
     {
-        TypeSupporter.GroupBySubclasses([InheritanceTracker.For(null)]).Assert().IsEmpty();
+        TypeSupporter.GroupBySubclasses([TypeDescriber.For(null)]).Assert().IsEmpty();
     }
 }

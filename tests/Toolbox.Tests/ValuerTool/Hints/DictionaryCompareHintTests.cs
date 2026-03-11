@@ -39,7 +39,7 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
             .Assert()
             .IsNotEmpty(
                 "Hint didn't find differences with a modified key on '"
-                    + TypeDescriber.ExpandedName(data)
+                    + TypeHelper.ExpandedName(data)
                     + "'."
             );
     }

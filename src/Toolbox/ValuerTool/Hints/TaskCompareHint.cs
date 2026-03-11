@@ -106,7 +106,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
         {
             canceler.ThrowIfCancellationRequested();
             throw new EngineException(
-                $"Attempting to await the {TypeDescriber.ExpandedName(item)} exceeded the timeout "
+                $"Attempting to await the {TypeHelper.ExpandedName(item)} exceeded the timeout "
                     + $"({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'."
             );
         }
@@ -129,7 +129,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     /// </returns>
     private static bool IsGenericTask(Task item)
     {
-        return TypeDescriber
+        return TypeHelper
                 .AsConcreteType(item.GetType(), typeof(Task<>))
                 ?.GetGenericArguments()
                 .Single()

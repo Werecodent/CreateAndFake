@@ -49,7 +49,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateVariantAttemptLimit.StallUntil(
-                    $"Create variant of type '{TypeDescriber.ExpandedName(type)}'",
+                    $"Create variant of type '{TypeHelper.ExpandedName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isVariantCheck
                 )
@@ -58,9 +58,9 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error creating a variant instance of type '{TypeDescriber.ExpandedName(type)}'. "
+                $"Error creating a variant instance of type '{TypeHelper.ExpandedName(type)}'. "
                     + "Current instance types: "
-                    + string.Join(",", instances.Select(TypeDescriber.ExpandedName)),
+                    + string.Join(",", instances.Select(TypeHelper.ExpandedName)),
                 e
             );
         }
@@ -99,7 +99,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateUniqueAttemptLimit.StallUntil(
-                    $"Create unique of type '{TypeDescriber.ExpandedName(type)}'",
+                    $"Create unique of type '{TypeHelper.ExpandedName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isUniqueCheck
                 )
@@ -108,9 +108,9 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error creating a unique instance of type '{TypeDescriber.ExpandedName(type)}'. "
+                $"Error creating a unique instance of type '{TypeHelper.ExpandedName(type)}'. "
                     + "Current instance types: "
-                    + string.Join(",", instances.Select(TypeDescriber.ExpandedName)),
+                    + string.Join(",", instances.Select(TypeHelper.ExpandedName)),
                 e
             );
         }
@@ -135,7 +135,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error modifying instance of type '{TypeDescriber.ExpandedName(instance)}'.",
+                $"Error modifying instance of type '{TypeHelper.ExpandedName(instance)}'.",
                 e
             );
         }

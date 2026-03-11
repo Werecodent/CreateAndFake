@@ -13,6 +13,6 @@ public class DataSample
 
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

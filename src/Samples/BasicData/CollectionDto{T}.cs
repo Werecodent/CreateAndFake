@@ -23,6 +23,6 @@ public class CollectionDto<T>
 
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

@@ -23,7 +23,7 @@ public sealed class SubclassCreateHint : CreateHint
             return CreateHintResult.None;
         }
 
-        InheritanceTracker inheritance = InheritanceTracker.For(type);
+        TypeDescriber inheritance = TypeDescriber.For(type);
 
         HashSet<Type> foundAlready = [];
         List<Type> subclasses =

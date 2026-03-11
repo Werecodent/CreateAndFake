@@ -11,7 +11,7 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
     /// <summary>All found hints from all loaded assemblies.</summary>
     private static readonly ImmutableArray<THint> _AllHints =
     [
-        .. InheritanceTracker
+        .. TypeDescriber
             .For<THint>()
             .FindLoadedSubclasses()
             .Select(Activator.CreateInstance)
@@ -68,6 +68,6 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

@@ -89,7 +89,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(valueType)}' not supported."
+                $"Type '{TypeHelper.ExpandedName(valueType)}' not supported."
             );
         }
     }
@@ -119,9 +119,7 @@ public abstract class ValueRandom(
         }
         else
         {
-            throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName<T>()}' not supported."
-            );
+            throw new UnsupportedException($"Type '{TypeHelper.ExpandedName<T>()}' not supported.");
         }
     }
 
@@ -149,9 +147,7 @@ public abstract class ValueRandom(
         }
         else
         {
-            throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName<T>()}' not supported."
-            );
+            throw new UnsupportedException($"Type '{TypeHelper.ExpandedName<T>()}' not supported.");
         }
     }
 

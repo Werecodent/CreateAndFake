@@ -15,7 +15,7 @@ namespace CreateAndFake.RandomizerTool;
 public static class GenericResolver
 {
     /// <summary>All possible <see cref="Type"/>s that have default constructors.</summary>
-    private static readonly FrozenSet<Type> _HasDefaultConstructor = InheritanceTracker
+    private static readonly FrozenSet<Type> _HasDefaultConstructor = TypeDescriber
         .For<object>()
         .FindLoadedSubclasses()
         .Where(t => t.IsValueType || t.GetConstructor(Type.EmptyTypes) != null)
@@ -61,7 +61,7 @@ public static class GenericResolver
         {
             return CreateConcreteGenerics(type, randomizer).FirstOrDefault()
                 ?? throw new UnsupportedException(
-                    $"Could not craft generic '{TypeDescriber.ExpandedName(type)}'."
+                    $"Could not craft generic '{TypeHelper.ExpandedName(type)}'."
                 );
         }
         else
@@ -111,7 +111,7 @@ public static class GenericResolver
         if (!type.IsGenericTypeDefinition)
         {
             throw new ArgumentException(
-                $"Type '{TypeDescriber.ExpandedName(type)}' was not a generic type definition.",
+                $"Type '{TypeHelper.ExpandedName(type)}' was not a generic type definition.",
                 nameof(type)
             );
         }
@@ -237,7 +237,7 @@ public static class GenericResolver
         [
             .. type.GetGenericParameterConstraints()
                 .Where(t => t != typeof(ValueType))
-                .Select(t => TypeDescriber.AsGenericBase(t) ?? t),
+                .Select(t => TypeHelper.AsGenericBase(t) ?? t),
         ];
         if (constraints.Length != 0)
         {
@@ -281,7 +281,7 @@ public static class GenericResolver
         }
         else
         {
-            return InheritanceTracker.For(type).FindLoadedSubclasses();
+            return TypeDescriber.For(type).FindLoadedSubclasses();
         }
     }
 }

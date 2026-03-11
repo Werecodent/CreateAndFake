@@ -52,7 +52,7 @@ public static class TypeSupporter
         foreach (T handler in typeHandlers ?? [])
         {
             foreach (
-                Type type in InheritanceTracker
+                Type type in TypeDescriber
                     .For(handler.SupportedType)
                     .InheritedTypes.Where(t => !t.IsGenericTypeDefinition)
                     .Where(t => !t.Inherits<Delegate>() || t == handler.SupportedType)
@@ -90,9 +90,7 @@ public static class TypeSupporter
         Dictionary<Type, IList<T>> results = [];
         foreach (T handler in typeHandlers ?? [])
         {
-            foreach (
-                Type type in InheritanceTracker.For(handler.SupportedType).FindLoadedSubclasses()
-            )
+            foreach (Type type in TypeDescriber.For(handler.SupportedType).FindLoadedSubclasses())
             {
                 if (results.TryGetValue(type, out IList<T>? values))
                 {

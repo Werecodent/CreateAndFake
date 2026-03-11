@@ -13,6 +13,6 @@ public abstract class ConstraintSample<TStruct, TClass>
 
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

@@ -9,10 +9,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class HandlerCopyHint : CopyHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly ICopyHandler[] _Copiers =
-    [
-        new RefCopyHandler(typeof(InheritanceTracker)),
-    ];
+    private static readonly ICopyHandler[] _Copiers = [new RefCopyHandler(typeof(TypeDescriber))];
 
     private static readonly IDictionary<Type, ICopyHandler> _CopiersByType =
         TypeSupporter.GroupBySupportedType(

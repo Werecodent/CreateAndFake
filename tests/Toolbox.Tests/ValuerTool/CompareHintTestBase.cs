@@ -263,7 +263,7 @@ public abstract class CompareHintTestBase<T>(
             catch (Exception e)
             {
                 throw new EngineException(
-                    $"Error while testing type {TypeDescriber.ExpandedName(type)}",
+                    $"Error while testing type {TypeHelper.ExpandedName(type)}",
                     e
                 );
             }

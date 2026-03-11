@@ -40,7 +40,7 @@ public sealed class CollectionCopyHint : CopyHint
             else
             {
                 throw new UnsupportedException(
-                    $"Collection '{TypeDescriber.ExpandedName(source)}' not supported by the "
+                    $"Collection '{TypeHelper.ExpandedName(source)}' not supported by the "
                         + "duplicator. Create a hint to generate the type."
                 );
             }
@@ -62,7 +62,7 @@ public sealed class CollectionCopyHint : CopyHint
             source,
             itemType,
             duplicator,
-            _ReverseCases.Contains(TypeDescriber.AsGenericBase(type) ?? type)
+            _ReverseCases.Contains(TypeHelper.AsGenericBase(type) ?? type)
         );
 
         return MakeCollection(contents, type, itemType, duplicator);
@@ -79,7 +79,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             return contents;
         }
-        else if (TypeDescriber.AsGenericBase(collectionType) == typeof(Dictionary<,>))
+        else if (TypeHelper.AsGenericBase(collectionType) == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(collectionType)!;
             foreach (dynamic item in contents)
@@ -89,7 +89,7 @@ public sealed class CollectionCopyHint : CopyHint
             return result;
         }
 
-        ConstructorInfo? constructor = InheritanceTracker
+        ConstructorInfo? constructor = TypeDescriber
             .For(collectionType)
             .Constructors.OnlyPublic.Where(c => c.GetParameters().Length == 1)
             .FirstOrDefault(c => c.GetParameters()[0].ParameterType.Inherits<IEnumerable>());

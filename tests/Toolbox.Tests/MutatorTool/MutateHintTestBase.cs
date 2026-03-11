@@ -44,9 +44,9 @@ public abstract class MutateHintTestBase<T>(
                 .HasData.Assert()
                 .Is(
                     true,
-                    $"Hint '{TypeDescriber.ExpandedName<T>()}' failed to modify type "
-                        + $"'{TypeDescriber.ExpandedName(type)}'. "
-                        + $"Actual type: '{TypeDescriber.ExpandedName(data)}'."
+                    $"Hint '{TypeHelper.ExpandedName<T>()}' failed to modify type "
+                        + $"'{TypeHelper.ExpandedName(type)}'. "
+                        + $"Actual type: '{TypeHelper.ExpandedName(data)}'."
                 );
         }
     }
@@ -63,9 +63,9 @@ public abstract class MutateHintTestBase<T>(
                 .HasData.Assert()
                 .Is(
                     false,
-                    $"Hint '{TypeDescriber.ExpandedName<T>()}' modified type "
-                        + $"'{TypeDescriber.ExpandedName(type)}'. "
-                        + $"Actual type: '{TypeDescriber.ExpandedName(data)}'."
+                    $"Hint '{TypeHelper.ExpandedName<T>()}' modified type "
+                        + $"'{TypeHelper.ExpandedName(type)}'. "
+                        + $"Actual type: '{TypeHelper.ExpandedName(data)}'."
                 );
         }
     }
@@ -84,7 +84,7 @@ public abstract class MutateHintTestBase<T>(
     [Fact]
     public void ToString_Overridden()
     {
-        TestInstance.ToString().Assert().Is(TypeDescriber.ExpandedName(TestInstance));
+        TestInstance.ToString().Assert().Is(TypeHelper.ExpandedName(TestInstance));
     }
 
     /// <typeparam name="TData">The <see cref="Type"/> to test.</typeparam>

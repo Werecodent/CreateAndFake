@@ -49,7 +49,7 @@ public static class ToolsTests
     internal static Task Tools_SupportsAll()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            InheritanceTracker.For<object>().FindLoadedSubclasses(),
+            TypeDescriber.For<object>().FindLoadedSubclasses(),
             TestContext.Current.CancellationToken
         );
     }

@@ -195,7 +195,7 @@ public sealed class Fake<T> : Fake
     private static object ResolveArgLambda(MethodCallExpression call)
     {
         Type innerType =
-            (TypeDescriber.AsGenericBase(call.Method.ReturnType) == typeof(OutRef<>))
+            (TypeHelper.AsGenericBase(call.Method.ReturnType) == typeof(OutRef<>))
                 ? call.Method.ReturnType.GetGenericArguments().Single()
                 : call.Method.ReturnType;
 

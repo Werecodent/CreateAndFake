@@ -18,7 +18,7 @@ public sealed class SpanCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        Type? asGeneric = TypeDescriber.AsGenericBase(type);
+        Type? asGeneric = TypeHelper.AsGenericBase(type);
         if (asGeneric == typeof(Span<>) || asGeneric == typeof(ReadOnlySpan<>))
         {
             Type content = type.GetGenericArguments().Single();

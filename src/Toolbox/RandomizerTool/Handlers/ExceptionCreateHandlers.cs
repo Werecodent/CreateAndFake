@@ -53,7 +53,7 @@ internal static class ExceptionCreateHandlers
 
     /// <summary>Exception that the handlers can create.</summary>
     internal static IEnumerable<Type> PotentialExceptions { get; } =
-        InheritanceTracker
+        TypeDescriber
             .For<Exception>()
             .FindLoadedSubclasses()
             .Where(t => t.IsVisible)

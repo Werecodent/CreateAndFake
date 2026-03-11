@@ -32,7 +32,7 @@ public static class TypeExtensions
         }
         else if (child.IsGenericTypeDefinition)
         {
-            return InheritanceTracker.For(child).Inherits<T>();
+            return TypeDescriber.For(child).Inherits<T>();
         }
         else
         {
@@ -56,7 +56,7 @@ public static class TypeExtensions
     ///     <paramref name="parent"/> <see cref="Type"/>, <see langword="false"/> otherwise.
     /// </returns>
     /// <remarks>Supports generic <see cref="Type"/> definitions.</remarks>
-    /// <seealso cref="InheritanceTracker.Inherits{T}"/>
+    /// <seealso cref="TypeDescriber.Inherits{T}"/>
     public static bool Inherits(
         [NotNullWhen(true)] this Type? child,
         [NotNullWhen(true)] Type? parent
@@ -68,7 +68,7 @@ public static class TypeExtensions
         }
         else if (child.IsGenericTypeDefinition || parent.IsGenericTypeDefinition)
         {
-            return InheritanceTracker.For(child).Inherits(parent);
+            return TypeDescriber.For(child).Inherits(parent);
         }
         else
         {
@@ -99,7 +99,7 @@ public static class TypeExtensions
         }
         else if (parent.IsGenericTypeDefinition)
         {
-            return InheritanceTracker.For<T>().Inherits(parent);
+            return TypeDescriber.For<T>().Inherits(parent);
         }
         else
         {
@@ -134,7 +134,7 @@ public static class TypeExtensions
         }
         else if (child.IsGenericTypeDefinition || parent.IsGenericTypeDefinition)
         {
-            return InheritanceTracker.For(child).Inherits(parent);
+            return TypeDescriber.For(child).Inherits(parent);
         }
         else
         {

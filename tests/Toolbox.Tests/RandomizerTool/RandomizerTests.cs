@@ -123,7 +123,7 @@ public static class RandomizerTests
             .Assert(r => r.Create(type))
             .Throws<ToolException>()
             .Message.Assert()
-            .Contains(TypeDescriber.ExpandedName(type));
+            .Contains(TypeHelper.ExpandedName(type));
     }
 
     [Fact]

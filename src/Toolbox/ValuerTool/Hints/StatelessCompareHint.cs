@@ -13,8 +13,8 @@ public sealed class StatelessCompareHint : CompareHint
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type type = expected.GetType();
-        return !InheritanceTracker.For(type).Properties.All.Any(p => p.CanRead)
-            && !InheritanceTracker.For(type).Fields.All.Any();
+        return !TypeDescriber.For(type).Properties.All.Any(p => p.CanRead)
+            && !TypeDescriber.For(type).Fields.All.Any();
     }
 
     /// <inheritdoc/>

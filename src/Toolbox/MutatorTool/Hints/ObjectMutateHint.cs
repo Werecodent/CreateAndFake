@@ -41,7 +41,7 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             PropertyInfo prop in chainer.Options.Gen.NextSequence(
-                InheritanceTracker
+                TypeDescriber
                     .For(type)
                     .Properties.SetAndGetable.Where(p =>
                         p.GetSetMethod()
@@ -71,7 +71,7 @@ public sealed class ObjectMutateHint : MutateHint
 
         foreach (
             FieldInfo field in chainer.Options.Gen.NextSequence(
-                InheritanceTracker.For(type).Fields.Writable
+                TypeDescriber.For(type).Fields.Writable
             )
         )
         {

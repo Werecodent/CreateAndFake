@@ -62,6 +62,6 @@ public sealed class Injected<T>
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }

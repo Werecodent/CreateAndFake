@@ -21,7 +21,7 @@ public sealed class TaskCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        Type? asGeneric = TypeDescriber.AsGenericBase(type);
+        Type? asGeneric = TypeHelper.AsGenericBase(type);
 
         if (asGeneric == typeof(Task<>) || asGeneric == typeof(TaskCompletionSource<>))
         {

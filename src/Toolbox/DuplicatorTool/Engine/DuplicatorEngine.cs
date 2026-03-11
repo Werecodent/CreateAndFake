@@ -33,7 +33,7 @@ public sealed class DuplicatorEngine : ToolEngine<ICopyHint>, IDuplicatorEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{TypeDescriber.ExpandedName(source)}' not supported by the duplicator. "
+                $"Type '{TypeHelper.ExpandedName(source)}' not supported by the duplicator. "
                     + "Create a hint to generate the type and pass it to the duplicator."
             );
         }

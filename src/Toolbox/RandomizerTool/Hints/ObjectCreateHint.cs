@@ -27,7 +27,7 @@ public sealed class ObjectCreateHint : CreateHint
             (type == null)
                 ? null
                 : randomizer.Options.ObjectCreateAttempts.Attempt(
-                    $"Create object of type '{TypeDescriber.ExpandedName(type)}'",
+                    $"Create object of type '{TypeHelper.ExpandedName(type)}'",
                     () => Create(type, type, randomizer)
                 );
 
@@ -60,7 +60,7 @@ public sealed class ObjectCreateHint : CreateHint
         {
             Disposer.Cleanup(data);
             throw new UnsupportedException(
-                $"Could not randomize content for '{TypeDescriber.ExpandedName(data)}'."
+                $"Could not randomize content for '{TypeHelper.ExpandedName(data)}'."
             );
         }
     }
@@ -76,7 +76,7 @@ public sealed class ObjectCreateHint : CreateHint
         bool changed = false;
         Type dataType = data.GetType();
 
-        foreach (FieldInfo field in InheritanceTracker.For(dataType).Fields.Writable)
+        foreach (FieldInfo field in TypeDescriber.For(dataType).Fields.Writable)
         {
             canChange = true;
 
@@ -86,7 +86,7 @@ public sealed class ObjectCreateHint : CreateHint
 
             changed = true;
         }
-        foreach (PropertyInfo property in InheritanceTracker.For(dataType).Properties.Settable)
+        foreach (PropertyInfo property in TypeDescriber.For(dataType).Properties.Settable)
         {
             canChange = true;
 

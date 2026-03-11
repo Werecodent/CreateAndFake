@@ -22,7 +22,7 @@ public sealed class CollectionMutateHint : MutateHint
     /// <inheritdoc/>
     protected override bool Supports(object instance)
     {
-        return InheritanceTracker.For(instance?.GetType()).Inherits(typeof(ICollection<>));
+        return TypeDescriber.For(instance?.GetType()).Inherits(typeof(ICollection<>));
     }
 
     /// <inheritdoc/>
@@ -31,7 +31,7 @@ public sealed class CollectionMutateHint : MutateHint
         return (bool)
             _Modifier
                 .MakeGenericMethod(
-                    TypeDescriber
+                    TypeHelper
                         .FindConcreteType(instance.GetType(), typeof(ICollection<>))
                         .GetGenericArguments()
                 )

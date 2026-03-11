@@ -26,7 +26,7 @@ public sealed class TaskCopyHint : CopyHint
 
         if (source is Task task)
         {
-            Type? asGeneric = TypeDescriber.AsConcreteType(source.GetType(), typeof(Task<>));
+            Type? asGeneric = TypeHelper.AsConcreteType(source.GetType(), typeof(Task<>));
             if (
                 asGeneric
                     ?.GetGenericArguments()

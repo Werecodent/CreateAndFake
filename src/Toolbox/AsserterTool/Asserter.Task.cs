@@ -54,7 +54,7 @@ public partial class Asserter : ITaskAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{TypeDescriber.ExpandedName<T>()}' but received: ";
+            $"Expected exception of type '{TypeHelper.ExpandedName<T>()}' but received: ";
         if (behavior != null)
         {
             try
@@ -120,7 +120,7 @@ public partial class Asserter : ITaskAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{TypeDescriber.ExpandedName<T>()}' but received: ";
+            $"Expected exception of type '{TypeHelper.ExpandedName<T>()}' but received: ";
 
         Task<object?>? task = behavior?.Invoke();
         if (task != null)

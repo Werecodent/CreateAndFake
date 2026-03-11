@@ -10,7 +10,7 @@ public static class VoidReturnTests
     [Fact]
     internal static void VoidReturn_PrivateConstructor()
     {
-        ConstructorInfo constructor = InheritanceTracker.For<VoidType>().Constructors.All.Single();
+        ConstructorInfo constructor = TypeDescriber.For<VoidType>().Constructors.All.Single();
 
         constructor.IsPrivate.Assert().Is(true);
         constructor.Invoke([]).Assert().Pass();

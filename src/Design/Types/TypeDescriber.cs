@@ -1,253 +1,280 @@
+using System.Collections.Frozen;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using Microsoft.CodeAnalysis;
+using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Types;
 
-/// <summary>Provides common <see cref="Type"/> patterns for getting additional details.</summary>
-public static class TypeDescriber
+/// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
+public sealed class TypeDescriber : ITypeSupporter
 {
-    /// <returns>The found inherited <see cref="Type"/>.</returns>
-    /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
-    /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteType(Type)"/>
-    /// <inheritdoc cref="FindConcreteType(Type,Type)"/>
-    public static Type FindConcreteType<T>(Type genericBase)
+    /// <summary>Every possible specific type.</summary>
+    private static readonly FrozenSet<Type> _AllTypesFromAllAssemblies = FindAllAssemblies()
+        .Where(a => !a.ReflectionOnly)
+        .Where(a => !a.IsDynamic)
+        .SelectMany(TypeHelper.FindLoadedTypes)
+        .ToFrozenSet();
+
+    /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
+    private static readonly Lock _Lock = new();
+
+    /// <summary>Caches every parent inherited per <see cref="Type"/>.</summary>
+    private static readonly Dictionary<Type, TypeDescriber> _InheritCache = [];
+
+    /// <summary>Associates no parents for <see langword="null"/>.</summary>
+    private static readonly TypeDescriber _NullDescriber = new(null, []);
+
+    /// <summary>Finds or loads inheritance data for <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T">The <see cref="Type"/> to find inheritance for.</typeparam>
+    /// <returns>The found/loaded inheritance data.</returns>
+    public static TypeDescriber For<T>()
     {
-        return FindConcreteType(typeof(T), genericBase);
+        return For(typeof(T));
     }
 
-    /// <returns>The found inherited <see cref="Type"/>.</returns>
-    /// <exception cref="InvalidOperationException">
-    ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
-    /// </exception>
-    /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
-    /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
-    public static Type FindConcreteType(Type child, Type genericBase)
+    /// <summary>Finds or loads inheritance data for the <paramref name="type"/>.</summary>
+    /// <param name="type">The <see cref="Type"/> to find inheritance for.</param>
+    /// <returns>The found/loaded inheritance data.</returns>
+    public static TypeDescriber For(Type? type)
     {
-        return AsConcreteType(child, genericBase)
-            ?? throw new InvalidOperationException(
-                $"Type {child} doesn't inherit {genericBase} as a generic base class."
-            );
-    }
-
-    /// <summary>
-    ///     Finds the defined <paramref name="genericBase"/> with generics
-    ///     specified that is inherited by <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">The <see cref="Type"/> to find the generic base of.</typeparam>
-    /// <remarks>Example: <example><c>
-    ///     AsConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
-    /// </c></example></remarks>
-    /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
-    public static Type? AsConcreteType<T>(Type genericBase)
-    {
-        return AsConcreteType(typeof(T), genericBase);
-    }
-
-    /// <summary>
-    ///     Finds the defined <paramref name="genericBase"/> with generics specified
-    ///     that is inherited by the <paramref name="child"/> <see cref="Type"/>.
-    /// </summary>
-    /// <param name="child">The <see cref="Type"/> to find the generic base of.</param>
-    /// <param name="genericBase">
-    ///     Generic <see cref="Type"/> definition without generics specified.
-    /// </param>
-    /// <returns>The inherited <see cref="Type"/> if found, null otherwise.</returns>
-    /// <remarks>Example: <example><c>
-    ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
-    /// </c></example></remarks>
-    public static Type? AsConcreteType(Type? child, Type genericBase)
-    {
-        List<Type> inheritance = child?.GetInterfaces().ToList() ?? [];
-
-        Type? current = child;
-        while (current != null)
+        if (type == null)
         {
-            inheritance.Add(current);
-            current = current.BaseType;
+            return _NullDescriber;
         }
 
-        return inheritance
-            .Where(i => i.IsGenericType)
-            .Where(i => !i.IsGenericTypeDefinition)
-            .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
+        TypeDescriber? describer;
+        lock (_Lock)
+        {
+            if (!_InheritCache.TryGetValue(type, out describer))
+            {
+                describer = _InheritCache[type] = new(type, FindParentInheritance(type));
+            }
+        }
+        return describer;
+    }
+
+    /// <inheritdoc/>
+    public Type? SupportedType { get; }
+
+    /// <summary>All found <see cref="Type"/>s the <see cref="SupportedType"/> inherits.</summary>
+    public IEnumerable<Type> InheritedTypes { get; }
+
+    /// <summary>All found <see cref="Type"/>s inheriting the <see cref="SupportedType"/>.</summary>
+    public IEnumerable<Type> SubTypes => _subTypes.Value;
+
+    /// <summary>Finds properties on the <see cref="SupportedType"/>.</summary>
+    public PropertyScanner Properties => _properties.Value;
+
+    /// <summary>Finds fields on the <see cref="SupportedType"/>.</summary>
+    public FieldScanner Fields => _fields.Value;
+
+    /// <summary>Finds constructors on the <see cref="SupportedType"/>.</summary>
+    public ConstructorScanner Constructors => _constructors.Value;
+
+    /// <summary>Finds factories on the <see cref="SupportedType"/>.</summary>
+    public FactoryScanner Factories => _factories.Value;
+
+    /// <inheritdoc cref="SubTypes"/>
+    private readonly Lazy<FrozenSet<Type>> _subTypes;
+
+    /// <inheritdoc cref="Properties"/>
+    private readonly Lazy<PropertyScanner> _properties;
+
+    /// <inheritdoc cref="Fields"/>
+    private readonly Lazy<FieldScanner> _fields;
+
+    /// <inheritdoc cref="Constructors"/>
+    private readonly Lazy<ConstructorScanner> _constructors;
+
+    /// <inheritdoc cref="Factories"/>
+    private readonly Lazy<FactoryScanner> _factories;
+
+    /// <summary><inheritdoc cref="TypeDescriber"/></summary>
+    /// <param name="type"><inheritdoc cref="SupportedType" path="/summary"/></param>
+    /// <param name="parents"><inheritdoc cref="InheritedTypes" path="/summary"/></param>
+    private TypeDescriber(Type? type, IEnumerable<Type> parents)
+    {
+        SupportedType = type;
+        InheritedTypes = parents.ToFrozenSet();
+        _subTypes = new(() => [.. FindLoadedChildren(type)]);
+        _fields = new(() => new FieldScanner(type));
+        _properties = new(() => new PropertyScanner(type));
+        _constructors = new(() => new ConstructorScanner(type));
+        _factories = new(() => new FactoryScanner(type));
     }
 
     /// <summary>
-    ///     Attempts to convert the <paramref name="type"/>
-    ///     to its generic <see cref="Type"/> definition.
+    ///     Checks if <typeparamref name="T"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
-    /// <param name="type">The <see cref="Type"/> to convert.</param>
+    /// <typeparam name="T">
+    ///     Potential base <see langword="class"/>/<see langword="interface"/>
+    ///     for the <see cref="SupportedType"/>.
+    /// </typeparam>
     /// <returns>
-    ///     The generic <see cref="Type"/> definition for <paramref name="type"/> if it's generic,
-    ///     <see langword="null"/> otherwise.
+    ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
+    ///     <typeparamref name="T"/>, <see langword="false"/> otherwise.
     /// </returns>
-    public static Type? AsGenericBase(Type? type)
+    public bool Inherits<T>()
     {
-        return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
+        return Inherits(typeof(T));
     }
 
     /// <summary>
-    ///     Determines if <typeparamref name="T"/> is usable in the <paramref name="assembly"/>.
+    ///     Checks if <paramref name="parent"/> is a base <see langword="class"/>
+    ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
-    /// <typeparam name="T">The <see cref="Type"/> to verify visibility for.</typeparam>
-    /// <inheritdoc cref="IsVisible(Type,AssemblyName)"/>
-    public static bool IsVisible<T>(AssemblyName assembly)
-    {
-        return IsVisible(typeof(T), assembly);
-    }
-
-    /// <summary>
-    ///     Determines if the <paramref name="type"/> is usable in the <paramref name="assembly"/>.
-    /// </summary>
-    /// <param name="type">The <see cref="Type"/> to verify visibility for.</param>
-    /// <param name="assembly">
-    ///     Name of the <see cref="Assembly"/> trying to use the <see cref="Type"/>.
+    /// <param name="parent">
+    ///     Potential base <see langword="class"/>/<see langword="interface"/>
+    ///     for the <see cref="SupportedType"/>.
     /// </param>
     /// <returns>
-    ///     <see langword="true"/> if the <see cref="Type"/> is visible to
-    ///     the <paramref name="assembly"/>, <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
+    ///     <paramref name="parent"/>, <see langword="false"/> otherwise.
     /// </returns>
+    public bool Inherits([NotNullWhen(true)] Type? parent)
+    {
+        return parent != null
+            && InheritedTypes.Contains(Nullable.GetUnderlyingType(parent) ?? parent);
+    }
+
+    /// <summary>
+    ///     Finds every non-<see langword="abstract"/> <see langword="class"/> inheriting
+    ///     the <see cref="SupportedType"/> in its defined <see cref="Assembly"/>.
+    /// </summary>
+    /// <inheritdoc cref="FindLoadedSubclasses(AssemblyName)"/>
+    public IEnumerable<Type> FindLocalSubclasses()
+    {
+        AssemblyName assembly = Assembly.GetCallingAssembly().GetName();
+        return FindLoadedSubclasses(assembly).Where(t => SupportedType?.Assembly == t.Assembly);
+    }
+
+    /// <inheritdoc cref="FindLoadedSubclasses(AssemblyName)"/>
+    public IEnumerable<Type> FindLoadedSubclasses()
+    {
+        return FindLoadedSubclasses(Assembly.GetCallingAssembly().GetName());
+    }
+
+    /// <summary>
+    ///     Finds every non-<see langword="abstract"/> <see langword="class"/>
+    ///     inheriting the <see cref="SupportedType"/> in all loaded assemblies.
+    /// </summary>
+    /// <param name="assembly">Accessing assembly to check visibility access for.</param>
+    /// <returns>The found creatable subclasses.</returns>
     /// <remarks>
     ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
-    ///     to access its <see langword="internal"/> types for this method.
+    ///     to access its <see langword="internal"/> types for the test framework.
     /// </remarks>
-    public static bool IsVisible(Type? type, AssemblyName assembly)
+    private IEnumerable<Type> FindLoadedSubclasses(AssemblyName assembly)
     {
-        return type != null && (type.IsVisible || InternalsAreVisible(type, assembly));
+        return SubTypes
+            .Where(t => !t.IsAbstract)
+            .Where(t => !t.IsGenericTypeDefinition)
+            .Where(t => TypeHelper.IsVisible(t, assembly));
+    }
+
+    /// <inheritdoc cref="IsMutable(AssemblyName)"/>
+    public bool IsMutable()
+    {
+        return IsMutable(Assembly.GetCallingAssembly().GetName());
     }
 
     /// <summary>
-    ///     Determines if the <paramref name="type"/>'s <see langword="internal"/>
-    ///     members are usable in the <paramref name="assembly"/>.
+    ///     Determines if the <see cref="SupportedType"/> has any modifiable properties/fields.
     /// </summary>
-    /// <param name="type">The <see cref="Type"/> to verify visibility for.</param>
-    /// <param name="assembly">
-    ///     Name of the <see cref="Assembly"/> to check scope privilege for.
-    /// </param>
-    /// <returns>
-    ///     <see langword="true"/> if the <see cref="Type"/>'s <see langword="internal"/>s
-    ///     are visible to the <paramref name="assembly"/>, <see langword="false"/> otherwise.
-    /// </returns>
-    /// <remarks>
-    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
-    ///     to enable <see langword="internal"/> members visibility per this method.
-    /// </remarks>
-    internal static bool InternalsAreVisible(Type? type, AssemblyName assembly)
+    /// <inheritdoc cref="TypeHelper.IsVisible(Type?, AssemblyName)"/>
+    private bool IsMutable(AssemblyName assembly)
     {
-        ArgumentGuard.ThrowIfNull(assembly);
-
-        Assembly? typeAssembly = type?.Assembly;
-        return typeAssembly != null
-            && (
-                typeAssembly.FullName == assembly.FullName
-                || typeAssembly
-                    .GetCustomAttributes<InternalsVisibleToAttribute>()
-                    .Any(a => a.AssemblyName == assembly.Name)
-            );
+        return Properties.FindSettable(assembly).Any() || Fields.FindWritable(assembly).Any();
     }
 
-    /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>
-    /// <param name="instance">The instance to create a <see cref="Type"/> name for.</param>
-    /// <returns>The built display name.</returns>
-    public static string ExpandedName(object? instance)
+    /// <summary>
+    ///     Determines if the <see cref="SupportedType"/> has any
+    ///     properties/fields only settable via a constructor.
+    /// </summary>
+    /// <remarks>Beware that this does not always mean the value is changeable.</remarks>
+    public bool HasInitializableOnlyState()
     {
-        return ExpandedName(instance is Type type ? type : instance?.GetType());
+        return Fields.All.Any(f => f.IsInitOnly && !f.IsLiteral)
+            && Constructors.All.Any(c => c.GetParameters().Length > 0);
     }
 
-    /// <summary>Builds a <typeparamref name="T"/> name with any generics included.</summary>
-    /// <typeparam name="T">The <see cref="Type"/> to create a name for.</typeparam>
-    /// <returns>The built display name.</returns>
-    public static string ExpandedName<T>()
+    /// <summary>
+    ///     Finds every child <see cref="Type"/> inheriting
+    ///     the <paramref name="type"/> in all loaded assemblies.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to find subclasses for.</param>
+    /// <returns>The found subclasses.</returns>
+    private static IEnumerable<Type> FindLoadedChildren(Type? type)
     {
-        return ExpandedName(typeof(T));
+        return (type == null) ? [] : _AllTypesFromAllAssemblies.Where(t => t.Inherits(type));
     }
 
-    /// <summary>Builds a <paramref name="type"/> name with any generics included.</summary>
-    /// <param name="type">The <see cref="Type"/> to create a name for.</param>
-    /// <returns>The built display name.</returns>
-    public static string ExpandedName(Type? type)
+    /// <summary>Finds every <see cref="Type"/> that the <paramref name="type"/> inherits.</summary>
+    /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
+    /// <returns>All found base classes/interfaces.</returns>
+    private static HashSet<Type> FindParentInheritance(Type type)
     {
-        if (type?.IsGenericType == true)
+        HashSet<Type> foundParents = [type];
+        Stack<Type> sourceTypes = new(foundParents);
+
+        void attemptAdd(Type? newType)
         {
-            return string.Concat(
-                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
-                "<",
-                string.Join(",", type.GetGenericArguments().Select(ExpandedName)),
-                ">"
-            );
+            if (newType != null && foundParents.Add(newType))
+            {
+                sourceTypes.Push(newType);
+            }
         }
-        else
+
+        while (sourceTypes.Count > 0)
         {
-            return type?.Name ?? "";
+            Type source = sourceTypes.Pop();
+            if (source.IsGenericType)
+            {
+                attemptAdd(source.GetGenericTypeDefinition());
+            }
+            foreach (Type parent in source.GetInterfaces())
+            {
+                attemptAdd(parent);
+            }
+            attemptAdd(source.BaseType);
         }
+        return foundParents;
     }
 
-    /// <summary>Builds a display name for the <paramref name="method"/> under test.</summary>
-    /// <param name="method">The method being tested needing a name.</param>
-    /// <returns>The built display name.</returns>
-    public static string BuildTestName(MethodBase method)
+    /// <summary>Finds all possible assemblies.</summary>
+    /// <returns>The found assemblies.</returns>
+    private static HashSet<Assembly> FindAllAssemblies()
     {
-        if (method != null)
-        {
-            IEnumerable<string> paramNames = method
-                .GetParameters()
-                .Select(p => ExpandedName(p.ParameterType));
+        HashSet<Assembly> foundAssemblies = [.. AppDomain.CurrentDomain.GetAssemblies()];
 
-            return $"{method.Name}({string.Join(",", paramNames)})";
-        }
-        else
+        Stack<Assembly> sourceAssemblies = new(foundAssemblies);
+        while (sourceAssemblies.Count > 0)
         {
-            return "";
+            Assembly assembly = sourceAssemblies.Pop();
+            foreach (AssemblyName referenced in assembly.GetReferencedAssemblies())
+            {
+                try
+                {
+                    Assembly loaded = Assembly.Load(referenced);
+                    if (foundAssemblies.Add(loaded))
+                    {
+                        sourceAssemblies.Push(loaded);
+                    }
+                }
+                catch
+                {
+                    // Ignore assemblies that can't be loaded.
+                }
+            }
         }
+        return foundAssemblies;
     }
 
-    /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see langword="class"/>es to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see langword="class"/> if the
-    ///     <paramref name="assembly"/> loads, none otherwise.
-    /// </returns>
-    public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    /// <inheritdoc/>
+    public override string ToString()
     {
-        if (assembly == null)
-        {
-            return [];
-        }
-
-        return FindLoadedTypes(assembly)
-            .Where(t => t.IsClass)
-            .Where(t => !t.IsNestedPrivate)
-            .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false));
-    }
-
-    /// <summary>Finds every <see cref="Type"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see cref="Type"/>s to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see cref="Type"/> if the
-    ///     <paramref name="assembly"/> can load, none otherwise.
-    /// </returns>
-    internal static IEnumerable<Type> FindLoadedTypes(Assembly? assembly)
-    {
-        try
-        {
-            return assembly?.GetTypes() ?? Type.EmptyTypes;
-        }
-        catch
-        {
-            return Type.EmptyTypes;
-        }
+        return $"{nameof(TypeDescriber)}({TypeHelper.ExpandedName(SupportedType)})";
     }
 }

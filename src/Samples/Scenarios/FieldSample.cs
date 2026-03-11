@@ -17,6 +17,6 @@ public class FieldSample(string stringValue, string stringValue2)
 
     public override string ToString()
     {
-        return TypeDescriber.ExpandedName(GetType());
+        return TypeHelper.ExpandedName(GetType());
     }
 }
