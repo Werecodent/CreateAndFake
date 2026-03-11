@@ -40,8 +40,7 @@ public sealed class ObjectCopyHint : CopyHint
         foreach (
             FieldInfo field in InheritanceTracker
                 .For(source.GetType())
-                .GetPublicFields()
-                .Where(f => !f.IsInitOnly && !f.IsLiteral)
+                .Fields.OnlyPublic.Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
             object? value = field.GetValue(source);
@@ -51,8 +50,7 @@ public sealed class ObjectCopyHint : CopyHint
         foreach (
             PropertyInfo property in InheritanceTracker
                 .For(source.GetType())
-                .GetPublicProperties()
-                .Where(p => p.CanRead && p.CanWrite)
+                .Properties.OnlyPublic.Where(p => p.CanRead && p.CanWrite)
                 .Where(p => p.GetIndexParameters().Length == 0)
         )
         {
@@ -91,7 +89,7 @@ public sealed class ObjectCopyHint : CopyHint
                 .Where(c => !c.IsPrivate)
                 .OrderByDescending(c => c.GetParameters().Length)
                 .Select(c =>
-                    TryCreate(source, duplicator, c, describer.AllProperties, describer.AllFields)
+                    TryCreate(source, duplicator, c, describer.Properties.All, describer.Fields.All)
                 )
                 .FirstOrDefault(o => o != null);
         }

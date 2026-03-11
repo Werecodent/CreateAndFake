@@ -145,8 +145,14 @@ public static class TypeDescriber
     {
         ArgumentGuard.ThrowIfNull(assembly);
 
-        return type?.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>()
-                .Any(a => a.AssemblyName == assembly.Name) == true;
+        Assembly? typeAssembly = type?.Assembly;
+        return typeAssembly != null
+            && (
+                typeAssembly.FullName == assembly.FullName
+                || typeAssembly
+                    .GetCustomAttributes<InternalsVisibleToAttribute>()
+                    .Any(a => a.AssemblyName == assembly.Name)
+            );
     }
 
     /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>

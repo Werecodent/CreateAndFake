@@ -22,8 +22,8 @@ public sealed class ObjectExtractHint : ExtractHint<object>
             foreach (
                 PropertyInfo property in (
                     chainer.Options.ExtractPrivateMembers
-                        ? InheritanceTracker.For(type).AllProperties
-                        : InheritanceTracker.For(type).GetPublicProperties()
+                        ? InheritanceTracker.For(type).Properties.All
+                        : InheritanceTracker.For(type).Properties.OnlyPublic
                 )
                     .Where(p => p.CanRead)
                     .Where(p => source is not Exception || p.Name != "HResult")
@@ -33,8 +33,8 @@ public sealed class ObjectExtractHint : ExtractHint<object>
             }
             foreach (
                 FieldInfo field in chainer.Options.ExtractPrivateMembers
-                    ? InheritanceTracker.For(type).AllFields
-                    : InheritanceTracker.For(type).GetPublicFields()
+                    ? InheritanceTracker.For(type).Fields.All
+                    : InheritanceTracker.For(type).Fields.OnlyPublic
             )
             {
                 _ = chainer.InnerExtract(field.GetValue(source));

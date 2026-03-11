@@ -80,7 +80,7 @@ public static class InheritanceTrackerTests
             typeof(Members).GetProperty(nameof(Members.PrivateSetterWithInternalGet), _AllScope),
         ];
 
-        InheritanceTracker.For<Members>().AllProperties.Assert().Is(expectedProperties);
+        InheritanceTracker.For<Members>().Properties.All.Assert().Is(expectedProperties);
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public static class InheritanceTrackerTests
             typeof(Members).GetField(nameof(Members._internalField), _AllScope),
         ];
 
-        IEnumerable<FieldInfo> fields = InheritanceTracker.For<Members>().AllFields;
+        IEnumerable<FieldInfo> fields = InheritanceTracker.For<Members>().Fields.All;
 
         expectedNonAutoBackingFields.Except(fields).Assert().IsEmpty();
         fields.Assert().HasCount(expectedNonAutoBackingFields.Count + 8);
@@ -103,27 +103,27 @@ public static class InheritanceTrackerTests
     [Fact]
     internal static void GetPublicFields_FindsPublicFields()
     {
-        InheritanceTracker.For<FieldSample>().GetPublicFields().Assert().IsNotEmpty();
+        InheritanceTracker.For<FieldSample>().Fields.OnlyPublic.Assert().IsNotEmpty();
     }
 
     [Fact]
     internal static void GetAllFields_FindsInheritedPrivates()
     {
-        InheritanceTracker.For<InheritedPrivatesSample>().GetPublicFields().Assert().IsEmpty();
-        InheritanceTracker.For<InheritedPrivatesSample>().AllFields.Assert().IsNotEmpty();
+        InheritanceTracker.For<InheritedPrivatesSample>().Fields.OnlyPublic.Assert().IsEmpty();
+        InheritanceTracker.For<InheritedPrivatesSample>().Fields.All.Assert().IsNotEmpty();
     }
 
     [Fact]
     internal static void GetPublicProperties_FindsPublicProperties()
     {
-        InheritanceTracker.For<DataSample>().GetPublicProperties().Assert().IsNotEmpty();
+        InheritanceTracker.For<DataSample>().Properties.OnlyPublic.Assert().IsNotEmpty();
     }
 
     [Fact]
     internal static void GetAllProperties_FindsInheritedPrivates()
     {
-        InheritanceTracker.For<InheritedPrivatesSample>().GetPublicProperties().Assert().IsEmpty();
-        InheritanceTracker.For<InheritedPrivatesSample>().AllProperties.Assert().IsNotEmpty();
+        InheritanceTracker.For<InheritedPrivatesSample>().Properties.OnlyPublic.Assert().IsEmpty();
+        InheritanceTracker.For<InheritedPrivatesSample>().Properties.All.Assert().IsNotEmpty();
     }
 
     [Fact]

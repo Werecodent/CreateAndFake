@@ -91,8 +91,7 @@ public sealed class CollectionCopyHint : CopyHint
 
         ConstructorInfo? constructor = InheritanceTracker
             .For(collectionType)
-            .GetPublicConstructors()
-            .Where(c => c.GetParameters().Length == 1)
+            .Constructors.OnlyPublic.Where(c => c.GetParameters().Length == 1)
             .FirstOrDefault(c => c.GetParameters()[0].ParameterType.Inherits<IEnumerable>());
 
         if (constructor != null)

@@ -100,8 +100,9 @@ public static class ToolSetTests
         foreach (
             PropertyInfo prop in InheritanceTracker
                 .For<T>()
-                .GetPublicProperties()
-                .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
+                .Properties.OnlyPublic.Where(p =>
+                    Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute))
+                )
         )
         {
             object currentValue = prop.GetValue(configOptions);
@@ -136,8 +137,9 @@ public static class ToolSetTests
                 .Except(
                     InheritanceTracker
                         .For<T>()
-                        .GetPublicProperties()
-                        .Where(p => Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute)))
+                        .Properties.OnlyPublic.Where(p =>
+                            Attribute.IsDefined(p, typeof(ConfigurableOptionAttribute))
+                        )
                         .Select(p => p.Name)
                 ),
             "Configuration had extra settings."

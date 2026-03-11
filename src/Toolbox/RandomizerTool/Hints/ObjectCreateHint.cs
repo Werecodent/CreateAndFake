@@ -76,7 +76,7 @@ public sealed class ObjectCreateHint : CreateHint
         bool changed = false;
         Type dataType = data.GetType();
 
-        foreach (FieldInfo field in InheritanceTracker.For(dataType).GetMutableFields())
+        foreach (FieldInfo field in InheritanceTracker.For(dataType).Fields.Writable)
         {
             canChange = true;
 
@@ -86,7 +86,7 @@ public sealed class ObjectCreateHint : CreateHint
 
             changed = true;
         }
-        foreach (PropertyInfo property in InheritanceTracker.For(dataType).GetMutableProperties())
+        foreach (PropertyInfo property in InheritanceTracker.For(dataType).Properties.Settable)
         {
             canChange = true;
 

@@ -127,7 +127,7 @@ internal static class Emitter
             .SelectMany(t =>
                 InheritanceTracker
                     .For(t)
-                    .AllProperties.Where(p => IsVisible(p.GetMethod))
+                    .Properties.All.Where(p => IsVisible(p.GetMethod))
                     .Concat(FindImplementableProperties(t.GetInterfaces()))
             )
             .Distinct();

@@ -197,8 +197,7 @@ public sealed class Faker(FakerOptions options) : IFaker
     {
         return InheritanceTracker
             .For<T>()
-            .GetPublicConstructors()
-            .GroupBy(c =>
+            .Constructors.OnlyPublic.GroupBy(c =>
                 c.GetParameters().Count(p => startingTypes.Any(t => t.Inherits(p.ParameterType)))
             )
             .OrderByDescending(g => g.Key)

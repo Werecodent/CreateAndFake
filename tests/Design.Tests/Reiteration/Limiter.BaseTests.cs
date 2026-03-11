@@ -12,8 +12,7 @@ public static class LimiterBaseTests
         foreach (
             PropertyInfo info in InheritanceTracker
                 .For<Limiter>()
-                .GetPublicProperties()
-                .Where(p => p.PropertyType == typeof(Limiter))
+                .Properties.OnlyPublic.Where(p => p.PropertyType == typeof(Limiter))
         )
         {
             Limiter instance = (Limiter)info.GetValue(null);

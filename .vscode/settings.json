@@ -11,7 +11,7 @@
         "source.organizeImports": "explicit"
     },
     "editor.rulers": [
-        100
+        120
     ],
     "[csharp]": {
         "editor.defaultFormatter": "csharpier.csharpier-vscode"

@@ -25,7 +25,7 @@ public static class DataRandomTests
     [Theory, RandomData]
     internal static void DataRandom_MaintainsValues(DataRandom testInstance)
     {
-        foreach (PropertyInfo prop in InheritanceTracker.For(typeof(DataRandom)).AllProperties)
+        foreach (PropertyInfo prop in InheritanceTracker.For(typeof(DataRandom)).Properties.All)
         {
             prop.GetValue(testInstance).Assert().Is(prop.GetValue(testInstance));
         }

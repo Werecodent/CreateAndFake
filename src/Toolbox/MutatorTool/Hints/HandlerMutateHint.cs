@@ -6,6 +6,8 @@ using CreateAndFake.MutatorTool.Handlers;
 
 namespace CreateAndFake.MutatorTool.Hints;
 
+#pragma warning disable CA1308 // Uri support for .NET 4.8 is lowercase.
+
 /// <summary>Combines and utilizes available handlers for mutations.</summary>
 public sealed class HandlerMutateHint : IMutateHint
 {
@@ -54,3 +56,5 @@ public sealed class HandlerMutateHint : IMutateHint
         return TypeDescriber.ExpandedName(GetType());
     }
 }
+
+#pragma warning restore CA1308

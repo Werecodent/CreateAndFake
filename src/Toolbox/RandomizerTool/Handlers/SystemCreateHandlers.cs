@@ -7,6 +7,8 @@ using static System.TimeZoneInfo;
 
 namespace CreateAndFake.RandomizerTool.Handlers;
 
+#pragma warning disable CA1308 // Uri support for .NET 4.8 is lowercase.
+
 internal static class SystemCreateHandlers
 {
     private static readonly ImmutableArray<CultureInfo> _PossibleCultureInfos =
@@ -70,3 +72,5 @@ internal static class SystemCreateHandlers
         )),
     ];
 }
+
+#pragma warning restore CA1308
