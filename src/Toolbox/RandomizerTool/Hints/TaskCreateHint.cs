@@ -5,8 +5,6 @@ using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
-#pragma warning disable CA1859 // False positive due to dynamic.
-
 /// <summary>Handles randomizing <see cref="Task{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class TaskCreateHint : CreateHint
 {
@@ -49,5 +47,3 @@ public sealed class TaskCreateHint : CreateHint
         }
     }
 }
-
-#pragma warning restore CA1859

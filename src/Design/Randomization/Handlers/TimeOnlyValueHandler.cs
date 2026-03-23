@@ -5,11 +5,6 @@ namespace CreateAndFake.Design.Randomization.Handlers;
 /// <summary>Handles randomizing TimeOnly values.</summary>
 internal sealed class TimeOnlyValueHandler : IValueHandler
 {
-    /// <summary>TimeOnly <see cref="Type"/> if current .NET version supports it.</summary>
-    private static readonly Type? _TimeOnlyType = Assembly
-        .Load("System.Runtime")
-        .GetType("System.TimeOnly", false);
-
     /// <summary>Number of ticks in a day.</summary>
     private const long _MaxTicks = TimeSpan.TicksPerDay - 1;
 
@@ -20,18 +15,29 @@ internal sealed class TimeOnlyValueHandler : IValueHandler
     /// <returns>The created handler if TimeOnly exists, null otherwise.</returns>
     internal static TimeOnlyValueHandler? TryToCreate()
     {
-        return (_TimeOnlyType != null) ? new TimeOnlyValueHandler(_TimeOnlyType) : null;
-    }
-
-    /// <inheritdoc cref="TimeOnlyValueHandler"/>
-    /// <param name="timeOnlyType"><inheritdoc cref="_TimeOnlyType" path="/summary"/></param>
-    internal TimeOnlyValueHandler(Type timeOnlyType)
-    {
-        _fromTicks = timeOnlyType.GetConstructor([typeof(long)])!;
+        try
+        {
+            return new TimeOnlyValueHandler(
+                Assembly.Load("System.Runtime").GetType("System.TimeOnly", true)
+            );
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <inheritdoc/>
-    public Type? SupportedType => _TimeOnlyType;
+    public Type? SupportedType { get; }
+
+    /// <inheritdoc cref="TimeOnlyValueHandler"/>
+    /// <param name="timeOnlyType">TimeOnly <see cref="Type"/> if current .NET version supports it.</param>
+    private TimeOnlyValueHandler(Type timeOnlyType)
+    {
+        SupportedType = timeOnlyType;
+
+        _fromTicks = timeOnlyType.GetConstructor([typeof(long)])!;
+    }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen)

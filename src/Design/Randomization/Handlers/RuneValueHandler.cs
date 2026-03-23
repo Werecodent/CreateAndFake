@@ -7,11 +7,6 @@ namespace CreateAndFake.Design.Randomization.Handlers;
 /// <summary>Handles randomizing Rune values.</summary>
 internal sealed class RuneValueHandler : IValueHandler
 {
-    /// <summary>Rune <see cref="Type"/> if current .NET version supports it.</summary>
-    private static readonly Type? _RuneType = Assembly
-        .Load("System.Runtime")
-        .GetType("System.Text.Rune", false);
-
     /// <summary>Rune factory using underlying <see langword="int"/> value.</summary>
     private readonly ConstructorInfo _fromValue;
 
@@ -22,13 +17,27 @@ internal sealed class RuneValueHandler : IValueHandler
     /// <returns>The created handler if Rune exists, null otherwise.</returns>
     internal static RuneValueHandler? TryToCreate()
     {
-        return (_RuneType != null) ? new RuneValueHandler(_RuneType) : null;
+        try
+        {
+            return new RuneValueHandler(
+                Assembly.Load("System.Runtime").GetType("System.Text.Rune", true)
+            );
+        }
+        catch
+        {
+            return null;
+        }
     }
 
+    /// <inheritdoc/>
+    public Type? SupportedType { get; }
+
     /// <inheritdoc cref="RuneValueHandler"/>
-    /// <param name="runeType"><inheritdoc cref="_RuneType" path="/summary"/></param>
-    internal RuneValueHandler(Type runeType)
+    /// <param name="runeType">Rune <see cref="Type"/> if current .NET version supports it.</param>
+    private RuneValueHandler(Type runeType)
     {
+        SupportedType = runeType;
+
         _fromValue = runeType.GetConstructor([typeof(int)])!;
         _isValidRuneValue =
             (Func<int, bool>)
@@ -36,9 +45,6 @@ internal sealed class RuneValueHandler : IValueHandler
                     .GetMethod("IsValid", [typeof(int)])!
                     .CreateDelegate(typeof(Func<int, bool>));
     }
-
-    /// <inheritdoc/>
-    public Type? SupportedType => _RuneType;
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen)

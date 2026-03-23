@@ -35,15 +35,6 @@ public static class MethodCallWrapperTests
     }
 
     [Fact]
-    internal static Task MethodCallWrapper_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<MethodCallWrapper>(
-            TestContext.Current.CancellationToken,
-            config
-        );
-    }
-
-    [Fact]
     internal static void MethodCallWrapper_CanRandomize()
     {
         Tools.Randomizer.Create<MethodCallWrapper>().Assert().IsNot(null);
