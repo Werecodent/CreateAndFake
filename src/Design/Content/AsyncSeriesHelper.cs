@@ -16,9 +16,7 @@ public static class AsyncSeriesHelper
                 .GetMethod("CancelAsync")
                 ?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
 
-    /// <summary>
-    ///     Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.
-    /// </summary>
+    /// <summary>Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.</summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
@@ -91,16 +89,13 @@ public static class AsyncSeriesHelper
 #pragma warning disable CA1068 // Token is relevant to the core functionality for the method.
 
     /// <summary>
-    ///     Safely executes <paramref name="itemHandler"/> on
-    ///     the contents of the <paramref name="collection"/>.
+    ///     Safely executes <paramref name="itemHandler"/> on the contents of the <paramref name="collection"/>.
     /// </summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to iterate.</param>
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="itemHandler">
-    ///     Behavior to run on each <paramref name="collection"/> item.
-    /// </param>
+    /// <param name="itemHandler">Behavior to run on each <paramref name="collection"/> item.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>Properly handles cancellation and prevents infinite iteration.</remarks>
     /// <exception cref="IterationLimitException">
@@ -235,9 +230,7 @@ public static class AsyncSeriesHelper
         }
     }
 
-    /// <summary>
-    ///     Handles canceling a token via its <paramref name="source"/> using async if possible.
-    /// </summary>
+    /// <summary>Handles canceling a token via its <paramref name="source"/> using async if possible.</summary>
     /// <param name="source">Owner of the <see cref="CancellationToken"/> to cancel.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>Asynchronous cancellation requires .NET 8 or later.</remarks>

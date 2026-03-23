@@ -20,7 +20,7 @@ internal sealed class RuneValueHandler : IValueHandler
         try
         {
             return new RuneValueHandler(
-                Assembly.Load("System.Runtime").GetType("System.Text.Rune", true)
+                Assembly.Load("System.Runtime").GetType("System.Text.Rune", true)!
             );
         }
         catch

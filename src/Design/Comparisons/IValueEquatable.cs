@@ -11,9 +11,7 @@ public interface IValueEquatable
     /// </returns>
     bool ValuesEqual(object? other);
 
-    /// <summary>
-    ///     Computes an identifying hash code for <see langword="this"/> based upon value.
-    /// </summary>
+    /// <summary>Computes an identifying hash code for <see langword="this"/> based upon value.</summary>
     /// <returns>The value computed hash code for <see langword="this"/>.</returns>
     int GetValueHash();
 }

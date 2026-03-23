@@ -3,9 +3,7 @@ using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Comparisons;
 
-/// <summary>
-///     Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.
-/// </summary>
+/// <summary>Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.</summary>
 /// <typeparam name="T">The supported <see cref="IValueEquatable"/> <see cref="Type"/>.</typeparam>
 /// <param name="iterationLimit">Max supported size for iterating sequences.</param>
 /// <remarks>Not reflection based.</remarks>

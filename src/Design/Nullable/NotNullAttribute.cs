@@ -6,9 +6,7 @@
 
 namespace System.Diagnostics.CodeAnalysis;
 
-/// <summary>
-///     Specifies the attached data will not be <see langword="null"/> when the call returns.
-/// </summary>
+/// <summary>Specifies the attached data will not be <see langword="null"/> when the call returns.</summary>
 [ExcludeFromCodeCoverage]
 [AttributeUsage(
     AttributeTargets.Parameter

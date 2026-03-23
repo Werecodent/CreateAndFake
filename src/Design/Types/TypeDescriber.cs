@@ -109,8 +109,7 @@ public sealed class TypeDescriber : ITypeSupporter
     ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
     /// <typeparam name="T">
-    ///     Potential base <see langword="class"/>/<see langword="interface"/>
-    ///     for the <see cref="SupportedType"/>.
+    ///     Potential base <see langword="class"/>/<see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </typeparam>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
@@ -126,8 +125,7 @@ public sealed class TypeDescriber : ITypeSupporter
     ///     or <see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </summary>
     /// <param name="parent">
-    ///     Potential base <see langword="class"/>/<see langword="interface"/>
-    ///     for the <see cref="SupportedType"/>.
+    ///     Potential base <see langword="class"/>/<see langword="interface"/> for the <see cref="SupportedType"/>.
     /// </param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="SupportedType"/> inherits
@@ -180,9 +178,7 @@ public sealed class TypeDescriber : ITypeSupporter
         return IsMutable(Assembly.GetCallingAssembly().GetName());
     }
 
-    /// <summary>
-    ///     Determines if the <see cref="SupportedType"/> has any modifiable properties/fields.
-    /// </summary>
+    /// <summary>Determines if the <see cref="SupportedType"/> has any modifiable properties/fields.</summary>
     /// <inheritdoc cref="TypeHelper.IsVisible(Type?, AssemblyName)"/>
     private bool IsMutable(AssemblyName assembly)
     {
@@ -190,8 +186,7 @@ public sealed class TypeDescriber : ITypeSupporter
     }
 
     /// <summary>
-    ///     Determines if the <see cref="SupportedType"/> has any
-    ///     properties/fields only settable via a constructor.
+    ///     Determines if the <see cref="SupportedType"/> has any properties/fields only settable via a constructor.
     /// </summary>
     /// <remarks>Beware that this does not always mean the value is changeable.</remarks>
     public bool HasInitializableOnlyState()
@@ -201,8 +196,7 @@ public sealed class TypeDescriber : ITypeSupporter
     }
 
     /// <summary>
-    ///     Finds every child <see cref="Type"/> inheriting
-    ///     the <paramref name="type"/> in all loaded assemblies.
+    ///     Finds every child <see cref="Type"/> inheriting the <paramref name="type"/> in all loaded assemblies.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> to find subclasses for.</param>
     /// <returns>The found subclasses.</returns>

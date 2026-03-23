@@ -179,9 +179,7 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         return $"{_tries}-{_timeout}-{_delay}";
     }
 
-    /// <summary>
-    ///     Creates a <see cref="Limiter"/> from its <see langword="string"/> representation.
-    /// </summary>
+    /// <summary>Creates a <see cref="Limiter"/> from its <see langword="string"/> representation.</summary>
     /// <param name="data"><see langword="string"/> representation to convert from.</param>
     /// <param name="culture">Culture used for conversion.</param>
     /// <returns>The created instance.</returns>

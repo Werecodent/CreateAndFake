@@ -330,10 +330,7 @@ public sealed partial class Limiter : ISyncLimiter
     /// <param name="elapsed">Current amount of time that has elapsed.</param>
     /// <param name="tries">Current number of repetitions.</param>
     /// <param name="canceler">Token indicating behavior should be canceled.</param>
-    /// <returns>
-    ///     <see langword="true"/> if terminal condition not reached,
-    ///     <see langword="false"/> otherwise.
-    /// </returns>
+    /// <returns><see langword="true"/> if terminal condition not reached, <see langword="false"/> otherwise.</returns>
     private bool DelayIfNotDone(
         string message,
         TimeSpan elapsed,

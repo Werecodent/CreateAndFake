@@ -7,16 +7,12 @@ namespace CreateAndFake.Design.Types;
 public static class TypeSupporter
 {
     /// <summary>
-    ///     Groups the <paramref name="typeHandlers"/> by
-    ///     their <see cref="ITypeSupporter.SupportedType"/>.
+    ///     Groups the <paramref name="typeHandlers"/> by their <see cref="ITypeSupporter.SupportedType"/>.
     /// </summary>
-    /// <typeparam name="T">
-    ///     The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.
-    /// </typeparam>
+    /// <typeparam name="T">The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.</typeparam>
     /// <param name="typeHandlers">The collection to group via iteration.</param>
     /// <returns>
-    ///     The collected <paramref name="typeHandlers"/> keyed
-    ///     by their <see cref="ITypeSupporter.SupportedType"/>.
+    ///     The collected <paramref name="typeHandlers"/> keyed by their <see cref="ITypeSupporter.SupportedType"/>.
     /// </returns>
     public static IDictionary<Type, T> GroupBySupportedType<T>(IEnumerable<T> typeHandlers)
         where T : ITypeSupporter
@@ -33,17 +29,13 @@ public static class TypeSupporter
     }
 
     /// <summary>
-    ///     Groups the <paramref name="typeHandlers"/> by what the
-    ///     <see cref="ITypeSupporter.SupportedType"/> inherits.
+    ///     Groups the <paramref name="typeHandlers"/> by what the <see cref="ITypeSupporter.SupportedType"/> inherits.
     /// </summary>
-    /// <typeparam name="T">
-    ///     The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.
-    /// </typeparam>
+    /// <typeparam name="T">The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.</typeparam>
     /// <param name="typeHandlers">The collection to group via iteration.</param>
     /// <returns>
-    ///     The collected <paramref name="typeHandlers"/> keyed by
-    ///     every <see langword="class"/> &amp; <see langword="interface"/>
-    ///     their <see cref="ITypeSupporter.SupportedType"/> inherits.
+    ///     The collected <paramref name="typeHandlers"/> keyed by every <see langword="class"/> &amp;
+    ///     <see langword="interface"/> their <see cref="ITypeSupporter.SupportedType"/> inherits.
     /// </returns>
     public static IDictionary<Type, T[]> GroupByInheritance<T>(IEnumerable<T> typeHandlers)
         where T : ITypeSupporter
@@ -75,14 +67,11 @@ public static class TypeSupporter
     ///     Groups the <paramref name="typeHandlers"/> by what the
     ///     <see cref="ITypeSupporter.SupportedType"/> is inherited by.
     /// </summary>
-    /// <typeparam name="T">
-    ///     The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.
-    /// </typeparam>
+    /// <typeparam name="T">The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.</typeparam>
     /// <param name="typeHandlers">The collection to group via iteration.</param>
     /// <returns>
-    ///     The collected <paramref name="typeHandlers"/> keyed by
-    ///     every <see langword="class"/> &amp; <see langword="interface"/>
-    ///     their <see cref="ITypeSupporter.SupportedType"/> is inherited by.
+    ///     The collected <paramref name="typeHandlers"/> keyed by every <see langword="class"/> &amp;
+    ///     <see langword="interface"/> their <see cref="ITypeSupporter.SupportedType"/> is inherited by.
     /// </returns>
     public static IDictionary<Type, T[]> GroupBySubclasses<T>(IEnumerable<T> typeHandlers)
         where T : ITypeSupporter

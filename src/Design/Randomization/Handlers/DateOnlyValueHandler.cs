@@ -18,7 +18,7 @@ internal sealed class DateOnlyValueHandler : IValueHandler
         try
         {
             return new DateOnlyValueHandler(
-                Assembly.Load("System.Runtime").GetType("System.DateOnly", true)
+                Assembly.Load("System.Runtime").GetType("System.DateOnly", true)!
             );
         }
         catch

@@ -4,9 +4,7 @@ namespace CreateAndFake.Design.Tooling;
 public interface IToolHint
 {
     /// <summary>Determines running order for dynamically loaded hints.</summary>
-    /// <remarks>
-    ///     Higher values take precedence. Refer to the tool's priority <see langword="enum"/>.
-    /// </remarks>
+    /// <remarks>Higher values take precedence. Refer to the tool's priority <see langword="enum"/>.</remarks>
     int EnginePriority { get; }
 
     /// <summary>Specific <see cref="Type"/>s explicitly supported.</summary>

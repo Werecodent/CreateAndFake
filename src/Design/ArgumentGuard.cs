@@ -11,9 +11,7 @@ namespace CreateAndFake.Design;
 /// <summary>Handles common argument <see cref="Exception"/> cases.</summary>
 public static class ArgumentGuard
 {
-    /// <summary>
-    ///     Prevents further execution if <paramref name="value"/> is <see langword="null"/>.
-    /// </summary>
+    /// <summary>Prevents further execution if <paramref name="value"/> is <see langword="null"/>.</summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="name">Name of the parameter.</param>
     /// <exception cref="ArgumentNullException">If <paramref name="value"/> is null.</exception>
@@ -29,9 +27,7 @@ public static class ArgumentGuard
         }
     }
 
-    /// <summary>
-    ///     Prevents further execution if any of the values are <see langword="null"/>.
-    /// </summary>
+    /// <summary>Prevents further execution if any of the values are <see langword="null"/>.</summary>
     /// <param name="valueA">First passed parameter value.</param>
     /// <param name="valueB">Second passed parameter value.</param>
     /// <param name="nameA">Parameter name for <paramref name="valueA"/>.</param>
@@ -112,8 +108,7 @@ public static class ArgumentGuard
         ThrowIfNull(valueE, nameE);
     }
 
-    /// <inheritdoc cref="ThrowIfNull(
-    ///     object,object,object,object,object,string,string,string,string,string)"/>
+    /// <inheritdoc cref="ThrowIfNull(object,object,object,object,object,string,string,string,string,string)"/>
     /// <param name="valueF">Sixth passed parameter value.</param>
     /// <param name="nameF">Parameter name for <paramref name="valueF"/>.</param>
     [DebuggerStepThrough]
@@ -206,9 +201,7 @@ public static class ArgumentGuard
         ThrowIfNull(valueH, nameH);
     }
 
-    /// <summary>
-    ///     Checks if <paramref name="value"/> is an asynchronous <see cref="Type"/> .
-    /// </summary>
+    /// <summary>Checks if <paramref name="value"/> is an asynchronous <see cref="Type"/> .</summary>
     /// <param name="value">Passed parameter value.</param>
     public static bool IsAsynchronous(object? value)
     {
@@ -216,10 +209,7 @@ public static class ArgumentGuard
             || (value?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
     }
 
-    /// <summary>
-    ///     Prevents further execution if <paramref name="value"/>
-    ///     is an asynchronous <see cref="Type"/>.
-    /// </summary>
+    /// <summary>Prevents further execution if <paramref name="value"/> is an asynchronous <see cref="Type"/>.</summary>
     /// <param name="value">Passed parameter value.</param>
     /// <param name="message">Error details for the potential <see cref="Exception"/>.</param>
     /// <exception cref="AsynchronousAccessException">

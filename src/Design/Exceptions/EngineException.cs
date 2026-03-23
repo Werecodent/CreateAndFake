@@ -4,8 +4,7 @@ using CreateAndFake.Design.Tooling;
 namespace CreateAndFake.Design.Exceptions;
 
 /// <summary>
-///     <see cref="Exception"/> <see cref="Type"/> for errors
-///     occurring within a <see cref="IToolEngine{T}"/>.
+///     <see cref="Exception"/> <see cref="Type"/> for errors occurring within a <see cref="IToolEngine{T}"/>.
 /// </summary>
 [Serializable]
 public sealed class EngineException : CreateAndFakeException

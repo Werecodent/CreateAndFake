@@ -2,10 +2,7 @@ using System.Runtime.Serialization;
 
 namespace CreateAndFake.Design.Exceptions;
 
-/// <summary>
-///     <see cref="Exception"/> <see cref="Type"/> for
-///     errors occurring due to lack of tooling support.
-/// </summary>
+/// <summary><see cref="Exception"/> <see cref="Type"/> for errors occurring due to lack of tooling support.</summary>
 [Serializable]
 public sealed class UnsupportedException : CreateAndFakeException
 {

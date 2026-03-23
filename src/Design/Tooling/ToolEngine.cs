@@ -35,9 +35,7 @@ public abstract class ToolEngine<THint> : IToolEngine<THint>
     public virtual IEnumerable<Type> SupportedTypes { get; } = _HintSupportedTypes;
 
     /// <summary>Picks hints to use for the tool based upon configured options.</summary>
-    /// <typeparam name="TOptions">
-    ///     The <see cref="Type"/> managing configuration options.
-    /// </typeparam>
+    /// <typeparam name="TOptions">The <see cref="Type"/> managing configuration options.</typeparam>
     /// <param name="chainer">Holds the configured options to use.</param>
     /// <returns>The selected hints to utilize in the order returned.</returns>
     protected static IEnumerable<THint> SelectHints<TOptions>(IToolChainer<TOptions, THint> chainer)

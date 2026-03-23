@@ -1,9 +1,7 @@
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
-/// <typeparam name="T">
-///     <inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/>
-/// </typeparam>
+/// <typeparam name="T"><inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/></typeparam>
 public static class AsyncSeriesHelper<T>
 {
     /// <summary>Cached series with no elements.</summary>

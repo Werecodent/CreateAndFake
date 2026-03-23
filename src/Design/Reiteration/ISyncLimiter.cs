@@ -16,9 +16,7 @@ public interface ISyncLimiter
         CancellationToken canceler = default
     );
 
-    /// <summary>
-    ///     Retries the <paramref name="behavior"/> until it returns <see langword="true"/>.
-    /// </summary>
+    /// <summary>Retries the <paramref name="behavior"/> until it returns <see langword="true"/>.</summary>
     /// <inheritdoc cref="StallUntil(string,Action,Func{bool},CancellationToken)"/>
     void StallUntil(string message, Func<bool> behavior, CancellationToken canceler = default);
 
@@ -165,23 +163,17 @@ public interface ISyncLimiter
 
     /// <summary>Retries <paramref name="behavior"/> upon encountering exceptions.</summary>
     /// <typeparam name="TError">
-    ///     Exception <see cref="Type"/> to ignore and retry
-    ///     the <paramref name="behavior"/> if encountered.
+    ///     Exception <see cref="Type"/> to ignore and retry the <paramref name="behavior"/> if encountered.
     /// </typeparam>
-    /// <typeparam name="TResult">
-    ///     Result <see cref="Type"/> returned from the <paramref name="behavior"/>.
-    /// </typeparam>
+    /// <typeparam name="TResult">Result <see cref="Type"/> returned from the <paramref name="behavior"/>.</typeparam>
     /// <param name="message">Details to include when throwing exceptions.</param>
     /// <param name="behavior">Code to repeatably attempt.</param>
     /// <param name="resetState">Code to run between attempts.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>
-    ///     Result of the successful <paramref name="behavior"/>
-    ///     attempt or <see langword="default"/> if limit reached.
+    ///     Result of the successful <paramref name="behavior"/> attempt or <see langword="default"/> if limit reached.
     /// </returns>
-    /// <exception cref="OperationCanceledException">
-    ///     If canceled via <paramref name="canceler"/>.
-    /// </exception>
+    /// <exception cref="OperationCanceledException">If canceled via <paramref name="canceler"/>.</exception>
     /// <remarks>Beware infinite loops in <paramref name="behavior"/>.</remarks>
     TResult? Attempt<TError, TResult>(
         string message,

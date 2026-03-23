@@ -5,8 +5,7 @@ using CreateAndFake.Design.Properties;
 namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>
-///     Compares <see langword="object"/>s/collections
-///     by value via <see cref="IValueEquatable"/> if possible.
+///     Compares <see langword="object"/>s/collections by value via <see cref="IValueEquatable"/> if possible.
 /// </summary>
 /// <param name="iterationLimit">Max supported size for iterating sequences.</param>
 /// <remarks>Not reflection based.</remarks>
@@ -153,21 +152,15 @@ public sealed class ValueComparer(int iterationLimit)
         }
     }
 
-    /// <summary>
-    ///     Computes an identifying hash code for <paramref name="items"/> based upon value.
-    /// </summary>
-    /// <param name="items">
-    ///     Bundled <see langword="object"/>s to generate a single hash code for.
-    /// </param>
+    /// <summary>Computes an identifying hash code for <paramref name="items"/> based upon value.</summary>
+    /// <param name="items">Bundled <see langword="object"/>s to generate a single hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="items"/>.</returns>
     public int GetHashCode(params IEnumerable<object?>? items)
     {
         return GetHashCode((IEnumerable?)items);
     }
 
-    /// <summary>
-    ///     Computes an identifying hash code for <paramref name="obj"/> based upon value.
-    /// </summary>
+    /// <summary>Computes an identifying hash code for <paramref name="obj"/> based upon value.</summary>
     /// <param name="obj">The <see langword="object"/> to generate a hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="obj"/>.</returns>
     public int GetHashCode(object? obj)
@@ -241,9 +234,7 @@ public sealed class ValueComparer(int iterationLimit)
         return hash;
     }
 
-    /// <summary>
-    ///     Compares <paramref name="x"/> and <paramref name="y"/> by their value hash for sorting.
-    /// </summary>
+    /// <summary>Compares <paramref name="x"/> and <paramref name="y"/> by their value hash for sorting.</summary>
     /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
     /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
     /// <returns><list type="bullet">

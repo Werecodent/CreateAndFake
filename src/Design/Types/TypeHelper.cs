@@ -9,8 +9,7 @@ public static class TypeHelper
 {
     /// <returns>The found inherited <see cref="Type"/>.</returns>
     /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
+    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     /// <inheritdoc cref="AsConcreteType(Type)"/>
     /// <inheritdoc cref="FindConcreteType(Type,Type)"/>
@@ -24,8 +23,7 @@ public static class TypeHelper
     ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
     /// </exception>
     /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
+    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
     public static Type FindConcreteType(Type child, Type genericBase)
@@ -42,8 +40,7 @@ public static class TypeHelper
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> to find the generic base of.</typeparam>
     /// <remarks>Example: <example><c>
-    ///     AsConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
+    ///     AsConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
     public static Type? AsConcreteType<T>(Type genericBase)
@@ -56,13 +53,10 @@ public static class TypeHelper
     ///     that is inherited by the <paramref name="child"/> <see cref="Type"/>.
     /// </summary>
     /// <param name="child">The <see cref="Type"/> to find the generic base of.</param>
-    /// <param name="genericBase">
-    ///     Generic <see cref="Type"/> definition without generics specified.
-    /// </param>
+    /// <param name="genericBase">Generic <see cref="Type"/> definition without generics specified.</param>
     /// <returns>The inherited <see cref="Type"/> if found, null otherwise.</returns>
     /// <remarks>Example: <example><c>
-    ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;))
-    ///     == typeof(IList&lt;int&gt;) // true
+    ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     public static Type? AsConcreteType(Type? child, Type genericBase)
     {
@@ -81,10 +75,7 @@ public static class TypeHelper
             .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
     }
 
-    /// <summary>
-    ///     Attempts to convert the <paramref name="type"/>
-    ///     to its generic <see cref="Type"/> definition.
-    /// </summary>
+    /// <summary>Attempts to convert the <paramref name="type"/> to its generic <see cref="Type"/> definition.</summary>
     /// <param name="type">The <see cref="Type"/> to convert.</param>
     /// <returns>
     ///     The generic <see cref="Type"/> definition for <paramref name="type"/> if it's generic,
@@ -95,9 +86,7 @@ public static class TypeHelper
         return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
     }
 
-    /// <summary>
-    ///     Determines if <typeparamref name="T"/> is usable in the <paramref name="assembly"/>.
-    /// </summary>
+    /// <summary>Determines if <typeparamref name="T"/> is usable in the <paramref name="assembly"/>.</summary>
     /// <typeparam name="T">The <see cref="Type"/> to verify visibility for.</typeparam>
     /// <inheritdoc cref="IsVisible(Type,AssemblyName)"/>
     public static bool IsVisible<T>(AssemblyName assembly)
@@ -105,13 +94,9 @@ public static class TypeHelper
         return IsVisible(typeof(T), assembly);
     }
 
-    /// <summary>
-    ///     Determines if the <paramref name="type"/> is usable in the <paramref name="assembly"/>.
-    /// </summary>
+    /// <summary>Determines if the <paramref name="type"/> is usable in the <paramref name="assembly"/>.</summary>
     /// <param name="type">The <see cref="Type"/> to verify visibility for.</param>
-    /// <param name="assembly">
-    ///     Name of the <see cref="Assembly"/> trying to use the <see cref="Type"/>.
-    /// </param>
+    /// <param name="assembly">Name of the <see cref="Assembly"/> trying to use the <see cref="Type"/>.</param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="Type"/> is visible to
     ///     the <paramref name="assembly"/>, <see langword="false"/> otherwise.
@@ -130,9 +115,7 @@ public static class TypeHelper
     ///     members are usable in the <paramref name="assembly"/>.
     /// </summary>
     /// <param name="type">The <see cref="Type"/> to verify visibility for.</param>
-    /// <param name="assembly">
-    ///     Name of the <see cref="Assembly"/> to check scope privilege for.
-    /// </param>
+    /// <param name="assembly">Name of the <see cref="Assembly"/> to check scope privilege for.</param>
     /// <returns>
     ///     <see langword="true"/> if the <see cref="Type"/>'s <see langword="internal"/>s
     ///     are visible to the <paramref name="assembly"/>, <see langword="false"/> otherwise.
@@ -211,13 +194,8 @@ public static class TypeHelper
     }
 
     /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see langword="class"/>es to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see langword="class"/> if the
-    ///     <paramref name="assembly"/> loads, none otherwise.
-    /// </returns>
+    /// <param name="assembly"><see cref="Assembly"/> containing the <see langword="class"/>es to search for.</param>
+    /// <returns>Every found <see langword="class"/> if the <paramref name="assembly"/> loads, none otherwise.</returns>
     public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
     {
         if (assembly == null)
@@ -232,13 +210,8 @@ public static class TypeHelper
     }
 
     /// <summary>Finds every <see cref="Type"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly">
-    ///     <see cref="Assembly"/> containing the <see cref="Type"/>s to search for.
-    /// </param>
-    /// <returns>
-    ///     Every found <see cref="Type"/> if the
-    ///     <paramref name="assembly"/> can load, none otherwise.
-    /// </returns>
+    /// <param name="assembly"><see cref="Assembly"/> containing the <see cref="Type"/>s to search for.</param>
+    /// <returns>Every found <see cref="Type"/> if the <paramref name="assembly"/> can load, none otherwise.</returns>
     internal static IEnumerable<Type> FindLoadedTypes(Assembly? assembly)
     {
         try

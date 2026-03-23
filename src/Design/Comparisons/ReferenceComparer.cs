@@ -4,10 +4,7 @@ using System.Runtime.CompilerServices;
 namespace CreateAndFake.Design.Comparisons;
 
 /// <summary>Compares <see langword="object"/>s by reference.</summary>
-/// <remarks>
-///     Ignores overrides to <see cref="object.Equals(object)"/>
-///     and <see cref="object.GetHashCode"/>.
-/// </remarks>
+/// <remarks>Ignores overrides to <see cref="object.Equals(object)"/> and <see cref="object.GetHashCode"/>.</remarks>
 public sealed class ReferenceComparer
     : IComparer,
         IComparer<object?>,
@@ -17,9 +14,7 @@ public sealed class ReferenceComparer
     /// <summary>Default instance to use for comparing by reference.</summary>
     public static ReferenceComparer Use { get; } = new();
 
-    /// <summary>
-    ///     Determines if <paramref name="x"/> equals <paramref name="y"/> by reference.
-    /// </summary>
+    /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by reference.</summary>
     /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
     /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
     /// <returns>
@@ -31,9 +26,7 @@ public sealed class ReferenceComparer
         return ReferenceEquals(x, y);
     }
 
-    /// <summary>
-    ///     Computes an identifying hash code for <paramref name="obj"/> based upon reference.
-    /// </summary>
+    /// <summary>Computes an identifying hash code for <paramref name="obj"/> based upon reference.</summary>
     /// <param name="obj">The <see langword="object"/> to generate a hash code for.</param>
     /// <returns>The reference computed hash code for <paramref name="obj"/>.</returns>
     public int GetHashCode(object? obj)
@@ -41,10 +34,7 @@ public sealed class ReferenceComparer
         return RuntimeHelpers.GetHashCode(obj);
     }
 
-    /// <summary>
-    ///     Compares <paramref name="x"/> and <paramref name="y"/>
-    ///     by their reference hash for sorting.
-    /// </summary>
+    /// <summary>Compares <paramref name="x"/> and <paramref name="y"/> by their reference hash for sorting.</summary>
     /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
     /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
     /// <returns><list type="bullet">

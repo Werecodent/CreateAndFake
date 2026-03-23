@@ -4,9 +4,7 @@ namespace CreateAndFake.Design.Tooling;
 
 /// <summary>Configuration for manipulating <see cref="IHintTool{T,T}"/> behavior.</summary>
 /// <typeparam name="TSelf">Self-reference <see cref="Type"/>.</typeparam>
-/// <typeparam name="THint">
-///     Hint <see cref="Type"/> used by the <see cref="IHintTool{T,T}"/>.
-/// </typeparam>
+/// <typeparam name="THint">Hint <see cref="Type"/> used by the <see cref="IHintTool{T,T}"/>.</typeparam>
 public interface IToolHintOptions<TSelf, THint> : IToolOptions
     where TSelf : IToolHintOptions<TSelf, THint>
     where THint : IToolHint

@@ -2,10 +2,7 @@ namespace CreateAndFake.Design.Content;
 
 #pragma warning disable IDE0001 // False positive: Lock is not always CustomLock.
 
-/// <summary>
-///     Type for <see langword="lock"/>s to prevent
-///     <see cref="object"/> <see cref="Type"/> conflicts.
-/// </summary>
+/// <summary>Type for <see langword="lock"/>s to prevent <see cref="object"/> <see cref="Type"/> conflicts.</summary>
 /// <param name="id"><inheritdoc cref="Id" path="/summary"/></param>
 /// <remarks>System.Threading.Lock should be used past .NET 9.</remarks>
 public sealed class CustomLock(Guid? id = null)

@@ -18,7 +18,7 @@ internal sealed class TimeOnlyValueHandler : IValueHandler
         try
         {
             return new TimeOnlyValueHandler(
-                Assembly.Load("System.Runtime").GetType("System.TimeOnly", true)
+                Assembly.Load("System.Runtime").GetType("System.TimeOnly", true)!
             );
         }
         catch

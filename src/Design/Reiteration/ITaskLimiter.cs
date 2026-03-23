@@ -16,8 +16,7 @@ public interface ITaskLimiter
     /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(string message, Task<bool> behavior, CancellationToken canceler);
 
-    /// <inheritdoc
-    ///     cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(
         string message,
         Task? behavior,
@@ -25,8 +24,7 @@ public interface ITaskLimiter
         CancellationToken canceler
     );
 
-    /// <inheritdoc
-    ///     cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(
         string message,
         Task? behavior,
@@ -50,8 +48,7 @@ public interface ITaskLimiter
         CancellationToken canceler
     );
 
-    /// <inheritdoc
-    ///     cref="IAsyncLimiter.StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken)"/>
     Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
         Task<T> behavior,
@@ -201,8 +198,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc
-    ///     cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,
@@ -211,8 +207,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc
-    ///     cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,

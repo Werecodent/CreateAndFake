@@ -3,8 +3,7 @@ using System.Runtime.Serialization;
 namespace CreateAndFake.Design.Exceptions;
 
 /// <summary>
-///     <see cref="Exception"/> <see cref="Type"/> for errors
-///     occurring within the <c>CreateAndFake</c> framework.
+///     <see cref="Exception"/> <see cref="Type"/> for errors occurring within the <c>CreateAndFake</c> framework.
 /// </summary>
 [Serializable]
 [KnownType(typeof(Exception))]

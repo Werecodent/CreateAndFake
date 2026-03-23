@@ -9,8 +9,7 @@ namespace CreateAndFake.Design.Types;
 public sealed class FactoryScanner(Type? type) : MemberScanner<MethodInfo>(type)
 {
     /// <summary>
-    ///     All <see langword="static"/> methods that
-    ///     create the <see cref="MemberScanner{T}.SupportedType"/>.
+    ///     All <see langword="static"/> methods that create the <see cref="MemberScanner{T}.SupportedType"/>.
     /// </summary>
     public override IEnumerable<MethodInfo> All { get; } = FindAllFactories(type).ToFrozenSet();
 

@@ -17,15 +17,15 @@ public sealed class FieldScanner(Type? type) : MemberScanner<FieldInfo>(type)
         All.Where(f => f.IsPublic || f.IsAssembly);
 
     /// <summary>
-    ///     The <see langword="public"/> and <see langword="internal"/>
-    ///     instance fields on the <see cref="MemberScanner{T}.SupportedType"/> that can be written to.
+    ///     The <see langword="public"/> and <see langword="internal"/> instance fields
+    ///     on the <see cref="MemberScanner{T}.SupportedType"/> that can be written to.
     /// </summary>
     /// <inheritdoc cref="MemberScanner{T}.Visible"/>
     public IEnumerable<FieldInfo> Writable => FindWritable(Assembly.GetCallingAssembly().GetName());
 
     /// <summary>
-    ///     Finds <see langword="public"/> and <see langword="internal"/>
-    ///     instance fields on the <see cref="MemberScanner{T}.SupportedType"/> that can be written to.
+    ///     Finds <see langword="public"/> and <see langword="internal"/> instance fields
+    ///     on the <see cref="MemberScanner{T}.SupportedType"/> that can be written to.
     /// </summary>
     /// <inheritdoc cref="MemberScanner{T}.FindVisible(AssemblyName)"/>
     internal IEnumerable<FieldInfo> FindWritable(AssemblyName assembly)

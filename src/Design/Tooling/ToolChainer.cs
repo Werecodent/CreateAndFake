@@ -65,9 +65,7 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     }
 
     /// <summary>Gets the appropriate <typeparamref name="TSelf"/> for child values.</summary>
-    /// <param name="optionConfiguration">
-    ///     Modifications of <see cref="Options"/> for the new chainer.
-    /// </param>
+    /// <param name="optionConfiguration">Modifications of <see cref="Options"/> for the new chainer.</param>
     /// <returns>The created <typeparamref name="TSelf"/> to use.</returns>
     protected TSelf GetSubChainer(Func<TOptions, TOptions>? optionConfiguration)
     {
@@ -78,9 +76,8 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     }
 
     /// <summary>
-    ///     Provides access to the concrete implementation of
-    ///     <see cref="ToolChainer(TOptions,TSelf)"/> for the
-    ///     <see langword="base"/> <see langword="class"/>.
+    ///     Provides access to the concrete implementation of <see cref="ToolChainer(TOptions,TSelf)"/>
+    ///     for the <see langword="base"/> <see langword="class"/>.
     /// </summary>
     /// <param name="subOptions">Configured options to use for the new chainer.</param>
     /// <returns>The created <typeparamref name="TSelf"/> to use for child values.</returns>
