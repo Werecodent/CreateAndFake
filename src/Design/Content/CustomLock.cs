@@ -1,6 +1,6 @@
 namespace CreateAndFake.Design.Content;
 
-#pragma warning disable IDE0001 // False positive, Lock is not always CustomLock.
+#pragma warning disable IDE0001 // False positive: Lock is not always CustomLock.
 
 /// <summary>
 ///     Type for <see langword="lock"/>s to prevent

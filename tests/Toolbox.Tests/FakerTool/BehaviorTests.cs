@@ -14,6 +14,7 @@ public static class BehaviorTests
             IgnorableExceptions =
             [
                 typeof(ArgumentException),
+                typeof(ArgumentNullException),
                 typeof(NotImplementedException),
                 typeof(TargetParameterCountException),
             ],

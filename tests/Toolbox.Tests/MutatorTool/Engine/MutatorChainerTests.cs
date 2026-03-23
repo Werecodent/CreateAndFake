@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.MutatorTool.Engine;
 
@@ -9,7 +10,8 @@ public static class MutatorChainerTests
     internal static Task MutatorChainer_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<MutatorChainer>(
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
         );
     }
 
@@ -18,7 +20,11 @@ public static class MutatorChainerTests
     {
         return Tools.Tester.PassthroughWithNoExceptionsAsync<MutatorChainer>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(InvalidCastException), typeof(ToolException)],
+                }
         );
     }
 

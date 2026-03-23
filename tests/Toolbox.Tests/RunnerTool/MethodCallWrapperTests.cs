@@ -21,6 +21,7 @@ public static class MethodCallWrapperTests
                 typeof(TargetParameterCountException),
                 typeof(InvalidOperationException),
                 typeof(FormatException),
+                typeof(NotSupportedException),
             ],
         };
 

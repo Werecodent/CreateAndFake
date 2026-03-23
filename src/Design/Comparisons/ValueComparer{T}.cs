@@ -15,7 +15,7 @@ public sealed class ValueComparer<T>(int iterationLimit)
         IComparer<IEnumerable<T>>,
         IEqualityComparer<T>,
         IEqualityComparer<IEnumerable<T>>,
-        IDeepCloneable
+        IDeepCloneable<ValueComparer<T>>
     where T : IValueEquatable
 {
     /// <inheritdoc cref="ValueComparer.Use"/>
@@ -82,7 +82,7 @@ public sealed class ValueComparer<T>(int iterationLimit)
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public ValueComparer<T> DeepClone()
     {
         return new ValueComparer<T>(iterationLimit);
     }

@@ -21,7 +21,7 @@ public sealed class ValueComparer(int iterationLimit)
         IEqualityComparer<IValueEquatable?>,
         IEqualityComparer<IEnumerable?>,
         IEqualityComparer<IDictionary?>,
-        IDeepCloneable
+        IDeepCloneable<ValueComparer>
 {
     /// <summary>Hash code used for <see langword="null"/> values.</summary>
     public static int NullHash { get; } = 0;
@@ -275,7 +275,7 @@ public sealed class ValueComparer(int iterationLimit)
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public ValueComparer DeepClone()
     {
         return new ValueComparer(iterationLimit);
     }

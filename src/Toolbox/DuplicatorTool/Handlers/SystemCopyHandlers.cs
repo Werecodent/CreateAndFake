@@ -11,12 +11,10 @@ internal static class SystemCopyHandlers
     internal static IEnumerable<ICopyHandler> Handlers { get; } =
     [
         new FactoryCopyHandler<StringBuilder>((source, _) => new StringBuilder(source.ToString())),
-        new FactoryCopyHandler<TimeSpan>((source, _) => new TimeSpan(source.Ticks)),
         new FactoryCopyHandler<Guid>((source, _) => new Guid(source.ToByteArray())),
         new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
+        new FactoryCopyHandler<ValueTuple>((_, __) => ValueTuple.Create()),
         new RefCopyHandler(typeof(TimeZoneInfo)),
-        new RefCopyHandler(typeof(DateTime)),
-        new RefCopyHandler(typeof(decimal)),
         new RefCopyHandler(typeof(UIntPtr)),
         new RefCopyHandler(typeof(IntPtr)),
         new RefCopyHandler(typeof(string)),

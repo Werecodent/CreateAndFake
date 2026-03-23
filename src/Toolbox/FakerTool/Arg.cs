@@ -3,7 +3,7 @@
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Provides the ability to match arguments based upon conditions.</summary>
-public sealed class Arg : IDeepCloneable
+public sealed class Arg : IDeepCloneable<Arg>
 {
     /// <summary>Current setup args.</summary>
     private static readonly ThreadLocal<IList<Tuple<Arg, object?>>> _ArgCache = new(() => []);
@@ -19,7 +19,7 @@ public sealed class Arg : IDeepCloneable
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public Arg DeepClone()
     {
         return new Arg(_matcher);
     }

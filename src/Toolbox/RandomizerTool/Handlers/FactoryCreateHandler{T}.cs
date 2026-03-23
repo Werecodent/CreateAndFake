@@ -1,3 +1,4 @@
+using CreateAndFake.Design.Types;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Handlers;
@@ -14,5 +15,11 @@ internal sealed class FactoryCreateHandler<T>(Func<IRandomizerChainer, T> factor
     public object? CreateSupported(IRandomizerChainer randomizer)
     {
         return factory.Invoke(randomizer);
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return TypeHelper.ExpandedName(GetType());
     }
 }

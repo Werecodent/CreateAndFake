@@ -40,6 +40,10 @@ public sealed class CollectionCreateHint : CreateHint
                 (_, data) => ImmutableHashSet.CreateRange((dynamic)data)
             },
             {
+                typeof(ImmutableSortedSet<>),
+                (_, data) => ImmutableSortedSet.CreateRange((dynamic)data)
+            },
+            {
                 typeof(ImmutableDictionary<,>),
                 (_, data) => ImmutableDictionary.CreateRange((dynamic)data)
             },
@@ -143,7 +147,7 @@ public sealed class CollectionCreateHint : CreateHint
             yield return typeof(Array);
         }
 
-        foreach (Type match in PotentialCollections.Where(typeAsGeneric.IsInheritedBy))
+        foreach (Type match in _Collections.Keys.Where(typeAsGeneric.IsInheritedBy))
         {
             if (!match.Inherits<IDictionary>() || itemType.Inherits(typeof(KeyValuePair<,>)))
             {

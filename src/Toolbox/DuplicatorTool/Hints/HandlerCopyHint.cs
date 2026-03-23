@@ -15,6 +15,7 @@ public sealed class HandlerCopyHint : CopyHint
         TypeSupporter.GroupBySupportedType(
             _Copiers
                 .Concat(SelfCopyHandlers.Handlers)
+                .Concat(ValueCopyHandlers.Handlers)
                 .Concat(SystemCopyHandlers.Handlers)
                 .Concat(ReflectionCopyHandlers.Handlers)
                 .Concat(LegacyCollectionCopyHandlers.Handlers)

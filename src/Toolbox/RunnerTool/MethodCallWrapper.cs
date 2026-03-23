@@ -9,7 +9,8 @@ namespace CreateAndFake.RunnerTool;
 /// <summary>Holds parameter data for a method.</summary>
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
-public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args) : IDuplicatable
+public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
+    : IDuplicatable<MethodCallWrapper>
 {
     /// <summary>Parameter names with associated data to pass.</summary>
     private readonly OrderedDictionary _args =
@@ -70,7 +71,7 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     }
 
     /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
+    public MethodCallWrapper DeepClone(IDuplicator duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 

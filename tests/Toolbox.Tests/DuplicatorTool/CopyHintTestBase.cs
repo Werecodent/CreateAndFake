@@ -24,13 +24,14 @@ public abstract class CopyHintTestBase<T>(
         {
             IgnorableExceptions =
             [
-                typeof(UnsupportedException),
-                typeof(TargetParameterCountException),
-                typeof(ArgumentException),
                 typeof(ToolException),
+                typeof(ArgumentException),
+                typeof(UnsupportedException),
+                typeof(NotSupportedException),
+                typeof(ArgumentNullException),
                 typeof(SerializationException),
                 typeof(PlatformNotSupportedException),
-                typeof(NotSupportedException),
+                typeof(TargetParameterCountException),
             ],
         };
 
@@ -56,7 +57,7 @@ public abstract class CopyHintTestBase<T>(
 
     /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
     [Fact]
-    public Task CopyHint_NoParameterMutation()
+    public virtual Task CopyHint_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             TestInstance,

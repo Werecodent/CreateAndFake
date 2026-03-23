@@ -16,23 +16,30 @@ public abstract class ValueRandom(
 ) : IRandom
 {
     /// <summary>Handlers for all the supported types.</summary>
-    private static readonly IValueHandler[] _Handlers =
-    [
-        .. TimeValueHandlers.Handlers,
-        new DecimalValueHandler(),
-        new DoubleValueHandler(),
-        new FloatValueHandler(),
-        new BoolValueHandler(),
-        new IntegralValueHandler<long>(8, BitConverter.ToInt64),
-        new IntegralValueHandler<ulong>(8, BitConverter.ToUInt64),
-        new IntegralValueHandler<int>(4, BitConverter.ToInt32),
-        new IntegralValueHandler<uint>(4, BitConverter.ToUInt32),
-        new IntegralValueHandler<short>(2, BitConverter.ToInt16),
-        new IntegralValueHandler<ushort>(2, BitConverter.ToUInt16),
-        new IntegralValueHandler<char>(2, BitConverter.ToChar),
-        new IntegralValueHandler<byte>(1, (bytes, _) => bytes[0]),
-        new IntegralValueHandler<sbyte>(1, (bytes, _) => (sbyte)bytes[0]),
-    ];
+    private static readonly IEnumerable<IValueHandler> _Handlers = Enumerable
+        .Empty<IValueHandler?>()
+        .Concat([
+            new BoolValueHandler(),
+            new FloatValueHandler(),
+            new DoubleValueHandler(),
+            new DecimalValueHandler(),
+            new TimeSpanValueHandler(),
+            new DateTimeValueHandler(),
+            new DateTimeOffsetValueHandler(),
+            new IntegralValueHandler<char>(2, BitConverter.ToChar),
+            new IntegralValueHandler<int>(4, BitConverter.ToInt32),
+            new IntegralValueHandler<uint>(4, BitConverter.ToUInt32),
+            new IntegralValueHandler<long>(8, BitConverter.ToInt64),
+            new IntegralValueHandler<ulong>(8, BitConverter.ToUInt64),
+            new IntegralValueHandler<short>(2, BitConverter.ToInt16),
+            new IntegralValueHandler<ushort>(2, BitConverter.ToUInt16),
+            new IntegralValueHandler<byte>(1, (bytes, _) => bytes[0]),
+            new IntegralValueHandler<sbyte>(1, (bytes, _) => (sbyte)bytes[0]),
+            DateOnlyValueHandler.TryToCreate(),
+            TimeOnlyValueHandler.TryToCreate(),
+            RuneValueHandler.TryToCreate(),
+        ])
+        .OfType<IValueHandler>();
 
     /// <summary>Supported types paired with the handler used to generate them.</summary>
     private static readonly IDictionary<Type, IValueHandler> _HandlersByType =

@@ -5,7 +5,7 @@ using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
 
-#pragma warning disable CA1307 // Not available for all versions.
+#pragma warning disable CA1307 // Not available for all .NET versions.
 
 /// <summary>Handles randomizing <see cref="IAsyncEnumerable{T}"/> collections for <see cref="IRandomizer"/>.</summary>
 public sealed class AsyncCollectionCreateHint : CreateHint

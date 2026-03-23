@@ -1,4 +1,4 @@
-#pragma warning disable CA1307, CA1310 // Not available for all versions.
+#pragma warning disable CA1307, CA1310 // Not available for all .NET versions.
 
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool;

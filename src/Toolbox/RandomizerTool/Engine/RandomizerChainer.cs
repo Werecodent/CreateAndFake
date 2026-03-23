@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.Design;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.RandomizerTool.Engine;
 
@@ -64,7 +65,7 @@ public sealed class RandomizerChainer
         }
         else
         {
-            throw new EngineException($"{type} already created.");
+            throw new EngineException($"Type '{TypeHelper.ExpandedName(type)}' already created.");
         }
     }
 
@@ -100,7 +101,7 @@ public sealed class RandomizerChainer
         }
         else
         {
-            return Engine.Create(type, GetSubChainer(optionConfiguration));
+            throw new EngineException($"Type '{TypeHelper.ExpandedName(parent)}' already created.");
         }
     }
 

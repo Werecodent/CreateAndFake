@@ -118,11 +118,9 @@ public sealed class ObjectCreateHint : CreateHint
         /*
          * Order of preference:
          * 1) Default constructor.
-         * 2) Public constructor.
-         * 3) Public factory.
-         * 4) Internal factory.
-         * 5) Internal constructor.
-         * 6) Stub.
+         * 2) Visible constructors.
+         * 3) Visible factories.
+         * 4) Stub.
          */
 
         ConstructorInfo? defaultConstructor = type.GetConstructor(Type.EmptyTypes);
@@ -134,40 +132,22 @@ public sealed class ObjectCreateHint : CreateHint
         {
             return defaultConstructor.Invoke(null);
         }
-        else if (FindConstructors(type, BindingFlags.Public, randomizer).Any())
+        else if (FindConstructors(type, randomizer).Any())
         {
             return CreateFrom(
                 randomizer,
                 smartData,
                 (c, d) => c.Invoke(d),
-                FindConstructors(type, BindingFlags.Public, randomizer)
+                FindConstructors(type, randomizer)
             );
         }
-        else if (FindFactories(type, BindingFlags.Public, randomizer).Any())
+        else if (FindFactories(type, randomizer).Any())
         {
             return CreateFrom(
                 randomizer,
                 smartData,
                 (c, d) => c.Invoke(null, d)!,
-                FindFactories(type, BindingFlags.Public, randomizer)
-            );
-        }
-        else if (FindFactories(type, BindingFlags.NonPublic, randomizer).Any())
-        {
-            return CreateFrom(
-                randomizer,
-                smartData,
-                (c, d) => c.Invoke(null, d)!,
-                FindFactories(type, BindingFlags.NonPublic, randomizer)
-            );
-        }
-        else if (FindConstructors(type, BindingFlags.NonPublic, randomizer).Any())
-        {
-            return CreateFrom(
-                randomizer,
-                smartData,
-                (c, d) => c.Invoke(d),
-                FindConstructors(type, BindingFlags.NonPublic, randomizer)
+                FindFactories(type, randomizer)
             );
         }
         else if (randomizer.Options.Faker.Supports(type))
@@ -219,18 +199,16 @@ public sealed class ObjectCreateHint : CreateHint
 
     /// <summary>Finds <see langword="public"/> or <see langword="internal"/> constructors.</summary>
     /// <param name="type"><see cref="Type"/> to search for.</param>
-    /// <param name="scope">Scope of constructors to look for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found constructors.</returns>
     private static IEnumerable<ConstructorInfo> FindConstructors(
         Type type,
-        BindingFlags scope,
         IRandomizerChainer? randomizer
     )
     {
-        return type.GetConstructors(BindingFlags.Instance | scope)
-            .Where(c => c.IsPublic || c.IsAssembly)
-            .Where(c =>
+        return TypeDescriber
+            .For(type)
+            .Constructors.Visible.Where(c =>
                 randomizer == null
                 || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
             );
@@ -238,21 +216,15 @@ public sealed class ObjectCreateHint : CreateHint
 
     /// <summary>Finds static methods that create <paramref name="type"/>.</summary>
     /// <param name="type"><see cref="Type"/> to search for.</param>
-    /// <param name="scope">Scope of constructors to look for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found factory methods.</returns>
-    private static IEnumerable<MethodInfo> FindFactories(
-        Type type,
-        BindingFlags scope,
-        IRandomizerChainer? randomizer
-    )
+    private static IEnumerable<MethodInfo> FindFactories(Type type, IRandomizerChainer? randomizer)
     {
         MethodInfo[] factories =
         [
-            .. type.GetMethods(BindingFlags.Static | scope)
-                .Where(m => m.IsPublic || m.IsAssembly)
-                .Where(m => m.ReturnType.Inherits(type))
-                .Where(c =>
+            .. TypeDescriber
+                .For(type)
+                .Factories.Visible.Where(c =>
                     randomizer == null
                     || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
                 ),

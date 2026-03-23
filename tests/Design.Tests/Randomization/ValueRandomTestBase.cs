@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Text;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
@@ -19,7 +20,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
 
     private readonly ValueRandom TestInstance = testInstance;
 
-    // [Fact]
+    [Fact]
     public Task ValueRandom_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<T>(
@@ -28,7 +29,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         );
     }
 
-    // [Fact]
+    [Fact]
     public Task ValueRandom_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync<T>(
@@ -184,6 +185,49 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
             v => v.AddTicks(-1)
         );
     }
+
+#if NET6_0_OR_GREATER
+    [Fact]
+    public void Supports_TimeOnly()
+    {
+        TestBasicSupport<TimeOnly>(default);
+        TestNextRange(
+            TimeOnly.MinValue,
+            TimeOnly.MaxValue,
+            v => v.Add(TimeSpan.FromTicks(1)),
+            v => v.Add(TimeSpan.FromTicks(-1))
+        );
+    }
+
+    [Fact]
+    public void Supports_DateOnly()
+    {
+        TestBasicSupport<DateOnly>(default);
+        TestNextRange(DateOnly.MinValue, DateOnly.MaxValue, v => v.AddDays(1), v => v.AddDays(-1));
+    }
+#endif
+
+#if NET5_0_OR_GREATER
+    [Fact]
+    public void Supports_Rune()
+    {
+        TestBasicSupport<Rune>(default);
+        TestNext(new Rune(0x0000), new Rune(0x10FFFF));
+        TestNextRange(
+            new Rune(0x0000),
+            new Rune(0xD7FF),
+            v => new Rune(v.Value + 1),
+            v => new Rune(v.Value - 1)
+        );
+        TestNextRange(
+            new Rune(0xE000),
+            new Rune(0x10FFFF),
+            v => new Rune(v.Value + 1),
+            v => new Rune(v.Value - 1)
+        );
+        TestNext(new Rune(0xD7FF), new Rune(0xE000));
+    }
+#endif
 
     [Fact]
     public void Supports_Bool()

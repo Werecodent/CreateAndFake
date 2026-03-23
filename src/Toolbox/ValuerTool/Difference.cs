@@ -6,7 +6,7 @@ using CreateAndFake.Design.Types;
 namespace CreateAndFake.ValuerTool;
 
 /// <summary>Expresses a value difference between two objects.</summary>
-public sealed class Difference : IValueEquatable, IDeepCloneable
+public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
 {
     /// <summary>Message stating the difference.</summary>
     private readonly Lazy<string> _message;
@@ -64,7 +64,7 @@ public sealed class Difference : IValueEquatable, IDeepCloneable
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public Difference DeepClone()
     {
         return new Difference(_message.Value);
     }

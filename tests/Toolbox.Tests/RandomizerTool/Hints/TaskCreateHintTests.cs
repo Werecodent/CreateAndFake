@@ -22,4 +22,10 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
 
     public TaskCreateHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+
+    [Fact]
+    internal static void TryCreate_TaskTypingCorrect()
+    {
+        Tools.Randomizer.Create<Task<object>>().GetType().Assert().Is(typeof(Task<object>));
+    }
 }

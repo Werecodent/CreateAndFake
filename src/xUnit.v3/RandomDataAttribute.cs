@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
@@ -102,9 +101,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 reflectable.GetTypeInfo().SetupReturn(typeof(Type));
             }
-            faked
-                .ToString()
-                .SetupReturn<string>(Design.Types.TypeHelper.ExpandedName(faked), Times.Any);
+            faked.ToString().SetupReturn(Design.Types.TypeHelper.ExpandedName(faked), Times.Any);
         }
         return arg;
     }

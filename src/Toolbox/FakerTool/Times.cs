@@ -3,7 +3,7 @@
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Tracks number of calls.</summary>
-public sealed class Times : IEquatable<Times>, IDeepCloneable
+public sealed class Times : IEquatable<Times>, IDeepCloneable<Times>
 {
     /// <summary>Expected bounds.</summary>
     private readonly int _min,
@@ -25,7 +25,7 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public Times DeepClone()
     {
         return new Times(_min, _max);
     }

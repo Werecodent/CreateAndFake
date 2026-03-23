@@ -10,7 +10,7 @@ namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Internal mechanism for faked object behavior.</summary>
 /// <param name="identifier"><inheritdoc cref="Identifier" path="/summary"/></param>
-public sealed class FakeMetaProvider(int identifier) : IDuplicatable
+public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaProvider>
 {
     /// <summary>Last called method.</summary>
     [ThreadStatic]
@@ -56,7 +56,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable
     }
 
     /// <inheritdoc/>
-    public IDuplicatable DeepClone(IDuplicator duplicator)
+    public FakeMetaProvider DeepClone(IDuplicator duplicator)
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 

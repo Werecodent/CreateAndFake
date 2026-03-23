@@ -12,8 +12,8 @@ namespace CreateAndFake.Design.Reiteration;
 [TypeConverter(typeof(LimiterTypeConverter))]
 public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
     : ILimiter,
-        IDeepCloneable,
-        IEquatable<Limiter>
+        IEquatable<Limiter>,
+        IDeepCloneable<Limiter>
 {
     /// <summary>Instance set to 1 attempt.</summary>
     public static Limiter Once { get; } = new Limiter(1);
@@ -262,7 +262,7 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public Limiter DeepClone()
     {
         return new Limiter(_timeout, _tries, _delay);
     }

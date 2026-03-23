@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Randomization;
 #pragma warning disable CA5394 // Secure alternative provided.
 
 /// <summary>For generating deterministic random values.</summary>
-public sealed class SeededRandom : ValueRandom, IDeepCloneable
+public sealed class SeededRandom : ValueRandom, IDeepCloneable<SeededRandom>
 {
     /// <summary>Prevents concurrency issues for <see cref="_seed"/>.</summary>
     private readonly Lock _lock = new();
@@ -75,7 +75,7 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable
     }
 
     /// <inheritdoc/>
-    public IDeepCloneable DeepClone()
+    public SeededRandom DeepClone()
     {
         return new SeededRandom(IterationLimit, OnlyValidValues, InitialSeed, Seed);
     }

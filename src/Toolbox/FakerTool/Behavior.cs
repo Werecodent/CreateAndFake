@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
 
 namespace CreateAndFake.FakerTool;
 
@@ -9,7 +8,7 @@ namespace CreateAndFake.FakerTool;
 /// <param name="implementation"><inheritdoc cref="Implementation" path="/summary"/></param>
 /// <param name="times"><inheritdoc cref="Limit" path="/summary"/></param>
 /// <param name="calls">Starting number of calls.</param>
-public abstract class Behavior(Delegate implementation, Times? times, int calls) : IDeepCloneable
+public abstract class Behavior(Delegate implementation, Times? times, int calls)
 {
     /// <summary>Set behavior to run.</summary>
     protected Delegate Implementation { get; } = implementation;
@@ -22,9 +21,6 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
 
     /// <summary>Triggers calling the base method of the given type instead.</summary>
     public Type? BaseCallType { get; private set; } = null;
-
-    /// <inheritdoc/>
-    public abstract IDeepCloneable DeepClone();
 
     /// <summary>Runs the behavior.</summary>
     /// <param name="args">Expected args for the behavior.</param>
@@ -70,14 +66,14 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <returns><see langword="true"/> if in range, <see langword="false"/> otherwise.</returns>
     internal bool HasExpectedCalls()
     {
-        return Limit.IsInRange(Calls);
+        return Limit?.IsInRange(Calls) ?? true;
     }
 
     /// <summary>Converts <see langword="this"/> to the number of expected calls.</summary>
     /// <returns>Text representation of expected calls.</returns>
     internal string ToExpectedCalls()
     {
-        return Limit.ToString();
+        return Limit?.ToString() ?? "";
     }
 
     /// <summary>Specifies no behavior for a fake.</summary>

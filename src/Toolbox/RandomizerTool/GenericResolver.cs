@@ -120,7 +120,9 @@ public static class GenericResolver
         {
             List<Type> directImplementations =
             [
-                .. FindSubclasses(type).Where(t => !randomizer.AlreadyCreated(t)),
+                .. randomizer.Options.Gen.NextSequence(
+                    FindSubclasses(type).Where(t => !randomizer.AlreadyCreated(t))
+                ),
             ];
 
             if (directImplementations.Count != 0)

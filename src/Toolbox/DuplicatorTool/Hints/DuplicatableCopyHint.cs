@@ -3,20 +3,40 @@ using CreateAndFake.DuplicatorTool.Engine;
 
 namespace CreateAndFake.DuplicatorTool.Hints;
 
-/// <summary>Handles cloning <see cref="IDuplicatable"/> instances for <see cref="IDuplicator"/> .</summary>
-public sealed class DuplicatableCopyHint : CopyHint<IDuplicatable>
+/// <summary>Handles cloning <see cref="IDuplicatable{T}"/> instances for <see cref="IDuplicator"/>.</summary>
+public sealed class DuplicatableCopyHint : CopyHint
 {
     /// <inheritdoc/>
     public override int EnginePriority => (int)CopyPriority.DuplicatableHint;
 
     /// <inheritdoc/>
-    public override IEnumerable<Type> SupportedTypes => [typeof(IDuplicatable)];
+    public override IEnumerable<Type> SupportedTypes => [typeof(IDuplicatable<>)];
 
     /// <inheritdoc/>
-    protected override IDuplicatable Copy(IDuplicatable source, IDuplicatorChainer duplicator)
+    public override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
     {
-        ArgumentGuard.ThrowIfNull(source, duplicator);
+        ArgumentGuard.ThrowIfNull(source);
 
-        return source.DeepClone(duplicator);
+        Type sourceType = source.GetType();
+        if (sourceType.Inherits(typeof(IDuplicatable<>)))
+        {
+            Type cloneType;
+            try
+            {
+                cloneType = typeof(IDuplicatable<>).MakeGenericType(sourceType);
+            }
+            catch (TypeLoadException)
+            {
+                return CopyHintResult.None;
+            }
+
+            return new(
+                cloneType.GetMethod(nameof(IDuplicatable<>.DeepClone))!.Invoke(source, [duplicator])
+            );
+        }
+        else
+        {
+            return CopyHintResult.None;
+        }
     }
 }

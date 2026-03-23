@@ -1,20 +1,9 @@
-﻿using System.Collections.Immutable;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Extensions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool.Handlers;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.RandomizerTool.Handlers;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
-using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests;
 
@@ -45,14 +34,14 @@ public static class ToolsTests
         return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.Current.CancellationToken);
     }
 
-    // [Fact]
+    /* [Fact]
     internal static Task Tools_SupportsAll()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
             TypeDescriber.For<object>().FindLoadedSubclasses(),
             TestContext.Current.CancellationToken
         );
-    }
+    }*/
 
     [Theory, RandomData]
     internal static void Tools_IntegrationWorks(
@@ -80,7 +69,7 @@ public static class ToolsTests
         Tools.Valuer.GetHashCode(dupe).Assert().Is(Tools.Valuer.GetHashCode(sample));
     }
 
-    // [Fact]
+    /* [Fact]
     internal static Task Tools_AllCreateAndFakeTypesWork()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
@@ -113,22 +102,22 @@ public static class ToolsTests
                     ],
                 }
         );
-    }
+    }*/
 
-    // [Fact]
+    /* [Fact]
     internal static Task Tools_ValidSamplesWork()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
             SampleGenerator.AllValidDataSamples,
             TestContext.Current.CancellationToken
         );
-    }
+    }*/
 
     [Fact]
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(ImmutableSortedDictionary<,>)],
+            [typeof(ValueTuple)],
             TestContext.Current.CancellationToken
         );
     }

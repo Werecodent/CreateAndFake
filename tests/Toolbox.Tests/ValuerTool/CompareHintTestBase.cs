@@ -117,9 +117,10 @@ public abstract class CompareHintTestBase<T>(
             try
             {
                 one = Tools.Randomizer.Create(type);
-                await Limiter.Score.StallUntilAsync(
-                    "Variant of same type.",
-                    () => two = Tools.Mutator.Variant(one.GetType(), one),
+                await Limiter.Hundred.StallUntilAsync(
+                    $"Variant of same type: {TypeHelper.ExpandedName(type)}, "
+                        + $"Existing type: {TypeHelper.ExpandedName(one)}.",
+                    () => two = Tools.Mutator.Variant(type, one),
                     () => two.GetType() == one.GetType(),
                     TestContext.Current.CancellationToken
                 );

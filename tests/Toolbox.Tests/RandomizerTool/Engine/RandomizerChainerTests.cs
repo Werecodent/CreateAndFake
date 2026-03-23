@@ -1,13 +1,110 @@
-﻿using CreateAndFake.Samples.Scenarios;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.FakerTool;
+using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.Tests.RandomizerTool.Engine;
 
 public static class RandomizerChainerTests
 {
     [Fact]
-    internal static void Create_HandlesInfinites()
+    internal static Task RandomizerChainer_GuardsNulls()
     {
-        Tools.Randomizer.Create<ChildWithParentSample>().Assert().IsNot(null);
-        Tools.Randomizer.Create<ParentLoopSample>().Assert().IsNot(null);
+        return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task RandomizerChainer_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentOutOfRangeException)] }
+        );
+    }
+
+    [Fact]
+    internal static Task MutatorChainer_PassthroughWithNoExceptions()
+    {
+        return Tools.Tester.PassthroughWithNoExceptionsAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] }
+        );
+    }
+
+    [Theory, RandomData]
+    internal static void CreateSpecific_ThrowsWhenRecreatingSameType(
+        [Stub] IRandomizerEngine engine,
+        Type specificType,
+        Type parentType
+    )
+    {
+        engine
+            .Create(specificType, Arg.Any<IRandomizerChainer>())
+            .SetupCall(
+                Behavior.Set<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateSpecific(specificType, parentType)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .Assert(c => c.CreateSpecific(specificType, parentType))
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_ThrowsWhenSameTypeRecreated(
+        [Stub] IRandomizerEngine engine,
+        object data
+    )
+    {
+        Type type = Tools.Mutator.Variant(data.GetType());
+
+        engine
+            .Create(type, Arg.Any<IRandomizerChainer>())
+            .SetupCall(
+                Behavior.Set<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateInternal(type, data)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .Assert(c => c.CreateInternal(type, data))
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_CreatesParentLoop(
+        [Stub] IRandomizerEngine engine,
+        object parentData,
+        object childData
+    )
+    {
+        Type type = Tools.Mutator.VariantOf([parentData.GetType(), childData.GetType()]);
+
+        engine
+            .Create(type, Arg.Any<IRandomizerChainer>())
+            .SetupCall(
+                Behavior.Set<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateInternal(parentData.GetType(), childData)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .CreateInternal(type, parentData)
+            .Assert()
+            .Is(parentData);
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_CreatesSelfLoop(
+        [Stub] IRandomizerEngine engine,
+        object data
+    )
+    {
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .CreateInternal(data.GetType(), data)
+            .Assert()
+            .Is(data);
     }
 }

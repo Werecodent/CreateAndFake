@@ -181,4 +181,11 @@ public static class RandomizerTests
         fake.Verify(Times.Once, f => f.FailIfNotMocked());
         fake2.Verify(Times.Once, f => f.FailIfNotMocked());
     }
+
+    [Fact]
+    internal static void Create_HandlesInfinites()
+    {
+        Tools.Randomizer.Create<ChildWithParentSample>().Assert().IsNot(null);
+        Tools.Randomizer.Create<ParentLoopSample>().Assert().IsNot(null);
+    }
 }

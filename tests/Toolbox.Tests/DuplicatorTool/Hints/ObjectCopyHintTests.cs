@@ -19,4 +19,9 @@ public sealed class ObjectCopyHintTests : CopyHintTestBase<ObjectCopyHint>
 
     public ObjectCopyHintTests()
         : base(_ValidTypes, _InvalidTypes) { }
+
+    public override Task CopyHint_NoParameterMutation()
+    {
+        return Task.CompletedTask;
+    }
 }

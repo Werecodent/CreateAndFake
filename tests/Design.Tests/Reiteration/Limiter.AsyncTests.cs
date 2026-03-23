@@ -225,7 +225,7 @@ public static class LimiterAsyncTests
             .GreaterThanOrEqualTo((_SmallDelay.TotalMilliseconds - _WaitAccuracy) * (tries - 1));
     }
 
-#pragma warning disable AsyncFixer02 // CancelAsync not available in legacy .net.
+#pragma warning disable AsyncFixer02 // CancelAsync not available in legacy .NET.
 
     [Fact]
     internal static async Task RepeatAsync_Cancelable()

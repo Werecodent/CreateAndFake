@@ -4,7 +4,7 @@ namespace CreateAndFake.FakerTool;
 
 /// <inheritdoc/>
 /// <typeparam name="T">Return type.</typeparam>
-public sealed class Behavior<T> : Behavior
+public sealed class Behavior<T> : Behavior, IDeepCloneable<Behavior<T>>
 {
     /// <inheritdoc/>>
     public Behavior(Delegate implementation, Times? times = null)
@@ -15,7 +15,7 @@ public sealed class Behavior<T> : Behavior
         : base(implementation, times, calls) { }
 
     /// <inheritdoc/>
-    public override IDeepCloneable DeepClone()
+    public Behavior<T> DeepClone()
     {
         return new Behavior<T>(Implementation, Limit, Calls);
     }
