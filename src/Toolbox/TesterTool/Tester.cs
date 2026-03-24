@@ -120,7 +120,7 @@ public class Tester(TesterOptions options) : ITester
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)
         {
             throw new SerializationException(
-                $"Ran into problem trying to serialize type '{TypeHelper.ExpandedName(type)}'.",
+                $"Ran into problem trying to serialize type '{GenericTypeConverter.ExpandedName(type)}'.",
                 e
             );
         }
@@ -128,7 +128,7 @@ public class Tester(TesterOptions options) : ITester
         localOptions.Asserter.Is(
             result,
             instance,
-            $"Instance of type '{TypeHelper.ExpandedName(type)}' did not deserialize with the same values."
+            $"Instance of type '{GenericTypeConverter.ExpandedName(type)}' did not deserialize with the same values."
         );
     }
 
@@ -377,10 +377,10 @@ public class Tester(TesterOptions options) : ITester
         FrozenSet<string> testClasses = testAssembly.GetTypes().Select(t => t.Name).ToFrozenSet();
 
         localOptions.Asserter.IsEmpty(
-            TypeHelper
+            ScopeChecker
                 .FindLoadedClassTypes(codeAssembly)
                 .Where(t => !t.IsAbstract || t.IsSealed)
-                .Where(t => TypeHelper.IsVisible(t, testAssembly.GetName()))
+                .Where(t => ScopeChecker.IsVisible(t, testAssembly.GetName()))
                 .Where(t =>
                 {
                     IEnumerable<string> possibleNames;
@@ -424,7 +424,7 @@ public class Tester(TesterOptions options) : ITester
 
         TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        IEnumerable<MethodInfo> testMethods = TypeHelper
+        IEnumerable<MethodInfo> testMethods = ScopeChecker
             .FindLoadedTypes(testAssembly)
             .Where(t => !t.IsGenericType)
             .SelectMany(t =>
@@ -536,8 +536,8 @@ public class Tester(TesterOptions options) : ITester
 
             string failMessage =
                 "Behavior did not work for type '"
-                + TypeHelper.ExpandedName(type)
-                + $"' randomized to '{TypeHelper.ExpandedName(original)}'.";
+                + GenericTypeConverter.ExpandedName(type)
+                + $"' randomized to '{GenericTypeConverter.ExpandedName(original)}'.";
 
             await localOptions
                 .Asserter.ValuesEqualAsync(

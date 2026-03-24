@@ -97,7 +97,7 @@ public partial class Asserter : IDelegateAsserter
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{TypeHelper.ExpandedName<T>()}' but received: ";
+            $"Expected exception of type '{GenericTypeConverter.ExpandedName<T>()}' but received: ";
         try
         {
             if (behavior is Action action)
@@ -142,7 +142,7 @@ public partial class Asserter : IDelegateAsserter
 
         return error as T
             ?? throw new AssertException(
-                errorMessage + TypeHelper.ExpandedName(e),
+                errorMessage + GenericTypeConverter.ExpandedName(e),
                 details,
                 localOptions.Gen.InitialSeed,
                 e

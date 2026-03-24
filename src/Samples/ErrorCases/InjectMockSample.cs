@@ -18,6 +18,6 @@ public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sa
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

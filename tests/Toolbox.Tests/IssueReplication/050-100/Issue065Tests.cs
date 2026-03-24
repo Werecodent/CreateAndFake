@@ -12,7 +12,7 @@ public static class Issue065Tests
 
         public override string ToString()
         {
-            return TypeHelper.ExpandedName(GetType());
+            return GenericTypeConverter.ExpandedName(GetType());
         }
     }
 
@@ -22,7 +22,7 @@ public static class Issue065Tests
 
         public override string ToString()
         {
-            return TypeHelper.ExpandedName(GetType());
+            return GenericTypeConverter.ExpandedName(GetType());
         }
     }
 
@@ -32,7 +32,7 @@ public static class Issue065Tests
 
         public override string ToString()
         {
-            return TypeHelper.ExpandedName(GetType());
+            return GenericTypeConverter.ExpandedName(GetType());
         }
     }
 

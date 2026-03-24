@@ -24,6 +24,6 @@ public class PrivateValuerEquatableSample(string stringValue) : IValuerEquatable
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

@@ -9,6 +9,6 @@ public sealed class InfiniteSample
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

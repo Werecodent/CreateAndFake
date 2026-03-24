@@ -11,6 +11,6 @@ public abstract class BaseReadableHolder<T>(T value) : IReadableHolder<T>
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

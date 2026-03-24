@@ -13,7 +13,7 @@ public sealed class TypeDescriber : ITypeSupporter
     private static readonly FrozenSet<Type> _AllTypesFromAllAssemblies = FindAllAssemblies()
         .Where(a => !a.ReflectionOnly)
         .Where(a => !a.IsDynamic)
-        .SelectMany(TypeHelper.FindLoadedTypes)
+        .SelectMany(ScopeChecker.FindLoadedTypes)
         .ToFrozenSet();
 
     /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
@@ -23,7 +23,7 @@ public sealed class TypeDescriber : ITypeSupporter
     private static readonly Dictionary<Type, TypeDescriber> _InheritCache = [];
 
     /// <summary>Associates no parents for <see langword="null"/>.</summary>
-    private static readonly TypeDescriber _NullDescriber = new(null, []);
+    private static readonly TypeDescriber _NullDescriber = new(null);
 
     /// <summary>Finds or loads inheritance data for <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The <see cref="Type"/> to find inheritance for.</typeparam>
@@ -48,7 +48,7 @@ public sealed class TypeDescriber : ITypeSupporter
         {
             if (!_InheritCache.TryGetValue(type, out describer))
             {
-                describer = _InheritCache[type] = new(type, FindParentInheritance(type));
+                describer = _InheritCache[type] = new(type);
             }
         }
         return describer;
@@ -58,7 +58,7 @@ public sealed class TypeDescriber : ITypeSupporter
     public Type? SupportedType { get; }
 
     /// <summary>All found <see cref="Type"/>s the <see cref="SupportedType"/> inherits.</summary>
-    public IEnumerable<Type> InheritedTypes { get; }
+    public IEnumerable<Type> InheritedTypes => _inheritedTypes.Value;
 
     /// <summary>All found <see cref="Type"/>s inheriting the <see cref="SupportedType"/>.</summary>
     public IEnumerable<Type> SubTypes => _subTypes.Value;
@@ -74,6 +74,9 @@ public sealed class TypeDescriber : ITypeSupporter
 
     /// <summary>Finds factories on the <see cref="SupportedType"/>.</summary>
     public FactoryScanner Factories => _factories.Value;
+
+    ///  <inheritdoc cref="InheritedTypes"/>
+    private readonly Lazy<FrozenSet<Type>> _inheritedTypes;
 
     /// <inheritdoc cref="SubTypes"/>
     private readonly Lazy<FrozenSet<Type>> _subTypes;
@@ -92,11 +95,10 @@ public sealed class TypeDescriber : ITypeSupporter
 
     /// <summary><inheritdoc cref="TypeDescriber"/></summary>
     /// <param name="type"><inheritdoc cref="SupportedType" path="/summary"/></param>
-    /// <param name="parents"><inheritdoc cref="InheritedTypes" path="/summary"/></param>
-    private TypeDescriber(Type? type, IEnumerable<Type> parents)
+    private TypeDescriber(Type? type)
     {
         SupportedType = type;
-        InheritedTypes = parents.ToFrozenSet();
+        _inheritedTypes = new(() => [.. FindParentInheritance(type)]);
         _subTypes = new(() => [.. FindLoadedChildren(type)]);
         _fields = new(() => new FieldScanner(type));
         _properties = new(() => new PropertyScanner(type));
@@ -169,7 +171,7 @@ public sealed class TypeDescriber : ITypeSupporter
         return SubTypes
             .Where(t => !t.IsAbstract)
             .Where(t => !t.IsGenericTypeDefinition)
-            .Where(t => TypeHelper.IsVisible(t, assembly));
+            .Where(t => ScopeChecker.IsVisible(t, assembly));
     }
 
     /// <inheritdoc cref="IsMutable(AssemblyName)"/>
@@ -179,7 +181,7 @@ public sealed class TypeDescriber : ITypeSupporter
     }
 
     /// <summary>Determines if the <see cref="SupportedType"/> has any modifiable properties/fields.</summary>
-    /// <inheritdoc cref="TypeHelper.IsVisible(Type?, AssemblyName)"/>
+    /// <inheritdoc cref="ScopeChecker.IsVisible(Type?, AssemblyName)"/>
     private bool IsMutable(AssemblyName assembly)
     {
         return Properties.FindSettable(assembly).Any() || Fields.FindWritable(assembly).Any();
@@ -208,8 +210,13 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <summary>Finds every <see cref="Type"/> that the <paramref name="type"/> inherits.</summary>
     /// <param name="type">The <see cref="Type"/> to find base classes/interfaces for.</param>
     /// <returns>All found base classes/interfaces.</returns>
-    private static HashSet<Type> FindParentInheritance(Type type)
+    private static HashSet<Type> FindParentInheritance(Type? type)
     {
+        if (type == null)
+        {
+            return [];
+        }
+
         HashSet<Type> foundParents = [type];
         Stack<Type> sourceTypes = new(foundParents);
 
@@ -269,6 +276,6 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{nameof(TypeDescriber)}({TypeHelper.ExpandedName(SupportedType)})";
+        return $"{nameof(TypeDescriber)}({GenericTypeConverter.ExpandedName(SupportedType)})";
     }
 }

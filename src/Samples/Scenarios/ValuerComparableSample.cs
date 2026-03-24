@@ -40,6 +40,6 @@ public class ValuerComparableSample : IValuerComparable
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

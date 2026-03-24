@@ -27,7 +27,7 @@ public sealed class ObjectCreateHint : CreateHint
             (type == null)
                 ? null
                 : randomizer.Options.ObjectCreateAttempts.Attempt(
-                    $"Create object of type '{TypeHelper.ExpandedName(type)}'",
+                    $"Create object of type '{GenericTypeConverter.ExpandedName(type)}'",
                     () => Create(type, type, randomizer)
                 );
 
@@ -60,7 +60,7 @@ public sealed class ObjectCreateHint : CreateHint
         {
             Disposer.Cleanup(data);
             throw new UnsupportedException(
-                $"Could not randomize content for '{TypeHelper.ExpandedName(data)}'."
+                $"Could not randomize content for '{GenericTypeConverter.ExpandedName(data)}'."
             );
         }
     }

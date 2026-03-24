@@ -17,8 +17,8 @@ public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
     public Difference(Type expectedType, Type? actualType)
     {
         _message = new Lazy<string>(() =>
-            $"-> Expected type:<{TypeHelper.ExpandedName(expectedType)}>, "
-            + $"Actual type:<{TypeHelper.ExpandedName(actualType)}>"
+            $"-> Expected type:<{GenericTypeConverter.ExpandedName(expectedType)}>, "
+            + $"Actual type:<{GenericTypeConverter.ExpandedName(actualType)}>"
         );
     }
 

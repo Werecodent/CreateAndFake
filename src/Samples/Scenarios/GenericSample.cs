@@ -13,6 +13,6 @@ public abstract class GenericSample<TClass>
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

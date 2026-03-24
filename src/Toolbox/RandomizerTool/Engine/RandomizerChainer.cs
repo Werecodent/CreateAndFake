@@ -65,7 +65,9 @@ public sealed class RandomizerChainer
         }
         else
         {
-            throw new EngineException($"Type '{TypeHelper.ExpandedName(type)}' already created.");
+            throw new EngineException(
+                $"Type '{GenericTypeConverter.ExpandedName(type)}' already created."
+            );
         }
     }
 
@@ -101,7 +103,9 @@ public sealed class RandomizerChainer
         }
         else
         {
-            throw new EngineException($"Type '{TypeHelper.ExpandedName(parent)}' already created.");
+            throw new EngineException(
+                $"Type '{GenericTypeConverter.ExpandedName(parent)}' already created."
+            );
         }
     }
 

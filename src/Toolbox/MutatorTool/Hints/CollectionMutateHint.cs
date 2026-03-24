@@ -31,7 +31,7 @@ public sealed class CollectionMutateHint : MutateHint
         return (bool)
             _Modifier
                 .MakeGenericMethod(
-                    TypeHelper
+                    GenericTypeConverter
                         .FindConcreteType(instance.GetType(), typeof(ICollection<>))
                         .GetGenericArguments()
                 )

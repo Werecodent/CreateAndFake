@@ -254,7 +254,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{TypeHelper.ExpandedName(GetType())}({Identifier})";
+        return $"{GenericTypeConverter.ExpandedName(GetType())}({Identifier})";
     }
 }
 

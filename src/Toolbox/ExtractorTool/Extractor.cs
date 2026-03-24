@@ -31,7 +31,7 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         catch (Exception e)
         {
             throw new ToolException(
-                $"Issue extracting type '{TypeHelper.ExpandedName(source)}'.",
+                $"Issue extracting type '{GenericTypeConverter.ExpandedName(source)}'.",
                 e
             );
         }

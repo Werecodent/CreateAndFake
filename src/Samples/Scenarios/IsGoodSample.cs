@@ -9,6 +9,6 @@ public class IsGoodSample : IIsGoodOrBadSample
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

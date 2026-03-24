@@ -41,7 +41,7 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
     /// <inheritdoc cref="FindSettable(AssemblyName)"/>
     internal IEnumerable<PropertyInfo> FindSetAndGetable(AssemblyName assembly)
     {
-        bool nonPublic = TypeHelper.InternalsAreVisible(SupportedType, assembly);
+        bool nonPublic = ScopeChecker.InternalsAreVisible(SupportedType, assembly);
         return FindSettable(assembly)
             .Where(p =>
             {
@@ -57,7 +57,7 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
     /// <inheritdoc cref="MemberScanner{T}.FindVisible(AssemblyName)"/>
     internal IEnumerable<PropertyInfo> FindSettable(AssemblyName assembly)
     {
-        bool nonPublic = TypeHelper.InternalsAreVisible(SupportedType, assembly);
+        bool nonPublic = ScopeChecker.InternalsAreVisible(SupportedType, assembly);
         return All.Where(p =>
         {
             MethodInfo? setMethod = p.GetSetMethod(nonPublic);

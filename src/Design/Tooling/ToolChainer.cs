@@ -91,6 +91,6 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

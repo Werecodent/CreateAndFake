@@ -52,7 +52,7 @@ public static class BehaviorTests
             Type type = info.GetParameters()[0].ParameterType;
 
             Type[] generics =
-                TypeHelper
+                GenericTypeConverter
                     .AsGenericBase(type)
                     ?.GetGenericArguments()
                     .Select(_ => typeof(string))

@@ -25,7 +25,10 @@ public sealed class DictionaryMutateHint : MutateHint<IDictionary>
             return _Handler.ModifySupported(instance, chainer);
         }
 
-        Type? pairType = TypeHelper.AsConcreteType(instance.GetType(), typeof(IDictionary<,>));
+        Type? pairType = GenericTypeConverter.AsConcreteType(
+            instance.GetType(),
+            typeof(IDictionary<,>)
+        );
 
         Type keyType =
             pairType?.GetGenericArguments()[0]

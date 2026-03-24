@@ -138,7 +138,7 @@ public static class Subclasser
                 )
             );
         }
-        else if (!TypeHelper.IsVisible(parent, AssemblyName))
+        else if (!ScopeChecker.IsVisible(parent, AssemblyName))
         {
             return (
                 false,

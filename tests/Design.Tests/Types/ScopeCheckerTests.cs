@@ -1,0 +1,85 @@
+using System.Reflection;
+using CreateAndFake.Design.Types;
+using CreateAndFake.FakerTool;
+using CreateAndFake.Samples.Scenarios;
+
+namespace CreateAndFake.Design.Tests.Types;
+
+public static class ScopeCheckerTests
+{
+    [Fact]
+    internal static Task ScopeChecker_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            typeof(ScopeChecker),
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
+        );
+    }
+
+    [Fact]
+    internal static Task ScopeChecker_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync(
+            typeof(ScopeChecker),
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
+        );
+    }
+
+    [Fact]
+    internal static void FindLoadedClassTypes_IncludesOnlyClasses()
+    {
+        ScopeChecker
+            .FindLoadedClassTypes(typeof(DataSample).Assembly)
+            .Assert()
+            .Contains(typeof(DataSample))
+            .And.ContainsNot(typeof(IIsGoodOrBadSample));
+    }
+
+    [Theory, RandomData]
+    internal static void FindLoadedTypes_IgnoresMissingAssembly(
+        [Stub] Assembly assembly,
+        FileNotFoundException error
+    )
+    {
+        assembly.GetTypes().SetupCall(Behavior<Type[]>.Throw(error, Times.Once));
+        ScopeChecker.FindLoadedTypes(assembly).Assert().IsEmpty();
+        assembly.Assert().Called();
+    }
+
+    [Theory, RandomData]
+    internal static void FindLoadedTypes_IgnoresReflectError(
+        [Stub] Assembly assembly,
+        ReflectionTypeLoadException error
+    )
+    {
+        assembly.GetTypes().SetupCall(Behavior<Type[]>.Throw(error, Times.Once));
+        ScopeChecker.FindLoadedTypes(assembly).Assert().IsEmpty();
+        assembly.Assert().Called();
+    }
+
+    [Fact]
+    internal static void IsVisible_TrueForPublicClasses()
+    {
+        ScopeChecker.IsVisible<DataSample>(typeof(string).Assembly.GetName()).Assert().Is(true);
+    }
+
+    [Fact]
+    internal static void IsVisible_TrueForInternalsWithAttribute()
+    {
+        ScopeChecker
+            .IsVisible<InternalSample>(Assembly.GetExecutingAssembly().GetName())
+            .Assert()
+            .Is(true);
+    }
+
+    [Fact]
+    internal static void IsVisible_FalseForInternalsWithoutAttribute()
+    {
+        ScopeChecker
+            .IsVisible<InternalSample>(typeof(string).Assembly.GetName())
+            .Assert()
+            .Is(false);
+    }
+}

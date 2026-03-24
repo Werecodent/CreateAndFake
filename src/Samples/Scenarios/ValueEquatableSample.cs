@@ -24,6 +24,6 @@ public class ValueEquatableSample : IValueEquatable
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

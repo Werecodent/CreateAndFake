@@ -16,6 +16,6 @@ public abstract class BaseWriteableHolder<T> : IWriteableHolder<T>
 
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

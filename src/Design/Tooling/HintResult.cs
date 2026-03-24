@@ -16,6 +16,6 @@ public abstract class HintResult<T>(bool hasData, T data) : IHintResult<T>
     /// <inheritdoc/>
     public override string ToString()
     {
-        return TypeHelper.ExpandedName(GetType());
+        return GenericTypeConverter.ExpandedName(GetType());
     }
 }

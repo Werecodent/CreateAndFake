@@ -83,9 +83,9 @@ public abstract class CopyHintTestBase<T>(
                     new CopyHintResult(data),
                     result,
                     TestContext.Current.CancellationToken,
-                    $"Hint '{TypeHelper.ExpandedName<T>()}' failed to clone type "
-                        + $"'{TypeHelper.ExpandedName(type)}'. "
-                        + $"Actual type: '{TypeHelper.ExpandedName(data)}'."
+                    $"Hint '{GenericTypeConverter.ExpandedName<T>()}' failed to clone type "
+                        + $"'{GenericTypeConverter.ExpandedName(type)}'. "
+                        + $"Actual type: '{GenericTypeConverter.ExpandedName(data)}'."
                 );
 
                 await result
@@ -93,9 +93,9 @@ public abstract class CopyHintTestBase<T>(
                     .IsAsync(
                         data,
                         TestContext.Current.CancellationToken,
-                        $"Hint '{TypeHelper.ExpandedName<T>()}' failed to create clone that's "
-                            + $"equal by value for type '{TypeHelper.ExpandedName(type)}'. "
-                            + $"Actual type '{TypeHelper.ExpandedName(data)}'."
+                        $"Hint '{GenericTypeConverter.ExpandedName<T>()}' failed to create clone that's "
+                            + $"equal by value for type '{GenericTypeConverter.ExpandedName(type)}'. "
+                            + $"Actual type '{GenericTypeConverter.ExpandedName(data)}'."
                     );
             }
             finally

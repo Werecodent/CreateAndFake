@@ -40,7 +40,7 @@ public sealed class CollectionCopyHint : CopyHint
             else
             {
                 throw new UnsupportedException(
-                    $"Collection '{TypeHelper.ExpandedName(source)}' not supported by the "
+                    $"Collection '{GenericTypeConverter.ExpandedName(source)}' not supported by the "
                         + "duplicator. Create a hint to generate the type."
                 );
             }
@@ -62,7 +62,7 @@ public sealed class CollectionCopyHint : CopyHint
             source,
             itemType,
             duplicator,
-            _ReverseCases.Contains(TypeHelper.AsGenericBase(type) ?? type)
+            _ReverseCases.Contains(GenericTypeConverter.AsGenericBase(type) ?? type)
         );
 
         return MakeCollection(contents, type, itemType, duplicator);
@@ -79,7 +79,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             return contents;
         }
-        else if (TypeHelper.AsGenericBase(collectionType) == typeof(Dictionary<,>))
+        else if (GenericTypeConverter.AsGenericBase(collectionType) == typeof(Dictionary<,>))
         {
             dynamic result = Activator.CreateInstance(collectionType)!;
             foreach (dynamic item in contents)

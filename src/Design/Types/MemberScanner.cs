@@ -48,7 +48,7 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     /// <returns>All found properties on the <see cref="Type"/>.</returns>
     internal IEnumerable<T> FindVisible(AssemblyName assembly)
     {
-        return TypeHelper.InternalsAreVisible(SupportedType, assembly)
+        return ScopeChecker.InternalsAreVisible(SupportedType, assembly)
             ? PublicOrInternal
             : OnlyPublic;
     }
