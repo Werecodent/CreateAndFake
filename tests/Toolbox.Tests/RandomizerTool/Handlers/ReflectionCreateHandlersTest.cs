@@ -32,9 +32,10 @@ public static class ReflectionCreateHandlersTests
     internal static async Task Handlers_AllMethodsSupported()
     {
         foreach (
-            MethodBase method in ReflectionCreateHandlers
-                .PossibleConstructors.Cast<MethodBase>()
+            MethodBase method in Enumerable
+                .Empty<MethodBase>()
                 .Concat(ReflectionCreateHandlers.PossibleMethods)
+                .Concat(ReflectionCreateHandlers.PossibleConstructors)
         )
         {
             object instance = null;

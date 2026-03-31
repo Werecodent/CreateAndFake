@@ -13,6 +13,7 @@ internal static class ReflectionCreateHandlers
     [
         "Join",
         "Parse",
+        "Format",
         "ToLower",
         "ToUpper",
         "Compare",
@@ -55,9 +56,8 @@ internal static class ReflectionCreateHandlers
         .SelectMany(t => t.GetMethods())
         .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-        .Where(m => m.ReflectedType != typeof(string) || m.Name != nameof(string.Format))
         .Where(m => !m.IsGenericMethodDefinition)
-        .Where(m => !_MethodsToExclude.Contains(m.Name))
+        .Where(m => m.Name != null && !_MethodsToExclude.Contains(m.Name))
         .ToFrozenSet();
 
     /// <summary>Potential properties to randomize.</summary>

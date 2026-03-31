@@ -9,7 +9,7 @@ public sealed class DefaultEqualityCompareHintTests
 {
     private static readonly DefaultEqualityCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes = [typeof(BindingFlags), typeof(Delegate)];
+    private static readonly Type[] _ValidTypes = [typeof(BindingFlags), typeof(Func<>)];
 
     private static readonly Type[] _InvalidTypes =
     [
