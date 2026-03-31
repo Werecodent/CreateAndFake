@@ -60,7 +60,7 @@ public static class ReflectionCreateHandlersTests
             }
             finally
             {
-                await Disposer.CleanupAsync(instance, wrapper.Args, result.Result);
+                await Disposer.CleanupAsync(instance, wrapper?.Args, result?.Result);
             }
         }
     }

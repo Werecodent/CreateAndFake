@@ -57,7 +57,7 @@ internal static class ReflectionCreateHandlers
         .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
         .Where(m => !m.IsGenericMethodDefinition)
-        .Where(m => m.Name != null && !_MethodsToExclude.Contains(m.Name))
+        .Where(m => !_MethodsToExclude.Contains(m.Name))
         .ToFrozenSet();
 
     /// <summary>Potential properties to randomize.</summary>

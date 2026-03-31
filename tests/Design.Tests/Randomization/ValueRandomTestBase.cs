@@ -1,9 +1,11 @@
 ﻿using System.Collections.Frozen;
-using System.Text;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Samples.Scenarios;
+#if NET5_0_OR_GREATER
+using System.Text;
+#endif
 
 namespace CreateAndFake.Design.Tests.Randomization;
 
