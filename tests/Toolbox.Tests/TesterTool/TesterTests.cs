@@ -72,7 +72,8 @@ public static class TesterTests
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
             await _LongTestInstance.PreventsNullRefExceptionAsync<MockDisposableSample>(
-                TestContext.Current.CancellationToken
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisableNullRefExceptionTests = false }
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
@@ -95,7 +96,8 @@ public static class TesterTests
             MockDisposableSample._Fake = Tools.Faker.Stub<IDisposable>();
 
             await _LongTestInstance.PreventsParameterMutationAsync<MockDisposableSample>(
-                TestContext.Current.CancellationToken
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisableParameterMutationTests = false }
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);

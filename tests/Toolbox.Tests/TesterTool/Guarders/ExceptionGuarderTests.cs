@@ -1,10 +1,10 @@
 ﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.TesterTool;
+using CreateAndFake.TesterTool.Guarders;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class ExceptionGuarderTests
 {

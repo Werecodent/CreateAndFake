@@ -7,7 +7,7 @@ using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
 using CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool;
+namespace CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates checks.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
@@ -46,6 +46,33 @@ internal abstract class BaseGuarder(TesterOptions options)
             .Where(m => !m.IsStatic || !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
             .Where(m => !m.IsPrivate)
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
+    }
+
+    /// <summary>Attempts to test all methods.</summary>
+    /// <param name="type">Type being tested.</param>
+    /// <param name="checker">Test to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    protected async Task CreateInstanceAndTestMethodsAsync(
+        Type type,
+        Func<object, CancellationToken, Task> checker,
+        CancellationToken canceler
+    )
+    {
+        if (Options.IncludeInstanceMethods && !(type.IsAbstract && type.IsSealed))
+        {
+            object instance =
+                (Options.InjectionValues.Length > 0)
+                    ? Options.Randomizer.Inject(type, Options.InjectionValues)
+                    : Options.Randomizer.Create(type);
+            try
+            {
+                await checker.Invoke(instance, canceler).ConfigureAwait(false);
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(instance).ConfigureAwait(false);
+            }
+        }
     }
 
     /// <summary>Calls all methods to test parameter being set to null.</summary>

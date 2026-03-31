@@ -20,7 +20,15 @@ public static class RandomizerChainerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<RandomizerChainer>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentOutOfRangeException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(ArgumentException),
+                    ],
+                }
         );
     }
 

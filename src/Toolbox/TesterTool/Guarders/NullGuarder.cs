@@ -3,12 +3,74 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool;
+namespace CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates null reference guard checks.</summary>
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 {
+    /// <inheritdoc/>
+    public Task PreventsNullRefExceptionAsync<T>(CancellationToken canceler)
+    {
+        return PreventsNullRefExceptionAsync(typeof(T), canceler);
+    }
+
+    /// <inheritdoc/>
+    public async Task PreventsNullRefExceptionAsync(Type type, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(type);
+
+        if (Options.DisableNullRefExceptionTests)
+        {
+            return;
+        }
+
+        if (Options.IncludeConstructors)
+        {
+            await PreventsNullRefExceptionOnConstructorsAsync(type, true, canceler)
+                .ConfigureAwait(false);
+        }
+
+        await CreateInstanceAndTestMethodsAsync(
+                type,
+                PreventsNullRefExceptionOnMethodsAsync,
+                canceler
+            )
+            .ConfigureAwait(false);
+
+        if (Options.IncludeStaticMethods)
+        {
+            await PreventsNullRefExceptionOnStaticsAsync(type, true, canceler)
+                .ConfigureAwait(false);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task PreventsNullRefExceptionAsync<T>(T instance, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(instance);
+
+        if (Options.DisableNullRefExceptionTests)
+        {
+            return;
+        }
+
+        if (Options.IncludeConstructors)
+        {
+            await PreventsNullRefExceptionOnConstructorsAsync(typeof(T), false, canceler)
+                .ConfigureAwait(false);
+        }
+        if (Options.IncludeInstanceMethods)
+        {
+            await PreventsNullRefExceptionOnMethodsAsync(instance, canceler).ConfigureAwait(false);
+        }
+        if (Options.IncludeStaticMethods)
+        {
+            await PreventsNullRefExceptionOnStaticsAsync(typeof(T), false, canceler)
+                .ConfigureAwait(false);
+        }
+    }
+
     /// <summary>
     ///     Verifies nulls are guarded on constructors.
     ///     Tests each nullable parameter possible with null.

@@ -22,7 +22,8 @@ public static class Issue015Tests
             .Assert(t =>
                 Tools.Tester.PreventsParameterMutationAsync(
                     t,
-                    TestContext.Current.CancellationToken
+                    TestContext.Current.CancellationToken,
+                    opt => opt with { DisableParameterMutationTests = false }
                 )
             )
             .Throws<AssertException>();

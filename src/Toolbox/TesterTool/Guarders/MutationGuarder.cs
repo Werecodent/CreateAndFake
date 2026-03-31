@@ -3,12 +3,82 @@ using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool;
+namespace CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates parameter mutation checks.</summary>
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(options)
 {
+    /// <inheritdoc/>
+    public Task PreventsParameterMutationAsync<T>(CancellationToken canceler)
+    {
+        return PreventsParameterMutationAsync(typeof(T), canceler);
+    }
+
+    /// <inheritdoc/>
+    public async Task PreventsParameterMutationAsync(Type type, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(type);
+
+        if (Options.DisableParameterMutationTests)
+        {
+            return;
+        }
+
+        MutationGuarder checker = new(Options);
+
+        if (Options.IncludeConstructors)
+        {
+            await checker
+                .PreventsMutationOnConstructorsAsync(type, true, canceler)
+                .ConfigureAwait(false);
+        }
+
+        await CreateInstanceAndTestMethodsAsync(
+                type,
+                checker.PreventsMutationOnMethodsAsync,
+                canceler
+            )
+            .ConfigureAwait(false);
+
+        if (Options.IncludeStaticMethods)
+        {
+            await checker
+                .PreventsMutationOnStaticsAsync(type, true, canceler)
+                .ConfigureAwait(false);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task PreventsParameterMutationAsync<T>(T instance, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(instance);
+
+        if (Options.DisableParameterMutationTests)
+        {
+            return;
+        }
+
+        MutationGuarder checker = new(Options);
+
+        if (Options.IncludeConstructors)
+        {
+            await checker
+                .PreventsMutationOnConstructorsAsync(typeof(T), false, canceler)
+                .ConfigureAwait(false);
+        }
+        if (Options.IncludeInstanceMethods)
+        {
+            await checker.PreventsMutationOnMethodsAsync(instance, canceler).ConfigureAwait(false);
+        }
+        if (Options.IncludeStaticMethods)
+        {
+            await checker
+                .PreventsMutationOnStaticsAsync(typeof(T), false, canceler)
+                .ConfigureAwait(false);
+        }
+    }
+
     /// <summary>Verifies mutations are prevented on constructors.</summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>

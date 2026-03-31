@@ -1,13 +1,37 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.FakerTool;
 
-namespace CreateAndFake.TesterTool;
+namespace CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates basic layer passthrough checks.</summary>
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
+    /// <inheritdoc/>
+    public Task PassthroughWithNoExceptionsAsync<T>(CancellationToken canceler)
+    {
+        if (Options.DisablePassthroughTests)
+        {
+            return Task.CompletedTask;
+        }
+
+        object instance = Options.Randomizer.Create<Injected<T>>()!.Dummy!;
+        return new ExceptionGuarder(Options).CallAllMethodsAsync(instance, canceler);
+    }
+
+    /// <inheritdoc/>
+    public Task PassthroughWithNoExceptionsAsync(object instance, CancellationToken canceler)
+    {
+        if (Options.DisablePassthroughTests)
+        {
+            return Task.CompletedTask;
+        }
+
+        return CallAllMethodsAsync(instance, canceler);
+    }
+
     /// <inheritdoc cref="BaseGuarder.CallAllMethodsAsync(MethodBase,ParameterInfo,object,CancellationToken)"/>
     internal async Task CallAllMethodsAsync(object instance, CancellationToken canceler)
     {

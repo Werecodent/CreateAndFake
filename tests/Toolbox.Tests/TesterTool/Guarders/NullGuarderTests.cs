@@ -3,10 +3,10 @@ using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.TesterTool;
+using CreateAndFake.TesterTool.Guarders;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class NullGuarderTests
 {
@@ -114,7 +114,8 @@ public static class NullGuarderTests
             .Tester.Assert(t =>
                 t.PreventsNullRefExceptionAsync(
                     typeof(StaticMutationSample),
-                    TestContext.Current.CancellationToken
+                    TestContext.Current.CancellationToken,
+                    opt => opt with { DisableNullRefExceptionTests = false }
                 )
             )
             .Throws<AssertException>();

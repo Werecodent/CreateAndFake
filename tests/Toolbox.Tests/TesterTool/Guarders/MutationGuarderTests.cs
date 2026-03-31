@@ -5,10 +5,10 @@ using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.TesterTool;
+using CreateAndFake.TesterTool.Guarders;
 using CreateAndFake.Tests.TesterTool.TestSamples;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class MutationGuarderTests
 {
@@ -62,7 +62,8 @@ public static class MutationGuarderTests
             .Tester.Assert(t =>
                 t.PreventsParameterMutationAsync(
                     typeof(StaticMutationSample),
-                    TestContext.Current.CancellationToken
+                    TestContext.Current.CancellationToken,
+                    opt => opt with { DisableParameterMutationTests = false }
                 )
             )
             .Throws<AssertException>();
