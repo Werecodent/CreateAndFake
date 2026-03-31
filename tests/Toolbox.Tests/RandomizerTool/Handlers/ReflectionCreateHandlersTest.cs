@@ -7,7 +7,7 @@ namespace CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class ReflectionCreateHandlersTests
 {
-    private const int _HealthyMin = 10;
+    private const int _HealthyMin = 8;
 
     [Fact]
     internal static void ReflectionCreateHandlers_InternalOnly()

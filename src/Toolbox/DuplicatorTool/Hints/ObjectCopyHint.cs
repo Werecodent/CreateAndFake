@@ -74,13 +74,9 @@ public sealed class ObjectCopyHint : CopyHint
         TypeDescriber describer = TypeDescriber.For(source.GetType());
 
         return describer
-            .Constructors.PublicOrInternal.OrderByDescending(c => c.GetParameters().Length)
+            .Constructors.Visible.OrderByDescending(c => c.GetParameters().Length)
             .Cast<MethodBase>()
-            .Concat(
-                describer.Factories.PublicOrInternal.OrderByDescending(c =>
-                    c.GetParameters().Length
-                )
-            )
+            .Concat(describer.Factories.Visible.OrderByDescending(c => c.GetParameters().Length))
             .Select(m =>
                 TryCreate(source, duplicator, m, describer.Properties.All, describer.Fields.All)
             )
