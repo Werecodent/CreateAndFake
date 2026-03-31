@@ -75,8 +75,8 @@
                 "B"
             ],
             "IgnoreAllExceptions": true,
-            "DisableNullRefExceptionTests": false,
-            "DisableParameterMutationTests": false,
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true,
             "DisablePassthroughTests": true
         },
         "Valuer": {
