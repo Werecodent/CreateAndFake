@@ -26,7 +26,7 @@ public static class AsyncSeriesHelperTests
     }
 
     [Theory, RandomData]
-    internal static Task CreateFrom_ConvertsObjectsSuccessfully(IList<string> data)
+    internal static Task CreateFromAsync_ConvertsObjectsSuccessfully(IList<string> data)
     {
         return AsyncSeriesHelper
             .CreateFromAsync(data, data.Count, TestContext.Current.CancellationToken)
@@ -35,7 +35,7 @@ public static class AsyncSeriesHelperTests
     }
 
     [Theory, RandomData]
-    internal static async Task CreateFrom_CanBeCanceled(IList<string> data)
+    internal static async Task CreateFromAsync_CanBeCanceled(IList<string> data)
     {
         try
         {

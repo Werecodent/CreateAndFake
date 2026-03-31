@@ -16,7 +16,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     /// <summary>Text to run assertion checks with.</summary>
     protected string? Text { get; } = text;
 
-    /// <inheritdoc cref="IStringAsserter.Contains(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.Contains(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(string content, string? details = null)
     {
@@ -24,7 +24,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.Contains(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.Contains(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(
         string content,
@@ -36,7 +36,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.ContainsNot(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.ContainsNot(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(string content, string? details = null)
     {
@@ -44,7 +44,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.ContainsNot(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.ContainsNot(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(
         string content,
@@ -56,7 +56,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.StartsWith(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.StartsWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> StartsWith(string content, string? details = null)
     {
@@ -64,7 +64,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.StartsWith(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.StartsWith(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> StartsWith(
         string content,
@@ -76,7 +76,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.StartsNotWith(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.StartsNotWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> StartsNotWith(string content, string? details = null)
     {
@@ -84,7 +84,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.StartsNotWith(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.StartsNotWith(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> StartsNotWith(
         string content,
@@ -96,7 +96,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.EndsWith(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.EndsWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> EndsWith(string content, string? details = null)
     {
@@ -104,7 +104,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.EndsWith(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.EndsWith(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> EndsWith(
         string content,
@@ -116,7 +116,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.EndsNotWith(string,string,string)"/>
+    /// <inheritdoc cref="IAsserterString.EndsNotWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> EndsNotWith(string content, string? details = null)
     {
@@ -124,7 +124,7 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IStringAsserter.EndsNotWith(string,string,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterString.EndsNotWith(string,string,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> EndsNotWith(
         string content,

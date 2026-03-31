@@ -1,7 +1,9 @@
 namespace CreateAndFake.AsserterTool.Categories;
 
+#pragma warning disable CA1711 // Follows existing pattern.
+
 /// <summary>Handles common delegate test scenarios.</summary>
-public interface IDelegateAsserter
+public interface IAsserterDelegate
 {
     /// <summary>Runs each case and aggregates exceptions.</summary>
     /// <param name="cases">Assert cases.</param>
@@ -30,7 +32,7 @@ public interface IDelegateAsserter
     /// <summary>Verifies <paramref name="behavior"/> throws a <typeparamref name="T"/> exception.</summary>
     /// <typeparam name="T">Expected exception type.</typeparam>
     /// <param name="behavior">Delegate to run assertion checks with.</param>
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
@@ -64,3 +66,5 @@ public interface IDelegateAsserter
     void ThrowsNo<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 }
+
+#pragma warning restore CA1711

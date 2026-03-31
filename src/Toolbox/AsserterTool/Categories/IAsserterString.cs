@@ -1,7 +1,7 @@
 namespace CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common string test scenarios.</summary>
-public interface IStringAsserter
+public interface IAsserterString
 {
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void Contains(string content, string? text, string? details = null);
@@ -9,7 +9,7 @@ public interface IStringAsserter
     /// <summary>Verifies <c>text</c> contains <paramref name="content"/>.</summary>
     /// <param name="content">Expected internal text.</param>
     /// <param name="text">Text to run assertion checks with.</param>
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void Contains(
         string content,
         string? text,

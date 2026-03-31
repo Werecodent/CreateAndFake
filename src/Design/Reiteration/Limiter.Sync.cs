@@ -3,7 +3,7 @@
 namespace CreateAndFake.Design.Reiteration;
 
 /// <inheritdoc cref="ILimiter"/>
-public sealed partial class Limiter : ISyncLimiter
+public sealed partial class Limiter : ILimiterSync
 {
     /// <inheritdoc/>
     public void Repeat(string message, Action? behavior, CancellationToken canceler = default)

@@ -63,7 +63,7 @@ public static class BehaviorTests
 
             Type setupType = caller.GetParameters()[0].ParameterType;
 
-            Type[] args = type.Name.StartsWith("Func", StringComparison.InvariantCulture)
+            Type[] args = type.Name.StartsWith("Func", StringComparison.Ordinal)
                 ? [.. generics.Skip(1)]
                 : generics;
 

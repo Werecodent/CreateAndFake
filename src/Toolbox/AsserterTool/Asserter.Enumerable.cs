@@ -8,7 +8,7 @@ using CreateAndFake.Design.Content;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IEnumerableAsserter
+public partial class Asserter : IAsserterEnumerable
 {
     /// <inheritdoc/>
     [DoesNotReturn, ExcludeFromCodeCoverage]

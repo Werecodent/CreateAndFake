@@ -187,14 +187,23 @@ public sealed class TypeDescriber : ITypeSupporter
         return Properties.FindSettable(assembly).Any() || Fields.FindWritable(assembly).Any();
     }
 
+    /// <inheritdoc cref="HasInitializableOnlyState(AssemblyName)"/>
+    public bool HasInitializableOnlyState()
+    {
+        return HasInitializableOnlyState(Assembly.GetCallingAssembly().GetName());
+    }
+
     /// <summary>
     ///     Determines if the <see cref="SupportedType"/> has any properties/fields only settable via a constructor.
     /// </summary>
     /// <remarks>Beware that this does not always mean the value is changeable.</remarks>
-    public bool HasInitializableOnlyState()
+    /// <inheritdoc cref="ScopeChecker.IsVisible(Type?, AssemblyName)"/>
+    public bool HasInitializableOnlyState(AssemblyName assembly)
     {
-        return Fields.All.Any(f => f.IsInitOnly && !f.IsLiteral)
-            && Constructors.All.Any(c => c.GetParameters().Length > 0);
+        return (
+                Constructors.FindVisible(assembly).Any(c => c.GetParameters().Length > 0)
+                || Factories.FindVisible(assembly).Any(f => f.GetParameters().Length > 0)
+            ) && Fields.All.Any(f => f.IsInitOnly && !f.IsLiteral);
     }
 
     /// <summary>

@@ -14,7 +14,7 @@ public static class StringCreateHandlerTests
     }
 
     [Fact]
-    internal static void TryCreate_SizeConstraintsWork()
+    internal static void CreateSupported_SizeConstraintsWork()
     {
         RandomizerOptions options = Tools.Randomizer.Options with
         {
@@ -36,7 +36,7 @@ public static class StringCreateHandlerTests
     }
 
     [Fact]
-    internal static void TryCreate_UsesCharSet()
+    internal static void CreateSupported_UsesCharSet()
     {
         RandomizerOptions options = Tools.Randomizer.Options with
         {

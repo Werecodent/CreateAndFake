@@ -6,9 +6,9 @@ namespace CreateAndFake.AsserterTool.Categories;
 #pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles common collection test scenarios.</summary>
-public interface IAsyncEnumerableAsserter
+public interface IAsserterAsyncEnumerable
 {
-    /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -16,7 +16,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -25,7 +25,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -33,7 +33,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsNotEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -42,7 +42,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.HasCount(int,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task HasCountAsync<T>(
         int count,
@@ -51,7 +51,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.HasCount(int,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task HasCountAsync<T>(
         int count,
@@ -61,7 +61,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.Contains(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsAsync<T>(
         object? content,
@@ -70,7 +70,7 @@ public interface IAsyncEnumerableAsserter
         string? details
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.Contains(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsAsync<T>(
         object? content,
@@ -80,7 +80,7 @@ public interface IAsyncEnumerableAsserter
         string? details
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsNotAsync<T>(
         object? content,
@@ -89,7 +89,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsNotAsync<T>(
         object? content,
@@ -99,7 +99,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.Fail(IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Fail(IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
@@ -107,7 +107,7 @@ public interface IAsyncEnumerableAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IEnumerableAsserter.Fail(IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Fail(IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,

@@ -21,7 +21,7 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
     ];
 
     [Fact]
-    internal static void Create_InvalidValuesPossible()
+    internal static void Next_InvalidValuesPossible()
     {
         FastRandom random = new(10, false);
 
@@ -38,7 +38,7 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
     }
 
     [Fact]
-    internal static void Create_OnlyValidValuesPreventsInvalids()
+    internal static void Next_OnlyValidValuesPreventsInvalids()
     {
         FastRandom random = new(10, true);
 

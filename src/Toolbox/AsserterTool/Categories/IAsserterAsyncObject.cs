@@ -4,9 +4,9 @@ namespace CreateAndFake.AsserterTool.Categories;
 #pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles common object test scenarios.</summary>
-public interface IAsyncObjectAsserter
+public interface IAsserterAsyncObject
 {
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsAsync(
         object? expected,
@@ -15,7 +15,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsAsync(
         object? expected,
@@ -25,7 +25,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.IsNot(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsNotAsync(
         object? expected,
@@ -34,7 +34,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.IsNot(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task IsNotAsync(
         object? expected,
@@ -44,7 +44,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ValuesEqualAsync(
         object? expected,
@@ -53,7 +53,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ValuesEqualAsync(
         object? expected,
@@ -63,7 +63,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesNotEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ValuesNotEqualAsync(
         object? expected,
@@ -72,7 +72,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesNotEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ValuesNotEqualAsync(
         object? expected,
@@ -82,7 +82,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.AreUnique(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task AreUniqueAsync(
         object? expected,
@@ -91,7 +91,7 @@ public interface IAsyncObjectAsserter
         string? details = null
     );
 
-    /// <inheritdoc cref="IObjectAsserter.AreUnique(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task AreUniqueAsync(
         object? expected,

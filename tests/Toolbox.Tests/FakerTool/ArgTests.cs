@@ -32,7 +32,7 @@ public static class ArgTests
         ];
 
         methods
-            .Where(m => !m.StartsWith("Lambda", StringComparison.InvariantCulture))
+            .Where(m => !m.StartsWith("Lambda", StringComparison.Ordinal))
             .Where(m => !methods.Contains("Lambda" + m))
             .Assert()
             .IsEmpty("Methods should have a lambda version to convert to.");

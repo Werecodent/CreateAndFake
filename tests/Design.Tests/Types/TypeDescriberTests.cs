@@ -101,26 +101,26 @@ public static class TypeDescriberTests
     }
 
     [Fact]
-    internal static void GetPublicFields_FindsPublicFields()
+    internal static void Fields_FindsPublicFields()
     {
         TypeDescriber.For<FieldSample>().Fields.OnlyPublic.Assert().IsNotEmpty();
     }
 
     [Fact]
-    internal static void GetAllFields_FindsInheritedPrivates()
+    internal static void Fields_FindsInheritedPrivates()
     {
         TypeDescriber.For<InheritedPrivatesSample>().Fields.OnlyPublic.Assert().IsEmpty();
         TypeDescriber.For<InheritedPrivatesSample>().Fields.All.Assert().IsNotEmpty();
     }
 
     [Fact]
-    internal static void GetPublicProperties_FindsPublicProperties()
+    internal static void Properties_FindsPublicProperties()
     {
         TypeDescriber.For<DataSample>().Properties.OnlyPublic.Assert().IsNotEmpty();
     }
 
     [Fact]
-    internal static void GetAllProperties_FindsInheritedPrivates()
+    internal static void Properties_FindsInheritedPrivates()
     {
         TypeDescriber.For<InheritedPrivatesSample>().Properties.OnlyPublic.Assert().IsEmpty();
         TypeDescriber.For<InheritedPrivatesSample>().Properties.All.Assert().IsNotEmpty();

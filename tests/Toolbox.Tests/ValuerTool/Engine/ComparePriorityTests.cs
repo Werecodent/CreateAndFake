@@ -2,7 +2,7 @@ using CreateAndFake.ValuerTool.Engine;
 
 namespace CreateAndFake.Tests.ValuerTool.Engine;
 
-public static class ExtractPriorityTests
+public static class ComparePriorityTests
 {
     [Fact]
     internal static void Disabled_SetToMin()

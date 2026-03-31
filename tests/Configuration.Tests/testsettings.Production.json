@@ -55,7 +55,12 @@
             "IncludeInstanceMethods": false,
             "IncludeStaticMethods": false,
             "IncludeInternals": false,
-            "TestClassNameSuffix": "Test",
+            "TestClassNameSuffixes": [
+                "Test"
+            ],
+            "TestMethodNameAllowedTargets": [
+                "Start"
+            ],
             "TestClassNameGenericSubstitutes": [
                 "",
                 "_T_",

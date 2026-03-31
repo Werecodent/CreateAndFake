@@ -25,7 +25,7 @@ public static class ExceptionGuarderTests
     }
 
     [Fact]
-    internal static Task CallAllMethods_SuccessfulNoException()
+    internal static Task CallAllMethodsAsync_SuccessfulNoException()
     {
         return Tools.Tester.PassthroughWithNoExceptionsAsync<InjectMockSample>(
             TestContext.Current.CancellationToken
@@ -33,7 +33,7 @@ public static class ExceptionGuarderTests
     }
 
     [Fact]
-    internal static Task CallAllMethods_FailsWithException()
+    internal static Task CallAllMethodsAsync_FailsWithException()
     {
         return Tools
             .Tester.Assert(t =>

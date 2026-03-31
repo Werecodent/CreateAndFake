@@ -6,7 +6,7 @@ using CreateAndFake.ValuerTool;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IAsyncObjectAsserter
+public partial class Asserter : IAsserterAsyncObject
 {
     /// <inheritdoc/>
     public Task IsAsync(

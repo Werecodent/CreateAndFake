@@ -67,7 +67,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
     [ConfigurableOption]
-    public string TestClassNameSuffix { get; init; } = "Tests";
+    public ImmutableArray<string> TestClassNameSuffixes { get; init; } = ["Tests", "TestBase"];
 
     /// <summary>Possible strings replacing generics in a type name for coverage tests.</summary>
     [ConfigurableOption]
@@ -78,8 +78,11 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>Types to ignore for test class coverage tests.</summary>
     [ConfigurableOption]
-    public FrozenSet<string> TestClassCoverageExceptions { get; init; } =
-        FrozenSet.ToFrozenSet<string>([]);
+    public FrozenSet<string> TestClassCoverageExceptions { get; init; } = [];
+
+    /// <summary>Allowed starts for test method names.</summary>
+    [ConfigurableOption]
+    public FrozenSet<string> TestMethodNameAllowedTargets { get; init; } = [];
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
     [ConfigurableOption]
@@ -127,14 +130,15 @@ public sealed record TesterOptions : IToolOptions
         {
             DisableParameterMutationTests = Config.GetValue(section, DisableParameterMutationTests),
             DisableNullRefExceptionTests = Config.GetValue(section, DisableNullRefExceptionTests),
+            TestMethodNameAllowedTargets = Config.GetSet(section, TestMethodNameAllowedTargets),
             TestClassCoverageExceptions = Config.GetSet(section, TestClassCoverageExceptions),
             TestDisplayNameConverter = Config.GetValue(section, TestDisplayNameConverter),
             DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
+            TestClassNameSuffixes = Config.GetArray(section, TestClassNameSuffixes),
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
             IgnoreAllExceptions = Config.GetValue(section, IgnoreAllExceptions),
             IncludeConstructors = Config.GetValue(section, IncludeConstructors),
-            TestClassNameSuffix = Config.GetValue(section, TestClassNameSuffix),
             IncludeInternals = Config.GetValue(section, IncludeInternals),
             InjectionValues = Config.GetValue(section, InjectionValues),
             MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),

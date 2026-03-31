@@ -21,7 +21,7 @@ public sealed record AsserterOptions : IToolOptions
 
     /// <summary>Options to use when performing <see langword="string"/> comparison (such as ignoring case or symbols).</summary>
     [ConfigurableOption]
-    public StringComparison StringCompareOption { get; init; } = StringComparison.InvariantCulture;
+    public StringComparison StringCompareOption { get; init; } = StringComparison.Ordinal;
 
     /// <summary>
     ///     If set to <see langword="true"/>, all exceptions will be rethrown instead of

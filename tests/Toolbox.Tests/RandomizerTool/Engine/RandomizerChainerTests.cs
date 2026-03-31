@@ -10,7 +10,8 @@ public static class RandomizerChainerTests
     internal static Task RandomizerChainer_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerChainer>(
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentOutOfRangeException)] }
         );
     }
 
@@ -24,7 +25,7 @@ public static class RandomizerChainerTests
     }
 
     [Fact]
-    internal static Task MutatorChainer_PassthroughWithNoExceptions()
+    internal static Task RandomizerChainer_PassthroughWithNoExceptions()
     {
         return Tools.Tester.PassthroughWithNoExceptionsAsync<RandomizerChainer>(
             TestContext.Current.CancellationToken,

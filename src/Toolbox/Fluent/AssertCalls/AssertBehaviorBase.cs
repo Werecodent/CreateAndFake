@@ -13,7 +13,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
     /// <summary>Delegate to run assertion checks with.</summary>
     protected Delegate? Behavior { get; } = behavior;
 
-    /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,string)"/>
+    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual TException Throws<TException>(string? details = null)
         where TException : Exception
@@ -21,7 +21,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
         return Asserter.Throws<TException>(Behavior, details);
     }
 
-    /// <inheritdoc cref="IDelegateAsserter.Throws{T}(Delegate,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual TException Throws<TException>(
         AsserterMod? optionConfiguration,
@@ -32,7 +32,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
         return Asserter.Throws<TException>(Behavior, optionConfiguration, details);
     }
 
-    /// <inheritdoc cref="IDelegateAsserter.ThrowsNo{T}(Delegate,string)"/>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual void ThrowsNo<TException>(string? details = null)
         where TException : Exception
@@ -40,7 +40,7 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
         Asserter.ThrowsNo<TException>(Behavior, details);
     }
 
-    /// <inheritdoc cref="IDelegateAsserter.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual void ThrowsNo<TException>(
         AsserterMod? optionConfiguration,

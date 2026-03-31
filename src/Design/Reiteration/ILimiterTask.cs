@@ -1,22 +1,22 @@
 namespace CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for asynchronous task repetition.</summary>
-public interface ITaskLimiter
+public interface ILimiterTask
 {
-    /// <inheritdoc cref="IAsyncLimiter.RepeatAsync(string,Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RepeatAsync(string,Action,CancellationToken)"/>
     Task RepeatAsync(string message, Task? behavior, CancellationToken canceler);
 
-    /// <inheritdoc cref="IAsyncLimiter.RepeatAsync{T}(string,Func{T},CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RepeatAsync{T}(string,Func{T},CancellationToken)"/>
     Task<IReadOnlyCollection<T>> RepeatAsync<T>(
         string message,
         Task<T> behavior,
         CancellationToken canceler
     );
 
-    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.StallUntilAsync(string,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(string message, Task<bool> behavior, CancellationToken canceler);
 
-    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(
         string message,
         Task? behavior,
@@ -24,7 +24,7 @@ public interface ITaskLimiter
         CancellationToken canceler
     );
 
-    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.StallUntilAsync(string,Action?,Func{bool},CancellationToken)"/>
     Task StallUntilAsync(
         string message,
         Task? behavior,
@@ -48,7 +48,7 @@ public interface ITaskLimiter
         CancellationToken canceler
     );
 
-    /// <inheritdoc cref="IAsyncLimiter.StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken)"/>
     Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
         Task<T> behavior,
@@ -69,7 +69,7 @@ public interface ITaskLimiter
     Task RetryAsync<TError>(string message, Task behavior, CancellationToken canceler)
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.RetryAsync{T}(string,Action,Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RetryAsync{T}(string,Action,Action,CancellationToken)"/>
     Task RetryAsync<TError>(
         string message,
         Task behavior,
@@ -78,7 +78,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.RetryAsync{T}(string,Action,Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RetryAsync{T}(string,Action,Action,CancellationToken)"/>
     Task RetryAsync<TError>(
         string message,
         Task behavior,
@@ -118,7 +118,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.RetryAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RetryAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult> RetryAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,
@@ -127,7 +127,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.RetryAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.RetryAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult> RetryAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,
@@ -149,7 +149,7 @@ public interface ITaskLimiter
     Task AttemptAsync<TError>(string message, Task behavior, CancellationToken canceler)
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T}(string,Action,Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.AttemptAsync{T}(string,Action,Action,CancellationToken)"/>
     Task AttemptAsync<TError>(
         string message,
         Task? behavior,
@@ -158,7 +158,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T}(string,Action,Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.AttemptAsync{T}(string,Action,Action,CancellationToken)"/>
     Task AttemptAsync<TError>(
         string message,
         Task? behavior,
@@ -198,7 +198,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,
@@ -207,7 +207,7 @@ public interface ITaskLimiter
     )
         where TError : Exception;
 
-    /// <inheritdoc cref="IAsyncLimiter.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
+    /// <inheritdoc cref="ILimiterAsync.AttemptAsync{T,T}(string,Func{T},Action,CancellationToken)"/>
     Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Task<TResult> behavior,

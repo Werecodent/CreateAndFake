@@ -506,7 +506,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     }
 
     [Theory, RandomData]
-    public void NextSeries_ShufflesValues([Size(3)] int[] items)
+    public void NextSequence_ShufflesValues([Size(3)] int[] items)
     {
         Limiter.Hundred.StallUntil(
             "Testing shuffle randomization.",

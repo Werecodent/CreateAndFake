@@ -12,7 +12,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
     : AssertObjectBase<T>(asserter, actual)
     where T : AssertAsyncObjectBase<T>
 {
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.IsAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsAsync(
         object? expected,
@@ -24,7 +24,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.IsAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsAsync(
         object? expected,
@@ -39,7 +39,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.IsNotAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsNotAsync(
         object? expected,
@@ -51,7 +51,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.IsNotAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.IsNotAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public async Task<AssertChainer<T>> IsNotAsync(
         object? expected,
@@ -66,7 +66,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.ValuesEqualAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesEqualAsync(
         object? expected,
@@ -78,7 +78,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.ValuesEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesEqualAsync(
         object? expected,
@@ -93,7 +93,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.ValuesNotEqualAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesNotEqualAsync(
         object? expected,
@@ -107,7 +107,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.ValuesNotEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.ValuesNotEqualAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ValuesNotEqualAsync(
         object? expected,
@@ -122,7 +122,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.AreUniqueAsync(object,object,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> UniqueFromAsync(
         object? expected,
@@ -134,7 +134,7 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncObjectAsserter.AreUniqueAsync(object,object,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncObject.AreUniqueAsync(object,object,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> UniqueFromAsync(
         object? expected,

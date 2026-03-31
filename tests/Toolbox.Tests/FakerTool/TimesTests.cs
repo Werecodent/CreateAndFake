@@ -98,7 +98,7 @@ public static class TimesTests
     }
 
     [Fact]
-    internal static void Equality_MatchesValue()
+    internal static void Equals_MatchesValue()
     {
         int min,
             max;

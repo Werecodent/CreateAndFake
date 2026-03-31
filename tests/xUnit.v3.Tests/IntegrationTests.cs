@@ -11,7 +11,7 @@ public static class IntegrationTests
     }
 
     [Theory, RandomData]
-    internal static void RandomData_UsesAttributes(
+    internal static void Integration_UsesParameterAttributes(
         [Stub] IRandom gen,
         Wrapper context,
         [Size(2)] string name

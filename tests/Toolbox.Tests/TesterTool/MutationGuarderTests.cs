@@ -56,7 +56,7 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static Task PreventsParameterMutation_OnStatics()
+    internal static Task PreventsMutationOnStaticsAsync_UsesStatics()
     {
         return Tools
             .Tester.Assert(t =>
@@ -69,7 +69,7 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static Task PreventsParameterMutation_StatelessFine()
+    internal static Task PreventsMutationAsync_StatelessFine()
     {
         return Tools.Tester.PreventsParameterMutationAsync<StatelessSample>(
             TestContext.Current.CancellationToken
@@ -77,7 +77,7 @@ public static class MutationGuarderTests
     }
 
     [Theory, RandomData]
-    internal static Task PreventsParameterMutation_InjectsMultipleValues(
+    internal static Task PreventsMutationOnMethodsAsync_InjectsMultipleValues(
         Fake<IOnlyMockSample> fake1,
         Fake<IOnlyMockSample> fake2
     )
@@ -89,7 +89,9 @@ public static class MutationGuarderTests
     }
 
     [Theory, RandomData]
-    internal static Task PreventsParameterMutation_InjectsWithMethods(Fake<IOnlyMockSample> fake)
+    internal static Task PreventsMutationOnMethodsAsync_InjectsWithMethods(
+        Fake<IOnlyMockSample> fake
+    )
     {
         return Tools.Tester.PreventsParameterMutationAsync<MockMethodPassOnly>(
             TestContext.Current.CancellationToken,
@@ -98,7 +100,7 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static Task CallMethod_TimesOut()
+    internal static Task PreventsMutationAsync_TimesOut()
     {
         return Limiter.Few.RetryAsync<AssertException>(
             "Attempting to test timeout works.",
@@ -116,7 +118,7 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static async Task PreventsMutationOnConstructors_Disposes()
+    internal static async Task PreventsMutationOnConstructorsAsync_Disposes()
     {
         await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
         try
@@ -141,7 +143,7 @@ public static class MutationGuarderTests
     }
 
     [Fact]
-    internal static async Task PreventsMutationOnMethods_Disposes()
+    internal static async Task PreventsMutationOnMethodsAsync_Disposes()
     {
         await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
         try

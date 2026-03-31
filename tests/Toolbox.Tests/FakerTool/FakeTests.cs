@@ -21,7 +21,7 @@ public static class FakeTests
     }
 
     [Fact]
-    internal static void SetupVerify_WorksProtectedMethods()
+    internal static void Setup_WorksProtectedMethods()
     {
         MethodInfo method = typeof(ProtectedSample).GetMethod(
             "ChildMethod",

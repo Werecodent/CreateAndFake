@@ -1,8 +1,11 @@
 [*.cs]
 
+# Not supported in all .NET versions.
+dotnet_diagnostic.CA1847.severity = None
+
 # Message based constructors are unnecessary and hurts design.
-dotnet_diagnostic.CA1032.severity = none
+dotnet_diagnostic.CA1032.severity = None
 dotnet_diagnostic.RCS1194.severity = None
 
 # False positive when adding a <param/> tag while also using <inheritdoc/> tag.
-dotnet_diagnostic.CS1573.severity = none
+dotnet_diagnostic.CS1573.severity = None

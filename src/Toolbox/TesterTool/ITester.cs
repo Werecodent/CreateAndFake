@@ -142,6 +142,16 @@ public interface ITester : ITool<TesterOptions>
         TesterMod? optionConfiguration = null
     );
 
+    /// <summary>Verifies tests in <paramref name="testAssembly"/> have appropriate names.</summary>
+    /// <param name="testMarkers">All test framework <see cref="Attribute"/>s that marks methods as tests.</param>
+    /// <inheritdoc cref="ProvidesTestClassCoverage"/>
+    void VerifyTestMethodNaming(
+        IEnumerable<Type> testMarkers,
+        Assembly codeAssembly,
+        Assembly testAssembly,
+        TesterMod? optionConfiguration = null
+    );
+
     /// <summary>
     ///     Validates <paramref name="testAssembly"/> methods marked by
     ///     <see cref="IRandomDataMarker"/> can be populated with random data.

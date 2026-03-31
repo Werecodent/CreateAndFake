@@ -1,6 +1,5 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
-using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.AsserterTool;
@@ -214,7 +213,7 @@ public sealed class AsserterObjectTests
     }
 
     [Theory, RandomData]
-    internal void UniqueFrom_NoSharedPass(DataSample sample)
+    internal void AreUnique_NoSharedPass(DataSample sample)
     {
         sample.Assert().UniqueFrom(sample.CreateVariant());
         sample.Assert().UniqueFrom(sample.CreateVariant(), _config);
@@ -222,7 +221,7 @@ public sealed class AsserterObjectTests
     }
 
     [Theory, RandomData]
-    internal void UniqueFrom_SharedFail(DataSample sample)
+    internal void AreUnique_SharedFail(DataSample sample)
     {
         sample
             .Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone()))
@@ -230,30 +229,6 @@ public sealed class AsserterObjectTests
         sample
             .Assert(s => s.Assert().UniqueFrom(sample.CreateDeepClone()))
             .Throws<AssertException>(_config);
-        _configCalled.Assert().Is(true);
-    }
-
-    [Theory, RandomData]
-    internal void Fail_Throws(DataSample sample)
-    {
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>();
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>(_config);
-        _configCalled.Assert().Is(true);
-    }
-
-    [Theory, RandomData]
-    internal void Fail_OnlyThrows([Stub] IAsserter asserter, DataSample sample)
-    {
-        AssertObject instance = new(asserter, sample);
-        instance.Fail();
-        instance.Fail(_config);
-    }
-
-    [Theory, RandomData]
-    internal void Pass_Works(DataSample sample)
-    {
-        sample.Assert().Pass();
-        sample.Assert().Pass(_config);
         _configCalled.Assert().Is(true);
     }
 }

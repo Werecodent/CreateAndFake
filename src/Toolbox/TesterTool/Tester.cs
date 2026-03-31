@@ -1,5 +1,7 @@
 ﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using CreateAndFake.Design;
@@ -382,26 +384,9 @@ public class Tester(TesterOptions options) : ITester
                 .Where(t => !t.IsAbstract || t.IsSealed)
                 .Where(t => ScopeChecker.IsVisible(t, testAssembly.GetName()))
                 .Where(t =>
-                {
-                    IEnumerable<string> possibleNames;
-                    if (t.IsGenericTypeDefinition)
-                    {
-                        string baseName = t.Name.Substring(
-                            0,
-                            t.Name.IndexOf("`", StringComparison.InvariantCulture)
-                        );
-                        possibleNames = localOptions.TestClassNameGenericSubstitutes.Select(sub =>
-                            baseName + sub
-                        );
-                    }
-                    else
-                    {
-                        possibleNames = [t.Name];
-                    }
-                    return possibleNames.All(name =>
-                        !testClasses.Contains(name + localOptions.TestClassNameSuffix)
-                    );
-                })
+                    FindPossibleTestClassNames(t, localOptions)
+                        .All(name => !testClasses.Contains(name))
+                )
                 .Where(t => !localOptions.TestClassCoverageExceptions.Contains(t.Name))
                 .Where(t =>
                     !t.Namespace!.StartsWith(
@@ -410,6 +395,176 @@ public class Tester(TesterOptions options) : ITester
                     )
                 ),
             $"Missing tests for classes from {codeAssembly} in {testAssembly}."
+        );
+    }
+
+    private static IEnumerable<string> FindPossibleTestClassNames(
+        Type codeClass,
+        TesterOptions localOptions
+    )
+    {
+        if (
+            codeClass.IsGenericTypeDefinition
+            && codeClass.Name.Contains("`", StringComparison.Ordinal)
+        )
+        {
+            string baseName = codeClass.Name.Substring(
+                0,
+                codeClass.Name.IndexOf("`", StringComparison.Ordinal)
+            );
+
+            return localOptions.TestClassNameSuffixes.SelectMany(suffix =>
+                localOptions.TestClassNameGenericSubstitutes.Select(sub => baseName + sub + suffix)
+            );
+        }
+        else
+        {
+            return localOptions.TestClassNameSuffixes.Select(suffix => codeClass.Name + suffix);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyTestMethodNaming(
+        IEnumerable<Type> testMarkers,
+        Assembly codeAssembly,
+        Assembly testAssembly,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(testMarkers, codeAssembly, testAssembly);
+
+        TesterOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        List<Type> markers = [.. testMarkers];
+
+        const BindingFlags scope =
+            BindingFlags.Instance
+            | BindingFlags.Static
+            | BindingFlags.Public
+            | BindingFlags.NonPublic;
+
+        static string stripGeneric(Type codeClass)
+        {
+            if (
+                codeClass.IsGenericTypeDefinition
+                && codeClass.Name.Contains("`", StringComparison.Ordinal)
+            )
+            {
+                return codeClass.Name.Substring(
+                    0,
+                    codeClass.Name.IndexOf("`", StringComparison.Ordinal)
+                );
+            }
+            else
+            {
+                return codeClass.Name;
+            }
+        }
+
+        static string getTarget(string testName)
+        {
+            if (testName.Contains("_", StringComparison.Ordinal))
+            {
+                return testName.Substring(0, testName.IndexOf("_", StringComparison.Ordinal));
+            }
+            else
+            {
+                return testName;
+            }
+        }
+
+        static IEnumerable<string> getAllTypeNames(Type? codeClass)
+        {
+            if (codeClass == null || codeClass == typeof(object))
+            {
+                yield return "Object";
+            }
+            else
+            {
+                yield return codeClass.Name;
+                foreach (string name in getAllTypeNames(codeClass.BaseType))
+                {
+                    yield return name;
+                }
+            }
+        }
+
+        ImmutableHashSet<string> globalValidTargets =
+        [
+            .. localOptions.TestMethodNameAllowedTargets,
+            "New",
+            codeAssembly.GetName()!.Name,
+            testAssembly.GetName()!.Name,
+        ];
+
+        Dictionary<string, List<string>> testsByClass = ScopeChecker
+            .FindLoadedClassTypes(testAssembly)
+            .Where(t => t != null)
+            .Where(t =>
+                localOptions.TestClassNameSuffixes.Any(suffix =>
+                    t.Name.Contains(suffix, StringComparison.Ordinal)
+                )
+            )
+            .Select(TypeDescriber.For)
+            .ToDictionary(
+                t => stripGeneric(t.SupportedType!),
+                t =>
+                    t.SupportedType!.GetMethods(scope)
+                        .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
+                        .Select(m => m.Name)
+                        .Where(n =>
+                        {
+                            string target = getTarget(n);
+                            return !(
+                                t.SupportedType!.Name.Contains(target, StringComparison.Ordinal)
+                                || globalValidTargets.Contains(target)
+                            );
+                        })
+                        .ToList()
+            );
+
+        foreach (
+            Type codeClass in codeAssembly
+                .GetTypes()
+                .Where(t => t != null)
+                .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute)))
+        )
+        {
+            ImmutableHashSet<string> methods = codeClass.IsEnum
+                ? [.. Enum.GetNames(codeClass), .. getAllTypeNames(codeClass), "Values"]
+                :
+                [
+                    .. getAllTypeNames(codeClass),
+                    .. codeClass.GetProperties(scope).Select(p => p.Name),
+                    .. codeClass
+                        .GetMethods(scope)
+                        .Select(m => m.Name)
+                        .Select(n =>
+                            n.Contains("`", StringComparison.Ordinal)
+                                ? n.Substring(0, n.IndexOf("`", StringComparison.Ordinal))
+                                : n
+                        ),
+                ];
+
+            foreach (
+                string name in FindPossibleTestClassNames(codeClass, localOptions)
+                    .SelectMany(name =>
+                        name.StartsWith("I", StringComparison.Ordinal)
+                            ? new List<string>() { name, name.Substring(1) }
+                            : [name]
+                    )
+            )
+            {
+                if (testsByClass.TryGetValue(name, out List<string>? tests))
+                {
+                    _ = tests.RemoveAll(n => methods.Contains(getTarget(n)));
+                }
+            }
+        }
+
+        localOptions.Asserter.IsEmpty(
+            testsByClass.SelectMany(t => t.Value.Select(v => t.Key + " - " + v)),
+            $"Invalid test methods for classes from {codeAssembly} in {testAssembly}."
         );
     }
 

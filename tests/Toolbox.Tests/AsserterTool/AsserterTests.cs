@@ -2,10 +2,12 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Tests.AsserterTool;
 
-public static class AsserterTests
+public class AsserterTests
 {
     private static readonly TesterMod config = opt =>
         opt with
@@ -23,7 +25,21 @@ public static class AsserterTests
             ],
         };
 
-    private static readonly Asserter _testInstance = new(Tools.Asserter.Options);
+    private readonly AsserterMod _config;
+
+    private bool _configCalled;
+
+    public AsserterTests()
+    {
+        _configCalled = false;
+        _config = opt =>
+        {
+            _configCalled = true;
+            return opt;
+        };
+    }
+
+    private readonly Asserter _testInstance = new(Tools.Asserter.Options);
 
     [Fact]
     internal static Task Asserter_GuardsNulls()
@@ -57,18 +73,42 @@ public static class AsserterTests
     }
 
     [Fact]
-    internal static void Fail_Throws()
+    internal void Fail_Throws()
     {
         _testInstance.Assert(t => t.Fail()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static void Fail_ThrowsWithException(Exception error)
+    internal void Fail_ThrowsWithException(Exception error)
     {
         _testInstance
             .Assert(t => t.Fail(error))
             .Throws<AssertException>()
             .InnerException.Assert()
             .Is(error);
+    }
+
+    [Theory, RandomData]
+    internal void Fail_ThrowsWithSample(DataSample sample)
+    {
+        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>();
+        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>(_config);
+        _configCalled.Assert().Is(true);
+    }
+
+    [Theory, RandomData]
+    internal void Fail_OnlyThrows([Stub] IAsserter asserter, DataSample sample)
+    {
+        AssertObject instance = new(asserter, sample);
+        instance.Fail();
+        instance.Fail(_config);
+    }
+
+    [Theory, RandomData]
+    internal void Pass_Works(DataSample sample)
+    {
+        sample.Assert().Pass();
+        sample.Assert().Pass(_config);
+        _configCalled.Assert().Is(true);
     }
 }

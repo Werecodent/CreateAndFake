@@ -20,6 +20,16 @@ public static class ToolsTests
     }
 
     [Fact]
+    internal static void CreateAndFake_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(FactAttribute), typeof(TheoryAttribute)],
+            Assembly.GetAssembly(typeof(ToolSet)),
+            Assembly.GetExecutingAssembly()
+        );
+    }
+
+    [Fact]
     internal static Task CreateAndFake_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParametersAsync(

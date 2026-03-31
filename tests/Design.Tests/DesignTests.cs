@@ -32,6 +32,16 @@ public static class DesignTests
     }
 
     [Fact]
+    internal static void Design_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(FactAttribute), typeof(TheoryAttribute)],
+            Assembly.GetAssembly(typeof(ArgumentGuard)),
+            Assembly.GetExecutingAssembly()
+        );
+    }
+
+    [Fact]
     internal static Task Design_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParametersAsync(

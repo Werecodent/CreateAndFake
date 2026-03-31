@@ -3,7 +3,7 @@ using CreateAndFake.AsserterTool.Categories;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : ITypeAsserter
+public partial class Asserter : IAsserterType
 {
 #pragma warning disable CA1716 // Matches existing usage.
 

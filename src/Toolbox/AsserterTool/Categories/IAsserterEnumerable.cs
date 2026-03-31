@@ -6,14 +6,14 @@ namespace CreateAndFake.AsserterTool.Categories;
 #pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles common collection test scenarios.</summary>
-public interface IEnumerableAsserter
+public interface IAsserterEnumerable
 {
     /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
     void IsEmpty(IEnumerable? collection, string? details = null);
 
     /// <summary>Verifies <c>collection</c> is empty.</summary>
     /// <param name="collection">Collection to run assertion checks with.</param>
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void IsEmpty(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="IsNotEmpty(IEnumerable,AsserterMod,string)"/>

@@ -17,7 +17,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     /// <summary>Collection to run assertion checks with.</summary>
     protected IEnumerable? Collection { get; } = collection;
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsEmpty(string? details = null)
     {
@@ -25,7 +25,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsEmpty(IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsEmpty(
         AsserterMod? optionConfiguration,
@@ -36,7 +36,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsNotEmpty(string? details = null)
     {
@@ -44,7 +44,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsNotEmpty(
         AsserterMod? optionConfiguration,
@@ -55,7 +55,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.HasCount(int,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCount(int count, string? details = null)
     {
@@ -63,7 +63,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.HasCount(int,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCount(
         int count,
@@ -75,7 +75,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.Contains(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(object? content, string? details = null)
     {
@@ -83,7 +83,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.Contains(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(
         object? content,
@@ -95,7 +95,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsAsync(object,IEnumerable,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
@@ -107,7 +107,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
@@ -122,7 +122,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(object? content, string? details = null)
     {
@@ -130,7 +130,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(
         object? content,
@@ -142,7 +142,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNotAsync(object,IEnumerable,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,
@@ -156,7 +156,7 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IEnumerableAsserter.ContainsNotAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterEnumerable.ContainsNotAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,

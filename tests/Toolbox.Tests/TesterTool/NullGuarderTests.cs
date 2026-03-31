@@ -57,7 +57,7 @@ public static class NullGuarderTests
     }
 
     [Fact]
-    internal static Task NullCheck_TimesOut()
+    internal static Task PreventsNullRefExceptionAsync_TimesOut()
     {
         return _ShortTestInstance
             .Assert(t =>
@@ -71,7 +71,7 @@ public static class NullGuarderTests
     }
 
     [Fact]
-    internal static Task NullCheck_NullReferenceThrows()
+    internal static Task PreventsNullRefExceptionAsync_NullReferenceThrows()
     {
         return _ShortTestInstance
             .Assert(t =>
@@ -85,7 +85,7 @@ public static class NullGuarderTests
     }
 
     [Theory, RandomData]
-    internal static Task PreventsNullRefException_InjectsMultipleValues(
+    internal static Task PreventsNullRefExceptionAsync_InjectsMultipleValues(
         Fake<IOnlyMockSample> fake1,
         Fake<IOnlyMockSample> fake2
     )
@@ -97,7 +97,9 @@ public static class NullGuarderTests
     }
 
     [Theory, RandomData]
-    internal static Task PreventsNullRefException_InjectsWithMethods(Fake<IOnlyMockSample> fake)
+    internal static Task PreventsNullRefExceptionAsync_InjectsWithMethods(
+        Fake<IOnlyMockSample> fake
+    )
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<MockMethodPassOnly>(
             TestContext.Current.CancellationToken,
@@ -106,7 +108,7 @@ public static class NullGuarderTests
     }
 
     [Fact]
-    internal static Task PreventsNullRefException_OnStatics()
+    internal static Task PreventsNullRefExceptionAsync_OnStatics()
     {
         return Tools
             .Tester.Assert(t =>
@@ -119,7 +121,7 @@ public static class NullGuarderTests
     }
 
     [Fact]
-    internal static Task PreventsNullRefException_StatelessFine()
+    internal static Task PreventsNullRefExceptionAsync_StatelessFine()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<StatelessSample>(
             TestContext.Current.CancellationToken
@@ -127,7 +129,7 @@ public static class NullGuarderTests
     }
 
     [Theory, RandomData]
-    internal static async Task PreventsNullRefExceptionOnConstructors_Disposes(
+    internal static async Task PreventsNullRefExceptionOnConstructorsAsync_Disposes(
         [Stub] IDisposable disposable
     )
     {
@@ -154,7 +156,7 @@ public static class NullGuarderTests
     }
 
     [Theory, RandomData]
-    internal static async Task PreventsNullRefExceptionOnMethods_Disposes(
+    internal static async Task PreventsNullRefExceptionOnMethodsAsync_Disposes(
         [Stub] IDisposable disposable
     )
     {

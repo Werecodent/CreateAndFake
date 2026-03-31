@@ -7,7 +7,7 @@ using CreateAndFake.ValuerTool;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IObjectAsserter
+public partial class Asserter : IAsserterObject
 {
     /// <inheritdoc/>
     public void Is(object? expected, object? actual, string? details = null)

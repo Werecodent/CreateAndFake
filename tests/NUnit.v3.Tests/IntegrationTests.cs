@@ -12,7 +12,7 @@ public static class IntegrationTests
     }
 
     [RandomData]
-    public static void RandomData_UsesAttributes(
+    public static void Integration_UsesParameterAttributes(
         [Fake] IRandom gen,
         Wrapper context,
         [Size(2)] string name

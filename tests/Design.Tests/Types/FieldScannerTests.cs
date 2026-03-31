@@ -115,7 +115,7 @@ public static class FieldScannerTests
     }
 
     [Fact]
-    internal static void Public_FieldsFound()
+    internal static void OnlyPublic_FieldsFound()
     {
         HashSet<FieldInfo> expectedFields =
         [

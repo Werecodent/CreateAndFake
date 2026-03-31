@@ -4,17 +4,17 @@ using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Tests.Context;
 
-public abstract class DataContextTestBase<T>
+public abstract class BaseDataContextTestBase<T>
     where T : BaseDataContext
 {
     [Fact]
-    public Task DataContext_GuardsNulls()
+    public Task BaseDataContext_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<T>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
-    public Task DataContext_NoParameterMutation()
+    public Task BaseDataContext_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync<T>(
             TestContext.Current.CancellationToken
@@ -22,7 +22,7 @@ public abstract class DataContextTestBase<T>
     }
 
     [Theory, RandomData]
-    public void DataContext_MaintainsValues(T testInstance)
+    public void BaseDataContext_MaintainsValues(T testInstance)
     {
         foreach (PropertyInfo prop in TypeDescriber.For<T>().Properties.All)
         {
@@ -31,7 +31,7 @@ public abstract class DataContextTestBase<T>
     }
 
     [Theory, RandomData]
-    public void DataContext_DataVaries(T testInstance)
+    public void BaseDataContext_DataVaries(T testInstance)
     {
         testInstance.CreateVariant().Assert().IsNot(testInstance);
     }

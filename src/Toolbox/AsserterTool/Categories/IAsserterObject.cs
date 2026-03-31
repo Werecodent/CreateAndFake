@@ -6,7 +6,7 @@ namespace CreateAndFake.AsserterTool.Categories;
 #pragma warning disable CA1716 // Matches existing usage.
 
 /// <summary>Handles common object test scenarios.</summary>
-public interface IObjectAsserter
+public interface IAsserterObject
 {
     /// <inheritdoc cref="Is(object,object,AsserterMod,string)"/>
     void Is(object? expected, object? actual, string? details = null);

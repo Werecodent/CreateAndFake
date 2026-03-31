@@ -3,7 +3,7 @@ using CreateAndFake.AsserterTool.Categories;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IStringAsserter
+public partial class Asserter : IAsserterString
 {
     /// <inheritdoc/>
     public virtual void Contains(string content, string? text, string? details = null)

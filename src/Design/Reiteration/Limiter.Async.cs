@@ -3,7 +3,7 @@ using System.Diagnostics;
 namespace CreateAndFake.Design.Reiteration;
 
 /// <inheritdoc cref="ILimiter"/>
-public sealed partial class Limiter : IAsyncLimiter
+public sealed partial class Limiter : ILimiterAsync
 {
     /// <inheritdoc/>
     public Task RepeatAsync(string message, Action? behavior, CancellationToken canceler)

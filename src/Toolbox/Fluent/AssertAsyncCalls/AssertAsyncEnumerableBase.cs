@@ -18,7 +18,7 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     /// <summary>Collection to run assertion checks with.</summary>
     protected IAsyncEnumerable<TItem>? Collection { get; } = collection;
 
-    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsEmptyAsync(
         CancellationToken canceler,
@@ -29,7 +29,7 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsEmptyAsync(
         CancellationToken canceler,
@@ -43,7 +43,7 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
         CancellationToken canceler,
@@ -54,7 +54,7 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsyncEnumerableAsserter.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
         CancellationToken canceler,

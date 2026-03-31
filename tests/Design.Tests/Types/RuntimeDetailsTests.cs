@@ -53,7 +53,7 @@ public static class RuntimeDetailsTests
     }
 
     [Fact]
-    internal static void RtFieldInfo_CorrectType()
+    internal static void RtFieldInfoType_CorrectType()
     {
         RuntimeDetails.RtFieldInfoType.FullName.Assert().Is("System.Reflection.RtFieldInfo");
     }

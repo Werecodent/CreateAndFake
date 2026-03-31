@@ -3,7 +3,7 @@ using CreateAndFake.AsserterTool.Categories;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IComparableAsserter
+public partial class Asserter : IAsserterComparable
 {
     /// <inheritdoc/>
     public virtual void GreaterThan(IComparable? target, IComparable? value, string? details = null)

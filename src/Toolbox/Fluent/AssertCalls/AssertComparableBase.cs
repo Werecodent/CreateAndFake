@@ -13,7 +13,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
     /// <summary>Value to run assertion checks with.</summary>
     protected IComparable? Value { get; } = value;
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThan(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThan(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThan(IComparable target, string? details = null)
     {
@@ -21,7 +21,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThan(
         IComparable target,
@@ -33,7 +33,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrEqualTo(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThanOrEqualTo(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrEqualTo(IComparable target, string? details = null)
     {
@@ -41,7 +41,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrEqualTo(
         IComparable target,
@@ -53,7 +53,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrIs(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThanOrIs(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrIs(IComparable target, string? details = null)
     {
@@ -61,7 +61,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.GreaterThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.GreaterThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> GreaterThanOrIs(
         IComparable target,
@@ -73,7 +73,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThan(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThan(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThan(IComparable target, string? details = null)
     {
@@ -81,7 +81,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThan(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThan(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThan(
         IComparable target,
@@ -93,7 +93,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThanOrEqualTo(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThanOrEqualTo(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrEqualTo(IComparable target, string? details = null)
     {
@@ -101,7 +101,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThanOrEqualTo(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrEqualTo(
         IComparable target,
@@ -113,7 +113,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThanOrIs(IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThanOrIs(IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrIs(IComparable target, string? details = null)
     {
@@ -121,7 +121,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.LessThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.LessThanOrIs(IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> LessThanOrIs(
         IComparable target,
@@ -133,7 +133,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.InRange(IComparable,IComparable,IComparable,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.InRange(IComparable,IComparable,IComparable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> InRange(
         IComparable min,
@@ -145,7 +145,7 @@ public abstract class AssertComparableBase<T>(IAsserter asserter, IComparable? v
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IComparableAsserter.InRange(IComparable,IComparable,IComparable,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterComparable.InRange(IComparable,IComparable,IComparable,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> InRange(
         IComparable min,

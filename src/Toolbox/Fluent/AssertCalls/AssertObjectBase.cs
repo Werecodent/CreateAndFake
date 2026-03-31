@@ -19,7 +19,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
     /// <summary>Instance to run assertion checks with.</summary>
     protected object? Actual { get; } = actual;
 
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> Is(object? expected, string? details = null)
     {
@@ -27,7 +27,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> Is(
         object? expected,
@@ -39,7 +39,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNull(object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNull(object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNull(string? details = null)
     {
@@ -47,7 +47,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNull(object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNull(AsserterMod? optionConfiguration, string? details = null)
     {
@@ -55,7 +55,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNot(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNot(object? expected, string? details = null)
     {
@@ -63,7 +63,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNot(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNot(
         object? expected,
@@ -75,7 +75,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNotNull(object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNotNull(object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNotNull(string? details = null)
     {
@@ -83,7 +83,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.IsNotNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.IsNotNull(object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public AssertChainer<T> IsNotNull(AsserterMod? optionConfiguration, string? details = null)
     {
@@ -91,7 +91,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ReferenceEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ReferenceEqual(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ReferenceEqual(object? expected, string? details = null)
     {
@@ -99,7 +99,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ReferenceEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ReferenceEqual(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ReferenceEqual(
         object? expected,
@@ -111,7 +111,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ReferenceNotEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ReferenceNotEqual(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ReferenceNotEqual(object? expected, string? details = null)
     {
@@ -119,7 +119,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ReferenceNotEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ReferenceNotEqual(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ReferenceNotEqual(
         object? expected,
@@ -131,7 +131,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ValuesEqual(object? expected, string? details = null)
     {
@@ -139,7 +139,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ValuesEqual(
         object? expected,
@@ -151,7 +151,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesNotEqual(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ValuesNotEqual(object? expected, string? details = null)
     {
@@ -159,7 +159,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.ValuesNotEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> ValuesNotEqual(
         object? expected,
@@ -171,7 +171,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.AreUnique(object,object,string)"/>
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> UniqueFrom(object? expected, string? details = null)
     {
@@ -179,7 +179,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.AreUnique(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,AsserterMod,string)"/>
     /// <inheritdoc cref="ToChainer"/>
     public virtual AssertChainer<T> UniqueFrom(
         object? expected,
@@ -217,14 +217,14 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         asserter.Pass(optionConfiguration);
     }
 
-    /// <inheritdoc cref="IObjectAsserter.Called(object, Times?)"/>
+    /// <inheritdoc cref="IAsserterObject.Called(object, Times?)"/>
     public virtual AssertChainer<T> Called(Times? total = null)
     {
         asserter.Called(Actual, total);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IObjectAsserter.Called(object,AsserterMod,Times?)"/>
+    /// <inheritdoc cref="IAsserterObject.Called(object,AsserterMod,Times?)"/>
     public virtual AssertChainer<T> Called(
         object fake,
         AsserterMod? optionConfiguration,

@@ -112,7 +112,7 @@ public static class GenericTypeConverter
         if (type?.IsGenericType == true)
         {
             return string.Concat(
-                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
+                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.Ordinal)),
                 "<",
                 string.Join(",", type.GetGenericArguments().Select(ExpandedName)),
                 ">"

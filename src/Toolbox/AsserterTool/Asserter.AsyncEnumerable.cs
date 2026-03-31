@@ -5,7 +5,7 @@ using CreateAndFake.Design.Content;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IAsyncEnumerableAsserter
+public partial class Asserter : IAsserterAsyncEnumerable
 {
     /// <inheritdoc/>
     public virtual Task FailAsync<T>(

@@ -23,6 +23,17 @@ public class MSTestTests
     }
 
     [TestMethod]
+    public void MSTest_v4_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(TestMethodAttribute)],
+            Assembly.GetAssembly(typeof(RandomDataAttribute)),
+            Assembly.GetExecutingAssembly(),
+            opt => opt with { TestMethodNameAllowedTargets = ["Issue118"] }
+        );
+    }
+
+    [TestMethod]
     public Task MSTest_v4_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParametersAsync(

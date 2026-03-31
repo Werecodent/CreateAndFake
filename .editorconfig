@@ -30,11 +30,11 @@ dotnet_naming_style.begins_with__pascal.capitalization = pascal_case
 dotnet_analyzer_diagnostic.severity = warning
 
 # Controlled by CSharpier.
-dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0055.severity = None
 dotnet_diagnostic.MA0051.severity = None
 
 # Bad warnings that can create bugs or are clearly intended behavior.
-dotnet_diagnostic.CA1000.severity = none
+dotnet_diagnostic.CA1000.severity = None
 dotnet_diagnostic.CA1040.severity = None
 dotnet_diagnostic.MA0018.severity = None
 dotnet_diagnostic.MA0165.severity = None
@@ -48,7 +48,7 @@ dotnet_diagnostic.S3453.severity = None
 dotnet_diagnostic.S3878.severity = None
 
 # Redundancy that's good for clarity.
-dotnet_diagnostic.CA1805.severity = none
+dotnet_diagnostic.CA1805.severity = None
 dotnet_diagnostic.RCS1033.severity = None
 dotnet_diagnostic.RCS1034.severity = None
 dotnet_diagnostic.RCS1071.severity = None
@@ -60,9 +60,9 @@ dotnet_diagnostic.S1199.severity = None
 dotnet_diagnostic.S3626.severity = None
 
 # Unnecessary overcaution against default behavior that hurts readability.
-dotnet_diagnostic.IDE0045.severity = none
-dotnet_diagnostic.IDE0046.severity = none
-dotnet_diagnostic.IDE0048.severity = none
+dotnet_diagnostic.IDE0045.severity = None
+dotnet_diagnostic.IDE0046.severity = None
+dotnet_diagnostic.IDE0048.severity = None
 dotnet_diagnostic.MA0002.severity = None
 dotnet_diagnostic.MA0003.severity = None
 dotnet_diagnostic.MA0006.severity = None
@@ -90,10 +90,10 @@ dotnet_diagnostic.MA0038.severity = None
 dotnet_diagnostic.MA0041.severity = None
 
 # Not supported in all .NET versions.
-dotnet_diagnostic.CA1865.severity = none
-dotnet_diagnostic.CA2249.severity = none
-dotnet_diagnostic.IDE0057.severity = none
-dotnet_diagnostic.IDE0370.severity = none
+dotnet_diagnostic.CA1865.severity = None
+dotnet_diagnostic.CA2249.severity = None
+dotnet_diagnostic.IDE0057.severity = None
+dotnet_diagnostic.IDE0370.severity = None
 dotnet_diagnostic.MA0001.severity = None
 dotnet_diagnostic.MA0089.severity = None
 

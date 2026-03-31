@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Tests.Reiteration;
 public static class LimiterSyncTests
 {
     [Fact]
-    internal static void DelayOrFault_SyncTimeoutWorks()
+    internal static void Limiter_SyncTimeoutWorks()
     {
         // All sync timeout tests reduced to one test in order to reduce any risk of deadlock.
         // Async methods should be preferred for timeout limits.

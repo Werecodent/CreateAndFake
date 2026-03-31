@@ -1,7 +1,7 @@
 namespace CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common comparable test scenarios.</summary>
-public interface IComparableAsserter
+public interface IAsserterComparable
 {
     /// <inheritdoc cref="GreaterThan(IComparable,IComparable,AsserterMod,string)"/>
     void GreaterThan(IComparable? target, IComparable? value, string? details = null);
@@ -9,7 +9,7 @@ public interface IComparableAsserter
     /// <summary>Verifies <c>value</c> &gt; <paramref name="target"/>.</summary>
     /// <param name="target">Expected value to compare with.</param>
     /// <param name="value">Actual value under test needing to match the condition</param>
-    /// <inheritdoc cref="IObjectAsserter.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void GreaterThan(
         IComparable? target,
         IComparable? value,

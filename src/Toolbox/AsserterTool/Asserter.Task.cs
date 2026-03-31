@@ -5,7 +5,7 @@ using CreateAndFake.Design.Types;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : ITaskAsserter
+public partial class Asserter : IAsserterTask
 {
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(Task? behavior, string? details = null)

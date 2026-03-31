@@ -68,7 +68,7 @@ public abstract class ExtractHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public async Task TryCreate_InvalidTypesFail()
+    public async Task TryExtract_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {

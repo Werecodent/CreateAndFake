@@ -11,15 +11,15 @@ namespace CreateAndFake.AsserterTool;
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter
     : ITool<AsserterOptions>,
-        IAsyncObjectAsserter,
-        IAsyncEnumerableAsserter,
-        IComparableAsserter,
-        IDelegateAsserter,
-        IEnumerableAsserter,
-        IObjectAsserter,
-        IStringAsserter,
-        ITaskAsserter,
-        ITypeAsserter
+        IAsserterAsyncObject,
+        IAsserterAsyncEnumerable,
+        IAsserterComparable,
+        IAsserterDelegate,
+        IAsserterEnumerable,
+        IAsserterObject,
+        IAsserterString,
+        IAsserterTask,
+        IAsserterType
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>

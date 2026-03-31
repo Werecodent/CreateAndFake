@@ -23,6 +23,17 @@ public static class NUnitTests
     }
 
     [Test]
+    public static void NUnit_v3_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(TestAttribute)],
+            Assembly.GetAssembly(typeof(RandomDataAttribute)),
+            Assembly.GetExecutingAssembly(),
+            opt => opt with { TestMethodNameAllowedTargets = ["Issue118"] }
+        );
+    }
+
+    [Test]
     public static Task NUnit_v3_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParametersAsync(

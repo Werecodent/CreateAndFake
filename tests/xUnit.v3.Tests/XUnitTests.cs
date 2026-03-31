@@ -20,6 +20,17 @@ public static class XUnitTests
     }
 
     [Fact]
+    internal static void XUnit_v3_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(FactAttribute), typeof(TheoryAttribute)],
+            Assembly.GetAssembly(typeof(RandomDataAttribute)),
+            Assembly.GetExecutingAssembly(),
+            opt => opt with { TestMethodNameAllowedTargets = ["Issue118"] }
+        );
+    }
+
+    [Fact]
     internal static Task XUnit_v3_ValidateRandomDataParameters()
     {
         return Tools.Tester.ValidateRandomDataParametersAsync(

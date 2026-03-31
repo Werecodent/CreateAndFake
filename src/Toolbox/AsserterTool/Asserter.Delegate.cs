@@ -5,7 +5,7 @@ using CreateAndFake.Design.Types;
 namespace CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
-public partial class Asserter : IDelegateAsserter
+public partial class Asserter : IAsserterDelegate
 {
     /// <inheritdoc/>
     public virtual void CheckAll(params ICollection<Action> cases)

@@ -87,7 +87,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         if (type?.IsGenericType == true)
         {
             return string.Concat(
-                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.InvariantCulture)),
+                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.Ordinal)),
                 "<",
                 string.Join(",", type.GetGenericArguments().Select(ExpandTypeName)),
                 ">"

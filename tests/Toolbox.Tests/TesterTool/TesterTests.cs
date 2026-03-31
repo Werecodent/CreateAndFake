@@ -62,7 +62,7 @@ public static class TesterTests
     }
 
     [Fact]
-    internal static async Task PreventsNullRefException_Disposes()
+    internal static async Task PreventsNullRefExceptionAsync_Disposes()
     {
         await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
         try
@@ -85,7 +85,7 @@ public static class TesterTests
     }
 
     [Fact]
-    internal static async Task PreventsParameterMutation_Disposes()
+    internal static async Task PreventsParameterMutationAsync_Disposes()
     {
         await MockDisposableSample._Lock.WaitAsync(TestContext.Current.CancellationToken);
         try
