@@ -220,7 +220,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             return null;
         }
-        else if (param.GetCustomAttributes<BaseFakeAttribute>().Any())
+        else if (param.GetCustomAttributes<BaseFakeAttribute>()?.Any() ?? false)
         {
             return (
                 (Fake)
@@ -229,7 +229,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     )!
             ).Dummy;
         }
-        else if (param.GetCustomAttributes<BaseStubAttribute>().Any())
+        else if (param.GetCustomAttributes<BaseStubAttribute>()?.Any() ?? false)
         {
             if (
                 localOptions.InheritIReflectableTypeOnFakedType
@@ -243,7 +243,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 return localOptions.Faker.Stub(param.ParameterType).Dummy;
             }
         }
-        else if (param.GetCustomAttributes<BaseSizeAttribute>().Any())
+        else if (param.GetCustomAttributes<BaseSizeAttribute>()?.Any() ?? false)
         {
             int size = param.GetCustomAttribute<BaseSizeAttribute>()!.Count;
             return localOptions.Randomizer.Create(
