@@ -1,5 +1,4 @@
 ﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Randomization.Handlers;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.DuplicatorTool.Handlers;
@@ -10,17 +9,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class HandlerCopyHint : CopyHint
 {
     /// <summary>Supported types and the methods used to generate them.</summary>
-    private static readonly ICopyHandler[] _Copiers =
-    [
-        new RefCopyHandler(typeof(TypeDescriber)),
-        new FactoryCopyHandler<RuneValueHandler?>((_, __) => RuneValueHandler.TryToCreate()),
-        new FactoryCopyHandler<DateOnlyValueHandler?>(
-            (_, __) => DateOnlyValueHandler.TryToCreate()
-        ),
-        new FactoryCopyHandler<TimeOnlyValueHandler?>(
-            (_, __) => TimeOnlyValueHandler.TryToCreate()
-        ),
-    ];
+    private static readonly ICopyHandler[] _Copiers = [new RefCopyHandler(typeof(TypeDescriber))];
 
     private static readonly IDictionary<Type, ICopyHandler> _CopiersByType =
         TypeSupporter.GroupBySupportedType(

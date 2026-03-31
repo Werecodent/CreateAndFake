@@ -28,6 +28,22 @@ internal static class ReflectionCreateHandlers
         typeof(ValueTuple<Guid, long, string>),
     ];
 
+    /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>
+    private static readonly ImmutableHashSet<string> _MethodsToExclude =
+    [
+        "Join",
+        "Parse",
+        "ToLower",
+        "ToUpper",
+        "Compare",
+        "Replace",
+        "PadLeft",
+        "PadRight",
+        "ToString",
+        "EndsWith",
+        "StartsWith",
+    ];
+
     private static readonly FrozenSet<ConstructorInfo> _Constructors = _PossibleTypes
         .Where(t => t != typeof(string))
         .SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic)
@@ -38,6 +54,7 @@ internal static class ReflectionCreateHandlers
         .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
         .Where(m => m.ReflectedType != typeof(string) || m.Name != nameof(string.Format))
+        .Where(m => !_MethodsToExclude.Contains(m.Name))
         .ToFrozenSet();
 
     private static readonly FrozenSet<PropertyInfo> _Properties = _PossibleTypes

@@ -8,10 +8,6 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 /// <summary>Handles cloning objects for <see cref="IDuplicator"/> .</summary>
 public sealed class ObjectCopyHint : CopyHint
 {
-    /// <summary>Flags used to identify members.</summary>
-    private const BindingFlags _MemberFlags =
-        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
     /// <inheritdoc/>
     public override int EnginePriority => (int)CopyPriority.ObjectHint;
 
@@ -75,37 +71,29 @@ public sealed class ObjectCopyHint : CopyHint
     /// <returns>The created instance.</returns>
     private static object? CreateNew(object source, IDuplicatorChainer duplicator)
     {
-        Type type = source.GetType();
+        TypeDescriber describer = TypeDescriber.For(source.GetType());
 
-        if (type.GetConstructor(Type.EmptyTypes) != null)
-        {
-            return Activator.CreateInstance(type);
-        }
-        else
-        {
-            TypeDescriber describer = TypeDescriber.For(type);
-
-            return type.GetConstructors(_MemberFlags)
-                .Where(c => !c.IsPrivate)
-                .OrderByDescending(c => c.GetParameters().Length)
-                .Select(c =>
-                    TryCreate(source, duplicator, c, describer.Properties.All, describer.Fields.All)
-                )
-                .FirstOrDefault(o => o != null);
-        }
+        return describer
+            .Constructors.Visible.OrderByDescending(c => c.GetParameters().Length)
+            .Cast<MethodBase>()
+            .Concat(describer.Factories.Visible.OrderByDescending(c => c.GetParameters().Length))
+            .Select(m =>
+                TryCreate(source, duplicator, m, describer.Properties.All, describer.Fields.All)
+            )
+            .FirstOrDefault(o => o != null);
     }
 
-    /// <summary>Attempts to create an instance using a <paramref name="constructor"/>.</summary>
+    /// <summary>Attempts to create an instance using a <paramref name="maker"/>.</summary>
     /// <param name="source">Object being cloned.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
-    /// <param name="constructor">Constructor on <paramref name="source"/> to use.</param>
+    /// <param name="maker">Constructor/factory on <paramref name="source"/> to use.</param>
     /// <param name="props">Properties on <paramref name="source"/>.</param>
     /// <param name="fields">Fields on <paramref name="source"/>.</param>
     /// <returns>Null if failed; created instance otherwise.</returns>
     private static object? TryCreate(
         object source,
         IDuplicatorChainer duplicator,
-        ConstructorInfo constructor,
+        MethodBase maker,
         IEnumerable<PropertyInfo> props,
         IEnumerable<FieldInfo> fields
     )
@@ -115,7 +103,7 @@ public sealed class ObjectCopyHint : CopyHint
 
         // Attempts to match members with parameters in the constructor.
         List<MemberInfo> matchedMembers = [];
-        foreach (ParameterInfo param in constructor.GetParameters())
+        foreach (ParameterInfo param in maker.GetParameters())
         {
             PropertyInfo[] potentialProps =
             [
@@ -164,9 +152,14 @@ public sealed class ObjectCopyHint : CopyHint
             return null;
         }
 
-        return constructor.Invoke([
+        object?[] finalParameters =
+        [
             .. matchedMembers.Select(m => CopyMember(m, source, duplicator)),
-        ]);
+        ];
+
+        return (maker is ConstructorInfo constructor)
+            ? constructor.Invoke(finalParameters)
+            : maker.Invoke(null, finalParameters);
     }
 
     /// <summary>Copies the value of <paramref name="member"/> on <paramref name="source"/>.</summary>

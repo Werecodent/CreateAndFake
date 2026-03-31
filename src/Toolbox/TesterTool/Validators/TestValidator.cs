@@ -129,8 +129,8 @@ internal sealed class TestValidator(TesterOptions options)
         [
             .. Options.TestMethodNameAllowedTargets,
             "New",
-            codeAssembly.GetName()!.Name,
-            testAssembly.GetName()!.Name,
+            codeAssembly.GetName()!.Name!,
+            testAssembly.GetName()!.Name!,
         ];
 
         Dictionary<string, List<string>> testsByClass = ScopeChecker
