@@ -84,6 +84,7 @@ internal static class Program
                     "--no-restore",
                     "--configuration Debug",
                     "--collect:\"XPlat Code Coverage\"",
+                    "--test-adapter-path:\"$(Pkgcoverlet_collector)\\build\\netstandard1.0\"",
                     $"--results-directory \"{testDir}\""
                 )
             )

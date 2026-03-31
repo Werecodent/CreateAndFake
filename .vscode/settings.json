@@ -69,6 +69,7 @@
         "nunit",
         "nupkg",
         "paramref",
+        "Pkgcoverlet",
         "Randomizable",
         "Randomizer",
         "Reflectable",
