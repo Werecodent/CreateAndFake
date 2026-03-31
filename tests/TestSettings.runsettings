@@ -4,13 +4,4 @@
     <ResultsDirectory>../artifacts/testing</ResultsDirectory>
     <TestSessionTimeout>600000</TestSessionTimeout>
   </RunConfiguration>
-  <DataCollectionRunSettings>
-    <DataCollectors>
-      <DataCollector friendlyName="XPlat Code Coverage">
-        <Configuration>
-          <Format>cobertura</Format>
-        </Configuration>
-      </DataCollector>
-    </DataCollectors>
-  </DataCollectionRunSettings>
 </RunSettings>
