@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.RandomizerTool.Handlers;
 using CreateAndFake.RunnerTool;
 
@@ -36,21 +37,30 @@ public static class ReflectionCreateHandlersTests
                 .Concat(ReflectionCreateHandlers.PossibleMethods)
         )
         {
-            object instance = method.ReflectedType.CreateRandomInstance();
+            object instance = null;
+            MethodCallWrapper wrapper = null;
+            RunResult result = null;
+            try
+            {
+                instance = method.ReflectedType.CreateRandomInstance();
 
-            MethodCallWrapper wrapper = Tools.Runner.CreateFor(
-                method,
-                TestContext.Current.CancellationToken
-            );
-            wrapper.CreateDeepClone().Assert().Is(wrapper);
+                wrapper = Tools.Runner.CreateFor(method, TestContext.Current.CancellationToken);
+                wrapper.CreateDeepClone().Assert().Is(wrapper);
 
-            await Disposer.CleanupAsync(
-                await Tools.Runner.RunAsync(
+                result = await Tools.Runner.RunAsync(
                     instance,
                     wrapper,
                     TestContext.Current.CancellationToken
-                )
-            );
+                );
+            }
+            catch (Exception e)
+            {
+                throw new ToolException($"Method '{method}' encountered an issue.", e);
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(instance, wrapper.Args, result.Result);
+            }
         }
     }
 }
