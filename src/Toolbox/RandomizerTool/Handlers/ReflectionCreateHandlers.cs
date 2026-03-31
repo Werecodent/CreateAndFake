@@ -8,8 +8,24 @@ namespace CreateAndFake.RandomizerTool.Handlers;
 
 internal static class ReflectionCreateHandlers
 {
+    /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>
+    private static readonly ImmutableHashSet<string> _MethodsToExclude =
+    [
+        "Join",
+        "Parse",
+        "ToLower",
+        "ToUpper",
+        "Compare",
+        "Replace",
+        "PadLeft",
+        "PadRight",
+        "ToString",
+        "EndsWith",
+        "StartsWith",
+    ];
+
     /// <summary>Potential types to randomize.</summary>
-    private static readonly ImmutableArray<Type> _PossibleTypes =
+    internal static readonly FrozenSet<Type> PossibleTypes =
     [
         typeof(int),
         typeof(Guid),
@@ -28,86 +44,74 @@ internal static class ReflectionCreateHandlers
         typeof(ValueTuple<Guid, long, string>),
     ];
 
-    /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>
-    private static readonly ImmutableHashSet<string> _MethodsToExclude =
-    [
-        "Join",
-        "Parse",
-        "ToLower",
-        "ToUpper",
-        "Compare",
-        "Replace",
-        "PadLeft",
-        "PadRight",
-        "ToString",
-        "EndsWith",
-        "StartsWith",
-    ];
-
-    private static readonly FrozenSet<ConstructorInfo> _Constructors = _PossibleTypes
+    /// <summary>Potential constructors to randomize.</summary>
+    internal static readonly FrozenSet<ConstructorInfo> PossibleConstructors = PossibleTypes
         .Where(t => t != typeof(string))
         .SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic)
         .ToFrozenSet();
 
-    private static readonly FrozenSet<MethodInfo> _Methods = _PossibleTypes
+    /// <summary>Potential methods to randomize.</summary>
+    internal static readonly FrozenSet<MethodInfo> PossibleMethods = PossibleTypes
         .SelectMany(t => t.GetMethods())
         .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
         .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
         .Where(m => m.ReflectedType != typeof(string) || m.Name != nameof(string.Format))
+        .Where(m => !m.IsGenericMethodDefinition)
         .Where(m => !_MethodsToExclude.Contains(m.Name))
         .ToFrozenSet();
 
-    private static readonly FrozenSet<PropertyInfo> _Properties = _PossibleTypes
+    /// <summary>Potential properties to randomize.</summary>
+    internal static readonly FrozenSet<PropertyInfo> PossibleProperties = PossibleTypes
         .SelectMany(t => t.GetProperties())
         .ToFrozenSet();
 
-    private static readonly FrozenSet<FieldInfo> _Fields = _PossibleTypes
+    /// <summary>Potential fields to randomize.</summary>
+    internal static readonly FrozenSet<FieldInfo> PossibleFields = PossibleTypes
         .SelectMany(t => t.GetFields())
         .ToFrozenSet();
 
-    private static readonly FrozenSet<FieldInfo> _ConstFields = _PossibleTypes
+    /// <summary>Potential constants to randomize.</summary>
+    internal static readonly FrozenSet<FieldInfo> PossibleConstants = PossibleTypes
         .SelectMany(t => t.GetFields())
         .Where(f => f.IsLiteral && !f.IsInitOnly)
         .ToFrozenSet();
 
-    private static readonly FrozenSet<ParameterInfo> _Parameters = _PossibleTypes
+    /// <summary>Potential parameters to randomize.</summary>
+    internal static readonly FrozenSet<ParameterInfo> PossibleParameters = PossibleTypes
         .SelectMany(t => t.GetMethods())
         .SelectMany(m => m.GetParameters())
         .ToFrozenSet();
-
-    internal static IEnumerable<MethodBase> PossibleMethods =>
-        Enumerable.Empty<MethodBase>().Concat(_Constructors).Concat(_Methods).Distinct();
 
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
         new FactoryCreateHandler(
             RuntimeDetails.RuntimeType,
-            rand => rand.Options.Gen.NextItem(_PossibleTypes)
+            rand => rand.Options.Gen.NextItem(PossibleTypes)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RuntimeConstructorInfoType,
-            rand => rand.Options.Gen.NextItem(_Constructors)
+            rand => rand.Options.Gen.NextItem(PossibleConstructors)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RuntimeMethodInfoType,
-            rand => rand.Options.Gen.NextItem(_Methods)
+            rand => rand.Options.Gen.NextItem(PossibleMethods)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RuntimePropertyInfoType,
-            rand => rand.Options.Gen.NextItem(_Properties)
+            rand => rand.Options.Gen.NextItem(PossibleProperties)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RtFieldInfoType,
-            rand => rand.Options.Gen.NextItem(_Fields)
+            rand => rand.Options.Gen.NextItem(PossibleFields)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.MdFieldInfoType,
-            rand => rand.Options.Gen.NextItem(_ConstFields)
+            rand => rand.Options.Gen.NextItem(PossibleConstants)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RuntimeParameterInfoType,
-            rand => rand.Options.Gen.NextItem(_Parameters)
+            rand => rand.Options.Gen.NextItem(PossibleParameters)
         ),
         new FactoryCreateHandler(
             RuntimeDetails.RuntimeAssemblyType,

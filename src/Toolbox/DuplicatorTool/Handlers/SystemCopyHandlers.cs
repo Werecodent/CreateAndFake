@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using CreateAndFake.DuplicatorTool.Engine;
 
@@ -15,6 +16,7 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
         new FactoryCopyHandler<ValueTuple>((_, __) => ValueTuple.Create()),
         new RefCopyHandler(typeof(TimeZoneInfo)),
+        new RefCopyHandler(typeof(ECCurve)),
         new RefCopyHandler(typeof(UIntPtr)),
         new RefCopyHandler(typeof(IntPtr)),
         new RefCopyHandler(typeof(string)),

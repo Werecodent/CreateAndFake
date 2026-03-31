@@ -44,9 +44,8 @@ internal static class SystemCreateHandlers
         new FactoryCreateHandler<Guid>(rand => new Guid(rand.Options.Gen.NextBytes(16))),
         new FactoryCreateHandler<StringBuilder>(rand => new StringBuilder(rand.Create<string>())),
         new FactoryCreateHandler<NumberFormatInfo>(rand => rand.Create<CultureInfo>().NumberFormat),
-        new FactoryCreateHandler<ECDsa>(rand =>
-            ECDsa.Create(rand.Options.Gen.NextItem(_SupportedECDsaCurves))
-        ),
+        new FactoryCreateHandler<ECDsa>(rand => ECDsa.Create(rand.Create<ECCurve>())),
+        new FactoryCreateHandler<ECCurve>(rand => rand.Options.Gen.NextItem(_SupportedECDsaCurves)),
         new FactoryCreateHandler<TimeZoneInfo>(rand =>
             rand.Options.Gen.NextItem(_PossibleTimeZoneInfos)
         ),
