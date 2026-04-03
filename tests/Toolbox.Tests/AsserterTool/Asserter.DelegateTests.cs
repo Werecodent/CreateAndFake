@@ -45,8 +45,8 @@ public sealed class AsserterDelegateTests
     [Fact]
     internal void Throws_ActionThrows()
     {
-        _testInstance.Throws<InvalidOperationException>(
-            (Action)(() => throw new InvalidOperationException())
+        _testInstance.Throws<InvalidOperationException>(() =>
+            throw new InvalidOperationException()
         );
     }
 
@@ -54,9 +54,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_ActionTypeMismatch()
     {
         _testInstance
-            .Assert(t =>
-                t.Throws<ArgumentException>((Action)(() => throw new NotSupportedException()))
-            )
+            .Assert(t => t.Throws<ArgumentException>(() => throw new NotSupportedException()))
             .Throws<AssertException>();
     }
 
@@ -71,7 +69,10 @@ public sealed class AsserterDelegateTests
     [Fact]
     internal Task Throws_HandlesAsyncNoError()
     {
-        return _testInstance.ThrowsAsync<InvalidDataException>(async () => await WaitTest());
+        return _testInstance.ThrowsAsync<InvalidDataException>(
+            async () => await WaitTest(),
+            TestContext.Current.CancellationToken
+        );
     }
 
     private static async Task<bool> WaitTest()
@@ -84,7 +85,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_ActionNullCase()
     {
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>((Action)null))
+            .Assert(t => t.Throws<InvalidOperationException>(null))
             .Throws<AssertException>();
     }
 

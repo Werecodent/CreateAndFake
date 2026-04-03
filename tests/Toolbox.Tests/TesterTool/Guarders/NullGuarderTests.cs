@@ -67,7 +67,7 @@ public static class NullGuarderTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<TimeoutException>();
+            .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public static class NullGuarderTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -118,7 +118,7 @@ public static class NullGuarderTests
                     opt => opt with { DisableNullRefExceptionTests = false }
                 )
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

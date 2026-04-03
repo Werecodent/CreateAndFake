@@ -11,18 +11,10 @@ internal static class ReflectionCreateHandlers
     /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>
     private static readonly ImmutableHashSet<string> _MethodsToExclude =
     [
-        "Join",
         "Parse",
         "Format",
-        "ToLower",
-        "ToUpper",
         "Compare",
-        "Replace",
-        "PadLeft",
-        "PadRight",
         "ToString",
-        "EndsWith",
-        "StartsWith",
     ];
 
     /// <summary>Potential types to randomize.</summary>
@@ -34,7 +26,6 @@ internal static class ReflectionCreateHandlers
         typeof(long?),
         typeof(int[]),
         typeof(double),
-        typeof(string),
         typeof(object),
         typeof(List<double>),
         typeof(ISet<string>),

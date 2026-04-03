@@ -66,7 +66,7 @@ public static class MutationGuarderTests
                     opt => opt with { DisableParameterMutationTests = false }
                 )
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public static class MutationGuarderTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<TimeoutException>(),
+                .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken),
             TestContext.Current.CancellationToken
         );
     }

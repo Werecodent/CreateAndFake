@@ -43,12 +43,14 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerableTask(List<int> data)
     {
-        Task<IAsyncEnumerable<int>> run = Task.Run(() =>
-            AsyncSeriesHelper.CreateFromAsync(
-                data,
-                data.Count,
-                TestContext.Current.CancellationToken
-            )
+        Task<IAsyncEnumerable<int>> run = Task.Run(
+            () =>
+                AsyncSeriesHelper.CreateFromAsync(
+                    data,
+                    data.Count,
+                    TestContext.Current.CancellationToken
+                ),
+            TestContext.Current.CancellationToken
         );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
@@ -56,12 +58,14 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerableTask(List<string> data)
     {
-        Task<IAsyncEnumerable<string>> run = Task.Run(() =>
-            AsyncSeriesHelper.CreateFromAsync(
-                data,
-                data.Count,
-                TestContext.Current.CancellationToken
-            )
+        Task<IAsyncEnumerable<string>> run = Task.Run(
+            () =>
+                AsyncSeriesHelper.CreateFromAsync(
+                    data,
+                    data.Count,
+                    TestContext.Current.CancellationToken
+                ),
+            TestContext.Current.CancellationToken
         );
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
@@ -69,21 +73,21 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsIntTask(int data)
     {
-        Task<int> run = Task.Run(() => data);
+        Task<int> run = Task.Run(() => data, TestContext.Current.CancellationToken);
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
 
     [Theory, RandomData]
     internal static async Task UnwrapResult_UnwrapsStringTask(string data)
     {
-        Task<string> run = Task.Run(() => data);
+        Task<string> run = Task.Run(() => data, TestContext.Current.CancellationToken);
         data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
 
     [Fact]
     internal static async Task UnwrapResult_UnwrapsNullTask()
     {
-        Task<object> run = Task.Run(() => (object)null);
+        Task<object> run = Task.Run(() => (object)null, TestContext.Current.CancellationToken);
         (await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options)).Assert().IsNull();
     }
 

@@ -61,14 +61,23 @@ public static class AssertBehaviorTests
     internal static Task Throws_WrongException(ArgumentNullException error)
     {
         return error
-            .Assert(e => e.Assert(ex => throw ex).Throws<InvalidOperationException>())
-            .Throws<AssertException>();
+            .Assert(e =>
+                e.Assert(ex => throw ex)
+                    .ThrowsAsync<InvalidOperationException>(TestContext.Current.CancellationToken)
+            )
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
     internal static void Throws_OptionsOkay(ArgumentNullException error)
     {
-        error.Assert(e => e.Assert(ex => throw ex).Throws<ArgumentNullException>(opt => opt));
+        error.Assert(e =>
+            e.Assert(ex => throw ex)
+                .ThrowsAsync<ArgumentNullException>(
+                    TestContext.Current.CancellationToken,
+                    opt => opt
+                )
+        );
     }
 
     [Theory, RandomData]
@@ -76,9 +85,10 @@ public static class AssertBehaviorTests
     {
         return error
             .Assert(e =>
-                e.Assert(ex => throw new AggregateException(ex)).Throws<ArgumentNullException>()
+                e.Assert(ex => throw new AggregateException(ex))
+                    .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken)
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -91,9 +101,9 @@ public static class AssertBehaviorTests
             .Assert(e =>
                 error2
                     .Assert(ex => throw new AggregateException(e, ex))
-                    .Throws<ArgumentNullException>()
+                    .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken)
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -112,15 +122,21 @@ public static class AssertBehaviorTests
     internal static Task ThrowsNo_Error(Exception error)
     {
         return error
-            .Assert(e => e.Assert(ex => throw ex).ThrowsNo<Exception>())
-            .Throws<AssertException>();
+            .Assert(e =>
+                e.Assert(ex => throw ex)
+                    .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            )
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
     internal static Task ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
     {
         return error
-            .Assert(e => e.Assert(ex => throw ex).ThrowsNo<IOException>())
-            .ThrowsNo<AssertException>();
+            .Assert(e =>
+                e.Assert(ex => throw ex)
+                    .ThrowsNoAsync<IOException>(TestContext.Current.CancellationToken)
+            )
+            .ThrowsNoAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 }

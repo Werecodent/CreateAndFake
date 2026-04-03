@@ -86,7 +86,7 @@ public static class AsyncSeriesHelperTests
         return AsyncSeriesHelper
             .HasAnyAsync(data, new CancellationToken(true))
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper
             .HasAnyAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -130,12 +130,12 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper
             .ForEachAsync(data, 1, new CancellationToken(false), _ => { })
             .Assert()
-            .Throws<IterationLimitException>();
+            .ThrowsAsync<IterationLimitException>(TestContext.Current.CancellationToken);
 
         await AsyncSeriesHelper
             .ForEachAsync(data, 1, new CancellationToken(false), _ => Task.CompletedTask)
             .Assert()
-            .Throws<IterationLimitException>();
+            .ThrowsAsync<IterationLimitException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -146,12 +146,12 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper
             .ForEachAsync(data, 0, new CancellationToken(true), _ => { })
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         await AsyncSeriesHelper
             .ForEachAsync(data, 0, new CancellationToken(true), _ => Task.CompletedTask)
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -166,7 +166,7 @@ public static class AsyncSeriesHelperTests
                 _ => { }
             )
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         using CancellationTokenSource source2 = new();
         await AsyncSeriesHelper
@@ -177,7 +177,7 @@ public static class AsyncSeriesHelperTests
                 _ => Task.CompletedTask
             )
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -194,7 +194,7 @@ public static class AsyncSeriesHelperTests
                 _ => { }
             )
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         using CancellationTokenSource source2 = new();
         await AsyncSeriesHelper
@@ -205,7 +205,7 @@ public static class AsyncSeriesHelperTests
                 _ => Task.CompletedTask
             )
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -228,7 +228,7 @@ public static class AsyncSeriesHelperTests
         return AsyncSeriesHelper
             .ToListAsync(data, 0, new CancellationToken(true))
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -242,7 +242,7 @@ public static class AsyncSeriesHelperTests
                 source.Token
             )
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -254,7 +254,7 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper
             .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 2, source.Token)
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -266,7 +266,7 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper
             .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 1, source.Token)
             .Assert()
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

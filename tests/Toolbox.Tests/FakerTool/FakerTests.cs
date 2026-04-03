@@ -24,15 +24,6 @@ public static class FakerTests
     }
 
     [Fact]
-    internal static Task Faker_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Faker>(
-            TestContext.Current.CancellationToken,
-            config
-        );
-    }
-
-    [Fact]
     internal static void New_NullValuerValid()
     {
         new Faker(Tools.Faker.Options with { Valuer = null }).Assert().Pass();

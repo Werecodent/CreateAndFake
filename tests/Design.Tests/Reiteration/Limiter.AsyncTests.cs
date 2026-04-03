@@ -35,7 +35,7 @@ public static class LimiterAsyncTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<TimeoutException>();
+            .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
         attempts.Assert().Is(tries);
     }
 
@@ -58,7 +58,7 @@ public static class LimiterAsyncTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<TimeoutException>()
+                .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken)
         ).InnerException.Assert().Is(exception).Also(attempts).Is(tries);
     }
 
@@ -103,7 +103,7 @@ public static class LimiterAsyncTests
             .Assert(l =>
                 l.StallUntilAsync("", () => { }, () => false, TestContext.Current.CancellationToken)
             )
-            .Throws<TimeoutException>();
+            .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
 
         watch
             .Elapsed.TotalMilliseconds.Assert()
@@ -119,7 +119,7 @@ public static class LimiterAsyncTests
             .Assert(l =>
                 l.RetryAsync("", () => throw exception, TestContext.Current.CancellationToken)
             )
-            .Throws<TimeoutException>();
+            .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
         error
             .InnerException.Assert()
             .Is(exception)
@@ -234,15 +234,15 @@ public static class LimiterAsyncTests
         {
             await Limiter
                 .Few.Assert(l => l.RepeatAsync("", () => tokenSource.Cancel(), tokenSource.Token))
-                .Throws<OperationCanceledException>();
+                .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
         }
         await Limiter
             .Few.Assert(l => l.RepeatAsync("Test", () => { }, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         await Limiter
             .Quick.Assert(l => l.RepeatAsync("", () => { }, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -259,15 +259,15 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<OperationCanceledException>();
+                .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
         }
         await Limiter
             .Few.Assert(l => l.StallUntilAsync("Test", () => false, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         await Limiter
             .Fast.Assert(l => l.StallUntilAsync("", () => false, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -284,17 +284,17 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<OperationCanceledException>();
+                .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
         }
         await Limiter
             .Few.Assert(l =>
                 l.RetryAsync("Test", () => throw exception, new CancellationToken(true))
             )
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         await Limiter
             .Quick.Assert(l => l.RetryAsync("", () => throw exception, new CancellationToken(true)))
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -311,19 +311,19 @@ public static class LimiterAsyncTests
                         tokenSource.Token
                     )
                 )
-                .Throws<OperationCanceledException>();
+                .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
         }
         await Limiter
             .Few.Assert(l =>
                 l.AttemptAsync(null, () => throw exception, new CancellationToken(true))
             )
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
         await Limiter
             .Quick.Assert(l =>
                 l.AttemptAsync("", () => throw exception, new CancellationToken(true))
             )
-            .Throws<OperationCanceledException>();
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
 #pragma warning restore AsyncFixer02
@@ -528,7 +528,7 @@ public static class LimiterAsyncTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<NotSupportedException>()
+                .ThrowsAsync<NotSupportedException>(TestContext.Current.CancellationToken)
         )
             .Assert()
             .Is(exception);
@@ -544,7 +544,7 @@ public static class LimiterAsyncTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<IOException>()
+                .ThrowsAsync<IOException>(TestContext.Current.CancellationToken)
         )
             .Assert()
             .Is(exception2);
@@ -614,7 +614,7 @@ public static class LimiterAsyncTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<NotSupportedException>()
+                .ThrowsAsync<NotSupportedException>(TestContext.Current.CancellationToken)
         )
             .Assert()
             .Is(exception);
@@ -630,7 +630,7 @@ public static class LimiterAsyncTests
                         TestContext.Current.CancellationToken
                     )
                 )
-                .Throws<IOException>()
+                .ThrowsAsync<IOException>(TestContext.Current.CancellationToken)
         )
             .Assert()
             .Is(exception2);

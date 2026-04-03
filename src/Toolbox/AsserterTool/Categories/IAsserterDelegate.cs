@@ -18,14 +18,6 @@ public interface IAsserterDelegate
         where T : Exception;
 
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
-    T Throws<T>(Func<object?>? behavior, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
-    T Throws<T>(Func<object?>? behavior, AsserterMod? optionConfiguration, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception;
 
@@ -42,18 +34,6 @@ public interface IAsserterDelegate
 
     /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     void ThrowsNo<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    void ThrowsNo<T>(Func<object?>? behavior, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    void ThrowsNo<T>(
-        Func<object?>? behavior,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
         where T : Exception;
 
     /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>

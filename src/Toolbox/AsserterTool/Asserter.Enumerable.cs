@@ -155,6 +155,190 @@ public partial class Asserter : IAsserterEnumerable
     }
 
     /// <inheritdoc/>
+    public virtual void HasCountLessThan(int count, IEnumerable? collection, string? details = null)
+    {
+        HasCountLessThan(count, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountLessThan(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '< {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+        }
+
+        if (i >= count)
+        {
+            throw new AssertException(
+                $"Expected collection of '< {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountLessOrExactly(
+        int count,
+        IEnumerable? collection,
+        string? details = null
+    )
+    {
+        HasCountLessOrExactly(count, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountLessOrExactly(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '<= {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+        }
+
+        if (i > count)
+        {
+            throw new AssertException(
+                $"Expected collection of '<= {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountMoreThan(int count, IEnumerable? collection, string? details = null)
+    {
+        HasCountMoreThan(count, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountMoreThan(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '> {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+        }
+
+        if (i <= count)
+        {
+            throw new AssertException(
+                $"Expected collection of '> {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountMoreOrExactly(
+        int count,
+        IEnumerable? collection,
+        string? details = null
+    )
+    {
+        HasCountMoreOrExactly(count, collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void HasCountMoreOrExactly(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '>= {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        foreach (object item in collection)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+        }
+
+        if (i < count)
+        {
+            throw new AssertException(
+                $"Expected collection of '>= {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void Contains(object? content, IEnumerable? collection, string? details)
     {
         Contains(content, collection, Unconfigured, details);

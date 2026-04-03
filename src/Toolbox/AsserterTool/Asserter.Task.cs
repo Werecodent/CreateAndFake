@@ -8,15 +8,20 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsserterTask
 {
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Task? behavior, string? details = null)
+    public virtual Task<T> ThrowsAsync<T>(
+        Task? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsAsync<T>(behavior, Unconfigured, details);
+        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
         Task? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -31,21 +36,27 @@ public partial class Asserter : IAsserterTask
                 }
                 return null;
             },
+            canceler,
             optionConfiguration,
             details
         );
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Task<object?>? behavior, string? details = null)
+    public virtual Task<T> ThrowsAsync<T>(
+        Task<object?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsAsync<T>(behavior, Unconfigured, details);
+        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Task<object?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -73,15 +84,20 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Func<Task?>? behavior, string? details = null)
+    public virtual Task<T> ThrowsAsync<T>(
+        Func<Task?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsAsync<T>(behavior, Unconfigured, details);
+        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
         Func<Task?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -97,21 +113,27 @@ public partial class Asserter : IAsserterTask
                 }
                 return null;
             },
+            canceler,
             optionConfiguration,
             details
         );
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(Func<Task<object?>?>? behavior, string? details = null)
+    public virtual Task<T> ThrowsAsync<T>(
+        Func<Task<object?>?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsAsync<T>(behavior, Unconfigured, details);
+        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
         Func<Task<object?>?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -139,15 +161,20 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task? behavior, string? details = null)
+    public virtual Task ThrowsNoAsync<T>(
+        Task? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, Unconfigured, details);
+        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
         Task? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -162,21 +189,27 @@ public partial class Asserter : IAsserterTask
                 }
                 return null;
             },
+            canceler,
             optionConfiguration,
             details
         );
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Task<object?>? behavior, string? details = null)
+    public virtual Task ThrowsNoAsync<T>(
+        Task<object?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, Unconfigured, details);
+        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
         Task<object?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -207,15 +240,20 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task?>? behavior, string? details = null)
+    public virtual Task ThrowsNoAsync<T>(
+        Func<Task?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, Unconfigured, details);
+        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
         Func<Task?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
@@ -231,21 +269,27 @@ public partial class Asserter : IAsserterTask
                 }
                 return null;
             },
+            canceler,
             optionConfiguration,
             details
         );
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(Func<Task<object?>?>? behavior, string? details = null)
+    public virtual Task ThrowsNoAsync<T>(
+        Func<Task<object?>?>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
         where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, Unconfigured, details);
+        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
         Func<Task<object?>?>? behavior,
+        CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )

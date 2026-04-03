@@ -50,7 +50,7 @@ public static class TesterTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<ArgumentNullException>();
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
         await nullType
             .Assert(t =>
                 _ShortTestInstance.PreventsParameterMutationAsync(
@@ -58,7 +58,7 @@ public static class TesterTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<ArgumentNullException>();
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

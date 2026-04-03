@@ -156,8 +156,220 @@ public partial class Asserter : IAsserterAsyncEnumerable
     }
 
     /// <inheritdoc/>
+    public virtual Task HasCountLessThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasCountLessThanAsync(count, collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HasCountLessThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '< {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        await AsyncSeriesHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+            )
+            .ConfigureAwait(false);
+
+        if (i >= count)
+        {
+            throw new AssertException(
+                $"Expected collection of '< {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual Task HasCountLessOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasCountLessOrExactlyAsync(count, collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HasCountLessOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '<= {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        await AsyncSeriesHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+            )
+            .ConfigureAwait(false);
+
+        if (i > count)
+        {
+            throw new AssertException(
+                $"Expected collection of '<= {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual Task HasCountMoreThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasCountMoreThanAsync(count, collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HasCountMoreThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '> {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        await AsyncSeriesHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+            )
+            .ConfigureAwait(false);
+
+        if (i <= count)
+        {
+            throw new AssertException(
+                $"Expected collection of '> {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual Task HasCountMoreOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasCountMoreOrExactlyAsync(count, collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task HasCountMoreOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (collection == null)
+        {
+            throw new AssertException(
+                $"Expected collection of '>= {count}' elements, but was 'null'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        StringBuilder contents = new();
+
+        int i = 0;
+        await AsyncSeriesHelper
+            .ForEachAsync(
+                collection,
+                localOptions.Valuer.Options.IterationLimit,
+                canceler,
+                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+            )
+            .ConfigureAwait(false);
+
+        if (i < count)
+        {
+            throw new AssertException(
+                $"Expected collection of '>= {count}' elements, but was '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                contents.ToString()
+            );
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual Task ContainsAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         string? details
@@ -168,7 +380,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
 
     /// <inheritdoc/>
     public virtual async Task ContainsAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -217,7 +429,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
 
     /// <inheritdoc/>
     public virtual Task ContainsNotAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         string? details = null
@@ -228,7 +440,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
 
     /// <inheritdoc/>
     public virtual async Task ContainsNotAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

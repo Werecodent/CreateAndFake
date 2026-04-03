@@ -61,10 +61,86 @@ public interface IAsserterAsyncEnumerable
         string? details = null
     );
 
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountLessThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountLessThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountLessOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountLessOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountMoreThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountMoreThanAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountMoreOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task HasCountMoreOrExactlyAsync<T>(
+        int count,
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         string? details
@@ -73,7 +149,7 @@ public interface IAsserterAsyncEnumerable
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -83,7 +159,7 @@ public interface IAsserterAsyncEnumerable
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsNotAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         string? details = null
@@ -92,7 +168,7 @@ public interface IAsserterAsyncEnumerable
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task ContainsNotAsync<T>(
-        object? content,
+        T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

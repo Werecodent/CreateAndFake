@@ -75,6 +75,86 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountLessThan(int count, string? details = null)
+    {
+        Asserter.HasCountLessThan(count, Collection, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountLessThan(
+        int count,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.HasCountLessThan(count, Collection, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountLessOrExactly(int count, string? details = null)
+    {
+        Asserter.HasCountLessOrExactly(count, Collection, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountLessOrExactly(
+        int count,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.HasCountLessOrExactly(count, Collection, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountMoreThan(int count, string? details = null)
+    {
+        Asserter.HasCountMoreThan(count, Collection, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountMoreThan(
+        int count,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.HasCountMoreThan(count, Collection, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountMoreOrExactly(int count, string? details = null)
+    {
+        Asserter.HasCountMoreOrExactly(count, Collection, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> HasCountMoreOrExactly(
+        int count,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.HasCountMoreOrExactly(count, Collection, optionConfiguration, details);
+        return ToChainer();
+    }
+
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(object? content, string? details = null)

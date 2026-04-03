@@ -41,7 +41,7 @@ public static class ExceptionGuarderTests
                     TestContext.Current.CancellationToken
                 )
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

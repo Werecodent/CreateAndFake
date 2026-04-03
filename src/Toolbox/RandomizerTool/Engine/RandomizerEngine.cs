@@ -115,7 +115,7 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
             .Where(g => g.Key > 0)
             .OrderByDescending(g => g.Key)
             .FirstOrDefault()
-            ?.OrderBy(c => c.GetParameters())
+            ?.OrderBy(c => c.GetParameters().Length)
             .FirstOrDefault();
     }
 }

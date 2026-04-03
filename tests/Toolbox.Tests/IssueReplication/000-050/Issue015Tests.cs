@@ -26,6 +26,6 @@ public static class Issue015Tests
                     opt => opt with { DisableParameterMutationTests = false }
                 )
             )
-            .Throws<AssertException>();
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 }

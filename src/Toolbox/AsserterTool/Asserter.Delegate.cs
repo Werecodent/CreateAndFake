@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
@@ -62,24 +63,6 @@ public partial class Asserter : IAsserterDelegate
     }
 
     /// <inheritdoc/>
-    public virtual T Throws<T>(Func<object?>? behavior, string? details = null)
-        where T : Exception
-    {
-        return Throws<T>(behavior, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual T Throws<T>(
-        Func<object?>? behavior,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return Throws<T>((Delegate?)behavior, optionConfiguration, details);
-    }
-
-    /// <inheritdoc/>
     public virtual T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception
     {
@@ -96,18 +79,13 @@ public partial class Asserter : IAsserterDelegate
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
+        VerifyCanCall(behavior, localOptions, details);
+
         string errorMessage =
             $"Expected exception of type '{GenericTypeConverter.ExpandedName<T>()}' but received: ";
         try
         {
-            if (behavior is Action action)
-            {
-                action.Invoke();
-            }
-            else
-            {
-                Disposer.Cleanup([((dynamic?)behavior)?.Invoke()]);
-            }
+            Invoke(behavior);
         }
         catch (Exception e)
         {
@@ -168,24 +146,6 @@ public partial class Asserter : IAsserterDelegate
     }
 
     /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Func<object?>? behavior, string? details = null)
-        where T : Exception
-    {
-        ThrowsNo<T>(behavior, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(
-        Func<object?>? behavior,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        ThrowsNo<T>((Delegate?)behavior, optionConfiguration, details);
-    }
-
-    /// <inheritdoc/>
     public virtual void ThrowsNo<T>(Delegate? behavior, string? details = null)
         where T : Exception
     {
@@ -201,16 +161,11 @@ public partial class Asserter : IAsserterDelegate
         where T : Exception
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        VerifyCanCall(behavior, localOptions, details);
         try
         {
-            if (behavior is Action action)
-            {
-                action.Invoke();
-            }
-            else
-            {
-                Disposer.Cleanup([((dynamic?)behavior)?.Invoke()]);
-            }
+            Invoke(behavior);
         }
         catch (Exception e)
         {
@@ -223,6 +178,49 @@ public partial class Asserter : IAsserterDelegate
                     e
                 );
             }
+        }
+    }
+
+    private static void VerifyCanCall(Delegate? behavior, AsserterOptions options, string? details)
+    {
+        if (behavior is null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (
+                behavior.Method.GetParameters().Length != 0
+                || !behavior.Method.CallingConvention.HasFlag(CallingConventions.HasThis)
+            )
+            {
+                throw new AssertException(
+                    "Delegate to test must not require an instance or arguments.",
+                    details,
+                    options.Gen.InitialSeed
+                );
+            }
+        }
+        catch (MemberAccessException)
+        {
+            // Without permissions, can only try invoking to determine validity.
+        }
+    }
+
+    private static void Invoke(Delegate? behavior)
+    {
+        if (behavior is Action action)
+        {
+            action.Invoke();
+        }
+        else if (behavior?.GetType().Inherits(typeof(Func<>)) ?? false)
+        {
+            Disposer.Cleanup([((dynamic)behavior).Invoke()]);
+        }
+        else
+        {
+            Disposer.Cleanup(behavior?.DynamicInvoke([]));
         }
     }
 }

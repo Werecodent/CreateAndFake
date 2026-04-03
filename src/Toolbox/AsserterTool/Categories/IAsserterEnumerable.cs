@@ -40,6 +40,58 @@ public interface IAsserterEnumerable
         string? details = null
     );
 
+    /// <inheritdoc cref="HasCountLessThan(int,IEnumerable,AsserterMod,string)"/>
+    void HasCountLessThan(int count, IEnumerable? collection, string? details = null);
+
+    /// <summary>Verifies <c>collection</c> has <c>&lt; count</c> elements.</summary>
+    /// <param name="count">Size that the <c>collection</c> should be.</param>
+    /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
+    void HasCountLessThan(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="HasCountLessOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    void HasCountLessOrExactly(int count, IEnumerable? collection, string? details = null);
+
+    /// <summary>Verifies <c>collection</c> has <c>&lt;= count</c> elements.</summary>
+    /// <param name="count">Size that the <c>collection</c> should be.</param>
+    /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
+    void HasCountLessOrExactly(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="HasCountMoreThan(int,IEnumerable,AsserterMod,string)"/>
+    void HasCountMoreThan(int count, IEnumerable? collection, string? details = null);
+
+    /// <summary>Verifies <c>collection</c> has <c>&gt; count</c> elements.</summary>
+    /// <param name="count">Size that the <c>collection</c> should be.</param>
+    /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
+    void HasCountMoreThan(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="HasCountMoreOrExactly(int,IEnumerable,AsserterMod,string)"/>
+    void HasCountMoreOrExactly(int count, IEnumerable? collection, string? details = null);
+
+    /// <summary>Verifies <c>collection</c> has <c>&gt;= count</c> elements.</summary>
+    /// <param name="count">Size that the <c>collection</c> should be.</param>
+    /// <inheritdoc cref="IsEmpty(IEnumerable,AsserterMod,string)"/>
+    void HasCountMoreOrExactly(
+        int count,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
     /// <inheritdoc cref="Contains(object,IEnumerable,AsserterMod,string)"/>
     void Contains(object? content, IEnumerable? collection, string? details);
 
