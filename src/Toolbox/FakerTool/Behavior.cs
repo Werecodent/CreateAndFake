@@ -14,7 +14,7 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     protected Delegate Implementation { get; } = implementation;
 
     /// <summary>Behavior call limit.</summary>
-    protected Times Limit { get; } = times ?? Times.Min(1);
+    protected Times Limit { get; } = times ?? Times.AtLeast(1);
 
     /// <summary>Times the fake behavior was called.</summary>
     protected internal int Calls { get; private set; } = calls;

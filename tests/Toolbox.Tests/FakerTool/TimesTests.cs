@@ -65,15 +65,15 @@ public static class TimesTests
     }
 
     [Theory, RandomData]
-    internal static void Min_Works(int value)
+    internal static void AtLeast_Works(int value)
     {
-        Times.Min(value).IsInRange(value - 1).Assert().Is(false);
-        Times.Min(value).IsInRange(value).Assert().Is(true);
-        Times.Min(value).IsInRange(value + 1).Assert().Is(true);
+        Times.AtLeast(value).IsInRange(value - 1).Assert().Is(false);
+        Times.AtLeast(value).IsInRange(value).Assert().Is(true);
+        Times.AtLeast(value).IsInRange(value + 1).Assert().Is(true);
     }
 
     [Fact]
-    internal static void Max_Works()
+    internal static void AtMost_Works()
     {
         int value;
         do
@@ -81,9 +81,9 @@ public static class TimesTests
             value = Tools.Randomizer.Create<int>();
         } while (value <= 0);
 
-        Times.Max(value).IsInRange(value - 1).Assert().Is(true);
-        Times.Max(value).IsInRange(value).Assert().Is(true);
-        Times.Max(value).IsInRange(value + 1).Assert().Is(false);
+        Times.AtMost(value).IsInRange(value - 1).Assert().Is(true);
+        Times.AtMost(value).IsInRange(value).Assert().Is(true);
+        Times.AtMost(value).IsInRange(value + 1).Assert().Is(false);
     }
 
     [Fact]
@@ -92,8 +92,8 @@ public static class TimesTests
         Times.Never.ToString().Assert().Is("0");
         Times.Once.ToString().Assert().Is("1");
         Times.Exactly(2).ToString().Assert().Is("2");
-        Times.Max(1).ToString().Assert().Is("[0-1]");
-        Times.Min(1).ToString().Assert().Is("[1-*]");
+        Times.AtMost(1).ToString().Assert().Is("[0-1]");
+        Times.AtLeast(1).ToString().Assert().Is("[1-*]");
         Times.Between(1, 2).ToString().Assert().Is("[1-2]");
     }
 

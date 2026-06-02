@@ -181,6 +181,69 @@ public partial class Asserter : IAsserterDelegate
         }
     }
 
+    /// <inheritdoc/>
+    public virtual T HasResult<T>(Delegate? behavior, string? details = null)
+    {
+        return HasResult<T>(behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual T HasResult<T>(
+        Delegate? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        VerifyCanCall(behavior, localOptions, details);
+
+        if (behavior is Action)
+        {
+            throw new AssertException(
+                $"Expected result type of '{GenericTypeConverter.ExpandedName<T>()}, but was 'void'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+
+        object? result;
+        try
+        {
+            if (behavior?.GetType().Inherits(typeof(Func<>)) ?? false)
+            {
+                result = ((dynamic)behavior).Invoke();
+            }
+            else
+            {
+                result = behavior?.DynamicInvoke([]);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                "Expected no exception.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
+
+        if (result is T data)
+        {
+            return data;
+        }
+        else
+        {
+            throw new AssertException(
+                $"Expected result type of '{GenericTypeConverter.ExpandedName<T>()},"
+                    + $" but was '{GenericTypeConverter.ExpandedName(result)}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+    }
+
     private static void VerifyCanCall(Delegate? behavior, AsserterOptions options, string? details)
     {
         if (behavior is null)

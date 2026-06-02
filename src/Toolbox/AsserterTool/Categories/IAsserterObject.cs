@@ -111,18 +111,18 @@ public interface IAsserterObject
         string? details = null
     );
 
-    /// <inheritdoc cref="Called(object,AsserterMod,Times)"/>
-    void Called(object? fake, Times? total = null);
+    /// <inheritdoc cref="Called(object,Times,AsserterMod)"/>
+    void Called(object? fake, AsserterMod? optionConfiguration = null);
 
     /// <summary>Verifies all behaviors with associated times were called as expected.</summary>
     /// <param name="fake">Fake instance with behavior set.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <param name="total">Expected total number of calls to test as well.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <remarks>
     ///     For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.
     ///     When specifying <paramref name="total"/>, be aware of test framework calls for info/display.
     /// </remarks>
-    void Called(object? fake, AsserterMod? optionConfiguration, Times? total = null);
+    void Called(object? fake, Times total, AsserterMod? optionConfiguration = null);
 }
 
 #pragma warning restore CA1716

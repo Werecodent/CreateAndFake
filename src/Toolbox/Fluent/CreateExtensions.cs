@@ -16,15 +16,15 @@ public static class CreateExtensions
     }
 
     /// <inheritdoc cref="IMutator.Variant{T}"/>
-    public static T CreateVariant<T>(this T source)
+    public static T CreateVariant<T>(this T source, MutatorMod? optionConfiguration = null)
     {
-        return Tools.Mutator.Variant(source);
+        return Tools.Mutator.Variant(source, optionConfiguration);
     }
 
     /// <inheritdoc cref="IMutator.Unique{T}"/>
-    public static T CreateUnique<T>(this T source)
+    public static T CreateUnique<T>(this T source, MutatorMod? optionConfiguration = null)
     {
-        return Tools.Mutator.Unique(source);
+        return Tools.Mutator.Unique(source, optionConfiguration);
     }
 
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>

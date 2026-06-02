@@ -10,7 +10,7 @@ namespace CreateAndFake.Fluent.AssertAsyncCalls;
 /// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
 public abstract class AssertAsyncBase<T>(IAsserter asserter, Func<Task?>? behavior)
-    : AssertObjectBase<T>(asserter, behavior)
+    : AssertAsyncObjectBase<T>(asserter, behavior)
     where T : AssertAsyncBase<T>
 {
     /// <summary>Delegate to run assertion checks with.</summary>

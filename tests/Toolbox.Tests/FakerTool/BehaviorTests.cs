@@ -145,7 +145,7 @@ public static class BehaviorTests
     [Theory, RandomData]
     internal static void ToExpectedCalls_MatchesTimes(Times times)
     {
-        Behavior.None().ToExpectedCalls().Assert().Is(Times.Min(1).ToString());
+        Behavior.None().ToExpectedCalls().Assert().Is(Times.AtLeast(1).ToString());
         Behavior.None(times).ToExpectedCalls().Assert().Is(times.ToString());
     }
 

@@ -45,6 +45,18 @@ public interface IAsserterDelegate
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     void ThrowsNo<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
+
+    /// <inheritdoc cref="HasResult{T}(Delegate,AsserterMod,string)"/>
+    T HasResult<T>(Delegate? behavior, string? details = null);
+
+    /// <summary>
+    ///     Verifies the <paramref name="behavior"/> successfully
+    ///     executes with a resulting <typeparamref name="T"/> value.
+    /// </summary>
+    /// <typeparam name="T">Return <see cref="Type"/> of the <paramref name="behavior"/>.</typeparam>
+    /// <returns>Result from invoking the <paramref name="behavior"/>.</returns>
+    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
+    T HasResult<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null);
 }
 
 #pragma warning restore CA1711

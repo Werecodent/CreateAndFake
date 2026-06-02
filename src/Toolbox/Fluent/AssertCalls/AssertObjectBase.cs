@@ -217,21 +217,17 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         asserter.Pass(optionConfiguration);
     }
 
-    /// <inheritdoc cref="IAsserterObject.Called(object, Times?)"/>
-    public virtual AssertChainer<T> Called(Times? total = null)
+    /// <inheritdoc cref="IAsserterObject.Called(object,Times,AsserterMod)"/>
+    public virtual AssertChainer<T> Called(AsserterMod? optionConfiguration = null)
     {
-        asserter.Called(Actual, total);
+        asserter.Called(Actual, optionConfiguration);
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsserterObject.Called(object,AsserterMod,Times?)"/>
-    public virtual AssertChainer<T> Called(
-        object fake,
-        AsserterMod? optionConfiguration,
-        Times? total = null
-    )
+    /// <inheritdoc cref="IAsserterObject.Called(object,Times,AsserterMod)"/>
+    public virtual AssertChainer<T> Called(Times total, AsserterMod? optionConfiguration = null)
     {
-        asserter.Called(Actual, optionConfiguration, total);
+        asserter.Called(Actual, total, optionConfiguration);
         return ToChainer();
     }
 

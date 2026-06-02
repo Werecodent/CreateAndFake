@@ -1,3 +1,5 @@
+using CreateAndFake.Fluent.AssertCalls;
+
 namespace CreateAndFake.Fluent;
 
 /// <summary>Chainer enabling additional assertion calls for throws assertions.</summary>
@@ -7,8 +9,8 @@ public sealed class ExceptionChainer<T>(T exception)
     where T : Exception
 {
     /// <summary>Includes another assertion on the instance to test.</summary>
-    public T That { get; } = exception;
+    public AssertError That { get; } = exception.Assert();
 
-    /// <summary>Includes another assertion on the instance to test.</summary>
-    public T Exception => That;
+    /// <summary>Exception returned.</summary>
+    public T Exception => exception;
 }
