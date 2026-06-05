@@ -26,13 +26,13 @@ public static class AssertBehaviorTests
     [Theory, RandomData]
     internal static void Throws_ReturnsException(Exception error)
     {
-        error.Assert(e => false ? "" : throw e).Throws<Exception>().Assert().Is(error);
+        error.Assert(e => false ? "" : throw e).Throws<Exception>().That.Is(error);
     }
 
     [Theory, RandomData]
     internal static void Throws_CatchesExpected(ArgumentNullException error)
     {
-        error.Assert(e => false ? "" : throw e).Throws<ArgumentNullException>().Assert().Is(error);
+        error.Assert(e => false ? "" : throw e).Throws<ArgumentNullException>().That.Is(error);
     }
 
     [Theory, RandomData]
@@ -41,8 +41,7 @@ public static class AssertBehaviorTests
         error
             .Assert(e => false ? "" : throw new AggregateException(e))
             .Throws<InvalidOperationException>()
-            .Assert()
-            .Is(error);
+            .That.Is(error);
     }
 
     [Theory, RandomData]

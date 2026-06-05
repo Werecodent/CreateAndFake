@@ -1,5 +1,6 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent.AssertCalls;
 
@@ -15,21 +16,23 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual TException Throws<TException>(string? details = null)
+    public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
         where TException : Exception
     {
-        return Asserter.Throws<TException>(Behavior, details);
+        return new ExceptionChainer<TException>(Asserter.Throws<TException>(Behavior, details));
     }
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual TException Throws<TException>(
+    public virtual ExceptionChainer<TException> Throws<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
     )
         where TException : Exception
     {
-        return Asserter.Throws<TException>(Behavior, optionConfiguration, details);
+        return new ExceptionChainer<TException>(
+            Asserter.Throws<TException>(Behavior, optionConfiguration, details)
+        );
     }
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
@@ -49,5 +52,24 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
         where TException : Exception
     {
         Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="HasResult{T}(AsserterMod,string)"/>
+    public virtual ResultChainer<TResult> HasResult<TResult>(string? details = null)
+    {
+        return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details));
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(Delegate,AsserterMod,string)"/>
+    /// <typeparam name="TResult">Expected return <see cref="Type"/> of the <see cref="Behavior"/>.</typeparam>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ResultChainer<TResult> HasResult<TResult>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TResult>(
+            Asserter.HasResult<TResult>(Behavior, optionConfiguration, details)
+        );
     }
 }

@@ -1,4 +1,6 @@
-namespace CreateAndFake.Tests.Fluent;
+using CreateAndFake.Fluent.Chaining;
+
+namespace CreateAndFake.Tests.Fluent.Chaining;
 
 public static class ExceptionChainerTests
 {

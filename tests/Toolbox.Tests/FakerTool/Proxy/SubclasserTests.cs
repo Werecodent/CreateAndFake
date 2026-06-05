@@ -143,7 +143,7 @@ public static class SubclasserTests
 
         type.Assert(t => Subclasser.Create(t, Tools.Faker.Options))
             .Throws<ArgumentException>()
-            .Message.Assert()
+            .Exception.Message.Assert()
             .Contains("InternalsVisibleTo");
     }
 }

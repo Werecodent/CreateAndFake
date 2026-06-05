@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent;
 

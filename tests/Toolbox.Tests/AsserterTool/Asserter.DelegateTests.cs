@@ -26,7 +26,7 @@ public sealed class AsserterDelegateTests
         _testInstance
             .Assert(t => t.CheckAll(() => throw error, () => ran2 = true))
             .Throws<AggregateException>()
-            .InnerExceptions.Assert()
+            .Exception.InnerExceptions.Assert()
             .Is(new[] { error })
             .Also(ran2)
             .Is(true);
@@ -38,7 +38,7 @@ public sealed class AsserterDelegateTests
         _testInstance
             .Assert(t => t.CheckAll(() => throw error1, () => throw error2))
             .Throws<AggregateException>()
-            .InnerExceptions.Assert()
+            .Exception.InnerExceptions.Assert()
             .Is(new[] { error1, error2 });
     }
 
@@ -148,7 +148,7 @@ public sealed class AsserterDelegateTests
         _testInstance
             .Assert(t => t.Throws<InvalidOperationException>(() => throw ex))
             .Throws<AssertException>()
-            .InnerException.Assert()
+            .Exception.InnerException.Assert()
             .Is(ex);
     }
 
@@ -160,7 +160,7 @@ public sealed class AsserterDelegateTests
         _testInstance
             .Assert(t => t.Throws<InvalidCastException>(() => throw ex))
             .Throws<AssertException>()
-            .InnerException.Assert()
+            .Exception.InnerException.Assert()
             .Is(ex);
     }
 }

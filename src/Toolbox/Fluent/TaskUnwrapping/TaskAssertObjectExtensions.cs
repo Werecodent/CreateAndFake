@@ -1,6 +1,7 @@
 using CreateAndFake.Design;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent;
 

@@ -2,6 +2,7 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.FakerTool;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent.AssertCalls;
 

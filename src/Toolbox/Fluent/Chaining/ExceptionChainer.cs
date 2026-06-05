@@ -1,6 +1,6 @@
 using CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Fluent;
+namespace CreateAndFake.Fluent.Chaining;
 
 /// <summary>Chainer enabling additional assertion calls for throws assertions.</summary>
 /// <typeparam name="T">Assertion base <see cref="Type"/> to chain.</typeparam>

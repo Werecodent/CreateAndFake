@@ -1,6 +1,7 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent.AssertAsyncCalls;
 

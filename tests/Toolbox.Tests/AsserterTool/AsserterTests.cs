@@ -84,7 +84,7 @@ public class AsserterTests
         _testInstance
             .Assert(t => t.Fail(error))
             .Throws<AssertException>()
-            .InnerException.Assert()
+            .Exception.InnerException.Assert()
             .Is(error);
     }
 

@@ -45,17 +45,16 @@ public static class Issue089Tests
     internal static void Issue089_DelegateAssertions(InvalidOperationException error, object item)
     {
         Action action = () => throw error;
-        action.Assert().Throws<InvalidOperationException>().Assert().Is(error);
+        action.Assert().Throws<InvalidOperationException>().That.Is(error);
 
         Func<object> func = () => throw error;
-        func.Assert().Throws<InvalidOperationException>().Assert().Is(error);
+        func.Assert().Throws<InvalidOperationException>().That.Is(error);
 
         item.Assert(o => false ? "" : throw error)
             .Throws<InvalidOperationException>()
-            .Assert()
-            .Is(error);
+            .That.Is(error);
 
-        item.Assert(o => o.Assert().Fail()).Throws<AssertException>().Assert().IsNot(error);
+        item.Assert(o => o.Assert().Fail()).Throws<AssertException>().That.IsNot(error);
     }
 
     [Theory, RandomData]

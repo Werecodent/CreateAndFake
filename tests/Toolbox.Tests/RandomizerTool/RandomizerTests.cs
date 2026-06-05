@@ -122,7 +122,7 @@ public static class RandomizerTests
         )
             .Assert(r => r.Create(type))
             .Throws<ToolException>()
-            .Message.Assert()
+            .Exception.Message.Assert()
             .Contains(GenericTypeConverter.ExpandedName(type));
     }
 

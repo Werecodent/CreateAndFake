@@ -2,6 +2,7 @@ using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.Tests.Fluent.AssertCalls;

@@ -1,6 +1,7 @@
 ﻿using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Tests.Fluent.AssertCalls;
+namespace CreateAndFake.Tests.Fluent.Chaining;
 
 public static class AssertChainerTests
 {

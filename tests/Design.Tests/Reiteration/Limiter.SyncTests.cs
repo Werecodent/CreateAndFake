@@ -89,7 +89,7 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<TimeoutException>()
-            .InnerException.Assert()
+            .Exception.InnerException.Assert()
             .Is(exception)
             .Also(attempts)
             .Is(tries);
@@ -377,8 +377,7 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<NotSupportedException>()
-            .Assert()
-            .Is(exception);
+            .That.Is(exception);
 
         IOException exception2 = new();
 
@@ -391,8 +390,7 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<IOException>()
-            .Assert()
-            .Is(exception2);
+            .That.Is(exception2);
     }
 
     [Theory, InlineData(1), InlineData(3)]
@@ -453,8 +451,7 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<NotSupportedException>()
-            .Assert()
-            .Is(exception);
+            .That.Is(exception);
 
         IOException exception2 = new();
         Limiter
@@ -466,7 +463,6 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<IOException>()
-            .Assert()
-            .Is(exception2);
+            .That.Is(exception2);
     }
 }

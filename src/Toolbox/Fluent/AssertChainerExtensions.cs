@@ -1,4 +1,5 @@
 using CreateAndFake.Design;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent;
 

@@ -1,5 +1,6 @@
 using CreateAndFake.Design;
 using CreateAndFake.Fluent.AssertAsyncCalls;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent;
 
