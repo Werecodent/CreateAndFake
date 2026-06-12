@@ -7,12 +7,12 @@ namespace CreateAndFake.Fluent.AssertCalls;
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavior)
-    : AssertObjectBase<T>(asserter, behavior)
-    where T : AssertBehaviorBase<T>
+public abstract class AssertFuncBase<TItem, TSelf>(IAsserter asserter, Func<TItem>? behavior)
+    : AssertObjectBase<TSelf>(asserter, behavior)
+    where TSelf : AssertFuncBase<TItem, TSelf>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Delegate? Behavior { get; } = behavior;
+    protected Func<TItem>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
@@ -54,22 +54,20 @@ public abstract class AssertBehaviorBase<T>(IAsserter asserter, Delegate? behavi
         Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
     }
 
-    /// <inheritdoc cref="HasResult{T}(AsserterMod,string)"/>
-    public virtual ResultChainer<TResult> HasResult<TResult>(string? details = null)
+    /// <inheritdoc cref="IAsserterFunc.HasResult{T}(Func{T},string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ResultChainer<TItem> HasResult(string? details = null)
     {
-        return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details));
+        return new ResultChainer<TItem>(Asserter.HasResult(Behavior, details));
     }
 
-    /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(Delegate,AsserterMod,string)"/>
-    /// <typeparam name="TResult">Expected return <see cref="Type"/> of the <see cref="Behavior"/>.</typeparam>
+    /// <inheritdoc cref="IAsserterFunc.HasResult{T}(Func{T},AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual ResultChainer<TResult> HasResult<TResult>(
+    public virtual ResultChainer<TItem> HasResult(
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return new ResultChainer<TResult>(
-            Asserter.HasResult<TResult>(Behavior, optionConfiguration, details)
-        );
+        return new ResultChainer<TItem>(Asserter.HasResult(Behavior, optionConfiguration, details));
     }
 }

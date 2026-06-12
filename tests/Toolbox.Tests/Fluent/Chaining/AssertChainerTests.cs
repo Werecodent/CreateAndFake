@@ -69,24 +69,24 @@ public static class AssertChainerTests
     [Theory, RandomData]
     internal static void Also_HandlesAction(AssertChainer<object> chainer, Action behavior)
     {
-        chainer.Also(behavior).GetType().Assert().Inherits<AssertBehavior>();
+        chainer.Also(behavior).GetType().Assert().Inherits<AssertDelegate>();
     }
 
     [Theory, RandomData]
     internal static void Also_HandlesFunc(AssertChainer<object> chainer, Func<string> behavior)
     {
-        chainer.Also(behavior).GetType().Assert().Inherits<AssertBehavior>();
+        chainer.Also(behavior).GetType().Assert().Inherits<AssertDelegate>();
     }
 
     [Theory, RandomData]
     internal static void Also_HandlesCompiledAction(AssertChainer<object> chainer, string data)
     {
-        chainer.Also(data, d => d.Assert().Called()).GetType().Assert().Inherits<AssertBehavior>();
+        chainer.Also(data, d => d.Assert().Called()).GetType().Assert().Inherits<AssertDelegate>();
     }
 
     [Theory, RandomData]
     internal static void Also_HandlesCompiledFunc(AssertChainer<object> chainer, string data)
     {
-        chainer.Also(data, d => d.Length).GetType().Assert().Inherits<AssertBehavior>();
+        chainer.Also(data, d => d.Length).GetType().Assert().Inherits<AssertDelegate>();
     }
 }

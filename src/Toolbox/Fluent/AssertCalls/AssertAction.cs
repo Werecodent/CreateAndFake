@@ -3,9 +3,9 @@ using CreateAndFake.AsserterTool;
 namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <inheritdoc/>
-public sealed class AssertBehavior : AssertBehaviorBase<AssertBehavior>
+public sealed class AssertAction : AssertActionBase<AssertAction>
 {
     /// <inheritdoc/>
-    internal AssertBehavior(IAsserter asserter, Delegate? behavior)
+    internal AssertAction(IAsserter asserter, Action? behavior)
         : base(asserter, behavior) { }
 }

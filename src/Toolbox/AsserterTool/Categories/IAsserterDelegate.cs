@@ -5,18 +5,6 @@ namespace CreateAndFake.AsserterTool.Categories;
 /// <summary>Handles common delegate test scenarios.</summary>
 public interface IAsserterDelegate
 {
-    /// <summary>Runs each case and aggregates exceptions.</summary>
-    /// <param name="cases">Assert cases.</param>
-    void CheckAll(params ICollection<Action> cases);
-
-    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
-    T Throws<T>(Action? behavior, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
-    T Throws<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null)
-        where T : Exception;
-
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception;
@@ -26,14 +14,6 @@ public interface IAsserterDelegate
     /// <param name="behavior">Delegate to run assertion checks with.</param>
     /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    void ThrowsNo<T>(Action? behavior, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    void ThrowsNo<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
     /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>

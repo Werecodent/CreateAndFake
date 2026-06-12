@@ -11,11 +11,13 @@ namespace CreateAndFake.AsserterTool;
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter
     : ITool<AsserterOptions>,
-        IAsserterAsyncObject,
+        IAsserterAction,
         IAsserterAsyncEnumerable,
+        IAsserterAsyncObject,
         IAsserterComparable,
         IAsserterDelegate,
         IAsserterEnumerable,
+        IAsserterFunc,
         IAsserterObject,
         IAsserterString,
         IAsserterTask,
@@ -53,4 +55,8 @@ public interface IAsserter
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     [DoesNotReturn]
     void Fail(Exception? exception, AsserterMod? optionConfiguration, string? details = null);
+
+    /// <summary>Runs each case and aggregates exceptions.</summary>
+    /// <param name="cases">Assert cases.</param>
+    void CheckAll(params IEnumerable<Action> cases);
 }

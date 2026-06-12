@@ -24,6 +24,13 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     }
 
     /// <inheritdoc/>
+    public IAsserter WithOptions(AsserterMod optionConfiguration)
+    {
+        ArgumentGuard.ThrowIfNull(optionConfiguration);
+        return new Asserter(optionConfiguration.Invoke(Options));
+    }
+
+    /// <inheritdoc/>
     public virtual void Pass() { }
 
     /// <inheritdoc/>
@@ -70,6 +77,42 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, exception);
     }
 
+    /// <inheritdoc/>
+    public virtual void CheckAll(params IEnumerable<Action> cases)
+    {
+        if (cases == null)
+        {
+            return;
+        }
+
+        List<Exception?> errors = [];
+        foreach (Action test in cases)
+        {
+            try
+            {
+                test.Invoke();
+                errors.Add(null);
+            }
+            catch (Exception e)
+            {
+                errors.Add(e);
+            }
+        }
+
+        if (errors.Exists(e => e != null))
+        {
+            throw new AggregateException(
+                "Cases failed: "
+                    + string.Join(
+                        ", ",
+                        Enumerable.Range(0, errors.Count).Where(i => errors[i] != null)
+                    )
+                    + " -",
+                errors.Where(e => e != null).Select(e => e!)
+            );
+        }
+    }
+
     /// <summary>Finds a suitable <see cref="Type"/> name to use for assertion messages.</summary>
     /// <param name="expected">Instance being compared to <paramref name="actual"/>.</param>
     /// <param name="actual">Instance to run assertion checks with.</param>
@@ -97,12 +140,5 @@ public partial class Asserter(AsserterOptions options) : IAsserter
         {
             return type?.Name;
         }
-    }
-
-    /// <inheritdoc/>
-    public IAsserter WithOptions(AsserterMod optionConfiguration)
-    {
-        ArgumentGuard.ThrowIfNull(optionConfiguration);
-        return new Asserter(optionConfiguration.Invoke(Options));
     }
 }

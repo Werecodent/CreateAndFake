@@ -1,23 +1,27 @@
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Types;
+using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
+using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
-public static class AssertBehaviorTests
+public static class AssertDelegateTests
 {
     [Fact]
-    internal static Task AssertBehavior_GuardsNulls()
+    internal static Task AssertDelegate_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertBehavior>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertDelegate>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnoreAllExceptions = true }
         );
     }
 
     [Fact]
-    internal static Task AssertBehavior_NoParameterMutation()
+    internal static Task AssertDelegate_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertBehavior>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertDelegate>(
             TestContext.Current.CancellationToken,
             opt => opt with { IgnoreAllExceptions = true }
         );
@@ -137,5 +141,25 @@ public static class AssertBehaviorTests
                     .ThrowsNoAsync<IOException>(TestContext.Current.CancellationToken)
             )
             .ThrowsNoAsync<AssertException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task AssertDelegate_CallsAndChains(Injected<AssertDelegate> instance)
+    {
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
+        results
+            .RawResults.Where(r => r.Result != null)
+            .Where(r =>
+                r.Result is not AssertChainer<AssertDelegate>
+                && r.Result != VoidReturn.Instance
+                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ResultChainer<>))
+                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
+            )
+            .Select(r => r.Method.Name)
+            .Assert()
+            .IsEmpty();
     }
 }

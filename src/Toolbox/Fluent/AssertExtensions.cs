@@ -63,25 +63,25 @@ public static class AssertExtensions
         return new AssertError(Tools.Asserter, error);
     }
 
-    /// <inheritdoc cref="AssertBehavior"/>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <inheritdoc cref="AssertDelegate"/>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertBehavior Assert(this Action? behavior)
+    public static AssertDelegate Assert(this Action? behavior)
     {
-        return new AssertBehavior(Tools.Asserter, behavior);
+        return new AssertDelegate(Tools.Asserter, behavior);
     }
 
-    /// <inheritdoc cref="AssertBehavior"/>
+    /// <inheritdoc cref="AssertDelegate"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertBehavior Assert<T>(this Func<T>? behavior)
+    public static AssertDelegate Assert<T>(this Func<T>? behavior)
     {
-        return new AssertBehavior(Tools.Asserter, behavior);
+        return new AssertDelegate(Tools.Asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert(this Func<Task>? behavior)
     {
@@ -90,7 +90,7 @@ public static class AssertExtensions
 
     /// <inheritdoc cref="AssertAsync"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert<T>(this Func<Task<T?>>? behavior)
     {
@@ -98,7 +98,7 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertAsync"/>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert(this Task? behavior)
     {
@@ -107,7 +107,7 @@ public static class AssertExtensions
 
     /// <inheritdoc cref="AssertAsync"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAsync Assert<T>(this Task<T?>? behavior)
     {
@@ -120,13 +120,13 @@ public static class AssertExtensions
     /// <param name="behavior"><c>Delegate</c> on <paramref name="origin"/> to test.</param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <remarks>Primarily useful for exception testing.</remarks>
-    public static AssertBehavior Assert<T>(this T origin, Action<T> behavior)
+    public static AssertDelegate Assert<T>(this T origin, Action<T> behavior)
     {
         return Assert(() => behavior.Invoke(origin));
     }
 
     /// <inheritdoc cref="Assert{T}(T,Action{T})"/>
-    public static AssertBehavior Assert<T>(this T origin, Func<T, object> behavior)
+    public static AssertDelegate Assert<T>(this T origin, Func<T, object> behavior)
     {
         return Assert(() => behavior.Invoke(origin));
     }

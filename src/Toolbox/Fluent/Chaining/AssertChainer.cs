@@ -61,21 +61,21 @@ public sealed class AssertChainer<T>(T chain, IAsserter asserter)
         return new AssertError(asserter, error);
     }
 
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <inheritdoc cref="Also(object)"/>
-    public AssertBehavior Also(Action? behavior)
+    public AssertDelegate Also(Action? behavior)
     {
-        return new AssertBehavior(asserter, behavior);
+        return new AssertDelegate(asserter, behavior);
     }
 
     /// <typeparam name="TReturn">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertBehaviorBase{T}.Behavior" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <inheritdoc cref="Also(object)"/>
-    public AssertBehavior Also<TReturn>(Func<TReturn>? behavior)
+    public AssertDelegate Also<TReturn>(Func<TReturn>? behavior)
     {
-        return new AssertBehavior(asserter, behavior);
+        return new AssertDelegate(asserter, behavior);
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
@@ -84,13 +84,13 @@ public sealed class AssertChainer<T>(T chain, IAsserter asserter)
     /// <param name="behavior"><c>Delegate</c> on <paramref name="origin"/> to test.</param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <remarks>Primarily useful for exception testing.</remarks>
-    public AssertBehavior Also<TOrigin>(TOrigin origin, Action<TOrigin> behavior)
+    public AssertDelegate Also<TOrigin>(TOrigin origin, Action<TOrigin> behavior)
     {
         return Also(() => behavior.Invoke(origin));
     }
 
     /// <inheritdoc cref="Also{T}(T,Action{T})"/>
-    public AssertBehavior Also<TOrigin>(TOrigin origin, Func<TOrigin, object> behavior)
+    public AssertDelegate Also<TOrigin>(TOrigin origin, Func<TOrigin, object> behavior)
     {
         return Also(() => behavior.Invoke(origin));
     }

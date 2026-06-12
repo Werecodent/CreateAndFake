@@ -9,60 +9,6 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsserterDelegate
 {
     /// <inheritdoc/>
-    public virtual void CheckAll(params ICollection<Action> cases)
-    {
-        if (cases == null)
-        {
-            return;
-        }
-
-        List<Exception?> errors = [];
-        foreach (Action test in cases)
-        {
-            try
-            {
-                test.Invoke();
-                errors.Add(null);
-            }
-            catch (Exception e)
-            {
-                errors.Add(e);
-            }
-        }
-
-        if (errors.Exists(e => e != null))
-        {
-            throw new AggregateException(
-                "Cases failed: "
-                    + string.Join(
-                        ", ",
-                        Enumerable.Range(0, errors.Count).Where(i => errors[i] != null)
-                    )
-                    + " -",
-                errors.Where(e => e != null).Select(e => e!)
-            );
-        }
-    }
-
-    /// <inheritdoc/>
-    public virtual T Throws<T>(Action? behavior, string? details = null)
-        where T : Exception
-    {
-        return Throws<T>(behavior, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual T Throws<T>(
-        Action? behavior,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return Throws<T>((Delegate?)behavior, optionConfiguration, details);
-    }
-
-    /// <inheritdoc/>
     public virtual T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception
     {
@@ -125,24 +71,6 @@ public partial class Asserter : IAsserterDelegate
                 localOptions.Gen.InitialSeed,
                 e
             );
-    }
-
-    /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(Action? behavior, string? details = null)
-        where T : Exception
-    {
-        ThrowsNo<T>(behavior, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual void ThrowsNo<T>(
-        Action? behavior,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        ThrowsNo<T>((Delegate?)behavior, optionConfiguration, details);
     }
 
     /// <inheritdoc/>

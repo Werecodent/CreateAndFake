@@ -111,4 +111,39 @@ public class AsserterTests
         sample.Assert().Pass(_config);
         _configCalled.Assert().Is(true);
     }
+
+    [Fact]
+    internal void CheckAll_RunsEachValidCase()
+    {
+        bool ran1 = false;
+        bool ran2 = false;
+
+        _testInstance.CheckAll(() => ran1 = true, () => ran2 = true);
+
+        ran1.Assert().Is(true).Also(ran2).Is(true);
+    }
+
+    [Theory, RandomData]
+    internal void CheckAll_SingleErrorThrows(Exception error)
+    {
+        bool ran2 = false;
+
+        _testInstance
+            .Assert(t => t.CheckAll(() => throw error, () => ran2 = true))
+            .Throws<AggregateException>()
+            .Exception.InnerExceptions.Assert()
+            .Is(new[] { error })
+            .Also(ran2)
+            .Is(true);
+    }
+
+    [Theory, RandomData]
+    internal void CheckAll_RunsEachErrorCase(Exception error1, Exception error2)
+    {
+        _testInstance
+            .Assert(t => t.CheckAll(() => throw error1, () => throw error2))
+            .Throws<AggregateException>()
+            .Exception.InnerExceptions.Assert()
+            .Is(new[] { error1, error2 });
+    }
 }

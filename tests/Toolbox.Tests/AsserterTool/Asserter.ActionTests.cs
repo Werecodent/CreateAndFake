@@ -3,7 +3,7 @@ using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.AsserterTool;
 
-public sealed class AsserterDelegateTests
+public sealed class AsserterActionTests
 {
     private readonly Asserter _testInstance = new(Tools.Asserter.Options);
 
