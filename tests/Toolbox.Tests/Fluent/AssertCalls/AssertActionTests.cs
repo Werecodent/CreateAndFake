@@ -51,8 +51,8 @@ public static class AssertActionTests
             .RawResults.Where(r => r.Result != null)
             .Where(r =>
                 r.Result is not AssertChainer<AssertAction>
-                && r.Result != VoidReturn.Instance
                 && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
+                && r.Result is not AlsoChainer
             )
             .Select(r => r.Method.Name)
             .Assert()

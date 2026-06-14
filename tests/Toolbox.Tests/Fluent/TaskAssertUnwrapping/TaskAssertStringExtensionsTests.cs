@@ -1,31 +1,31 @@
 using System.Reflection;
 using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertAsyncCalls;
+using CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Tests.Fluent.TaskAsyncUnwrapping;
+namespace CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertAsyncObjectExtensionsTests
+public static class TaskAssertStringExtensionsTests
 {
     [Fact]
-    internal static Task TaskAssertAsyncObjectExtensions_GuardsNulls()
+    internal static Task TaskAssertStringExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertAsyncObjectExtensions),
+            typeof(TaskAssertStringExtensions),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
     }
 
     [Fact]
-    internal static void TaskAssertAsyncObjectExtensions_MatchesEveryMethod()
+    internal static void TaskAssertStringExtensions_MatchesEveryMethod()
     {
-        typeof(AssertAsyncObjectBase<>)
+        typeof(AssertStringBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .Select(m => m.Name)
             .Order()
             .Assert()
             .Is(
-                typeof(TaskAssertAsyncObjectExtensions)
+                typeof(TaskAssertStringExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .Select(m => m.Name)
                     .Order()

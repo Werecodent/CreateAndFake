@@ -2,15 +2,15 @@ using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Tests.Fluent.TaskUnwrapping;
+namespace CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertComparableExtensionsTests
+public static class TaskAssertActionExtensionsTests
 {
     [Fact]
-    internal static Task TaskAssertComparableExtensions_GuardsNulls()
+    internal static Task TaskAssertActionExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertComparableExtensions),
+            typeof(TaskAssertActionExtensions),
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -21,15 +21,15 @@ public static class TaskAssertComparableExtensionsTests
     }
 
     [Fact]
-    internal static void TaskAssertComparableExtensions_MatchesEveryMethod()
+    internal static void TaskAssertActionExtensions_MatchesEveryMethod()
     {
-        typeof(AssertComparableBase<>)
+        typeof(AssertActionBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .Select(m => m.Name)
             .Order()
             .Assert()
             .Is(
-                typeof(TaskAssertComparableExtensions)
+                typeof(TaskAssertActionExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .Select(m => m.Name)
                     .Order()

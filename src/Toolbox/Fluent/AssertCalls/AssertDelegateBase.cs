@@ -19,7 +19,10 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
         where TException : Exception
     {
-        return new ExceptionChainer<TException>(Asserter.Throws<TException>(Behavior, details));
+        return new ExceptionChainer<TException>(
+            Asserter.Throws<TException>(Behavior, details),
+            Asserter
+        );
     }
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
@@ -31,33 +34,36 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         where TException : Exception
     {
         return new ExceptionChainer<TException>(
-            Asserter.Throws<TException>(Behavior, optionConfiguration, details)
+            Asserter.Throws<TException>(Behavior, optionConfiguration, details),
+            Asserter
         );
     }
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual void ThrowsNo<TException>(string? details = null)
+    public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
         where TException : Exception
     {
         Asserter.ThrowsNo<TException>(Behavior, details);
+        return new AlsoChainer(Asserter);
     }
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual void ThrowsNo<TException>(
+    public virtual AlsoChainer ThrowsNo<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
     )
         where TException : Exception
     {
         Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
+        return new AlsoChainer(Asserter);
     }
 
     /// <inheritdoc cref="HasResult{T}(AsserterMod,string)"/>
     public virtual ResultChainer<TResult> HasResult<TResult>(string? details = null)
     {
-        return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details));
+        return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details), Asserter);
     }
 
     /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(Delegate,AsserterMod,string)"/>
@@ -69,7 +75,8 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     )
     {
         return new ResultChainer<TResult>(
-            Asserter.HasResult<TResult>(Behavior, optionConfiguration, details)
+            Asserter.HasResult<TResult>(Behavior, optionConfiguration, details),
+            Asserter
         );
     }
 }

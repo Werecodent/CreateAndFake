@@ -2,34 +2,30 @@ using System.Reflection;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Tests.Fluent.TaskUnwrapping;
+namespace CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertObjectExtensionsTests
+public static class TaskAssertTypeExtensionsTests
 {
     [Fact]
-    internal static Task TaskAssertObjectExtensions_GuardsNulls()
+    internal static Task TaskAssertTypeExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertObjectExtensions),
+            typeof(TaskAssertTypeExtensions),
             TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(InvalidCastException)],
-                }
+            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
     }
 
     [Fact]
-    internal static void TaskAssertObjectExtensions_MatchesEveryMethod()
+    internal static void TaskAssertTypeExtensions_MatchesEveryMethod()
     {
-        typeof(AssertObjectBase<>)
+        typeof(AssertTypeBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .Select(m => m.Name)
             .Order()
             .Assert()
             .Is(
-                typeof(TaskAssertObjectExtensions)
+                typeof(TaskAssertTypeExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .Select(m => m.Name)
                     .Order()

@@ -1,6 +1,6 @@
 using CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.Fluent;
+namespace CreateAndFake.Tests.Fluent.TaskChainingUnwrapping;
 
 public static class AssertChainerExtensionsTests
 {

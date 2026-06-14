@@ -5,60 +5,20 @@ using CreateAndFake.Fluent.Chaining;
 namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles assertion calls for delegates.</summary>
-/// <param name="behavior">Delegate to check.</param>
+/// <param name="function">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertFuncBase<TItem, TSelf>(IAsserter asserter, Func<TItem>? behavior)
-    : AssertObjectBase<TSelf>(asserter, behavior)
+public abstract class AssertFuncBase<TItem, TSelf>(IAsserter asserter, Func<TItem>? function)
+    : AssertDelegateBase<TSelf>(asserter, function)
     where TSelf : AssertFuncBase<TItem, TSelf>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Func<TItem>? Behavior { get; } = behavior;
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
-        where TException : Exception
-    {
-        return new ExceptionChainer<TException>(Asserter.Throws<TException>(Behavior, details));
-    }
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual ExceptionChainer<TException> Throws<TException>(
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where TException : Exception
-    {
-        return new ExceptionChainer<TException>(
-            Asserter.Throws<TException>(Behavior, optionConfiguration, details)
-        );
-    }
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual void ThrowsNo<TException>(string? details = null)
-        where TException : Exception
-    {
-        Asserter.ThrowsNo<TException>(Behavior, details);
-    }
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual void ThrowsNo<TException>(
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where TException : Exception
-    {
-        Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
-    }
+    protected Func<TItem>? Function { get; } = function;
 
     /// <inheritdoc cref="IAsserterFunc.HasResult{T}(Func{T},string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ResultChainer<TItem> HasResult(string? details = null)
     {
-        return new ResultChainer<TItem>(Asserter.HasResult(Behavior, details));
+        return new ResultChainer<TItem>(Asserter.HasResult(Function, details), Asserter);
     }
 
     /// <inheritdoc cref="IAsserterFunc.HasResult{T}(Func{T},AsserterMod,string)"/>
@@ -68,6 +28,9 @@ public abstract class AssertFuncBase<TItem, TSelf>(IAsserter asserter, Func<TIte
         string? details = null
     )
     {
-        return new ResultChainer<TItem>(Asserter.HasResult(Behavior, optionConfiguration, details));
+        return new ResultChainer<TItem>(
+            Asserter.HasResult(Function, optionConfiguration, details),
+            Asserter
+        );
     }
 }

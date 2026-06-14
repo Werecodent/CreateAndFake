@@ -154,9 +154,9 @@ public static class AssertDelegateTests
             .RawResults.Where(r => r.Result != null)
             .Where(r =>
                 r.Result is not AssertChainer<AssertDelegate>
-                && r.Result != VoidReturn.Instance
                 && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ResultChainer<>))
                 && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
+                && r.Result is not AlsoChainer
             )
             .Select(r => r.Method.Name)
             .Assert()
