@@ -56,7 +56,7 @@ public static class ArgumentGuardTests
         Task task = Task.Delay(1000, TestContext.Current.CancellationToken);
         task.Assert(t => ArgumentGuard.ThrowIfAsynchronous(t, message))
             .Throws<AsynchronousAccessException>()
-            .Exception.Message.Assert()
+            .With.Message.Assert()
             .Contains(message);
     }
 
@@ -68,7 +68,7 @@ public static class ArgumentGuardTests
     {
         data.Assert(d => ArgumentGuard.ThrowIfAsynchronous(d, message))
             .Throws<AsynchronousAccessException>()
-            .Exception.Message.Assert()
+            .With.Message.Assert()
             .Contains(message);
     }
 
@@ -115,7 +115,7 @@ public static class ArgumentGuardTests
         value
             .Assert(_ => ArgumentGuard.ThrowIfNull(nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -126,12 +126,12 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -142,17 +142,17 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -163,22 +163,22 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -189,27 +189,27 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -220,32 +220,32 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -256,37 +256,37 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, nullValue, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 
@@ -297,42 +297,42 @@ public static class ArgumentGuardTests
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(nullValue, v, v, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, nullValue, v, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, nullValue, v, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, nullValue, v, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, nullValue, v, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, nullValue, v, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, v, nullValue, v))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
         value
             .Assert(v => ArgumentGuard.ThrowIfNull(v, v, v, v, v, v, v, nullValue))
             .Throws<ArgumentNullException>()
-            .Exception.ParamName.Assert()
+            .With.ParamName.Assert()
             .Is(nameof(nullValue));
     }
 }

@@ -32,6 +32,8 @@ public static class TaskAssertFuncExtensionsTests
                 typeof(TaskAssertFuncExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .Select(m => m.Name)
+                    .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsException))
+                    .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsNoException))
                     .Order()
             );
     }

@@ -14,5 +14,5 @@ public sealed class ExceptionChainer<T>(T exception, IAsserter asserter) : AlsoC
     public AssertError That { get; } = exception.Assert();
 
     /// <summary>Exception returned.</summary>
-    public T Exception => exception;
+    public T With => exception;
 }

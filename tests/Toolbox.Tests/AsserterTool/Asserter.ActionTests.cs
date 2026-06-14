@@ -113,7 +113,7 @@ public sealed class AsserterActionTests
         _testInstance
             .Assert(t => t.Throws<InvalidOperationException>(() => throw ex))
             .Throws<AssertException>()
-            .Exception.InnerException.Assert()
+            .With.InnerException.Assert()
             .Is(ex);
     }
 
@@ -125,7 +125,7 @@ public sealed class AsserterActionTests
         _testInstance
             .Assert(t => t.Throws<InvalidCastException>(() => throw ex))
             .Throws<AssertException>()
-            .Exception.InnerException.Assert()
+            .With.InnerException.Assert()
             .Is(ex);
     }
 }

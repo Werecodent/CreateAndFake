@@ -84,7 +84,7 @@ public class AsserterTests
         _testInstance
             .Assert(t => t.Fail(error))
             .Throws<AssertException>()
-            .Exception.InnerException.Assert()
+            .With.InnerException.Assert()
             .Is(error);
     }
 
@@ -131,7 +131,7 @@ public class AsserterTests
         _testInstance
             .Assert(t => t.CheckAll(() => throw error, () => ran2 = true))
             .Throws<AggregateException>()
-            .Exception.InnerExceptions.Assert()
+            .With.InnerExceptions.Assert()
             .Is(new[] { error })
             .Also(ran2)
             .Is(true);
@@ -143,7 +143,7 @@ public class AsserterTests
         _testInstance
             .Assert(t => t.CheckAll(() => throw error1, () => throw error2))
             .Throws<AggregateException>()
-            .Exception.InnerExceptions.Assert()
+            .With.InnerExceptions.Assert()
             .Is(new[] { error1, error2 });
     }
 }

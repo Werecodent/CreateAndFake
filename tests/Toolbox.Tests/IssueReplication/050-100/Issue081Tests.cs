@@ -16,7 +16,7 @@ public static class Issue081Tests
         Tools
             .Asserter.Assert(a => a.Fail())
             .Throws<AssertException>()
-            .Exception.Message.Assert()
+            .With.Message.Assert()
             .Contains($"{Tools.Gen.InitialSeed}");
     }
 }

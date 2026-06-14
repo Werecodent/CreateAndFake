@@ -89,7 +89,7 @@ public static class LimiterSyncTests
                 )
             )
             .Throws<TimeoutException>()
-            .Exception.InnerException.Assert()
+            .With.InnerException.Assert()
             .Is(exception)
             .Also(attempts)
             .Is(tries);

@@ -66,18 +66,18 @@ public static class AssertExtensions
     /// <inheritdoc cref="AssertDelegate"/>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertDelegate Assert(this Action? behavior)
+    public static AssertAction Assert(this Action? behavior)
     {
-        return new AssertDelegate(Tools.Asserter, behavior);
+        return new AssertAction(Tools.Asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertDelegate"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertDelegate Assert<T>(this Func<T>? behavior)
+    public static AssertFunc<T> Assert<T>(this Func<T>? behavior)
     {
-        return new AssertDelegate(Tools.Asserter, behavior);
+        return new AssertFunc<T>(Tools.Asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertAsync"/>
@@ -120,13 +120,13 @@ public static class AssertExtensions
     /// <param name="behavior"><c>Delegate</c> on <paramref name="origin"/> to test.</param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     /// <remarks>Primarily useful for exception testing.</remarks>
-    public static AssertDelegate Assert<T>(this T origin, Action<T> behavior)
+    public static AssertAction Assert<T>(this T origin, Action<T> behavior)
     {
         return Assert(() => behavior.Invoke(origin));
     }
 
     /// <inheritdoc cref="Assert{T}(T,Action{T})"/>
-    public static AssertDelegate Assert<T>(this T origin, Func<T, object> behavior)
+    public static AssertFunc<object> Assert<T>(this T origin, Func<T, object> behavior)
     {
         return Assert(() => behavior.Invoke(origin));
     }

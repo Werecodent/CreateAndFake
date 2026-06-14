@@ -38,7 +38,7 @@ public static class DuplicatorTests
         new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
             .Assert(d => d.Copy(new object()))
             .Throws<ToolException>()
-            .Exception.InnerException.GetType()
+            .With.InnerException.GetType()
             .Assert()
             .Is(typeof(UnsupportedException));
     }
@@ -90,7 +90,7 @@ public static class DuplicatorTests
         )
             .Assert(d => d.Copy(instance))
             .Throws<ToolException>()
-            .Exception.Message.Assert()
+            .With.Message.Assert()
             .Contains(GenericTypeConverter.ExpandedName(instance));
     }
 }
