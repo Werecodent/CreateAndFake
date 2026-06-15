@@ -1,4 +1,6 @@
-namespace CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.AsserterTool.Categories;
+
+namespace CreateAndFake.AsserterTool.AsyncCategories;
 
 #pragma warning disable CA1068 // Cleaner calls.
 

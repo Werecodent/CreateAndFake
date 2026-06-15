@@ -1,4 +1,4 @@
-using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.AsserterTool.AsyncCategories;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
 

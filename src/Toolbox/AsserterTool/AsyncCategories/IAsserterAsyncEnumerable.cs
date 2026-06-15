@@ -1,6 +1,7 @@
 using System.Collections;
+using CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.Categories;
+namespace CreateAndFake.AsserterTool.AsyncCategories;
 
 #pragma warning disable CA1716 // Matches existing usage.
 #pragma warning disable CA1068 // Cleaner calls.

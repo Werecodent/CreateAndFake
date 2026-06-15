@@ -3,6 +3,7 @@ global using AsserterMod = System.Func<
     CreateAndFake.AsserterTool.AsserterOptions
 >;
 using System.Diagnostics.CodeAnalysis;
+using CreateAndFake.AsserterTool.AsyncCategories;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Design.Tooling;
 

@@ -1,5 +1,5 @@
 using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.AsserterTool.AsyncCategories;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Fluent.Chaining;
 
