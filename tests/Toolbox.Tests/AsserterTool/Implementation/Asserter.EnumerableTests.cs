@@ -2,7 +2,7 @@ using CreateAndFake.AsserterTool;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterEnumerableTests
 {

@@ -1,6 +1,6 @@
 using CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace CreateAndFake.Tests.AsserterTool.Implementation;
 
 public static class AsserterTypeTests
 {

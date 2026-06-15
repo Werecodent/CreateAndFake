@@ -1,7 +1,7 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterDelegateTests
 {
