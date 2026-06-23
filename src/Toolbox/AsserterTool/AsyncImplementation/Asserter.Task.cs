@@ -8,6 +8,28 @@ namespace CreateAndFake.AsserterTool;
 public partial class Asserter : IAsserterTask
 {
     /// <inheritdoc/>
+    public virtual Task<T> HasResultAsync<T>(
+        Task<T>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasResultAsync(behavior, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task<T> HasResultAsync<T>(
+        Task<T>? behavior,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        IsNotNull(behavior, optionConfiguration, details);
+        return behavior;
+    }
+
+    /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
         Task? behavior,
         CancellationToken canceler,

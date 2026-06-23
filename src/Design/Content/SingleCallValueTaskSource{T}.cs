@@ -13,13 +13,13 @@ public sealed class SingleCallValueTaskSource<T>(T rawResult) : IValueTaskSource
     private static readonly FieldInfo _TaskSourceGrabber = typeof(ValueTask<T>).GetField(
         "_obj",
         BindingFlags.Instance | BindingFlags.NonPublic
-    );
+    )!;
 
     /// <summary>How to access a <see cref="ValueTask{T}"/>'s token.</summary>
     private static readonly FieldInfo _TaskTokenGrabber = typeof(ValueTask<T>).GetField(
         "_token",
         BindingFlags.Instance | BindingFlags.NonPublic
-    );
+    )!;
 
     /// <summary>Stored result to return.</summary>
     public T RawResult { get; } = rawResult;

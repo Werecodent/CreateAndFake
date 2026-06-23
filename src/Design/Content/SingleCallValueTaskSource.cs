@@ -16,13 +16,13 @@ public sealed class SingleCallValueTaskSource(Guid? id = null)
     private static readonly FieldInfo _TaskSourceGrabber = typeof(ValueTask).GetField(
         "_obj",
         BindingFlags.Instance | BindingFlags.NonPublic
-    );
+    )!;
 
     /// <summary>How to access a <see cref="ValueTask"/>'s token.</summary>
     private static readonly FieldInfo _TaskTokenGrabber = typeof(ValueTask).GetField(
         "_token",
         BindingFlags.Instance | BindingFlags.NonPublic
-    );
+    )!;
 
     /// <summary>Identifier representing <see langword="this"/> task.</summary>
     public Guid Id { get; } = id ?? Guid.NewGuid();
