@@ -10,6 +10,9 @@ namespace CreateAndFake.ValuerTool.Engine;
 /// <inheritdoc cref="ICompareHint"/>
 public abstract class CompareHint : ICompareHint
 {
+    /// <summary>If calculated value hashes can be included in equality comparisons.</summary>
+    protected virtual bool EnableValueHashForComparisons => true;
+
     /// <inheritdoc/>
     public abstract int EnginePriority { get; }
 
@@ -24,7 +27,7 @@ public abstract class CompareHint : ICompareHint
         if (Supports(expected, actual, chainer))
         {
             IEnumerable<Difference> results = Compare(expected, actual, chainer);
-            if (chainer.Options.IncludeValueHashInComparison)
+            if (EnableValueHashForComparisons && chainer.Options.IncludeValueHashInComparison)
             {
                 int expectedHash = GetHashCode(expected, chainer);
                 int actualHash = GetHashCode(actual, chainer);
@@ -82,7 +85,7 @@ public abstract class CompareHint : ICompareHint
             yield return diff;
         }
 
-        if (chainer.Options.IncludeValueHashInComparison)
+        if (EnableValueHashForComparisons && chainer.Options.IncludeValueHashInComparison)
         {
             canceler.ThrowIfCancellationRequested();
             int expectedHash = await GetHashCodeAsync(expected, chainer, canceler)

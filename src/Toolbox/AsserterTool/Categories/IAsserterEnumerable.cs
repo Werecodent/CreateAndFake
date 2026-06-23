@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CreateAndFake.AsserterTool.Categories;
 
-#pragma warning disable CA1068 // Cleaner calls.
-
 /// <summary>Handles common collection test scenarios.</summary>
 public interface IAsserterEnumerable
 {
@@ -161,5 +159,3 @@ public interface IAsserterEnumerable
     [DoesNotReturn]
     void Fail(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null);
 }
-
-#pragma warning restore CA1068

@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using CreateAndFake.Design.Content;
 using CreateAndFake.RandomizerTool.Engine;
 using static System.TimeZoneInfo;
 
@@ -62,6 +63,10 @@ internal static class SystemCreateHandlers
         ),
         new FactoryCreateHandler<DateTimeOffset>(rand => new DateTimeOffset(
             rand.Create<DateTime>()
+        )),
+        new FactoryCreateHandler<ValueTask>(rand => new ValueTask(
+            rand.Create<SingleCallValueTaskSource>(),
+            rand.Create<short>()
         )),
         new FactoryCreateHandler<UriBuilder>(rand => new UriBuilder(
             rand.Create<bool>() ? "http" : "https",

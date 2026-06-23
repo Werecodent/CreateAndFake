@@ -38,7 +38,6 @@ internal static class ReflectionCreateHandlers
 
     /// <summary>Potential constructors to randomize.</summary>
     internal static readonly FrozenSet<ConstructorInfo> PossibleConstructors = PossibleTypes
-        .Where(t => t != typeof(string))
         .SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic)
         .ToFrozenSet();
 

@@ -44,13 +44,16 @@ public enum CopyPriority
     /// <summary>Priority for <see cref="DeepCloneableCopyHint"/>.</summary>
     DeepCloneableHint = 10,
 
+    /// <summary>Priority for <see cref="ValueTaskCopyHint"/>.</summary>
+    ValueTaskHint = 11,
+
     /// <summary>Priority for <see cref="TaskCopyHint"/>.</summary>
-    TaskHint = 11,
+    TaskHint = 12,
 
     /// <summary>Priority for <see cref="HandlerCopyHint"/>.</summary>
-    HandlerHint = 12,
+    HandlerHint = 13,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 13,
+    Highest = 14,
 }

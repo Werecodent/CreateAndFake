@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 
@@ -47,11 +48,15 @@ public interface IAsserterObject
     );
 
     /// <inheritdoc cref="IsNotNull(object,AsserterMod,string)"/>
-    void IsNotNull(object? actual, string? details = null);
+    void IsNotNull([NotNull] object? actual, string? details = null);
 
     /// <summary>Verifies <c>actual</c> unequals <see langword="null"/>.</summary>
     /// <inheritdoc cref="Is(object,object,AsserterMod,string)"/>
-    void IsNotNull(object? actual, AsserterMod? optionConfiguration, string? details = null);
+    void IsNotNull(
+        [NotNull] object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 
     /// <inheritdoc cref="ReferenceEqual(object,object,AsserterMod,string)"/>
     void ReferenceEqual(object? expected, object? actual, string? details = null);

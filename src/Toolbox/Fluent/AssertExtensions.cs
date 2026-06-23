@@ -7,6 +7,14 @@ namespace CreateAndFake.Fluent;
 /// <summary>Provides fluent assertions.</summary>
 public static class AssertExtensions
 {
+    /// <inheritdoc cref="AssertValueTask"/>
+    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    public static AssertValueTask Assert(this ValueTask? actual)
+    {
+        return new AssertValueTask(Tools.Asserter, actual);
+    }
+
     /// <inheritdoc cref="AssertObject"/>
     /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>

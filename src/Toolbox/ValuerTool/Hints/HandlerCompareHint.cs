@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Types;
 using CreateAndFake.ValuerTool.Engine;
@@ -18,14 +19,24 @@ public sealed class HandlerCompareHint : CompareHint
         new DefaultEqualityCompareHandler(typeof(string)),
         new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
         new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
-        new ConvertCompareHandler<CancellationToken>((s, _) => s.IsCancellationRequested),
+        new ConvertCompareHandler<CancellationToken>((token, _) => token.IsCancellationRequested),
         new ConvertCompareHandler<StringDictionary>(
             (dict, _) =>
                 dict.Cast<DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string?)e.Value)
         ),
         new ConvertCompareHandler<SeededRandom>(
-            (r, c) =>
-                c.Options.IgnoreCurrentRandomSeed ? r.InitialSeed : new[] { r.InitialSeed, r.Seed }
+            (rand, c) =>
+                c.Options.IgnoreCurrentRandomSeed
+                    ? rand.InitialSeed
+                    : new[] { rand.InitialSeed, rand.Seed }
+        ),
+        new ConvertCompareHandler<ValueTask>(
+            (task, _) =>
+                new
+                {
+                    SingleCallSource = SingleCallValueTaskSource.ExtractFrom(task),
+                    Token = SingleCallValueTaskSource.ExtractTokenFrom(task),
+                }
         ),
     ];
 

@@ -64,4 +64,13 @@ public static class ReflectionCreateHandlersTests
             }
         }
     }
+
+    [Fact]
+    internal static Task PossibleTypes_AllSupported()
+    {
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            ReflectionCreateHandlers.PossibleTypes,
+            TestContext.Current.CancellationToken
+        );
+    }
 }

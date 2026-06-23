@@ -1,4 +1,5 @@
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.DuplicatorTool;
@@ -20,6 +21,9 @@ internal static class SelfCreateHandlers
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
+        new FactoryCreateHandler<SingleCallValueTaskSource>(rand => new SingleCallValueTaskSource(
+            rand.Create<Guid>()
+        )),
         new FactoryCreateHandler<IFaked>(rand => (IFaked)rand.Options.Faker.Stub<object>().Dummy),
         new FactoryCreateHandler<ToolSet>(rand =>
             ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>())

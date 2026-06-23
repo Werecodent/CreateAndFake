@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.FakerTool;
@@ -56,16 +57,24 @@ public partial class Asserter : IAsserterObject
     }
 
     /// <inheritdoc/>
-    public void IsNotNull(object? actual, string? details = null)
+    public void IsNotNull([NotNull] object? actual, string? details = null)
     {
         IsNotNull(actual, Unconfigured, details);
     }
 
+#pragma warning disable CS8777 // Is accounted for.
+
     /// <inheritdoc/>
-    public void IsNotNull(object? actual, AsserterMod? optionConfiguration, string? details = null)
+    public void IsNotNull(
+        [NotNull] object? actual,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
     {
         ReferenceNotEqual(null, actual, optionConfiguration, details);
     }
+
+#pragma warning restore CS8777
 
     /// <inheritdoc/>
     public virtual void ReferenceEqual(object? expected, object? actual, string? details = null)

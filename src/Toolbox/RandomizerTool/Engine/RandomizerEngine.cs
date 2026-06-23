@@ -101,7 +101,7 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
     /// <param name="type">Type to find a constructor for.</param>
     /// <param name="data">Injection data to use.</param>
     /// <param name="scope">Scope of constructors to find.</param>
-    /// <returns>Constructor if found; null otherwise.</returns>
+    /// <returns>Constructor if found, null otherwise.</returns>
     private static ConstructorInfo? FindConstructor(
         Type type,
         List<Tuple<Type, object>> data,

@@ -2,8 +2,6 @@ using CreateAndFake.AsserterTool.Categories;
 
 namespace CreateAndFake.AsserterTool.AsyncCategories;
 
-#pragma warning disable CA1068 // Cleaner calls.
-
 /// <summary>Handles common async test scenarios.</summary>
 public interface IAsserterTask
 {
@@ -147,5 +145,3 @@ public interface IAsserterTask
     )
         where T : Exception;
 }
-
-#pragma warning restore CA1068

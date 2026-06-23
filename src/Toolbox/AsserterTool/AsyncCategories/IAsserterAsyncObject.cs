@@ -3,7 +3,6 @@ using CreateAndFake.AsserterTool.Categories;
 namespace CreateAndFake.AsserterTool.AsyncCategories;
 
 #pragma warning disable CA1716 // Matches existing usage.
-#pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles common object test scenarios.</summary>
 public interface IAsserterAsyncObject
@@ -104,4 +103,4 @@ public interface IAsserterAsyncObject
     );
 }
 
-#pragma warning restore CA1716, CA1068
+#pragma warning restore CA1716

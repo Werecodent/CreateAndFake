@@ -22,6 +22,7 @@ public class AsserterTests
                 typeof(UnsupportedException),
                 typeof(TargetException),
                 typeof(InvalidCastException),
+                typeof(ValueTaskRepeatedAccessException),
             ],
         };
 
