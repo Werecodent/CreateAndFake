@@ -100,6 +100,6 @@ public sealed class SingleCallValueTaskSource(Guid? id = null)
     /// <returns>The <paramref name="task"/>'s opaque token.</returns>
     public static short ExtractTokenFrom(ValueTask task)
     {
-        return (short)_TaskTokenGrabber.GetValue(task);
+        return (short)_TaskTokenGrabber.GetValue(task)!;
     }
 }

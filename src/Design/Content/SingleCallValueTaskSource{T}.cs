@@ -74,6 +74,6 @@ public sealed class SingleCallValueTaskSource<T>(T rawResult) : IValueTaskSource
     /// <returns>The <paramref name="task"/>'s opaque token.</returns>
     public static short ExtractTokenFrom(ValueTask<T> task)
     {
-        return (short)_TaskTokenGrabber.GetValue(task);
+        return (short)_TaskTokenGrabber.GetValue(task)!;
     }
 }

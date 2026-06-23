@@ -21,14 +21,14 @@ public static class TaskAssertStringExtensionsTests
     {
         typeof(AssertStringBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+            .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Order()
             .Assert()
             .Is(
                 typeof(TaskAssertStringExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Order()
             );
     }
 }

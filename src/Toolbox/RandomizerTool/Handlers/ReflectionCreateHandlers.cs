@@ -18,7 +18,7 @@ internal static class ReflectionCreateHandlers
     ];
 
     /// <summary>Potential types to randomize.</summary>
-    internal static readonly FrozenSet<Type> PossibleTypes =
+    internal static FrozenSet<Type> PossibleTypes { get; } =
     [
         typeof(int),
         typeof(Guid),
@@ -37,40 +37,40 @@ internal static class ReflectionCreateHandlers
     ];
 
     /// <summary>Potential constructors to randomize.</summary>
-    internal static readonly FrozenSet<ConstructorInfo> PossibleConstructors = PossibleTypes
-        .SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic)
-        .ToFrozenSet();
+    internal static FrozenSet<ConstructorInfo> PossibleConstructors { get; } =
+        PossibleTypes.SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic).ToFrozenSet();
 
     /// <summary>Potential methods to randomize.</summary>
-    internal static readonly FrozenSet<MethodInfo> PossibleMethods = PossibleTypes
-        .SelectMany(t => t.GetMethods())
-        .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
-        .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
-        .Where(m => !m.IsGenericMethodDefinition)
-        .Where(m => !_MethodsToExclude.Contains(m.Name))
-        .ToFrozenSet();
+    internal static FrozenSet<MethodInfo> PossibleMethods { get; } =
+        PossibleTypes
+            .SelectMany(t => t.GetMethods())
+            .Where(m => m.GetParameters().All(p => !p.ParameterType.IsByRef))
+            .Where(m => !m.ReturnType.Inherits(typeof(ValueTuple<,>)))
+            .Where(m => !m.IsGenericMethodDefinition)
+            .Where(m => !_MethodsToExclude.Contains(m.Name))
+            .ToFrozenSet();
 
     /// <summary>Potential properties to randomize.</summary>
-    internal static readonly FrozenSet<PropertyInfo> PossibleProperties = PossibleTypes
-        .SelectMany(t => t.GetProperties())
-        .ToFrozenSet();
+    internal static FrozenSet<PropertyInfo> PossibleProperties { get; } =
+        PossibleTypes.SelectMany(t => t.GetProperties()).ToFrozenSet();
 
     /// <summary>Potential fields to randomize.</summary>
-    internal static readonly FrozenSet<FieldInfo> PossibleFields = PossibleTypes
-        .SelectMany(t => t.GetFields())
-        .ToFrozenSet();
+    internal static FrozenSet<FieldInfo> PossibleFields { get; } =
+        PossibleTypes.SelectMany(t => t.GetFields()).ToFrozenSet();
 
     /// <summary>Potential constants to randomize.</summary>
-    internal static readonly FrozenSet<FieldInfo> PossibleConstants = PossibleTypes
-        .SelectMany(t => t.GetFields())
-        .Where(f => f.IsLiteral && !f.IsInitOnly)
-        .ToFrozenSet();
+    internal static FrozenSet<FieldInfo> PossibleConstants { get; } =
+        PossibleTypes
+            .SelectMany(t => t.GetFields())
+            .Where(f => f.IsLiteral && !f.IsInitOnly)
+            .ToFrozenSet();
 
     /// <summary>Potential parameters to randomize.</summary>
-    internal static readonly FrozenSet<ParameterInfo> PossibleParameters = PossibleTypes
-        .SelectMany(t => t.GetMethods())
-        .SelectMany(m => m.GetParameters())
-        .ToFrozenSet();
+    internal static FrozenSet<ParameterInfo> PossibleParameters { get; } =
+        PossibleTypes
+            .SelectMany(t => t.GetMethods())
+            .SelectMany(m => m.GetParameters())
+            .ToFrozenSet();
 
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =

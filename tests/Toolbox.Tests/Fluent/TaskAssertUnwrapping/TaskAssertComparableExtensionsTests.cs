@@ -25,14 +25,14 @@ public static class TaskAssertComparableExtensionsTests
     {
         typeof(AssertComparableBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+            .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Order()
             .Assert()
             .Is(
                 typeof(TaskAssertComparableExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Order()
             );
     }
 }

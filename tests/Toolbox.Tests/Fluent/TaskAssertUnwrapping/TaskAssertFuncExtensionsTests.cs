@@ -25,16 +25,16 @@ public static class TaskAssertFuncExtensionsTests
     {
         typeof(AssertFuncBase<,>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+            .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Order()
             .Assert()
             .Is(
                 typeof(TaskAssertFuncExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .OrderBy(m => m.Name)
                     .Select(m => m.Name)
                     .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsException))
                     .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsNoException))
-                    .Order()
             );
     }
 }

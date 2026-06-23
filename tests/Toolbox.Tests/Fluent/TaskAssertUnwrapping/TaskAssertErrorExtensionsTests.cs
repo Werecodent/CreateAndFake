@@ -21,14 +21,14 @@ public static class TaskAssertEnumerableExtensionsTests
     {
         typeof(AssertEnumerableBase<>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+            .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Order()
             .Assert()
             .Is(
                 typeof(TaskAssertEnumerableExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                    .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Order()
             );
     }
 }
