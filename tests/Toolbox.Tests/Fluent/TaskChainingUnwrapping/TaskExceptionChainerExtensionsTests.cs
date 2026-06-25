@@ -2,13 +2,13 @@ using CreateAndFake.AsserterTool;
 
 namespace CreateAndFake.Tests.Fluent.TaskChainingUnwrapping;
 
-public static class ExceptionChainerExtensionsTests
+public static class TaskExceptionChainerExtensionsTests
 {
     [Fact]
-    internal static Task ExceptionChainerExtensions_GuardsNulls()
+    internal static Task TaskExceptionChainerExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ExceptionChainerExtensions),
+            typeof(TaskExceptionChainerExtensions),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );

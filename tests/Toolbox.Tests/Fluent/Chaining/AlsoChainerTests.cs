@@ -1,3 +1,4 @@
+using CreateAndFake.Fluent.AssertAsyncCalls;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Fluent.Chaining;
 
@@ -24,7 +25,7 @@ public static class AlsoChainerTests
     [Theory, RandomData]
     internal static void Also_HandlesObject(AlsoChainer chainer, object data)
     {
-        chainer.Also(data).GetType().Assert().Inherits<AssertObject>();
+        chainer.Also(data).GetType().Assert().Inherits<AssertAsyncObject>();
     }
 
     [Theory, RandomData]

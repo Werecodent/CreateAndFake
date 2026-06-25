@@ -1,4 +1,5 @@
-﻿using CreateAndFake.Fluent.AssertCalls;
+﻿using CreateAndFake.Fluent.AssertAsyncCalls;
+using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Tests.Fluent.Chaining;
@@ -30,7 +31,7 @@ public static class AssertChainerTests
     [Theory, RandomData]
     internal static void Also_HandlesObject(AssertChainer<object> chainer, object data)
     {
-        chainer.Also(data).GetType().Assert().Inherits<AssertObject>();
+        chainer.Also(data).GetType().Assert().Inherits<AssertAsyncObject>();
     }
 
     [Theory, RandomData]

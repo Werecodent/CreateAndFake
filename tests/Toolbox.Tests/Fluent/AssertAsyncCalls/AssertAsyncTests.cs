@@ -25,8 +25,8 @@ public static class AssertAsyncTests
     [Theory, RandomData]
     internal static Task ThrowsAsync_HandlesAsyncNoError(InvalidDataException error)
     {
-        return error
-            .Assert(async e => await WaitTest(e))
+        return WaitTest(error)
+            .Assert()
             .ThrowsAsync<InvalidDataException>(TestContext.Current.CancellationToken);
     }
 

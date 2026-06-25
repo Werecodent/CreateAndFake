@@ -7,20 +7,29 @@ namespace CreateAndFake.Fluent;
 /// <summary>Provides fluent assertions.</summary>
 public static class AssertExtensions
 {
-    /// <inheritdoc cref="AssertValueTask"/>
-    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static AssertValueTask Assert(this ValueTask actual)
+    /// <inheritdoc cref="AssertAsyncEnumerable{T}"/>
+    /// <param name="collection"><inheritdoc cref="AssertAsyncEnumerableBase{T,T}.Collection" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
+    public static AssertAsyncEnumerable<T> Assert<T>(this IAsyncEnumerable<T> collection)
     {
-        return new AssertValueTask(Tools.Asserter, actual);
+        return new AssertAsyncEnumerable<T>(Tools.Asserter, collection);
     }
 
-    /// <inheritdoc cref="AssertValueTask"/>
+    /// <inheritdoc cref="AssertObject"/>
     /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static AssertValueTask Assert(this ValueTask? actual)
+    public static AssertAsyncObject Assert(this object? actual)
     {
-        return new AssertValueTask(Tools.Asserter, actual);
+        return new AssertAsyncObject(Tools.Asserter, actual);
+    }
+
+    /// <inheritdoc cref="AssertAsync"/>
+    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static AssertGenericTask<T> Assert<T>(this Task<T>? behavior)
+    {
+        return new AssertGenericTask<T>(Tools.Asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertGenericValueTask{T}"/>
@@ -39,36 +48,36 @@ public static class AssertExtensions
         return new AssertGenericValueTask<T>(Tools.Asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertObject"/>
+    /// <inheritdoc cref="AssertAsync"/>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static AssertTask Assert(this Task? behavior)
+    {
+        return new AssertTask(Tools.Asserter, behavior);
+    }
+
+    /// <inheritdoc cref="AssertValueTask"/>
     /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static AssertAsyncObject Assert(this object? actual)
+    public static AssertValueTask Assert(this ValueTask actual)
     {
-        return new AssertAsyncObject(Tools.Asserter, actual);
+        return new AssertValueTask(Tools.Asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertEnumerable"/>
-    /// <param name="collection"><inheritdoc cref="AssertEnumerableBase{T}.Collection" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
-    public static AssertEnumerable Assert(this IEnumerable? collection)
+    /// <inheritdoc cref="AssertValueTask"/>
+    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    public static AssertValueTask Assert(this ValueTask? actual)
     {
-        return new AssertEnumerable(Tools.Asserter, collection);
+        return new AssertValueTask(Tools.Asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertAsyncEnumerable{T}"/>
-    /// <param name="collection"><inheritdoc cref="AssertAsyncEnumerableBase{T,T}.Collection" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
-    public static AssertAsyncEnumerable<T> Assert<T>(this IAsyncEnumerable<T> collection)
+    /// <inheritdoc cref="AssertDelegate"/>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static AssertAction Assert(this Action? behavior)
     {
-        return new AssertAsyncEnumerable<T>(Tools.Asserter, collection);
-    }
-
-    /// <inheritdoc cref="AssertString"/>
-    /// <param name="text"><inheritdoc cref="AssertStringBase{T}.Text" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="text"/> with.</returns>
-    public static AssertString Assert(this string? text)
-    {
-        return new AssertString(Tools.Asserter, text);
+        return new AssertAction(Tools.Asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertComparable"/>
@@ -79,12 +88,12 @@ public static class AssertExtensions
         return new AssertComparable(Tools.Asserter, value);
     }
 
-    /// <inheritdoc cref="AssertType"/>
-    /// <param name="type"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="type"/> with.</returns>
-    public static AssertType Assert(this Type? type)
+    /// <inheritdoc cref="AssertEnumerable"/>
+    /// <param name="collection"><inheritdoc cref="AssertEnumerableBase{T}.Collection" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
+    public static AssertEnumerable Assert(this IEnumerable? collection)
     {
-        return new AssertType(Tools.Asserter, type);
+        return new AssertEnumerable(Tools.Asserter, collection);
     }
 
     /// <inheritdoc cref="AssertError"/>
@@ -96,20 +105,28 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertAction Assert(this Action? behavior)
-    {
-        return new AssertAction(Tools.Asserter, behavior);
-    }
-
-    /// <inheritdoc cref="AssertDelegate"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertFunc<T> Assert<T>(this Func<T>? behavior)
     {
         return new AssertFunc<T>(Tools.Asserter, behavior);
+    }
+
+    /// <inheritdoc cref="AssertString"/>
+    /// <param name="text"><inheritdoc cref="AssertStringBase{T}.Text" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="text"/> with.</returns>
+    public static AssertString Assert(this string? text)
+    {
+        return new AssertString(Tools.Asserter, text);
+    }
+
+    /// <inheritdoc cref="AssertType"/>
+    /// <param name="type"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="type"/> with.</returns>
+    public static AssertType Assert(this Type? type)
+    {
+        return new AssertType(Tools.Asserter, type);
     }
 
     /// <inheritdoc cref="AssertAsync"/>
@@ -127,23 +144,6 @@ public static class AssertExtensions
     public static AssertAsync Assert<T>(this Func<Task<T?>>? behavior)
     {
         return new AssertAsync(Tools.Asserter, behavior);
-    }
-
-    /// <inheritdoc cref="AssertAsync"/>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertTask Assert(this Task? behavior)
-    {
-        return new AssertTask(Tools.Asserter, behavior);
-    }
-
-    /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertGenericTask<T> Assert<T>(this Task<T>? behavior)
-    {
-        return new AssertGenericTask<T>(Tools.Asserter, behavior);
     }
 
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
