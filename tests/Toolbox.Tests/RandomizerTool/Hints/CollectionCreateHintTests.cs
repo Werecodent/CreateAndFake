@@ -54,11 +54,11 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
-    public void TryCreate_RetriesSetsWithDuplicates()
+    public void TryToCreate_RetriesSetsWithDuplicates()
     {
         for (int i = 0; i < 20; i++)
         {
-            _TestInstance.TryCreate(typeof(IDictionary<bool, int>), CreateChainer());
+            _TestInstance.TryToCreate(typeof(IDictionary<bool, int>), CreateChainer());
         }
     }
 

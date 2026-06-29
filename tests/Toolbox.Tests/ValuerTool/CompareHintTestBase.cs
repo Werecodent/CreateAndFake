@@ -75,14 +75,14 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public async Task TryCompare_SupportsSameValidTypes()
+    public async Task TryToCompare_SupportsSameValidTypes()
     {
         foreach (Type type in _validTypes)
         {
             object data = Tools.Randomizer.Create(type);
             try
             {
-                DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+                DifferenceHintAsyncResult result = TestInstance.TryToAsyncCompare(
                     data,
                     data,
                     CreateChainer(),
@@ -108,7 +108,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public virtual async Task TryCompare_SupportsDifferentValidTypes()
+    public virtual async Task TryToCompare_SupportsDifferentValidTypes()
     {
         foreach (Type type in _validTypes)
         {
@@ -125,7 +125,7 @@ public abstract class CompareHintTestBase<T>(
                     TestContext.Current.CancellationToken
                 );
 
-                DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+                DifferenceHintAsyncResult result = TestInstance.TryToAsyncCompare(
                     one,
                     two,
                     CreateChainer(),
@@ -151,7 +151,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public async Task TryCompare_InvalidTypesFail()
+    public async Task TryToCompare_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -163,7 +163,7 @@ public abstract class CompareHintTestBase<T>(
                 two = Tools.Randomizer.Create(one.GetType());
 
                 await TestInstance
-                    .TryAsyncCompare(
+                    .TryToAsyncCompare(
                         one,
                         two,
                         CreateChainer(),
@@ -185,7 +185,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public async Task TryGetHashCode_SupportsSameValidTypes()
+    public async Task TryToGetHashCode_SupportsSameValidTypes()
     {
         CancellationToken ct = TestContext.Current.CancellationToken;
         foreach (Type type in _validTypes)
@@ -197,7 +197,7 @@ public abstract class CompareHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 dataCopy = Tools.Duplicator.Copy(data);
 
-                HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
+                HashCodeHintAsyncResult dataHash = TestInstance.TryToAsyncGetHashCode(
                     data,
                     CreateChainer(),
                     ct
@@ -206,7 +206,7 @@ public abstract class CompareHintTestBase<T>(
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
                 await TestInstance
-                    .TryAsyncGetHashCode(data, CreateChainer(), ct)
+                    .TryToAsyncGetHashCode(data, CreateChainer(), ct)
                     .Assert()
                     .IsAsync(
                         dataHash,
@@ -214,7 +214,7 @@ public abstract class CompareHintTestBase<T>(
                         $"Hint '{typeof(T).Name}' generated different hash for same '{type.Name}'."
                     );
                 await TestInstance
-                    .TryAsyncGetHashCode(dataCopy, CreateChainer(), ct)
+                    .TryToAsyncGetHashCode(dataCopy, CreateChainer(), ct)
                     .Assert()
                     .IsAsync(
                         dataHash,
@@ -232,7 +232,7 @@ public abstract class CompareHintTestBase<T>(
     /// <summary>Verifies the hint supports the correct types.</summary>
     /// <exception cref="EngineException">When an exception is encountered.</exception>
     [Fact]
-    public async Task TryGetHashCode_SupportsDifferentValidTypes()
+    public async Task TryToGetHashCode_SupportsDifferentValidTypes()
     {
         CancellationToken ct = TestContext.Current.CancellationToken;
         foreach (Type type in _validTypes)
@@ -244,7 +244,7 @@ public abstract class CompareHintTestBase<T>(
                 data = Tools.Randomizer.Create(type);
                 dataDiffer = Tools.Mutator.Variant(type, data);
 
-                HashCodeHintAsyncResult dataHash = TestInstance.TryAsyncGetHashCode(
+                HashCodeHintAsyncResult dataHash = TestInstance.TryToAsyncGetHashCode(
                     data,
                     CreateChainer(),
                     ct
@@ -253,7 +253,7 @@ public abstract class CompareHintTestBase<T>(
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
                 await TestInstance
-                    .TryAsyncGetHashCode(dataDiffer, CreateChainer(), ct)
+                    .TryToAsyncGetHashCode(dataDiffer, CreateChainer(), ct)
                     .Assert()
                     .IsNotAsync(
                         dataHash,
@@ -277,7 +277,7 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public async Task TryGetHashCode_InvalidTypesFail()
+    public async Task TryToGetHashCode_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -285,7 +285,7 @@ public abstract class CompareHintTestBase<T>(
             try
             {
                 await TestInstance
-                    .TryGetHashCode(data, CreateChainer())
+                    .TryToGetHashCode(data, CreateChainer())
                     .Assert()
                     .IsAsync(
                         HashCodeHintResult.None,

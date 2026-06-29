@@ -11,7 +11,7 @@ public sealed class EndingExtractHint : ExtractHint
     public override int EnginePriority => (int)ExtractPriority.EndingHint;
 
     /// <inheritdoc/>
-    public override ExtractHintResult TryExtract(object? source, IExtractorChainer chainer)
+    public override ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
 

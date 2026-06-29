@@ -58,11 +58,11 @@ public abstract class CreateHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public async Task TryCreate_SupportsValidTypes()
+    public async Task TryToCreate_SupportsValidTypes()
     {
         foreach (Type type in _validTypes)
         {
-            CreateHintResult result = TestInstance.TryCreate(type, CreateChainer());
+            CreateHintResult result = TestInstance.TryToCreate(type, CreateChainer());
             try
             {
                 result
@@ -99,12 +99,12 @@ public abstract class CreateHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public void TryCreate_InvalidTypesFail()
+    public void TryToCreate_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
             TestInstance
-                .TryCreate(type, CreateChainer())
+                .TryToCreate(type, CreateChainer())
                 .Assert()
                 .Is(
                     CreateHintResult.None,

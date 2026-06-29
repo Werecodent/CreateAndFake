@@ -17,7 +17,7 @@ public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
         ArgumentGuard.ThrowIfNull(type, chainer);
 
         CreateHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryCreate(type, chainer))
+            .Select(h => h.TryToCreate(type, chainer))
             .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)

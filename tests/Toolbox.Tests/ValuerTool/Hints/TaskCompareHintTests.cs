@@ -37,9 +37,15 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
         Task taskC = Task.FromException(Tools.Mutator.Variant(ex));
         Task taskD = Task.CompletedTask;
         IValuerChainer chainer = CreateChainer();
-        TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
-        TestInstance.TryCompare(taskA, taskC, chainer).Assert().IsNot(new DifferenceHintResult([]));
-        TestInstance.TryCompare(taskA, taskD, chainer).Assert().IsNot(new DifferenceHintResult([]));
+        TestInstance.TryToCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
+        TestInstance
+            .TryToCompare(taskA, taskC, chainer)
+            .Assert()
+            .IsNot(new DifferenceHintResult([]));
+        TestInstance
+            .TryToCompare(taskA, taskD, chainer)
+            .Assert()
+            .IsNot(new DifferenceHintResult([]));
     }
 
     [Fact]
@@ -48,6 +54,6 @@ public sealed class TaskCompareHintTests : CompareHintTestBase<TaskCompareHint>
         Task taskA = Task.CompletedTask;
         Task taskB = Task.CompletedTask;
         IValuerChainer chainer = CreateChainer();
-        TestInstance.TryCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
+        TestInstance.TryToCompare(taskA, taskB, chainer).Assert().Is(new DifferenceHintResult([]));
     }
 }

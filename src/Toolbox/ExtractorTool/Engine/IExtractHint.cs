@@ -9,5 +9,5 @@ public interface IExtractHint : IToolHint
     /// <param name="source">Instance to extract content from.</param>
     /// <param name="chainer">Extractor to use.</param>
     /// <returns>Hint result.</returns>
-    ExtractHintResult TryExtract(object? source, IExtractorChainer chainer);
+    ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer);
 }

@@ -48,7 +48,7 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void GetHashCode_ValidHint(object data, int result, [Stub] ICompareHint hint)
     {
-        hint.TryGetHashCode(data, Arg.Any<IValuerChainer>()).SetupReturn(new(result));
+        hint.TryToGetHashCode(data, Arg.Any<IValuerChainer>()).SetupReturn(new(result));
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .GetHashCode(data)
@@ -94,7 +94,7 @@ public static class ValuerTests
         [Stub] ICompareHint hint
     )
     {
-        hint.TryCompare(data1, data2, Arg.Any<IValuerChainer>()).SetupReturn(new([]));
+        hint.TryToCompare(data1, data2, Arg.Any<IValuerChainer>()).SetupReturn(new([]));
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Equals(data1, data2)
@@ -110,7 +110,7 @@ public static class ValuerTests
         IEnumerable<Difference> differences
     )
     {
-        hint.TryCompare(data1, data2, Arg.Any<IValuerChainer>())
+        hint.TryToCompare(data1, data2, Arg.Any<IValuerChainer>())
             .SetupReturn(new(differences), Times.Once);
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
@@ -128,7 +128,7 @@ public static class ValuerTests
         [Fake] ICompareHint hint
     )
     {
-        hint.TryCompare(item1, item2, Arg.Any<IValuerChainer>())
+        hint.TryToCompare(item1, item2, Arg.Any<IValuerChainer>())
             .SetupCall(Behavior<DifferenceHintResult>.Throw<InsufficientExecutionStackException>());
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
@@ -141,7 +141,7 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void GetHashCode_InfiniteLoopDetails(object item, [Fake] ICompareHint hint)
     {
-        hint.TryGetHashCode(item, Arg.Any<IValuerChainer>())
+        hint.TryToGetHashCode(item, Arg.Any<IValuerChainer>())
             .SetupCall(Behavior<HashCodeHintResult>.Throw<InsufficientExecutionStackException>());
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })

@@ -63,7 +63,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
+                m => m.TryToCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(CreateHintResult.None, Times.Once)
             );
 
@@ -86,7 +86,7 @@ public static class RandomizerTests
         hint.ToFake().ThrowByDefault = true;
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
+                m => m.TryToCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(new CreateHintResult(data), Times.Once)
             );
 
@@ -109,7 +109,7 @@ public static class RandomizerTests
     {
         hint.ToFake()
             .Setup(
-                m => m.TryCreate(type, Arg.Any<IRandomizerChainer>()),
+                m => m.TryToCreate(type, Arg.Any<IRandomizerChainer>()),
                 Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
             );
 

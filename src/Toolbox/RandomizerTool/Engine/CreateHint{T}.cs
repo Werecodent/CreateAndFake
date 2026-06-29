@@ -10,7 +10,7 @@ public abstract class CreateHint<T> : CreateHint
     public override IEnumerable<Type> SupportedTypes { get; } = [typeof(T)];
 
     /// <inheritdoc/>
-    public sealed override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public sealed override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 

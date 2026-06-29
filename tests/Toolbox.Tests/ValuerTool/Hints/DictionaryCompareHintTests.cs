@@ -27,14 +27,14 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal void TryCompare_SameKeyDifferentValuesWorks(Dictionary<string, int> data)
+    internal void TryToCompare_SameKeyDifferentValuesWorks(Dictionary<string, int> data)
     {
         Dictionary<string, int> dupe = data.CreateDeepClone();
         string key = data.First().Key;
         dupe[key] = data[key].CreateVariant();
 
         TestInstance
-            .TryCompare(data, dupe, CreateChainer())
+            .TryToCompare(data, dupe, CreateChainer())
             .Data.ToArray()
             .Assert()
             .IsNotEmpty(

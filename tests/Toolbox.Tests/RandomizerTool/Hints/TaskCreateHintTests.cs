@@ -24,7 +24,7 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
-    internal static void TryCreate_TaskTypingCorrect()
+    internal static void TryToCreate_TaskTypingCorrect()
     {
         Tools.Randomizer.Create<Task<object>>().GetType().Assert().Is(typeof(Task<object>));
     }

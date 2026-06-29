@@ -21,8 +21,8 @@ public sealed class DefaultEqualityCompareHintTests
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal void TryCompare_MismatchedTypesDifferent(int value)
+    internal void TryToCompare_MismatchedTypesDifferent(int value)
     {
-        TestInstance.TryCompare(value, new object(), CreateChainer()).Data.Assert().IsNotEmpty();
+        TestInstance.TryToCompare(value, new object(), CreateChainer()).Data.Assert().IsNotEmpty();
     }
 }

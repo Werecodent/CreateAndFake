@@ -17,7 +17,7 @@ public sealed class ValueTaskCreateHint : CreateHint
         [typeof(ValueTask<>), typeof(IValueTaskSource<>), typeof(SingleCallValueTaskSource<>)];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 

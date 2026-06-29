@@ -19,7 +19,7 @@ public sealed class ObjectCreateHint : CreateHint
     public override IEnumerable<Type> SupportedTypes => [typeof(object)];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
@@ -36,7 +36,7 @@ public sealed class ObjectCreateHint : CreateHint
 
     /// <param name="rootType">Original <see cref="Type"/> being generated.</param>
     /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
+    /// <inheritdoc cref="CreateHint.TryToCreate"/>
     private static object? Create(Type type, Type rootType, IRandomizerChainer randomizer)
     {
         if (type != rootType)

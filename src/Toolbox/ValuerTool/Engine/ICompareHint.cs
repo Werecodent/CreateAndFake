@@ -12,10 +12,10 @@ public interface ICompareHint : IToolHint
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="chainer">Handles comparing child values.</param>
     /// <returns>If the hint supported the operation with the attempt result if so.</returns>
-    DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer chainer);
+    DifferenceHintResult TryToCompare(object expected, object actual, IValuerChainer chainer);
 
-    /// <inheritdoc cref="TryCompare"/>
-    DifferenceHintAsyncResult TryAsyncCompare(
+    /// <inheritdoc cref="TryToCompare"/>
+    DifferenceHintAsyncResult TryToAsyncCompare(
         object expected,
         object actual,
         IValuerChainer chainer,
@@ -26,11 +26,11 @@ public interface ICompareHint : IToolHint
     /// <param name="item">Object to generate a hash code for.</param>
     /// <param name="chainer">Handles hashing behavior for child values.</param>
     /// <returns>If the hint supported the operation with the attempt result if so.</returns>
-    HashCodeHintResult TryGetHashCode(object item, IValuerChainer chainer);
+    HashCodeHintResult TryToGetHashCode(object item, IValuerChainer chainer);
 
-    /// <inheritdoc cref="TryGetHashCode"/>
+    /// <inheritdoc cref="TryToGetHashCode"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    HashCodeHintAsyncResult TryAsyncGetHashCode(
+    HashCodeHintAsyncResult TryToAsyncGetHashCode(
         object item,
         IValuerChainer chainer,
         CancellationToken canceler

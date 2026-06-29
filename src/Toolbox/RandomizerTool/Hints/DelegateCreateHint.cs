@@ -64,7 +64,7 @@ public sealed class DelegateCreateHint : CreateHint
     ];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
@@ -83,7 +83,7 @@ public sealed class DelegateCreateHint : CreateHint
     }
 
     /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
+    /// <inheritdoc cref="CreateHint.TryToCreate"/>
     private static object Create(Type type, IRandomizerChainer randomizer)
     {
         Delegator delegator = new(randomizer);

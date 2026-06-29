@@ -25,23 +25,23 @@ public sealed class AsyncEnumerableCompareHintTests
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal void TryCompare_BlocksComparison(IAsyncEnumerable<string> data)
+    internal void TryToCompare_BlocksComparison(IAsyncEnumerable<string> data)
     {
         TestInstance
-            .Assert(hint => hint.TryCompare(data, data, CreateChainer()))
+            .Assert(hint => hint.TryToCompare(data, data, CreateChainer()))
             .Throws<EngineException>();
     }
 
     [Theory, RandomData]
-    internal void TryGetHashCode_BlocksHashing(IAsyncEnumerable<int> data)
+    internal void TryToGetHashCode_BlocksHashing(IAsyncEnumerable<int> data)
     {
         TestInstance
-            .Assert(hint => hint.TryGetHashCode(data, CreateChainer()))
+            .Assert(hint => hint.TryToGetHashCode(data, CreateChainer()))
             .Throws<EngineException>();
     }
 
     [Theory, RandomData]
-    internal async Task TryCompare_NoDifferencesWhenEqual(IAsyncEnumerable<string> data)
+    internal async Task TryToCompare_NoDifferencesWhenEqual(IAsyncEnumerable<string> data)
     {
         IEnumerable<string> data2 = await AsyncSeriesHelper.ToListAsync(
             data,
@@ -49,7 +49,7 @@ public sealed class AsyncEnumerableCompareHintTests
             TestContext.Current.CancellationToken
         );
 
-        DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+        DifferenceHintAsyncResult result = TestInstance.TryToAsyncCompare(
             data2,
             data,
             CreateChainer(),
@@ -69,12 +69,12 @@ public sealed class AsyncEnumerableCompareHintTests
     }
 
     [Theory, RandomData]
-    internal async Task TryCompare_FindsDifferences(
+    internal async Task TryToCompare_FindsDifferences(
         IAsyncEnumerable<string> data,
         IEnumerable<string> data2
     )
     {
-        DifferenceHintAsyncResult result = TestInstance.TryAsyncCompare(
+        DifferenceHintAsyncResult result = TestInstance.TryToAsyncCompare(
             data,
             data2,
             CreateChainer(),

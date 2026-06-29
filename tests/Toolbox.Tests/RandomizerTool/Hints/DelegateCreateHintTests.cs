@@ -77,7 +77,10 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     [Fact]
     internal static void Create_HandlesOutRef()
     {
-        CreateHintResult result = _TestInstance.TryCreate(typeof(Action<IOutRef>), CreateChainer());
+        CreateHintResult result = _TestInstance.TryToCreate(
+            typeof(Action<IOutRef>),
+            CreateChainer()
+        );
         result.HasData.Assert().Is(true);
 
         Action<IOutRef> action = (Action<IOutRef>)result.Data;

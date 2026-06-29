@@ -12,7 +12,7 @@ public abstract class ExtractHint : IExtractHint
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <inheritdoc/>
-    public abstract ExtractHintResult TryExtract(object? source, IExtractorChainer chainer);
+    public abstract ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer);
 
     /// <inheritdoc/>
     public override string ToString()

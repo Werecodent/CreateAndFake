@@ -36,7 +36,7 @@ public sealed class DictionaryMutateHintTests : MutateHintTestBase<DictionaryMut
 
         Limiter.Score.StallUntil(
             "Until added to.",
-            () => TestInstance.TryModifying(data, CreateChainer()),
+            () => TestInstance.TryToModify(data, CreateChainer()),
             () => data.Count > original.Count,
             TestContext.Current.CancellationToken
         );

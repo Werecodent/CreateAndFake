@@ -9,5 +9,5 @@ public interface ICreateHint : IToolHint
     /// <param name="type"><see cref="Type"/> to generate.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Possible result.</returns>
-    CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer);
+    CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer);
 }

@@ -34,7 +34,7 @@ public sealed class HandlerExtractHint : IExtractHint
     public IEnumerable<Type> SupportedTypes => _MutatorsByType.Keys;
 
     /// <inheritdoc/>
-    public ExtractHintResult TryExtract(object? source, IExtractorChainer chainer)
+    public ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
 

@@ -21,18 +21,18 @@ public sealed class ValuerAsyncComparableCompareHintTests
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal void TryCompare_BlocksComparison(IValuerAsyncComparable data)
+    internal void TryToCompare_BlocksComparison(IValuerAsyncComparable data)
     {
         TestInstance
-            .Assert(hint => hint.TryCompare(data, data, CreateChainer()))
+            .Assert(hint => hint.TryToCompare(data, data, CreateChainer()))
             .Throws<EngineException>();
     }
 
     [Theory, RandomData]
-    internal void TryGetHashCode_BlocksHashing(IValuerAsyncComparable data)
+    internal void TryToGetHashCode_BlocksHashing(IValuerAsyncComparable data)
     {
         TestInstance
-            .Assert(hint => hint.TryGetHashCode(data, CreateChainer()))
+            .Assert(hint => hint.TryToGetHashCode(data, CreateChainer()))
             .Throws<EngineException>();
     }
 }

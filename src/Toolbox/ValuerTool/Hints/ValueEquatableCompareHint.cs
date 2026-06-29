@@ -36,7 +36,7 @@ public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
                 new Difference(true, false)
             );
 
-            DifferenceHintResult byValues = _NestedHint.TryCompare(expected, actual, chainer);
+            DifferenceHintResult byValues = _NestedHint.TryToCompare(expected, actual, chainer);
             if (byValues.HasData)
             {
                 foreach (Difference difference in byValues.Data!)

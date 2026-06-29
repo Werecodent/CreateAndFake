@@ -18,7 +18,7 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
         }
 
         ExtractHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryExtract(value, chainer))
+            .Select(h => h.TryToExtract(value, chainer))
             .FirstOrDefault(r => r?.HasData ?? false);
 
         if (result != null)

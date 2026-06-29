@@ -20,7 +20,7 @@ public abstract class CompareHint : ICompareHint
     public virtual IEnumerable<Type> SupportedTypes { get; } = [];
 
     /// <inheritdoc/>
-    public DifferenceHintResult TryCompare(object expected, object actual, IValuerChainer chainer)
+    public DifferenceHintResult TryToCompare(object expected, object actual, IValuerChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(expected, actual, chainer);
 
@@ -48,7 +48,7 @@ public abstract class CompareHint : ICompareHint
     }
 
     /// <inheritdoc/>
-    public DifferenceHintAsyncResult TryAsyncCompare(
+    public DifferenceHintAsyncResult TryToAsyncCompare(
         object expected,
         object actual,
         IValuerChainer chainer,
@@ -67,7 +67,7 @@ public abstract class CompareHint : ICompareHint
         }
     }
 
-    /// <inheritdoc cref="TryAsyncCompare"/>
+    /// <inheritdoc cref="TryToAsyncCompare"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     private async IAsyncEnumerable<Difference> HandleCompareAsync(
         object expected,
@@ -106,7 +106,7 @@ public abstract class CompareHint : ICompareHint
     }
 
     /// <inheritdoc/>
-    public HashCodeHintResult TryGetHashCode(object item, IValuerChainer chainer)
+    public HashCodeHintResult TryToGetHashCode(object item, IValuerChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(item, chainer);
 
@@ -121,7 +121,7 @@ public abstract class CompareHint : ICompareHint
     }
 
     /// <inheritdoc/>
-    public HashCodeHintAsyncResult TryAsyncGetHashCode(
+    public HashCodeHintAsyncResult TryToAsyncGetHashCode(
         object item,
         IValuerChainer chainer,
         CancellationToken canceler
@@ -143,12 +143,12 @@ public abstract class CompareHint : ICompareHint
     ///     Determines if <paramref name="expected"/> or <paramref name="actual"/> are supported by the hint.
     /// </summary>
     /// <returns><see langword="true"/> if the objects can be compared, <see langword="false"/> otherwise.</returns>
-    /// <inheritdoc cref="TryCompare"/>
+    /// <inheritdoc cref="TryToCompare"/>
     protected abstract bool Supports(object expected, object actual, IValuerChainer chainer);
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <returns>The found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
-    /// <inheritdoc cref="TryCompare"/>
+    /// <inheritdoc cref="TryToCompare"/>
     protected abstract IEnumerable<Difference> Compare(
         object expected,
         object actual,
@@ -175,7 +175,7 @@ public abstract class CompareHint : ICompareHint
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
-    /// <inheritdoc cref="TryGetHashCode"/>
+    /// <inheritdoc cref="TryToGetHashCode"/>
     protected abstract int GetHashCode(object item, IValuerChainer chainer);
 
     /// <inheritdoc cref="GetHashCode"/>

@@ -38,12 +38,12 @@ public abstract class ExtractHintTestBase<T>(
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
-    public async Task TryExtract_SupportsValidTypes()
+    public async Task TryToExtract_SupportsValidTypes()
     {
         foreach (Type type in _validTypes)
         {
             object value = Tools.Randomizer.Create(type);
-            ExtractHintResult result = TestInstance.TryExtract(value, CreateChainer());
+            ExtractHintResult result = TestInstance.TryToExtract(value, CreateChainer());
             try
             {
                 result
@@ -68,7 +68,7 @@ public abstract class ExtractHintTestBase<T>(
 
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
-    public async Task TryExtract_InvalidTypesFail()
+    public async Task TryToExtract_InvalidTypesFail()
     {
         foreach (Type type in _invalidTypes)
         {
@@ -76,7 +76,7 @@ public abstract class ExtractHintTestBase<T>(
             try
             {
                 await TestInstance
-                    .TryExtract(value, CreateChainer())
+                    .TryToExtract(value, CreateChainer())
                     .Assert()
                     .IsAsync(
                         ExtractHintResult.None,

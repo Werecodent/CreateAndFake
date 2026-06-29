@@ -28,7 +28,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         try
         {
             result = SelectHints(chainer)
-                .Select(h => h.TryCompare(expected, actual, chainer))
+                .Select(h => h.TryToCompare(expected, actual, chainer))
                 .FirstOrDefault(r => r?.HasData ?? false);
         }
         catch (Exception e)
@@ -79,7 +79,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         try
         {
             result = SelectHints(chainer)
-                .Select(h => h.TryAsyncCompare(expected, actual, chainer, canceler))
+                .Select(h => h.TryToAsyncCompare(expected, actual, chainer, canceler))
                 .FirstOrDefault(r => r?.HasData ?? false);
         }
         catch (Exception e)
@@ -117,7 +117,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         try
         {
             result = SelectHints(chainer)
-                .Select(h => h.TryGetHashCode(item, chainer))
+                .Select(h => h.TryToGetHashCode(item, chainer))
                 .FirstOrDefault(r => r?.HasData ?? false);
         }
         catch (Exception e)
@@ -158,7 +158,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         try
         {
             result = SelectHints(chainer)
-                .Select(h => h.TryAsyncGetHashCode(item, chainer, canceler))
+                .Select(h => h.TryToAsyncGetHashCode(item, chainer, canceler))
                 .FirstOrDefault(r => r?.HasData ?? false);
         }
         catch (Exception e)

@@ -22,7 +22,7 @@ public sealed class TaskCreateHint : CreateHint
         [typeof(Task), typeof(Task<>), typeof(TaskCompletionSource<>)];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 

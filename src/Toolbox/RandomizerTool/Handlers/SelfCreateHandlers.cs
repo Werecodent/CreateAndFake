@@ -126,6 +126,6 @@ internal static class SelfCreateHandlers
 
     private static T CreateRandomOptionsBase<T>(IRandomizerChainer randomizer)
     {
-        return (T)_SubHint.TryCreate(typeof(T), randomizer).Data!;
+        return (T)_SubHint.TryToCreate(typeof(T), randomizer).Data!;
     }
 }

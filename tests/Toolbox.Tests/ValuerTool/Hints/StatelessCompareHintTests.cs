@@ -23,7 +23,7 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
     public StatelessCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
-    public override Task TryCompare_SupportsDifferentValidTypes()
+    public override Task TryToCompare_SupportsDifferentValidTypes()
     {
         // Stateless objects can't be different.
         return Task.CompletedTask;

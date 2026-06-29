@@ -13,7 +13,7 @@ public sealed class EnumCreateHint : CreateHint
     public override IEnumerable<Type> SupportedTypes => [];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 

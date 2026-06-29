@@ -30,7 +30,7 @@ public sealed class PublicObjectCompareHintTests : CompareHintTestBase<PublicObj
         var expected = new { Value = value1 };
         var actual = new { Value = value2 };
 
-        DifferenceHintResult result = TestInstance.TryCompare(expected, actual, CreateChainer());
+        DifferenceHintResult result = TestInstance.TryToCompare(expected, actual, CreateChainer());
 
         result.HasData.Assert().Is(true);
         result.Data.Assert().IsNotEmpty();

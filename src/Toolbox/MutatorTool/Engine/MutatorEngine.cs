@@ -129,7 +129,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         try
         {
             result = SelectHints(chainer)
-                .Select(h => h.TryModifying(instance, chainer))
+                .Select(h => h.TryToModify(instance, chainer))
                 .FirstOrDefault(r => r?.HasData ?? false);
         }
         catch (Exception e)

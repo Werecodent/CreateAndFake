@@ -7,7 +7,7 @@ namespace CreateAndFake.ExtractorTool.Engine;
 public abstract class ExtractHint<T> : ExtractHint
 {
     /// <inheritdoc/>
-    public sealed override ExtractHintResult TryExtract(object? source, IExtractorChainer chainer)
+    public sealed override ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);
 
@@ -21,6 +21,6 @@ public abstract class ExtractHint<T> : ExtractHint
         }
     }
 
-    /// <inheritdoc cref="TryExtract"/>
+    /// <inheritdoc cref="TryToExtract"/>
     protected abstract bool Extract(T source, IExtractorChainer chainer);
 }

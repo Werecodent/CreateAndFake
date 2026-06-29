@@ -34,12 +34,12 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
         List<string> variant = original.CreateDeepClone();
         variant.RemoveAt(variant.Count - 1);
 
-        DifferenceHintResult result = TestInstance.TryCompare(original, variant, chainer);
+        DifferenceHintResult result = TestInstance.TryToCompare(original, variant, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
         result.Data.Single().ToString().Assert().Contains("'out of range'");
 
-        result = TestInstance.TryCompare(variant, original, chainer);
+        result = TestInstance.TryToCompare(variant, original, chainer);
         result.HasData.Assert().Is(true);
         result.Data.Assert().HasCount(1);
         result.Data.Single().ToString().Assert().Contains("'out of range'");

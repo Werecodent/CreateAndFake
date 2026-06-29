@@ -198,7 +198,7 @@ public static class MutatorEngineTests
     [Theory, RandomData]
     internal static void Modify_WrapsError([Stub] IMutateHint hint, object data)
     {
-        hint.TryModifying(data, Arg.Any<IMutatorChainer>())
+        hint.TryToModify(data, Arg.Any<IMutatorChainer>())
             .SetupCall(Behavior<MutateHintResult>.Throw<InvalidOperationException>());
 
         _TestInstance.Assert(d => d.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();

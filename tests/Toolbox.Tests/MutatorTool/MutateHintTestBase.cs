@@ -34,13 +34,13 @@ public abstract class MutateHintTestBase<T>(
 
     /// <summary>Ensure the hint supports all provided valid types.</summary>
     [Fact]
-    public void TryModifying_ValidTypesSupported()
+    public void TryToModify_ValidTypesSupported()
     {
         foreach (Type type in _validTypes)
         {
             object data = type.CreateRandomInstance();
             TestInstance
-                .TryModifying(data, CreateChainer())
+                .TryToModify(data, CreateChainer())
                 .HasData.Assert()
                 .Is(
                     true,
@@ -53,13 +53,13 @@ public abstract class MutateHintTestBase<T>(
 
     /// <summary>Ensure the hint does not support any invalid types.</summary>
     [Fact]
-    public void TryModifying_InvalidTypesNotSupported()
+    public void TryToModify_InvalidTypesNotSupported()
     {
         foreach (Type type in _invalidTypes)
         {
             object data = type.CreateRandomInstance();
             TestInstance
-                .TryModifying(data, CreateChainer())
+                .TryToModify(data, CreateChainer())
                 .HasData.Assert()
                 .Is(
                     false,
@@ -115,7 +115,7 @@ public abstract class MutateHintTestBase<T>(
         object original = data.CreateDeepClone();
 
         TestInstance
-            .TryModifying(data, CreateChainer())
+            .TryToModify(data, CreateChainer())
             .Assert()
             .Is(new MutateHintResult(shouldMutate));
 

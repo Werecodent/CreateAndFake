@@ -7,5 +7,5 @@ public interface IMutateHint : IToolHint
 {
     /// <returns>If the hint supported the operation with the attempt result if so.</returns>
     /// <inheritdoc cref="IMutatorEngine.Modify(object?, IMutatorChainer)"/>
-    MutateHintResult TryModifying(object instance, IMutatorChainer chainer);
+    MutateHintResult TryToModify(object instance, IMutatorChainer chainer);
 }

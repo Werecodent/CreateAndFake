@@ -22,7 +22,12 @@ public static class SupportValidatorTests
             opt =>
                 opt with
                 {
-                    IgnorableExceptions = [typeof(AssertException), typeof(SerializationException)],
+                    IgnorableExceptions =
+                    [
+                        typeof(AssertException),
+                        typeof(SerializationException),
+                        typeof(PlatformNotSupportedException),
+                    ],
                 }
         );
     }

@@ -27,7 +27,7 @@ public sealed class CollectionMutateHintTests : MutateHintTestBase<CollectionMut
     {
         List<DataSample> original = data.CreateDeepClone();
 
-        TestInstance.TryModifying(data, CreateChainer()).Assert().Is(new MutateHintResult(true));
+        TestInstance.TryToModify(data, CreateChainer()).Assert().Is(new MutateHintResult(true));
 
         data.Assert().HasCount(original.Count + 1);
     }

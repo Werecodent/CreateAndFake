@@ -78,7 +78,7 @@ public sealed class ObjectCopyHint : CopyHint
             .Cast<MethodBase>()
             .Concat(describer.Factories.Visible.OrderByDescending(c => c.GetParameters().Length))
             .Select(m =>
-                TryCreate(source, duplicator, m, describer.Properties.All, describer.Fields.All)
+                TryToCreate(source, duplicator, m, describer.Properties.All, describer.Fields.All)
             )
             .FirstOrDefault(o => o != null);
     }
@@ -90,7 +90,7 @@ public sealed class ObjectCopyHint : CopyHint
     /// <param name="props">Properties on <paramref name="source"/>.</param>
     /// <param name="fields">Fields on <paramref name="source"/>.</param>
     /// <returns>Null if failed; created instance otherwise.</returns>
-    private static object? TryCreate(
+    private static object? TryToCreate(
         object source,
         IDuplicatorChainer duplicator,
         MethodBase maker,

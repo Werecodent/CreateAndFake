@@ -38,7 +38,7 @@ public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
     internal void Modify_IgnoresReadOnly()
     {
         TestInstance
-            .TryModifying(new AllInvalidsSample(), CreateChainer())
+            .TryToModify(new AllInvalidsSample(), CreateChainer())
             .Assert()
             .Is(new MutateHintResult(false));
     }
@@ -55,7 +55,7 @@ public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
             () =>
             {
                 PropertyLoopSample sample = new() { FirstName = original.FirstName };
-                TestInstance.TryModifying(sample, chainer).Assert().Is(expectedResult);
+                TestInstance.TryToModify(sample, chainer).Assert().Is(expectedResult);
                 sample.FirstName.Assert().IsNot(original.FirstName);
             },
             TestContext.Current.CancellationToken
@@ -74,7 +74,7 @@ public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
             () =>
             {
                 FieldLoopSample sample = new() { LastName = original.LastName };
-                TestInstance.TryModifying(sample, chainer).Assert().Is(expectedResult);
+                TestInstance.TryToModify(sample, chainer).Assert().Is(expectedResult);
                 sample.LastName.Assert().IsNot(original.LastName);
             },
             TestContext.Current.CancellationToken

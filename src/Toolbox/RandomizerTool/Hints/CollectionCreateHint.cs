@@ -85,7 +85,7 @@ public sealed class CollectionCreateHint : CreateHint
     public override IEnumerable<Type> SupportedTypes => PotentialCollections;
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer? randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer? randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
         if (type == null)
@@ -112,7 +112,7 @@ public sealed class CollectionCreateHint : CreateHint
 
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
+    /// <inheritdoc cref="CreateHint.TryToCreate"/>
     private static object? Create(Type type, Type itemType, IRandomizerChainer randomizer)
     {
         Array internalData = CreateInternalData(itemType, randomizer);

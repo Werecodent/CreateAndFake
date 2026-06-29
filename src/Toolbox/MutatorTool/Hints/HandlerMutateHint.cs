@@ -38,7 +38,7 @@ public sealed class HandlerMutateHint : IMutateHint
     public IEnumerable<Type> SupportedTypes => _MutatorsByType.Keys;
 
     /// <inheritdoc/>
-    public MutateHintResult TryModifying(object instance, IMutatorChainer chainer)
+    public MutateHintResult TryToModify(object instance, IMutatorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(instance, chainer);
 

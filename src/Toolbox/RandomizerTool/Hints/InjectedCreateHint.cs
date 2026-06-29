@@ -15,7 +15,7 @@ public sealed class InjectedCreateHint : CreateHint
     public override IEnumerable<Type> SupportedTypes => [];
 
     /// <inheritdoc/>
-    public override CreateHintResult TryCreate(Type type, IRandomizerChainer randomizer)
+    public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
@@ -30,7 +30,7 @@ public sealed class InjectedCreateHint : CreateHint
     }
 
     /// <returns>The randomized instance.</returns>
-    /// <inheritdoc cref="CreateHint.TryCreate"/>
+    /// <inheritdoc cref="CreateHint.TryToCreate"/>
     private static object Create(Type type, IRandomizerChainer randomizer)
     {
         Type target = type.GetGenericArguments().Single();

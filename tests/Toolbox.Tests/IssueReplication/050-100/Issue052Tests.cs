@@ -27,7 +27,7 @@ public static class Issue052Tests
         Data testItem = new() { Item = "Sample" };
 
         hint.Setup(
-            d => d.TryCreate(typeof(Data), Arg.Any<IRandomizerChainer>()),
+            d => d.TryToCreate(typeof(Data), Arg.Any<IRandomizerChainer>()),
             Behavior.Returns(new CreateHintResult(testItem), Times.Once)
         );
 
@@ -75,7 +75,7 @@ public static class Issue052Tests
             }
         );
 
-        hint.TryCompare(item1, item2, Arg.Any<IValuerChainer>()).SetupReturn(new([]), Times.Once);
+        hint.TryToCompare(item1, item2, Arg.Any<IValuerChainer>()).SetupReturn(new([]), Times.Once);
 
         valuer.Equals(item1, item2, opt => opt with { Hints = [hint] }).Assert().Is(true);
         hint.Assert().Called();

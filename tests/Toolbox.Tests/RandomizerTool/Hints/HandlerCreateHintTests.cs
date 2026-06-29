@@ -34,11 +34,11 @@ public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHin
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     [Fact]
-    internal static void TryCreate_ContinuesUntilMemberFound()
+    internal static void TryToCreate_ContinuesUntilMemberFound()
     {
         for (int i = 0; i < 50; i++)
         {
-            _ = _TestInstance.TryCreate(typeof(FieldInfo), CreateChainer());
+            _ = _TestInstance.TryToCreate(typeof(FieldInfo), CreateChainer());
         }
     }
 }
