@@ -1,16 +1,14 @@
-using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool.Engine;
+using CreateAndFake.Properties;
 using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Configuration for controlling faking behavior.</summary>
-public sealed record FakerOptions : IToolOptions
+public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
 {
-    /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
-
     /// <summary>Handles comparisons.</summary>
     public required IValuer? Valuer { get; init; }
 
@@ -29,6 +27,10 @@ public sealed record FakerOptions : IToolOptions
         }
 
         return this with
-        { };
+        {
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+        };
     }
 }

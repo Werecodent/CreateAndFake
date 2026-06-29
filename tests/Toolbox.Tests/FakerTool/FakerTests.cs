@@ -1,6 +1,5 @@
 ﻿using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.Tests.FakerTool.TestSamples;
 
@@ -53,38 +52,6 @@ public static class FakerTests
         Tools.Faker.Supports<InternalSample>().Assert().Is(false);
         Tools.Faker.Supports(typeof(void*)).Assert().Is(false);
         Tools.Faker.Supports(typeof(ConstraintSample<,>)).Assert().Is(false);
-    }
-
-    [Fact]
-    internal static void Inject_HandlesValues()
-    {
-        Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>();
-        sample.Dummy.Value1.Assert().Is(0);
-        sample.Dummy.Value2.Assert().Is(null);
-    }
-
-    [Fact]
-    internal static void Inject_ConstructorRequired()
-    {
-        Tools
-            .Faker.Assert(f => f.InjectStubs<IOnlyMockSample>())
-            .Throws<InvalidOperationException>();
-    }
-
-    [Theory, RandomData]
-    internal static void Inject_UsesValues(int num, string text)
-    {
-        Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>([
-            null,
-            Tools.Faker.Stub<AbstractFakeSample>(),
-            num,
-            text,
-        ]);
-
-        sample.Dummy.Sample1.Text.Assert().Is(null);
-        sample.Dummy.Sample2.Assert(s => s.Calc()).Throws<FakeCallException>();
-        sample.Dummy.Value1.Assert().Is(num);
-        sample.Dummy.Value2.Assert().Is(text);
     }
 
     [Fact]

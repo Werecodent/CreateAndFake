@@ -3,11 +3,12 @@
     CreateAndFake.FakerTool.FakerOptions
 >;
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool.Engine;
 
 namespace CreateAndFake.FakerTool;
 
 /// <summary>Creates fake objects.</summary>
-public interface IFaker : ITool<FakerOptions>
+public interface IFaker : IHintTool<FakerOptions, IFakeHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>

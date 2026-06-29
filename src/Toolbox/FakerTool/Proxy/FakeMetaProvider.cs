@@ -22,9 +22,6 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
     /// <summary>Record of calls made.</summary>
     private readonly List<CallData> _log = [];
 
-    /// <summary>Number of calls made with no associated behavior.</summary>
-    private int _defaultCalls = 0;
-
     /// <summary>Value assigned to identify the instance.</summary>
     /// <remarks>Uniqueness not guaranteed nor verified.</remarks>
     public int Identifier { get; } = identifier;
@@ -68,7 +65,6 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
         {
             Options = duplicator.Copy(Options),
             ThrowByDefault = ThrowByDefault,
-            _defaultCalls = _defaultCalls,
         };
     }
 
@@ -173,7 +169,6 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
         (CallData, Behavior) match = _behavior.FirstOrDefault(t => t.Item1.MatchesCall(data));
         if (match.Equals(default))
         {
-            _defaultCalls++;
             if (
                 ThrowByDefault
                 && name != "Dispose"

@@ -17,7 +17,11 @@
             "MaxHintRecursion": 9,
             "ExtractPrivateMembers": true
         },
-        "Faker": {},
+        "Faker": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9
+        },
         "Mutator": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
