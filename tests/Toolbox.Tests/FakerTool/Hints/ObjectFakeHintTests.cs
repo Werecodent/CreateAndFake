@@ -1,13 +1,13 @@
-using CreateAndFake.FakerTool.Engine;
+using CreateAndFake.FakerTool.Hints;
 
-namespace CreateAndFake.Tests.FakerTool.Engine;
+namespace CreateAndFake.Tests.FakerTool.Hints;
 
-public static class FakerChainerTests
+public static class ObjectFakeHintTests
 {
     [Fact]
-    internal static Task FakerChainer_GuardsNulls()
+    internal static Task ObjectFakeHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FakerChainer>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<ObjectFakeHint>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -15,16 +15,16 @@ public static class FakerChainerTests
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),
-                        typeof(InvalidOperationException),
+                        typeof(NotSupportedException),
                     ],
                 }
         );
     }
 
     [Fact]
-    internal static Task FakerChainer_NoParameterMutation()
+    internal static Task ObjectFakeHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<FakerChainer>(
+        return Tools.Tester.PreventsParameterMutationAsync<ObjectFakeHint>(
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -32,7 +32,7 @@ public static class FakerChainerTests
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),
-                        typeof(InvalidOperationException),
+                        typeof(NotSupportedException),
                     ],
                 }
         );

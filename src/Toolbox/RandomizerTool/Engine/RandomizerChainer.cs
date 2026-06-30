@@ -7,7 +7,7 @@ namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
 public sealed class RandomizerChainer
-    : ToolChainer<RandomizerChainer, IRandomizerEngine, RandomizerOptions, CreateHint>,
+    : ToolChainer<RandomizerChainer, IRandomizerEngine, RandomizerOptions, ICreateHint>,
         IRandomizerChainer
 {
     /// <summary>Types not to create as to prevent infinite recursion.</summary>

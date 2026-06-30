@@ -1,4 +1,5 @@
 using CreateAndFake.Design.Tooling;
+using CreateAndFake.FakerTool.Hints;
 
 namespace CreateAndFake.FakerTool.Engine;
 
@@ -13,7 +14,16 @@ public enum FakePriority
     /// <remarks>Subtract from this priority for even lower priorities.</remarks>
     None = 0,
 
+    /// <summary>Priority for <see cref="ObjectFakeHint"/>.</summary>
+    ObjectHint = 1,
+
+    /// <summary>Priority for <see cref="AsyncDisposableFakeHint"/>.</summary>
+    AsyncDisposableHint = 2,
+
+    /// <summary>Priority for <see cref="DisposableFakeHint"/>.</summary>
+    DisposableHint = 3,
+
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 1,
+    Highest = 4,
 }

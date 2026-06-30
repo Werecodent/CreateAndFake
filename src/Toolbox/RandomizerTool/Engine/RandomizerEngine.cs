@@ -8,7 +8,7 @@ using CreateAndFake.FakerTool;
 namespace CreateAndFake.RandomizerTool.Engine;
 
 /// <inheritdoc cref="IRandomizer"/>
-public sealed class RandomizerEngine : ToolEngine<CreateHint>, IRandomizerEngine
+public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngine
 {
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <inheritdoc cref="IRandomizer.Create(Type,RandomizerMod)"/>

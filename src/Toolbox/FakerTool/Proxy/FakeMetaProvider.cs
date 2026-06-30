@@ -10,7 +10,9 @@ namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Internal mechanism for faked object behavior.</summary>
 /// <param name="identifier"><inheritdoc cref="Identifier" path="/summary"/></param>
-public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaProvider>
+/// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>
+public sealed class FakeMetaProvider(int identifier, FakerOptions options)
+    : IDuplicatable<FakeMetaProvider>
 {
     /// <summary>Last called method.</summary>
     [ThreadStatic]
@@ -30,7 +32,8 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
     public bool ThrowByDefault { get; set; } = true;
 
     /// <inheritdoc cref="FakerOptions"/>
-    internal FakerOptions? Options { get; set; }
+    internal FakerOptions Options { get; } =
+        options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc cref="FakeMetaProvider"/>
     /// <param name="behavior">Behavior to pass in.</param>
@@ -38,10 +41,11 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
     /// <remarks>Copy constructor.</remarks>
     internal FakeMetaProvider(
         int identifier,
+        FakerOptions options,
         IEnumerable<(CallData, Behavior)> behavior,
         IEnumerable<CallData> log
     )
-        : this(identifier)
+        : this(identifier, options)
     {
         ArgumentGuard.ThrowIfNull(behavior, log);
 
@@ -59,11 +63,11 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
 
         return new FakeMetaProvider(
             Identifier,
+            duplicator.Copy(Options),
             _behavior.Reverse().Select(t => duplicator.Copy(t)),
             _log.Select(t => duplicator.Copy(t))
         )
         {
-            Options = duplicator.Copy(Options),
             ThrowByDefault = ThrowByDefault,
         };
     }
@@ -169,12 +173,7 @@ public sealed class FakeMetaProvider(int identifier) : IDuplicatable<FakeMetaPro
         (CallData, Behavior) match = _behavior.FirstOrDefault(t => t.Item1.MatchesCall(data));
         if (match.Equals(default))
         {
-            if (
-                ThrowByDefault
-                && name != "Dispose"
-                && name != "DisposeAsync"
-                && name != "Finalizer"
-            )
+            if (ThrowByDefault && name != "Finalizer")
             {
                 throw new FakeCallException(data, _behavior.Select(b => b.Item1));
             }

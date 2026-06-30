@@ -9,7 +9,7 @@ using CreateAndFake.RandomizerTool.Engine;
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
-public interface IRandomizer : IHintTool<RandomizerOptions, CreateHint>
+public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>

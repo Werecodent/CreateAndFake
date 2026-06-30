@@ -39,7 +39,7 @@ public static class FakeMetaProviderTests
     [Theory, RandomData]
     internal static void Verify_PresetOutOfRangeThrows(string name)
     {
-        FakeMetaProvider provider = new(0) { ThrowByDefault = false };
+        FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
         CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
 
@@ -59,7 +59,7 @@ public static class FakeMetaProviderTests
     [Theory, RandomData]
     internal static void Verify_CustomOutOfRangeThrows(string name)
     {
-        FakeMetaProvider provider = new(0) { ThrowByDefault = false };
+        FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
         CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
 
@@ -82,7 +82,7 @@ public static class FakeMetaProviderTests
     [Theory, RandomData]
     internal static void VerifyTotalCalls_OutOfRangeThrows(string name)
     {
-        FakeMetaProvider provider = new(0) { ThrowByDefault = false };
+        FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
         provider.VerifyTotalCalls(0);
         provider.Assert(p => p.VerifyTotalCalls(1)).Throws<FakeVerifyException>();
@@ -99,7 +99,7 @@ public static class FakeMetaProviderTests
     [Theory, RandomData]
     internal static void CallVoid_ReturnValueThrows(string name)
     {
-        FakeMetaProvider provider = new(0);
+        FakeMetaProvider provider = new(0, Tools.Faker.Options);
 
         CallData data = new(name, Type.EmptyTypes, [], Tools.Faker.Options);
         provider.SetCallBehavior(data, Behavior.Returns(""));

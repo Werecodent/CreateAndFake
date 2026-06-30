@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 namespace CreateAndFake.RandomizerTool;
 
 /// <summary>Configuration for controlling randomization behavior.</summary>
-public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, CreateHint>
+public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICreateHint>
 {
     /// <summary>Provides stubs.</summary>
     public required IFaker Faker { get; init; }

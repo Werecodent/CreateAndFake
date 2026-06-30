@@ -59,7 +59,7 @@ public static class Subclasser
             CreateInfo(parent, interfaces)
                 .AsType()
                 .GetConstructor([Emitter.MetaType])!
-                .Invoke([new FakeMetaProvider(options.Gen.Next<int>())]);
+                .Invoke([new FakeMetaProvider(options.Gen.Next<int>(), options)]);
     }
 
     /// <summary>Creates a subclass of the given type.</summary>
@@ -170,8 +170,8 @@ public static class Subclasser
             parent
                 .GetMethods(
                     BindingFlags.FlattenHierarchy
-                        | BindingFlags.Public
                         | BindingFlags.NonPublic
+                        | BindingFlags.Public
                         | BindingFlags.Static
                 )
                 .Any(m => m.IsAbstract)

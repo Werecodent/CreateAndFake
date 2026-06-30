@@ -4,6 +4,7 @@ using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.ExtractorTool;
+using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.MutatorTool;
 using CreateAndFake.RandomizerTool.Engine;
@@ -62,6 +63,16 @@ internal static class SelfCreateHandlers
         ),
         new FactoryCreateHandler<ExtractorOptions>(rand =>
             CreateRandomOptionsBase<ExtractorOptions>(rand) with
+            {
+                Hints = [],
+                NestedOptions = null,
+                IncludeFoundHints = false,
+                IncludeFrameworkHints = true,
+                MaxHintRecursion = rand.Options.Gen.Next(28, 32),
+            }
+        ),
+        new FactoryCreateHandler<FakerOptions>(rand =>
+            CreateRandomOptionsBase<FakerOptions>(rand) with
             {
                 Hints = [],
                 NestedOptions = null,
