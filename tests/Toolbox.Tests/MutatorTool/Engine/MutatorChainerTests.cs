@@ -33,8 +33,8 @@ public static class MutatorChainerTests
     {
         engine
             .Modify(data, Arg.Any<IMutatorChainer>())
-            .SetupCall(
-                Behavior.Set<object, IMutatorChainer, bool>((d, chainer) => chainer.Modify(d))
+            .SetupReturn(
+                Behavior.Call<object, IMutatorChainer, bool>((d, chainer) => chainer.Modify(d))
             );
 
         new MutatorChainer(Tools.Mutator.Options, engine).Modify(data).Assert().Is(false);

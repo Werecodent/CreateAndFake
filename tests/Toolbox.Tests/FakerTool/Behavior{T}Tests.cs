@@ -1,4 +1,5 @@
-﻿using CreateAndFake.FakerTool;
+﻿using CreateAndFake.Design.Exceptions;
+using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.Tests.FakerTool;
 
@@ -36,9 +37,9 @@ public static class Behavior_T_Tests
     }
 
     [Fact]
-    internal static void Error_BehaviorWorks()
+    internal static void Throw_DefaultBehaviorWorks()
     {
-        Behavior<string>.Error().Assert(b => b.Invoke([])).Throws<NotImplementedException>();
+        Behavior<string>.Throw().Assert(b => b.Invoke([])).Throws<BehaviorDefaultThrowException>();
     }
 
     [Fact]

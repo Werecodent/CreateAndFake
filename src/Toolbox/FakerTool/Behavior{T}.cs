@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Exceptions;
 
 namespace CreateAndFake.FakerTool;
 
@@ -22,9 +23,9 @@ public sealed class Behavior<T> : Behavior, IDeepCloneable<Behavior<T>>
 
     /// <summary>Specifies exception behavior for a fake.</summary>
     /// <param name="times">Behavior call limit.</param>
-    public static new Behavior<T> Error(Times? times = null)
+    public static new Behavior<T> Throw(Times? times = null)
     {
-        return Throw<NotImplementedException>(times);
+        return Throw(new BehaviorDefaultThrowException("Thrown as configured."), times);
     }
 
     /// <inheritdoc cref="Throw{T}(T,Times)"/>
@@ -42,6 +43,6 @@ public sealed class Behavior<T> : Behavior, IDeepCloneable<Behavior<T>>
     public static new Behavior<T> Throw<TException>(TException exception, Times? times = null)
         where TException : Exception
     {
-        return Set<T>(() => throw exception, times);
+        return Call<T>(() => throw exception, times);
     }
 }

@@ -17,7 +17,7 @@ internal static void TestGetMovieDirectors(
     api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
 
     // Optionally check all behavior called as expected.
-    db.VerifyAllCalls();
+    db.Verify();
 }
 ```
 

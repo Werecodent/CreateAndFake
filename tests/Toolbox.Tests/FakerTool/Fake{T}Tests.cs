@@ -77,7 +77,7 @@ public static class Fake_T_Tests
         Fake<OutSample> fake = Tools.Faker.Mock<OutSample>();
         fake.Setup(
             d => d.ReturnVoid(out Arg.AnyRef<string>().Var),
-            Behavior.Set(
+            Behavior.Call(
                 (OutRef<string> d) =>
                 {
                     d.Var = data;
@@ -89,7 +89,7 @@ public static class Fake_T_Tests
         fake.Dummy.ReturnVoid(out string value);
 
         value.Assert().Is(data);
-        fake.VerifyAll(Times.Once);
+        fake.Verify(Times.Once);
     }
 
     [Theory, RandomData]
@@ -98,7 +98,7 @@ public static class Fake_T_Tests
         Fake<OutSample> fake = Tools.Faker.Mock<OutSample>();
         fake.Setup(
             d => d.ReturnValue(out Arg.AnyRef<int>().Var),
-            Behavior.Set(
+            Behavior.Call(
                 (OutRef<int> d) =>
                 {
                     d.Var = data;
@@ -111,7 +111,7 @@ public static class Fake_T_Tests
         fake.Dummy.ReturnValue(out int value).Assert().Is(plain);
 
         value.Assert().Is(data);
-        fake.VerifyAll(Times.Once);
+        fake.Verify(Times.Once);
     }
 
     [Theory, RandomData]
@@ -120,7 +120,7 @@ public static class Fake_T_Tests
         Fake<RefSample> fake = Tools.Faker.Mock<RefSample>();
         fake.Setup(
             d => d.ReturnVoid(ref Arg.WhereRef<string>(v => v == start).Var),
-            Behavior.Set(
+            Behavior.Call(
                 (OutRef<string> d) =>
                 {
                     d.Var = data;
@@ -133,7 +133,7 @@ public static class Fake_T_Tests
         fake.Dummy.ReturnVoid(ref value);
 
         value.Assert().Is(data);
-        fake.VerifyAll(Times.Once);
+        fake.Verify(Times.Once);
     }
 
     [Theory, RandomData]
@@ -147,7 +147,7 @@ public static class Fake_T_Tests
         fake.Dummy.Run<DataSample, bool>(text, sample).Assert().Is(true);
         fake.Dummy.Run<DataSample, int>(text, sample).Assert().Is(5);
 
-        fake.VerifyAll(Times.Exactly(2));
+        fake.Verify(Times.Exactly(2));
         fake.Dummy.Assert(d => d.Run<DataSample, object>(text, sample)).Throws<FakeCallException>();
     }
 
@@ -168,7 +168,7 @@ public static class Fake_T_Tests
             .ToFake()
             .Setup(
                 m => m.Compare(true, Arg.Any<bool?>(), null),
-                Behavior.Set(
+                Behavior.Call(
                     (object o1, object o2) =>
                     {
                         return (!o1.Equals(o2))
@@ -203,13 +203,13 @@ public static class Fake_T_Tests
         fake2.Dummy.Text = "What";
         fake2.VerifySet(Times.Once, m => m.Text, Arg.LambdaAny<string>());
 
-        fake2.SetupSet(m => m.Text, "Hinter", Behavior.Set((string _) => { }));
+        fake2.SetupSet(m => m.Text, "Hinter", Behavior.Call((string _) => { }));
         fake2.VerifySet(Times.Never, m => m.Text, "Hinter");
         fake2.Dummy.Text = "Hinter";
         fake2.VerifySet(Times.Once, m => m.Text, "Hinter");
         fake2.VerifySet(Times.Exactly(2), m => m.Text, Arg.LambdaAny<string>());
 
-        fake.Setup(m => m.Read(), Behavior.Set(() => "Test"));
+        fake.Setup(m => m.Read(), Behavior.Call(() => "Test"));
         fake.Verify(Times.Never, m => m.Read());
         fake.Dummy.Read().Assert().Is("Test");
         fake.Verify(Times.Once, m => m.Read());
@@ -242,7 +242,7 @@ public static class Fake_T_Tests
         fake.Setup(m => m.Read(Arg.Any<string>()), Behavior.Returns("Wow!"));
         fake.Dummy.Read("Okay?").Assert().Is("Wow!");
 
-        fake.Setup(m => m.Combo(2, "Finally"), Behavior.Set((int _, string __) => { }));
+        fake.Setup(m => m.Combo(2, "Finally"), Behavior.Call((int _, string __) => { }));
         fake.Verify(Times.Never, m => m.Combo(2, "Finally"));
         fake.Dummy.Combo(2, "Finally");
         fake.Verify(Times.Once, m => m.Combo(2, "Finally"));

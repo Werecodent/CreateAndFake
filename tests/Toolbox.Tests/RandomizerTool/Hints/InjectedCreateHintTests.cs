@@ -43,8 +43,8 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
             .Fake<IOnlyMockSample>()
             .Setup(m => m.FailIfNotMocked(), Behavior.Returns(false, Times.Once));
         sample.Dummy.TestIfMockedSeparately();
-        sample.Fake<IOnlyMockSample>().VerifyAll(Times.Once);
-        sample.VerifyAll();
+        sample.Fake<IOnlyMockSample>().Verify(Times.Once);
+        sample.Verify();
     }
 
     [Fact]

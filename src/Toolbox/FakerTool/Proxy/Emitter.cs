@@ -21,9 +21,9 @@ internal static class Emitter
     /// <summary>Flags used to find members to implement.</summary>
     private const BindingFlags _MemberFinder =
         BindingFlags.FlattenHierarchy
-        | BindingFlags.Public
         | BindingFlags.NonPublic
-        | BindingFlags.Instance;
+        | BindingFlags.Instance
+        | BindingFlags.Public;
 
     /// <summary>Methods called to chain fake calls.</summary>
     private static readonly MethodInfo _VoidChainer =
@@ -55,7 +55,10 @@ internal static class Emitter
     {
         TypeBuilder newType = _Module.DefineType(
             "Fake_"
-                + string.Join("|", interfaces.Prepend(parent).Select(i => i.Name))
+                + string.Join(
+                    "|",
+                    interfaces.Prepend(parent).Select(GenericTypeConverter.ExpandedName)
+                )
                 + "_"
                 + Guid.NewGuid(),
             TypeAttributes.NotPublic | TypeAttributes.Sealed,

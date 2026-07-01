@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 
@@ -41,12 +42,12 @@ public static class BehaviorTests
     }
 
     [Fact]
-    internal static void Set_BehaviorWorks()
+    internal static void Call_BehaviorWorks()
     {
         foreach (
             MethodInfo info in typeof(Behavior)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .Where(m => m.Name == nameof(Behavior.Set))
+                .Where(m => m.Name == nameof(Behavior.Call))
         )
         {
             Type type = info.GetParameters()[0].ParameterType;
@@ -90,9 +91,9 @@ public static class BehaviorTests
     }
 
     [Fact]
-    internal static void Error_BehaviorWorks()
+    internal static void Throw_DefaultBehaviorWorks()
     {
-        Behavior.Error().Assert(b => b.Invoke([])).Throws<NotImplementedException>();
+        Behavior.Throw().Assert(b => b.Invoke([])).Throws<BehaviorDefaultThrowException>();
     }
 
     [Fact]
@@ -153,7 +154,7 @@ public static class BehaviorTests
     internal static void Invoke_ThrowsWithWrongArgs()
     {
         Behavior
-            .Set((int _) => { })
+            .Call((int _) => { })
             .Assert(b => b.Invoke([]))
             .Throws<TargetParameterCountException>();
     }

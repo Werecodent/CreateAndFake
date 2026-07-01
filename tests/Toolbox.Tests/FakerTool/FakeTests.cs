@@ -17,7 +17,7 @@ public static class FakeTests
     [Fact]
     internal static void Verify_NoTotalValid()
     {
-        Tools.Faker.Mock<object>().VerifyAll();
+        Tools.Faker.Mock<object>().Verify();
     }
 
     [Fact]

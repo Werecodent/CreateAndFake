@@ -62,7 +62,7 @@ public static class MutatorEngineTests
         fakeValuer.Options.SetupReturn(Tools.Valuer.Options);
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
-            .SetupCall(Behavior.Series(true, true, true, false));
+            .SetupReturn(Behavior.Series(true, true, true, false));
 
         new Mutator(
             Tools.Mutator.Options with
@@ -88,7 +88,7 @@ public static class MutatorEngineTests
         fakeValuer.Options.SetupReturn(Tools.Valuer.Options);
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<ValuerMod>())
-            .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
+            .SetupReturn(Behavior.Series(false, true, true, false, true, true, false, false));
 
         new Mutator(
             Tools.Mutator.Options with
@@ -140,7 +140,7 @@ public static class MutatorEngineTests
     {
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>())
-            .SetupCall(Behavior.Series(true, true, true, false));
+            .SetupReturn(Behavior.Series(true, true, true, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
         new Mutator(
@@ -164,7 +164,7 @@ public static class MutatorEngineTests
     {
         fakeValuer
             .Equals(Arg.Any<object>(), Arg.Any<object>())
-            .SetupCall(Behavior.Series(false, true, true, false, true, true, false, false));
+            .SetupReturn(Behavior.Series(false, true, true, false, true, true, false, false));
         fakeValuer.GetHashCode(Arg.Any<object>()).SetupReturn(0);
 
         new Mutator(
@@ -199,7 +199,7 @@ public static class MutatorEngineTests
     internal static void Modify_WrapsError([Stub] IMutateHint hint, object data)
     {
         hint.TryToModify(data, Arg.Any<IMutatorChainer>())
-            .SetupCall(Behavior<MutateHintResult>.Throw<InvalidOperationException>());
+            .SetupReturn(Behavior<MutateHintResult>.Throw<InvalidOperationException>());
 
         _TestInstance.Assert(d => d.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();
     }

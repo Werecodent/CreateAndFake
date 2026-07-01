@@ -1,3 +1,4 @@
+using CreateAndFake.Design;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 
@@ -22,7 +23,7 @@ public static class FakeExtensions
     /// </example>
     public static void SetupReturn<T>(this T fakeCallResult, T returnValue, Times? times = null)
     {
-        SetupCall(fakeCallResult, Behavior.Returns(returnValue, times));
+        SetupReturn(fakeCallResult, Behavior.Returns(returnValue, times));
     }
 
     /// <summary>Ties a method call to <paramref name="behavior"/>.</summary>
@@ -30,8 +31,22 @@ public static class FakeExtensions
     /// <param name="fakeCallResult">Result from the fake method to setup.</param>
     /// <param name="behavior">Behavior to set the call behavior with.</param>
     /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
-    public static void SetupCall<T>(this T fakeCallResult, Behavior<T> behavior)
+    public static void SetupReturn<T>(this T fakeCallResult, Behavior<T> behavior)
     {
+        FakeMetaProvider.SetLastCallBehavior(behavior);
+    }
+
+    /// <summary>Ties a method call to <paramref name="behavior"/>.</summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fake"></param>
+    /// <param name="call"></param>
+    /// <param name="behavior">Behavior to set the call behavior with.</param>
+    /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
+    public static void SetupReturn<T>(this T fake, Action<T> call, Behavior<VoidType> behavior)
+    {
+        ArgumentGuard.ThrowIfNull(fake, call);
+
+        call.Invoke(fake);
         FakeMetaProvider.SetLastCallBehavior(behavior);
     }
 

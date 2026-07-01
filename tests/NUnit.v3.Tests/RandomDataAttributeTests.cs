@@ -27,8 +27,8 @@ public static class RandomDataAttributeTests
     {
         copyStub
             .TryCopy(Arg.Any<MethodWrapper>(), Arg.Any<IDuplicatorChainer>())
-            .SetupCall(
-                Behavior.Set<MethodWrapper, IDuplicatorChainer, CopyHintResult>(
+            .SetupReturn(
+                Behavior.Call<MethodWrapper, IDuplicatorChainer, CopyHintResult>(
                     (w, _) =>
                         (w != null)
                             ? new(new MethodWrapper(w.TypeInfo.Type, w.MethodInfo))

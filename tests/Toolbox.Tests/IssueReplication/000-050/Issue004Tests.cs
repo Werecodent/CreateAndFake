@@ -48,7 +48,7 @@ public static class Issue004Tests
     {
         sample.Setup(d => d.GetValueA(), Behavior.Base<BaseHolder, int>());
         sample.Dummy.GetValueA().Assert().Is(BaseHolder._TestValue);
-        sample.VerifyAll();
+        sample.Verify();
     }
 
     [Theory, RandomData]
@@ -56,7 +56,7 @@ public static class Issue004Tests
     {
         sample.Setup(d => d.GetValueB(value), Behavior.Base<BaseHolder, int>());
         sample.Dummy.GetValueB(value).Assert().Is(value);
-        sample.VerifyAll();
+        sample.Verify();
     }
 
     [Theory, RandomData]
@@ -65,7 +65,7 @@ public static class Issue004Tests
         sample.Setup(d => d.GetValueC(), Behavior.Base<BaseHolder>());
         sample.Dummy.GetValueC();
         sample.Dummy.ValueHolder.Assert().Is(BaseHolder._TestValue);
-        sample.VerifyAll();
+        sample.Verify();
     }
 
     [Theory, RandomData]
@@ -74,7 +74,7 @@ public static class Issue004Tests
         sample.Setup(d => d.GetValueD(value), Behavior.Base<BaseHolder>());
         sample.Dummy.GetValueD(value);
         sample.Dummy.ValueHolder.Assert().Is(value);
-        sample.VerifyAll();
+        sample.Verify();
     }
 
     [Theory, RandomData]
@@ -82,7 +82,7 @@ public static class Issue004Tests
     {
         sample.Setup(d => d.ThrowError(e), Behavior.Base<BaseHolder>());
         sample.Dummy.Assert(d => d.ThrowError(e)).Throws<Exception>().That.Is(e);
-        sample.VerifyAll();
+        sample.Verify();
     }
 
     [Theory, RandomData]

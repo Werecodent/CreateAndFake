@@ -35,7 +35,7 @@ public static class Issue052Tests
             .Create<Data>(opt => opt with { Hints = [hint.Dummy] })
             .Assert()
             .ReferenceEqual(testItem);
-        hint.VerifyAll();
+        hint.Verify();
     }
 
     [Theory, RandomData]
@@ -57,7 +57,7 @@ public static class Issue052Tests
             .Copy(item, opt => opt with { Hints = [hint.Dummy] })
             .Assert()
             .ReferenceEqual(item);
-        hint.VerifyAll();
+        hint.Verify();
     }
 
     [Theory, RandomData]

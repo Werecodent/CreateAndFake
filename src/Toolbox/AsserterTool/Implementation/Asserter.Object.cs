@@ -230,6 +230,6 @@ public partial class Asserter : IAsserterObject
     public virtual void Called(object? fake, Times total, AsserterMod? optionConfiguration = null)
     {
         ReferenceNotEqual(null, fake);
-        new Fake((IFaked)fake!).VerifyAll(total);
+        new Fake((IFaked)fake!).Verify(total);
     }
 }

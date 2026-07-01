@@ -29,8 +29,8 @@ public static class DisposerTests
         item1.Setup(m => m.Dispose(), Behavior.None(Times.Once));
         item2.Setup(m => m.Dispose(), Behavior.None(Times.Once));
         Disposer.Cleanup(item1.Dummy, new object(), item2.Dummy, "");
-        item1.VerifyAll();
-        item2.VerifyAll();
+        item1.Verify();
+        item2.Verify();
     }
 
     [Theory, RandomData]
@@ -42,8 +42,8 @@ public static class DisposerTests
         item1.Setup(m => m.Dispose(), Behavior.None(Times.Once));
         item2.Setup(m => m.DisposeAsync(), Behavior.Returns<ValueTask>(default, Times.Once));
         await Disposer.CleanupAsync(item1.Dummy, new object(), item2.Dummy, "");
-        item1.VerifyAll();
-        item2.VerifyAll();
+        item1.Verify();
+        item2.Verify();
     }
 
     [Fact]
@@ -54,6 +54,6 @@ public static class DisposerTests
 
         await Disposer.CleanupAsync(item.Dummy);
 
-        item.VerifyAll();
+        item.Verify();
     }
 }

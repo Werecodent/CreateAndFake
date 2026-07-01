@@ -5,7 +5,7 @@ using CreateAndFake.Design.Types;
 namespace CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Creates dynamic subclasses.</summary>
-public static class Subclasser
+internal static class Subclasser
 {
     /// <summary>Prevents concurrency issues for <see cref="_TypeCache"/>.</summary>
     private static readonly Lock _Lock = new();

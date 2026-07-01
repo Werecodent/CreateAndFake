@@ -43,7 +43,7 @@ public static class ScopeCheckerTests
         FileNotFoundException error
     )
     {
-        assembly.GetTypes().SetupCall(Behavior<Type[]>.Throw(error, Times.Once));
+        assembly.GetTypes().SetupReturn(Behavior<Type[]>.Throw(error, Times.Once));
         ScopeChecker.FindLoadedTypes(assembly).Assert().IsEmpty();
         assembly.Assert().Called();
     }
@@ -54,7 +54,7 @@ public static class ScopeCheckerTests
         ReflectionTypeLoadException error
     )
     {
-        assembly.GetTypes().SetupCall(Behavior<Type[]>.Throw(error, Times.Once));
+        assembly.GetTypes().SetupReturn(Behavior<Type[]>.Throw(error, Times.Once));
         ScopeChecker.FindLoadedTypes(assembly).Assert().IsEmpty();
         assembly.Assert().Called();
     }

@@ -86,6 +86,6 @@ public static class Issue038Tests
         sample.Value.Assert().Is(value);
         sample.ToString().Assert().Is(identity);
 
-        sample.ToFake().ToFake<object>().VerifyAll();
+        sample.ToFake().ToFake<object>().Verify();
     }
 }

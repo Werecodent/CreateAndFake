@@ -43,12 +43,12 @@ public class Fake(IFaked fake)
 
     /// <summary>Verifies all behaviors with associated times were called as expected.</summary>
     /// <param name="total">Expected total number of calls to test as well.</param>
-    public void VerifyAll(Times? total = null)
+    public void Verify(Times? total = null)
     {
         Dummy.FakeMeta.Verify();
         if (total != null)
         {
-            VerifyTotalCalls(total);
+            Dummy.FakeMeta.VerifyTotalCalls(total);
         }
     }
 
@@ -77,13 +77,6 @@ public class Fake(IFaked fake)
     private void Verify(Times times, CallData call)
     {
         Dummy.FakeMeta.Verify(times, call);
-    }
-
-    /// <summary>Verifies the total number of calls made.</summary>
-    /// <param name="times">Expected total.</param>
-    public void VerifyTotalCalls(Times times)
-    {
-        Dummy.FakeMeta.VerifyTotalCalls(times);
     }
 
     /// <inheritdoc/>

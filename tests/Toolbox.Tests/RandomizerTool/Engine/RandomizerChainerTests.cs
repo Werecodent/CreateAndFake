@@ -58,8 +58,8 @@ public static class RandomizerChainerTests
     {
         engine
             .Create(specificType, Arg.Any<IRandomizerChainer>())
-            .SetupCall(
-                Behavior.Set<Type, IRandomizerChainer, object>(
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
                     (_, chainer) => chainer.CreateSpecific(specificType, parentType)
                 )
             );
@@ -79,8 +79,8 @@ public static class RandomizerChainerTests
 
         engine
             .Create(type, Arg.Any<IRandomizerChainer>())
-            .SetupCall(
-                Behavior.Set<Type, IRandomizerChainer, object>(
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
                     (_, chainer) => chainer.CreateInternal(type, data)
                 )
             );
@@ -101,8 +101,8 @@ public static class RandomizerChainerTests
 
         engine
             .Create(type, Arg.Any<IRandomizerChainer>())
-            .SetupCall(
-                Behavior.Set<Type, IRandomizerChainer, object>(
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
                     (_, chainer) => chainer.CreateInternal(parentData.GetType(), childData)
                 )
             );

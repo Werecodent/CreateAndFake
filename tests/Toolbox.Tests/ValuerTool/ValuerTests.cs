@@ -48,7 +48,8 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void GetHashCode_ValidHint(object data, int result, [Stub] ICompareHint hint)
     {
-        hint.TryToGetHashCode(data, Arg.Any<IValuerChainer>()).SetupReturn(new(result));
+        hint.TryToGetHashCode(data, Arg.Any<IValuerChainer>())
+            .SetupReturn(new HashCodeHintResult(result));
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .GetHashCode(data)
@@ -94,7 +95,8 @@ public static class ValuerTests
         [Stub] ICompareHint hint
     )
     {
-        hint.TryToCompare(data1, data2, Arg.Any<IValuerChainer>()).SetupReturn(new([]));
+        hint.TryToCompare(data1, data2, Arg.Any<IValuerChainer>())
+            .SetupReturn(new DifferenceHintResult([]));
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Equals(data1, data2)
@@ -129,7 +131,9 @@ public static class ValuerTests
     )
     {
         hint.TryToCompare(item1, item2, Arg.Any<IValuerChainer>())
-            .SetupCall(Behavior<DifferenceHintResult>.Throw<InsufficientExecutionStackException>());
+            .SetupReturn(
+                Behavior<DifferenceHintResult>.Throw<InsufficientExecutionStackException>()
+            );
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Assert(v => v.Compare(item1, item2).ToList())
@@ -142,7 +146,7 @@ public static class ValuerTests
     internal static void GetHashCode_InfiniteLoopDetails(object item, [Fake] ICompareHint hint)
     {
         hint.TryToGetHashCode(item, Arg.Any<IValuerChainer>())
-            .SetupCall(Behavior<HashCodeHintResult>.Throw<InsufficientExecutionStackException>());
+            .SetupReturn(Behavior<HashCodeHintResult>.Throw<InsufficientExecutionStackException>());
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
             .Assert(v => v.GetHashCode(item))

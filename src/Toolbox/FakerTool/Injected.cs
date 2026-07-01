@@ -51,11 +51,11 @@ public sealed class Injected<T>
     }
 
     /// <summary>Verifies all behaviors in all fakes were called as expected.</summary>
-    public void VerifyAll()
+    public void Verify()
     {
         foreach (Fake fake in Fakes)
         {
-            fake.VerifyAll();
+            fake.Verify();
         }
     }
 
