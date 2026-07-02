@@ -13,7 +13,9 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
     /// <inheritdoc/>
     public bool Supports(Type type, IFakerChainer chainer)
     {
-        return Subclasser.Supports(type);
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        return chainer.SupportedTypes.Contains(type) || Subclasser.Supports(type);
     }
 
     /// <inheritdoc/>

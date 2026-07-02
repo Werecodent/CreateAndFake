@@ -50,7 +50,6 @@ public static class AssertObjectTests
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertObject>)
-            .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();
     }

@@ -30,6 +30,7 @@ internal sealed class TestValidator(TesterOptions options)
                 .Where(t => ScopeChecker.IsVisible(t, testAssembly.GetName()))
                 .Where(t => FindPossibleTestClassNames(t).All(name => !testClasses.Contains(name)))
                 .Where(t => !Options.TestClassCoverageExceptions.Contains(t.Name))
+                .Where(t => !t.Inherits<Delegate>())
                 .Where(t =>
                     !t.Namespace!.StartsWith(
                         "Coverlet.Core.Instrumentation.Tracker",

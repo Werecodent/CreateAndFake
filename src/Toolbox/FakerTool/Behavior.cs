@@ -89,7 +89,7 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <param name="times">Behavior call limit.</param>
     /// <returns>Instance to set up the mock with.</returns>
     public static Behavior<T> Null<T>(Times? times = null)
-        where T : class
+        where T : class?
     {
         return Returns<T>(null, times);
     }

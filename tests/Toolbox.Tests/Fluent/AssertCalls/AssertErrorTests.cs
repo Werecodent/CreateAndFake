@@ -48,7 +48,6 @@ public static class AssertErrorTests
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertError>)
-            .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();
     }

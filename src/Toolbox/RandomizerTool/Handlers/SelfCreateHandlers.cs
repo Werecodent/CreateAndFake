@@ -77,6 +77,7 @@ internal static class SelfCreateHandlers
                 Hints = [],
                 NestedOptions = null,
                 IncludeFoundHints = false,
+                FakeDefaultGenerator = null,
                 IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(28, 32),
             }

@@ -147,7 +147,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="InvalidOperationException"></exception>
     internal void CallVoid(object instance, string name, Type[] generics, object[] args)
     {
-        object? result = CallRet<object>(instance, name, generics, args);
+        object? result = CallBehavior<object>(instance, name, generics, args, true);
         if (result != null)
         {
             throw new InvalidOperationException(
@@ -166,6 +166,26 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="FakeCallException"></exception>
     internal T? CallRet<T>(object instance, string name, Type[] generics, object[] args)
     {
+        return CallBehavior<T>(instance, name, generics, args, false);
+    }
+
+    /// <summary>Manager for all calls.</summary>
+    /// <typeparam name="T">Return type.</typeparam>
+    /// <param name="instance">The faked object.</param>
+    /// <param name="name">Name of the method being called.</param>
+    /// <param name="generics">Generics tied to the call.</param>
+    /// <param name="args">Provided args to the call.</param>
+    /// <param name="isVoid">If method called is void.</param>
+    /// <returns>Faked result previously set up.</returns>
+    /// <exception cref="FakeCallException"></exception>
+    private T? CallBehavior<T>(
+        object instance,
+        string name,
+        Type[] generics,
+        object[] args,
+        bool isVoid
+    )
+    {
         CallData data = new(name, generics, args, Options);
         _log.Add(data);
         _LastCall = Tuple.Create(this, data);
@@ -176,6 +196,10 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
             if (ThrowByDefault && name != "Finalizer")
             {
                 throw new FakeCallException(data, _behavior.Select(b => b.Item1));
+            }
+            else if (!isVoid && Options.FakeDefaultGenerator != null)
+            {
+                return (T?)Options.FakeDefaultGenerator.Invoke(name, typeof(T));
             }
             else
             {

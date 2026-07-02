@@ -18,7 +18,9 @@ public sealed class DataRandom(IRandom gen)
             { "LASTNAME", dat => dat.Person.LastName },
             { "FULLNAME", dat => dat.Person.FullName },
             { "INITIALS", dat => dat.Person.Initials },
-        }.ToFrozenDictionary();
+        }
+            .SelectMany(pair => new[] { pair, new("GET" + pair.Key, pair.Value) })
+            .ToFrozenDictionary();
 
     /// <summary>All searchable names.</summary>
     internal static IEnumerable<string> SupportedProperties { get; } = _Matcher.Keys.ToFrozenSet();

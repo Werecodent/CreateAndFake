@@ -50,7 +50,6 @@ public static class AssertValueTaskTests
                 && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
                 && r.Result is not AlsoChainer
             )
-            .Select(r => $"{r.Method.Name}, {GenericTypeConverter.ExpandedName(r.Result)}")
             .Assert()
             .IsEmpty();
     }*/

@@ -55,7 +55,6 @@ public static class AssertStringTests
                     is not AssertChainer<AssertString>
                         and Task<AssertChainer<AssertEnumerable>>
             )
-            .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();
     }

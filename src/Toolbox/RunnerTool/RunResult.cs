@@ -15,7 +15,7 @@ public sealed class RunResult(
 )
 {
     /// <summary>Associated method.</summary>
-    public MethodBase Method { get; } = method;
+    public MethodBase Method { get; } = method ?? throw new ArgumentNullException(nameof(method));
 
     /// <summary>Parameter data for the method.</summary>
     public IEnumerable<object?> Args { get; } = [.. args];
@@ -29,4 +29,10 @@ public sealed class RunResult(
 
     /// <summary>If the method threw an exception; Result will be the exception.</summary>
     public bool ThrewException { get; } = threwException;
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{Method.Name}({(HasSuccessfulResult ? "Success" : "Exception")}): {Result?.ToString()}";
+    }
 }

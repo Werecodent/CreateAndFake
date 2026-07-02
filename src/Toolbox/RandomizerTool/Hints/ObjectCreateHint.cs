@@ -5,6 +5,7 @@ using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RandomizerTool.Engine;
 
 namespace CreateAndFake.RandomizerTool.Hints;
@@ -46,7 +47,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         DataRandom smartData = randomizer.Options.Gen.NextData();
         object? data = CreateNew(type, randomizer, smartData);
-        if (data == null)
+        if (data is null or IFaked)
         {
             return data;
         }

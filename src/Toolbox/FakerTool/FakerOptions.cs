@@ -12,6 +12,9 @@ public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
     /// <summary>Handles comparisons.</summary>
     public required IValuer? Valuer { get; init; }
 
+    /// <summary>If set, controls the default result returned from fake calls.</summary>
+    public Func<string, Type, object?>? FakeDefaultGenerator { get; init; }
+
     /// <summary>
     ///     Creates options from <see langword="this"/>
     ///     overridden with values from <paramref name="config"/>.

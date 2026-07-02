@@ -56,7 +56,6 @@ public static class AssertEnumerableTests
                     is not AssertChainer<AssertEnumerable>
                         and Task<AssertChainer<AssertEnumerable>>
             )
-            .Select(r => r.Method.Name)
             .Assert()
             .IsEmpty();
     }
