@@ -28,7 +28,7 @@ public partial class Asserter : IAsserterDelegate
         VerifyCanCall(behavior, localOptions, details);
 
         string errorMessage =
-            $"Expected exception of type '{GenericTypeConverter.ExpandedName<T>()}' but received: ";
+            $"Expected exception of type '{GenericConverter.ExpandName<T>()}' but received: ";
         try
         {
             Invoke(behavior);
@@ -66,7 +66,7 @@ public partial class Asserter : IAsserterDelegate
 
         return error as T
             ?? throw new AssertException(
-                errorMessage + GenericTypeConverter.ExpandedName(e),
+                errorMessage + GenericConverter.ExpandName(e),
                 details,
                 localOptions.Gen.InitialSeed,
                 e
@@ -129,7 +129,7 @@ public partial class Asserter : IAsserterDelegate
         if (behavior is Action)
         {
             throw new AssertException(
-                $"Expected result type of '{GenericTypeConverter.ExpandedName<T>()}, but was 'void'.",
+                $"Expected result type of '{GenericConverter.ExpandName<T>()}, but was 'void'.",
                 details,
                 localOptions.Gen.InitialSeed
             );
@@ -164,8 +164,8 @@ public partial class Asserter : IAsserterDelegate
         else
         {
             throw new AssertException(
-                $"Expected result type of '{GenericTypeConverter.ExpandedName<T>()},"
-                    + $" but was '{GenericTypeConverter.ExpandedName(result)}'.",
+                $"Expected result type of '{GenericConverter.ExpandName<T>()},"
+                    + $" but was '{GenericConverter.ExpandName(result)}'.",
                 details,
                 localOptions.Gen.InitialSeed
             );

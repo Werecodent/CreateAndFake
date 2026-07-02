@@ -61,7 +61,7 @@ public static class GenericResolver
         {
             return CreateConcreteGenerics(type, randomizer).FirstOrDefault()
                 ?? throw new UnsupportedException(
-                    $"Could not craft generic '{GenericTypeConverter.ExpandedName(type)}'."
+                    $"Could not craft generic '{GenericConverter.ExpandName(type)}'."
                 );
         }
         else
@@ -111,7 +111,7 @@ public static class GenericResolver
         if (!type.IsGenericTypeDefinition)
         {
             throw new ArgumentException(
-                $"Type '{GenericTypeConverter.ExpandedName(type)}' was not a generic type definition.",
+                $"Type '{GenericConverter.ExpandName(type)}' was not a generic type definition.",
                 nameof(type)
             );
         }
@@ -239,7 +239,7 @@ public static class GenericResolver
         [
             .. type.GetGenericParameterConstraints()
                 .Where(t => t != typeof(ValueType))
-                .Select(t => GenericTypeConverter.AsGenericBase(t) ?? t),
+                .Select(t => GenericConverter.AsGenericBase(t) ?? t),
         ];
         if (constraints.Length != 0)
         {

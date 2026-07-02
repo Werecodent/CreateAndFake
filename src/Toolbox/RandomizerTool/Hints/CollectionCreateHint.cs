@@ -74,7 +74,7 @@ public sealed class CollectionCreateHint : CreateHint
         _Collections
             .Keys.SelectMany(t => TypeDescriber.For(t).InheritedTypes)
             .Where(t => t.Inherits(typeof(IEnumerable<>)))
-            .Select(t => GenericTypeConverter.AsGenericBase(t) ?? t)
+            .Select(t => GenericConverter.AsGenericBase(t) ?? t)
             .Distinct()
             .ToFrozenSet()!;
 
@@ -93,14 +93,14 @@ public sealed class CollectionCreateHint : CreateHint
             return CreateHintResult.None;
         }
 
-        Type? itemType = GenericTypeConverter
+        Type? itemType = GenericConverter
             .AsConcreteType(type, typeof(IEnumerable<>))
             ?.GetGenericArguments()[0];
 
         if (itemType != null && FindMatches(type, itemType).Any())
         {
             return randomizer.Options.CollectionAttempts.Retry(
-                $"Generating '{GenericTypeConverter.ExpandedName(type)}' collection.",
+                $"Generating '{GenericConverter.ExpandName(type)}' collection.",
                 () => new CreateHintResult(Create(type, itemType, randomizer))
             );
         }

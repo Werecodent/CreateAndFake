@@ -96,7 +96,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(valueType)}' not supported."
+                $"Type '{GenericConverter.ExpandName(valueType)}' not supported."
             );
         }
     }
@@ -127,7 +127,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName<T>()}' not supported."
+                $"Type '{GenericConverter.ExpandName<T>()}' not supported."
             );
         }
     }
@@ -157,7 +157,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName<T>()}' not supported."
+                $"Type '{GenericConverter.ExpandName<T>()}' not supported."
             );
         }
     }

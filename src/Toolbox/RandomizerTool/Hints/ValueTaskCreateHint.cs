@@ -21,7 +21,7 @@ public sealed class ValueTaskCreateHint : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        Type? asGeneric = GenericTypeConverter.AsGenericBase(type);
+        Type? asGeneric = GenericConverter.AsGenericBase(type);
 
         if (
             asGeneric == typeof(SingleCallValueTaskSource<>)

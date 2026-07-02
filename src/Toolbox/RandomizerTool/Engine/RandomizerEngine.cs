@@ -27,7 +27,7 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(type)}' not supported by the randomizer. "
+                $"Type '{GenericConverter.ExpandName(type)}' not supported by the randomizer. "
                     + "Create a hint to generate the type."
             );
         }

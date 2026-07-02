@@ -192,18 +192,18 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-    /// <inheritdoc cref="IAsserter.Fail(string,string)"/>
+    /// <inheritdoc cref="IAsserter.Fail(object,string)"/>
     [DoesNotReturn]
     public virtual void Fail(string? details = null)
     {
-        asserter.Fail(details, Actual?.ToString());
+        asserter.Fail(Actual, details);
     }
 
-    /// <inheritdoc cref="IAsserter.Fail(AsserterMod,string,string)"/>
+    /// <inheritdoc cref="IAsserter.Fail(object,AsserterMod,string)"/>
     [DoesNotReturn]
     public virtual void Fail(AsserterMod? optionConfiguration, string? details = null)
     {
-        asserter.Fail(optionConfiguration, details, Actual?.ToString());
+        asserter.Fail(Actual, optionConfiguration, details);
     }
 
     /// <inheritdoc cref="IAsserter.Pass()"/>

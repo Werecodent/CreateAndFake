@@ -22,6 +22,6 @@ internal sealed class FactoryCreateHandler(
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{nameof(FactoryCreateHandler)}({GenericTypeConverter.ExpandedName(SupportedType)})";
+        return $"{nameof(FactoryCreateHandler)}({GenericConverter.ExpandName(SupportedType)})";
     }
 }

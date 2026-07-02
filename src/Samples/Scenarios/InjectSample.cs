@@ -11,6 +11,6 @@ public class InjectSample(DataSample data, DataSample data2)
 
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

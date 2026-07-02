@@ -88,7 +88,7 @@ internal sealed class SerializationValidator(TesterOptions options)
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)
         {
             throw new SerializationException(
-                $"Ran into problem trying to serialize type '{GenericTypeConverter.ExpandedName(type)}'.",
+                $"Ran into problem trying to serialize type '{GenericConverter.ExpandName(type)}'.",
                 e
             );
         }
@@ -96,7 +96,7 @@ internal sealed class SerializationValidator(TesterOptions options)
         Options.Asserter.Is(
             result,
             instance,
-            $"Instance of type '{GenericTypeConverter.ExpandedName(type)}' did not deserialize with the same values."
+            $"Instance of type '{GenericConverter.ExpandName(type)}' did not deserialize with the same values."
         );
     }
 }

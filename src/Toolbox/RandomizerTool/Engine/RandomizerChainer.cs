@@ -66,7 +66,7 @@ public sealed class RandomizerChainer
         else
         {
             throw new EngineException(
-                $"Type '{GenericTypeConverter.ExpandedName(type)}' already created."
+                $"Type '{GenericConverter.ExpandName(type)}' already created."
             );
         }
     }
@@ -104,7 +104,7 @@ public sealed class RandomizerChainer
         else
         {
             throw new EngineException(
-                $"Type '{GenericTypeConverter.ExpandedName(parent)}' already created."
+                $"Type '{GenericConverter.ExpandName(parent)}' already created."
             );
         }
     }

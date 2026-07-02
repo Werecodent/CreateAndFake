@@ -55,10 +55,7 @@ internal static class Emitter
     {
         TypeBuilder newType = _Module.DefineType(
             "Fake_"
-                + string.Join(
-                    "|",
-                    interfaces.Prepend(parent).Select(GenericTypeConverter.ExpandedName)
-                )
+                + string.Join("|", interfaces.Prepend(parent).Select(GenericConverter.ExpandName))
                 + "_"
                 + Guid.NewGuid(),
             TypeAttributes.NotPublic | TypeAttributes.Sealed,

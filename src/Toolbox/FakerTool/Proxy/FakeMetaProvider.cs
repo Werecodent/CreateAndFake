@@ -272,7 +272,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{GenericTypeConverter.ExpandedName(GetType())}({Identifier})";
+        return $"{GenericConverter.ExpandName(GetType())}({Identifier})";
     }
 }
 

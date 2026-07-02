@@ -155,7 +155,7 @@ public interface IAsserterEnumerable
     void Fail(IEnumerable? collection, string? details = null);
 
     /// <param name="collection">Collection to run assertion checks with.</param>
-    /// <inheritdoc cref="IAsserter.Fail(AsserterMod,string,string)"/>
+    /// <inheritdoc cref="IAsserter.Fail(object,AsserterMod,string)"/>
     [DoesNotReturn]
     void Fail(IEnumerable? collection, AsserterMod? optionConfiguration, string? details = null);
 }

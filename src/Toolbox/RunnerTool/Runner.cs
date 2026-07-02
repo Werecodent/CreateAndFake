@@ -171,7 +171,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         if (method.IsGenericMethodDefinition)
         {
             throw new UnsupportedException(
-                $"Method '{GenericTypeConverter.BuildTestName(method)}' must have "
+                $"Method '{GenericConverter.BuildTestName(method)}' must have "
                     + "generics specified before data can be populated for it."
             );
         }

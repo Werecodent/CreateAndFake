@@ -44,9 +44,9 @@ public abstract class MutateHintTestBase<T>(
                 .HasData.Assert()
                 .Is(
                     true,
-                    $"Hint '{GenericTypeConverter.ExpandedName<T>()}' failed to modify type "
-                        + $"'{GenericTypeConverter.ExpandedName(type)}'. "
-                        + $"Actual type: '{GenericTypeConverter.ExpandedName(data)}'."
+                    $"Hint '{GenericConverter.ExpandName<T>()}' failed to modify type "
+                        + $"'{GenericConverter.ExpandName(type)}'. "
+                        + $"Actual type: '{GenericConverter.ExpandName(data)}'."
                 );
         }
     }
@@ -63,9 +63,9 @@ public abstract class MutateHintTestBase<T>(
                 .HasData.Assert()
                 .Is(
                     false,
-                    $"Hint '{GenericTypeConverter.ExpandedName<T>()}' modified type "
-                        + $"'{GenericTypeConverter.ExpandedName(type)}'. "
-                        + $"Actual type: '{GenericTypeConverter.ExpandedName(data)}'."
+                    $"Hint '{GenericConverter.ExpandName<T>()}' modified type "
+                        + $"'{GenericConverter.ExpandName(type)}'. "
+                        + $"Actual type: '{GenericConverter.ExpandName(data)}'."
                 );
         }
     }
@@ -84,7 +84,7 @@ public abstract class MutateHintTestBase<T>(
     [Fact]
     public void ToString_Overridden()
     {
-        TestInstance.ToString().Assert().Is(GenericTypeConverter.ExpandedName(TestInstance));
+        TestInstance.ToString().Assert().Is(GenericConverter.ExpandName(TestInstance));
     }
 
     /// <typeparam name="TData">The <see cref="Type"/> to test.</typeparam>

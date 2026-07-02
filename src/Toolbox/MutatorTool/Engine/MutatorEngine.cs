@@ -49,7 +49,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateVariantAttemptLimit.StallUntil(
-                    $"Create variant of type '{GenericTypeConverter.ExpandedName(type)}'",
+                    $"Create variant of type '{GenericConverter.ExpandName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isVariantCheck
                 )
@@ -58,9 +58,9 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error creating a variant instance of type '{GenericTypeConverter.ExpandedName(type)}'. "
+                $"Error creating a variant instance of type '{GenericConverter.ExpandName(type)}'. "
                     + "Current instance types: "
-                    + string.Join(",", instances.Select(GenericTypeConverter.ExpandedName)),
+                    + string.Join(",", instances.Select(GenericConverter.ExpandName)),
                 e
             );
         }
@@ -99,7 +99,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return chainer
                 .Options.CreateUniqueAttemptLimit.StallUntil(
-                    $"Create unique of type '{GenericTypeConverter.ExpandedName(type)}'",
+                    $"Create unique of type '{GenericConverter.ExpandName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isUniqueCheck
                 )
@@ -108,9 +108,9 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error creating a unique instance of type '{GenericTypeConverter.ExpandedName(type)}'. "
+                $"Error creating a unique instance of type '{GenericConverter.ExpandName(type)}'. "
                     + "Current instance types: "
-                    + string.Join(",", instances.Select(GenericTypeConverter.ExpandedName)),
+                    + string.Join(",", instances.Select(GenericConverter.ExpandName)),
                 e
             );
         }
@@ -135,7 +135,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error modifying instance of type '{GenericTypeConverter.ExpandedName(instance)}'.",
+                $"Error modifying instance of type '{GenericConverter.ExpandName(instance)}'.",
                 e
             );
         }

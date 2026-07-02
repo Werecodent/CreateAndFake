@@ -64,11 +64,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         dynamic convertedExpected = ConvertFromSync(expected, chainer, canceler);
         dynamic convertedActual = ConvertFromSync(actual, chainer, canceler);
 
-        Type expectedType = GenericTypeConverter.FindConcreteType(
+        Type expectedType = GenericConverter.FindConcreteType(
             convertedExpected.GetType(),
             typeof(IAsyncEnumerable<>)
         );
-        Type actualType = GenericTypeConverter.FindConcreteType(
+        Type actualType = GenericConverter.FindConcreteType(
             convertedActual.GetType(),
             typeof(IAsyncEnumerable<>)
         );

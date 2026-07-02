@@ -141,14 +141,14 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     [DoesNotReturn]
     public override void Fail(string? details = null)
     {
-        Asserter.Fail(details, Text);
+        Asserter.Fail(Text, details);
     }
 
     /// <inheritdoc/>
     [DoesNotReturn]
     public override void Fail(AsserterMod? optionConfiguration, string? details = null)
     {
-        Asserter.Fail(optionConfiguration, details, Text);
+        Asserter.Fail(Text, optionConfiguration, details);
     }
 }
 

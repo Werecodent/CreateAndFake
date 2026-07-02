@@ -106,7 +106,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
         {
             canceler.ThrowIfCancellationRequested();
             throw new EngineException(
-                $"Attempting to await the {GenericTypeConverter.ExpandedName(item)} exceeded the timeout "
+                $"Attempting to await the {GenericConverter.ExpandName(item)} exceeded the timeout "
                     + $"({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'."
             );
         }
@@ -129,7 +129,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     /// </returns>
     private static bool IsGenericTask(Task item)
     {
-        return GenericTypeConverter
+        return GenericConverter
                 .AsConcreteType(item.GetType(), typeof(Task<>))
                 ?.GetGenericArguments()
                 .Single()

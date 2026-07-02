@@ -13,6 +13,6 @@ public abstract class BaseHolder<T>(T value) : IReadableHolder<T>, IWriteableHol
 
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

@@ -103,7 +103,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             }
             faked
                 .ToString()
-                .SetupReturn(Design.Types.GenericTypeConverter.ExpandedName(faked), Times.Any);
+                .SetupReturn(Design.Types.GenericConverter.ExpandName(faked), Times.Any);
         }
         return arg;
     }

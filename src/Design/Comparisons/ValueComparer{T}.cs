@@ -88,6 +88,6 @@ public sealed class ValueComparer<T>(int iterationLimit)
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

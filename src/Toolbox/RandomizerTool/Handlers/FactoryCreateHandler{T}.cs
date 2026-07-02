@@ -20,6 +20,6 @@ internal sealed class FactoryCreateHandler<T>(Func<IRandomizerChainer, T> factor
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

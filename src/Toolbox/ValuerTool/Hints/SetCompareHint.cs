@@ -27,11 +27,8 @@ public sealed class SetCompareHint : CompareHint
         IValuerChainer chainer
     )
     {
-        Type expectedType = GenericTypeConverter.FindConcreteType(
-            expected.GetType(),
-            typeof(ISet<>)
-        );
-        Type actualType = GenericTypeConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
+        Type expectedType = GenericConverter.FindConcreteType(expected.GetType(), typeof(ISet<>));
+        Type actualType = GenericConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
 
         if (expectedType != actualType)
         {
@@ -87,11 +84,8 @@ public sealed class SetCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        Type expectedType = GenericTypeConverter.FindConcreteType(
-            expected.GetType(),
-            typeof(ISet<>)
-        );
-        Type actualType = GenericTypeConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
+        Type expectedType = GenericConverter.FindConcreteType(expected.GetType(), typeof(ISet<>));
+        Type actualType = GenericConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
 
         if (expectedType != actualType)
         {
@@ -205,7 +199,7 @@ public sealed class SetCompareHint : CompareHint
     /// </returns>
     private static object? TryDescribe(object? item)
     {
-        return (item is Type type) ? GenericTypeConverter.ExpandedName(type) : item;
+        return (item is Type type) ? GenericConverter.ExpandName(type) : item;
     }
 
     /// <inheritdoc/>

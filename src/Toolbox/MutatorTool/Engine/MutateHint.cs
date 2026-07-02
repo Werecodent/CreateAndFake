@@ -32,6 +32,6 @@ public abstract class MutateHint : IMutateHint
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

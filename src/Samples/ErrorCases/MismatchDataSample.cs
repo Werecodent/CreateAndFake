@@ -9,6 +9,6 @@ public class MismatchDataSample(int value)
 
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

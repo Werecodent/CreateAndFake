@@ -285,6 +285,6 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{nameof(TypeDescriber)}({GenericTypeConverter.ExpandedName(SupportedType)})";
+        return $"{nameof(TypeDescriber)}({GenericConverter.ExpandName(SupportedType)})";
     }
 }

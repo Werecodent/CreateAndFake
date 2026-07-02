@@ -1,4 +1,5 @@
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.AsserterTool;
 
@@ -24,7 +25,7 @@ public partial class Asserter : IAsserterType
         if (!type.Inherits<TChild>())
         {
             throw new AssertException(
-                $"'{ExpandTypeName(type)}' does not inherit '{ExpandTypeName(typeof(TChild))}'.",
+                $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName<TChild>()}'.",
                 details,
                 localOptions.Gen.InitialSeed
             );
@@ -49,7 +50,7 @@ public partial class Asserter : IAsserterType
         if (!type.Inherits(child))
         {
             throw new AssertException(
-                $"'{ExpandTypeName(type)}' does not inherit '{ExpandTypeName(child)}'.",
+                $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName(child)}'.",
                 details,
                 localOptions.Gen.InitialSeed
             );
@@ -75,7 +76,7 @@ public partial class Asserter : IAsserterType
         if (!type.IsInheritedBy<TParent>())
         {
             throw new AssertException(
-                $"'{ExpandTypeName(typeof(TParent))}' does not inherit '{ExpandTypeName(type)}'.",
+                $"'{GenericConverter.ExpandName<TParent>()}' does not inherit '{GenericConverter.ExpandName(type)}'.",
                 details,
                 localOptions.Gen.InitialSeed
             );
@@ -100,7 +101,7 @@ public partial class Asserter : IAsserterType
         if (!type.IsInheritedBy(parent))
         {
             throw new AssertException(
-                $"'{ExpandTypeName(parent)}' does not inherit '{ExpandTypeName(type)}'.",
+                $"'{GenericConverter.ExpandName(parent)}' does not inherit '{GenericConverter.ExpandName(type)}'.",
                 details,
                 localOptions.Gen.InitialSeed
             );

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.AsserterTool;
 
@@ -41,21 +42,41 @@ public partial class Asserter(AsserterOptions options) : IAsserter
 
     /// <inheritdoc/>
     [DoesNotReturn, ExcludeFromCodeCoverage]
-    public virtual void Fail(string? details = null, string? content = null)
+    public virtual void Fail(string? details = null)
     {
-        Fail(Unconfigured, details, content);
+        Fail(Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    public virtual void Fail(AsserterMod? optionConfiguration, string? details = null)
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn, ExcludeFromCodeCoverage]
+    public virtual void Fail(object? content, string? details = null)
+    {
+        Fail(content, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     [DoesNotReturn]
     public virtual void Fail(
+        object? content,
         AsserterMod? optionConfiguration,
-        string? details = null,
-        string? content = null
+        string? details = null
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, content);
+        throw new AssertException(
+            "Test failed.",
+            details,
+            localOptions.Gen.InitialSeed,
+            content?.ToString()
+        );
     }
 
     /// <inheritdoc/>
@@ -119,26 +140,6 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     /// <returns>The <see cref="Type"/> name to use if found, <see langword="null"/> otherwise.</returns>
     private static string? GetTypeName(object? expected, object? actual)
     {
-        return ExpandTypeName((expected ?? actual)?.GetType());
-    }
-
-    /// <summary>Builds <see cref="Type"/> name with generic argument names.</summary>
-    /// <param name="type"><see cref="Type"/> to describe.</param>
-    /// <returns>The built name.</returns>
-    private static string? ExpandTypeName(Type? type)
-    {
-        if (type?.IsGenericType == true)
-        {
-            return string.Concat(
-                type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.Ordinal)),
-                "<",
-                string.Join(",", type.GetGenericArguments().Select(ExpandTypeName)),
-                ">"
-            );
-        }
-        else
-        {
-            return type?.Name;
-        }
+        return GenericConverter.ExpandName(expected ?? actual);
     }
 }

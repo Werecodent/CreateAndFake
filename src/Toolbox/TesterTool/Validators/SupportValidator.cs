@@ -118,8 +118,8 @@ internal sealed class SupportValidator(TesterOptions options)
 
             string failMessage =
                 "Behavior did not work for type '"
-                + GenericTypeConverter.ExpandedName(type)
-                + $"' randomized to '{GenericTypeConverter.ExpandedName(original)}'.";
+                + GenericConverter.ExpandName(type)
+                + $"' randomized to '{GenericConverter.ExpandName(original)}'.";
 
             await Options
                 .Asserter.ValuesEqualAsync(

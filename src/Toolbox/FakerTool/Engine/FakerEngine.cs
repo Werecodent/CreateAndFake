@@ -36,7 +36,7 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(parent)}' not supported by the faker. "
+                $"Type '{GenericConverter.ExpandName(parent)}' not supported by the faker. "
                     + "Create a hint to fake the type."
             );
         }

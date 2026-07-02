@@ -132,7 +132,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
     /// </returns>
     private static object TryDescribe(object item)
     {
-        return (item is Type type) ? GenericTypeConverter.ExpandedName(type) : item;
+        return (item is Type type) ? GenericConverter.ExpandName(type) : item;
     }
 
     /// <inheritdoc/>

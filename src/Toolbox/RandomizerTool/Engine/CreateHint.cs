@@ -17,6 +17,6 @@ public abstract class CreateHint : ICreateHint
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

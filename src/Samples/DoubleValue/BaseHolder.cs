@@ -16,6 +16,6 @@ public abstract class BaseHolder<T, TOther>(T value, TOther otherValue)
 
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }

@@ -52,7 +52,7 @@ public partial class Asserter : IAsserterValueTask
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{GenericTypeConverter.ExpandedName<T>()}' but received: ";
+            $"Expected exception of type '{GenericConverter.ExpandName<T>()}' but received: ";
         if (operation != null)
         {
             try
@@ -91,7 +91,7 @@ public partial class Asserter : IAsserterValueTask
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
         string errorMessage =
-            $"Expected exception of type '{GenericTypeConverter.ExpandedName<TException>()}' but received: ";
+            $"Expected exception of type '{GenericConverter.ExpandName<TException>()}' but received: ";
         if (operation != null)
         {
             try

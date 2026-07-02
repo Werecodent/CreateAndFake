@@ -91,6 +91,6 @@ public static class DuplicatorTests
             .Assert(d => d.Copy(instance))
             .Throws<ToolException>()
             .With.Message.Assert()
-            .Contains(GenericTypeConverter.ExpandedName(instance));
+            .Contains(GenericConverter.ExpandName(instance));
     }
 }

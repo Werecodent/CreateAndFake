@@ -55,7 +55,7 @@ public sealed class HandlerMutateHint : IMutateHint
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 }
 

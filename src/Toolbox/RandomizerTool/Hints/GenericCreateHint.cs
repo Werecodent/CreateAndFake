@@ -39,7 +39,7 @@ public sealed class GenericCreateHint : CreateHint
                 }
             }
             throw new UnsupportedException(
-                $"Could not create generic '{GenericTypeConverter.ExpandedName(type)}'."
+                $"Could not create generic '{GenericConverter.ExpandName(type)}'."
             );
         }
         else

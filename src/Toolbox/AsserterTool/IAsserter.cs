@@ -37,14 +37,22 @@ public interface IAsserter
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void Pass(AsserterMod? optionConfiguration);
 
-    /// <inheritdoc cref="Fail(AsserterMod,string,string)"/>
+    /// <inheritdoc cref="Fail(AsserterMod,string)"/>
     [DoesNotReturn]
-    void Fail(string? details = null, string? content = null);
+    void Fail(string? details = null);
+
+    /// <inheritdoc cref="Fail(object,AsserterMod,string)"/>
+    [DoesNotReturn]
+    void Fail(AsserterMod? optionConfiguration, string? details = null);
+
+    /// <inheritdoc cref="Fail(object,AsserterMod,string)"/>
+    [DoesNotReturn]
+    void Fail(object? content, string? details = null);
 
     /// <param name="content">Content responsible for the failure.</param>
     /// <inheritdoc cref="Fail(Exception,AsserterMod,string)"/>
     [DoesNotReturn]
-    void Fail(AsserterMod? optionConfiguration, string? details = null, string? content = null);
+    void Fail(object? content, AsserterMod? optionConfiguration, string? details = null);
 
     /// <inheritdoc cref="Fail(Exception,AsserterMod,string)"/>
     [DoesNotReturn]

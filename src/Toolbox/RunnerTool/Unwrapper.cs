@@ -70,8 +70,8 @@ internal static class Unwrapper
     {
         Type resultType = result.GetType();
         if (
-            !GenericTypeConverter
-                .ExpandedName(resultType)
+            !GenericConverter
+                .ExpandName(resultType)
                 .Contains("VoidTaskResult", StringComparison.Ordinal)
             && resultType.GetProperty("Result") != null
         )

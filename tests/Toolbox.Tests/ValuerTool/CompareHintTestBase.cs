@@ -118,8 +118,8 @@ public abstract class CompareHintTestBase<T>(
             {
                 one = Tools.Randomizer.Create(type);
                 await Limiter.Hundred.StallUntilAsync(
-                    $"Variant of same type: {GenericTypeConverter.ExpandedName(type)}, "
-                        + $"Existing type: {GenericTypeConverter.ExpandedName(one)}.",
+                    $"Variant of same type: {GenericConverter.ExpandName(type)}, "
+                        + $"Existing type: {GenericConverter.ExpandName(one)}.",
                     () => two = Tools.Mutator.Variant(type, one),
                     () => two.GetType() == one.GetType(),
                     TestContext.Current.CancellationToken
@@ -264,7 +264,7 @@ public abstract class CompareHintTestBase<T>(
             catch (Exception e)
             {
                 throw new EngineException(
-                    $"Error while testing type {GenericTypeConverter.ExpandedName(type)}",
+                    $"Error while testing type {GenericConverter.ExpandName(type)}",
                     e
                 );
             }

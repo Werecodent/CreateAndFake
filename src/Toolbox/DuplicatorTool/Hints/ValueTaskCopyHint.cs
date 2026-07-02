@@ -39,7 +39,7 @@ public sealed class ValueTaskCopyHint : CopyHint
         ArgumentGuard.ThrowIfNull(source, duplicator);
 
         Type type = source.GetType();
-        Type? genericType = GenericTypeConverter.AsGenericBase(type);
+        Type? genericType = GenericConverter.AsGenericBase(type);
 
         if (source is ValueTask task)
         {

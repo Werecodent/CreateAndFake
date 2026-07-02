@@ -139,7 +139,7 @@ public static class ValuerTests
             .Assert(v => v.Compare(item1, item2).ToList())
             .Throws<ToolException>()
             .With.Message.Assert()
-            .Contains(GenericTypeConverter.ExpandedName(item1));
+            .Contains(GenericConverter.ExpandName(item1));
     }
 
     [Theory, RandomData]
@@ -152,6 +152,6 @@ public static class ValuerTests
             .Assert(v => v.GetHashCode(item))
             .Throws<ToolException>()
             .With.Message.Assert()
-            .Contains(GenericTypeConverter.ExpandedName(item));
+            .Contains(GenericConverter.ExpandName(item));
     }
 }

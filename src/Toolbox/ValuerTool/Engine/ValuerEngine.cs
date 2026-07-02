@@ -34,8 +34,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error comparing instance of type '{GenericTypeConverter.ExpandedName(expected)}' "
-                    + $"with an instance of type '{GenericTypeConverter.ExpandedName(actual)}'.",
+                $"Error comparing instance of type '{GenericConverter.ExpandName(expected)}' "
+                    + $"with an instance of type '{GenericConverter.ExpandName(actual)}'.",
                 e
             );
         }
@@ -47,7 +47,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(expected)}' not supported by the valuer. "
+                $"Type '{GenericConverter.ExpandName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type."
             );
         }
@@ -85,8 +85,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error comparing instance of type '{GenericTypeConverter.ExpandedName(expected)}' "
-                    + $"with an instance of type '{GenericTypeConverter.ExpandedName(actual)}'.",
+                $"Error comparing instance of type '{GenericConverter.ExpandName(expected)}' "
+                    + $"with an instance of type '{GenericConverter.ExpandName(actual)}'.",
                 e
             );
         }
@@ -98,7 +98,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(expected)}' not supported by the valuer. "
+                $"Type '{GenericConverter.ExpandName(expected)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -123,7 +123,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{GenericTypeConverter.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{GenericConverter.ExpandName(item)}'.",
                 e
             );
         }
@@ -135,7 +135,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(item)}' not supported by the valuer. "
+                $"Type '{GenericConverter.ExpandName(item)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -164,7 +164,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{GenericTypeConverter.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{GenericConverter.ExpandName(item)}'.",
                 e
             );
         }
@@ -176,7 +176,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericTypeConverter.ExpandedName(item)}' not supported by the valuer. "
+                $"Type '{GenericConverter.ExpandName(item)}' not supported by the valuer. "
                     + "Create a hint to generate the type and pass it to the valuer."
             );
         }
@@ -204,8 +204,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
                 catch (Exception e)
                 {
                     throw new ToolException(
-                        $"Error comparing instance of type '{GenericTypeConverter.ExpandedName(expected)}'"
-                            + $" with an instance of type '{GenericTypeConverter.ExpandedName(actual)}'.",
+                        $"Error comparing instance of type '{GenericConverter.ExpandName(expected)}'"
+                            + $" with an instance of type '{GenericConverter.ExpandName(actual)}'.",
                         e
                     );
                 }
@@ -247,8 +247,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
                 {
                     throw new ToolException(
                         "Error comparing instance of type "
-                            + $"'{GenericTypeConverter.ExpandedName(expected)}' with an "
-                            + $"instance of type '{GenericTypeConverter.ExpandedName(actual)}'.",
+                            + $"'{GenericConverter.ExpandName(expected)}' with an "
+                            + $"instance of type '{GenericConverter.ExpandName(actual)}'.",
                         e
                     );
                 }
@@ -273,7 +273,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         catch (Exception e)
         {
             throw new ToolException(
-                $"Error hashing instance of type '{GenericTypeConverter.ExpandedName(item)}'.",
+                $"Error hashing instance of type '{GenericConverter.ExpandName(item)}'.",
                 e
             );
         }

@@ -35,7 +35,7 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
     public sealed override string ToString()
     {
         // Prevents infinite loop from nested options.
-        return GenericTypeConverter.ExpandedName(GetType());
+        return GenericConverter.ExpandName(GetType());
     }
 
     /// <inheritdoc/>
