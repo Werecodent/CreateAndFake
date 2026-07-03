@@ -27,7 +27,7 @@ Note the ban on LLM-generated code. Developers do not have the right to submit L
     A) Check if installed: ‘xcode-select -p’
     B) If not, run: ‘code-select —install’
     C) Verify git works: ‘git —version’
-2) Install VS Code: https://code.visualstudio.com/download
+2) Install [VS Code](https://code.visualstudio.com/docs/setup/mac).
 3) Clone the repository in the editor, then:
     A) Install all recommended extensions for the project.
     B) Follow all prompts for signing in/downloads.
@@ -37,9 +37,9 @@ Note the ban on LLM-generated code. Developers do not have the right to submit L
 ## Linux Environment Recommended Setup
 
 1) Install packages for:
-    A) [.NET frameworks](https://dotnet.microsoft.com/download/)
-    B) [Mono](https://www.mono-project.com/download/stable/#download-lin/)
-    C) [VS Code](https://code.visualstudio.com/download/)
+    A) [.NET frameworks](https://dotnet.microsoft.com/download)
+    B) [Mono](https://www.mono-project.com/download/stable/#download-lin)
+    C) [VS Code](https://code.visualstudio.com/docs/setup/linux)
 2) Clone the repository in the editor, then:
     A) Install all recommended extensions for the project.
     B) Run from terminal: "chmod +x ./build/run.sh"
@@ -50,7 +50,7 @@ Note the ban on LLM-generated code. Developers do not have the right to submit L
 
 VS Code is still recommended (see above setups), but VS Community may be utilized instead:
 
-1) Install [VS Community](https://visualstudio.microsoft.com/vs/community/).
+1) Install [VS Community](https://visualstudio.microsoft.com/vs/community).
 2) Clone the repository locally.
 3) To see build options, run from cmd prompt: "./build/run.cmd --help"
 4) Verify project state by running from cmd prompt: "./build/run.cmd test"
@@ -61,7 +61,7 @@ Set the following git configuration settings, replacing [xxx] with valid persona
 
 1) git config --global user.name "[xxx]"
 2) git config --global user.email "[xxx]@users.noreply.github.com"
-3) git config --global user.signingKey [XXX]
+3) git config --global user.signingKey [xxx]
 4) git config --global tag.gpgSign true
 5) git config --global commit.gpgSign true
 6) git config --global push.gpgSign "if-asked"

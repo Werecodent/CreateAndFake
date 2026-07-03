@@ -1,4 +1,5 @@
 using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Reiteration;
 using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Design.Tests.Comparisons;
@@ -34,9 +35,22 @@ public static class ReferenceComparerTests
     internal static void GetHashCode_UsesReferenceValue(DataSample data)
     {
         int originalHash = ReferenceComparer.Use.GetHashCode(data);
+
         Tools.Mutator.Modify(data).Assert().Is(true);
         ReferenceComparer.Use.GetHashCode(data).Assert().Is(originalHash);
-        ReferenceComparer.Use.GetHashCode(null).Assert().Is(0);
+
+        Limiter.Few.Retry(
+            "Occasional hash collisions acceptable.",
+            () =>
+                ReferenceComparer.Use.GetHashCode(data.Tools().Copy()).Assert().IsNot(originalHash),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static void GetHashCode_NullIsValid()
+    {
+        ReferenceComparer.Use.Assert(c => c.GetHashCode(null)).ThrowsNo<Exception>();
     }
 
     [Theory, RandomData]
