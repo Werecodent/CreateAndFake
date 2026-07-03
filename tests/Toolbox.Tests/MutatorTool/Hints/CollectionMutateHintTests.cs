@@ -25,7 +25,7 @@ public sealed class CollectionMutateHintTests : MutateHintTestBase<CollectionMut
     [Theory, RandomData]
     public void Alter_AddsToMutableCollection(List<DataSample> data)
     {
-        List<DataSample> original = data.CreateDeepClone();
+        List<DataSample> original = data.Tools().Copy();
 
         TestInstance.TryToModify(data, CreateChainer()).Assert().Is(new MutateHintResult(true));
 

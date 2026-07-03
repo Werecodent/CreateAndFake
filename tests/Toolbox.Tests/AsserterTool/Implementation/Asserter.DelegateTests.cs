@@ -89,7 +89,7 @@ public sealed class AsserterDelegateTests
     [Theory, RandomData]
     internal void Throws_Disposes([Stub] IDisposable disposable)
     {
-        disposable.ToFake().Setup(m => m.Dispose(), Behavior.None(Times.Once));
+        disposable.Tools().ToFake().Setup(m => m.Dispose(), Behavior.None(Times.Once));
 
         _testInstance.Assert(t => t.Throws<Exception>(() => disposable)).Throws<AssertException>();
 

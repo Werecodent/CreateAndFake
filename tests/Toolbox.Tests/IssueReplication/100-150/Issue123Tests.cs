@@ -8,19 +8,19 @@ public static class Issue123Tests
     [Theory, RandomData]
     internal static void Issue123_ImmutablesSupported(ImmutableArray<string> data)
     {
-        data.Assert().Is(data.CreateDeepClone());
+        data.Assert().Is(data.Tools().Copy());
     }
 
     [Theory, RandomData]
     internal static void Issue123_FrozenDictionarySupported(FrozenDictionary<string, int> data)
     {
-        data.Assert().Is(data.CreateDeepClone());
+        data.Assert().Is(data.Tools().Copy());
     }
 
     [Fact]
     internal static void Issue123_FrozenSetSupported()
     {
         FrozenSet<string> data = Tools.Randomizer.Create<FrozenSet<string>>();
-        data.Assert().Is(data.CreateDeepClone());
+        data.Assert().Is(data.Tools().Copy());
     }
 }

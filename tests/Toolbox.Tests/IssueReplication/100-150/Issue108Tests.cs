@@ -24,7 +24,7 @@ public static class Issue108Tests
     [Fact]
     internal static void Issue108_SupportsSelfReference()
     {
-        typeof(InnerStuff<>).CreateRandomInstance().Assert().IsNot(null);
+        typeof(InnerStuff<>).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 
     [Theory, RandomData]
@@ -36,7 +36,7 @@ public static class Issue108Tests
     [Fact]
     internal static void Issue108_SupportsContainerWithSelfReferenceContent()
     {
-        typeof(Container<>).CreateRandomInstance().Assert().IsNot(null);
+        typeof(Container<>).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 
     [Theory, RandomData]

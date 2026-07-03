@@ -23,7 +23,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
     {
         return Tools.Asserter.IsAsync(
             items,
-            items.CreateDeepClone(),
+            items.Tools().Copy(),
             TestContext.Current.CancellationToken
         );
     }
@@ -31,7 +31,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
     [Theory, RandomData]
     internal static async Task CopyAsync_Interrupt([Size(5)] IAsyncEnumerable<int> original)
     {
-        IAsyncEnumerable<int> items = original.CreateDeepClone();
+        IAsyncEnumerable<int> items = original.Tools().Copy();
 
         await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 

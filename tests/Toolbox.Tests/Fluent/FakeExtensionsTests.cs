@@ -1,30 +1,28 @@
-using CreateAndFake.Design.Exceptions;
+namespace CreateAndFake.Tests.Fluent;
 
-namespace CreateAndFake.Tests.Extensions;
-
-public static class CreateExtensionsTests
+public static class FakeExtensionsTests
 {
     private static readonly TesterMod config = opt =>
         opt with
         {
-            IgnorableExceptions = [typeof(ToolException)],
+            IgnorableExceptions = [typeof(InvalidOperationException), typeof(InvalidCastException)],
         };
 
     [Fact]
-    internal static Task CreateExtensions_GuardsNulls()
+    internal static Task FakeExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(CreateExtensions),
+            typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
             config
         );
     }
 
     [Fact]
-    internal static Task CreateExtensions_NoParameterMutation()
+    internal static Task FakeExtensions_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(CreateExtensions),
+            typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
             config
         );

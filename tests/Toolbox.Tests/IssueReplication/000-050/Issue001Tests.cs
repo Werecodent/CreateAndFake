@@ -12,7 +12,7 @@ public static class Issue001Tests
     [Theory, RandomData]
     internal static void Issue001_CanCreateUniques(Sample original)
     {
-        Sample unique = original.CreateUnique();
+        Sample unique = original.Tools().Unique();
         unique.Name.Assert().IsNot(original.Name);
         unique.Value.Assert().IsNot(original.Value);
         unique.Assert().UniqueFrom(original);
@@ -21,6 +21,6 @@ public static class Issue001Tests
     [Theory, RandomData]
     internal static void Issue001_CanCreateUniqueValues(int original)
     {
-        original.CreateUnique().Assert().IsNot(original);
+        original.Tools().Unique().Assert().IsNot(original);
     }
 }

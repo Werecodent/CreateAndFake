@@ -80,8 +80,8 @@ public static class ValuerTests
     internal static void Compare_NullableWorks(int? item)
     {
         item.Assert().IsNot(null);
-        item.CreateVariant().Assert().IsNot(item);
-        item.CreateDeepClone().Assert().Is(item);
+        item.Tools().Variant().Assert().IsNot(item);
+        item.Tools().Copy().Assert().Is(item);
 
         int? none = null;
         none.Assert().IsNot(item);

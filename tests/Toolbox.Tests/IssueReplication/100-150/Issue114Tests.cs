@@ -5,25 +5,25 @@ public static class Issue114Tests
     [Theory, RandomData]
     internal static void Issue114_IntArraySequencesEqualRegardlessOfType(int[] sample)
     {
-        sample.Assert().Is(sample.CreateDeepClone().ToList());
+        sample.Assert().Is(sample.Tools().Copy().ToList());
     }
 
     [Theory, RandomData]
     internal static void Issue114_ObjectArraySequencesEqualRegardlessOfType(object[] sample)
     {
-        sample.Assert().Is(sample.CreateDeepClone().ToList());
+        sample.Assert().Is(sample.Tools().Copy().ToList());
     }
 
     [Theory, RandomData]
     internal static void Issue114_StringListSequencesEqualRegardlessOfType(IList<string> sample)
     {
-        sample.Assert().Is(sample.CreateDeepClone().ToList());
+        sample.Assert().Is(sample.Tools().Copy().ToList());
     }
 
     [Theory, RandomData]
     internal static void Issue114_ObjectListSequencesEqualRegardlessOfType(IList<object> sample)
     {
-        sample.Assert().Is(sample.CreateDeepClone().ToList());
+        sample.Assert().Is(sample.Tools().Copy().ToList());
     }
 
     [Theory, RandomData]
@@ -31,6 +31,6 @@ public static class Issue114Tests
         IDictionary<string, object> sample
     )
     {
-        sample.Assert().Is(sample.CreateDeepClone().ToDictionary(e => e.Key, e => e.Value));
+        sample.Assert().Is(sample.Tools().Copy().ToDictionary(e => e.Key, e => e.Value));
     }
 }

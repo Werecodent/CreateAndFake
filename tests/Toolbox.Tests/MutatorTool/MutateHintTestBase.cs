@@ -38,7 +38,7 @@ public abstract class MutateHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
-            object data = type.CreateRandomInstance();
+            object data = type.Tools().CreateRandomInstance();
             TestInstance
                 .TryToModify(data, CreateChainer())
                 .HasData.Assert()
@@ -57,7 +57,7 @@ public abstract class MutateHintTestBase<T>(
     {
         foreach (Type type in _invalidTypes)
         {
-            object data = type.CreateRandomInstance();
+            object data = type.Tools().CreateRandomInstance();
             TestInstance
                 .TryToModify(data, CreateChainer())
                 .HasData.Assert()
@@ -112,7 +112,7 @@ public abstract class MutateHintTestBase<T>(
                             CollectionMaxSize = collectionSize.Value,
                         }
                 );
-        object original = data.CreateDeepClone();
+        object original = data.Tools().Copy();
 
         TestInstance
             .TryToModify(data, CreateChainer())

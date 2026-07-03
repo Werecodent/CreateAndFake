@@ -196,7 +196,7 @@ public static class Issue094Tests
 
         foreach (IFormatProvider provider in CultureInfo.GetCultures(CultureTypes.AllCultures))
         {
-            provider.CreateDeepClone().Assert().Is(provider);
+            provider.Tools().Copy().Assert().Is(provider);
         }
     }
 
@@ -223,7 +223,7 @@ public static class Issue094Tests
         dict.Add("test", fake);
 
         MethodCallWrapper wrapper = new MethodCallWrapper(method, dict);
-        wrapper.Assert().Is(wrapper.CreateDeepClone());
+        wrapper.Assert().Is(wrapper.Tools().Copy());
     }
 
     private static Task TestToolBehavior<T>()

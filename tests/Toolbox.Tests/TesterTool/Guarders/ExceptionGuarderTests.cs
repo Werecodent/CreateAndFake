@@ -47,6 +47,7 @@ public static class ExceptionGuarderTests
     internal static async Task HandleCheckException_UsesAsserterFail([Fake] IAsserter asserter)
     {
         asserter
+            .Tools()
             .ToFake()
             .Setup(d => d.Fail(Arg.Any<Exception>(), Arg.Any<string>()), Behavior.None(Times.Once));
 

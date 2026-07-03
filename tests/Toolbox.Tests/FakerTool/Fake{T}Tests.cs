@@ -163,8 +163,9 @@ public static class Fake_T_Tests
     [Theory, RandomData]
     internal static void ConvertArg_ConvertExpression([Stub] IValuer valuer, string[] data)
     {
-        valuer.ToFake().Setup(m => m.Equals(true, true), Behavior.Returns(true));
+        valuer.Tools().ToFake().Setup(m => m.Equals(true, true), Behavior.Returns(true));
         valuer
+            .Tools()
             .ToFake()
             .Setup(
                 m => m.Compare(true, Arg.Any<bool?>(), null),

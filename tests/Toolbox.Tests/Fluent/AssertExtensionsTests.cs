@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Tests.Extensions;
+﻿namespace CreateAndFake.Tests.Fluent;
 
 public static class AssertExtensionsTests
 {

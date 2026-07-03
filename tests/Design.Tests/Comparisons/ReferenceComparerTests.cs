@@ -27,7 +27,7 @@ public static class ReferenceComparerTests
         ReferenceComparer.Use.Equals(null, null).Assert().Is(true);
         ReferenceComparer.Use.Equals(data, data).Assert().Is(true);
         ReferenceComparer.Use.Equals(data, null).Assert().Is(false);
-        ReferenceComparer.Use.Equals(data, data.CreateDeepClone()).Assert().Is(false);
+        ReferenceComparer.Use.Equals(data, data.Tools().Copy()).Assert().Is(false);
     }
 
     [Theory, RandomData]
@@ -43,6 +43,6 @@ public static class ReferenceComparerTests
     internal static void Compare_UsesReferenceValue(DataSample data)
     {
         ReferenceComparer.Use.Compare(data, data).Assert().Is(0);
-        ReferenceComparer.Use.Compare(data, data.CreateDeepClone()).Assert().IsNot(0);
+        ReferenceComparer.Use.Compare(data, data.Tools().Copy()).Assert().IsNot(0);
     }
 }

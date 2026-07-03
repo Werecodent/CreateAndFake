@@ -64,7 +64,7 @@ public static class ValueComparer_T_Tests
     {
         stub.GetValueHash().SetupReturn(hash);
         equalStub.GetValueHash().SetupReturn(hash);
-        unequalStub.GetValueHash().SetupReturn(hash.CreateVariant());
+        unequalStub.GetValueHash().SetupReturn(hash.Tools().Variant());
 
         ValueComparer<IValueEquatable> comparer = ValueComparer<IValueEquatable>.Use;
 

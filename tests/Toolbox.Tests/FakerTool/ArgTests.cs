@@ -119,10 +119,10 @@ public static class ArgTests
     internal static void Arg_Cloneable(string value)
     {
         Arg origin = Arg.LambdaWhere<string>(d => d == value);
-        Arg copy = origin.CreateDeepClone();
+        Arg copy = origin.Tools().Copy();
 
         copy.Assert().Is(origin);
         copy.Matches(value).Assert().Is(true);
-        copy.Matches(value.CreateVariant()).Assert().Is(false);
+        copy.Matches(value.Tools().Variant()).Assert().Is(false);
     }
 }

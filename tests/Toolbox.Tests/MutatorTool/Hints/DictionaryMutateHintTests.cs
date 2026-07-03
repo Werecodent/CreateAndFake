@@ -32,7 +32,7 @@ public sealed class DictionaryMutateHintTests : MutateHintTestBase<DictionaryMut
     public void Modify_UsesInternalType(int key, DataSample value)
     {
         ListDictionary data = new() { { key, value } };
-        ListDictionary original = data.CreateDeepClone();
+        ListDictionary original = data.Tools().Copy();
 
         Limiter.Score.StallUntil(
             "Until added to.",

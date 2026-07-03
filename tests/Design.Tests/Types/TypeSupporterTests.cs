@@ -33,7 +33,7 @@ public static class TypeSupporterTests
     [Theory, RandomData]
     internal static void GroupBySupportedType_GroupsSuccessfully(ITypeSupporter item)
     {
-        ITypeSupporter item2 = item.CreateUnique();
+        ITypeSupporter item2 = item.Tools().Unique();
         TypeSupporter
             .GroupBySupportedType([item, item2])
             .Assert()

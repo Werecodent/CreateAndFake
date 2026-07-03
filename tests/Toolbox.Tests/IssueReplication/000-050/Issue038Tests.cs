@@ -80,12 +80,12 @@ public static class Issue038Tests
         string identity
     )
     {
-        sample.ToFake().Setup(d => d.Value, Behavior.Returns(value));
-        sample.ToFake<object>().Setup(d => d.ToString(), Behavior.Returns(identity));
+        sample.Tools().ToFake().Setup(d => d.Value, Behavior.Returns(value));
+        sample.Tools().ToFake<object>().Setup(d => d.ToString(), Behavior.Returns(identity));
 
         sample.Value.Assert().Is(value);
         sample.ToString().Assert().Is(identity);
 
-        sample.ToFake().ToFake<object>().Verify();
+        sample.Tools().ToFake().ToFake<object>().Verify();
     }
 }

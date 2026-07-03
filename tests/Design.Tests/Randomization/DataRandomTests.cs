@@ -34,7 +34,7 @@ public static class DataRandomTests
     [Theory, RandomData]
     internal static void DataRandom_DataVaries(DataRandom testInstance)
     {
-        testInstance.CreateVariant().Assert().IsNot(testInstance);
+        testInstance.Tools().Variant().Assert().IsNot(testInstance);
     }
 
     [Theory, RandomData]

@@ -33,7 +33,7 @@ public sealed class DisposableFakeHint : IFakeHint
 
         if (instance.GetType().Inherits<IDisposable>())
         {
-            instance.ToFake<IDisposable>().Setup(f => f.Dispose(), Behavior.None(Times.Any));
+            new Fake<IDisposable>(instance).Setup(f => f.Dispose(), Behavior.None(Times.Any));
             return new(true);
         }
         else

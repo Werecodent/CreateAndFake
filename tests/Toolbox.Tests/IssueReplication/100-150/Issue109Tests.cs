@@ -46,13 +46,13 @@ public static class Issue109Tests
     [Theory, RandomData]
     internal static void Issue109_BinarySerializationRemovedDateTime(DateTime date)
     {
-        date.CreateDeepClone().Assert().Is(date);
+        date.Tools().Copy().Assert().Is(date);
     }
 
     [Theory, RandomData]
     internal static void Issue109_BinarySerializationRemovedSample(IContainer sample)
     {
-        sample.CreateDeepClone().Assert().Is(sample);
+        sample.Tools().Copy().Assert().Is(sample);
         new Duplicator(Tools.Duplicator.Options with { Hints = [new SerializableCopyHint()] })
             .Copy(sample)
             .Assert()

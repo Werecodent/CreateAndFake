@@ -31,7 +31,7 @@ public sealed class ListMutateHintTests : MutateHintTestBase<ListMutateHint>
     public void Modify_UsesInternalType(DataSample value)
     {
         ArrayList data = new() { { value } };
-        ArrayList original = data.CreateDeepClone();
+        ArrayList original = data.Tools().Copy();
 
         Limiter.Score.StallUntil(
             "Until added to.",

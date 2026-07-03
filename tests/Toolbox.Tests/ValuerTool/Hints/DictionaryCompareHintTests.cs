@@ -29,9 +29,9 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
     [Theory, RandomData]
     internal void TryToCompare_SameKeyDifferentValuesWorks(Dictionary<string, int> data)
     {
-        Dictionary<string, int> dupe = data.CreateDeepClone();
+        Dictionary<string, int> dupe = data.Tools().Copy();
         string key = data.First().Key;
-        dupe[key] = data[key].CreateVariant();
+        dupe[key] = data[key].Tools().Variant();
 
         TestInstance
             .TryToCompare(data, dupe, CreateChainer())

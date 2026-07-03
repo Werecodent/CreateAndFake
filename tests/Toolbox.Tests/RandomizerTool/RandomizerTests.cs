@@ -60,8 +60,9 @@ public static class RandomizerTests
     [Theory, RandomData]
     internal static void Create_MissingMatchThrows([Stub] CreateHint hint, string data)
     {
-        hint.ToFake().ThrowByDefault = true;
-        hint.ToFake()
+        hint.Tools().ToFake().ThrowByDefault = true;
+        hint.Tools()
+            .ToFake()
             .Setup(
                 m => m.TryToCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(CreateHintResult.None, Times.Once)
@@ -83,8 +84,9 @@ public static class RandomizerTests
     [Theory, RandomData]
     internal static void Create_ValidHintWorks([Stub] CreateHint hint, string data)
     {
-        hint.ToFake().ThrowByDefault = true;
-        hint.ToFake()
+        hint.Tools().ToFake().ThrowByDefault = true;
+        hint.Tools()
+            .ToFake()
             .Setup(
                 m => m.TryToCreate(data.GetType(), Arg.Any<IRandomizerChainer>()),
                 Behavior.Returns(new CreateHintResult(data), Times.Once)
@@ -107,7 +109,8 @@ public static class RandomizerTests
     [Theory, RandomData]
     internal static void Create_InfiniteLoopDetails(Type type, [Fake] CreateHint hint)
     {
-        hint.ToFake()
+        hint.Tools()
+            .ToFake()
             .Setup(
                 m => m.TryToCreate(type, Arg.Any<IRandomizerChainer>()),
                 Behavior.Throw<InsufficientExecutionStackException>(Times.Once)

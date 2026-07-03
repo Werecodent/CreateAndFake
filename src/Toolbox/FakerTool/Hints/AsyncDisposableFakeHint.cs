@@ -33,12 +33,10 @@ public sealed class AsyncDisposableFakeHint : IFakeHint
 
         if (instance.GetType().Inherits<IAsyncDisposable>())
         {
-            instance
-                .ToFake<IAsyncDisposable>()
-                .Setup(
-                    f => f.DisposeAsync(),
-                    Behavior.Returns(new ValueTask(Task.CompletedTask), Times.Any)
-                );
+            new Fake<IAsyncDisposable>(instance).Setup(
+                f => f.DisposeAsync(),
+                Behavior.Returns(new ValueTask(Task.CompletedTask), Times.Any)
+            );
 
             return new(true);
         }

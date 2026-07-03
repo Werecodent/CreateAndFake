@@ -33,24 +33,24 @@ public static class ContentMapTests
     internal static void HasContent_UsesObjectByValue(DataHolderSample sample)
     {
         IContentMap map = Tools.Extractor.Extract(sample);
-        map.HasContent(sample.NestedValue.CreateVariant()).Assert().Is(false);
-        map.HasContent(sample.NestedValue.CreateDeepClone()).Assert().Is(true);
+        map.HasContent(sample.NestedValue.Tools().Variant()).Assert().Is(false);
+        map.HasContent(sample.NestedValue.Tools().Copy()).Assert().Is(true);
     }
 
     [Theory, RandomData]
     internal static void HasContent_UsesValueByValue(DataHolderSample sample)
     {
         IContentMap map = Tools.Extractor.Extract(sample);
-        map.HasContent(sample.NestedValue.NumberValue.CreateVariant()).Assert().Is(false);
-        map.HasContent(sample.NestedValue.NumberValue.CreateDeepClone()).Assert().Is(true);
+        map.HasContent(sample.NestedValue.NumberValue.Tools().Variant()).Assert().Is(false);
+        map.HasContent(sample.NestedValue.NumberValue.Tools().Copy()).Assert().Is(true);
     }
 
     [Theory, RandomData]
     internal static void HasContent_UsesStringByValue(DataHolderSample sample)
     {
         IContentMap map = Tools.Extractor.Extract(sample);
-        map.HasContent(sample.NestedValue.StringValue.CreateVariant()).Assert().Is(false);
-        map.HasContent(sample.NestedValue.StringValue.CreateDeepClone()).Assert().Is(true);
+        map.HasContent(sample.NestedValue.StringValue.Tools().Variant()).Assert().Is(false);
+        map.HasContent(sample.NestedValue.StringValue.Tools().Copy()).Assert().Is(true);
     }
 
     [Theory, RandomData]
@@ -99,7 +99,7 @@ public static class ContentMapTests
     internal static void HasSharedContent_FalseWithNothingShared(string sample)
     {
         IContentMap map = Tools.Extractor.Extract(sample);
-        IContentMap test = Tools.Extractor.Extract(sample.CreateVariant());
+        IContentMap test = Tools.Extractor.Extract(sample.Tools().Variant());
         map.HasSharedContent(test).Assert().Is(false);
     }
 
@@ -112,19 +112,19 @@ public static class ContentMapTests
     {
         Tools
             .Extractor.Extract(sample1)
-            .HasSharedContent(Tools.Extractor.Extract(sample1.CreateDeepClone()))
+            .HasSharedContent(Tools.Extractor.Extract(sample1.Tools().Copy()))
             .Assert()
             .Is(false);
 
         Tools
             .Extractor.Extract(sample2)
-            .HasSharedContent(Tools.Extractor.Extract(sample2.CreateDeepClone()))
+            .HasSharedContent(Tools.Extractor.Extract(sample2.Tools().Copy()))
             .Assert()
             .Is(false);
 
         Tools
             .Extractor.Extract(sample3)
-            .HasSharedContent(Tools.Extractor.Extract(sample3.CreateDeepClone()))
+            .HasSharedContent(Tools.Extractor.Extract(sample3.Tools().Copy()))
             .Assert()
             .Is(false);
     }

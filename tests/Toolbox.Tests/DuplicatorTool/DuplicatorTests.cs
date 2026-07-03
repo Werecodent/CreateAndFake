@@ -75,7 +75,8 @@ public static class DuplicatorTests
     [Theory, RandomData]
     internal static void Copy_InfiniteLoopDetails(object instance, [Stub] CopyHint hint)
     {
-        hint.ToFake()
+        hint.Tools()
+            .ToFake()
             .Setup(
                 m => m.TryCopy(instance, Arg.Any<IDuplicatorChainer>()),
                 Behavior.Throw<InsufficientExecutionStackException>(Times.Once)

@@ -18,6 +18,6 @@ public static class Issue012Tests
     [Theory, RandomData]
     internal static void Issue012_FakeImmutableResult(Fake<Sample> sample)
     {
-        sample.CreateDeepClone().Dummy.Value().Assert().Is(sample.Dummy.Value());
+        sample.Tools().Copy().Dummy.Value().Assert().Is(sample.Dummy.Value());
     }
 }

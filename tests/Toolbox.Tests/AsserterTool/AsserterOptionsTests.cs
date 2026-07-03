@@ -27,6 +27,6 @@ public static class AsserterOptionsTests
     [Fact]
     internal static void AsserterOptions_ModFormRandomizable()
     {
-        typeof(AsserterMod).CreateRandomInstance().Assert().IsNot(null);
+        typeof(AsserterMod).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 }

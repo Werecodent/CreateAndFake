@@ -12,7 +12,7 @@ public static class Issue107Tests
     internal static void Issue107_SelfReferenceGenericMustHaveSubclass()
     {
         typeof(SelfReferenceContainer<>)
-            .Assert(c => c.CreateRandomInstance())
+            .Assert(c => c.Tools().CreateRandomInstance())
             .Throws<ToolException>();
     }
 }

@@ -32,6 +32,9 @@ internal sealed class TestValidator(TesterOptions options)
                 .Where(t => !Options.TestClassCoverageExceptions.Contains(t.Name))
                 .Where(t => !t.Inherits<Delegate>())
                 .Where(t =>
+                    !t.Namespace!.StartsWith("Microsoft.CodeCoverage", StringComparison.Ordinal)
+                )
+                .Where(t =>
                     !t.Namespace!.StartsWith(
                         "Coverlet.Core.Instrumentation.Tracker",
                         StringComparison.Ordinal

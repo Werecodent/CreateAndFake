@@ -27,6 +27,6 @@ public static class RunnerOptionsTests
     [Fact]
     internal static void RunnerOptions_ModFormRandomizable()
     {
-        typeof(RunnerMod).CreateRandomInstance().Assert().IsNot(null);
+        typeof(RunnerMod).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 }

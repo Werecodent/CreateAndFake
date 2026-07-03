@@ -136,7 +136,7 @@ public static class NullGuarderTests
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
-            MockDisposableSample._Fake = disposable.ToFake();
+            MockDisposableSample._Fake = disposable.Tools().ToFake();
 
             await _LongTestInstance.PreventsNullRefExceptionOnConstructorsAsync(
                 typeof(MockDisposableSample),
@@ -163,7 +163,7 @@ public static class NullGuarderTests
         {
             MockDisposableSample._ClassDisposes = 0;
             MockDisposableSample._FinalizerDisposes = 0;
-            MockDisposableSample._Fake = disposable.ToFake();
+            MockDisposableSample._Fake = disposable.Tools().ToFake();
 
             using MockDisposableSample sample = new(null);
             await _LongTestInstance.PreventsNullRefExceptionOnMethodsAsync(

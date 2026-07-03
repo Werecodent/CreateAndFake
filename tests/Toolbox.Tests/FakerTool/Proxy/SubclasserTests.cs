@@ -135,9 +135,11 @@ public static class SubclasserTests
 
         Type type = Tools.Faker.Stub<Type>().Dummy;
 
-        type.ToFake().Setup("GetAttributeFlagsImpl", [], Behavior.Returns(invisibleAttributes));
-        type.ToFake().Setup("HasElementTypeImpl", [], Behavior.Returns(false));
-        type.ToFake().Setup("IsPointerImpl", [], Behavior.Returns(false));
+        type.Tools()
+            .ToFake()
+            .Setup("GetAttributeFlagsImpl", [], Behavior.Returns(invisibleAttributes));
+        type.Tools().ToFake().Setup("HasElementTypeImpl", [], Behavior.Returns(false));
+        type.Tools().ToFake().Setup("IsPointerImpl", [], Behavior.Returns(false));
         type.Assembly.SetupReturn(typeof(object).Assembly);
         type.Name.SetupReturn("TestInvisibleType");
 

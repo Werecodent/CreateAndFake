@@ -66,7 +66,7 @@ public static class FakeMetaProviderTests
         provider.Verify(0, data);
         provider.Assert(p => p.Verify(1, data)).Throws<FakeVerifyException>();
 
-        provider.CallVoid(null, name.CreateVariant(), Type.EmptyTypes, []);
+        provider.CallVoid(null, name.Tools().Variant(), Type.EmptyTypes, []);
         provider.Verify(0, data);
         provider.Assert(p => p.Verify(1, data)).Throws<FakeVerifyException>();
 
@@ -91,7 +91,7 @@ public static class FakeMetaProviderTests
         provider.Assert(p => p.VerifyTotalCalls(0)).Throws<FakeVerifyException>();
         provider.VerifyTotalCalls(1);
 
-        provider.CallVoid(null, name.CreateVariant(), Type.EmptyTypes, []);
+        provider.CallVoid(null, name.Tools().Variant(), Type.EmptyTypes, []);
         provider.Assert(p => p.VerifyTotalCalls(1)).Throws<FakeVerifyException>();
         provider.VerifyTotalCalls(2);
     }

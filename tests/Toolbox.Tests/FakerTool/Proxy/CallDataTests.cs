@@ -30,7 +30,7 @@ public static class CallDataTests
     )
     {
         new CallData(name, generics, data, Tools.Faker.Options)
-            .MatchesCall(new CallData(name.CreateVariant(), generics, data, null))
+            .MatchesCall(new CallData(name.Tools().Variant(), generics, data, null))
             .Assert()
             .Is(false);
     }
@@ -69,7 +69,7 @@ public static class CallDataTests
         DataHolderSample[] data1
     )
     {
-        DataHolderSample[] data2 = [.. data1.Select(d => d.CreateDeepClone())];
+        DataHolderSample[] data2 = [.. data1.Select(d => d.Tools().Copy())];
 
         new CallData(name, generics, data1, Tools.Faker.Options)
             .MatchesCall(new CallData(name, generics, data2, null))

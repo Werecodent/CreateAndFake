@@ -11,7 +11,7 @@ public static class Issue015Tests
         {
             ArgumentGuard.ThrowIfNull(value, nameof(value));
 
-            value[0] = value[0].CreateVariant();
+            value[0] = value[0].Tools().Variant();
         }
     }
 

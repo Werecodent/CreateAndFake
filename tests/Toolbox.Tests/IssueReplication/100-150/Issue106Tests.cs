@@ -20,7 +20,7 @@ public static class Issue106Tests
     )
     {
         generic
-            .Assert(l => l.Assert().Is(generic.CreateVariant()))
+            .Assert(l => l.Assert().Is(generic.Tools().Variant()))
             .Throws<AssertException>()
             .With.Message.Assert()
             .Contains(nameof(RandomNameItem));
@@ -32,7 +32,7 @@ public static class Issue106Tests
     )
     {
         generic
-            .Assert(l => l.Assert().Is(generic.CreateVariant()))
+            .Assert(l => l.Assert().Is(generic.Tools().Variant()))
             .Throws<AssertException>()
             .With.Message.Assert()
             .Contains(nameof(RandomNameItem));

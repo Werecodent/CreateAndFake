@@ -94,10 +94,10 @@ public sealed class AsserterEnumerableTests
     internal void HasCount_MismatchedSize(ICollection<DataSample> items)
     {
         items
-            .Assert(d => d.Assert().HasCount(items.Count.CreateVariant()))
+            .Assert(d => d.Assert().HasCount(items.Count.Tools().Variant()))
             .Throws<AssertException>();
         items
-            .Assert(d => d.Assert().HasCount(items.Count.CreateVariant()))
+            .Assert(d => d.Assert().HasCount(items.Count.Tools().Variant()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }

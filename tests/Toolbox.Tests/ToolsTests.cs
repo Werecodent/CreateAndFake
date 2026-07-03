@@ -59,9 +59,9 @@ public static class ToolsTests
         [Fake] DataHolderSample faked
     )
     {
-        DataHolderSample dupe = original.CreateDeepClone();
+        DataHolderSample dupe = original.Tools().Copy();
 
-        original.Assert().Is(dupe).And.IsNot(original.CreateVariant());
+        original.Assert().Is(dupe).And.IsNot(original.Tools().Variant());
 
         faked.HasNested(dupe).SetupReturn(true, Times.Once);
         faked.HasNested(original).Assert().Is(true, "Value equality did not work for args.");

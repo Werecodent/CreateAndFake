@@ -49,26 +49,6 @@ public static class FakeExtensions
         call.Invoke(fake);
         FakeMetaProvider.SetLastCallBehavior(behavior);
     }
-
-    /// <summary>Accesses the raw fake wrapper.</summary>
-    /// <typeparam name="T">Faked type.</typeparam>
-    /// <param name="fakeDummy">Fake instance to wrap.</param>
-    /// <returns>Fake to test with.</returns>
-    /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
-    public static Fake<T> ToFake<T>(this T fakeDummy)
-    {
-        return new((IFaked)fakeDummy!);
-    }
-
-    /// <summary>Accesses the raw fake wrapper.</summary>
-    /// <typeparam name="T">Faked type to cast to.</typeparam>
-    /// <param name="fakeDummy">Fake instance to wrap.</param>
-    /// <returns>Fake to test with.</returns>
-    /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
-    public static Fake<T> ToFake<T>(this object fakeDummy)
-    {
-        return new((IFaked)fakeDummy);
-    }
 }
 
 #pragma warning restore IDE0060, RCS1175

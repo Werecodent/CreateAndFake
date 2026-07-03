@@ -43,10 +43,10 @@ public static class ReflectionCreateHandlersTests
             RunResult result = null;
             try
             {
-                instance = method.ReflectedType.CreateRandomInstance();
+                instance = method.ReflectedType.Tools().CreateRandomInstance();
 
                 wrapper = Tools.Runner.CreateFor(method, TestContext.Current.CancellationToken);
-                wrapper.CreateDeepClone().Assert().Is(wrapper);
+                wrapper.Tools().Copy().Assert().Is(wrapper);
 
                 result = await Tools.Runner.RunAsync(
                     instance,

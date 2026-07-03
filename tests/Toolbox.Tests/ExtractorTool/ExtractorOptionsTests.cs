@@ -27,6 +27,6 @@ public static class ExtractorOptionsTests
     [Fact]
     internal static void ExtractorOptions_ModFormRandomizable()
     {
-        typeof(ExtractorMod).CreateRandomInstance().Assert().IsNot(null);
+        typeof(ExtractorMod).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 }

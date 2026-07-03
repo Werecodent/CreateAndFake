@@ -27,6 +27,6 @@ public static class DuplicatorOptionsTests
     [Fact]
     internal static void DuplicatorOptions_ModFormRandomizable()
     {
-        typeof(DuplicatorMod).CreateRandomInstance().Assert().IsNot(null);
+        typeof(DuplicatorMod).Tools().CreateRandomInstance().Assert().IsNot(null);
     }
 }

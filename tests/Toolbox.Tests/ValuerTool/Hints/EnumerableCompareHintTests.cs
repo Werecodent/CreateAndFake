@@ -31,7 +31,7 @@ public sealed class EnumerableCompareHintTests : CompareHintTestBase<EnumerableC
             }
         );
 
-        List<string> variant = original.CreateDeepClone();
+        List<string> variant = original.Tools().Copy();
         variant.RemoveAt(variant.Count - 1);
 
         DifferenceHintResult result = TestInstance.TryToCompare(original, variant, chainer);
