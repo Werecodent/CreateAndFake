@@ -30,6 +30,10 @@ public sealed record AsserterOptions : IToolOptions
     [ConfigurableOption]
     public bool DisableAssertThrowCatching { get; init; } = false;
 
+    /// <summary>Fails any call that utilizes the Debug methods.</summary>
+    [ConfigurableOption]
+    public bool DebugAssertsFail { get; init; } = false;
+
     /// <summary>
     ///     Creates options from <see langword="this"/>
     ///     overridden with values from <paramref name="config"/>.
@@ -48,6 +52,7 @@ public sealed record AsserterOptions : IToolOptions
         {
             DisableAssertThrowCatching = Config.GetValue(section, DisableAssertThrowCatching),
             StringCompareOption = Config.GetValue(section, StringCompareOption),
+            DebugAssertsFail = Config.GetValue(section, DebugAssertsFail),
         };
     }
 

@@ -128,6 +128,22 @@ public interface IAsserterObject
     ///     When specifying <paramref name="total"/>, be aware of test framework calls for info/display.
     /// </remarks>
     void Called(object? fake, Times total, AsserterMod? optionConfiguration = null);
+
+    /// <inheritdoc cref="Fail(object,AsserterMod,string)"/>
+    [DoesNotReturn]
+    void Fail(object? content, string? details = null);
+
+    /// <param name="content">Content responsible for the failure.</param>
+    /// <inheritdoc cref="IAsserter.Fail(AsserterMod,string)"/>
+    [DoesNotReturn]
+    void Fail(object? content, AsserterMod? optionConfiguration, string? details = null);
+
+    /// <inheritdoc cref="Debug(object,AsserterMod,string)"/>
+    void Debug(object? content, string? details = null);
+
+    /// <param name="content">Content responsible for the failure.</param>
+    /// <inheritdoc cref="IAsserter.Debug(AsserterMod,string)"/>
+    void Debug(object? content, AsserterMod? optionConfiguration, string? details = null);
 }
 
 #pragma warning restore CA1716

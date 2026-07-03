@@ -265,6 +265,20 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     {
         Asserter.Fail(Collection, optionConfiguration, details);
     }
+
+    /// <inheritdoc/>
+    public override AssertChainer<T> Debug(string? details = null)
+    {
+        Asserter.Debug(Collection, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc/>
+    public override AssertChainer<T> Debug(AsserterMod? optionConfiguration, string? details = null)
+    {
+        Asserter.Debug(Collection, optionConfiguration, details);
+        return ToChainer();
+    }
 }
 
 #pragma warning restore CA1068

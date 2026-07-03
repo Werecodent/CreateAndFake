@@ -289,6 +289,28 @@ public static class TaskAssertObjectExtensions
         (await origin.ConfigureAwait(false)).Fail(optionConfiguration, details);
     }
 
+    /// <inheritdoc cref="AssertObjectBase{T}.Debug(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(this Task<T> origin, string? details = null)
+        where T : AssertObjectBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.Debug(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(
+        this Task<T> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertObjectBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(optionConfiguration, details);
+    }
+
     /// <inheritdoc cref="AssertObjectBase{T}.Pass()"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task Pass<T>(this Task<T> origin)

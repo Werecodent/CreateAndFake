@@ -18,18 +18,30 @@ public partial class Asserter : IAsserterEnumerable
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public virtual void Fail(
         IEnumerable? collection,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
+        HandleFail("Test failed.", details, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    private void HandleFail(
+        string message,
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details
+    )
+    {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
-                "Test failed.",
+                message,
                 details,
                 localOptions.Gen.InitialSeed,
                 (string?)null
@@ -46,10 +58,31 @@ public partial class Asserter : IAsserterEnumerable
         }
 
         throw new AssertException(
-            "Test failed.",
+            message,
             details,
             localOptions.Gen.InitialSeed,
             contents.ToString()
+        );
+    }
+
+    /// <inheritdoc/>
+    public void Debug(IEnumerable? collection, string? details = null)
+    {
+        Debug(collection, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void Debug(
+        IEnumerable? collection,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        HandleFail(
+            $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+            details,
+            optionConfiguration,
+            details
         );
     }
 

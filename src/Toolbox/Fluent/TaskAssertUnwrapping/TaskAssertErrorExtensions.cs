@@ -1,5 +1,6 @@
 using CreateAndFake.Design;
 using CreateAndFake.Fluent.AssertCalls;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent;
 
@@ -26,5 +27,27 @@ public static class TaskAssertErrorExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         (await origin.ConfigureAwait(false)).Fail(optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="AssertErrorBase{T}.Debug(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(this Task<T> origin, string? details = null)
+        where T : AssertErrorBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(details);
+    }
+
+    /// <inheritdoc cref="AssertErrorBase{T}.Debug(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(
+        this Task<T> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertErrorBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(optionConfiguration, details);
     }
 }

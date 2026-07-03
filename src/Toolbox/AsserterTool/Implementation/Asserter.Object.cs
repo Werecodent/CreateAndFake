@@ -232,4 +232,49 @@ public partial class Asserter : IAsserterObject
         ReferenceNotEqual(null, fake);
         new Fake((IFaked)fake!).Verify(total);
     }
+
+    /// <inheritdoc/>
+    [DoesNotReturn, ExcludeFromCodeCoverage]
+    public virtual void Fail(object? content, string? details = null)
+    {
+        Fail(content, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    [DoesNotReturn]
+    public virtual void Fail(
+        object? content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        throw new AssertException(
+            "Test failed.",
+            details,
+            localOptions.Gen.InitialSeed,
+            content?.ToString()
+        );
+    }
+
+    /// <inheritdoc/>
+    public void Debug(object? content, string? details = null)
+    {
+        Debug(content, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void Debug(object? content, AsserterMod? optionConfiguration, string? details = null)
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (localOptions.DebugAssertsFail)
+        {
+            throw new AssertException(
+                $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                content?.ToString()
+            );
+        }
+    }
 }

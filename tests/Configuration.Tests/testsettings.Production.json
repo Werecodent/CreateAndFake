@@ -3,7 +3,8 @@
         "Seed": 2,
         "Asserter": {
             "StringCompareOption": "CurrentCulture",
-            "DisableAssertThrowCatching": true
+            "DisableAssertThrowCatching": true,
+            "DebugAssertsFail": true
         },
         "Duplicator": {
             "IncludeFrameworkHints": false,

@@ -239,7 +239,7 @@ public static class TaskAssertEnumerableExtensions
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.ContainsAsync(object,CancellationToken,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<Task<AssertChainer<T>>> ContainsAsync<T>(
+    public static async Task<AssertChainer<T>> ContainsAsync<T>(
         this Task<T> origin,
         object? content,
         CancellationToken canceler,
@@ -248,12 +248,14 @@ public static class TaskAssertEnumerableExtensions
         where T : AssertEnumerableBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).ContainsAsync(content, canceler, details);
+        return await (await origin.ConfigureAwait(false))
+            .ContainsAsync(content, canceler, details)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.ContainsAsync(object,CancellationToken,AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<Task<AssertChainer<T>>> ContainsAsync<T>(
+    public static async Task<AssertChainer<T>> ContainsAsync<T>(
         this Task<T> origin,
         object? content,
         CancellationToken canceler,
@@ -263,12 +265,9 @@ public static class TaskAssertEnumerableExtensions
         where T : AssertEnumerableBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).ContainsAsync(
-            content,
-            canceler,
-            optionConfiguration,
-            details
-        );
+        return await (await origin.ConfigureAwait(false))
+            .ContainsAsync(content, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.ContainsNot(object,string)"/>
@@ -304,7 +303,7 @@ public static class TaskAssertEnumerableExtensions
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.ContainsNotAsync(object,CancellationToken,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<Task<AssertChainer<T>>> ContainsNotAsync<T>(
+    public static async Task<AssertChainer<T>> ContainsNotAsync<T>(
         this Task<T> origin,
         object? content,
         CancellationToken canceler,
@@ -313,12 +312,14 @@ public static class TaskAssertEnumerableExtensions
         where T : AssertEnumerableBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).ContainsNotAsync(content, canceler, details);
+        return await (await origin.ConfigureAwait(false))
+            .ContainsNotAsync(content, canceler, details)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.ContainsNotAsync(object,CancellationToken,AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<Task<AssertChainer<T>>> ContainsNotAsync<T>(
+    public static async Task<AssertChainer<T>> ContainsNotAsync<T>(
         this Task<T> origin,
         object? content,
         CancellationToken canceler,
@@ -328,12 +329,9 @@ public static class TaskAssertEnumerableExtensions
         where T : AssertEnumerableBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).ContainsNotAsync(
-            content,
-            canceler,
-            optionConfiguration,
-            details
-        );
+        return await (await origin.ConfigureAwait(false))
+            .ContainsNotAsync(content, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc cref="AssertEnumerableBase{T}.Fail(string)"/>
@@ -356,6 +354,28 @@ public static class TaskAssertEnumerableExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         (await origin.ConfigureAwait(false)).Fail(optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="AssertEnumerableBase{T}.Debug(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(this Task<T> origin, string? details = null)
+        where T : AssertEnumerableBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(details);
+    }
+
+    /// <inheritdoc cref="AssertEnumerableBase{T}.Debug(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> Debug<T>(
+        this Task<T> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertEnumerableBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Debug(optionConfiguration, details);
     }
 }
 

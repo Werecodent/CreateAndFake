@@ -56,46 +56,23 @@ public partial class Asserter(AsserterOptions options) : IAsserter
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
-    public virtual void Fail(object? content, string? details = null)
+    public void Debug(string? details = null)
     {
-        Fail(content, Unconfigured, details);
+        Debug(Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn]
-    public virtual void Fail(
-        object? content,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
+    public void Debug(AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        throw new AssertException(
-            "Test failed.",
-            details,
-            localOptions.Gen.InitialSeed,
-            content?.ToString()
-        );
-    }
-
-    /// <inheritdoc/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
-    public virtual void Fail(Exception? exception, string? details = null)
-    {
-        Fail(exception, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    [DoesNotReturn]
-    public virtual void Fail(
-        Exception? exception,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-    {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        throw new AssertException("Test failed.", details, localOptions.Gen.InitialSeed, exception);
+        if (localOptions.DebugAssertsFail)
+        {
+            throw new AssertException(
+                $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
     }
 
     /// <inheritdoc/>

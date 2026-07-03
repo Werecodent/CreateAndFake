@@ -41,30 +41,21 @@ public interface IAsserter
     [DoesNotReturn]
     void Fail(string? details = null);
 
-    /// <inheritdoc cref="Fail(object,AsserterMod,string)"/>
-    [DoesNotReturn]
-    void Fail(AsserterMod? optionConfiguration, string? details = null);
-
-    /// <inheritdoc cref="Fail(object,AsserterMod,string)"/>
-    [DoesNotReturn]
-    void Fail(object? content, string? details = null);
-
-    /// <param name="content">Content responsible for the failure.</param>
-    /// <inheritdoc cref="Fail(Exception,AsserterMod,string)"/>
-    [DoesNotReturn]
-    void Fail(object? content, AsserterMod? optionConfiguration, string? details = null);
-
-    /// <inheritdoc cref="Fail(Exception,AsserterMod,string)"/>
-    [DoesNotReturn]
-    void Fail(Exception? exception, string? details = null);
-
     /// <summary>Specifies the test has failed if it reaches this point.</summary>
-    /// <param name="exception">Exception responsible for the failure.</param>
     /// <param name="details">Description to include in assertion failure messages.</param>
     /// <exception cref="AssertException">Always.</exception>
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     [DoesNotReturn]
-    void Fail(Exception? exception, AsserterMod? optionConfiguration, string? details = null);
+    void Fail(AsserterMod? optionConfiguration, string? details = null);
+
+    /// <inheritdoc cref="Debug(AsserterMod,string)"/>
+    void Debug(string? details = null);
+
+    /// <summary>Fails the test only if the option is set.</summary>
+    /// <param name="details">Description to include in assertion failure messages.</param>
+    /// <exception cref="AssertException">Always.</exception>
+    /// <inheritdoc cref="Pass(AsserterMod)"/>
+    void Debug(AsserterMod? optionConfiguration, string? details = null);
 
     /// <summary>Runs each case and aggregates exceptions.</summary>
     /// <param name="cases">Assert cases.</param>

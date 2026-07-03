@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool;
+using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent.AssertCalls;
 
@@ -25,5 +26,19 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
     public override void Fail(AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.Fail(Error, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
+    public override AssertChainer<T> Debug(string? details = null)
+    {
+        Asserter.Debug(Error, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc/>
+    public override AssertChainer<T> Debug(AsserterMod? optionConfiguration, string? details = null)
+    {
+        Asserter.Debug(Error, optionConfiguration, details);
+        return ToChainer();
     }
 }
