@@ -43,21 +43,13 @@ public static class TesterTests
     internal static async Task Tester_GuardsNulls()
     {
         Type nullType = null;
-        await nullType
-            .Assert(t =>
-                _ShortTestInstance.PreventsNullRefExceptionAsync(
-                    t,
-                    TestContext.Current.CancellationToken
-                )
-            )
+        await _ShortTestInstance
+            .PreventsNullRefExceptionAsync(nullType, TestContext.Current.CancellationToken)
+            .Assert()
             .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
-        await nullType
-            .Assert(t =>
-                _ShortTestInstance.PreventsParameterMutationAsync(
-                    t,
-                    TestContext.Current.CancellationToken
-                )
-            )
+        await _ShortTestInstance
+            .PreventsParameterMutationAsync(nullType, TestContext.Current.CancellationToken)
+            .Assert()
             .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
     }
 

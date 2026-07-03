@@ -61,46 +61,44 @@ public static class AssertDelegateTests
     }
 
     [Theory, RandomData]
-    internal static Task Throws_WrongException(ArgumentNullException error)
+    internal static void Throws_WrongException(ArgumentNullException error)
     {
-        return error
-            .Assert(ex => throw ex)
-            .ThrowsAsync<InvalidOperationException>(TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+        error
+            .Assert(ex => ex.Assert(e => throw e).Throws<InvalidOperationException>())
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static Task Throws_OptionsOkay(ArgumentNullException error)
+    internal static void Throws_OptionsOkay(ArgumentNullException error)
     {
-        return error
-            .Assert(ex => throw ex)
-            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken, opt => opt)
-            .Assert()
-            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken);
+        error
+            .Assert(ex => ex.Assert(e => throw e).Throws<ArgumentNullException>(opt => opt))
+            .ThrowsNo<Exception>();
     }
 
     [Theory, RandomData]
-    internal static Task Throws_WrongAggregate(InvalidOperationException error)
+    internal static void Throws_WrongAggregate(InvalidOperationException error)
     {
-        return error
-            .Assert(ex => throw new AggregateException(ex))
-            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+        error
+            .Assert(ex =>
+                ex.Assert(e => throw new AggregateException(e)).Throws<ArgumentNullException>()
+            )
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static Task Throws_TooManyAggregate(
+    internal static void Throws_TooManyAggregate(
         ArgumentNullException error,
         InvalidOperationException error2
     )
     {
-        return error2
-            .Assert(ex => throw new AggregateException(error, ex))
-            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+        error
+            .Assert(ex =>
+                error2
+                    .Assert(e => throw new AggregateException(ex, e))
+                    .Throws<ArgumentNullException>()
+            )
+            .Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -116,23 +114,17 @@ public static class AssertDelegateTests
     }
 
     [Theory, RandomData]
-    internal static Task ThrowsNo_Error(Exception error)
+    internal static void ThrowsNo_Error(Exception error)
     {
-        return error
-            .Assert(ex => throw ex)
-            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+        error.Assert(ex => ex.Assert(e => throw e).ThrowsNo<Exception>()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
-    internal static Task ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
+    internal static void ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
     {
-        return error
-            .Assert(ex => throw ex)
-            .ThrowsNoAsync<IOException>(TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsNoAsync<AssertException>(TestContext.Current.CancellationToken);
+        error
+            .Assert(ex => ex.Assert(e => throw e).ThrowsNo<IOException>())
+            .ThrowsNo<AssertException>();
     }
 
     [Theory, RandomData]

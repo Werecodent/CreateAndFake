@@ -23,7 +23,7 @@ public static class AssertExtensions
         return new AssertAsyncObject(Tools.Asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertGenericTask{T}"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
@@ -48,7 +48,7 @@ public static class AssertExtensions
         return new AssertGenericValueTask<T>(Tools.Asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertTask"/>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertTask Assert(this Task? behavior)
@@ -129,23 +129,6 @@ public static class AssertExtensions
         return new AssertType(Tools.Asserter, type);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertAsync Assert(this Func<Task>? behavior)
-    {
-        return new AssertAsync(Tools.Asserter, behavior);
-    }
-
-    /// <inheritdoc cref="AssertAsync"/>
-    /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
-    public static AssertAsync Assert<T>(this Func<Task<T?>>? behavior)
-    {
-        return new AssertAsync(Tools.Asserter, behavior);
-    }
-
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
     /// <typeparam name="T"><see cref="Type"/> of <paramref name="origin"/>.</typeparam>
     /// <param name="origin">Object with <paramref name="behavior"/> to test.</param>
@@ -158,19 +141,10 @@ public static class AssertExtensions
     }
 
     /// <inheritdoc cref="Assert{T}(T,Action{T})"/>
-    public static AssertFunc<object> Assert<T>(this T origin, Func<T, object> behavior)
-    {
-        return Assert(() => behavior.Invoke(origin));
-    }
-
-    /// <inheritdoc cref="Assert{T}(T,Action{T})"/>
-    public static AssertAsync Assert<T>(this T origin, Func<T, Task> behavior)
-    {
-        return Assert(() => behavior.Invoke(origin));
-    }
-
-    /// <inheritdoc cref="Assert{T}(T,Action{T})"/>
-    public static AssertAsync Assert<T>(this T origin, Func<T, Task<object?>> behavior)
+    public static AssertFunc<TResult> Assert<TSelf, TResult>(
+        this TSelf origin,
+        Func<TSelf, TResult> behavior
+    )
     {
         return Assert(() => behavior.Invoke(origin));
     }

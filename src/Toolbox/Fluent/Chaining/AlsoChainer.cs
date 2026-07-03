@@ -25,7 +25,7 @@ public class AlsoChainer(IAsserter asserter)
         return new AssertAsyncObject(asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertGenericTask{T}"/>
     /// <typeparam name="T">Return <see cref="Type"/> of <paramref name="behavior"/>.</typeparam>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
@@ -50,7 +50,7 @@ public class AlsoChainer(IAsserter asserter)
         return new AssertGenericValueTask<T>(asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertTask"/>
     /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public AssertTask Also(Task? behavior)

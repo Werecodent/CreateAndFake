@@ -32,7 +32,7 @@ public static class TaskAlsoChainerExtensions
         return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertGenericTask{T}"/>
     /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
     public static async Task<AssertGenericTask<TItem>> Also<TSelf, TItem>(
@@ -71,7 +71,7 @@ public static class TaskAlsoChainerExtensions
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
-    /// <inheritdoc cref="AssertAsync"/>
+    /// <inheritdoc cref="AssertTask"/>
     /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
     public static async Task<AssertTask> Also<T>(this Task<T> origin, Task? actual)

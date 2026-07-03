@@ -60,13 +60,12 @@ public static class NullGuarderTests
     internal static Task PreventsNullRefExceptionAsync_TimesOut()
     {
         return _ShortTestInstance
-            .Assert(t =>
-                t.PreventsNullRefExceptionOnStaticsAsync(
-                    typeof(LongMethodSample),
-                    false,
-                    TestContext.Current.CancellationToken
-                )
+            .PreventsNullRefExceptionOnStaticsAsync(
+                typeof(LongMethodSample),
+                false,
+                TestContext.Current.CancellationToken
             )
+            .Assert()
             .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
     }
 
@@ -74,13 +73,12 @@ public static class NullGuarderTests
     internal static Task PreventsNullRefExceptionAsync_NullReferenceThrows()
     {
         return _ShortTestInstance
-            .Assert(t =>
-                t.PreventsNullRefExceptionOnConstructorsAsync(
-                    typeof(NullReferenceSample),
-                    true,
-                    TestContext.Current.CancellationToken
-                )
+            .PreventsNullRefExceptionOnConstructorsAsync(
+                typeof(NullReferenceSample),
+                true,
+                TestContext.Current.CancellationToken
             )
+            .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
@@ -111,13 +109,12 @@ public static class NullGuarderTests
     internal static Task PreventsNullRefExceptionAsync_OnStatics()
     {
         return Tools
-            .Tester.Assert(t =>
-                t.PreventsNullRefExceptionAsync(
-                    typeof(StaticMutationSample),
-                    TestContext.Current.CancellationToken,
-                    opt => opt with { DisableNullRefExceptionTests = false }
-                )
+            .Tester.PreventsNullRefExceptionAsync(
+                typeof(StaticMutationSample),
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisableNullRefExceptionTests = false }
             )
+            .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 

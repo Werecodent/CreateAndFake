@@ -36,11 +36,10 @@ public static class ExceptionGuarderTests
     internal static Task CallAllMethodsAsync_FailsWithException()
     {
         return Tools
-            .Tester.Assert(t =>
-                t.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
-                    TestContext.Current.CancellationToken
-                )
+            .Tester.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
+                TestContext.Current.CancellationToken
             )
+            .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 

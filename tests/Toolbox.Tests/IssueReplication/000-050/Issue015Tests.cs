@@ -18,14 +18,13 @@ public static class Issue015Tests
     [Fact]
     internal static Task Issue015_GuardsParameterMutation()
     {
-        return typeof(Sample)
-            .Assert(t =>
-                Tools.Tester.PreventsParameterMutationAsync(
-                    t,
-                    TestContext.Current.CancellationToken,
-                    opt => opt with { DisableParameterMutationTests = false }
-                )
+        return Tools
+            .Tester.PreventsParameterMutationAsync(
+                typeof(Sample),
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisableParameterMutationTests = false }
             )
+            .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 }

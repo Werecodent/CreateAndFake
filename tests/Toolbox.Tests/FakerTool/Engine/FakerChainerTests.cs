@@ -16,6 +16,7 @@ public static class FakerChainerTests
                     [
                         typeof(ArgumentException),
                         typeof(InvalidOperationException),
+                        typeof(ArgumentOutOfRangeException),
                     ],
                 }
         );
@@ -33,6 +34,7 @@ public static class FakerChainerTests
                     [
                         typeof(ArgumentException),
                         typeof(InvalidOperationException),
+                        typeof(ArgumentOutOfRangeException),
                     ],
                 }
         );

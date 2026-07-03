@@ -59,13 +59,12 @@ public static class MutationGuarderTests
     internal static Task PreventsMutationOnStaticsAsync_UsesStatics()
     {
         return Tools
-            .Tester.Assert(t =>
-                t.PreventsParameterMutationAsync(
-                    typeof(StaticMutationSample),
-                    TestContext.Current.CancellationToken,
-                    opt => opt with { DisableParameterMutationTests = false }
-                )
+            .Tester.PreventsParameterMutationAsync(
+                typeof(StaticMutationSample),
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisableParameterMutationTests = false }
             )
+            .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
@@ -106,13 +105,12 @@ public static class MutationGuarderTests
         return Limiter.Few.RetryAsync<AssertException>(
             "Attempting to test timeout works.",
             _ShortTestInstance
-                .Assert(t =>
-                    t.PreventsMutationOnStaticsAsync(
-                        typeof(LongMethodSample),
-                        false,
-                        TestContext.Current.CancellationToken
-                    )
+                .PreventsMutationOnStaticsAsync(
+                    typeof(LongMethodSample),
+                    false,
+                    TestContext.Current.CancellationToken
                 )
+                .Assert()
                 .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken),
             TestContext.Current.CancellationToken
         );
