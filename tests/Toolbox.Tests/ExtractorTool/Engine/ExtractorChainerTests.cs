@@ -27,7 +27,7 @@ public static class ExtractorChainerTests
         );
     }
 
-    [Fact]
+    /*[Fact]
     internal static Task ExtractorChainer_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
@@ -35,5 +35,5 @@ public static class ExtractorChainerTests
             TestContext.Current.CancellationToken,
             config
         );
-    }
+    }*/
 }

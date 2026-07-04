@@ -1,6 +1,5 @@
 #pragma warning disable CA1307, CA1310 // Not available for all .NET versions.
 
-using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
 using CreateAndFake.Fluent.Chaining;
@@ -135,20 +134,6 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     {
         Asserter.EndsNotWith(content, Text, optionConfiguration, details);
         return ToChainer();
-    }
-
-    /// <inheritdoc/>
-    [DoesNotReturn]
-    public override void Fail(string? details = null)
-    {
-        Asserter.Fail(Text, details);
-    }
-
-    /// <inheritdoc/>
-    [DoesNotReturn]
-    public override void Fail(AsserterMod? optionConfiguration, string? details = null)
-    {
-        Asserter.Fail(Text, optionConfiguration, details);
     }
 }
 

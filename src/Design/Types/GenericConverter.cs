@@ -109,7 +109,7 @@ public static class GenericConverter
     /// <returns>The built display name.</returns>
     public static string ExpandName(Type? type)
     {
-        if (type?.IsGenericType == true)
+        if (type?.IsGenericType == true && type.Name.Contains("`", StringComparison.Ordinal))
         {
             return string.Concat(
                 type.Name.Substring(0, type.Name.IndexOf("`", StringComparison.Ordinal)),

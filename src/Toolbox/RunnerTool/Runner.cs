@@ -51,7 +51,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     .ConfigureAwait(false)
             );
         }
-        return new(results);
+        return new(results, localOptions);
     }
 
     /// <inheritdoc/>
@@ -91,14 +91,12 @@ public sealed class Runner(RunnerOptions options) : IRunner
         )
         {
             task = Task.Run(
-                async () =>
-                    await Unwrapper
-                        .UnwrapResult(
-                            () => data.InvokeOn(instance),
-                            localOptions,
-                            timeoutTokenSource.Token
-                        )
-                        .ConfigureAwait(false),
+                () =>
+                    Unwrapper.UnwrapResult(
+                        () => data.InvokeOn(instance),
+                        localOptions,
+                        timeoutTokenSource.Token
+                    ),
                 timeoutTokenSource.Token
             );
 

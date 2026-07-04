@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.Design;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Fluent.Chaining;
@@ -186,30 +185,6 @@ public static class TaskAssertStringExtensions
             optionConfiguration,
             details
         );
-    }
-
-    /// <inheritdoc cref="AssertStringBase{T}.Fail(string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    [DoesNotReturn]
-    public static async Task Fail<T>(this Task<T> origin, string? details = null)
-        where T : AssertStringBase<T>
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        (await origin.ConfigureAwait(false)).Fail(details);
-    }
-
-    /// <inheritdoc cref="AssertStringBase{T}.Fail(AsserterMod,string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    [DoesNotReturn]
-    public static async Task Fail<T>(
-        this Task<T> origin,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : AssertStringBase<T>
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        (await origin.ConfigureAwait(false)).Fail(optionConfiguration, details);
     }
 }
 

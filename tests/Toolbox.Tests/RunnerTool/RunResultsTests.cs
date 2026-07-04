@@ -19,4 +19,10 @@ public static class RunResultsTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Theory, RandomData]
+    internal static void ToString_Debug(RunResults results)
+    {
+        results.ToString().Assert().Debug();
+    }
 }

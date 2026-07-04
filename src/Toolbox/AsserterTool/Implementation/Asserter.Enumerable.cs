@@ -25,19 +25,19 @@ public partial class Asserter : IAsserterEnumerable
         string? details = null
     )
     {
-        HandleFail("Test failed.", details, optionConfiguration, details);
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        HandleFail("Test failed.", details, localOptions, details);
     }
 
     /// <inheritdoc/>
     [DoesNotReturn]
-    private void HandleFail(
+    private static void HandleFail(
         string message,
         IEnumerable? collection,
-        AsserterMod? optionConfiguration,
+        AsserterOptions localOptions,
         string? details
     )
     {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         if (collection == null)
         {
             throw new AssertException(
@@ -48,21 +48,29 @@ public partial class Asserter : IAsserterEnumerable
             );
         }
 
-        StringBuilder contents = new();
-
-        int i = 0;
-        foreach (object item in collection)
+        string content;
+        if (collection is string text)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            content = text;
+        }
+        else
+        {
+            StringBuilder contents = new();
+
+            int i = 0;
+            foreach (object item in collection)
+            {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i,
+                    localOptions.Valuer.Options.IterationLimit
+                );
+                _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+            }
+
+            content = contents.ToString();
         }
 
-        throw new AssertException(
-            message,
-            details,
-            localOptions.Gen.InitialSeed,
-            contents.ToString()
-        );
+        throw new AssertException(message, details, localOptions.Gen.InitialSeed, content);
     }
 
     /// <inheritdoc/>
@@ -78,12 +86,16 @@ public partial class Asserter : IAsserterEnumerable
         string? details = null
     )
     {
-        HandleFail(
-            $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
-            details,
-            optionConfiguration,
-            details
-        );
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+        if (localOptions.DebugAssertsFail)
+        {
+            HandleFail(
+                $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+                collection,
+                localOptions,
+                details
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -172,8 +184,8 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i != count)
@@ -216,8 +228,8 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i >= count)
@@ -264,8 +276,8 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i > count)
@@ -308,8 +320,8 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i <= count)
@@ -356,8 +368,8 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (i < count)
@@ -401,11 +413,11 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
 
             found |= localOptions.Valuer.Equals(content, item);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -455,13 +467,13 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
 
             found |= await localOptions
                 .Valuer.EqualsAsync(content, item, canceler)
                 .ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!found)
@@ -505,11 +517,11 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
 
             notFound &= !localOptions.Valuer.Equals(content, item);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)
@@ -555,13 +567,13 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
 
             notFound &= !await localOptions
                 .Valuer.EqualsAsync(content, item, canceler)
                 .ConfigureAwait(false);
 
-            _ = contents.Append('[').Append(i).Append("]:").Append(item).AppendLine();
+            _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
         if (!notFound)

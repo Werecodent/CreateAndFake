@@ -31,8 +31,10 @@ public static class MutatorEngineTests
     [Theory, RandomData]
     internal static void VariantOf_ManyValuesWorks([Size(10000)] int[] data)
     {
-        int result = Tools.Mutator.VariantOf(data);
-        data.Assert().ContainsNot(result);
+        IValuer valuer = Tools.Valuer.WithOptions(opt => opt with { IterationLimit = 10001 });
+
+        int result = Tools.Mutator.VariantOf(data, opt => opt with { Valuer = valuer });
+        data.Assert().ContainsNot(result, opt => opt with { Valuer = valuer });
     }
 
     [Theory, RandomData]
