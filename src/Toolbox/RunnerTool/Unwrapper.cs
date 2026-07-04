@@ -1,4 +1,3 @@
-using System.Collections;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
@@ -10,22 +9,25 @@ internal static class Unwrapper
 {
     /// <summary>Ensures the result is completed.</summary>
     /// <param name="call">Potentially wrapped data.</param>
-    /// <param name="options">Options for unwrapping.</param>
+    /// <param name="options">Configured options to apply to this call.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The unwrapped result.</returns>
-    internal static async Task<object?> UnwrapResult(Func<object?> call, RunnerOptions options)
+    internal static async Task<object?> UnwrapResult(
+        Func<object?> call,
+        RunnerOptions options,
+        CancellationToken canceler
+    )
     {
-        object? result = call.Invoke();
+        object? result = call?.Invoke();
 
-        while (
-            result != null
-            && (
-                result.GetType().Inherits<Task>()
-                || result.GetType().Inherits<ValueTask>()
-                || result.GetType().Inherits(typeof(ValueTask<>))
-            )
+        TypeDescriber describer = TypeDescriber.For(result?.GetType());
+        if (
+            describer.Inherits<Task>()
+            || describer.Inherits<ValueTask>()
+            || describer.Inherits(typeof(ValueTask<>))
         )
         {
-            result = await UnwrapTask(result).ConfigureAwait(false);
+            result = await UnwrapTask(result!).ConfigureAwait(false);
         }
 
         if (result == null)
@@ -34,30 +36,30 @@ internal static class Unwrapper
         }
 
         Type resultType = result.GetType();
-        if (resultType.Inherits(typeof(IAsyncEnumerable<>)))
-        {
-            return await AsyncSeriesHelper
-                .ToListAsync(
-                    (dynamic)result,
-                    options.Valuer.Options.IterationLimit,
-                    CancellationToken.None
-                )
-                .ConfigureAwait(false);
-        }
 
-        if (
-            resultType.Inherits<ICollection>()
-            || resultType.Inherits(typeof(ICollection<>))
-            || resultType == typeof(string)
-        )
+        if (resultType.Inherits(typeof(ICollection<>)))
         {
             return result;
+        }
+
+        // Required to execute async yield return methods.
+        if (resultType.Inherits(typeof(IAsyncEnumerable<>)))
+        {
+            dynamic collection = await AsyncSeriesHelper
+                .ToListAsync((dynamic)result, options.Valuer.Options.IterationLimit, canceler)
+                .ConfigureAwait(false);
+
+            return AsyncSeriesHelper.CreateFromAsync(
+                collection,
+                options.Valuer.Options.IterationLimit,
+                canceler
+            );
         }
 
         // Required to execute yield return methods.
         if (resultType.Inherits(typeof(IEnumerable<>)))
         {
-            return Collect((dynamic)result, options);
+            return Enumerable.AsEnumerable(CollectYieldedResults((dynamic)result, options));
         }
 
         return result;
@@ -85,7 +87,12 @@ internal static class Unwrapper
         }
     }
 
-    private static List<T> Collect<T>(IEnumerable<T> series, RunnerOptions options)
+    /// <summary>Iterates through yielded results.</summary>
+    /// <typeparam name="T">The <paramref name="series"/>' item <see cref="Type"/>.</typeparam>
+    /// <param name="series">Items to iterate.</param>
+    /// <param name="options">Configured options to apply to this call.</param>
+    /// <returns>The collected <paramref name="series"/>.</returns>
+    private static List<T> CollectYieldedResults<T>(IEnumerable<T> series, RunnerOptions options)
     {
         int i = 0;
         List<T> results = [];

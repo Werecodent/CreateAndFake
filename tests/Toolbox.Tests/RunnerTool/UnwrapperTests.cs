@@ -1,203 +1,220 @@
 using System.Collections;
-using CreateAndFake.Design.Content;
+using CreateAndFake.Fluent.AssertAsyncCalls;
+using CreateAndFake.Fluent.Chaining;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.Tests.RunnerTool;
 
 public static class UnwrapperTests
 {
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerable(List<int> data)
+    [Fact]
+    internal static Task Unwrapper_GuardsNulls()
     {
-        data.Assert()
-            .Is(
-                await Unwrapper.UnwrapResult(
-                    () =>
-                        AsyncSeriesHelper.CreateFromAsync(
-                            data,
-                            data.Count,
-                            TestContext.Current.CancellationToken
-                        ),
-                    Tools.Runner.Options
-                )
-            );
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerable(List<string> data)
-    {
-        data.Assert()
-            .Is(
-                await Unwrapper.UnwrapResult(
-                    () =>
-                        AsyncSeriesHelper.CreateFromAsync(
-                            data,
-                            data.Count,
-                            TestContext.Current.CancellationToken
-                        ),
-                    Tools.Runner.Options
-                )
-            );
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsIntAsyncEnumerableTask(List<int> data)
-    {
-        Task<IAsyncEnumerable<int>> run = Task.Run(
-            () =>
-                AsyncSeriesHelper.CreateFromAsync(
-                    data,
-                    data.Count,
-                    TestContext.Current.CancellationToken
-                ),
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            typeof(Unwrapper),
             TestContext.Current.CancellationToken
         );
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
 
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsStringAsyncEnumerableTask(List<string> data)
+    [Fact]
+    internal static Task Unwrapper_NoParameterMutation()
     {
-        Task<IAsyncEnumerable<string>> run = Task.Run(
-            () =>
-                AsyncSeriesHelper.CreateFromAsync(
-                    data,
-                    data.Count,
-                    TestContext.Current.CancellationToken
-                ),
+        return Tools.Tester.PreventsParameterMutationAsync(
+            typeof(Unwrapper),
             TestContext.Current.CancellationToken
         );
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
     }
 
     [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsIntTask(int data)
+    internal static Task UnwrapResult_UnwrapsTaskAndIntAsyncEnumerable(IAsyncEnumerable<int> data)
+    {
+        return UnwrapsTaskAndAsyncEnumerableAsync(data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsTaskAndStringAsyncEnumerable(
+        IAsyncEnumerable<string> data
+    )
+    {
+        return UnwrapsTaskAndAsyncEnumerableAsync(data);
+    }
+
+    private static async Task UnwrapsTaskAndAsyncEnumerableAsync<T>(IAsyncEnumerable<T> data)
+    {
+        bool iterated = false;
+
+        async IAsyncEnumerable<T> Iterate()
+        {
+            await foreach (T item in data.WithCancellation(TestContext.Current.CancellationToken))
+            {
+                yield return item;
+            }
+            iterated = true;
+        }
+
+        object result = await Unwrapper.UnwrapResult(
+            () => Task.Run(Iterate, TestContext.Current.CancellationToken),
+            Tools.Runner.Options,
+            TestContext.Current.CancellationToken
+        );
+
+        await iterated
+            .Assert()
+            .Is(true)
+            .Also(result)
+            .IsAsync(data, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsTaskAndIntEnumerable(IEnumerable<int> data)
+    {
+        return UnwrapsTaskAndEnumerableAsync(data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsTaskAndStringEnumerable(IEnumerable<string> data)
+    {
+        return UnwrapsTaskAndEnumerableAsync(data);
+    }
+
+    private static async Task UnwrapsTaskAndEnumerableAsync<T>(IEnumerable<T> data)
+    {
+        bool iterated = false;
+
+        IEnumerable<T> Iterate()
+        {
+            foreach (T item in data)
+            {
+                yield return item;
+            }
+            iterated = true;
+        }
+
+        object result = await Unwrapper.UnwrapResult(
+            () => Task.Run(Iterate, TestContext.Current.CancellationToken),
+            Tools.Runner.Options,
+            TestContext.Current.CancellationToken
+        );
+
+        await iterated
+            .Assert()
+            .Is(true)
+            .Also(result)
+            .IsAsync(data, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsIntTask(int data)
     {
         Task<int> run = Task.Run(() => data, TestContext.Current.CancellationToken);
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
+        return TestUnwrap(() => run, data);
     }
 
     [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsStringTask(string data)
+    internal static Task UnwrapResult_UnwrapsStringTask(string data)
     {
         Task<string> run = Task.Run(() => data, TestContext.Current.CancellationToken);
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
+        return TestUnwrap(() => run, data);
     }
 
     [Fact]
-    internal static async Task UnwrapResult_UnwrapsNullTask()
+    internal static Task UnwrapResult_UnwrapsNullTask()
     {
         Task<object> run = Task.Run(() => (object)null, TestContext.Current.CancellationToken);
-        (await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options)).Assert().IsNull();
+        return TestUnwrap(() => run, null);
     }
 
     [Fact]
-    internal static async Task UnwrapResult_UnwrapsTask()
+    internal static Task UnwrapResult_UnwrapsTask()
     {
-        await (await Unwrapper.UnwrapResult(() => Task.CompletedTask, Tools.Runner.Options))
-            .Assert()
-            .IsAsync(VoidReturn.Instance, TestContext.Current.CancellationToken);
+        return TestUnwrap(() => Task.CompletedTask, VoidReturn.Instance);
     }
 
     [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsIntValueTask(int data)
+    internal static Task UnwrapResult_UnwrapsIntValueTask(int data)
     {
-        ValueTask<int> run = new(Task.FromResult(data));
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
+        ValueTask<int> run = new(data);
+        return TestUnwrap(() => run, data);
     }
 
     [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsStringValueTask(string data)
+    internal static Task UnwrapResult_UnwrapsStringValueTask(string data)
     {
         ValueTask<string> run = new(Task.FromResult(data));
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options));
+        return TestUnwrap(() => run, data);
     }
 
     [Fact]
-    internal static async Task UnwrapResult_UnwrapsNullValueTask()
+    internal static Task UnwrapResult_UnwrapsNullValueTask()
     {
         ValueTask<object> run = new(Task.FromResult<object>(null));
-        (await Unwrapper.UnwrapResult(() => run, Tools.Runner.Options)).Assert().IsNull();
+        return TestUnwrap(() => run, null);
     }
 
     [Fact]
-    internal static async Task UnwrapResult_UnwrapsValueTask()
+    internal static Task UnwrapResult_UnwrapsValueTask()
     {
-        await (
-            await Unwrapper.UnwrapResult(
-                () => new ValueTask(Task.CompletedTask),
-                Tools.Runner.Options
-            )
-        )
+        return TestUnwrap(() => new ValueTask(Task.CompletedTask), VoidReturn.Instance);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsString(string data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsInt(int data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Fact]
+    internal static Task UnwrapResult_UnwrapsNull()
+    {
+        return TestUnwrap(() => null, null);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsListInt(List<int> data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsListString(List<string> data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsArrayInt(int[] data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsArrayString(string[] data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    [Theory, RandomData]
+    internal static Task UnwrapResult_UnwrapsCollection(ICollection data)
+    {
+        return TestUnwrap(() => data, data);
+    }
+
+    private static Task<AssertChainer<AssertAsyncObject>> TestUnwrap(
+        Func<object> call,
+        object expectedResult
+    )
+    {
+        return Unwrapper
+            .UnwrapResult(call, Tools.Runner.Options, TestContext.Current.CancellationToken)
             .Assert()
-            .IsAsync(VoidReturn.Instance, TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsString(string data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsInt(int data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Fact]
-    internal static async Task UnwrapResult_UnwrapsNull()
-    {
-        (await Unwrapper.UnwrapResult(() => null, Tools.Runner.Options)).Assert().IsNull();
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsListInt(List<int> data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsListString(List<string> data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsArrayInt(int[] data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsArrayString(string[] data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsEnumerableInt(List<int> data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => Yielded(data), Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsEnumerableString(List<string> data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => Yielded(data), Tools.Runner.Options));
-    }
-
-    [Theory, RandomData]
-    internal static async Task UnwrapResult_UnwrapsCollection(ICollection data)
-    {
-        data.Assert().Is(await Unwrapper.UnwrapResult(() => data, Tools.Runner.Options));
-    }
-
-    private static IEnumerable<T> Yielded<T>(IEnumerable<T> data)
-    {
-        foreach (T item in data)
-        {
-            yield return item;
-        }
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .Is(expectedResult);
     }
 }
