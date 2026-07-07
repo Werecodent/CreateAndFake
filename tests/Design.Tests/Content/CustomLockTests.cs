@@ -21,6 +21,21 @@ public static class CustomLockTests
     }
 
     [Fact]
+    internal static Task CustomLock_VerifyToolSupport()
+    {
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            typeof(CustomLock),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static void CustomLock_VerifyValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality(typeof(CustomLock));
+    }
+
+    [Fact]
     internal static void CustomLock_Sealed()
     {
         typeof(CustomLock).IsSealed.Assert().Is(true);

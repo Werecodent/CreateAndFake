@@ -106,8 +106,10 @@ internal sealed class SupportValidator(TesterOptions options)
     /// <summary>Validates the <paramref name="type"/> is fully compatible with the framework as configured.</summary>
     /// <param name="type">The <see cref="Type"/> to test with.</param>
     /// <inheritdoc cref="VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken)"/>
-    private async Task VerifyToolSetSupportAsync(Type type, CancellationToken canceler)
+    public async Task VerifyToolSetSupportAsync(Type type, CancellationToken canceler)
     {
+        ArgumentGuard.ThrowIfNull(type);
+
         object? original = null,
             variant = null,
             dupe = null;

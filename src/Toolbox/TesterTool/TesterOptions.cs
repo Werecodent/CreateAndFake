@@ -11,6 +11,7 @@ using CreateAndFake.MutatorTool;
 using CreateAndFake.Properties;
 using CreateAndFake.RandomizerTool;
 using CreateAndFake.RunnerTool;
+using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
 
 namespace CreateAndFake.TesterTool;
@@ -41,6 +42,9 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>Handles method generation.</summary>
     public required IRunner Runner { get; init; }
+
+    /// <summary>Handles value comparisons.</summary>
+    public required IValuer Valuer { get; init; }
 
     /// <summary>Retries tests if timeout is reached.</summary>
     [ConfigurableOption]

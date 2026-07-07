@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using CreateAndFake.AsserterTool;
 using CreateAndFake.AsserterTool.Categories;
+using CreateAndFake.Fluent.AssertAsyncCalls;
 using CreateAndFake.Fluent.Chaining;
 
 namespace CreateAndFake.Fluent.AssertCalls;
@@ -10,9 +11,9 @@ namespace CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common collection assertion calls.</summary>
 /// <param name="collection"><inheritdoc cref="Collection" path="/summary"/></param>
-/// <inheritdoc cref="AssertObjectBase{T}"/>
+/// <inheritdoc cref="AssertAsyncObjectBase{T}"/>
 public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? collection)
-    : AssertObjectBase<T>(asserter, collection)
+    : AssertAsyncObjectBase<T>(asserter, collection)
     where T : AssertEnumerableBase<T>
 {
     /// <summary>Collection to run assertion checks with.</summary>

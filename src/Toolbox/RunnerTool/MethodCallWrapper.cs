@@ -1,8 +1,10 @@
 ﻿using System.Collections.Specialized;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.RunnerTool;
 
@@ -10,7 +12,8 @@ namespace CreateAndFake.RunnerTool;
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>
 /// <param name="args"><inheritdoc cref="_args" path="/summary"/></param>
 public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
-    : IDuplicatable<MethodCallWrapper>
+    : IDuplicatable<MethodCallWrapper>,
+        IValuerAsyncComparable
 {
     /// <summary>Parameter names with associated data to pass.</summary>
     private readonly OrderedDictionary _args =
@@ -68,6 +71,51 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
         {
             return Method.Invoke(instance, [.. Args]);
         }
+    }
+
+    /// <inheritdoc/>
+    public async IAsyncEnumerable<Difference> CompareAsync(
+        object? other,
+        IValuer valuer,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        if (other is MethodCallWrapper wrapper)
+        {
+            await foreach (
+                Difference diff in valuer
+                    .CompareAsync(Method, wrapper.Method, canceler)
+                    .ConfigureAwait(false)
+            )
+            {
+                canceler.ThrowIfCancellationRequested();
+                yield return diff;
+            }
+
+            await foreach (
+                Difference diff in valuer
+                    .CompareAsync(Args, wrapper.Args, canceler)
+                    .ConfigureAwait(false)
+            )
+            {
+                canceler.ThrowIfCancellationRequested();
+                yield return diff;
+            }
+        }
+        else
+        {
+            yield return new Difference(typeof(MethodCallWrapper), other?.GetType());
+        }
+    }
+
+    /// <inheritdoc/>
+    public Task<int> GetValueHashAsync(IValuer valuer, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        return valuer.GetHashCodeAsync(Args.Prepend(Method), canceler);
     }
 
     /// <inheritdoc/>

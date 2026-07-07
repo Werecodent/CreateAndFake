@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Drawing;
 using CreateAndFake.Design.Comparisons;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
@@ -9,10 +10,6 @@ namespace CreateAndFake.Design.Tests.Comparisons;
 
 public static class ValueComparerTests
 {
-    private static readonly int[] _OneValue = [0];
-
-    private static readonly int[] _TwoValues = [0, 0];
-
     [Fact]
     internal static Task ValueComparer_GuardsNulls()
     {
@@ -41,10 +38,22 @@ public static class ValueComparerTests
     }
 
     [Fact]
-    internal static void Equals_MismatchSizeFalse()
+    internal static Task ValueComparer_VerifyToolSupport()
     {
-        ValueComparer.Use.Equals(_OneValue, _TwoValues).Assert().Is(false);
-        ValueComparer.Use.Equals(_TwoValues, _OneValue).Assert().Is(false);
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            typeof(ValueComparer),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Theory, RandomData]
+    internal static void Equals_MismatchSizeFalse(
+        [Size(1)] int[] oneValue,
+        [Size(2)] int[] twoValues
+    )
+    {
+        ValueComparer.Use.Equals(oneValue, twoValues).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues, oneValue).Assert().Is(false);
     }
 
     [Theory, RandomData]
@@ -93,6 +102,12 @@ public static class ValueComparerTests
     }
 
     [Fact]
+    internal static void ValueComparer_SupportsValueEquatable()
+    {
+        TestBehavior<IValueEquatable, IValueEquatable>(ValueComparer.Use, ValueComparer.Use);
+    }
+
+    [Fact]
     internal static void ValueComparer_SupportsObject()
     {
         TestBehavior<int, object>(ValueComparer.Use, ValueComparer.Use);
@@ -112,24 +127,24 @@ public static class ValueComparerTests
     [Fact]
     internal static void ValueComparer_SupportsIDictionary()
     {
+        TestBehavior<Dictionary<int, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<int, int>, object>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<int, int>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
-        TestBehavior<Dictionary<int, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
 
+        TestBehavior<Dictionary<string, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<string, int>, object>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<string, int>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
-        TestBehavior<Dictionary<string, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
 
+        TestBehavior<Dictionary<int, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<int, string>, object>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<int, string>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
-        TestBehavior<Dictionary<int, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
 
+        TestBehavior<Dictionary<string, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<string, string>, object>(ValueComparer.Use, ValueComparer.Use);
         TestBehavior<IDictionary<string, string>, IEnumerable>(
             ValueComparer.Use,
             ValueComparer.Use
         );
-        TestBehavior<Dictionary<string, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
     }
 
     private static void TestBehavior<TActual, TComparer>(

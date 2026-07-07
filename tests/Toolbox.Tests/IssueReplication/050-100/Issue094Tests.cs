@@ -214,7 +214,7 @@ public static class Issue094Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue094_MethodCallWrapperWithFakesWorks(
+    internal static Task Issue094_MethodCallWrapperWithFakesWorks(
         MethodBase method,
         Fake<object> fake
     )
@@ -223,7 +223,9 @@ public static class Issue094Tests
         dict.Add("test", fake);
 
         MethodCallWrapper wrapper = new MethodCallWrapper(method, dict);
-        wrapper.Assert().Is(wrapper.Tools().Copy());
+        return wrapper
+            .Assert()
+            .IsAsync(wrapper.Tools().Copy(), TestContext.Current.CancellationToken);
     }
 
     private static Task TestToolBehavior<T>()
@@ -246,7 +248,7 @@ public static class Issue094Tests
             object dupe = Tools.Duplicator.Copy(sample);
 
             await Tools.Asserter.IsAsync(sample, dupe, TestContext.Current.CancellationToken);
-            Tools.Asserter.Is(sample, dupe);
+            await Tools.Asserter.IsAsync(sample, dupe, TestContext.Current.CancellationToken);
         }
     }
 }

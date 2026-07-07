@@ -134,7 +134,7 @@ public sealed class ObjectCopyHint : CopyHint
             if (potentialFields.Length != 0)
             {
                 FieldInfo? directFieldMatch = potentialFields.FirstOrDefault(f =>
-                    f.Name.Equals(param.Name, StringComparison.OrdinalIgnoreCase)
+                    f.Name.Trim('_').Equals(param.Name, StringComparison.OrdinalIgnoreCase)
                 );
                 if (directFieldMatch != null)
                 {

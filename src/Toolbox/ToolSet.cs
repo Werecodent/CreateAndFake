@@ -157,6 +157,7 @@ public sealed class ToolSet(
                 Extractor = extractor,
                 Asserter = asserter,
                 Runner = runner,
+                Valuer = valuer,
             }.WithConfig(config)
         );
 

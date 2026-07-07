@@ -10,12 +10,6 @@ namespace CreateAndFake.TesterTool.Guarders;
 internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(options)
 {
     /// <inheritdoc/>
-    public Task PreventsParameterMutationAsync<T>(CancellationToken canceler)
-    {
-        return PreventsParameterMutationAsync(typeof(T), canceler);
-    }
-
-    /// <inheritdoc/>
     public async Task PreventsParameterMutationAsync(Type type, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(type);

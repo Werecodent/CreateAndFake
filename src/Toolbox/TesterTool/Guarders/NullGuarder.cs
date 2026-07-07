@@ -10,12 +10,6 @@ namespace CreateAndFake.TesterTool.Guarders;
 internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 {
     /// <inheritdoc/>
-    public Task PreventsNullRefExceptionAsync<T>(CancellationToken canceler)
-    {
-        return PreventsNullRefExceptionAsync(typeof(T), canceler);
-    }
-
-    /// <inheritdoc/>
     public async Task PreventsNullRefExceptionAsync(Type type, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(type);
@@ -219,9 +213,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         Exception taskException
     )
     {
-        ArgumentGuard.ThrowIfNull(testOrigin);
-        ArgumentGuard.ThrowIfNull(testParam);
-        ArgumentGuard.ThrowIfNull(taskException);
+        ArgumentGuard.ThrowIfNull(testOrigin, testParam, taskException);
 
         string details = $"on method '{testOrigin.Name}' with parameter '{testParam.Name}'";
 

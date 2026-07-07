@@ -223,15 +223,17 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
     }
 
     /// <inheritdoc cref="IAsserter.Pass()"/>
-    public virtual void Pass()
+    public virtual AssertChainer<T> Pass()
     {
         asserter.Pass();
+        return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserter.Pass(AsserterMod)"/>
-    public virtual void Pass(AsserterMod? optionConfiguration)
+    public virtual AssertChainer<T> Pass(AsserterMod? optionConfiguration)
     {
         asserter.Pass(optionConfiguration);
+        return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.Called(object,Times,AsserterMod)"/>

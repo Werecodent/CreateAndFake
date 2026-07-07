@@ -38,6 +38,9 @@ public sealed class HandlerCompareHint : CompareHint
                     Token = SingleCallValueTaskSource.ExtractTokenFrom(task),
                 }
         ),
+#if NET9_0_OR_GREATER
+        new DefaultEqualityCompareHandler(typeof(System.Threading.Lock)),
+#endif
     ];
 
     private static readonly IDictionary<Type, ICompareHandler> _HandlersByType =

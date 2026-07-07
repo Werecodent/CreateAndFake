@@ -55,29 +55,30 @@ public static class AsyncSeriesHelperTests
     }
 
     [Fact]
-    internal static async Task HasAnyAsync_FalseWhenGivenNull()
+    internal static Task HasAnyAsync_FalseWhenGivenNull()
     {
-        (await AsyncSeriesHelper.HasAnyAsync<string>(null, TestContext.Current.CancellationToken))
+        return AsyncSeriesHelper
+            .HasAnyAsync<string>(null, TestContext.Current.CancellationToken)
             .Assert()
-            .Is(false);
+            .IsAsync(Task.FromResult(false), TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal static async Task HasAnyAsync_FalseWithNoValues(
-        [Size(0)] IAsyncEnumerable<string> data
-    )
+    internal static Task HasAnyAsync_FalseWithNoValues([Size(0)] IAsyncEnumerable<string> data)
     {
-        (await AsyncSeriesHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
+        return AsyncSeriesHelper
+            .HasAnyAsync(data, TestContext.Current.CancellationToken)
             .Assert()
-            .Is(false);
+            .IsAsync(Task.FromResult(false), TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal static async Task HasAnyAsync_TrueWithValues(IAsyncEnumerable<string> data)
+    internal static Task HasAnyAsync_TrueWithValues(IAsyncEnumerable<string> data)
     {
-        (await AsyncSeriesHelper.HasAnyAsync(data, TestContext.Current.CancellationToken))
+        return AsyncSeriesHelper
+            .HasAnyAsync(data, TestContext.Current.CancellationToken)
             .Assert()
-            .Is(true);
+            .IsAsync(Task.FromResult(true), TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
@@ -93,6 +94,7 @@ public static class AsyncSeriesHelperTests
     internal static async Task HasAnyAsync_CanBeCanceledAtIteration()
     {
         using CancellationTokenSource source = new();
+
         await AsyncSeriesHelper
             .HasAnyAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
             .Assert()
@@ -106,7 +108,7 @@ public static class AsyncSeriesHelperTests
     {
         List<string> results = [];
         await AsyncSeriesHelper.ForEachAsync(data, 2, new CancellationToken(false), results.Add);
-        await data.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+        await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
 
         results.Clear();
         await AsyncSeriesHelper.ForEachAsync(
@@ -119,7 +121,7 @@ public static class AsyncSeriesHelperTests
                 return Task.CompletedTask;
             }
         );
-        await data.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+        await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

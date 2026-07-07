@@ -24,26 +24,34 @@ public static class DisposerTests
     }
 
     [Theory, RandomData]
-    internal static void Cleanup_DisposesAllItems(Fake<IDisposable> item1, Fake<IDisposable> item2)
+    internal static void Cleanup_DisposesAllItems(
+        [Stub] IDisposable item1,
+        [Stub] IDisposable item2
+    )
     {
-        item1.Setup(m => m.Dispose(), Behavior.None(Times.Once));
-        item2.Setup(m => m.Dispose(), Behavior.None(Times.Once));
-        Disposer.Cleanup(item1.Dummy, new object(), item2.Dummy, "");
-        item1.Verify();
-        item2.Verify();
+        item1.SetupReturn(m => m.Dispose(), Behavior.None(Times.Once));
+        item2.SetupReturn(m => m.Dispose(), Behavior.None(Times.Once));
+
+        Disposer.Cleanup(item1, new object(), item2, "");
+
+        item1.Assert().Called().Also(item2).Called();
     }
 
     [Theory, RandomData]
     internal static async Task CleanupAsync_DisposesAllItems(
-        Fake<IDisposable> item1,
-        Fake<IAsyncDisposable> item2
+        [Stub] IDisposable item1,
+        [Stub] IAsyncDisposable item2
     )
     {
-        item1.Setup(m => m.Dispose(), Behavior.None(Times.Once));
-        item2.Setup(m => m.DisposeAsync(), Behavior.Returns<ValueTask>(default, Times.Once));
-        await Disposer.CleanupAsync(item1.Dummy, new object(), item2.Dummy, "");
-        item1.Verify();
-        item2.Verify();
+        item1.SetupReturn(m => m.Dispose(), Behavior.None(Times.Once));
+        item2
+            .Tools()
+            .ToFake()
+            .Setup(m => m.DisposeAsync(), Behavior.Returns<ValueTask>(default, Times.Once));
+
+        await Disposer.CleanupAsync(item1, new object(), item2, "");
+
+        item1.Assert().Called().Also(item2).Called();
     }
 
     [Fact]

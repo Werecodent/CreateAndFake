@@ -50,5 +50,8 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<CancellationToken>(
             (source, _) => new CancellationToken(source.IsCancellationRequested)
         ),
+#if NET9_0_OR_GREATER
+        new RefCopyHandler(typeof(System.Threading.Lock)),
+#endif
     ];
 }

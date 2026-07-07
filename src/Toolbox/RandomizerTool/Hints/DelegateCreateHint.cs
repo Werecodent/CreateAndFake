@@ -88,7 +88,7 @@ public sealed class DelegateCreateHint : CreateHint
     {
         Delegator delegator = new(randomizer);
 
-        MethodInfo info = type.GetMethod("Invoke")!;
+        MethodInfo info = type.GetMethod(nameof(Action.Invoke))!;
         bool hasReturn = info.ReturnType != typeof(void);
 
         MethodInfo match = _DelegatorMethods

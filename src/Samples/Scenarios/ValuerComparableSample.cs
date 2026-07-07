@@ -32,6 +32,11 @@ public class ValuerComparableSample : IValuerComparable
         }
     }
 
+    public virtual bool ValuesEqual(object? other, IValuer valuer)
+    {
+        return !Compare(other, valuer).Any();
+    }
+
     public virtual int GetValueHash(IValuer valuer)
     {
         return valuer?.GetHashCode(new object?[] { StringValue, NumberValue })

@@ -72,14 +72,39 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
+    public virtual void VerifyEqualsMatchesHashCodes<T>(TesterMod? optionConfiguration = null)
+    {
+        VerifyEqualsMatchesHashCodes(typeof(T), optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyEqualsMatchesHashCodes(
+        Type type,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        new EqualityValidator(Configure(optionConfiguration)).VerifyEqualsMatchesHashCodes(type);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyValueEquality<T>(TesterMod? optionConfiguration = null)
+    {
+        VerifyValueEquality(typeof(T), optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual void VerifyValueEquality(Type type, TesterMod? optionConfiguration = null)
+    {
+        new EqualityValidator(Configure(optionConfiguration)).VerifyValueEquality(type);
+    }
+
+    /// <inheritdoc/>
     public virtual Task PreventsNullRefExceptionAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
     {
-        return new NullGuarder(Configure(optionConfiguration)).PreventsNullRefExceptionAsync<T>(
-            canceler
-        );
+        return PreventsNullRefExceptionAsync(typeof(T), canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -89,8 +114,10 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        return new NullGuarder(Configure(optionConfiguration)).PreventsNullRefExceptionAsync(
-            type,
+        TesterOptions localOptions = Configure(optionConfiguration);
+
+        return new NullGuarder(localOptions).PreventsNullRefExceptionAsync(
+            GenericFixer.FixType(type, localOptions),
             canceler
         );
     }
@@ -114,9 +141,7 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        return new MutationGuarder(
-            Configure(optionConfiguration)
-        ).PreventsParameterMutationAsync<T>(canceler);
+        return PreventsParameterMutationAsync(typeof(T), canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -126,8 +151,10 @@ public class Tester(TesterOptions options) : ITester
         TesterMod? optionConfiguration = null
     )
     {
-        return new MutationGuarder(Configure(optionConfiguration)).PreventsParameterMutationAsync(
-            type,
+        TesterOptions localOptions = Configure(optionConfiguration);
+
+        return new MutationGuarder(localOptions).PreventsParameterMutationAsync(
+            GenericFixer.FixType(type, localOptions),
             canceler
         );
     }
@@ -215,6 +242,30 @@ public class Tester(TesterOptions options) : ITester
     )
     {
         return new SupportValidator(Configure(optionConfiguration)).VerifyToolSetIntegrityAsync(
+            canceler
+        );
+    }
+
+    /// <inheritdoc/>
+    public virtual Task VerifyToolSetSupportAsync<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        return VerifyToolSetSupportAsync(typeof(T), canceler, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task VerifyToolSetSupportAsync(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(type);
+
+        return new SupportValidator(Configure(optionConfiguration)).VerifyToolSetSupportAsync(
+            type,
             canceler
         );
     }

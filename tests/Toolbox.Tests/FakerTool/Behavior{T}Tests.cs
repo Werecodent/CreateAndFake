@@ -8,6 +8,7 @@ public static class Behavior_T_Tests
     private static readonly TesterMod config = opt =>
         opt with
         {
+            MethodsToIgnore = ["Throw"],
             IgnorableExceptions =
             [
                 typeof(MemberAccessException),
@@ -32,7 +33,7 @@ public static class Behavior_T_Tests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
-            opt => config(opt) with { MethodsToIgnore = ["Throw"] }
+            config
         );
     }
 
