@@ -12,14 +12,14 @@ namespace CreateAndFake.DuplicatorTool;
 public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
 {
     /// <summary>Handles hint based duplication.</summary>
-    private static readonly DuplicatorEngine _engine = new();
+    private static readonly DuplicatorEngine _Engine = new();
 
     /// <inheritdoc/>
     public DuplicatorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+    public IEnumerable<Type> SupportedTypes => _Engine.SupportedTypes;
 
     /// <inheritdoc/>
     [return: NotNullIfNotNull(nameof(source))]
@@ -28,7 +28,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         DuplicatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
-            T result = new DuplicatorChainer(localOptions, _engine).Copy(source);
+            T result = new DuplicatorChainer(localOptions, _Engine).Copy(source);
             if (localOptions.VerifyCloneResult)
             {
                 Options.Asserter.ValuesEqual(

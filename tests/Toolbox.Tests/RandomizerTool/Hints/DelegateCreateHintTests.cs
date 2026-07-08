@@ -70,7 +70,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     {
         foreach (Type type in _ActionTypes.Concat(_FuncTypes))
         {
-            Tools.Randomizer.Create(type).Assert().IsNot(null);
+            Tools.Randomizer.Create(type).Assert().IsNotNull();
         }
     }
 

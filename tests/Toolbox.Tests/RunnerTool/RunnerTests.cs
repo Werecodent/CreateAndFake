@@ -9,7 +9,7 @@ namespace CreateAndFake.Tests.RunnerTool;
 
 public static class RunnerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             InjectionValues = [GetGeneratableMethod()],
@@ -26,7 +26,7 @@ public static class RunnerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Runner>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -35,7 +35,7 @@ public static class RunnerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Runner>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

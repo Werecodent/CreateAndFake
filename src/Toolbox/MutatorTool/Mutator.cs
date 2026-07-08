@@ -8,31 +8,31 @@ namespace CreateAndFake.MutatorTool;
 public sealed class Mutator(MutatorOptions options) : IMutator
 {
     /// <inheritdoc cref="IMutatorEngine"/>
-    private static readonly MutatorEngine _engine = new();
+    private static readonly MutatorEngine _Engine = new();
 
     /// <inheritdoc/>
     public MutatorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+    public IEnumerable<Type> SupportedTypes => _Engine.SupportedTypes;
 
     /// <inheritdoc/>
     public T Variant<T>(T instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).Variant(instance, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).Variant(instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public object Variant(Type type, object? instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).Variant(type, instance, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).Variant(type, instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public T VariantOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).VariantOf(instances, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).VariantOf(instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -42,25 +42,25 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         MutatorMod? optionConfiguration = null
     )
     {
-        return new MutatorChainer(Options, _engine).VariantOf(type, instances, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).VariantOf(type, instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public T Unique<T>(T instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).Unique(instance, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).Unique(instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public object Unique(Type type, object? instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).Unique(type, instance, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).Unique(type, instance, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public T UniqueOf<T>(IEnumerable<T?> instances, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).UniqueOf(instances, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).UniqueOf(instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -70,13 +70,13 @@ public sealed class Mutator(MutatorOptions options) : IMutator
         MutatorMod? optionConfiguration = null
     )
     {
-        return new MutatorChainer(Options, _engine).UniqueOf(type, instances, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).UniqueOf(type, instances, optionConfiguration);
     }
 
     /// <inheritdoc/>
     public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _engine).Modify(instance, optionConfiguration);
+        return new MutatorChainer(Options, _Engine).Modify(instance, optionConfiguration);
     }
 
     /// <inheritdoc/>

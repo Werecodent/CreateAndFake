@@ -9,7 +9,7 @@ namespace CreateAndFake.Tests.AsserterTool;
 
 public class AsserterTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -47,7 +47,7 @@ public class AsserterTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Asserter>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -56,7 +56,7 @@ public class AsserterTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Asserter>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

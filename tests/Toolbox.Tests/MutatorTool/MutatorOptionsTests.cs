@@ -27,6 +27,6 @@ public static class MutatorOptionsTests
     [Fact]
     internal static void MutatorOptions_ModFormRandomizable()
     {
-        typeof(MutatorMod).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(MutatorMod).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 }

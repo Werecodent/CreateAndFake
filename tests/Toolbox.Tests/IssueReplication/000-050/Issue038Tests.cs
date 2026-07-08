@@ -22,7 +22,7 @@ public static class Issue038Tests
     [Theory, RandomData]
     internal static void Issue038_FluentStubSetup([Stub] ISample sample, string value)
     {
-        sample.Value.Assert().Is(null);
+        sample.Value.Assert().IsNull();
         sample.Value.SetupReturn(value);
         sample.Value.Assert().Is(value);
         sample.Assert().Called();
@@ -31,7 +31,7 @@ public static class Issue038Tests
     [Theory, RandomData]
     internal static void Issue038_FluentFakeSetup([Fake] ISample sample, string value)
     {
-        sample.Value.Assert().IsNot(null);
+        sample.Value.Assert().IsNotNull();
         sample.Value.SetupReturn(value);
         sample.Value.Assert().Is(value);
         sample.Assert().Called();

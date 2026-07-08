@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -30,14 +30,14 @@ public static class MethodCallWrapperTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<MethodCallWrapper>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
     [Fact]
     internal static void MethodCallWrapper_CanRandomize()
     {
-        Tools.Randomizer.Create<MethodCallWrapper>().Assert().IsNot(null);
+        Tools.Randomizer.Create<MethodCallWrapper>().Assert().IsNotNull();
     }
 
     [Theory, RandomData]

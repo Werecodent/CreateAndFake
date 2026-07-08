@@ -11,7 +11,7 @@ namespace CreateAndFake.Tests.RandomizerTool;
 
 public static class RandomizerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             InjectionValues = [GetGeneratableMethod()],
@@ -23,7 +23,7 @@ public static class RandomizerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Randomizer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -32,7 +32,7 @@ public static class RandomizerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Randomizer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -188,7 +188,7 @@ public static class RandomizerTests
     [Fact]
     internal static void Create_HandlesInfinites()
     {
-        Tools.Randomizer.Create<ChildWithParentSample>().Assert().IsNot(null);
-        Tools.Randomizer.Create<ParentLoopSample>().Assert().IsNot(null);
+        Tools.Randomizer.Create<ChildWithParentSample>().Assert().IsNotNull();
+        Tools.Randomizer.Create<ParentLoopSample>().Assert().IsNotNull();
     }
 }

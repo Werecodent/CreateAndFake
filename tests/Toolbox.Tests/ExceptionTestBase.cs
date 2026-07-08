@@ -20,8 +20,8 @@ public abstract class ExceptionTestBase<T>
     [Fact]
     public void Exception_DefaultConstructorPrivate()
     {
-        typeof(T).GetConstructor(Type.EmptyTypes).Assert().Is(null);
-        Activator.CreateInstance(typeof(T), true).Assert().IsNot(null);
+        typeof(T).GetConstructor(Type.EmptyTypes).Assert().IsNull();
+        Activator.CreateInstance(typeof(T), true).Assert().IsNotNull();
     }
 
     [Theory, RandomData]

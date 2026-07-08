@@ -19,7 +19,7 @@ public abstract class CreateHintTestBase<T>(
     where T : CreateHint
 {
     /// <summary>Configuration to use for automatic tests.</summary>
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(InvalidOperationException)],
@@ -41,7 +41,7 @@ public abstract class CreateHintTestBase<T>(
         return Tools.Tester.PreventsNullRefExceptionAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -52,7 +52,7 @@ public abstract class CreateHintTestBase<T>(
         return Tools.Tester.PreventsParameterMutationAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
-            opt => config(opt) with { InjectionValues = [CreateChainer()] }
+            opt => _Config(opt) with { InjectionValues = [CreateChainer()] }
         );
     }
 

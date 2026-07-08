@@ -12,14 +12,14 @@ namespace CreateAndFake.RandomizerTool;
 public sealed class Randomizer(RandomizerOptions options) : IRandomizer
 {
     /// <summary>Handles hint based randomization.</summary>
-    private static readonly RandomizerEngine _engine = new();
+    private static readonly RandomizerEngine _Engine = new();
 
     /// <inheritdoc/>
     public RandomizerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+    public IEnumerable<Type> SupportedTypes => _Engine.SupportedTypes;
 
     /// <inheritdoc/>
     public T Create<T>(RandomizerMod? optionConfiguration = null)
@@ -38,7 +38,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
                     $"Trying to create instance of '{GenericConverter.ExpandName(type)}'",
                     () =>
                     {
-                        return new RandomizerChainer(Options, _engine).Create(
+                        return new RandomizerChainer(Options, _Engine).Create(
                             type,
                             (optionConfiguration != null) ? _ => localOptions : null
                         );
@@ -79,7 +79,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     {
         try
         {
-            return new RandomizerChainer(Options, _engine).Inject(
+            return new RandomizerChainer(Options, _Engine).Inject(
                 type,
                 values,
                 optionConfiguration

@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.DuplicatorTool;
 
 public static class DuplicatorTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(ToolException)],
@@ -19,7 +19,7 @@ public static class DuplicatorTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Duplicator>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -28,7 +28,7 @@ public static class DuplicatorTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Duplicator>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -49,7 +49,7 @@ public static class DuplicatorTests
         new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
             .Copy<object>(null)
             .Assert()
-            .Is(null);
+            .IsNull();
     }
 
     [Theory, RandomData]

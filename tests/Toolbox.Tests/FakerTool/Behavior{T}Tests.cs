@@ -5,7 +5,7 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class Behavior_T_Tests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             MethodsToIgnore = ["Throw"],
@@ -23,7 +23,7 @@ public static class Behavior_T_Tests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -33,7 +33,7 @@ public static class Behavior_T_Tests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Behavior<>),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

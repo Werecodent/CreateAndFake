@@ -15,16 +15,34 @@ max_line_length = 100
 csharp_style_namespace_declarations = file_scoped
 dotnet_code_quality.CA1062.null_check_validation_methods = CreateAndFake.Design.ArgumentGuard.ThrowIfNull
 
-# Naming styles:
-dotnet_naming_style.begins_with__camel.required_prefix = _
-dotnet_naming_style.begins_with__camel.required_suffix = 
-dotnet_naming_style.begins_with__camel.word_separator = 
-dotnet_naming_style.begins_with__camel.capitalization = camel_case
+#### Naming styles: ####
 
-dotnet_naming_style.begins_with__pascal.required_prefix = _
-dotnet_naming_style.begins_with__pascal.required_suffix = 
-dotnet_naming_style.begins_with__pascal.word_separator = 
-dotnet_naming_style.begins_with__pascal.capitalization = pascal_case
+# Define the 'private_fields' symbol group:
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+# Define the 'private_static_fields' symbol group
+dotnet_naming_symbols.private_static_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_static_fields.required_modifiers = static
+
+# Define the 'underscored_camel' naming style
+dotnet_naming_style.underscored_camel.capitalization = camel_case
+dotnet_naming_style.underscored_camel.required_prefix = _
+
+# Define the 'underscored_pascal' naming style
+dotnet_naming_style.underscored_pascal.capitalization = pascal_case
+dotnet_naming_style.underscored_pascal.required_prefix = _
+
+# Define the 'private_fields_prefix' naming rule
+dotnet_naming_rule.private_fields_prefix.symbols = private_fields
+dotnet_naming_rule.private_fields_prefix.style = underscored_camel
+dotnet_naming_rule.private_fields_prefix.severity = warning
+
+# Define the 'private_static_fields_none' naming rule
+dotnet_naming_rule.private_static_fields_prefix.symbols = private_static_fields
+dotnet_naming_rule.private_static_fields_prefix.style = underscored_pascal
+dotnet_naming_rule.private_static_fields_prefix.severity = warning
 
 #### Analyzer Overrides ####
 

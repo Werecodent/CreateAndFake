@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.DuplicatorTool.Engine;
 
 public static class DuplicatorChainerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -23,7 +23,7 @@ public static class DuplicatorChainerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<IDuplicatorChainer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -32,7 +32,7 @@ public static class DuplicatorChainerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<IDuplicatorChainer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 }

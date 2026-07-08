@@ -32,11 +32,11 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     [Theory, RandomData]
     internal void Create_ValidInjections(Injected<InjectMockSample> sample)
     {
-        sample.Fake<IOnlyMockSample>().Assert().IsNot(null);
+        sample.Fake<IOnlyMockSample>().Assert().IsNotNull();
         sample
             .Fake<IOnlyMockSample>(1)
             .Assert()
-            .IsNot(null)
+            .IsNotNull()
             .And.IsNot(sample.Fake<IOnlyMockSample>());
 
         sample
@@ -59,6 +59,6 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     internal void Create_ValuesRandom(Injected<FakeHolderSample> sample)
     {
         sample.Dummy.Value1.Assert().IsNot(0);
-        sample.Dummy.Value2.Assert().IsNot(null);
+        sample.Dummy.Value2.Assert().IsNotNull();
     }
 }

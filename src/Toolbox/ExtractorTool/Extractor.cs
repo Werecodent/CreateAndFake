@@ -11,14 +11,14 @@ namespace CreateAndFake.ExtractorTool;
 public sealed class Extractor(ExtractorOptions options) : IExtractor
 {
     /// <summary>Handles hint based extraction.</summary>
-    private static readonly ExtractorEngine _engine = new();
+    private static readonly ExtractorEngine _Engine = new();
 
     /// <inheritdoc/>
     public ExtractorOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+    public IEnumerable<Type> SupportedTypes => _Engine.SupportedTypes;
 
     /// <inheritdoc/>
     public IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
@@ -26,7 +26,7 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
         ExtractorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
-            return new ExtractorChainer(localOptions, _engine).Extract(source);
+            return new ExtractorChainer(localOptions, _Engine).Extract(source);
         }
         catch (Exception e)
         {

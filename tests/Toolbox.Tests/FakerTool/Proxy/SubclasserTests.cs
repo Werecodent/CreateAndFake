@@ -11,18 +11,18 @@ public static class SubclasserTests
     [Fact]
     internal static void Create_InterfacesWork()
     {
-        Subclasser.Create<IFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
+        Subclasser.Create<IFakeSample>(Tools.Faker.Options).Assert().IsNotNull();
         Subclasser
             .Create<IFakeSample>(Tools.Faker.Options, typeof(IClashingFakeSample))
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Fact]
     internal static void Create_ClassesWork()
     {
-        Subclasser.Create<AbstractFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
-        Subclasser.Create<VirtualFakeSample>(Tools.Faker.Options).Assert().IsNot(null);
+        Subclasser.Create<AbstractFakeSample>(Tools.Faker.Options).Assert().IsNotNull();
+        Subclasser.Create<VirtualFakeSample>(Tools.Faker.Options).Assert().IsNotNull();
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public static class SubclasserTests
         Subclasser
             .Create<AbstractFakeSample>(Tools.Faker.Options, typeof(IFakeSample))
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
         Subclasser
             .Create<VirtualFakeSample>(
                 Tools.Faker.Options,
@@ -39,20 +39,20 @@ public static class SubclasserTests
                 typeof(IClashingFakeSample)
             )
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Fact]
     internal static void Create_IFakedDefault()
     {
         Subclasser.Create<object>(Tools.Faker.Options).GetType().Assert().Inherits<IFaked>();
-        Subclasser.Create(null, Tools.Faker.Options, null).Assert().IsNot(null);
+        Subclasser.Create(null, Tools.Faker.Options, null).Assert().IsNotNull();
     }
 
     [Fact]
     internal static void Create_IFakedFunctional()
     {
-        Subclasser.Create<IFaked>(Tools.Faker.Options).FakeMeta.Assert().IsNot(null);
+        Subclasser.Create<IFaked>(Tools.Faker.Options).FakeMeta.Assert().IsNotNull();
     }
 
     [Fact]
@@ -97,11 +97,11 @@ public static class SubclasserTests
         Subclasser
             .Create<ConstraintSample<int, DataSample>>(Tools.Faker.Options)
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
         Subclasser
             .Create<ConstraintSample<bool, DataSample>>(Tools.Faker.Options)
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Fact]

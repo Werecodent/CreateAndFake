@@ -19,7 +19,7 @@ public abstract class CopyHintTestBase<T>(
     where T : CopyHint, new()
 {
     /// <summary>Configuration to use for automatic tests.</summary>
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -51,7 +51,7 @@ public abstract class CopyHintTestBase<T>(
         return Tools.Tester.PreventsNullRefExceptionAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -62,7 +62,7 @@ public abstract class CopyHintTestBase<T>(
         return Tools.Tester.PreventsParameterMutationAsync(
             TestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

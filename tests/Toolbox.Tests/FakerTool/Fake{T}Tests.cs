@@ -63,10 +63,10 @@ public static class Fake_T_Tests
 
         fake.Dummy.InternalProp = name;
         fake.Dummy.InternalProp.Assert().Is(name);
-        fake.Dummy.InternalMethod().Assert().IsNot(null);
+        fake.Dummy.InternalMethod().Assert().IsNotNull();
 
         fake.Dummy.Assert(d => d.InternalGet = name).Throws<FakeCallException>();
-        fake.Dummy.InternalGet.Assert().Is(null);
+        fake.Dummy.InternalGet.Assert().IsNull();
         fake.Dummy.InternalSet = name;
         fake.Dummy.Assert(d => d.InternalSet).Throws<FakeCallException>();
     }

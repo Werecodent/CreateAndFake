@@ -24,19 +24,19 @@ public static class Issue108Tests
     [Fact]
     internal static void Issue108_SupportsSelfReference()
     {
-        typeof(InnerStuff<>).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(InnerStuff<>).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 
     [Theory, RandomData]
     internal static void Issue108_SupportsWrappingSelfReference(Wrapper instance)
     {
-        instance.Assert().IsNot(null);
+        instance.Assert().IsNotNull();
     }
 
     [Fact]
     internal static void Issue108_SupportsContainerWithSelfReferenceContent()
     {
-        typeof(Container<>).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(Container<>).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 
     [Theory, RandomData]
@@ -44,12 +44,12 @@ public static class Issue108Tests
         Container<Wrapper> instance
     )
     {
-        instance.Assert().IsNot(null);
+        instance.Assert().IsNotNull();
     }
 
     [Theory, RandomData]
     internal static void Issue108_SupportsWrappedContainer(WrapperContainer instance)
     {
-        instance.Assert().IsNot(null);
+        instance.Assert().IsNotNull();
     }
 }

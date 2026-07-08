@@ -23,7 +23,7 @@ public static class AssertExtensionsTests
     [Theory, RandomData]
     internal static void Assert_ObjectIsFluent(int data)
     {
-        data.Assert().Is(data).And.IsNot(null);
+        data.Assert().Is(data).And.IsNotNull();
     }
 
     [Theory, RandomData]

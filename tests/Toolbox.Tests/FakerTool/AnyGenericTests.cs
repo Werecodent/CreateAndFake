@@ -13,6 +13,6 @@ public static class AnyGenericTests
             .Single();
 
         constructor.IsPrivate.Assert().Is(true);
-        constructor.Invoke([]).Assert().IsNot(null);
+        constructor.Invoke([]).Assert().IsNotNull();
     }
 }

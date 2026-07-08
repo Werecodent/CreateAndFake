@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Types;
 using CreateAndFake.RunnerTool;
 
 namespace CreateAndFake.TesterTool.Guarders;
@@ -181,7 +182,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
                     copy,
                     data,
                     cleanupCanceler.Token,
-                    $"Parameter data was mutated when testing '{method.Name}'."
+                    $"Parameter data was mutated when testing '{GenericConverter.BuildTestName(method)}'."
                 )
                 .ConfigureAwait(false);
         }

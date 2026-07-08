@@ -7,6 +7,6 @@ public sealed class FakeCallExceptionTests : ExceptionTestBase<FakeCallException
     [Fact]
     internal static void FakeCallException_MultiNullsOkay()
     {
-        new FakeCallException(null, null).Assert().IsNot(null);
+        new FakeCallException(null, null).Assert().IsNotNull();
     }
 }

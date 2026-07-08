@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class BehaviorTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]),
@@ -27,7 +27,7 @@ public static class BehaviorTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Behavior),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -37,7 +37,7 @@ public static class BehaviorTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Behavior),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -99,7 +99,7 @@ public static class BehaviorTests
     [Fact]
     internal static void Null_BehaviorWorks()
     {
-        Behavior.Null<string>().Invoke([]).Assert().Is(null);
+        Behavior.Null<string>().Invoke([]).Assert().IsNull();
     }
 
     [Fact]
@@ -139,8 +139,8 @@ public static class BehaviorTests
     {
         Behavior behavior = Behavior.Series(value, null);
         behavior.Invoke([]).Assert().Is(value);
-        behavior.Invoke([]).Assert().Is(null);
-        behavior.Invoke([]).Assert().Is(null);
+        behavior.Invoke([]).Assert().IsNull();
+        behavior.Invoke([]).Assert().IsNull();
     }
 
     [Theory, RandomData]

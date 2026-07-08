@@ -10,14 +10,14 @@ namespace CreateAndFake.ValuerTool;
 public sealed class Valuer(ValuerOptions options) : IValuer
 {
     /// <summary>Handles hint based comparisons.</summary>
-    private static readonly ValuerEngine _engine = new();
+    private static readonly ValuerEngine _Engine = new();
 
     /// <inheritdoc/>
     public ValuerOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<Type> SupportedTypes => _engine.SupportedTypes;
+    public IEnumerable<Type> SupportedTypes => _Engine.SupportedTypes;
 
     /// <inheritdoc/>
     public IEnumerable<Difference> Compare(
@@ -26,7 +26,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         ValuerMod? optionConfiguration = null
     )
     {
-        return new ValuerChainer(Options, _engine).Compare(expected, actual, optionConfiguration);
+        return new ValuerChainer(Options, _Engine).Compare(expected, actual, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -56,7 +56,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
         timeoutSource.CancelAfter(localOptions.AsyncTimeout);
 
         await foreach (
-            Difference diff in new ValuerChainer(Options, _engine)
+            Difference diff in new ValuerChainer(Options, _Engine)
                 .CompareAsync(
                     expected,
                     actual,
@@ -73,13 +73,13 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc/>
     public int GetHashCode(object? item)
     {
-        return new ValuerChainer(Options, _engine).GetHashCode(item);
+        return new ValuerChainer(Options, _Engine).GetHashCode(item);
     }
 
     /// <inheritdoc/>
     public int GetHashCode(object? item, ValuerMod? optionConfiguration)
     {
-        return new ValuerChainer(Options, _engine).GetHashCode(item, optionConfiguration);
+        return new ValuerChainer(Options, _Engine).GetHashCode(item, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -96,7 +96,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
 
         timeoutSource.CancelAfter(localOptions.AsyncTimeout);
 
-        return await new ValuerChainer(Options, _engine)
+        return await new ValuerChainer(Options, _Engine)
             .GetHashCodeAsync(
                 item,
                 timeoutSource.Token,
@@ -108,13 +108,13 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     /// <inheritdoc/>
     public new bool Equals(object? x, object? y)
     {
-        return new ValuerChainer(Options, _engine).Equals(x, y);
+        return new ValuerChainer(Options, _Engine).Equals(x, y);
     }
 
     /// <inheritdoc/>
     public bool Equals(object? x, object? y, ValuerMod? optionConfiguration)
     {
-        return new ValuerChainer(Options, _engine).Equals(x, y, optionConfiguration);
+        return new ValuerChainer(Options, _Engine).Equals(x, y, optionConfiguration);
     }
 
     /// <inheritdoc/>
@@ -132,7 +132,7 @@ public sealed class Valuer(ValuerOptions options) : IValuer
 
         timeoutSource.CancelAfter(localOptions.AsyncTimeout);
 
-        return await new ValuerChainer(Options, _engine)
+        return await new ValuerChainer(Options, _Engine)
             .EqualsAsync(
                 x,
                 y,

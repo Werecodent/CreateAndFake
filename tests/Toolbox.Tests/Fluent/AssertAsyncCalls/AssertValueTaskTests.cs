@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public static class AssertValueTaskTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -23,7 +23,7 @@ public static class AssertValueTaskTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertValueTask>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -32,7 +32,7 @@ public static class AssertValueTaskTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertValueTask>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

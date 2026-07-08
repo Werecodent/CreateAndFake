@@ -5,7 +5,7 @@ namespace CreateAndFake.Tests.ValuerTool.Engine;
 
 public static class ValuerChainerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -21,7 +21,7 @@ public static class ValuerChainerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<IValuerChainer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -30,7 +30,7 @@ public static class ValuerChainerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<IValuerChainer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 }

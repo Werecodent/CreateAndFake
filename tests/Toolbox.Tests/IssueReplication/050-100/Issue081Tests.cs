@@ -7,7 +7,7 @@ public static class Issue081Tests
     [Fact]
     internal static void Issue081_RandomizationIsSeeded()
     {
-        Tools.Gen.InitialSeed.Assert().IsNot(null);
+        Tools.Gen.InitialSeed.Assert().IsNotNull();
     }
 
     [Fact]

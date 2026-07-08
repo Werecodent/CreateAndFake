@@ -10,7 +10,7 @@ namespace CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertEnumerableTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -29,7 +29,7 @@ public static class AssertEnumerableTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertEnumerable>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -38,7 +38,7 @@ public static class AssertEnumerableTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertEnumerable>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

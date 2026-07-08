@@ -27,6 +27,6 @@ public static class TesterOptionsTests
     [Fact]
     internal static void TesterOptions_ModFormRandomizable()
     {
-        typeof(TesterMod).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(TesterMod).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 }

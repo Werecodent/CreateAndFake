@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.ExtractorTool.Engine;
 
 public static class ExtractorChainerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -23,7 +23,7 @@ public static class ExtractorChainerTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

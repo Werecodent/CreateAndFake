@@ -27,6 +27,6 @@ public static class FakerOptionsTests
     [Fact]
     internal static void FakerOptions_ModFormRandomizable()
     {
-        typeof(FakerMod).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(FakerMod).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 }

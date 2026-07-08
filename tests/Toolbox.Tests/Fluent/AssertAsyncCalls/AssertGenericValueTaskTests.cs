@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public static class AssertGenericValueTaskTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -24,7 +24,7 @@ public static class AssertGenericValueTaskTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertGenericValueTask<string>>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -33,7 +33,7 @@ public static class AssertGenericValueTaskTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertGenericValueTask<string>>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 }

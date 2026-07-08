@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.FakerTool.Proxy;
 
 public static class FakeMetaProviderTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -23,7 +23,7 @@ public static class FakeMetaProviderTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<FakeMetaProvider>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -32,7 +32,7 @@ public static class FakeMetaProviderTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<FakeMetaProvider>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

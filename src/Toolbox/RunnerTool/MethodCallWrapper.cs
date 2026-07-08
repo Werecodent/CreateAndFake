@@ -91,7 +91,7 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
             )
             {
                 canceler.ThrowIfCancellationRequested();
-                yield return diff;
+                yield return new Difference(".Method", diff);
             }
 
             await foreach (
@@ -101,7 +101,7 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
             )
             {
                 canceler.ThrowIfCancellationRequested();
-                yield return diff;
+                yield return new Difference(".Arg", diff);
             }
         }
         else

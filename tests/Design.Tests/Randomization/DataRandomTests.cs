@@ -42,7 +42,7 @@ public static class DataRandomTests
     {
         foreach (string item in DataRandom.SupportedProperties)
         {
-            testInstance.Find(item).Assert().IsNot(null);
+            testInstance.Find(item).Assert().IsNotNull();
         }
     }
 
@@ -52,31 +52,31 @@ public static class DataRandomTests
         testInstance
             .Find("_" + Tools.Gen.NextItem(DataRandom.SupportedProperties))
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Theory, RandomData]
     internal static void Find_NullWithMissingName(DataRandom testInstance, string name)
     {
-        testInstance.Find(name).Assert().Is(null);
+        testInstance.Find(name).Assert().IsNull();
     }
 
     [Theory, RandomData]
     internal static void Find_FieldNamesWork(DataRandom testInstance)
     {
         Type type = typeof(SampleNameData);
-        testInstance.Find(type.GetField(nameof(SampleNameData._firstName))).Assert().IsNot(null);
-        testInstance.Find(type.GetField(nameof(SampleNameData._lastName))).Assert().IsNot(null);
-        testInstance.Find(type.GetField(nameof(SampleNameData._bad))).Assert().Is(null);
+        testInstance.Find(type.GetField(nameof(SampleNameData._firstName))).Assert().IsNotNull();
+        testInstance.Find(type.GetField(nameof(SampleNameData._lastName))).Assert().IsNotNull();
+        testInstance.Find(type.GetField(nameof(SampleNameData._bad))).Assert().IsNull();
     }
 
     [Theory, RandomData]
     internal static void Find_PropertyNamesWork(DataRandom testInstance)
     {
         Type type = typeof(SampleNameData);
-        testInstance.Find(type.GetProperty(nameof(SampleNameData.FirstName))).Assert().IsNot(null);
-        testInstance.Find(type.GetProperty(nameof(SampleNameData.LastName))).Assert().IsNot(null);
-        testInstance.Find(type.GetProperty(nameof(SampleNameData.Bad))).Assert().Is(null);
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.FirstName))).Assert().IsNotNull();
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.LastName))).Assert().IsNotNull();
+        testInstance.Find(type.GetProperty(nameof(SampleNameData.Bad))).Assert().IsNull();
     }
 
     private sealed class SampleNameData

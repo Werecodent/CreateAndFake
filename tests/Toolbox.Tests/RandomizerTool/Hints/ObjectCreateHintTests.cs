@@ -30,7 +30,7 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
         ParentLoopSample sample2
     )
     {
-        sample1.Assert().IsNot(null);
-        sample2.Assert().IsNot(null);
+        sample1.Assert().IsNotNull();
+        sample2.Assert().IsNotNull();
     }
 }

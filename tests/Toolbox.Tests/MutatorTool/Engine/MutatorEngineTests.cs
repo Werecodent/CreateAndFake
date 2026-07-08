@@ -24,8 +24,8 @@ public static class MutatorEngineTests
     [Theory, RandomData]
     internal static void Variant_AcceptsNull(string value)
     {
-        Tools.Mutator.Variant<string>(null).Assert().IsNot(null);
-        Tools.Mutator.Variant(value, null).Assert().IsNot(value).And.IsNot(null);
+        Tools.Mutator.Variant<string>(null).Assert().IsNotNull();
+        Tools.Mutator.Variant(value, null).Assert().IsNot(value).And.IsNotNull();
     }
 
     [Theory, RandomData]
@@ -80,7 +80,7 @@ public static class MutatorEngineTests
         )
             .Variant(sample)
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
 
         fakeValuer.Assert().Called();
     }
@@ -106,7 +106,7 @@ public static class MutatorEngineTests
         )
             .VariantOf([sample1, sample2])
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
 
         fakeValuer.Assert().Called();
     }
@@ -114,8 +114,8 @@ public static class MutatorEngineTests
     [Theory, RandomData]
     internal static void Unique_AcceptsNull(string value)
     {
-        Tools.Mutator.Unique<string>(null).Assert().IsNot(null);
-        Tools.Mutator.Unique(value, null).Assert().IsNot(value).And.IsNot(null);
+        Tools.Mutator.Unique<string>(null).Assert().IsNotNull();
+        Tools.Mutator.Unique(value, null).Assert().IsNot(value).And.IsNotNull();
     }
 
     [Theory, RandomData]
@@ -159,7 +159,7 @@ public static class MutatorEngineTests
         )
             .Unique(sample)
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Theory, RandomData]
@@ -183,7 +183,7 @@ public static class MutatorEngineTests
         )
             .UniqueOf([sample1, sample2])
             .Assert()
-            .IsNot(null);
+            .IsNotNull();
     }
 
     [Theory, RandomData]

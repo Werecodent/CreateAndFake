@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Reiteration;
 
@@ -31,7 +32,7 @@ public sealed class LimiterTypeConverter : TypeConverter
         else
         {
             throw new ArgumentException(
-                $"Cannot convert {nameof(Limiter)} from type: {value?.GetType()}",
+                $"Cannot convert {nameof(Limiter)} from type: '{GenericConverter.ExpandName(value)}'",
                 nameof(value)
             );
         }
@@ -54,6 +55,16 @@ public sealed class LimiterTypeConverter : TypeConverter
         Type destinationType
     )
     {
-        return ((Limiter?)value)?.ToString();
+        if (value is Limiter limiter)
+        {
+            return limiter.ToString();
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Can only convert {nameof(Limiter)}s, not type: '{GenericConverter.ExpandName(value)}'",
+                nameof(value)
+            );
+        }
     }
 }

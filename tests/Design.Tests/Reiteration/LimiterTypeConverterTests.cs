@@ -5,7 +5,7 @@ namespace CreateAndFake.Design.Tests.Reiteration;
 
 public class LimiterTypeConverterTests
 {
-    private static readonly FrozenSet<Type> ignorableExceptions =
+    private static readonly FrozenSet<Type> _IgnorableExceptions =
     [
         typeof(FormatException),
         typeof(ArgumentException),
@@ -13,12 +13,14 @@ public class LimiterTypeConverterTests
         typeof(ArgumentOutOfRangeException),
     ];
 
+    private static readonly LimiterTypeConverter _TestInstance = new();
+
     [Fact]
     public Task LimiterTypeConverter_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<LimiterTypeConverter>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = ignorableExceptions }
+            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
     }
 
@@ -27,7 +29,32 @@ public class LimiterTypeConverterTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<LimiterTypeConverter>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = ignorableExceptions }
+            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
+    }
+
+    [Theory, RandomData]
+    public void ConvertFrom_Tries(int tries)
+    {
+        _TestInstance.CanConvertFrom(typeof(int)).Assert().Is(true);
+        _TestInstance.ConvertFrom(Math.Abs(tries)).Assert().Is(new Limiter(Math.Abs(tries)));
+    }
+
+    [Theory, RandomData]
+    public void ConvertFrom_ConvertToRoundtrip(Limiter limiter)
+    {
+        _TestInstance.CanConvertTo(typeof(string)).Assert().Is(true);
+        _TestInstance.CanConvertFrom(typeof(string)).Assert().Is(true);
+
+        string result = (string)_TestInstance.ConvertTo(limiter, typeof(string));
+
+        _TestInstance.ConvertFrom(result).Assert().Is(limiter);
+    }
+
+    [Theory, RandomData]
+    public void ConvertTo_InvalidTypesThrow(object item)
+    {
+        _TestInstance.Assert(t => t.ConvertTo(item, typeof(string))).Throws<ArgumentException>();
+        _TestInstance.Assert(t => t.ConvertFrom(item)).Throws<ArgumentException>();
     }
 }

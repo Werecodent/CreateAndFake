@@ -7,7 +7,7 @@ namespace CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterTests
 {
-    private static readonly FrozenSet<Type> ignorableExceptions =
+    private static readonly FrozenSet<Type> _IgnorableExceptions =
     [
         typeof(ArgumentOutOfRangeException),
         typeof(TimeoutException),
@@ -20,7 +20,7 @@ public static class LimiterTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             Limiter.Few,
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = ignorableExceptions }
+            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
     }
 
@@ -30,7 +30,7 @@ public static class LimiterTests
         return Tools.Tester.PreventsParameterMutationAsync(
             Limiter.Few,
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = ignorableExceptions }
+            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
     }
 

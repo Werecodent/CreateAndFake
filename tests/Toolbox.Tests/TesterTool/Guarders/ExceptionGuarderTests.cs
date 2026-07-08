@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class ExceptionGuarderTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IncludeInternals = false,
@@ -20,7 +20,7 @@ public static class ExceptionGuarderTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<ExceptionGuarder>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

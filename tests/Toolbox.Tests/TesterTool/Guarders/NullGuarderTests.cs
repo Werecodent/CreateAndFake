@@ -10,7 +10,7 @@ namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class NullGuarderTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnoreAllExceptions = true,
@@ -42,7 +42,7 @@ public static class NullGuarderTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -52,7 +52,7 @@ public static class NullGuarderTests
         return Tools.Tester.PreventsParameterMutationAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

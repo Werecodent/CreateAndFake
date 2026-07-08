@@ -52,7 +52,7 @@ public static class FakerEngineTests
     {
         Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>();
         sample.Dummy.Value1.Assert().Is(0);
-        sample.Dummy.Value2.Assert().Is(null);
+        sample.Dummy.Value2.Assert().IsNull();
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public static class FakerEngineTests
             text,
         ]);
 
-        sample.Dummy.Sample1.Text.Assert().Is(null);
+        sample.Dummy.Sample1.Text.Assert().IsNull();
         sample.Dummy.Sample2.Assert(s => s.Calc()).Throws<FakeCallException>();
         sample.Dummy.Value1.Assert().Is(num);
         sample.Dummy.Value2.Assert().Is(text);

@@ -27,6 +27,6 @@ public static class ValuerOptionsTests
     [Fact]
     internal static void ValuerOptions_ModFormRandomizable()
     {
-        typeof(ValuerMod).Tools().CreateRandomInstance().Assert().IsNot(null);
+        typeof(ValuerMod).Tools().CreateRandomInstance().Assert().IsNotNull();
     }
 }

@@ -32,7 +32,7 @@ public static class CustomLockTests
     [Fact]
     internal static void CustomLock_VerifyValueEquality()
     {
-        Tools.Tester.VerifyValueEquality(typeof(CustomLock));
+        Tools.Tester.VerifyValueEquality<CustomLock>();
     }
 
     [Fact]

@@ -7,7 +7,7 @@ namespace CreateAndFake.Tests.FakerTool;
 
 public static class FakerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidOperationException)],
@@ -18,7 +18,7 @@ public static class FakerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Faker>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -69,6 +69,6 @@ public static class FakerTests
         Injected<FakeHolderSample> sample = Tools.Faker.InjectStubs<FakeHolderSample>();
 
         sample.Dummy.Sample1.Calc().Assert().Is(0);
-        sample.Dummy.Sample2.Text.Assert().Is(null);
+        sample.Dummy.Sample2.Text.Assert().IsNull();
     }
 }

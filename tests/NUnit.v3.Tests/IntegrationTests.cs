@@ -26,6 +26,6 @@ public static class IntegrationTests
     [RandomData]
     public static void Issue118_FixesStubTypeRandomData([Stub] Type type)
     {
-        type.Assert().IsNot(null);
+        type.Assert().IsNotNull();
     }
 }

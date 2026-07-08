@@ -4,7 +4,7 @@ namespace CreateAndFake.Tests.Fluent;
 
 public static class ToolingExtensionsTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(ToolException)],
@@ -16,7 +16,7 @@ public static class ToolingExtensionsTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ToolingExtensions),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -26,7 +26,7 @@ public static class ToolingExtensionsTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ToolingExtensions),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 }

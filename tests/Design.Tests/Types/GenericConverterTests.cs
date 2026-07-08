@@ -74,7 +74,7 @@ public static class GenericConverterTests
     [Fact]
     internal static void AsGenericBase_NullForNonGeneric()
     {
-        GenericConverter.AsGenericBase(typeof(string)).Assert().Is(null);
+        GenericConverter.AsGenericBase(typeof(string)).Assert().IsNull();
     }
 
     [Theory, RandomData]

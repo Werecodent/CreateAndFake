@@ -12,7 +12,7 @@ namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class MutationGuarderTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IncludeInternals = false,
@@ -51,7 +51,7 @@ public static class MutationGuarderTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             _ShortTestInstance,
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

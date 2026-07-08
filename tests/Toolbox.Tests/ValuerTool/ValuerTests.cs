@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.ValuerTool;
 
 public static class ValuerTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions =
@@ -24,7 +24,7 @@ public static class ValuerTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Valuer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -33,7 +33,7 @@ public static class ValuerTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Valuer>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -79,7 +79,7 @@ public static class ValuerTests
     [Theory, RandomData]
     internal static void Compare_NullableWorks(int? item)
     {
-        item.Assert().IsNot(null);
+        item.Assert().IsNotNull();
         item.Tools().Variant().Assert().IsNot(item);
         item.Tools().Copy().Assert().Is(item);
 

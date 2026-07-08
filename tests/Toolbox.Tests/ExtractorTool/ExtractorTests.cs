@@ -6,7 +6,7 @@ namespace CreateAndFake.Tests.ExtractorTool;
 
 public static class ExtractorTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(ToolException)],
@@ -17,7 +17,7 @@ public static class ExtractorTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Extractor>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -26,7 +26,7 @@ public static class ExtractorTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<Extractor>(
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 

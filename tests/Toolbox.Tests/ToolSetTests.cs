@@ -21,6 +21,6 @@ public static class ToolSetTests
     [Fact]
     internal static void ToolSet_Creatable()
     {
-        ToolSet.CreateViaSeed(0).Assert().IsNot(null);
+        ToolSet.CreateViaSeed(0).Assert().IsNotNull();
     }
 }

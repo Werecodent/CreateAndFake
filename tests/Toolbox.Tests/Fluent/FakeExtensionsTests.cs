@@ -2,7 +2,7 @@ namespace CreateAndFake.Tests.Fluent;
 
 public static class FakeExtensionsTests
 {
-    private static readonly TesterMod config = opt =>
+    private static readonly TesterMod _Config = opt =>
         opt with
         {
             IgnorableExceptions = [typeof(InvalidOperationException), typeof(InvalidCastException)],
@@ -14,7 +14,7 @@ public static class FakeExtensionsTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 
@@ -24,7 +24,7 @@ public static class FakeExtensionsTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(FakeExtensions),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
     }
 }

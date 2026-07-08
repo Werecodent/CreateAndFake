@@ -25,6 +25,7 @@ public abstract class ValueRandom(
             new DecimalValueHandler(),
             new TimeSpanValueHandler(),
             new DateTimeValueHandler(),
+            new BigIntegerValueHandler(),
             new DateTimeOffsetValueHandler(),
             new IntegralValueHandler<char>(2, BitConverter.ToChar),
             new IntegralValueHandler<int>(4, BitConverter.ToInt32),
@@ -37,6 +38,7 @@ public abstract class ValueRandom(
             new IntegralValueHandler<sbyte>(1, (bytes, _) => (sbyte)bytes[0]),
             DateOnlyValueHandler.TryToCreate(),
             TimeOnlyValueHandler.TryToCreate(),
+            HalfValueHandler.TryToCreate(),
             RuneValueHandler.TryToCreate(),
         ])
         .OfType<IValueHandler>();
@@ -89,7 +91,7 @@ public abstract class ValueRandom(
     /// <inheritdoc/>
     public object Next(Type valueType)
     {
-        if (valueType != null && _HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
+        if (valueType is not null && _HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
             return gen.CreateSupported(this);
         }
