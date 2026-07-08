@@ -1,8 +1,10 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handles randomizing DateOnly values.</summary>
+[ExcludeFromCreateAndFake]
 internal sealed class DateOnlyValueHandler : IValueHandler
 {
     /// <summary>Number of days from 1/1/0001 to 12/31/9999.</summary>

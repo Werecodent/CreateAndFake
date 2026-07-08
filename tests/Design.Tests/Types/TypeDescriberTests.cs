@@ -1,5 +1,6 @@
 using System.Reflection;
 using CreateAndFake.Design.Comparisons;
+using CreateAndFake.Design.Randomization.Handlers;
 using CreateAndFake.Design.Types;
 using CreateAndFake.Samples.Scenarios;
 using CreateAndFake.ValuerTool;
@@ -203,6 +204,16 @@ public static class TypeDescriberTests
             .FindLoadedSubclasses()
             .Assert()
             .Contains(typeof(ValueComparer));
+    }
+
+    [Fact]
+    internal static void FindLoadedSubclasses_ExcludesExclusionAttribute()
+    {
+        TypeDescriber
+            .For<ITypeSupporter>()
+            .FindLoadedSubclasses()
+            .Assert()
+            .ContainsNot(typeof(RuneValueHandler));
     }
 }
 

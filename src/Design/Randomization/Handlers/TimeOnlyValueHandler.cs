@@ -1,8 +1,10 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handles randomizing TimeOnly values.</summary>
+[ExcludeFromCreateAndFake]
 internal sealed class TimeOnlyValueHandler : IValueHandler
 {
     /// <summary>Number of ticks in a day.</summary>

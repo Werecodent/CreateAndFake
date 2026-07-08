@@ -113,7 +113,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
             if (timedOut)
             {
                 throw new TimeoutException(
-                    $"Attempting to run method '{data.Method.Name}' timed out: {timeout}"
+                    $"Attempting to run method '{GenericConverter.BuildTestName(data.Method)}' timed out: {timeout}"
                 );
             }
         }
@@ -222,7 +222,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             return null;
         }
-        else if (param.GetCustomAttributes<BaseFakeAttribute>()?.Any() ?? false)
+        else if (Attribute.IsDefined(param, typeof(BaseFakeAttribute)))
         {
             return (
                 (Fake)
@@ -231,7 +231,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                     )!
             ).Dummy;
         }
-        else if (param.GetCustomAttributes<BaseStubAttribute>()?.Any() ?? false)
+        else if (Attribute.IsDefined(param, typeof(BaseStubAttribute)))
         {
             if (
                 localOptions.InheritIReflectableTypeOnFakedType
@@ -245,7 +245,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 return localOptions.Faker.Stub(param.ParameterType).Dummy;
             }
         }
-        else if (param.GetCustomAttributes<BaseSizeAttribute>()?.Any() ?? false)
+        else if (Attribute.IsDefined(param, typeof(BaseSizeAttribute)))
         {
             int size = param.GetCustomAttribute<BaseSizeAttribute>()!.Count;
             return localOptions.Randomizer.Create(

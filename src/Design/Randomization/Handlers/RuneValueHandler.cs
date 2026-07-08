@@ -1,10 +1,12 @@
 using System.Reflection;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Randomization.Handlers;
 
 #pragma warning disable CA2263 // Not available in all .NET versions.
 
 /// <summary>Handles randomizing Rune values.</summary>
+[ExcludeFromCreateAndFake]
 internal sealed class RuneValueHandler : IValueHandler
 {
     /// <summary>Rune factory using underlying <see langword="int"/> value.</summary>

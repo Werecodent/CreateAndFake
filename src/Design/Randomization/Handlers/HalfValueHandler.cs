@@ -1,9 +1,11 @@
 using System.Globalization;
 using System.Reflection;
+using CreateAndFake.Design.Content;
 
 namespace CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handles randomizing Half values.</summary>
+[ExcludeFromCreateAndFake]
 internal sealed class HalfValueHandler : IValueHandler
 {
     private const float _MinHalf = -65504;

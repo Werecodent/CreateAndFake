@@ -475,7 +475,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
         if (!notFound)
         {
             throw new AssertException(
-                $"Expected collection to contain '{content}' but didn't.",
+                $"Expected collection to not contain '{content}' but did.",
                 details,
                 localOptions.Gen.InitialSeed,
                 contents.ToString()

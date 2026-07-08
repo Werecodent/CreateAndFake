@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Types;
@@ -14,6 +15,7 @@ public sealed class TypeDescriber : ITypeSupporter
         .Where(a => !a.ReflectionOnly)
         .Where(a => !a.IsDynamic)
         .SelectMany(ScopeChecker.FindLoadedTypes)
+        .Where(t => !Attribute.IsDefined(t, typeof(ExcludeFromCreateAndFakeAttribute)))
         .ToFrozenSet();
 
     /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
