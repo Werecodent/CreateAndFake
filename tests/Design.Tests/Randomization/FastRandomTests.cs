@@ -57,7 +57,7 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
     [Fact]
     internal static void NextSequence_SizeCapped()
     {
-        static IEnumerable<int> Generate(int count)
+        static IEnumerable<int> generate(int count)
         {
             for (int i = 0; i < count; i++)
             {
@@ -66,7 +66,7 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
         }
 
         FastRandom gen = new(2);
-        gen.NextSequence(Generate(2)).Assert().HasCount(2);
-        gen.Assert(g => g.NextSequence(Generate(3)).Count()).Throws<IterationLimitException>();
+        gen.NextSequence(generate(2)).Assert().HasCount(2);
+        gen.Assert(g => g.NextSequence(generate(3)).Count()).Throws<IterationLimitException>();
     }
 }

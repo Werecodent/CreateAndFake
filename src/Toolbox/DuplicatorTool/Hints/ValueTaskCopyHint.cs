@@ -17,7 +17,7 @@ public sealed class ValueTaskCopyHint : CopyHint
         + " as resolving a ValueTask multiple times results in undefined behavior.";
 
     private static readonly MethodInfo _GenericTaskCloner = typeof(ValueTaskCopyHint).GetMethod(
-        nameof(CloneTask),
+        nameof(CloneTaskAsync),
         BindingFlags.NonPublic | BindingFlags.Static
     )!;
 
@@ -43,7 +43,7 @@ public sealed class ValueTaskCopyHint : CopyHint
 
         if (source is ValueTask task)
         {
-            return new(ClonePlainTask(task));
+            return new(ClonePlainTaskAsync(task));
         }
         else if (genericType == typeof(ValueTask<>))
         {
@@ -67,7 +67,7 @@ public sealed class ValueTaskCopyHint : CopyHint
         }
     }
 
-    private static ValueTask ClonePlainTask(ValueTask task)
+    private static ValueTask ClonePlainTaskAsync(ValueTask task)
     {
         SingleCallValueTaskSource? source = SingleCallValueTaskSource.ExtractFrom(task);
         if (source != null)
@@ -83,7 +83,7 @@ public sealed class ValueTaskCopyHint : CopyHint
         }
     }
 
-    private static ValueTask<T> CloneTask<T>(ValueTask<T> task, IDuplicatorChainer duplicator)
+    private static ValueTask<T> CloneTaskAsync<T>(ValueTask<T> task, IDuplicatorChainer duplicator)
     {
         SingleCallValueTaskSource<T>? source = SingleCallValueTaskSource<T>.ExtractFrom(task);
         if (source != null)

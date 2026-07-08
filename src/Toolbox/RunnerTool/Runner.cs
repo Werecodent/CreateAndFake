@@ -92,7 +92,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             task = Task.Run(
                 () =>
-                    Unwrapper.UnwrapResult(
+                    Unwrapper.UnwrapResultAsync(
                         () => data.InvokeOn(instance),
                         localOptions,
                         timeoutTokenSource.Token

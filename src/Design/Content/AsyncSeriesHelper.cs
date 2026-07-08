@@ -196,7 +196,7 @@ public static class AsyncSeriesHelper
     /// <returns>An empty asynchronous series.</returns>
     /// <inheritdoc cref="CreateFromAsync{T}"/>
     /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
-    public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
+    public static async IAsyncEnumerable<T> CreateCancelingIterationAsync<T>(
         CancellationTokenSource source
     )
     {
@@ -210,8 +210,8 @@ public static class AsyncSeriesHelper
     ///     triggers cancellation via the <paramref name="source"/> after the first yielded value.
     /// </summary>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
-    /// <inheritdoc cref="CreateCancelingIteration{T}(CancellationTokenSource)"/>
-    public static async IAsyncEnumerable<T> CreateCancelingIteration<T>(
+    /// <inheritdoc cref="CreateCancelingIterationAsync{T}(CancellationTokenSource)"/>
+    public static async IAsyncEnumerable<T> CreateCancelingIterationAsync<T>(
         IEnumerable<T> collection,
         CancellationTokenSource source
     )

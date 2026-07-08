@@ -2,6 +2,7 @@
 
 # Cleaner calls.
 dotnet_diagnostic.CA1068.severity = None
+dotnet_diagnostic.VSTHRD200.severity = None
 
 # Cleaner project organization.
 dotnet_diagnostic.IDE0130.severity = None

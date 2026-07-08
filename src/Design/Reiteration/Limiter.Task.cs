@@ -8,7 +8,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task RepeatAsync(string message, Task? behavior, CancellationToken canceler)
     {
-        return RepeatAsync(message, ToGeneric(behavior), canceler);
+        return RepeatAsync(message, ToGenericAsync(behavior), canceler);
     }
 
     /// <inheritdoc/>
@@ -47,7 +47,7 @@ public sealed partial class Limiter : ILimiterTask
         CancellationToken canceler
     )
     {
-        return StallUntilAsync(message, ToGeneric(behavior), checkState, canceler);
+        return StallUntilAsync(message, ToGenericAsync(behavior), checkState, canceler);
     }
 
     /// <inheritdoc/>
@@ -58,7 +58,7 @@ public sealed partial class Limiter : ILimiterTask
         CancellationToken canceler
     )
     {
-        return StallUntilAsync(message, ToGeneric(behavior), checkState, canceler);
+        return StallUntilAsync(message, ToGenericAsync(behavior), checkState, canceler);
     }
 
     /// <inheritdoc/>
@@ -172,7 +172,7 @@ public sealed partial class Limiter : ILimiterTask
     )
         where TError : Exception
     {
-        return RetryAsync<TError, bool>(message, ToGeneric(behavior), resetState, canceler);
+        return RetryAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
     }
 
     /// <inheritdoc/>
@@ -184,7 +184,7 @@ public sealed partial class Limiter : ILimiterTask
     )
         where TError : Exception
     {
-        return RetryAsync<TError, bool>(message, ToGeneric(behavior), resetState, canceler);
+        return RetryAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
     }
 
     /// <inheritdoc/>
@@ -336,7 +336,7 @@ public sealed partial class Limiter : ILimiterTask
     )
         where TError : Exception
     {
-        return AttemptAsync<TError, bool>(message, ToGeneric(behavior), resetState, canceler);
+        return AttemptAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
     }
 
     /// <inheritdoc/>
@@ -348,7 +348,7 @@ public sealed partial class Limiter : ILimiterTask
     )
         where TError : Exception
     {
-        return AttemptAsync<TError, bool>(message, ToGeneric(behavior), resetState, canceler);
+        return AttemptAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
     }
 
     /// <inheritdoc/>
@@ -455,7 +455,7 @@ public sealed partial class Limiter : ILimiterTask
         return default;
     }
 
-    private static async Task<bool> ToGeneric(Task? behavior)
+    private static async Task<bool> ToGenericAsync(Task? behavior)
     {
         if (behavior != null)
         {

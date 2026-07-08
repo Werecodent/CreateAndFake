@@ -12,7 +12,7 @@ internal static class Unwrapper
     /// <param name="options">Configured options to apply to this call.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The unwrapped result.</returns>
-    internal static async Task<object?> UnwrapResult(
+    internal static async Task<object?> UnwrapResultAsync(
         Func<object?> call,
         RunnerOptions options,
         CancellationToken canceler
@@ -27,7 +27,7 @@ internal static class Unwrapper
             || describer.Inherits(typeof(ValueTask<>))
         )
         {
-            result = await UnwrapTask(result!).ConfigureAwait(false);
+            result = await UnwrapTaskAsync(result!).ConfigureAwait(false);
         }
 
         if (result == null)
@@ -68,7 +68,7 @@ internal static class Unwrapper
     /// <summary>Ensures the result is completed.</summary>
     /// <param name="result">Potentially wrapped data.</param>
     /// <returns>The unwrapped result.</returns>
-    private static async Task<object?> UnwrapTask(object result)
+    private static async Task<object?> UnwrapTaskAsync(object result)
     {
         Type resultType = result.GetType();
         if (

@@ -17,32 +17,54 @@ dotnet_code_quality.CA1062.null_check_validation_methods = CreateAndFake.Design.
 
 #### Naming styles: ####
 
-# Define the 'private_fields' symbol group:
+# Define naming styles:
+dotnet_naming_style.underscored_camel.required_prefix = _
+dotnet_naming_style.underscored_camel.capitalization = camel_case
+
+dotnet_naming_style.underscored_pascal.required_prefix = _
+dotnet_naming_style.underscored_pascal.capitalization = pascal_case
+
+dotnet_naming_style.underscored_i.required_prefix = I
+dotnet_naming_style.underscored_i.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.camel_case.capitalization = camel_case
+
+# Define symbol groups:
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 
-# Define the 'private_static_fields' symbol group
 dotnet_naming_symbols.private_static_fields.applicable_kinds = field
 dotnet_naming_symbols.private_static_fields.applicable_accessibilities = private
 dotnet_naming_symbols.private_static_fields.required_modifiers = static
 
-# Define the 'underscored_camel' naming style
-dotnet_naming_style.underscored_camel.capitalization = camel_case
-dotnet_naming_style.underscored_camel.required_prefix = _
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
 
-# Define the 'underscored_pascal' naming style
-dotnet_naming_style.underscored_pascal.capitalization = pascal_case
-dotnet_naming_style.underscored_pascal.required_prefix = _
+dotnet_naming_symbols.structures.applicable_kinds = class, struct, interface, enum, property, event, method, type_parameter
 
-# Define the 'private_fields_prefix' naming rule
+dotnet_naming_symbols.locals.applicable_kinds = parameters, local, local_function
+
+# Define naming rules:
 dotnet_naming_rule.private_fields_prefix.symbols = private_fields
 dotnet_naming_rule.private_fields_prefix.style = underscored_camel
 dotnet_naming_rule.private_fields_prefix.severity = warning
 
-# Define the 'private_static_fields_none' naming rule
 dotnet_naming_rule.private_static_fields_prefix.symbols = private_static_fields
 dotnet_naming_rule.private_static_fields_prefix.style = underscored_pascal
 dotnet_naming_rule.private_static_fields_prefix.severity = warning
+
+dotnet_naming_rule.interfaces_prefix.symbols = interfaces
+dotnet_naming_rule.interfaces_prefix.style = begins_with_i
+dotnet_naming_rule.interfaces_prefix.severity = warning
+
+dotnet_naming_rule.structures_casing.symbols = structures
+dotnet_naming_rule.structures_casing.style = pascal_case
+dotnet_naming_rule.structures_casing.severity = warning
+
+dotnet_naming_rule.locals_casing.symbols = locals
+dotnet_naming_rule.locals_casing.style = camel_case
+dotnet_naming_rule.locals_casing.severity = warning
 
 #### Analyzer Overrides ####
 
@@ -118,10 +140,6 @@ dotnet_diagnostic.MA0089.severity = None
 
 # Specifically for Visual Studio extensions and don't apply to this library.
 dotnet_diagnostic.VSTHRD003.severity = None
-
-# TODO: Async suffix design for fluent to be determined later.
-dotnet_diagnostic.VSTHRD200.severity = None
-dotnet_diagnostic.AsyncFixer06.severity = None
 
 # TODO: Documentation work.
 dotnet_diagnostic.RCS1228.severity = None

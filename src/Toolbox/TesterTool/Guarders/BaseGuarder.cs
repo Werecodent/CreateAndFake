@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 using CreateAndFake.RunnerTool;
 
@@ -116,7 +116,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             }
             finally
             {
-                await DisposeAllButInjected(data).ConfigureAwait(false);
+                await DisposeAllButInjectedAsync(data).ConfigureAwait(false);
             }
         }
     }
@@ -128,6 +128,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="data">Call to invoke and test.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Returned result from the call.</returns>
+    /// <exception cref="TesterFailureException">If running <paramref name="data"/> created an exception.</exception>
     protected async Task<object?> RunCheckAsync(
         MethodBase testOrigin,
         ParameterInfo? testParam,
@@ -147,23 +148,28 @@ internal abstract class BaseGuarder(TesterOptions options)
         }
         else if (!HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
         {
-            ExceptionDispatchInfo.Capture((Exception)result.Result!).Throw();
+            throw new TesterFailureException(
+                $"Encountered exception when testing '{GenericConverter.BuildTestName(testOrigin)}'"
+                    + $" when running '{GenericConverter.BuildTestName(data.Method)}'.",
+                (Exception)result.Result!
+            );
+            // ExceptionDispatchInfo.Capture((Exception)result.Result!).Throw();
         }
         return null;
     }
 
     /// <summary>Checks data for disposables and disposes them.</summary>
     /// <param name="data">Data to check and dispose.</param>
-    protected async Task DisposeAllButInjected(object? data)
+    protected async Task DisposeAllButInjectedAsync(object? data)
     {
         if (data is IDictionary asDict)
         {
-            await DisposeAllButInjected(asDict.Keys).ConfigureAwait(false);
-            await DisposeAllButInjected(asDict.Values).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(asDict.Keys).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(asDict.Values).ConfigureAwait(false);
         }
         else if (data is IEnumerable asEnum)
         {
-            await DisposeAllButInjected(asEnum).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(asEnum).ConfigureAwait(false);
         }
         else if (!Options.InjectionValues.Any(v => ReferenceEquals(data, v)))
         {
@@ -173,7 +179,7 @@ internal abstract class BaseGuarder(TesterOptions options)
 
     /// <summary>Checks data for disposables and disposes them.</summary>
     /// <param name="data">Data to check and dispose.</param>
-    protected async Task DisposeAllButInjected(IEnumerable? data)
+    protected async Task DisposeAllButInjectedAsync(IEnumerable? data)
     {
         if (data is not null and not string)
         {

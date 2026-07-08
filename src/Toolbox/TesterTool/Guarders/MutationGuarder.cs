@@ -189,9 +189,9 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         finally
         {
             await AsyncSeriesHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
-            await DisposeAllButInjected(data?.Args).ConfigureAwait(false);
-            await DisposeAllButInjected(copy?.Args).ConfigureAwait(false);
-            await DisposeAllButInjected(result).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(data?.Args).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(copy?.Args).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(result).ConfigureAwait(false);
         }
     }
 

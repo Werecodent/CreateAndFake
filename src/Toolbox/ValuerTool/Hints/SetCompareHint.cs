@@ -113,7 +113,7 @@ public sealed class SetCompareHint : CompareHint
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        async Task<Dictionary<int, List<object>>> byHashes(IEnumerable set)
+        async Task<Dictionary<int, List<object>>> byHashesAsync(IEnumerable set)
         {
             Dictionary<int, List<object>> result = [];
             foreach (object item in set)
@@ -134,7 +134,7 @@ public sealed class SetCompareHint : CompareHint
             return result;
         }
 
-        async IAsyncEnumerable<object> findMissing(
+        async IAsyncEnumerable<object> findMissingAsync(
             Dictionary<int, List<object>> set,
             Dictionary<int, List<object>> other
         )
@@ -168,12 +168,13 @@ public sealed class SetCompareHint : CompareHint
             }
         }
 
-        Dictionary<int, List<object>> expectedByHash = await byHashes(expected)
+        Dictionary<int, List<object>> expectedByHash = await byHashesAsync(expected)
             .ConfigureAwait(false);
-        Dictionary<int, List<object>> actualByHash = await byHashes(actual).ConfigureAwait(false);
+        Dictionary<int, List<object>> actualByHash = await byHashesAsync(actual)
+            .ConfigureAwait(false);
 
         await foreach (
-            object item in findMissing(expectedByHash, actualByHash)
+            object item in findMissingAsync(expectedByHash, actualByHash)
                 .WithCancellation(canceler)
                 .ConfigureAwait(false)
         )
@@ -182,7 +183,7 @@ public sealed class SetCompareHint : CompareHint
         }
 
         await foreach (
-            object item in findMissing(expectedByHash, actualByHash)
+            object item in findMissingAsync(expectedByHash, actualByHash)
                 .WithCancellation(canceler)
                 .ConfigureAwait(false)
         )

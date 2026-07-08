@@ -34,7 +34,7 @@ public sealed class ValueTaskCreateHint : CreateHint
         else if (asGeneric == typeof(ValueTask<>))
         {
             object content = randomizer.Create(type.GetGenericArguments().Single());
-            return new(CreateValueTask((dynamic)content, randomizer));
+            return new(CreateValueTaskAsync((dynamic)content, randomizer));
         }
         else
         {
@@ -42,7 +42,7 @@ public sealed class ValueTaskCreateHint : CreateHint
         }
     }
 
-    private static ValueTask<T> CreateValueTask<T>(T content, IRandomizerChainer randomizer)
+    private static ValueTask<T> CreateValueTaskAsync<T>(T content, IRandomizerChainer randomizer)
     {
         return new ValueTask<T>(CreateSource(content), randomizer.Create<short>());
     }

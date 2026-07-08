@@ -315,11 +315,11 @@ public static class LimiterAsyncTests
     [Theory, RandomData]
     internal static async Task RepeatAsync_ResultsValid(List<int> data)
     {
-        int AttemptAsync = 0;
+        int attemptAsync = 0;
 
         (
             await new Limiter(data.Count)
-                .RepeatAsync("", () => data[AttemptAsync++], TestContext.Current.CancellationToken)
+                .RepeatAsync("", () => data[attemptAsync++], TestContext.Current.CancellationToken)
                 .Assert()
                 .HasResultAsync(TestContext.Current.CancellationToken)
                 .GetResultValue()
@@ -331,12 +331,12 @@ public static class LimiterAsyncTests
     [Theory, RandomData]
     internal static async Task StallUntilAsync_ResultsValid(List<int> data)
     {
-        int AttemptAsync = 0;
+        int attemptAsync = 0;
         (
             await new Limiter(data.Count).StallUntilAsync(
                 "",
-                () => data[AttemptAsync++],
-                () => AttemptAsync == data.Count,
+                () => data[attemptAsync++],
+                () => attemptAsync == data.Count,
                 TestContext.Current.CancellationToken
             )
         )
@@ -491,7 +491,7 @@ public static class LimiterAsyncTests
         int resetAttemptAsync = 0;
 
         int result = Tools.Randomizer.Create<int>();
-        int ResetBehavior()
+        int resetBehavior()
         {
             return (++attemptAsync == tries) ? result : throw exception;
         }
@@ -500,7 +500,7 @@ public static class LimiterAsyncTests
             await new Limiter(tries)
                 .RetryAsync(
                     "",
-                    ResetBehavior,
+                    resetBehavior,
                     () => resetAttemptAsync++,
                     TestContext.Current.CancellationToken
                 )
@@ -576,26 +576,26 @@ public static class LimiterAsyncTests
     internal static async Task AttemptAsync_ReturnResetStateBehavior(int tries)
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
-        int AttemptAsync = 0;
+        int attemptAsync = 0;
         int resetAttemptAsync = 0;
 
         int result = Tools.Randomizer.Create<int>();
-        int ResetBehavior()
+        int resetBehavior()
         {
-            return (++AttemptAsync == tries) ? result : throw exception;
+            return (++attemptAsync == tries) ? result : throw exception;
         }
 
         (
             await new Limiter(tries).AttemptAsync(
                 "",
-                ResetBehavior,
+                resetBehavior,
                 () => resetAttemptAsync++,
                 TestContext.Current.CancellationToken
             )
         )
             .Assert()
             .Is(result)
-            .Also(AttemptAsync)
+            .Also(attemptAsync)
             .Is(tries)
             .Also(resetAttemptAsync)
             .Is(tries - 1);

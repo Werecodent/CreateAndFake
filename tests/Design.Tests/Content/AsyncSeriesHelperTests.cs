@@ -96,7 +96,10 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source = new();
 
         await AsyncSeriesHelper
-            .HasAnyAsync(AsyncSeriesHelper.CreateCancelingIteration<string>(source), source.Token)
+            .HasAnyAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
+                source.Token
+            )
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
@@ -162,7 +165,7 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncSeriesHelper.CreateCancelingIteration<string>(source),
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
                 10,
                 source.Token,
                 _ => { }
@@ -173,7 +176,7 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source2 = new();
         await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncSeriesHelper.CreateCancelingIteration<string>(source2),
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source2),
                 10,
                 source.Token,
                 _ => Task.CompletedTask
@@ -190,7 +193,7 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncSeriesHelper.CreateCancelingIteration(data, source),
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source),
                 data.Count,
                 source.Token,
                 _ => { }
@@ -201,7 +204,7 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source2 = new();
         await AsyncSeriesHelper
             .ForEachAsync(
-                AsyncSeriesHelper.CreateCancelingIteration(data, source2),
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source2),
                 data.Count,
                 source.Token,
                 _ => Task.CompletedTask
@@ -239,7 +242,7 @@ public static class AsyncSeriesHelperTests
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
             .ToListAsync(
-                AsyncSeriesHelper.CreateCancelingIteration<string>(source),
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
                 DesignDefaults.IterationLimit,
                 source.Token
             )
@@ -254,7 +257,11 @@ public static class AsyncSeriesHelperTests
     {
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
-            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 2, source.Token)
+            .ToListAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source),
+                2,
+                source.Token
+            )
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
@@ -266,18 +273,22 @@ public static class AsyncSeriesHelperTests
     {
         using CancellationTokenSource source = new();
         await AsyncSeriesHelper
-            .ToListAsync(AsyncSeriesHelper.CreateCancelingIteration(data, source), 1, source.Token)
+            .ToListAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source),
+                1,
+                source.Token
+            )
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
-    internal static async Task CreateCancelingIteration_EmptyCancelsAtIteration()
+    internal static async Task CreateCancelingIterationAsync_EmptyCancelsAtIteration()
     {
         using CancellationTokenSource source = new();
         await foreach (
             string _ in AsyncSeriesHelper
-                .CreateCancelingIteration<string>(source)
+                .CreateCancelingIterationAsync<string>(source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
         {
@@ -287,14 +298,14 @@ public static class AsyncSeriesHelperTests
     }
 
     [Theory, RandomData]
-    internal static async Task CreateCancelingIteration_OnlyYieldCancelsAfterIteration(
+    internal static async Task CreateCancelingIterationAsync_OnlyYieldCancelsAfterIteration(
         [Size(1)] IEnumerable<string> data
     )
     {
         using CancellationTokenSource source = new();
         await foreach (
             string _ in AsyncSeriesHelper
-                .CreateCancelingIteration(data, source)
+                .CreateCancelingIterationAsync(data, source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
         {
@@ -304,7 +315,7 @@ public static class AsyncSeriesHelperTests
     }
 
     [Theory, RandomData]
-    internal static async Task CreateCancelingIteration_MultipleYieldCancelsDuringIteration(
+    internal static async Task CreateCancelingIterationAsync_MultipleYieldCancelsDuringIteration(
         [Size(2)] IEnumerable<string> data
     )
     {
@@ -312,7 +323,7 @@ public static class AsyncSeriesHelperTests
         int i = 0;
         await foreach (
             string _ in AsyncSeriesHelper
-                .CreateCancelingIteration(data, source)
+                .CreateCancelingIterationAsync(data, source)
                 .WithCancellation(TestContext.Current.CancellationToken)
         )
         {

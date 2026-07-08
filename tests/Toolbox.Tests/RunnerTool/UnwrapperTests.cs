@@ -26,13 +26,15 @@ public static class UnwrapperTests
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsTaskAndIntAsyncEnumerable(IAsyncEnumerable<int> data)
+    internal static Task UnwrapResultAsync_UnwrapsTaskAndIntAsyncEnumerable(
+        IAsyncEnumerable<int> data
+    )
     {
         return UnwrapsTaskAndAsyncEnumerableAsync(data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsTaskAndStringAsyncEnumerable(
+    internal static Task UnwrapResultAsync_UnwrapsTaskAndStringAsyncEnumerable(
         IAsyncEnumerable<string> data
     )
     {
@@ -43,7 +45,7 @@ public static class UnwrapperTests
     {
         bool iterated = false;
 
-        async IAsyncEnumerable<T> Iterate()
+        async IAsyncEnumerable<T> iterate()
         {
             await foreach (T item in data.WithCancellation(TestContext.Current.CancellationToken))
             {
@@ -52,8 +54,8 @@ public static class UnwrapperTests
             iterated = true;
         }
 
-        object result = await Unwrapper.UnwrapResult(
-            () => Task.Run(Iterate, TestContext.Current.CancellationToken),
+        object result = await Unwrapper.UnwrapResultAsync(
+            () => Task.Run(iterate, TestContext.Current.CancellationToken),
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -66,13 +68,13 @@ public static class UnwrapperTests
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsTaskAndIntEnumerable(IEnumerable<int> data)
+    internal static Task UnwrapResultAsync_UnwrapsTaskAndIntEnumerable(IEnumerable<int> data)
     {
         return UnwrapsTaskAndEnumerableAsync(data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsTaskAndStringEnumerable(IEnumerable<string> data)
+    internal static Task UnwrapResultAsync_UnwrapsTaskAndStringEnumerable(IEnumerable<string> data)
     {
         return UnwrapsTaskAndEnumerableAsync(data);
     }
@@ -81,7 +83,7 @@ public static class UnwrapperTests
     {
         bool iterated = false;
 
-        IEnumerable<T> Iterate()
+        IEnumerable<T> iterate()
         {
             foreach (T item in data)
             {
@@ -90,8 +92,8 @@ public static class UnwrapperTests
             iterated = true;
         }
 
-        object result = await Unwrapper.UnwrapResult(
-            () => Task.Run(Iterate, TestContext.Current.CancellationToken),
+        object result = await Unwrapper.UnwrapResultAsync(
+            () => Task.Run(iterate, TestContext.Current.CancellationToken),
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -104,103 +106,103 @@ public static class UnwrapperTests
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsIntTask(int data)
+    internal static Task UnwrapResultAsync_UnwrapsIntTask(int data)
     {
         Task<int> run = Task.Run(() => data, TestContext.Current.CancellationToken);
         return TestUnwrap(() => run, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsStringTask(string data)
+    internal static Task UnwrapResultAsync_UnwrapsStringTask(string data)
     {
         Task<string> run = Task.Run(() => data, TestContext.Current.CancellationToken);
         return TestUnwrap(() => run, data);
     }
 
     [Fact]
-    internal static Task UnwrapResult_UnwrapsNullTask()
+    internal static Task UnwrapResultAsync_UnwrapsNullTask()
     {
         Task<object> run = Task.Run(() => (object)null, TestContext.Current.CancellationToken);
         return TestUnwrap(() => run, null);
     }
 
     [Fact]
-    internal static Task UnwrapResult_UnwrapsTask()
+    internal static Task UnwrapResultAsync_UnwrapsTask()
     {
         return TestUnwrap(() => Task.CompletedTask, VoidReturn.Instance);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsIntValueTask(int data)
+    internal static Task UnwrapResultAsync_UnwrapsIntValueTask(int data)
     {
         ValueTask<int> run = new(data);
         return TestUnwrap(() => run, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsStringValueTask(string data)
+    internal static Task UnwrapResultAsync_UnwrapsStringValueTask(string data)
     {
         ValueTask<string> run = new(Task.FromResult(data));
         return TestUnwrap(() => run, data);
     }
 
     [Fact]
-    internal static Task UnwrapResult_UnwrapsNullValueTask()
+    internal static Task UnwrapResultAsync_UnwrapsNullValueTask()
     {
         ValueTask<object> run = new(Task.FromResult<object>(null));
         return TestUnwrap(() => run, null);
     }
 
     [Fact]
-    internal static Task UnwrapResult_UnwrapsValueTask()
+    internal static Task UnwrapResultAsync_UnwrapsValueTask()
     {
         return TestUnwrap(() => new ValueTask(Task.CompletedTask), VoidReturn.Instance);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsString(string data)
+    internal static Task UnwrapResultAsync_UnwrapsString(string data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsInt(int data)
+    internal static Task UnwrapResultAsync_UnwrapsInt(int data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Fact]
-    internal static Task UnwrapResult_UnwrapsNull()
+    internal static Task UnwrapResultAsync_UnwrapsNull()
     {
         return TestUnwrap(() => null, null);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsListInt(List<int> data)
+    internal static Task UnwrapResultAsync_UnwrapsListInt(List<int> data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsListString(List<string> data)
+    internal static Task UnwrapResultAsync_UnwrapsListString(List<string> data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsArrayInt(int[] data)
+    internal static Task UnwrapResultAsync_UnwrapsArrayInt(int[] data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsArrayString(string[] data)
+    internal static Task UnwrapResultAsync_UnwrapsArrayString(string[] data)
     {
         return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResult_UnwrapsCollection(ICollection data)
+    internal static Task UnwrapResultAsync_UnwrapsCollection(ICollection data)
     {
         return TestUnwrap(() => data, data);
     }
@@ -211,7 +213,7 @@ public static class UnwrapperTests
     )
     {
         return Unwrapper
-            .UnwrapResult(call, Tools.Runner.Options, TestContext.Current.CancellationToken)
+            .UnwrapResultAsync(call, Tools.Runner.Options, TestContext.Current.CancellationToken)
             .Assert()
             .HasResultAsync(TestContext.Current.CancellationToken)
             .That()

@@ -100,7 +100,7 @@ internal sealed class EqualityValidator(TesterOptions options)
             $"Hash codes for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed with clone."
         );
 
-        void SwitchValue(PropertyInfo prop, object? originalValue, object? newValue)
+        void switchValue(PropertyInfo prop, object? originalValue, object? newValue)
         {
             string originalAsText = $"{originalValue ?? "default"}";
             string newAsText = $"{newValue ?? "default"}";
@@ -148,8 +148,8 @@ internal sealed class EqualityValidator(TesterOptions options)
             object? originalValue = prop.GetValue(x);
             object newValue = Options.Mutator.Variant(prop.PropertyType, originalValue);
 
-            SwitchValue(prop, originalValue, null);
-            SwitchValue(prop, null, newValue);
+            switchValue(prop, originalValue, null);
+            switchValue(prop, null, newValue);
         }
     }
 }

@@ -350,13 +350,13 @@ public static class LimiterSyncTests
         int resetAttempt = 0;
 
         int result = Tools.Randomizer.Create<int>();
-        int ResetBehavior()
+        int resetBehavior()
         {
             return (++attempt == tries) ? result : throw exception;
         }
 
         new Limiter(tries)
-            .Retry("", ResetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
+            .Retry("", resetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
             .Assert()
             .Is(result)
             .Also(attempt)
@@ -424,13 +424,13 @@ public static class LimiterSyncTests
         int resetAttempt = 0;
 
         int result = Tools.Randomizer.Create<int>();
-        int ResetBehavior()
+        int resetBehavior()
         {
             return (++attempt == tries) ? result : throw exception;
         }
 
         new Limiter(tries)
-            .Attempt("", ResetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
+            .Attempt("", resetBehavior, () => resetAttempt++, TestContext.Current.CancellationToken)
             .Assert()
             .Is(result)
             .Also(attempt)

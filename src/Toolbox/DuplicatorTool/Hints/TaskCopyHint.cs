@@ -9,7 +9,7 @@ namespace CreateAndFake.DuplicatorTool.Hints;
 public sealed class TaskCopyHint : CopyHint
 {
     private static readonly MethodInfo _GenericCloner = typeof(TaskCopyHint).GetMethod(
-        nameof(WrapTask),
+        nameof(WrapTaskAsync),
         BindingFlags.NonPublic | BindingFlags.Static
     )!;
 
@@ -42,7 +42,7 @@ public sealed class TaskCopyHint : CopyHint
             }
             else
             {
-                return new(WrapPlainTask(task, duplicator));
+                return new(WrapPlainTaskAsync(task, duplicator));
             }
         }
         else
@@ -51,7 +51,7 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-    private static Task WrapPlainTask(Task task, IDuplicatorChainer duplicator)
+    private static Task WrapPlainTaskAsync(Task task, IDuplicatorChainer duplicator)
     {
         if (task.IsCanceled)
         {
@@ -73,7 +73,7 @@ public sealed class TaskCopyHint : CopyHint
 
 #pragma warning disable CA1849, MA0042, VSTHRD103 // Completion verified.
 
-    private static Task<T> WrapTask<T>(Task<T> task, IDuplicatorChainer duplicator)
+    private static Task<T> WrapTaskAsync<T>(Task<T> task, IDuplicatorChainer duplicator)
     {
         if (task.IsCanceled)
         {
