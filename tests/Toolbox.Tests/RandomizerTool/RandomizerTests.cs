@@ -53,7 +53,7 @@ public static class RandomizerTests
     internal static void Create_NoRulesThrows()
     {
         new Randomizer(Tools.Randomizer.Options with { IncludeFrameworkHints = false })
-            .Assert(r => r.Create<object>())
+            .Assert(x => x.Create<object>())
             .Throws<ToolException>();
     }
 
@@ -75,7 +75,7 @@ public static class RandomizerTests
                 Hints = [hint],
             }
         )
-            .Assert(r => r.Create<string>())
+            .Assert(x => x.Create<string>())
             .Throws<ToolException>();
 
         hint.Assert().Called();
@@ -123,7 +123,7 @@ public static class RandomizerTests
                 Hints = [hint],
             }
         )
-            .Assert(r => r.Create(type))
+            .Assert(x => x.Create(type))
             .Throws<ToolException>()
             .With.Message.Assert()
             .Contains(GenericConverter.ExpandName(type));
@@ -142,8 +142,8 @@ public static class RandomizerTests
     internal static void Create_ConditionTimesOut()
     {
         Tools
-            .Randomizer.Assert(r =>
-                r.Create<DateTime>(opt =>
+            .Randomizer.Assert(x =>
+                x.Create<DateTime>(opt =>
                     opt with
                     {
                         FinalCondition = r => r is DateTime d && d < DateTime.MinValue,

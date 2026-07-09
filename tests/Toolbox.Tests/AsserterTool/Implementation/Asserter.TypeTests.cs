@@ -27,10 +27,10 @@ public static class AsserterTypeTests
     internal static void Inherits_ChildToParent()
     {
         typeof(IChildType)
-            .Assert(t => t.Assert().Inherits<IParentType>())
+            .Assert(x => x.Assert().Inherits<IParentType>())
             .Throws<AssertException>();
         typeof(IChildType)
-            .Assert(t => t.Assert().Inherits(typeof(IParentType)))
+            .Assert(x => x.Assert().Inherits(typeof(IParentType)))
             .Throws<AssertException>();
     }
 
@@ -44,10 +44,10 @@ public static class AsserterTypeTests
     internal static void InheritedBy_ParentToChild()
     {
         typeof(IParentType)
-            .Assert(t => t.Assert().InheritedBy<IChildType>())
+            .Assert(x => x.Assert().InheritedBy<IChildType>())
             .Throws<AssertException>();
         typeof(IParentType)
-            .Assert(t => t.Assert().InheritedBy(typeof(IChildType)))
+            .Assert(x => x.Assert().InheritedBy(typeof(IChildType)))
             .Throws<AssertException>();
     }
 }

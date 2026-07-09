@@ -51,7 +51,7 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     internal void Create_NoConstructorThrows()
     {
         Tools
-            .Randomizer.Assert(t => t.Create<Injected<IUnimplementedSample>>())
+            .Randomizer.Assert(x => x.Create<Injected<IUnimplementedSample>>())
             .Throws<ToolException>();
     }
 

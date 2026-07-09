@@ -15,8 +15,8 @@ public static class Fake_T_Tests
     [Fact]
     internal static void Fake_T_GuardsNulls()
     {
-        ((IFaked)null).Assert(v => new Fake<object>(v)).Throws<ArgumentNullException>();
-        ((Fake)null).Assert(v => new Fake<object>(v)).Throws<ArgumentNullException>();
+        ((IFaked)null).Assert(x => new Fake<object>(x)).Throws<ArgumentNullException>();
+        ((Fake)null).Assert(x => new Fake<object>(x)).Throws<ArgumentNullException>();
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public static class Fake_T_Tests
     {
         Tools
             .Faker.Stub<IFakeSample>()
-            .Assert(s => s.Setup(null, Behavior.None()))
+            .Assert(x => x.Setup(null, Behavior.None()))
             .Throws<ArgumentNullException>();
     }
 
@@ -45,30 +45,30 @@ public static class Fake_T_Tests
     internal static void Fake_ScopeBehavior(string name)
     {
         Fake<InternalScopeSample> fake = Tools.Faker.Mock<InternalScopeSample>();
-        fake.Dummy.Assert(d => d.PublicProp).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.PublicProp = name).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.PublicMethod()).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.PublicProp).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.PublicProp = name).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.PublicMethod()).Throws<FakeCallException>();
 
-        fake.Dummy.Assert(d => d.CallProtectProp()).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.SetProtectProp(name)).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.CallProtectGet()).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.SetProtectSet(name)).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.CallProtectMethod()).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.CallProtectProp()).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.SetProtectProp(name)).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.CallProtectGet()).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.SetProtectSet(name)).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.CallProtectMethod()).Throws<FakeCallException>();
 
-        fake.Dummy.Assert(d => d.ProIntProp).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.ProIntProp = name).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.ProIntGet).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.ProIntSet = name).Throws<FakeCallException>();
-        fake.Dummy.Assert(d => d.ProIntMethod()).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.ProIntProp).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.ProIntProp = name).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.ProIntGet).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.ProIntSet = name).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.ProIntMethod()).Throws<FakeCallException>();
 
         fake.Dummy.InternalProp = name;
         fake.Dummy.InternalProp.Assert().Is(name);
         fake.Dummy.InternalMethod().Assert().IsNotNull();
 
-        fake.Dummy.Assert(d => d.InternalGet = name).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.InternalGet = name).Throws<FakeCallException>();
         fake.Dummy.InternalGet.Assert().IsNull();
         fake.Dummy.InternalSet = name;
-        fake.Dummy.Assert(d => d.InternalSet).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.InternalSet).Throws<FakeCallException>();
     }
 
     [Theory, RandomData]
@@ -148,7 +148,7 @@ public static class Fake_T_Tests
         fake.Dummy.Run<DataSample, int>(text, sample).Assert().Is(5);
 
         fake.Verify(Times.Exactly(2));
-        fake.Dummy.Assert(d => d.Run<DataSample, object>(text, sample)).Throws<FakeCallException>();
+        fake.Dummy.Assert(x => x.Run<DataSample, object>(text, sample)).Throws<FakeCallException>();
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public static class Fake_T_Tests
     {
         Tools
             .Faker.Mock<object>()
-            .Assert(f => f.Setup(_ => new object(), Behavior.Returns(new object())))
+            .Assert(x => x.Setup(_ => new object(), Behavior.Returns(new object())))
             .Throws<InvalidOperationException>();
     }
 
@@ -181,8 +181,8 @@ public static class Fake_T_Tests
 
         Asserter tester = new(Tools.Asserter.Options with { Valuer = valuer });
         tester.IsNotEmpty(data);
-        tester.Assert(t => t.IsNotEmpty(null)).Throws<AssertException>();
-        tester.Assert(t => t.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();
+        tester.Assert(x => x.IsNotEmpty(null)).Throws<AssertException>();
+        tester.Assert(x => x.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();
     }
 
     private static void FakeTester<T>()

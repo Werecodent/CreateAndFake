@@ -41,7 +41,7 @@ public static class ValuerTests
     internal static void GetHashCode_MissingMatchThrows()
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.GetHashCode(new object()))
+            .Assert(x => x.GetHashCode(new object()))
             .Throws<UnsupportedException>();
     }
 
@@ -63,7 +63,7 @@ public static class ValuerTests
     internal static void Compare_MissingMatchThrows()
     {
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false })
-            .Assert(v => v.Compare(new object(), new object()).ToList())
+            .Assert(x => x.Compare(new object(), new object()).ToList())
             .Throws<UnsupportedException>();
     }
 
@@ -136,7 +136,7 @@ public static class ValuerTests
             );
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
-            .Assert(v => v.Compare(item1, item2).ToList())
+            .Assert(x => x.Compare(item1, item2).ToList())
             .Throws<ToolException>()
             .With.Message.Assert()
             .Contains(GenericConverter.ExpandName(item1));
@@ -149,7 +149,7 @@ public static class ValuerTests
             .SetupReturn(Behavior<HashCodeHintResult>.Throw<InsufficientExecutionStackException>());
 
         new Valuer(Tools.Valuer.Options with { IncludeFrameworkHints = false, Hints = [hint] })
-            .Assert(v => v.GetHashCode(item))
+            .Assert(x => x.GetHashCode(item))
             .Throws<ToolException>()
             .With.Message.Assert()
             .Contains(GenericConverter.ExpandName(item));

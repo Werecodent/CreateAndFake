@@ -10,9 +10,7 @@ public static class SamplesTests
     {
         Assembly
             .GetAssembly(typeof(SampleGenerator))
-            .Assert(assembly =>
-                Tools.Tester.ProvidesTestClassCoverage(assembly, Assembly.GetExecutingAssembly())
-            )
+            .Assert(x => Tools.Tester.ProvidesTestClassCoverage(x, Assembly.GetExecutingAssembly()))
             .Throws<AssertException>();
     }
 }

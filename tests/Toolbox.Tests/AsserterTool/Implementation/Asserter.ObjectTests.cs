@@ -28,7 +28,7 @@ public sealed class AsserterObjectTests
         fake.Equals(Arg.Any<object>()).SetupReturn(true, Times.Never);
 
         _testInstance.ReferenceEqual(fake, fake);
-        _testInstance.Assert(t => t.ReferenceEqual(fake, fake.Tools().Copy()));
+        _testInstance.Assert(x => x.ReferenceEqual(fake, fake.Tools().Copy()));
 
         fake.Assert().Called(Times.Never);
     }
@@ -39,7 +39,7 @@ public sealed class AsserterObjectTests
         fake.Equals(Arg.Any<object>()).SetupReturn(false, Times.Never);
 
         _testInstance.ReferenceNotEqual(fake, fake.Tools().Copy());
-        _testInstance.Assert(t => t.ReferenceNotEqual(fake, fake)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ReferenceNotEqual(fake, fake)).Throws<AssertException>();
 
         fake.Assert().Called(Times.Never);
     }
@@ -54,16 +54,16 @@ public sealed class AsserterObjectTests
     internal void ValuesEqual_UnequalInvalid(string value)
     {
         _testInstance
-            .Assert(t => t.ValuesEqual(value, value.Tools().Variant()))
+            .Assert(x => x.ValuesEqual(value, value.Tools().Variant()))
             .Throws<AssertException>();
-        _testInstance.Assert(t => t.ValuesEqual(null, value)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ValuesEqual(null, value)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal void ValuesEqual_CanHandleNullsNotEqual(object value)
     {
-        _testInstance.Assert(t => t.ValuesEqual(value, null)).Throws<AssertException>();
-        _testInstance.Assert(t => t.ValuesEqual(null, value)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ValuesEqual(value, null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ValuesEqual(null, value)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -78,10 +78,10 @@ public sealed class AsserterObjectTests
     internal void ValuesNotEqual_EqualInvalid(string value)
     {
         _testInstance
-            .Assert(t => t.ValuesNotEqual(value, value.Tools().Copy()))
+            .Assert(x => x.ValuesNotEqual(value, value.Tools().Copy()))
             .Throws<AssertException>();
-        _testInstance.Assert(t => t.ValuesNotEqual(value, value)).Throws<AssertException>();
-        _testInstance.Assert(t => t.ValuesNotEqual(null, null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ValuesNotEqual(value, value)).Throws<AssertException>();
+        _testInstance.Assert(x => x.ValuesNotEqual(null, null)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -96,10 +96,10 @@ public sealed class AsserterObjectTests
     internal void AreUnique_EqualInvalid(string value)
     {
         _testInstance
-            .Assert(t => t.AreUnique(value, value.Tools().Copy()))
+            .Assert(x => x.AreUnique(value, value.Tools().Copy()))
             .Throws<AssertException>();
-        _testInstance.Assert(t => t.AreUnique(value, value)).Throws<AssertException>();
-        _testInstance.Assert(t => t.AreUnique(null, null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.AreUnique(value, value)).Throws<AssertException>();
+        _testInstance.Assert(x => x.AreUnique(null, null)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -113,9 +113,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void Is_UsesValueQualityFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().Is(sample.Tools().Variant())).Throws<AssertException>();
+        sample.Assert(x => x.Assert().Is(sample.Tools().Variant())).Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().Is(sample.Tools().Variant()))
+            .Assert(x => x.Assert().Is(sample.Tools().Variant()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -131,9 +131,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void IsNot_UsesValueQualityFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().IsNot(sample.Tools().Copy())).Throws<AssertException>();
+        sample.Assert(x => x.Assert().IsNot(sample.Tools().Copy())).Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().IsNot(sample.Tools().Copy()))
+            .Assert(x => x.Assert().IsNot(sample.Tools().Copy()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -150,10 +150,10 @@ public sealed class AsserterObjectTests
     internal void ReferenceEqual_DifferentObject(DataSample sample)
     {
         sample
-            .Assert(s => s.Assert().ReferenceEqual(sample.Tools().Copy()))
+            .Assert(x => x.Assert().ReferenceEqual(sample.Tools().Copy()))
             .Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().ReferenceEqual(sample.Tools().Copy()))
+            .Assert(x => x.Assert().ReferenceEqual(sample.Tools().Copy()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -169,8 +169,8 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void ReferenceNotEqual_SameObject(DataSample sample)
     {
-        sample.Assert(s => s.Assert().ReferenceNotEqual(sample)).Throws<AssertException>();
-        sample.Assert(s => s.Assert().ReferenceNotEqual(sample)).Throws<AssertException>(_config);
+        sample.Assert(x => x.Assert().ReferenceNotEqual(sample)).Throws<AssertException>();
+        sample.Assert(x => x.Assert().ReferenceNotEqual(sample)).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -186,10 +186,10 @@ public sealed class AsserterObjectTests
     internal void ValuesEqual_UsesValueQualityFail(DataSample sample)
     {
         sample
-            .Assert(s => s.Assert().ValuesEqual(sample.Tools().Variant()))
+            .Assert(x => x.Assert().ValuesEqual(sample.Tools().Variant()))
             .Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().ValuesEqual(sample.Tools().Variant()))
+            .Assert(x => x.Assert().ValuesEqual(sample.Tools().Variant()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -206,10 +206,10 @@ public sealed class AsserterObjectTests
     internal void ValuesNotEqual_UsesValueQualityFail(DataSample sample)
     {
         sample
-            .Assert(s => s.Assert().ValuesNotEqual(sample.Tools().Copy()))
+            .Assert(x => x.Assert().ValuesNotEqual(sample.Tools().Copy()))
             .Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().ValuesNotEqual(sample.Tools().Copy()))
+            .Assert(x => x.Assert().ValuesNotEqual(sample.Tools().Copy()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -225,9 +225,9 @@ public sealed class AsserterObjectTests
     [Theory, RandomData]
     internal void AreUnique_SharedFail(DataSample sample)
     {
-        sample.Assert(s => s.Assert().UniqueFrom(sample.Tools().Copy())).Throws<AssertException>();
+        sample.Assert(x => x.Assert().UniqueFrom(sample.Tools().Copy())).Throws<AssertException>();
         sample
-            .Assert(s => s.Assert().UniqueFrom(sample.Tools().Copy()))
+            .Assert(x => x.Assert().UniqueFrom(sample.Tools().Copy()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }

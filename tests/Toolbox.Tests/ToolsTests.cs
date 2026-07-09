@@ -72,7 +72,7 @@ public static class ToolsTests
     [Theory, RandomData]
     internal static void Tools_HandlesInfinites(InfiniteSample sample)
     {
-        Tools.Mutator.Assert(m => m.Variant(sample)).Throws<ToolException>();
+        Tools.Mutator.Assert(x => x.Variant(sample)).Throws<ToolException>();
 
         InfiniteSample dupe = Tools.Duplicator.Copy(sample);
 

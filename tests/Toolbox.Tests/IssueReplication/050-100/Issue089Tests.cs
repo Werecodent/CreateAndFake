@@ -24,21 +24,21 @@ public static class Issue089Tests
     [Theory, RandomData]
     internal static void Issue089_InvalidStringAssertions(string text)
     {
-        text.Assert(t => t.Assert().IsNot(Tools.Duplicator.Copy(text))).Throws<AssertException>();
-        text.Assert(t => t.Assert().HasCount(text.Length + 1)).Throws<AssertException>();
+        text.Assert(x => x.Assert().IsNot(Tools.Duplicator.Copy(text))).Throws<AssertException>();
+        text.Assert(x => x.Assert().HasCount(text.Length + 1)).Throws<AssertException>();
 
         string startSample = text.Substring(0, 2);
         string endSample = text.Substring(text.Length - 2, 2);
 
-        text.Assert(t => t.Assert().Contains(Tools.Mutator.Variant(text)))
+        text.Assert(x => x.Assert().Contains(Tools.Mutator.Variant(text)))
             .Throws<AssertException>();
-        text.Assert(t => t.Assert().ContainsNot(text.Substring(2, 2))).Throws<AssertException>();
-        text.Assert(t => t.Assert().StartsWith(Tools.Mutator.Variant(startSample)))
+        text.Assert(x => x.Assert().ContainsNot(text.Substring(2, 2))).Throws<AssertException>();
+        text.Assert(x => x.Assert().StartsWith(Tools.Mutator.Variant(startSample)))
             .Throws<AssertException>();
-        text.Assert(t => t.Assert().StartsNotWith(startSample)).Throws<AssertException>();
-        text.Assert(t => t.Assert().EndsWith(Tools.Mutator.Variant(endSample)))
+        text.Assert(x => x.Assert().StartsNotWith(startSample)).Throws<AssertException>();
+        text.Assert(x => x.Assert().EndsWith(Tools.Mutator.Variant(endSample)))
             .Throws<AssertException>();
-        text.Assert(t => t.Assert().EndsNotWith(endSample)).Throws<AssertException>();
+        text.Assert(x => x.Assert().EndsNotWith(endSample)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -50,11 +50,11 @@ public static class Issue089Tests
         Func<object> func = () => throw error;
         func.Assert().Throws<InvalidOperationException>().That.Is(error);
 
-        item.Assert(o => false ? "" : throw error)
+        item.Assert(_ => false ? "" : throw error)
             .Throws<InvalidOperationException>()
             .That.Is(error);
 
-        item.Assert(o => o.Assert().Fail()).Throws<AssertException>().That.IsNot(error);
+        item.Assert(x => x.Assert().Fail()).Throws<AssertException>().That.IsNot(error);
     }
 
     [Theory, RandomData]
@@ -82,18 +82,18 @@ public static class Issue089Tests
     [Theory, RandomData]
     internal static void Issue089_InvalidComparableAssertions(int value)
     {
-        value.Assert(v => v.Assert().GreaterThan(value + 1)).Throws<AssertException>();
-        value.Assert(v => v.Assert().GreaterThanOrEqualTo(value + 1)).Throws<AssertException>();
-        value.Assert(v => v.Assert().LessThanOrEqualTo(value - 1)).Throws<AssertException>();
-        value.Assert(v => v.Assert().LessThan(value - 1)).Throws<AssertException>();
+        value.Assert(x => x.Assert().GreaterThan(value + 1)).Throws<AssertException>();
+        value.Assert(x => x.Assert().GreaterThanOrEqualTo(value + 1)).Throws<AssertException>();
+        value.Assert(x => x.Assert().LessThanOrEqualTo(value - 1)).Throws<AssertException>();
+        value.Assert(x => x.Assert().LessThan(value - 1)).Throws<AssertException>();
 
-        value.Assert(v => v.Assert().InRange(value + 1, value)).Throws<AssertException>();
-        value.Assert(v => v.Assert().InRange(value, value - 1)).Throws<AssertException>();
+        value.Assert(x => x.Assert().InRange(value + 1, value)).Throws<AssertException>();
+        value.Assert(x => x.Assert().InRange(value, value - 1)).Throws<AssertException>();
 
-        value.Assert(v => v.Assert().GreaterThan(null)).Throws<AssertException>();
-        value.Assert(v => v.Assert().InRange(null, value)).Throws<AssertException>();
-        value.Assert(v => v.Assert().InRange(value, null)).Throws<AssertException>();
-        ((int?)null).Assert(v => v.Assert().InRange(value, value)).Throws<AssertException>();
-        ((int?)null).Assert(v => v.Assert().GreaterThan(value)).Throws<AssertException>();
+        value.Assert(x => x.Assert().GreaterThan(null)).Throws<AssertException>();
+        value.Assert(x => x.Assert().InRange(null, value)).Throws<AssertException>();
+        value.Assert(x => x.Assert().InRange(value, null)).Throws<AssertException>();
+        ((int?)null).Assert(x => x.Assert().InRange(value, value)).Throws<AssertException>();
+        ((int?)null).Assert(x => x.Assert().GreaterThan(value)).Throws<AssertException>();
     }
 }

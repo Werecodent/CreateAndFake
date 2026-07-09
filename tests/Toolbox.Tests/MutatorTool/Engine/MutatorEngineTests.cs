@@ -57,7 +57,7 @@ public static class MutatorEngineTests
                 CreateVariantAttemptLimit = new Limiter(3),
             }
         )
-            .Assert(t => t.Variant(sample))
+            .Assert(x => x.Variant(sample))
             .Throws<ToolException>();
 
         fakeValuer.Assert().Called();
@@ -138,7 +138,7 @@ public static class MutatorEngineTests
                 Extractor = new Extractor(Tools.Extractor.Options with { Valuer = fakeValuer }),
             }
         )
-            .Assert(t => t.Unique(sample))
+            .Assert(x => x.Unique(sample))
             .Throws<ToolException>();
     }
 
@@ -190,7 +190,7 @@ public static class MutatorEngineTests
     internal static void Modify_NoHintsUnsupported(object data)
     {
         _TestInstance
-            .Assert(d => d.Modify(data, CreateHintChainer(null)))
+            .Assert(x => x.Modify(data, CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
@@ -198,7 +198,7 @@ public static class MutatorEngineTests
     internal static void Modify_NullResultSafe([Stub] IMutateHint hint, object data)
     {
         _TestInstance
-            .Assert(d => d.Modify(data, CreateHintChainer(hint)))
+            .Assert(x => x.Modify(data, CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
@@ -208,7 +208,7 @@ public static class MutatorEngineTests
         hint.TryToModify(data, Arg.Any<IMutatorChainer>())
             .SetupReturn(Behavior<MutateHintResult>.Throw<InvalidOperationException>());
 
-        _TestInstance.Assert(d => d.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();
+        _TestInstance.Assert(x => x.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();
     }
 
     private static MutatorChainer CreateHintChainer(IMutateHint hint)

@@ -93,7 +93,7 @@ public static class BehaviorTests
     [Fact]
     internal static void Throw_DefaultBehaviorWorks()
     {
-        Behavior.Throw().Assert(b => b.Invoke([])).Throws<BehaviorDefaultThrowException>();
+        Behavior.Throw().Assert(x => x.Invoke([])).Throws<BehaviorDefaultThrowException>();
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public static class BehaviorTests
     {
         Behavior
             .Throw<InvalidOperationException>()
-            .Assert(b => b.Invoke([]))
+            .Assert(x => x.Invoke([]))
             .Throws<InvalidOperationException>();
     }
 
@@ -155,7 +155,7 @@ public static class BehaviorTests
     {
         Behavior
             .Call((int _) => { })
-            .Assert(b => b.Invoke([]))
+            .Assert(x => x.Invoke([]))
             .Throws<TargetParameterCountException>();
     }
 }

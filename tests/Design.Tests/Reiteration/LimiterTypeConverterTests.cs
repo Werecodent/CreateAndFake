@@ -54,7 +54,7 @@ public class LimiterTypeConverterTests
     [Theory, RandomData]
     public void ConvertTo_InvalidTypesThrow(object item)
     {
-        _TestInstance.Assert(t => t.ConvertTo(item, typeof(string))).Throws<ArgumentException>();
-        _TestInstance.Assert(t => t.ConvertFrom(item)).Throws<ArgumentException>();
+        _TestInstance.Assert(x => x.ConvertTo(item, typeof(string))).Throws<ArgumentException>();
+        _TestInstance.Assert(x => x.ConvertFrom(item)).Throws<ArgumentException>();
     }
 }

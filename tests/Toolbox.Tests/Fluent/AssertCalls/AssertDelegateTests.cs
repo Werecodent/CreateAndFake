@@ -30,20 +30,20 @@ public static class AssertDelegateTests
     [Theory, RandomData]
     internal static void Throws_ReturnsException(Exception error)
     {
-        error.Assert(e => false ? "" : throw e).Throws<Exception>().That.Is(error);
+        error.Assert(x => false ? "" : throw x).Throws<Exception>().That.Is(error);
     }
 
     [Theory, RandomData]
     internal static void Throws_CatchesExpected(ArgumentNullException error)
     {
-        error.Assert(e => false ? "" : throw e).Throws<ArgumentNullException>().That.Is(error);
+        error.Assert(x => false ? "" : throw x).Throws<ArgumentNullException>().That.Is(error);
     }
 
     [Theory, RandomData]
     internal static void Throws_UnwrapsAggregate(InvalidOperationException error)
     {
         error
-            .Assert(e => false ? "" : throw new AggregateException(e))
+            .Assert(x => false ? "" : throw new AggregateException(x))
             .Throws<InvalidOperationException>()
             .That.Is(error);
     }
@@ -51,20 +51,20 @@ public static class AssertDelegateTests
     [Theory, RandomData]
     internal static void Throws_ActionNoException(Action behavior)
     {
-        behavior.Assert(d => d.Assert().Throws<Exception>()).Throws<AssertException>();
+        behavior.Assert(x => x.Assert().Throws<Exception>()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal static void Throws_FuncNoException(Func<object> behavior)
     {
-        behavior.Assert(d => d.Assert().Throws<Exception>()).Throws<AssertException>();
+        behavior.Assert(x => x.Assert().Throws<Exception>()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal static void Throws_WrongException(ArgumentNullException error)
     {
         error
-            .Assert(ex => ex.Assert(e => throw e).Throws<InvalidOperationException>())
+            .Assert(x => x.Assert(ex => throw ex).Throws<InvalidOperationException>())
             .Throws<AssertException>();
     }
 
@@ -72,7 +72,7 @@ public static class AssertDelegateTests
     internal static void Throws_OptionsOkay(ArgumentNullException error)
     {
         error
-            .Assert(ex => ex.Assert(e => throw e).Throws<ArgumentNullException>(opt => opt))
+            .Assert(x => x.Assert(ex => throw ex).Throws<ArgumentNullException>(opt => opt))
             .ThrowsNo<Exception>();
     }
 
@@ -80,8 +80,8 @@ public static class AssertDelegateTests
     internal static void Throws_WrongAggregate(InvalidOperationException error)
     {
         error
-            .Assert(ex =>
-                ex.Assert(e => throw new AggregateException(e)).Throws<ArgumentNullException>()
+            .Assert(x =>
+                x.Assert(ex => throw new AggregateException(ex)).Throws<ArgumentNullException>()
             )
             .Throws<AssertException>();
     }
@@ -93,9 +93,9 @@ public static class AssertDelegateTests
     )
     {
         error
-            .Assert(ex =>
+            .Assert(x =>
                 error2
-                    .Assert(e => throw new AggregateException(ex, e))
+                    .Assert(ex => throw new AggregateException(x, ex))
                     .Throws<ArgumentNullException>()
             )
             .Throws<AssertException>();
@@ -116,14 +116,14 @@ public static class AssertDelegateTests
     [Theory, RandomData]
     internal static void ThrowsNo_Error(Exception error)
     {
-        error.Assert(ex => ex.Assert(e => throw e).ThrowsNo<Exception>()).Throws<AssertException>();
+        error.Assert(x => x.Assert(ex => throw ex).ThrowsNo<Exception>()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal static void ThrowsNo_DifferentExceptionIgnored(TimeoutException error)
     {
         error
-            .Assert(ex => ex.Assert(e => throw e).ThrowsNo<IOException>())
+            .Assert(x => x.Assert(ex => throw ex).ThrowsNo<IOException>())
             .ThrowsNo<AssertException>();
     }
 

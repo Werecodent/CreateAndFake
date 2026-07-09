@@ -14,7 +14,7 @@ public static class AsserterStringTests
     internal static void Contains_RandomOther(string sample)
     {
         sample
-            .Assert(d => d.Assert().Contains(Tools.Mutator.Variant(sample)))
+            .Assert(x => x.Assert().Contains(Tools.Mutator.Variant(sample)))
             .Throws<AssertException>();
     }
 
@@ -28,7 +28,7 @@ public static class AsserterStringTests
     internal static void ContainsNot_UsingSubstring(ICollection<string> sample)
     {
         string.Concat(sample)
-            .Assert(d => d.Assert().ContainsNot(Tools.Gen.NextItem(sample)))
+            .Assert(x => x.Assert().ContainsNot(Tools.Gen.NextItem(sample)))
             .Throws<AssertException>();
     }
 
@@ -42,7 +42,7 @@ public static class AsserterStringTests
     internal static void StartsWith_UsingNonFirstString([Size(3)] ICollection<string> sample)
     {
         string.Concat(sample)
-            .Assert(d => d.Assert().StartsWith(Tools.Gen.NextItem(sample.Skip(1))))
+            .Assert(x => x.Assert().StartsWith(Tools.Gen.NextItem(sample.Skip(1))))
             .Throws<AssertException>();
     }
 
@@ -56,7 +56,7 @@ public static class AsserterStringTests
     internal static void StartsNotWith_UsingFirstString(ICollection<string> sample)
     {
         string.Concat(sample)
-            .Assert(d => d.Assert().StartsNotWith(sample.First()))
+            .Assert(x => x.Assert().StartsNotWith(sample.First()))
             .Throws<AssertException>();
     }
 
@@ -70,7 +70,7 @@ public static class AsserterStringTests
     internal static void EndsWith_UsingNonLstString([Size(3)] ICollection<string> sample)
     {
         string.Concat(sample)
-            .Assert(d => d.Assert().EndsWith(Tools.Gen.NextItem(sample.Reverse().Skip(1))))
+            .Assert(x => x.Assert().EndsWith(Tools.Gen.NextItem(sample.Reverse().Skip(1))))
             .Throws<AssertException>();
     }
 
@@ -84,7 +84,7 @@ public static class AsserterStringTests
     internal static void EndsNotWith_UsingLstString(ICollection<string> sample)
     {
         string.Concat(sample)
-            .Assert(d => d.Assert().EndsNotWith(sample.Last()))
+            .Assert(x => x.Assert().EndsNotWith(sample.Last()))
             .Throws<AssertException>();
     }
 }

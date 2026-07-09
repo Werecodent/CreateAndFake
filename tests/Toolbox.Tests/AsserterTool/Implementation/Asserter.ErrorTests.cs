@@ -22,8 +22,8 @@ public sealed class AsserterErrorTests
     [Theory, RandomData]
     internal void Fail_Throws(Exception sample)
     {
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>();
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>(_config);
+        sample.Assert(x => x.Assert().Fail()).Throws<AssertException>();
+        sample.Assert(x => x.Assert().Fail()).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 

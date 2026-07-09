@@ -76,14 +76,14 @@ public class AsserterTests
     [Fact]
     internal void Fail_Throws()
     {
-        _testInstance.Assert(t => t.Fail()).Throws<AssertException>();
+        _testInstance.Assert(x => x.Fail()).Throws<AssertException>();
     }
 
     [Theory, RandomData]
     internal void Fail_ThrowsWithException(Exception error)
     {
         _testInstance
-            .Assert(t => t.Fail(error))
+            .Assert(x => x.Fail(error))
             .Throws<AssertException>()
             .With.InnerException.Assert()
             .Is(error);
@@ -92,8 +92,8 @@ public class AsserterTests
     [Theory, RandomData]
     internal void Fail_ThrowsWithSample(DataSample sample)
     {
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>();
-        sample.Assert(d => d.Assert().Fail()).Throws<AssertException>(_config);
+        sample.Assert(x => x.Assert().Fail()).Throws<AssertException>();
+        sample.Assert(x => x.Assert().Fail()).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -130,7 +130,7 @@ public class AsserterTests
         bool ran2 = false;
 
         _testInstance
-            .Assert(t => t.CheckAll(() => throw error, () => ran2 = true))
+            .Assert(x => x.CheckAll(() => throw error, () => ran2 = true))
             .Throws<AggregateException>()
             .With.InnerExceptions.Assert()
             .Is(new[] { error })
@@ -142,7 +142,7 @@ public class AsserterTests
     internal void CheckAll_RunsEachErrorCase(Exception error1, Exception error2)
     {
         _testInstance
-            .Assert(t => t.CheckAll(() => throw error1, () => throw error2))
+            .Assert(x => x.CheckAll(() => throw error1, () => throw error2))
             .Throws<AggregateException>()
             .With.InnerExceptions.Assert()
             .Is(new[] { error1, error2 });

@@ -20,6 +20,7 @@ public interface IAsserter
         IAsserterComparable,
         IAsserterDelegate,
         IAsserterEnumerable,
+        IAsserterError,
         IAsserterFunc,
         IAsserterObject,
         IAsserterString,

@@ -1,5 +1,6 @@
 using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Exceptions;
+using CreateAndFake.Design.Extensions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.Fluent.AssertCalls;
 using CreateAndFake.Fluent.Chaining;
@@ -48,6 +49,7 @@ public static class AssertErrorTests
         results
             .RawResults.Where(r => r.Result != null)
             .Where(r => r.Result is not AssertChainer<AssertError>)
+            .Where(r => !r.Result?.GetType().Inherits(typeof(ExceptionChainer<>)) ?? false)
             .Assert()
             .IsEmpty();
     }

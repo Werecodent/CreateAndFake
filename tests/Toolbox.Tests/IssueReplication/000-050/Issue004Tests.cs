@@ -81,7 +81,7 @@ public static class Issue004Tests
     internal static void Issue004_MockCanCallBaseThrow(Fake<BaseHolder> sample, Exception e)
     {
         sample.Setup(d => d.ThrowError(e), Behavior.Base<BaseHolder>());
-        sample.Dummy.Assert(d => d.ThrowError(e)).Throws<Exception>().That.Is(e);
+        sample.Dummy.Assert(x => x.ThrowError(e)).Throws<Exception>().That.Is(e);
         sample.Verify();
     }
 
@@ -89,13 +89,13 @@ public static class Issue004Tests
     internal static void Issue004_MockCallBaseAbstractInvalid(Fake<BaseHolder> sample)
     {
         sample.Setup(d => d.GetValueUnset(), Behavior.Base<BaseHolder>());
-        sample.Dummy.Assert(d => d.GetValueUnset()).Throws<InvalidOperationException>();
+        sample.Dummy.Assert(x => x.GetValueUnset()).Throws<InvalidOperationException>();
     }
 
     [Theory, RandomData]
     internal static void Issue004_MockCallBaseWrongTypeInvalid(Fake<IBaseHolder> sample)
     {
         sample.Setup(d => d.GetValueUnset(), Behavior.Base<string>());
-        sample.Dummy.Assert(d => d.GetValueUnset()).Throws<MissingMethodException>();
+        sample.Dummy.Assert(x => x.GetValueUnset()).Throws<MissingMethodException>();
     }
 }

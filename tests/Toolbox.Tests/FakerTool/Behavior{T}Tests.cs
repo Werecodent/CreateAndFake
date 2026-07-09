@@ -40,7 +40,7 @@ public static class Behavior_T_Tests
     [Fact]
     internal static void Throw_DefaultBehaviorWorks()
     {
-        Behavior<string>.Throw().Assert(b => b.Invoke([])).Throws<BehaviorDefaultThrowException>();
+        Behavior<string>.Throw().Assert(x => x.Invoke([])).Throws<BehaviorDefaultThrowException>();
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public static class Behavior_T_Tests
     {
         Behavior<string>
             .Throw<InvalidOperationException>()
-            .Assert(b => b.Invoke([]))
+            .Assert(x => x.Invoke([]))
             .Throws<InvalidOperationException>();
     }
 }

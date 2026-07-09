@@ -68,7 +68,7 @@ public static class Issue038Tests
     {
         sample.Value.SetupReturn(value, Times.Exactly(2));
         sample.Value.Assert().Is(value);
-        sample.Assert(s => s.Assert().Called()).Throws<FakeVerifyException>();
+        sample.Assert(x => x.Assert().Called()).Throws<FakeVerifyException>();
         sample.Value.Assert().Is(value);
         sample.Assert().Called();
     }

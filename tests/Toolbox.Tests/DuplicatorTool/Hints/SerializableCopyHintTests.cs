@@ -21,6 +21,6 @@ public sealed class SerializableCopyHintTests : CopyHintTestBase<SerializableCop
     [Theory, RandomData]
     internal void TryCopy_InvalidDataContractExceptionRethrown([Stub] ISerializable data)
     {
-        TestInstance.Assert(t => t.TryCopy(data, CreateChainer())).Throws<SerializationException>();
+        TestInstance.Assert(x => x.TryCopy(data, CreateChainer())).Throws<SerializationException>();
     }
 }

@@ -59,7 +59,7 @@ public static class FakerEngineTests
     internal static void Inject_ConstructorRequired()
     {
         Tools
-            .Faker.Assert(f => f.InjectStubs<IOnlyMockSample>())
+            .Faker.Assert(x => x.InjectStubs<IOnlyMockSample>())
             .Throws<InvalidOperationException>();
     }
 
@@ -74,7 +74,7 @@ public static class FakerEngineTests
         ]);
 
         sample.Dummy.Sample1.Text.Assert().IsNull();
-        sample.Dummy.Sample2.Assert(s => s.Calc()).Throws<FakeCallException>();
+        sample.Dummy.Sample2.Assert(x => x.Calc()).Throws<FakeCallException>();
         sample.Dummy.Value1.Assert().Is(num);
         sample.Dummy.Value2.Assert().Is(text);
     }

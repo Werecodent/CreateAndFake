@@ -50,7 +50,7 @@ public static class ReferenceComparerTests
     [Fact]
     internal static void GetHashCode_NullIsValid()
     {
-        ReferenceComparer.Use.Assert(c => c.GetHashCode(null)).ThrowsNo<Exception>();
+        ReferenceComparer.Use.Assert(x => x.GetHashCode(null)).ThrowsNo<Exception>();
     }
 
     [Theory, RandomData]

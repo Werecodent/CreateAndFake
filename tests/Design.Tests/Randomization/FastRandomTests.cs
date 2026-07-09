@@ -67,6 +67,6 @@ public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
 
         FastRandom gen = new(2);
         gen.NextSequence(generate(2)).Assert().HasCount(2);
-        gen.Assert(g => g.NextSequence(generate(3)).Count()).Throws<IterationLimitException>();
+        gen.Assert(x => x.NextSequence(generate(3)).Count()).Throws<IterationLimitException>();
     }
 }

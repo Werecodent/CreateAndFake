@@ -24,7 +24,7 @@ public sealed class ValuerAsyncComparableCompareHintTests
     internal void TryToCompare_BlocksComparison(IValuerAsyncComparable data)
     {
         TestInstance
-            .Assert(hint => hint.TryToCompare(data, data, CreateChainer()))
+            .Assert(x => x.TryToCompare(data, data, CreateChainer()))
             .Throws<EngineException>();
     }
 
@@ -32,7 +32,7 @@ public sealed class ValuerAsyncComparableCompareHintTests
     internal void TryToGetHashCode_BlocksHashing(IValuerAsyncComparable data)
     {
         TestInstance
-            .Assert(hint => hint.TryToGetHashCode(data, CreateChainer()))
+            .Assert(x => x.TryToGetHashCode(data, CreateChainer()))
             .Throws<EngineException>();
     }
 }

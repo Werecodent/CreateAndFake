@@ -60,7 +60,7 @@ public static class MethodCallWrapperTests
         object value
     )
     {
-        method.Assert(m => m.ModifyArg(parameter, value)).Throws<KeyNotFoundException>();
+        method.Assert(x => x.ModifyArg(parameter, value)).Throws<KeyNotFoundException>();
     }
 
     [Theory, RandomData]

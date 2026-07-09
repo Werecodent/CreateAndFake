@@ -18,7 +18,7 @@ public static class TaskAlsoChainerExtensions
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -41,7 +41,7 @@ public static class TaskAlsoChainerExtensions
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -54,7 +54,7 @@ public static class TaskAlsoChainerExtensions
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -67,7 +67,7 @@ public static class TaskAlsoChainerExtensions
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -77,7 +77,7 @@ public static class TaskAlsoChainerExtensions
     public static async Task<AssertTask> Also<T>(this Task<T> origin, Task? actual)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -87,7 +87,7 @@ public static class TaskAlsoChainerExtensions
     public static async Task<AssertValueTask> Also<T>(this Task<T> origin, ValueTask actual)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -97,7 +97,7 @@ public static class TaskAlsoChainerExtensions
     public static async Task<AssertValueTask> Also<T>(this Task<T> origin, ValueTask? actual)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 
@@ -107,7 +107,7 @@ public static class TaskAlsoChainerExtensions
     public static async Task<AssertAction> Also<T>(this Task<T> origin, Action? actual)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
+        ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Also(actual);
     }
 

@@ -65,7 +65,7 @@ public static class RandomizerChainerTests
             );
 
         new RandomizerChainer(Tools.Randomizer.Options, engine)
-            .Assert(c => c.CreateSpecific(specificType, parentType))
+            .Assert(x => x.CreateSpecific(specificType, parentType))
             .Throws<EngineException>();
     }
 
@@ -86,7 +86,7 @@ public static class RandomizerChainerTests
             );
 
         new RandomizerChainer(Tools.Randomizer.Options, engine)
-            .Assert(c => c.CreateInternal(type, data))
+            .Assert(x => x.CreateInternal(type, data))
             .Throws<EngineException>();
     }
 

@@ -36,7 +36,7 @@ public static class DuplicatorTests
     internal static void Copy_MissingMatchThrows()
     {
         new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
-            .Assert(d => d.Copy(new object()))
+            .Assert(x => x.Copy(new object()))
             .Throws<ToolException>()
             .With.InnerException.GetType()
             .Assert()
@@ -89,7 +89,7 @@ public static class DuplicatorTests
                 Hints = [hint],
             }
         )
-            .Assert(d => d.Copy(instance))
+            .Assert(x => x.Copy(instance))
             .Throws<ToolException>()
             .With.Message.Assert()
             .Contains(GenericConverter.ExpandName(instance));

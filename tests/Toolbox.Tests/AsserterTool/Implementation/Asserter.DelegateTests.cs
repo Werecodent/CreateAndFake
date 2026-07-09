@@ -19,7 +19,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_ActionTypeMismatch()
     {
         _testInstance
-            .Assert(t => t.Throws<ArgumentException>(() => throw new NotSupportedException()))
+            .Assert(x => x.Throws<ArgumentException>(() => throw new NotSupportedException()))
             .Throws<AssertException>();
     }
 
@@ -27,7 +27,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_ActionNoThrow()
     {
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>(() => { }))
+            .Assert(x => x.Throws<InvalidOperationException>(() => { }))
             .Throws<AssertException>();
     }
 
@@ -50,7 +50,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_ActionNullCase()
     {
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>(null))
+            .Assert(x => x.Throws<InvalidOperationException>(null))
             .Throws<AssertException>();
     }
 
@@ -66,7 +66,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_FuncTypeMismatch()
     {
         _testInstance
-            .Assert(t => t.Throws<ArgumentException>(() => throw new NotSupportedException()))
+            .Assert(x => x.Throws<ArgumentException>(() => throw new NotSupportedException()))
             .Throws<AssertException>();
     }
 
@@ -74,7 +74,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_FuncNoThrow()
     {
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>(() => true))
+            .Assert(x => x.Throws<InvalidOperationException>(() => true))
             .Throws<AssertException>();
     }
 
@@ -82,7 +82,7 @@ public sealed class AsserterDelegateTests
     internal void Throws_FuncNullCase()
     {
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>(null))
+            .Assert(x => x.Throws<InvalidOperationException>(null))
             .Throws<AssertException>();
     }
 
@@ -91,7 +91,7 @@ public sealed class AsserterDelegateTests
     {
         disposable.Tools().ToFake().Setup(m => m.Dispose(), Behavior.None(Times.Once));
 
-        _testInstance.Assert(t => t.Throws<Exception>(() => disposable)).Throws<AssertException>();
+        _testInstance.Assert(x => x.Throws<Exception>(() => disposable)).Throws<AssertException>();
 
         disposable.Assert().Called();
     }
@@ -111,7 +111,7 @@ public sealed class AsserterDelegateTests
         AggregateException ex = new(error1, error2);
 
         _testInstance
-            .Assert(t => t.Throws<InvalidOperationException>(() => throw ex))
+            .Assert(x => x.Throws<InvalidOperationException>(() => throw ex))
             .Throws<AssertException>()
             .With.InnerException.Assert()
             .Is(ex);
@@ -123,7 +123,7 @@ public sealed class AsserterDelegateTests
         AggregateException ex = new(error);
 
         _testInstance
-            .Assert(t => t.Throws<InvalidCastException>(() => throw ex))
+            .Assert(x => x.Throws<InvalidCastException>(() => throw ex))
             .Throws<AssertException>()
             .With.InnerException.Assert()
             .Is(ex);

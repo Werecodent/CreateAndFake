@@ -28,7 +28,7 @@ public sealed class AsyncEnumerableCompareHintTests
     internal void TryToCompare_BlocksComparison(IAsyncEnumerable<string> data)
     {
         TestInstance
-            .Assert(hint => hint.TryToCompare(data, data, CreateChainer()))
+            .Assert(x => x.TryToCompare(data, data, CreateChainer()))
             .Throws<EngineException>();
     }
 
@@ -36,7 +36,7 @@ public sealed class AsyncEnumerableCompareHintTests
     internal void TryToGetHashCode_BlocksHashing(IAsyncEnumerable<int> data)
     {
         TestInstance
-            .Assert(hint => hint.TryToGetHashCode(data, CreateChainer()))
+            .Assert(x => x.TryToGetHashCode(data, CreateChainer()))
             .Throws<EngineException>();
     }
 

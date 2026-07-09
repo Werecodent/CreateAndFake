@@ -27,8 +27,8 @@ public sealed class AsserterEnumerableTests
     {
         _testInstance.IsEmpty(Array.Empty<string>());
 
-        _testInstance.Assert(t => t.IsEmpty(null)).Throws<AssertException>();
-        _testInstance.Assert(t => t.IsEmpty(data)).Throws<AssertException>();
+        _testInstance.Assert(x => x.IsEmpty(null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.IsEmpty(data)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -36,8 +36,8 @@ public sealed class AsserterEnumerableTests
     {
         _testInstance.IsNotEmpty(data);
 
-        _testInstance.Assert(t => t.IsNotEmpty(null)).Throws<AssertException>();
-        _testInstance.Assert(t => t.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();
+        _testInstance.Assert(x => x.IsNotEmpty(null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.IsNotEmpty(Array.Empty<string>())).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -45,9 +45,9 @@ public sealed class AsserterEnumerableTests
     {
         _testInstance.HasCount(data.Count(), data);
 
-        _testInstance.Assert(t => t.HasCount(data.Count(), null)).Throws<AssertException>();
-        _testInstance.Assert(t => t.HasCount(data.Count() - 1, data)).Throws<AssertException>();
-        _testInstance.Assert(t => t.HasCount(data.Count() + 1, data)).Throws<AssertException>();
+        _testInstance.Assert(x => x.HasCount(data.Count(), null)).Throws<AssertException>();
+        _testInstance.Assert(x => x.HasCount(data.Count() - 1, data)).Throws<AssertException>();
+        _testInstance.Assert(x => x.HasCount(data.Count() + 1, data)).Throws<AssertException>();
     }
 
     [Theory, RandomData]
@@ -61,8 +61,8 @@ public sealed class AsserterEnumerableTests
     [Theory, RandomData]
     internal void IsEmpty_WithItems(IEnumerable<DataSample> items)
     {
-        items.Assert(d => d.Assert().IsEmpty()).Throws<AssertException>();
-        items.Assert(d => d.Assert().IsEmpty()).Throws<AssertException>(_config);
+        items.Assert(x => x.Assert().IsEmpty()).Throws<AssertException>();
+        items.Assert(x => x.Assert().IsEmpty()).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -77,8 +77,8 @@ public sealed class AsserterEnumerableTests
     [Theory, RandomData]
     internal void IsNotEmpty_NoItems([Size(0)] IEnumerable<DataSample> items)
     {
-        items.Assert(d => d.Assert().IsNotEmpty()).Throws<AssertException>();
-        items.Assert(d => d.Assert().IsNotEmpty()).Throws<AssertException>(_config);
+        items.Assert(x => x.Assert().IsNotEmpty()).Throws<AssertException>();
+        items.Assert(x => x.Assert().IsNotEmpty()).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 
@@ -94,10 +94,10 @@ public sealed class AsserterEnumerableTests
     internal void HasCount_MismatchedSize(ICollection<DataSample> items)
     {
         items
-            .Assert(d => d.Assert().HasCount(items.Count.Tools().Variant()))
+            .Assert(x => x.Assert().HasCount(items.Count.Tools().Variant()))
             .Throws<AssertException>();
         items
-            .Assert(d => d.Assert().HasCount(items.Count.Tools().Variant()))
+            .Assert(x => x.Assert().HasCount(items.Count.Tools().Variant()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -114,10 +114,10 @@ public sealed class AsserterEnumerableTests
     internal void Contains_RandomOther(ICollection<DataSample> items)
     {
         items
-            .Assert(d => d.Assert().Contains(Tools.Mutator.Variant(items)))
+            .Assert(x => x.Assert().Contains(Tools.Mutator.Variant(items)))
             .Throws<AssertException>();
         items
-            .Assert(d => d.Assert().Contains(Tools.Mutator.Variant(items)))
+            .Assert(x => x.Assert().Contains(Tools.Mutator.Variant(items)))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -134,10 +134,10 @@ public sealed class AsserterEnumerableTests
     internal void ContainsNot_UsingSubitem(ICollection<DataSample> items)
     {
         items
-            .Assert(d => d.Assert().ContainsNot(Tools.Gen.NextItem(items)))
+            .Assert(x => x.Assert().ContainsNot(Tools.Gen.NextItem(items)))
             .Throws<AssertException>();
         items
-            .Assert(d => d.Assert().ContainsNot(Tools.Gen.NextItem(items)))
+            .Assert(x => x.Assert().ContainsNot(Tools.Gen.NextItem(items)))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
@@ -145,8 +145,8 @@ public sealed class AsserterEnumerableTests
     [Theory, RandomData]
     internal void Fail_Throws(IEnumerable<DataSample> items)
     {
-        items.Assert(d => d.Assert().Fail()).Throws<AssertException>();
-        items.Assert(d => d.Assert().Fail()).Throws<AssertException>(_config);
+        items.Assert(x => x.Assert().Fail()).Throws<AssertException>();
+        items.Assert(x => x.Assert().Fail()).Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
     }
 

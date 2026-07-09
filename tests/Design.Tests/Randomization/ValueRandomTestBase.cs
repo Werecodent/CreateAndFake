@@ -264,7 +264,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
 
         testInstance.Next(false, false).Assert().Is(false);
         testInstance.Next(true, true).Assert().Is(true);
-        testInstance.Assert(t => t.Next(true, false)).Throws<ArgumentOutOfRangeException>();
+        testInstance.Assert(x => x.Next(true, false)).Throws<ArgumentOutOfRangeException>();
     }
 
     private void TestBasicSupport<TValueType>(TValueType zero)
@@ -311,7 +311,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         TestNext(min, addSome(min));
         TestNext(subtractSome(max), max);
 
-        min.Assert(m => testInstance.Next(max, m)).Throws<ArgumentOutOfRangeException>();
+        min.Assert(x => testInstance.Next(max, x)).Throws<ArgumentOutOfRangeException>();
 
         Limiter.Myriad.Repeat(
             "Minimal range adherence testing.",
@@ -370,10 +370,10 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     [Theory, RandomData]
     public void Next_UnsupportedTypeThrows(StructSample sample)
     {
-        testInstance.Assert(t => t.Next<StructSample>()).Throws<UnsupportedException>();
-        testInstance.Assert(t => t.Next(typeof(StructSample))).Throws<UnsupportedException>();
-        testInstance.Assert(t => t.Next(sample)).Throws<UnsupportedException>();
-        testInstance.Assert(t => t.Next(sample, sample)).Throws<UnsupportedException>();
+        testInstance.Assert(x => x.Next<StructSample>()).Throws<UnsupportedException>();
+        testInstance.Assert(x => x.Next(typeof(StructSample))).Throws<UnsupportedException>();
+        testInstance.Assert(x => x.Next(sample)).Throws<UnsupportedException>();
+        testInstance.Assert(x => x.Next(sample, sample)).Throws<UnsupportedException>();
     }
 
     [Fact]
@@ -490,7 +490,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     [Fact]
     public void Next_MinMustBeSmallerThanMax()
     {
-        testInstance.Assert(t => t.Next(1, -1)).Throws<ArgumentOutOfRangeException>();
+        testInstance.Assert(x => x.Next(1, -1)).Throws<ArgumentOutOfRangeException>();
     }
 
     [Theory, RandomData]
@@ -516,9 +516,9 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     [Fact]
     public void NextItem_EmptyThrows()
     {
-        testInstance.Assert(t => t.NextItem(CreateSeries(0))).Throws<InvalidOperationException>();
+        testInstance.Assert(x => x.NextItem(CreateSeries(0))).Throws<InvalidOperationException>();
         testInstance
-            .Assert(t => t.NextItem(Array.Empty<object>()))
+            .Assert(x => x.NextItem(Array.Empty<object>()))
             .Throws<InvalidOperationException>();
     }
 

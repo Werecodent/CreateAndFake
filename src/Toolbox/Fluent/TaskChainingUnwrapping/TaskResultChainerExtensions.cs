@@ -16,6 +16,14 @@ public static class TaskResultChainerExtensions
         return (await origin.ConfigureAwait(false)).GetResultValue();
     }
 
+    /// <inheritdoc cref="AlsoChainer.Also(object)"/>
+    public static async Task<AssertAsyncObject> That<T>(this Task<ResultChainer<T>> origin)
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        ResultChainer<T> chainer = await origin.ConfigureAwait(false);
+        return chainer.Also(chainer.GetResultValue());
+    }
+
     /// <inheritdoc cref="AlsoChainer.Also{T}(IAsyncEnumerable{T})"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AssertAsyncEnumerable<T>> That<T>(

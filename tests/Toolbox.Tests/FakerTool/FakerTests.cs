@@ -33,7 +33,7 @@ public static class FakerTests
     {
         Fake<DataHolderSample> sample = Tools.Faker.Mock<DataHolderSample>();
         sample.ThrowByDefault.Assert().Is(true);
-        sample.Dummy.Assert(d => d.HasNested(sample.Dummy.NestedValue)).Throws<FakeCallException>();
+        sample.Dummy.Assert(x => x.HasNested(sample.Dummy.NestedValue)).Throws<FakeCallException>();
     }
 
     [Fact]
@@ -59,8 +59,8 @@ public static class FakerTests
     {
         Injected<FakeHolderSample> sample = Tools.Faker.InjectMocks<FakeHolderSample>();
 
-        sample.Dummy.Sample1.Assert(s => s.Calc()).Throws<FakeCallException>();
-        sample.Dummy.Sample2.Assert(s => s.Text).Throws<FakeCallException>();
+        sample.Dummy.Sample1.Assert(x => x.Calc()).Throws<FakeCallException>();
+        sample.Dummy.Sample2.Assert(x => x.Text).Throws<FakeCallException>();
     }
 
     [Fact]

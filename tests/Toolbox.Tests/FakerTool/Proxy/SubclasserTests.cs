@@ -59,7 +59,7 @@ public static class SubclasserTests
     internal static void Create_OnlyMultipleInterfaces()
     {
         typeof(object)
-            .Assert(t => Subclasser.Create<DataSample>(Tools.Faker.Options, t))
+            .Assert(x => Subclasser.Create<DataSample>(Tools.Faker.Options, x))
             .Throws<ArgumentException>();
     }
 
@@ -67,7 +67,7 @@ public static class SubclasserTests
     internal static void Create_SealedTypesThrow()
     {
         typeof(string)
-            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>();
     }
 
@@ -108,7 +108,7 @@ public static class SubclasserTests
     internal static void Create_UndefinedGenericsThrow()
     {
         typeof(ConstraintSample<,>)
-            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>();
     }
 
@@ -116,7 +116,7 @@ public static class SubclasserTests
     internal static void Create_PointersThrow()
     {
         typeof(void*)
-            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>();
     }
 
@@ -124,7 +124,7 @@ public static class SubclasserTests
     internal static void Create_InternalTypesThrow()
     {
         typeof(InternalSample)
-            .Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+            .Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>();
     }
 
@@ -143,7 +143,7 @@ public static class SubclasserTests
         type.Assembly.SetupReturn(typeof(object).Assembly);
         type.Name.SetupReturn("TestInvisibleType");
 
-        type.Assert(t => Subclasser.Create(t, Tools.Faker.Options))
+        type.Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>()
             .With.Message.Assert()
             .Contains("InternalsVisibleTo");
