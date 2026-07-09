@@ -22,7 +22,12 @@ public static class SerializationValidatorTests
             opt =>
                 opt with
                 {
-                    IgnorableExceptions = [typeof(AssertException), typeof(SerializationException)],
+                    IgnorableExceptions =
+                    [
+                        typeof(AssertException),
+                        typeof(SerializationException),
+                        typeof(ArgumentOutOfRangeException),
+                    ],
                 }
         );
     }

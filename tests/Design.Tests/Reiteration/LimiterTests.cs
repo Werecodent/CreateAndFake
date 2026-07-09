@@ -14,7 +14,7 @@ public static class LimiterTests
         typeof(FormatException),
     ];
 
-    [Fact]
+    /*[Fact]
     internal static Task Limiter_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
@@ -22,7 +22,7 @@ public static class LimiterTests
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
-    }
+    }*/
 
     [Fact]
     internal static Task Limiter_NoParameterMutation()

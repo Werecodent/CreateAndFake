@@ -18,6 +18,8 @@ internal static class Unwrapper
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(options);
+
         object? result = call?.Invoke();
 
         TypeDescriber describer = TypeDescriber.For(result?.GetType());

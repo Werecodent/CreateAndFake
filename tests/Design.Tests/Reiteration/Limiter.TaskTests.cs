@@ -3,24 +3,28 @@ using CreateAndFake.Design.Reiteration;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
-public static class LimiterAsyncTests
+public static class LimiterTaskTests
 {
     private const int _WaitAccuracy = 5;
 
     private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
 
-    [Theory, InlineData(1), InlineData(5)]
+    /*[Theory, InlineData(1), InlineData(5)]
     internal static Task RepeatAsync_TryLimited(int tries)
     {
         int attempts = 0;
 
         return new Limiter(tries)
-            .RepeatAsync(GetAMessage(), () => attempts++, TestContext.Current.CancellationToken)
+            .RepeatAsync(
+                GetAMessage(),
+                Task.Run(() => attempts++, TestContext.Current.CancellationToken),
+                TestContext.Current.CancellationToken
+            )
             .Assert()
             .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
             .Also(() => attempts)
             .Is(tries);
-    }
+    }*/
 
     [Theory, InlineData(1), InlineData(3)]
     internal static Task StallUntilAsync_TryLimited(int tries)

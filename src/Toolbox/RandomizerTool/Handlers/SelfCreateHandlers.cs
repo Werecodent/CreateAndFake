@@ -68,6 +68,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
+                ExtractPrivateMembers = false,
                 MaxHintRecursion = rand.Options.Gen.Next(28, 32),
             }
         ),

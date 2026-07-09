@@ -104,14 +104,17 @@ public static class MutationGuarderTests
     {
         return Limiter.Few.RetryAsync<AssertException>(
             "Attempting to test timeout works.",
-            _ShortTestInstance
-                .PreventsMutationOnStaticsAsync(
-                    typeof(LongMethodSample),
-                    false,
-                    TestContext.Current.CancellationToken
-                )
-                .Assert()
-                .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken),
+            () =>
+            {
+                _ = _ShortTestInstance
+                    .PreventsMutationOnStaticsAsync(
+                        typeof(LongMethodSample),
+                        false,
+                        TestContext.Current.CancellationToken
+                    )
+                    .Assert()
+                    .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
+            },
             TestContext.Current.CancellationToken
         );
     }

@@ -6,15 +6,15 @@ namespace CreateAndFake.Design.Reiteration;
 public sealed partial class Limiter : ILimiterTask
 {
     /// <inheritdoc/>
-    public Task RepeatAsync(string message, Task? behavior, CancellationToken canceler)
+    public Task RepeatAsync(string message, Func<Task?> behavior, CancellationToken canceler)
     {
-        return RepeatAsync(message, ToGenericAsync(behavior), canceler);
+        return RepeatAsync(message, () => ToGenericAsync(behavior), canceler);
     }
 
     /// <inheritdoc/>
     public async Task<IReadOnlyCollection<T>> RepeatAsync<T>(
         string message,
-        Task<T> behavior,
+        Func<Task<T>> behavior,
         CancellationToken canceler
     )
     {
@@ -25,7 +25,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
-            results.Add(await behavior.ConfigureAwait(false));
+            results.Add(await behavior.Invoke().ConfigureAwait(false));
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
         );
@@ -34,51 +34,60 @@ public sealed partial class Limiter : ILimiterTask
     }
 
     /// <inheritdoc/>
-    public Task StallUntilAsync(string message, Task<bool> behavior, CancellationToken canceler)
+    public Task StallUntilAsync(
+        string message,
+        Func<Task<bool>> behavior,
+        CancellationToken canceler
+    )
     {
-        return StallUntilAsync(message, null, behavior, canceler);
+        return StallUntilAsync(message, () => Task.CompletedTask, behavior, canceler);
     }
 
     /// <inheritdoc/>
     public Task StallUntilAsync(
         string message,
-        Task? behavior,
+        Func<Task?> behavior,
         Func<bool> checkState,
         CancellationToken canceler
     )
     {
-        return StallUntilAsync(message, ToGenericAsync(behavior), checkState, canceler);
+        return StallUntilAsync(message, () => ToGenericAsync(behavior), checkState, canceler);
     }
 
     /// <inheritdoc/>
     public Task StallUntilAsync(
         string message,
-        Task? behavior,
-        Task<bool> checkState,
+        Func<Task?> behavior,
+        Func<Task<bool>> checkState,
         CancellationToken canceler
     )
     {
-        return StallUntilAsync(message, ToGenericAsync(behavior), checkState, canceler);
+        return StallUntilAsync(message, () => ToGenericAsync(behavior), checkState, canceler);
     }
 
     /// <inheritdoc/>
     public Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
-        Task<T> behavior,
+        Func<Task<T>> behavior,
         Func<bool> checkState,
         CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(checkState);
 
-        return StallUntilAsync(message, behavior, _ => checkState.Invoke(), canceler);
+        return StallUntilAsync(
+            message,
+            behavior,
+            () => Task.FromResult(checkState.Invoke()),
+            canceler
+        );
     }
 
     /// <inheritdoc/>
     public async Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
-        Task<T> behavior,
-        Task<bool> checkState,
+        Func<Task<T>> behavior,
+        Func<Task<bool>> checkState,
         CancellationToken canceler
     )
     {
@@ -88,10 +97,10 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
-            T result = await behavior.ConfigureAwait(false);
+            T result = await behavior.Invoke().ConfigureAwait(false);
 
             results.Add(result);
-            if (await checkState.ConfigureAwait(false))
+            if (await checkState.Invoke().ConfigureAwait(false))
             {
                 break;
             }
@@ -104,7 +113,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public async Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
-        Task<T> behavior,
+        Func<Task<T>> behavior,
         Func<T, bool> checkState,
         CancellationToken canceler
     )
@@ -115,7 +124,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
-            T result = await behavior.ConfigureAwait(false);
+            T result = await behavior.Invoke().ConfigureAwait(false);
 
             results.Add(result);
             if (checkState.Invoke(result))
@@ -129,7 +138,7 @@ public sealed partial class Limiter : ILimiterTask
     }
 
     /// <inheritdoc/>
-    public Task RetryAsync(string message, Task behavior, CancellationToken canceler)
+    public Task RetryAsync(string message, Func<Task> behavior, CancellationToken canceler)
     {
         return RetryAsync<Exception>(message, behavior, (Action?)null, canceler);
     }
@@ -137,7 +146,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task RetryAsync(
         string message,
-        Task behavior,
+        Func<Task> behavior,
         Action resetState,
         CancellationToken canceler
     )
@@ -148,8 +157,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task RetryAsync(
         string message,
-        Task behavior,
-        Task resetState,
+        Func<Task> behavior,
+        Func<Task> resetState,
         CancellationToken canceler
     )
     {
@@ -157,7 +166,7 @@ public sealed partial class Limiter : ILimiterTask
     }
 
     /// <inheritdoc/>
-    public Task RetryAsync<TError>(string message, Task behavior, CancellationToken canceler)
+    public Task RetryAsync<TError>(string message, Func<Task> behavior, CancellationToken canceler)
         where TError : Exception
     {
         return RetryAsync<TError>(message, behavior, (Action?)null, canceler);
@@ -166,31 +175,41 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task RetryAsync<TError>(
         string message,
-        Task behavior,
+        Func<Task> behavior,
         Action? resetState,
         CancellationToken canceler
     )
         where TError : Exception
     {
-        return RetryAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
+        return RetryAsync<TError, bool>(
+            message,
+            () => ToGenericAsync(behavior),
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc/>
     public Task RetryAsync<TError>(
         string message,
-        Task behavior,
-        Task? resetState,
+        Func<Task> behavior,
+        Func<Task>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
     {
-        return RetryAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
+        return RetryAsync<TError, bool>(
+            message,
+            () => ToGenericAsync(behavior),
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc/>
     public Task<TResult> RetryAsync<TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         CancellationToken canceler
     )
     {
@@ -200,7 +219,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult> RetryAsync<TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         Action resetState,
         CancellationToken canceler
     )
@@ -211,8 +230,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult> RetryAsync<TResult>(
         string message,
-        Task<TResult> behavior,
-        Task resetState,
+        Func<Task<TResult>> behavior,
+        Func<Task> resetState,
         CancellationToken canceler
     )
     {
@@ -222,7 +241,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult> RetryAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         CancellationToken canceler
     )
         where TError : Exception
@@ -233,7 +252,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public async Task<TResult> RetryAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         Action? resetState,
         CancellationToken canceler
     )
@@ -247,7 +266,7 @@ public sealed partial class Limiter : ILimiterTask
             TError lastError;
             try
             {
-                return await behavior.ConfigureAwait(false);
+                return await behavior.Invoke().ConfigureAwait(false);
             }
             catch (TError error)
             {
@@ -262,8 +281,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public async Task<TResult> RetryAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
-        Task? resetState,
+        Func<Task<TResult>> behavior,
+        Func<Task>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
@@ -276,7 +295,7 @@ public sealed partial class Limiter : ILimiterTask
             TError lastError;
             try
             {
-                return await behavior.ConfigureAwait(false);
+                return await behavior.Invoke().ConfigureAwait(false);
             }
             catch (TError error)
             {
@@ -285,7 +304,7 @@ public sealed partial class Limiter : ILimiterTask
 
             if (resetState != null)
             {
-                await resetState.ConfigureAwait(false);
+                await resetState.Invoke().ConfigureAwait(false);
             }
             await DelayOrFaultAsync(message, watch.Elapsed, i, canceler, lastError)
                 .ConfigureAwait(false);
@@ -293,7 +312,7 @@ public sealed partial class Limiter : ILimiterTask
     }
 
     /// <inheritdoc/>
-    public Task AttemptAsync(string message, Task behavior, CancellationToken canceler)
+    public Task AttemptAsync(string message, Func<Task> behavior, CancellationToken canceler)
     {
         return AttemptAsync<Exception>(message, behavior, (Action?)null, canceler);
     }
@@ -301,7 +320,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task AttemptAsync(
         string message,
-        Task behavior,
+        Func<Task> behavior,
         Action resetState,
         CancellationToken canceler
     )
@@ -312,8 +331,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task AttemptAsync(
         string message,
-        Task behavior,
-        Task resetState,
+        Func<Task> behavior,
+        Func<Task> resetState,
         CancellationToken canceler
     )
     {
@@ -321,7 +340,11 @@ public sealed partial class Limiter : ILimiterTask
     }
 
     /// <inheritdoc/>
-    public Task AttemptAsync<TError>(string message, Task behavior, CancellationToken canceler)
+    public Task AttemptAsync<TError>(
+        string message,
+        Func<Task> behavior,
+        CancellationToken canceler
+    )
         where TError : Exception
     {
         return AttemptAsync<TError>(message, behavior, (Action?)null, canceler);
@@ -330,31 +353,41 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task AttemptAsync<TError>(
         string message,
-        Task? behavior,
+        Func<Task?> behavior,
         Action? resetState,
         CancellationToken canceler
     )
         where TError : Exception
     {
-        return AttemptAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
+        return AttemptAsync<TError, bool>(
+            message,
+            () => ToGenericAsync(behavior),
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc/>
     public Task AttemptAsync<TError>(
         string message,
-        Task? behavior,
-        Task? resetState,
+        Func<Task?> behavior,
+        Func<Task>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
     {
-        return AttemptAsync<TError, bool>(message, ToGenericAsync(behavior), resetState, canceler);
+        return AttemptAsync<TError, bool>(
+            message,
+            () => ToGenericAsync(behavior),
+            resetState,
+            canceler
+        );
     }
 
     /// <inheritdoc/>
     public Task<TResult?> AttemptAsync<TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         CancellationToken canceler
     )
     {
@@ -364,7 +397,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult?> AttemptAsync<TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         Action resetState,
         CancellationToken canceler
     )
@@ -375,8 +408,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult?> AttemptAsync<TResult>(
         string message,
-        Task<TResult> behavior,
-        Task resetState,
+        Func<Task<TResult>> behavior,
+        Func<Task> resetState,
         CancellationToken canceler
     )
     {
@@ -386,7 +419,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         CancellationToken canceler
     )
         where TError : Exception
@@ -397,7 +430,7 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public async Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
+        Func<Task<TResult>> behavior,
         Action? resetState,
         CancellationToken canceler
     )
@@ -411,7 +444,7 @@ public sealed partial class Limiter : ILimiterTask
         {
             try
             {
-                return await behavior.ConfigureAwait(false);
+                return await behavior.Invoke().ConfigureAwait(false);
             }
             catch (TError) { }
 
@@ -426,8 +459,8 @@ public sealed partial class Limiter : ILimiterTask
     /// <inheritdoc/>
     public async Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
-        Task<TResult> behavior,
-        Task? resetState,
+        Func<Task<TResult>> behavior,
+        Func<Task>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
@@ -440,13 +473,13 @@ public sealed partial class Limiter : ILimiterTask
         {
             try
             {
-                return await behavior.ConfigureAwait(false);
+                return await behavior.Invoke().ConfigureAwait(false);
             }
             catch (TError) { }
 
             if (resetState != null)
             {
-                await resetState.ConfigureAwait(false);
+                await resetState.Invoke().ConfigureAwait(false);
             }
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
@@ -455,11 +488,12 @@ public sealed partial class Limiter : ILimiterTask
         return default;
     }
 
-    private static async Task<bool> ToGenericAsync(Task? behavior)
+    private static async Task<bool> ToGenericAsync(Func<Task?> behavior)
     {
-        if (behavior != null)
+        Task? innerBehavior = behavior.Invoke();
+        if (innerBehavior != null)
         {
-            await behavior.ConfigureAwait(false);
+            await innerBehavior.ConfigureAwait(false);
         }
         return true;
     }
