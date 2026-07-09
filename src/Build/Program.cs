@@ -19,17 +19,17 @@ internal static class Program
     {
         string[] configurations = ["Debug", "Release"];
         Target("default", dependsOn: ["test"]);
-        Target("restore", Restore);
-        Target("compile", dependsOn: ["restore"], forEach: configurations, Compile);
-        Target("test", dependsOn: ["compile"], forEach: configurations, Test);
-        Target("coverage", dependsOn: ["compile"], Coverage);
-        Target("pack", dependsOn: ["compile"], Pack);
-        Target("debugCrash", dependsOn: ["compile"], DebugCrash);
+        Target("restore", RestoreAsync);
+        Target("compile", dependsOn: ["restore"], forEach: configurations, CompileAsync);
+        Target("test", dependsOn: ["compile"], forEach: configurations, TestAsync);
+        Target("coverage", dependsOn: ["compile"], CoverageAsync);
+        Target("pack", dependsOn: ["compile"], PackAsync);
+        Target("debugCrash", dependsOn: ["compile"], DebugCrashAsync);
         return RunTargetsAndExitAsync(args);
     }
 
     /// <summary>Downloads all packages for the solution.</summary>
-    private static async Task Restore()
+    private static async Task RestoreAsync()
     {
         await RunAsync("dotnet", "tool update -g csharpier").ConfigureAwait(false);
         await RunAsync("dotnet", "restore").ConfigureAwait(false);
@@ -37,21 +37,21 @@ internal static class Program
 
     /// <summary>Builds the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
-    private static Task Compile(string configuration)
+    private static Task CompileAsync(string configuration)
     {
         return RunAsync("dotnet", $"build --no-restore --configuration {configuration}");
     }
 
     /// <summary>Tests the solution.</summary>
     /// <param name="configuration">Build configuration to use.</param>
-    private static Task Test(string configuration)
+    private static Task TestAsync(string configuration)
     {
         return RunAsync("dotnet", $"test --no-restore --no-build --configuration {configuration}");
     }
 
     /// <summary>Tests the solution with file logging.</summary>
     /// <remarks>For debugging test harness crashes.</remarks>
-    private static Task DebugCrash()
+    private static Task DebugCrashAsync()
     {
         string logDir = Path.Combine(_ArtifactDir, "logs");
         EnsureEmpty(logDir);
@@ -63,7 +63,7 @@ internal static class Program
     }
 
     /// <summary>Tests and analyzes test code coverage.</summary>
-    private static async Task Coverage()
+    private static async Task CoverageAsync()
     {
         const string prefix = "coverage";
         const string postfix = ".cobertura.xml";
@@ -115,7 +115,7 @@ internal static class Program
     }
 
     /// <summary>Packs the solution for release.</summary>
-    private static Task Pack()
+    private static Task PackAsync()
     {
         string releaseDir = Path.Combine(_ArtifactDir, "releases");
         EnsureEmpty(releaseDir);

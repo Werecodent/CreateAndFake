@@ -11,7 +11,7 @@ namespace CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class EqualityValidator(TesterOptions options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 

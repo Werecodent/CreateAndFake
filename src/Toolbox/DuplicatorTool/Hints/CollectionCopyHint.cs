@@ -48,7 +48,6 @@ public sealed class CollectionCopyHint : CopyHint
         return CopyHintResult.None;
     }
 
-    /// <inheritdoc/>
     private static IEnumerable? Copy(IEnumerable source, IDuplicatorChainer duplicator)
     {
         Type type = source.GetType();

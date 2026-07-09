@@ -38,7 +38,7 @@ public sealed class SetCompareHint : CompareHint
         return HandleCompare((IEnumerable)expected, (IEnumerable)actual, chainer);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Compare"/>
     private static IEnumerable<Difference> HandleCompare(
         IEnumerable expected,
         IEnumerable actual,

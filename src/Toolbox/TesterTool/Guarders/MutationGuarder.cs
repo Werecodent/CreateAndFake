@@ -10,7 +10,7 @@ namespace CreateAndFake.TesterTool.Guarders;
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
     public async Task PreventsParameterMutationAsync(Type type, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(type);
@@ -44,7 +44,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
     public async Task PreventsParameterMutationAsync<T>(T instance, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(instance);

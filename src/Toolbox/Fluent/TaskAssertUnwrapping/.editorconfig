@@ -6,3 +6,6 @@ dotnet_diagnostic.VSTHRD200.severity = None
 
 # Cleaner project organization.
 dotnet_diagnostic.IDE0130.severity = None
+
+# Matches underlying method and override available.
+dotnet_diagnostic.VSTHRD103.severity = None

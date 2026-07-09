@@ -3,7 +3,7 @@ using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Randomization;
 
-#pragma warning disable CA5394 // Secure alternative provided.
+#pragma warning disable CA5394, S2245 // Secure alternative provided.
 
 /// <summary>For generating deterministic random values.</summary>
 public sealed class SeededRandom : ValueRandom, IDeepCloneable<SeededRandom>
@@ -81,4 +81,4 @@ public sealed class SeededRandom : ValueRandom, IDeepCloneable<SeededRandom>
     }
 }
 
-#pragma warning restore CA5394
+#pragma warning restore

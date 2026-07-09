@@ -11,23 +11,23 @@ namespace CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class SerializationValidator(TesterOptions options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
     public void VerifyJsonSerialization<T>()
     {
         VerifyJsonSerialization(Options.Randomizer.Create<T>());
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
     public void VerifyJsonSerialization<T>(T instance)
     {
         VerifyJsonSerialization(typeof(T), instance);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
     public void VerifyJsonSerialization(object instance)
     {
         ArgumentGuard.ThrowIfNull(instance);
@@ -41,19 +41,19 @@ internal sealed class SerializationValidator(TesterOptions options)
         VerifySerialization(type, instance, new DataContractJsonSerializer(type));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
     public void VerifyXmlSerialization<T>()
     {
         VerifyXmlSerialization(Options.Randomizer.Create<T>());
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
     public void VerifyXmlSerialization<T>(T instance)
     {
         VerifyXmlSerialization(typeof(T), instance);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
     public void VerifyXmlSerialization(object instance)
     {
         ArgumentGuard.ThrowIfNull(instance);

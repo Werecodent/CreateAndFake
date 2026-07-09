@@ -97,7 +97,7 @@ public sealed class ValuerChainer
         return HandleCompareAsync(expected, actual, optionConfiguration, canceler);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="CompareAsync"/>
     private async IAsyncEnumerable<Difference> HandleCompareAsync(
         object? expected,
         object? actual,

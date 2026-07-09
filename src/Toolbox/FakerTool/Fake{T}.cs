@@ -18,7 +18,7 @@ public sealed class Fake<T> : Fake
     public Fake(IFaked fake)
         : base(fake) { }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Fake"/>
     /// <remarks>Switches the fake to a different type.</remarks>
     public Fake(Fake baseFake)
         : base(baseFake?.Dummy ?? throw new ArgumentNullException(nameof(baseFake)))

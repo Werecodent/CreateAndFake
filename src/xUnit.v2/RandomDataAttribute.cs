@@ -30,7 +30,7 @@ namespace CreateAndFake.xUnit.v2;
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class RandomDataAttribute : DataAttribute
 {
-    /// <inheritdoc/>
+    /// <summary>Number of times to run the attached test.</summary>
     public int Trials { get; set; } = 1;
 
     /// <inheritdoc/>

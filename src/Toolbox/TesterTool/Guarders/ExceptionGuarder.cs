@@ -9,7 +9,7 @@ namespace CreateAndFake.TesterTool.Guarders;
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PassthroughWithNoExceptionsAsync"/>
     public Task PassthroughWithNoExceptionsAsync<T>(CancellationToken canceler)
     {
         if (Options.DisablePassthroughTests)
@@ -21,7 +21,7 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         return new ExceptionGuarder(Options).CallAllMethodsAsync(instance, canceler);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PassthroughWithNoExceptionsAsync"/>
     public Task PassthroughWithNoExceptionsAsync(object instance, CancellationToken canceler)
     {
         if (Options.DisablePassthroughTests)

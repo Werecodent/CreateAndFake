@@ -9,7 +9,7 @@ namespace CreateAndFake.TesterTool.Guarders;
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>
 internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     public async Task PreventsNullRefExceptionAsync(Type type, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(type);
@@ -39,7 +39,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     public async Task PreventsNullRefExceptionAsync<T>(T instance, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(instance);

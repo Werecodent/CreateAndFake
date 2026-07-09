@@ -9,3 +9,7 @@ dotnet_diagnostic.RCS1194.severity = None
 
 # False positive when adding a <param/> tag while also using <inheritdoc/> tag.
 dotnet_diagnostic.CS1573.severity = None
+
+# Bad rules that advocates for less maintainable documentation.
+dotnet_diagnostic.MA0197.severity = None
+dotnet_diagnostic.MA0203.severity = None

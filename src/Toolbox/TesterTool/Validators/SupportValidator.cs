@@ -13,11 +13,11 @@ namespace CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class SupportValidator(TesterOptions options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
     public async Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler
@@ -63,7 +63,7 @@ internal sealed class SupportValidator(TesterOptions options)
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyToolSetIntegrityAsync"/>
     public Task VerifyToolSetIntegrityAsync(CancellationToken canceler)
     {
         return VerifyToolSetSupportAsync(
@@ -78,7 +78,7 @@ internal sealed class SupportValidator(TesterOptions options)
         );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
     public async Task VerifyToolSetSupportAsync(IEnumerable<Type> types, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(types);

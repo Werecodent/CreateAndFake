@@ -12,11 +12,11 @@ namespace CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class TestValidator(TesterOptions options)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.ProvidesTestClassCoverage"/>
     public void ProvidesTestClassCoverage(Assembly codeAssembly, Assembly testAssembly)
     {
         ArgumentGuard.ThrowIfNull(codeAssembly, testAssembly);
@@ -66,7 +66,7 @@ internal sealed class TestValidator(TesterOptions options)
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITester.VerifyTestMethodNaming"/>
     internal void VerifyTestMethodNaming(
         IEnumerable<Type> testMarkers,
         Assembly codeAssembly,

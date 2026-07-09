@@ -7,7 +7,7 @@ namespace CreateAndFake.FakerTool;
 /// <typeparam name="T">Return type.</typeparam>
 public sealed class Behavior<T> : Behavior, IDeepCloneable<Behavior<T>>
 {
-    /// <inheritdoc/>>
+    /// <inheritdoc cref="Behavior"/>
     public Behavior(Delegate implementation, Times? times = null)
         : base(implementation, times, 0) { }
 

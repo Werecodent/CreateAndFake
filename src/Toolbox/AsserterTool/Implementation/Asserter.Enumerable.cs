@@ -29,7 +29,6 @@ public partial class Asserter : IAsserterEnumerable
         HandleFail("Test failed.", details, localOptions, details);
     }
 
-    /// <inheritdoc/>
     [DoesNotReturn]
     private static void HandleFail(
         string message,
