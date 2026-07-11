@@ -461,10 +461,10 @@ public static class LimiterAsyncTests
             )
             .Assert()
             .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
-            .Also(() => tries)
-            .Is(attemptAsync)
-            .And()
-            .Is(checkAttemptAsync);
+            .Also(() => attemptAsync)
+            .Is(tries)
+            .Also(() => checkAttemptAsync)
+            .Is(tries);
     }
 
     [Theory, InlineData(1), InlineData(3)]

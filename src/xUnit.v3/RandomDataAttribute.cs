@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.Design.Types;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
@@ -57,6 +58,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
                     default,
                     (RunnerOptions opt) => opt with { InheritIReflectableTypeOnFakedType = true }
                 );
+
                 data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
             }
             catch (Exception e)
@@ -101,9 +103,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 reflectable.GetTypeInfo().SetupReturn(typeof(Type));
             }
-            faked
-                .ToString()
-                .SetupReturn(Design.Types.GenericConverter.ExpandName(faked), Times.Any);
+            faked.ToString().SetupReturn(GenericConverter.ExpandName(faked), Times.Any);
         }
         return arg;
     }

@@ -26,7 +26,7 @@ public partial class Asserter : IAsserterEnumerable
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        HandleFail("Test failed.", details, localOptions, details);
+        HandleFail("Test failed.", collection, localOptions, details);
     }
 
     [DoesNotReturn]

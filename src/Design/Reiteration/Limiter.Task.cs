@@ -25,7 +25,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
-            results.Add(await behavior.Invoke().ConfigureAwait(false));
+            results.Add(await SafeInvokeAsync(behavior).ConfigureAwait(false));
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
         );
@@ -74,11 +74,34 @@ public sealed partial class Limiter : ILimiterTask
     )
     {
         ArgumentGuard.ThrowIfNull(checkState);
+        return StallUntilAsync(message, behavior, (T _) => checkState.Invoke(), canceler);
+    }
 
+    /// <inheritdoc/>
+    public Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
+        string message,
+        Func<Task<T>> behavior,
+        Func<Task<bool>> checkState,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(checkState);
+        return StallUntilAsync(message, behavior, _ => checkState.Invoke(), canceler);
+    }
+
+    /// <inheritdoc/>
+    public Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
+        string message,
+        Func<Task<T>> behavior,
+        Func<T, bool> checkState,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(checkState);
         return StallUntilAsync(
             message,
             behavior,
-            () => Task.FromResult(checkState.Invoke()),
+            x => Task.FromResult(checkState.Invoke(x)),
             canceler
         );
     }
@@ -87,7 +110,7 @@ public sealed partial class Limiter : ILimiterTask
     public async Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
         string message,
         Func<Task<T>> behavior,
-        Func<Task<bool>> checkState,
+        Func<T, Task<bool>> checkState,
         CancellationToken canceler
     )
     {
@@ -97,37 +120,12 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
-            T result = await behavior.Invoke().ConfigureAwait(false);
+            T result = await SafeInvokeAsync(behavior).ConfigureAwait(false);
 
             results.Add(result);
-            if (await checkState.Invoke().ConfigureAwait(false))
-            {
-                break;
-            }
-            await DelayOrFaultAsync(message, watch.Elapsed, i, canceler).ConfigureAwait(false);
-        }
 
-        return results.AsReadOnly();
-    }
-
-    /// <inheritdoc/>
-    public async Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
-        string message,
-        Func<Task<T>> behavior,
-        Func<T, bool> checkState,
-        CancellationToken canceler
-    )
-    {
-        ArgumentGuard.ThrowIfNull(behavior, checkState);
-
-        List<T> results = [];
-        Stopwatch watch = Stopwatch.StartNew();
-        for (int i = 1; true; i++)
-        {
-            T result = await behavior.Invoke().ConfigureAwait(false);
-
-            results.Add(result);
-            if (checkState.Invoke(result))
+            Task<bool> checker = checkState.Invoke(result);
+            if (await SafeInvokeAsync(() => checker).ConfigureAwait(false))
             {
                 break;
             }
@@ -266,7 +264,7 @@ public sealed partial class Limiter : ILimiterTask
             TError lastError;
             try
             {
-                return await behavior.Invoke().ConfigureAwait(false);
+                return await SafeInvokeAsync(behavior).ConfigureAwait(false);
             }
             catch (TError error)
             {
@@ -295,17 +293,19 @@ public sealed partial class Limiter : ILimiterTask
             TError lastError;
             try
             {
-                return await behavior.Invoke().ConfigureAwait(false);
+                return await SafeInvokeAsync(behavior).ConfigureAwait(false);
             }
             catch (TError error)
             {
                 lastError = error;
             }
 
-            if (resetState != null)
+            Task? resetter = resetState?.Invoke();
+            if (resetter != null)
             {
-                await resetState.Invoke().ConfigureAwait(false);
+                await resetter.ConfigureAwait(false);
             }
+
             await DelayOrFaultAsync(message, watch.Elapsed, i, canceler, lastError)
                 .ConfigureAwait(false);
         }
@@ -444,7 +444,7 @@ public sealed partial class Limiter : ILimiterTask
         {
             try
             {
-                return await behavior.Invoke().ConfigureAwait(false);
+                return await SafeInvokeAsync(behavior).ConfigureAwait(false);
             }
             catch (TError) { }
 
@@ -473,13 +473,14 @@ public sealed partial class Limiter : ILimiterTask
         {
             try
             {
-                return await behavior.Invoke().ConfigureAwait(false);
+                return await SafeInvokeAsync(behavior).ConfigureAwait(false);
             }
             catch (TError) { }
 
-            if (resetState != null)
+            Task? resetter = resetState?.Invoke();
+            if (resetter != null)
             {
-                await resetState.Invoke().ConfigureAwait(false);
+                await resetter.ConfigureAwait(false);
             }
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
@@ -488,9 +489,14 @@ public sealed partial class Limiter : ILimiterTask
         return default;
     }
 
+    private static Task<T> SafeInvokeAsync<T>(Func<Task<T>> behavior)
+    {
+        return behavior?.Invoke() ?? throw new ArgumentNullException(nameof(behavior));
+    }
+
     private static async Task<bool> ToGenericAsync(Func<Task?> behavior)
     {
-        Task? innerBehavior = behavior.Invoke();
+        Task? innerBehavior = behavior?.Invoke();
         if (innerBehavior != null)
         {
             await innerBehavior.ConfigureAwait(false);

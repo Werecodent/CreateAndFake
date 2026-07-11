@@ -14,7 +14,7 @@ public static class LimiterTests
         typeof(FormatException),
     ];
 
-    /*[Fact]
+    [Fact]
     internal static Task Limiter_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
@@ -22,7 +22,7 @@ public static class LimiterTests
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = _IgnorableExceptions }
         );
-    }*/
+    }
 
     [Fact]
     internal static Task Limiter_NoParameterMutation()
@@ -46,6 +46,55 @@ public static class LimiterTests
             Limiter instance = (Limiter)info.GetValue(null);
             Limiter.ConvertFrom(instance.ToString(), null).Assert().ReferenceEqual(instance);
         }
+    }
+
+    [Fact]
+    internal static void Limiter_DebugNamesWithDurationEstimates()
+    {
+        new Dictionary<Limiter, TimeSpan>()
+        {
+            { Limiter.Once, Limiter.Once.GetMaxDurationEstimate() },
+            { Limiter.Few, Limiter.Few.GetMaxDurationEstimate() },
+            { Limiter.Dozen, Limiter.Dozen.GetMaxDurationEstimate() },
+            { Limiter.Score, Limiter.Score.GetMaxDurationEstimate() },
+            { Limiter.Hundred, Limiter.Hundred.GetMaxDurationEstimate() },
+            { Limiter.Myriad, Limiter.Myriad.GetMaxDurationEstimate() },
+            { Limiter.Quick, Limiter.Quick.GetMaxDurationEstimate() },
+            { Limiter.Fast, Limiter.Fast.GetMaxDurationEstimate() },
+            { Limiter.Slow, Limiter.Slow.GetMaxDurationEstimate() },
+        }
+            .Assert()
+            .Debug();
+    }
+
+    [Fact]
+    internal static void Limiter_CompareWorks()
+    {
+        (Limiter.Myriad == Limiter.Myriad)
+            .Assert()
+            .Is(true, "==")
+            .Also(Limiter.Myriad == Limiter.Hundred)
+            .Is(false, "==")
+            .Also(Limiter.Fast != Limiter.Once)
+            .Is(true, "!=")
+            .Also(Limiter.Dozen != Limiter.Dozen)
+            .Is(false, "!=")
+            .Also(Limiter.Dozen > Limiter.Few)
+            .Is(true, ">")
+            .Also(Limiter.Once > Limiter.Few)
+            .Is(false, ">")
+            .Also(Limiter.Hundred >= Limiter.Hundred)
+            .Is(true, ">=")
+            .Also(Limiter.Quick >= Limiter.Slow)
+            .Is(false, ">=")
+            .Also(Limiter.Once < Limiter.Fast)
+            .Is(true, "<")
+            .Also(Limiter.Myriad < Limiter.Few)
+            .Is(false, "<")
+            .Also(Limiter.Slow <= Limiter.Slow)
+            .Is(true, "<=")
+            .Also(Limiter.Hundred <= Limiter.Once)
+            .Is(false, "<=");
     }
 
     [Fact]

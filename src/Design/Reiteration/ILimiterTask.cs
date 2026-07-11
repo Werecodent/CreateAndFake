@@ -56,6 +56,14 @@ public interface ILimiterTask
         CancellationToken canceler
     );
 
+    /// <inheritdoc cref="ILimiterAsync.StallUntilAsync{T}(string,Func{T},Func{bool},CancellationToken)"/>
+    Task<IReadOnlyCollection<T>> StallUntilAsync<T>(
+        string message,
+        Func<Task<T>> behavior,
+        Func<T, Task<bool>> checkState,
+        CancellationToken canceler
+    );
+
     /// <inheritdoc cref="RetryAsync{T}(string,Func{Task},Action,CancellationToken)"/>
     Task RetryAsync(string message, Func<Task> behavior, CancellationToken canceler);
 

@@ -106,7 +106,7 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         double timeTries = Math.Floor(_timeout.TotalMilliseconds / duration) + 1;
 
         double result;
-        if (timeTries > _tries)
+        if (timeTries < _tries)
         {
             result = (timeTries - 1) * duration + 1;
         }
