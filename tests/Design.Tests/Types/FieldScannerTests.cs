@@ -10,22 +10,6 @@ public static class FieldScannerTests
     private const BindingFlags _AllScope =
         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-    [Fact]
-    internal static Task FieldScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FieldScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task FieldScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FieldScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     private abstract class BaseMemberHolder
     {
         public static int _StaticBaseField = 0;
@@ -61,6 +45,22 @@ public static class FieldScannerTests
     }
 
     [Fact]
+    internal static Task FieldScanner_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<FieldScanner>(
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task FieldScanner_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<FieldScanner>(
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
     internal static void All_FieldsFound()
     {
         HashSet<FieldInfo> expectedFields =
@@ -83,7 +83,7 @@ public static class FieldScannerTests
     }
 
     [Fact]
-    internal static void Visible_FieldsFound()
+    internal static void PublicOrInternal_FieldsFound()
     {
         HashSet<FieldInfo> expectedFields =
         [
@@ -97,21 +97,10 @@ public static class FieldScannerTests
             typeof(MemberHolder).GetField(nameof(MemberHolder._publicMutateField), _AllScope),
         ];
 
-        new FieldScanner(typeof(MemberHolder)).Visible.ToHashSet().Assert().Is(expectedFields);
-    }
+        FieldScanner scanner = new(typeof(MemberHolder));
 
-    [Fact]
-    internal static void Writable_FieldsFound()
-    {
-        HashSet<FieldInfo> expectedFields =
-        [
-            typeof(MemberHolder).GetField(nameof(MemberHolder._internalBaseMutateField), _AllScope),
-            typeof(MemberHolder).GetField(nameof(MemberHolder._publicBaseMutateField), _AllScope),
-            typeof(MemberHolder).GetField(nameof(MemberHolder._internalMutateField), _AllScope),
-            typeof(MemberHolder).GetField(nameof(MemberHolder._publicMutateField), _AllScope),
-        ];
-
-        new FieldScanner(typeof(MemberHolder)).Writable.ToHashSet().Assert().Is(expectedFields);
+        scanner.PublicOrInternal.ToHashSet().Assert().Is(expectedFields);
+        scanner.Visible.ToHashSet().Assert().Is(expectedFields);
     }
 
     [Fact]
@@ -127,6 +116,20 @@ public static class FieldScannerTests
 
         new FieldScanner(typeof(MemberHolder)).OnlyPublic.ToHashSet().Assert().Is(expectedFields);
     }
+
+    [Fact]
+    internal static void Writable_FieldsFound()
+    {
+        HashSet<FieldInfo> expectedFields =
+        [
+            typeof(MemberHolder).GetField(nameof(MemberHolder._internalBaseMutateField), _AllScope),
+            typeof(MemberHolder).GetField(nameof(MemberHolder._publicBaseMutateField), _AllScope),
+            typeof(MemberHolder).GetField(nameof(MemberHolder._internalMutateField), _AllScope),
+            typeof(MemberHolder).GetField(nameof(MemberHolder._publicMutateField), _AllScope),
+        ];
+
+        new FieldScanner(typeof(MemberHolder)).Writable.ToHashSet().Assert().Is(expectedFields);
+    }
 }
 
-#pragma warning restore CA1823, CS0169, CS0414, IDE0044, IDE0051, RCS1169, RCS1213, S1144, S2933
+#pragma warning restore

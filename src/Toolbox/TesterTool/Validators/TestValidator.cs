@@ -103,13 +103,15 @@ internal sealed class TestValidator(TesterOptions options)
 
         static string getTarget(string testName)
         {
-            if (testName.Contains("_", StringComparison.Ordinal))
+            string cleanedName = testName.Replace("Debug_", "");
+
+            if (cleanedName.Contains("_", StringComparison.Ordinal))
             {
-                return testName.Substring(0, testName.IndexOf("_", StringComparison.Ordinal));
+                return cleanedName.Substring(0, cleanedName.IndexOf("_", StringComparison.Ordinal));
             }
             else
             {
-                return testName;
+                return cleanedName;
             }
         }
 

@@ -10,7 +10,8 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
     public override IEnumerable<PropertyInfo> All { get; } = FindAllProperties(type).ToFrozenSet();
 
     /// <inheritdoc/>
-    public override IEnumerable<PropertyInfo> OnlyPublic => SupportedType?.GetProperties() ?? [];
+    public override IEnumerable<PropertyInfo> OnlyPublic =>
+        SupportedType?.GetProperties(BindingFlags.Instance | BindingFlags.Public) ?? [];
 
     /// <inheritdoc/>
     public override IEnumerable<PropertyInfo> PublicOrInternal =>
@@ -58,11 +59,12 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
     internal IEnumerable<PropertyInfo> FindSettable(AssemblyName assembly)
     {
         bool nonPublic = ScopeChecker.InternalsAreVisible(SupportedType, assembly);
-        return All.Where(p =>
-        {
-            MethodInfo? setMethod = p.GetSetMethod(nonPublic);
-            return setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly);
-        });
+        return FindVisible(assembly)
+            .Where(p =>
+            {
+                MethodInfo? setMethod = p.GetSetMethod(nonPublic);
+                return setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly);
+            });
     }
 
     /// <summary>Finds all instance properties on the <paramref name="type"/>.</summary>

@@ -12,8 +12,7 @@ namespace CreateAndFake.Design.Reiteration;
 [TypeConverter(typeof(LimiterTypeConverter))]
 public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay = null)
     : ILimiter,
-        IEquatable<Limiter>,
-        IDeepCloneable<Limiter>
+        IEquatable<Limiter>
 {
     /// <summary>Instance set to 1 attempt.</summary>
     public static Limiter Once { get; } = new Limiter(1);
@@ -100,15 +99,24 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         : this(timeout, int.MaxValue, delay) { }
 
     /// <inheritdoc/>
-    public TimeSpan GetMaxDurationEstimate()
+    public TimeSpan GetMaxDurationEstimate(int millisecondsPerAttempt = 1)
     {
-        double duration = _delay.TotalMilliseconds + 1;
-        double timeTries = Math.Floor(_timeout.TotalMilliseconds / duration) + 1;
+        if (millisecondsPerAttempt <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(millisecondsPerAttempt),
+                "Must be positive."
+            );
+        }
+
+        double duration = _delay.TotalMilliseconds + millisecondsPerAttempt;
+        double timeTries =
+            Math.Floor(_timeout.TotalMilliseconds / duration) + millisecondsPerAttempt;
 
         double result;
         if (timeTries < _tries)
         {
-            result = (timeTries - 1) * duration + 1;
+            result = (timeTries - millisecondsPerAttempt) * duration + millisecondsPerAttempt;
         }
         else
         {
@@ -257,12 +265,6 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         {
             throw new OperationCanceledException(error + details);
         }
-    }
-
-    /// <inheritdoc/>
-    public Limiter DeepClone()
-    {
-        return new Limiter(_timeout, _tries, _delay);
     }
 
     /// <summary>Compares <paramref name="left"/> to <paramref name="right"/> by value.</summary>

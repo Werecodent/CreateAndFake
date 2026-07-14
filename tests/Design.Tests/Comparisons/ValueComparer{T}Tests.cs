@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Tests.Comparisons;
 public static class ValueComparer_T_Tests
 {
     [Fact]
-    internal static void ValueComparer_ToStringName()
+    internal static void Debug_ValueComparer_ToString()
     {
         typeof(ValueComparer<>).Tools().CreateRandomInstance().ToString().Assert().Debug();
     }

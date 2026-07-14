@@ -15,6 +15,25 @@ public static class LimiterTests
     ];
 
     [Fact]
+    internal static void Debug_Limiter_NamesWithDurationEstimates()
+    {
+        new Dictionary<Limiter, TimeSpan>()
+        {
+            { Limiter.Once, Limiter.Once.GetMaxDurationEstimate() },
+            { Limiter.Few, Limiter.Few.GetMaxDurationEstimate() },
+            { Limiter.Dozen, Limiter.Dozen.GetMaxDurationEstimate() },
+            { Limiter.Score, Limiter.Score.GetMaxDurationEstimate() },
+            { Limiter.Hundred, Limiter.Hundred.GetMaxDurationEstimate() },
+            { Limiter.Myriad, Limiter.Myriad.GetMaxDurationEstimate() },
+            { Limiter.Quick, Limiter.Quick.GetMaxDurationEstimate() },
+            { Limiter.Fast, Limiter.Fast.GetMaxDurationEstimate() },
+            { Limiter.Slow, Limiter.Slow.GetMaxDurationEstimate() },
+        }
+            .Assert()
+            .Debug();
+    }
+
+    [Fact]
     internal static Task Limiter_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
@@ -49,29 +68,15 @@ public static class LimiterTests
     }
 
     [Fact]
-    internal static void Limiter_DebugNamesWithDurationEstimates()
-    {
-        new Dictionary<Limiter, TimeSpan>()
-        {
-            { Limiter.Once, Limiter.Once.GetMaxDurationEstimate() },
-            { Limiter.Few, Limiter.Few.GetMaxDurationEstimate() },
-            { Limiter.Dozen, Limiter.Dozen.GetMaxDurationEstimate() },
-            { Limiter.Score, Limiter.Score.GetMaxDurationEstimate() },
-            { Limiter.Hundred, Limiter.Hundred.GetMaxDurationEstimate() },
-            { Limiter.Myriad, Limiter.Myriad.GetMaxDurationEstimate() },
-            { Limiter.Quick, Limiter.Quick.GetMaxDurationEstimate() },
-            { Limiter.Fast, Limiter.Fast.GetMaxDurationEstimate() },
-            { Limiter.Slow, Limiter.Slow.GetMaxDurationEstimate() },
-        }
-            .Assert()
-            .Debug();
-    }
-
-    [Fact]
     internal static void Limiter_CompareWorks()
     {
-        (Limiter.Myriad == Limiter.Myriad)
+        Limiter
+            .Once.Equals((ILimiter)Limiter.Once)
             .Assert()
+            .Is(true, ".Equals")
+            .Also(Limiter.Dozen.Equals(Limiter.Few))
+            .Is(false, ".Equals")
+            .Also(Limiter.Myriad == Limiter.Myriad)
             .Is(true, "==")
             .Also(Limiter.Myriad == Limiter.Hundred)
             .Is(false, "==")
@@ -93,8 +98,22 @@ public static class LimiterTests
             .Is(false, "<")
             .Also(Limiter.Slow <= Limiter.Slow)
             .Is(true, "<=")
-            .Also(Limiter.Hundred <= Limiter.Once)
+            .Also(Limiter.Myriad <= Limiter.Hundred)
             .Is(false, "<=");
+    }
+
+    [Fact]
+    internal static void Limiter_PositiveTimesOnly()
+    {
+        new Limiter(TimeSpan.FromTicks(1), 1, TimeSpan.Zero)
+            .Assert()
+            .IsNotNull()
+            .Also(() => new Limiter(TimeSpan.Zero, 1, TimeSpan.Zero))
+            .Throws<ArgumentOutOfRangeException>()
+            .Also(() => new Limiter(TimeSpan.FromTicks(1), 0, TimeSpan.Zero))
+            .Throws<ArgumentOutOfRangeException>()
+            .Also(() => new Limiter(TimeSpan.FromTicks(1), 1, TimeSpan.FromTicks(-1)))
+            .Throws<ArgumentOutOfRangeException>();
     }
 
     [Fact]
@@ -149,5 +168,12 @@ public static class LimiterTests
         Limiter.ConvertFrom(timeoutLimiter.ToString(), null).Assert().Is(timeoutLimiter);
         Limiter.ConvertFrom(timeoutDelayLimiter.ToString(), null).Assert().Is(timeoutDelayLimiter);
         Limiter.ConvertFrom(fullLimiter.ToString(), null).Assert().Is(fullLimiter);
+    }
+
+    [Fact]
+    internal static void GetMaxDurationEstimate_ThrowsWithNegative()
+    {
+        Limiter.Once.Assert(x => x.GetMaxDurationEstimate(0)).Throws<ArgumentOutOfRangeException>();
+        Limiter.Few.Assert(x => x.GetMaxDurationEstimate(-1)).Throws<ArgumentOutOfRangeException>();
     }
 }
