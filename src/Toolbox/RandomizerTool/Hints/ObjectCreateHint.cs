@@ -47,7 +47,7 @@ public sealed class ObjectCreateHint : CreateHint
 
         DataRandom smartData = randomizer.Options.Gen.NextData();
         object? data = CreateNew(type, randomizer, smartData);
-        if (data is null or IFaked)
+        if (data is null or IFaked or Exception)
         {
             return data;
         }

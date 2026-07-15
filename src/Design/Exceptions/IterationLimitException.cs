@@ -15,9 +15,13 @@ public sealed class IterationLimitException : CreateAndFakeException
         : base() { }
 
     /// <inheritdoc cref="IterationLimitException"/>
-    /// <inheritdoc/>
-    public IterationLimitException(string? message)
-        : base(message) { }
+    public IterationLimitException(int iterationLimit, string? message)
+        : base(
+            BuildMessage(
+                $"Execution stopped at iteration {iterationLimit} to prevent infinite recursion.",
+                message
+            )
+        ) { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

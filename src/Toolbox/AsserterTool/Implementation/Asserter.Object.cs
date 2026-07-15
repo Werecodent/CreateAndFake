@@ -267,13 +267,16 @@ public partial class Asserter : IAsserterObject
     public void Debug(object? content, AsserterMod? optionConfiguration, string? details = null)
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        string? text = content?.ToString();
+
         if (localOptions.DebugAssertsFail)
         {
             throw new AssertException(
                 $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
                 details,
                 localOptions.Gen.InitialSeed,
-                content?.ToString()
+                text
             );
         }
     }

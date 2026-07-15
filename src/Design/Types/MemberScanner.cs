@@ -46,7 +46,7 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     /// </summary>
     /// <param name="assembly">Name of the <see cref="Assembly"/> to determine visibility for.</param>
     /// <returns>All found properties on the <see cref="Type"/>.</returns>
-    internal IEnumerable<T> FindVisible(AssemblyName assembly)
+    protected internal IEnumerable<T> FindVisible(AssemblyName assembly)
     {
         return ScopeChecker.InternalsAreVisible(SupportedType, assembly)
             ? PublicOrInternal

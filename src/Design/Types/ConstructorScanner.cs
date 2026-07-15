@@ -13,8 +13,7 @@ public sealed class ConstructorScanner(Type? type) : MemberScanner<ConstructorIn
 
     /// <remarks></remarks>
     /// <inheritdoc/>
-    public override IEnumerable<ConstructorInfo> OnlyPublic =>
-        SupportedType?.GetConstructors(BindingFlags.Instance | BindingFlags.Public) ?? [];
+    public override IEnumerable<ConstructorInfo> OnlyPublic => All.Where(c => c.IsPublic);
 
     /// <remarks></remarks>
     /// <inheritdoc/>

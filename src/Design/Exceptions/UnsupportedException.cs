@@ -14,7 +14,7 @@ public sealed class UnsupportedException : CreateAndFakeException
     /// <inheritdoc cref="UnsupportedException"/>
     /// <inheritdoc/>
     public UnsupportedException(string? message)
-        : base(message) { }
+        : base(BuildMessage("Case not supported by the framework.", message)) { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

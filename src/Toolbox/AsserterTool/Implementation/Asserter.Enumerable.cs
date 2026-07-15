@@ -26,31 +26,23 @@ public partial class Asserter : IAsserterEnumerable
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        HandleFail("Test failed.", collection, localOptions, details);
+        throw new AssertException(
+            "Test failed.",
+            details,
+            localOptions.Gen.InitialSeed,
+            AsString(collection, localOptions)
+        );
     }
 
-    [DoesNotReturn]
-    private static void HandleFail(
-        string message,
-        IEnumerable? collection,
-        AsserterOptions localOptions,
-        string? details
-    )
+    private static string? AsString(IEnumerable? collection, AsserterOptions localOptions)
     {
         if (collection == null)
         {
-            throw new AssertException(
-                message,
-                details,
-                localOptions.Gen.InitialSeed,
-                (string?)null
-            );
+            return null;
         }
-
-        string content;
-        if (collection is string text)
+        else if (collection is string text)
         {
-            content = text;
+            return text;
         }
         else
         {
@@ -66,10 +58,8 @@ public partial class Asserter : IAsserterEnumerable
                 _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
             }
 
-            content = contents.ToString();
+            return contents.ToString();
         }
-
-        throw new AssertException(message, details, localOptions.Gen.InitialSeed, content);
     }
 
     /// <inheritdoc/>
@@ -86,13 +76,16 @@ public partial class Asserter : IAsserterEnumerable
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        string? content = AsString(collection, localOptions);
+
         if (localOptions.DebugAssertsFail)
         {
-            HandleFail(
+            throw new AssertException(
                 $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
-                collection,
-                localOptions,
-                details
+                details,
+                localOptions.Gen.InitialSeed,
+                content
             );
         }
     }

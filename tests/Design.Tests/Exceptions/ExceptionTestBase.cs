@@ -3,6 +3,12 @@
 public abstract class ExceptionTestBase<T>
     where T : Exception
 {
+    [Theory, RandomData]
+    public void Debug_Exception_ToString(T error)
+    {
+        error.Assert().Debug();
+    }
+
     [Fact]
     public Task Exception_GuardsNulls()
     {

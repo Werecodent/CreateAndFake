@@ -220,7 +220,7 @@ public static class ArgumentGuard
     {
         if (IsAsynchronous(value))
         {
-            throw new AsynchronousAccessException(message);
+            throw new AsynchronousAccessException(value, message);
         }
     }
 
@@ -237,8 +237,8 @@ public static class ArgumentGuard
         if (index >= iterationLimit)
         {
             throw new IterationLimitException(
-                $"Index {index} reached max iteration limit ({iterationLimit}). "
-                    + "Increase via 'ValuerOptions.IterationLimit'."
+                iterationLimit,
+                $"Index {index} surpassed max iteration limit. Increase via 'ValuerOptions.IterationLimit'."
             );
         }
     }

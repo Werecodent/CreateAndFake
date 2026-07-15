@@ -32,7 +32,7 @@ public sealed class SingleCallValueTaskSource<T>(T rawResult) : IValueTaskSource
     {
         if (_called)
         {
-            throw new ValueTaskRepeatedAccessException(null);
+            throw new ValueTaskRepeatedAccessException(token);
         }
         else
         {

@@ -17,6 +17,8 @@ public static class LimiterTests
     [Fact]
     internal static void Debug_Limiter_NamesWithDurationEstimates()
     {
+        Limiter customLimiter = new(TimeSpan.FromSeconds(1), 2, null);
+
         new Dictionary<Limiter, TimeSpan>()
         {
             { Limiter.Once, Limiter.Once.GetMaxDurationEstimate() },
@@ -28,6 +30,7 @@ public static class LimiterTests
             { Limiter.Quick, Limiter.Quick.GetMaxDurationEstimate() },
             { Limiter.Fast, Limiter.Fast.GetMaxDurationEstimate() },
             { Limiter.Slow, Limiter.Slow.GetMaxDurationEstimate() },
+            { customLimiter, customLimiter.GetMaxDurationEstimate() },
         }
             .Assert()
             .Debug();

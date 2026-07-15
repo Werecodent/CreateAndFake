@@ -6,6 +6,23 @@ namespace CreateAndFake.Design.Tests.Types;
 
 public static class GenericConverterTests
 {
+    private static readonly MethodInfo _TestMethod = typeof(GenericConverterTests).GetMethod(
+        nameof(HiddenTestName),
+        BindingFlags.Static | BindingFlags.NonPublic
+    );
+
+    [Fact]
+    internal static void Debug_GenericConverter_BuildTestName()
+    {
+        GenericConverter.BuildTestName(_TestMethod).Assert().Debug();
+    }
+
+    [Fact]
+    internal static void Debug_GenericConverter_ExpandName()
+    {
+        GenericConverter.ExpandName<Dictionary<int, string>>().Assert().Debug();
+    }
+
     [Fact]
     internal static Task GenericConverter_GuardsNulls()
     {
@@ -103,12 +120,7 @@ public static class GenericConverterTests
     internal static void BuildTestName_IncludesParameters()
     {
         GenericConverter
-            .BuildTestName(
-                typeof(GenericConverterTests).GetMethod(
-                    nameof(HiddenTestName),
-                    BindingFlags.Static | BindingFlags.NonPublic
-                )
-            )
+            .BuildTestName(_TestMethod)
             .Assert()
             .Contains(nameof(HiddenTestName))
             .And.Contains(nameof(String))

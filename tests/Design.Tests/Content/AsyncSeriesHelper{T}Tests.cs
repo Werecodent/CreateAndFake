@@ -17,18 +17,21 @@ public static class AsyncSeriesHelper_T_Tests
     internal static Task AsyncSeriesHelper_T_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AsyncSeriesHelper<string>),
+            typeof(AsyncSeriesHelper<>),
             TestContext.Current.CancellationToken
         );
     }
 
     [Fact]
-    internal static async Task Empty_NoItemsRepeatably()
+    internal static void Empty_Cached()
     {
-        await AsyncSeriesHelper<string>
-            .Empty.Assert()
-            .IsEmptyAsync(TestContext.Current.CancellationToken);
-        await AsyncSeriesHelper<string>
+        AsyncSeriesHelper<string>.Empty.Assert().ReferenceEqual(AsyncSeriesHelper<string>.Empty);
+    }
+
+    [Fact]
+    internal static Task Empty_IsEmpty()
+    {
+        return AsyncSeriesHelper<string>
             .Empty.Assert()
             .IsEmptyAsync(TestContext.Current.CancellationToken);
     }

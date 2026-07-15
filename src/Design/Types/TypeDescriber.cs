@@ -71,6 +71,9 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <summary>Finds fields on the <see cref="SupportedType"/>.</summary>
     public FieldScanner Fields => _fields.Value;
 
+    /// <summary>Finds instance methods on the <see cref="SupportedType"/>.</summary>
+    public MethodScanner Methods => _methods.Value;
+
     /// <summary>Finds constructors on the <see cref="SupportedType"/>.</summary>
     public ConstructorScanner Constructors => _constructors.Value;
 
@@ -89,6 +92,9 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <inheritdoc cref="Fields"/>
     private readonly Lazy<FieldScanner> _fields;
 
+    /// <inheritdoc cref="Methods"/>
+    private readonly Lazy<MethodScanner> _methods;
+
     /// <inheritdoc cref="Constructors"/>
     private readonly Lazy<ConstructorScanner> _constructors;
 
@@ -104,6 +110,7 @@ public sealed class TypeDescriber : ITypeSupporter
         _subTypes = new(() => [.. FindLoadedChildren(type)]);
         _fields = new(() => new FieldScanner(type));
         _properties = new(() => new PropertyScanner(type));
+        _methods = new(() => new MethodScanner(type));
         _constructors = new(() => new ConstructorScanner(type));
         _factories = new(() => new FactoryScanner(type));
     }
@@ -200,7 +207,7 @@ public sealed class TypeDescriber : ITypeSupporter
     /// </summary>
     /// <remarks>Beware that this does not always mean the value is changeable.</remarks>
     /// <inheritdoc cref="ScopeChecker.IsVisible(Type?, AssemblyName)"/>
-    public bool HasInitializableOnlyState(AssemblyName assembly)
+    private bool HasInitializableOnlyState(AssemblyName assembly)
     {
         return (
                 Constructors.FindVisible(assembly).Any(c => c.GetParameters().Length > 0)

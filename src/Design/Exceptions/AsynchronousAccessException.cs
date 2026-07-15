@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Exceptions;
 
@@ -14,10 +15,17 @@ public sealed class AsynchronousAccessException : CreateAndFakeException
     private AsynchronousAccessException()
         : base() { }
 
+    /// <param name="value">Asynchronous instance attempting to be accessed.</param>
+    /// <param name="message">Details to include in the error message.</param>
     /// <inheritdoc cref="AsynchronousAccessException"/>
-    /// <inheritdoc/>
-    public AsynchronousAccessException(string? message)
-        : base(message) { }
+    public AsynchronousAccessException(object? value, string? message)
+        : base(
+            BuildMessage(
+                $"Prevented synchronous access to instance of type '{GenericConverter.ExpandName(value)}'.",
+                message,
+                value?.ToString()
+            )
+        ) { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

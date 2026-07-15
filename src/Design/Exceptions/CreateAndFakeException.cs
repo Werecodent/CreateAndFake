@@ -33,4 +33,19 @@ public abstract class CreateAndFakeException : Exception
 #endif
     protected CreateAndFakeException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }
+
+    /// <summary>Integrates the details into the message.</summary>
+    /// <param name="error">Starting message.</param>
+    /// <param name="details">Details to integrate.</param>
+    /// <param name="content">Content to integrate.</param>
+    /// <returns>Message to use for the exception.</returns>
+    protected static string BuildMessage(string error, string? details, string? content = null)
+    {
+        string nl = Environment.NewLine;
+
+        return $"{nameof(CreateAndFake)} library exception."
+            + $"{nl}Error: {error}"
+            + ((details != null) ? $"{nl}Details: {details}" : "")
+            + ((content != null) ? $"{nl}Content: {nl}{content}" : "");
+    }
 }

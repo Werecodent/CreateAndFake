@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Extensions;
 
 namespace CreateAndFake.Design.Types;
 
@@ -17,11 +16,7 @@ public sealed class FactoryScanner(Type? type) : MemberScanner<MethodInfo>(type)
     ///     The <see langword="public"/> <see langword="static"/>
     ///     methods that create the <see cref="MemberScanner{T}.SupportedType"/>.
     /// </summary>
-    public override IEnumerable<MethodInfo> OnlyPublic =>
-        SupportedType
-            ?.GetMethods(BindingFlags.Static | BindingFlags.Public)
-            .Where(m => m.ReturnType.Inherits(SupportedType))
-        ?? [];
+    public override IEnumerable<MethodInfo> OnlyPublic => All.Where(m => m.IsPublic);
 
     /// <summary>
     ///     The <see langword="public"/> or <see langword="internal"/> <see langword="static"/>

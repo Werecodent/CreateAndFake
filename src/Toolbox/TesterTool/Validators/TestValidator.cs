@@ -77,12 +77,6 @@ internal sealed class TestValidator(TesterOptions options)
 
         List<Type> markers = [.. testMarkers];
 
-        const BindingFlags scope =
-            BindingFlags.Instance
-            | BindingFlags.Static
-            | BindingFlags.Public
-            | BindingFlags.NonPublic;
-
         static string stripGeneric(Type codeClass)
         {
             if (
@@ -103,7 +97,9 @@ internal sealed class TestValidator(TesterOptions options)
 
         static string getTarget(string testName)
         {
-            string cleanedName = testName.Replace("Debug_", "");
+            string cleanedName = testName.StartsWith("Debug_", StringComparison.Ordinal)
+                ? testName.Substring(6)
+                : testName;
 
             if (cleanedName.Contains("_", StringComparison.Ordinal))
             {
@@ -151,8 +147,9 @@ internal sealed class TestValidator(TesterOptions options)
             .ToDictionary(
                 t => stripGeneric(t.SupportedType!),
                 t =>
-                    t.SupportedType!.GetMethods(scope)
-                        .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
+                    t.Methods.PublicOrInternal.Where(m =>
+                            markers.Exists(marker => Attribute.IsDefined(m, marker))
+                        )
                         .Select(m => m.Name)
                         .Where(n =>
                         {
@@ -177,9 +174,13 @@ internal sealed class TestValidator(TesterOptions options)
                 :
                 [
                     .. getAllTypeNames(codeClass),
-                    .. codeClass.GetProperties(scope).Select(p => p.Name),
                     .. codeClass
-                        .GetMethods(scope)
+                        .GetMembers(
+                            BindingFlags.Instance
+                                | BindingFlags.Static
+                                | BindingFlags.Public
+                                | BindingFlags.NonPublic
+                        )
                         .Select(m => m.Name)
                         .Select(n =>
                             n.Contains("`", StringComparison.Ordinal)

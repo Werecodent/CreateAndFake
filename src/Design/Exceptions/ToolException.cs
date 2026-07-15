@@ -16,12 +16,13 @@ public sealed class ToolException : CreateAndFakeException
     /// <inheritdoc cref="ToolException"/>
     /// <inheritdoc/>
     public ToolException(string? message)
-        : base(message) { }
+        : base(BuildMessage("Encountered fatal framework tool issue.", message)) { }
 
     /// <inheritdoc cref="ToolException"/>
     /// <inheritdoc/>
     public ToolException(string? message, Exception? innerException)
-        : base(message, innerException) { }
+        : base(BuildMessage("Encountered fatal framework tool exception.", message), innerException)
+    { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

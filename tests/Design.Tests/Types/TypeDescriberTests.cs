@@ -8,6 +8,12 @@ namespace CreateAndFake.Design.Tests.Types;
 
 public static class TypeDescriberTests
 {
+    [Theory, RandomData]
+    internal static void Debug_TypeDescriber_ToString(TypeDescriber describer)
+    {
+        describer.ToString().Assert().Debug();
+    }
+
     [Fact]
     internal static Task TypeDescriber_GuardsNulls()
     {

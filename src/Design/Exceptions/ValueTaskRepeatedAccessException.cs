@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace CreateAndFake.Design.Exceptions;
@@ -15,11 +16,14 @@ public sealed class ValueTaskRepeatedAccessException : CreateAndFakeException
         : base() { }
 
     /// <inheritdoc cref="ValueTaskRepeatedAccessException"/>
-    /// <inheritdoc/>
-    public ValueTaskRepeatedAccessException(string? message)
+    /// <param name="token">Token owned by the parent <see cref="ValueTask"/>.</param>
+    public ValueTaskRepeatedAccessException(short token)
         : base(
-            "Resolving a ValueTask multiple times results in undefined behavior."
-                + message?.PadLeft(1)
+            BuildMessage(
+                "The ValueTask was resolved multiple times.",
+                "Resolving a ValueTask multiple times results in undefined behavior and indicates a bug.",
+                token.ToString(CultureInfo.InvariantCulture)
+            )
         ) { }
 
     /// <inheritdoc/>

@@ -10,18 +10,22 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
     public override IEnumerable<PropertyInfo> All { get; } = FindAllProperties(type).ToFrozenSet();
 
     /// <inheritdoc/>
-    public override IEnumerable<PropertyInfo> OnlyPublic =>
-        SupportedType?.GetProperties(BindingFlags.Instance | BindingFlags.Public) ?? [];
+    public override IEnumerable<PropertyInfo> OnlyPublic { get; } =
+        FindAllProperties(type)
+            .Where(p => p.GetGetMethod(false) != null || p.GetSetMethod(false) != null)
+            .ToFrozenSet();
 
     /// <inheritdoc/>
-    public override IEnumerable<PropertyInfo> PublicOrInternal =>
-        All.Where(p =>
-        {
-            MethodInfo? getMethod = p.GetGetMethod(true);
-            MethodInfo? setMethod = p.GetSetMethod(true);
-            return (getMethod != null && (getMethod.IsPublic || getMethod.IsAssembly))
-                || (setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly));
-        });
+    public override IEnumerable<PropertyInfo> PublicOrInternal { get; } =
+        FindAllProperties(type)
+            .Where(p =>
+            {
+                MethodInfo? getMethod = p.GetGetMethod(true);
+                MethodInfo? setMethod = p.GetSetMethod(true);
+                return (getMethod != null && (getMethod.IsPublic || getMethod.IsAssembly))
+                    || (setMethod != null && (setMethod.IsPublic || setMethod.IsAssembly));
+            })
+            .ToFrozenSet();
 
     /// <summary>
     ///     The readable <see langword="public"/> and <see langword="internal"/> instance

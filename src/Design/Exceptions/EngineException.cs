@@ -17,12 +17,15 @@ public sealed class EngineException : CreateAndFakeException
     /// <inheritdoc cref="EngineException"/>
     /// <inheritdoc/>
     public EngineException(string? message)
-        : base(message) { }
+        : base(BuildMessage("Encountered fatal framework engine issue.", message)) { }
 
     /// <inheritdoc cref="EngineException"/>
     /// <inheritdoc/>
     public EngineException(string? message, Exception? innerException)
-        : base(message, innerException) { }
+        : base(
+            BuildMessage("Encountered fatal framework engine exception.", message),
+            innerException
+        ) { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

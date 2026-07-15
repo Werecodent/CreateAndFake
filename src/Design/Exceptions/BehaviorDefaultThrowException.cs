@@ -14,7 +14,12 @@ public sealed class BehaviorDefaultThrowException : CreateAndFakeException
     /// <inheritdoc cref="BehaviorDefaultThrowException"/>
     /// <inheritdoc/>
     public BehaviorDefaultThrowException(string? message)
-        : base(message) { }
+        : base(
+            BuildMessage(
+                "Behavior called that has been configured to throw a general exception.",
+                message
+            )
+        ) { }
 
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>

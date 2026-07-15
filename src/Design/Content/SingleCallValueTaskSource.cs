@@ -35,7 +35,7 @@ public sealed class SingleCallValueTaskSource(Guid? id = null)
     {
         if (_called)
         {
-            throw new ValueTaskRepeatedAccessException(null);
+            throw new ValueTaskRepeatedAccessException(token);
         }
         else
         {
