@@ -6,7 +6,7 @@ namespace CreateAndFake.Design.Properties;
 internal static class DesignDefaults
 {
     /// <summary>Cap to iterating <see cref="IEnumerable"/>s and loops.</summary>
-    internal const int IterationLimit = 5000;
+    internal const int IterationLimit = 7500;
 
     /// <summary>
     ///     Flag to include generating invalid floating-point values (NaN, -∞ and +∞).

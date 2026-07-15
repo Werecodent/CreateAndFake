@@ -72,11 +72,9 @@ public static class MethodScannerTests
             typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
-            typeof(Members).GetMethod(nameof(MemberwiseClone), _AllScope),
-            typeof(Members).GetMethod(nameof(GetType)),
-            typeof(Members).GetMethod(nameof(ToString)),
-            typeof(Members).GetMethod(nameof(Equals)),
-            typeof(Members).GetMethod(nameof(GetHashCode)),
+            .. typeof(object)
+                .GetMethods(_AllScope)
+                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
         new MethodScanner(typeof(Members)).All.ToHashSet().Assert().Is(expectedMethods);
@@ -93,11 +91,10 @@ public static class MethodScannerTests
             typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
-            typeof(Members).GetMethod(nameof(MemberwiseClone), _AllScope),
-            typeof(Members).GetMethod(nameof(GetType)),
-            typeof(Members).GetMethod(nameof(ToString)),
-            typeof(Members).GetMethod(nameof(Equals)),
-            typeof(Members).GetMethod(nameof(GetHashCode)),
+            .. typeof(object)
+                .GetMethods(_AllScope)
+                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope))
+                .Where(m => m.IsPublic || m.IsAssembly || m.IsFamilyOrAssembly),
         ];
 
         MethodScanner scanner = new(typeof(Members));
@@ -113,10 +110,9 @@ public static class MethodScannerTests
         [
             typeof(Members).GetMethod(nameof(Members.BasePublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
-            typeof(Members).GetMethod(nameof(GetType)),
-            typeof(Members).GetMethod(nameof(ToString)),
-            typeof(Members).GetMethod(nameof(Equals)),
-            typeof(Members).GetMethod(nameof(GetHashCode)),
+            .. typeof(object)
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
         new MethodScanner(typeof(Members)).OnlyPublic.ToHashSet().Assert().Is(expectedMethods);

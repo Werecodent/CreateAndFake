@@ -130,6 +130,7 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<AsserterMod>(rand => _ => rand.Create<AsserterOptions>()),
         new FactoryCreateHandler<DuplicatorMod>(rand => _ => rand.Create<DuplicatorOptions>()),
         new FactoryCreateHandler<ExtractorMod>(rand => _ => rand.Create<ExtractorOptions>()),
+        new FactoryCreateHandler<FakerMod>(rand => _ => rand.Create<FakerOptions>()),
         new FactoryCreateHandler<MutatorMod>(rand => _ => rand.Create<MutatorOptions>()),
         new FactoryCreateHandler<RandomizerMod>(rand => _ => rand.Create<RandomizerOptions>()),
         new FactoryCreateHandler<RunnerMod>(rand => _ => rand.Create<RunnerOptions>()),
