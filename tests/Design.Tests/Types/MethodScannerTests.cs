@@ -74,6 +74,8 @@ public static class MethodScannerTests
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
             .. typeof(object)
                 .GetMethods(_AllScope)
+                .Where(m => !m.IsPrivate)
+                .Where(m => m.Name != "Finalize")
                 .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
@@ -93,8 +95,9 @@ public static class MethodScannerTests
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
             .. typeof(object)
                 .GetMethods(_AllScope)
-                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope))
-                .Where(m => m.IsPublic || m.IsAssembly || m.IsFamilyOrAssembly),
+                .Where(m => !m.IsPrivate)
+                .Where(m => m.Name != "Finalize")
+                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
         MethodScanner scanner = new(typeof(Members));

@@ -33,11 +33,14 @@ public sealed class MethodScanner(Type? type) : MemberScanner<MethodInfo>(type)
             )
         )
         {
-            yield return method;
+            if (method.Name != "Finalize")
+            {
+                yield return method;
+            }
         }
 
         Type? currentType = type;
-        HashSet<Type> completedTypes = [];
+        HashSet<Type> completedTypes = [typeof(object)];
         while (currentType != null && completedTypes.Add(currentType))
         {
             foreach (
