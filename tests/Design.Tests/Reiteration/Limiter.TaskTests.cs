@@ -370,7 +370,7 @@ public static class LimiterTaskTests
     internal static async Task AttemptAsync_Cancelable(Exception exception)
     {
         await Limiter
-            .Quick.AttemptAsync(
+            .Slow.AttemptAsync(
                 GetAMessage(),
                 () => Task.FromException(exception),
                 new CancellationToken(true)

@@ -59,7 +59,12 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
                     (RunnerOptions opt) => opt with { InheritIReflectableTypeOnFakedType = true }
                 );
 
-                data.Add(new TheoryDataRow([.. test.Args.Select(FixArg)]));
+                data.Add(
+                    new TheoryDataRow([.. test.Args.Select(FixArg)])
+                    {
+                        Label = GenericConverter.BuildTestParametersName(test.Method),
+                    }
+                );
             }
             catch (Exception e)
             {

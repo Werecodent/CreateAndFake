@@ -129,17 +129,17 @@ public static class GenericConverter
     /// <returns>The built display name.</returns>
     public static string BuildTestName(MethodBase method)
     {
-        if (method != null)
-        {
-            IEnumerable<string> paramNames = method
-                .GetParameters()
-                .Select(p => ExpandName(p.ParameterType));
+        return method != null ? $"{method.Name}({BuildTestParametersName(method)})" : "";
+    }
 
-            return $"{method.Name}({string.Join(",", paramNames)})";
-        }
-        else
-        {
-            return "";
-        }
+    /// <summary>Builds a display name for the <paramref name="method"/>'s parameters under test.</summary>
+    /// <param name="method">The method being tested needing a name.</param>
+    /// <returns>The built display name for just the parameters.</returns>
+    public static string BuildTestParametersName(MethodBase method)
+    {
+        return string.Join(
+            ",",
+            method?.GetParameters().Select(p => ExpandName(p.ParameterType)) ?? []
+        );
     }
 }

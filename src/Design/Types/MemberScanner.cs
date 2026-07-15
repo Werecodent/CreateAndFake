@@ -52,4 +52,10 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
             ? PublicOrInternal
             : OnlyPublic;
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{GenericConverter.ExpandName(this)}({GenericConverter.ExpandName(SupportedType)})";
+    }
 }
