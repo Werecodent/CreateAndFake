@@ -34,10 +34,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         List<RunResult> results = [];
         foreach (
-            MethodInfo method in instance
-                .GetType()
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(m => m.DeclaringType != typeof(object))
+            MethodInfo method in TypeDescriber
+                .For(instance.GetType())
+                .Methods.OnlyPublic.Where(m =>
+                    localOptions.IncludeBaseObjectMethods || m.DeclaringType != typeof(object)
+                )
         )
         {
             // Sequentially executed to prevent concurrency issues; do not attempt to parallelize.

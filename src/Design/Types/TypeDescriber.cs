@@ -74,6 +74,9 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <summary>Finds instance methods on the <see cref="SupportedType"/>.</summary>
     public MethodScanner Methods => _methods.Value;
 
+    /// <summary>Finds static methods on the <see cref="SupportedType"/>.</summary>
+    public StaticMethodScanner StaticMethods => _staticMethods.Value;
+
     /// <summary>Finds constructors on the <see cref="SupportedType"/>.</summary>
     public ConstructorScanner Constructors => _constructors.Value;
 
@@ -95,6 +98,9 @@ public sealed class TypeDescriber : ITypeSupporter
     /// <inheritdoc cref="Methods"/>
     private readonly Lazy<MethodScanner> _methods;
 
+    /// <inheritdoc cref="StaticMethods"/>
+    private readonly Lazy<StaticMethodScanner> _staticMethods;
+
     /// <inheritdoc cref="Constructors"/>
     private readonly Lazy<ConstructorScanner> _constructors;
 
@@ -111,6 +117,7 @@ public sealed class TypeDescriber : ITypeSupporter
         _fields = new(() => new FieldScanner(type));
         _properties = new(() => new PropertyScanner(type));
         _methods = new(() => new MethodScanner(type));
+        _staticMethods = new(() => new StaticMethodScanner(type));
         _constructors = new(() => new ConstructorScanner(type));
         _factories = new(() => new FactoryScanner(type));
     }

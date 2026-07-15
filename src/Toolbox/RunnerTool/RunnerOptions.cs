@@ -53,6 +53,10 @@ public sealed record RunnerOptions : IToolOptions
     [ConfigurableOption]
     public bool IncludeInstanceMethods { get; init; } = true;
 
+    /// <summary>Option for which methods to include.</summary>
+    [ConfigurableOption]
+    public bool IncludeBaseObjectMethods { get; init; } = true;
+
     /// <summary>How long to wait for methods to complete.</summary>
     [ConfigurableOption]
     public TimeSpan Timeout { get; init; } = new(0, 0, 30);
@@ -76,6 +80,7 @@ public sealed record RunnerOptions : IToolOptions
 
         return this with
         {
+            IncludeBaseObjectMethods = Config.GetValue(section, IncludeBaseObjectMethods),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
             IncludeFinalize = Config.GetValue(section, IncludeFinalize),

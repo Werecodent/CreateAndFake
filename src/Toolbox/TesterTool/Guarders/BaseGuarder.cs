@@ -37,14 +37,28 @@ internal abstract class BaseGuarder(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(type);
 
-        BindingFlags scope = Options.IncludeInternals
-            ? BindingFlags.Public | BindingFlags.NonPublic
-            : BindingFlags.Public;
-        return type.GetMethods(kind | scope)
-            .Where(m => m.IsPublic || m.IsAssembly)
+        TypeDescriber describer = TypeDescriber.For(type);
+        IEnumerable<MethodInfo> methods = [];
+
+        if (kind.HasFlag(BindingFlags.Instance))
+        {
+            methods = methods.Concat(
+                Options.IncludeInternals ? describer.Methods.Visible : describer.Methods.OnlyPublic
+            );
+        }
+
+        if (kind.HasFlag(BindingFlags.Static))
+        {
+            methods = methods.Concat(
+                Options.IncludeInternals
+                    ? describer.StaticMethods.Visible
+                    : describer.StaticMethods.OnlyPublic
+            );
+        }
+
+        return methods
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
             .Where(m => !m.IsStatic || !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
-            .Where(m => !m.IsPrivate)
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
     }
 

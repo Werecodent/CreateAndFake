@@ -132,7 +132,8 @@ public static class AssertDelegateTests
     {
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
             .RawResults.Where(r => r.Result != null)

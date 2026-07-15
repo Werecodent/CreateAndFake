@@ -147,9 +147,8 @@ internal sealed class TestValidator(TesterOptions options)
             .ToDictionary(
                 t => stripGeneric(t.SupportedType!),
                 t =>
-                    t.Methods.PublicOrInternal.Where(m =>
-                            markers.Exists(marker => Attribute.IsDefined(m, marker))
-                        )
+                    t.Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
+                        .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
                         .Select(m => m.Name)
                         .Where(n =>
                         {

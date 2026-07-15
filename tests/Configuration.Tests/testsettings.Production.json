@@ -52,6 +52,7 @@
             "IncludeDispose": true,
             "IncludeStaticMethods": false,
             "IncludeInstanceMethods": false,
+            "IncludeBaseObjectMethods": false,
             "Timeout": "00:00:10"
         },
         "Tester": {
