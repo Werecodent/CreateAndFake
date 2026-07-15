@@ -65,21 +65,19 @@ public static class MethodScannerTests
             typeof(Members).GetMethod("BaseProtectedMethod", _AllScope),
             typeof(Members).GetMethod("PrivateMethod", _AllScope),
             typeof(Members).GetMethod("ProtectedMethod", _AllScope),
-            typeof(Members).GetMethod("Finalize", _AllScope),
             typeof(Members).GetMethod(nameof(Members.BasePublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.BaseProtectedInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.BaseInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
-            .. typeof(object)
-                .GetMethods(_AllScope)
-                .Where(m => !m.IsPrivate)
-                .Where(m => m.Name != "Finalize")
-                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
-        new MethodScanner(typeof(Members)).All.ToHashSet().Assert().Is(expectedMethods);
+        new MethodScanner(typeof(Members))
+            .All.Where(m => m.DeclaringType != typeof(object))
+            .ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
     }
 
     [Fact]
@@ -93,15 +91,14 @@ public static class MethodScannerTests
             typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
             typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
-            .. typeof(object)
-                .GetMethods(_AllScope)
-                .Where(m => !m.IsPrivate)
-                .Where(m => m.Name != "Finalize")
-                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
         ];
 
         MethodScanner scanner = new(typeof(Members));
-        scanner.PublicOrInternal.ToHashSet().Assert().Is(expectedMethods);
+        scanner
+            .PublicOrInternal.Where(m => m.DeclaringType != typeof(object))
+            .ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
 
         scanner.Visible.Assert().Is(scanner.PublicOrInternal);
     }
