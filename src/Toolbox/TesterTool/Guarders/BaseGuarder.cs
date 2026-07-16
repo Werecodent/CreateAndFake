@@ -163,8 +163,8 @@ internal abstract class BaseGuarder(TesterOptions options)
         else if (!HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
         {
             throw new TesterFailureException(
-                $"Encountered exception when testing '{GenericConverter.BuildTestName(testOrigin)}'"
-                    + $" when running '{GenericConverter.BuildTestName(data.Method)}'.",
+                "Encountered exception when testing "
+                    + $"'{GenericConverter.BuildTestName(testOrigin)}' when running: '{data}'.",
                 (Exception)result.Result!
             );
             // ExceptionDispatchInfo.Capture((Exception)result.Result!).Throw();

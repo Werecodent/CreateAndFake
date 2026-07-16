@@ -4,11 +4,11 @@ namespace CreateAndFake.xUnit.v2.Tests;
 
 public static class XUnitTests
 {
-    /*[Fact]
+    [Fact]
     internal static Task XUnit_v2_VerifyIntegrity()
     {
         return Tools.Tester.VerifyToolSetIntegrityAsync(CancellationToken.None);
-    }*/
+    }
 
     [Fact]
     internal static void XUnit_v2_TestClassCoverage()

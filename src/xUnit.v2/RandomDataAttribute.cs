@@ -2,6 +2,7 @@
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
 using CreateAndFake.RunnerTool;
+using CreateAndFake.RunnerTool.Attributes;
 using Xunit.Sdk;
 
 namespace CreateAndFake.xUnit.v2;
@@ -28,7 +29,7 @@ namespace CreateAndFake.xUnit.v2;
 ///     </example>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-public sealed class RandomDataAttribute : DataAttribute
+public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
 {
     /// <summary>Number of times to run the attached test.</summary>
     public int Trials { get; set; } = 1;

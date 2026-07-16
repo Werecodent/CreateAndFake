@@ -113,9 +113,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
             if (timedOut)
             {
-                throw new TimeoutException(
-                    $"Attempting to run method '{GenericConverter.BuildTestName(data.Method)}' timed out: {timeout}"
-                );
+                throw new RunnerTimeoutException(timeout, data.ToString());
             }
         }
 

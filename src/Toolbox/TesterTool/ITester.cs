@@ -232,4 +232,9 @@ public interface ITester : ITool<TesterOptions>
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
+
+    /// <summary>Triggers a debug assertion of all classes in the <paramref name="codeAssembly"/>.</summary>
+    /// <param name="codeAssembly">Assembly being tested.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    void VerifyAllToStrings(Assembly codeAssembly, TesterMod? optionConfiguration = null);
 }

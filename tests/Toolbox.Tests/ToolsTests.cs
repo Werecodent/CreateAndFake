@@ -40,6 +40,12 @@ public static class ToolsTests
     }
 
     [Fact]
+    internal static void CreateAndFake_VerifyAllToStrings()
+    {
+        Tools.Tester.VerifyAllToStrings(Assembly.GetAssembly(typeof(ToolSet)));
+    }
+
+    [Fact]
     internal static Task Tools_VerifyIntegrity()
     {
         return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.Current.CancellationToken);

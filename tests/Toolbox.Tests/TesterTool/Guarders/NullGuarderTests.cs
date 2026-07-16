@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.AsserterTool;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.ErrorCases;
@@ -66,7 +67,7 @@ public static class NullGuarderTests
                 TestContext.Current.CancellationToken
             )
             .Assert()
-            .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
+            .ThrowsAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

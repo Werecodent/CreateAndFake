@@ -1,9 +1,13 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Types;
 using CreateAndFake.DuplicatorTool;
+using CreateAndFake.FakerTool;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.RunnerTool;
@@ -129,6 +133,52 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{nameof(MethodCallWrapper)}({GenericConverter.BuildTestName(method)})";
+        string nl = Environment.NewLine;
+
+        StringBuilder argDetails = new();
+        foreach (DictionaryEntry entry in _args)
+        {
+            argDetails.Append(nl).Append(" - ").Append(entry.Key).Append(": ");
+
+            if (entry.Value is IDisposable)
+            {
+                argDetails.Append('*');
+            }
+            if (entry.Value is IAsyncDisposable)
+            {
+                argDetails.Append("**");
+            }
+
+            if (entry.Value == null)
+            {
+                argDetails.Append("'NULL'");
+            }
+            else if (entry.Value is Fake or IFaked)
+            {
+                argDetails.Append("'FAKE'");
+            }
+            else if (entry.Value is ICollection series)
+            {
+                argDetails
+                    .Append('(')
+                    .Append(series.Count)
+                    .Append(") ")
+                    .Append(GenericConverter.ExpandName(entry.Value));
+            }
+            else if (entry.Value.GetType().Inherits(typeof(ICollection<>)))
+            {
+                argDetails
+                    .Append('(')
+                    .Append(((dynamic)entry.Value).Count)
+                    .Append(") ")
+                    .Append(GenericConverter.ExpandName(entry.Value));
+            }
+            else
+            {
+                argDetails.Append(entry.Value.ToString());
+            }
+        }
+
+        return GenericConverter.BuildTestName(Method) + argDetails;
     }
 }

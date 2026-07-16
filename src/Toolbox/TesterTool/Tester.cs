@@ -224,6 +224,12 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
+    public void VerifyAllToStrings(Assembly codeAssembly, TesterMod? optionConfiguration = null)
+    {
+        new SupportValidator(Configure(optionConfiguration)).VerifyAllToStrings(codeAssembly);
+    }
+
+    /// <inheritdoc/>
     public virtual Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler,

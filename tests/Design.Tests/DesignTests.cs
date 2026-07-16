@@ -48,4 +48,10 @@ public static class DesignTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Fact]
+    internal static void Design_VerifyAllToStrings()
+    {
+        Tools.Tester.VerifyAllToStrings(Assembly.GetAssembly(typeof(ArgumentGuard)));
+    }
 }

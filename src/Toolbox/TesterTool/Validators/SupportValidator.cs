@@ -1,6 +1,7 @@
 using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
 using CreateAndFake.RunnerTool;
@@ -17,31 +18,53 @@ internal sealed class SupportValidator(TesterOptions options)
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
+    /// <inheritdoc cref="ITester.VerifyAllToStrings"/>
+    public void VerifyAllToStrings(Assembly codeAssembly)
+    {
+        ArgumentGuard.ThrowIfNull(codeAssembly);
+
+        Options.Asserter.Debug(
+            ScopeChecker
+                .FindLoadedClassTypes(codeAssembly)
+                .Where(t => !t.IsAbstract)
+                .Where(t => ScopeChecker.IsVisible(t, Assembly.GetExecutingAssembly().GetName()))
+                .ToDictionary(
+                    GenericConverter.ExpandName,
+                    t =>
+                    {
+                        try
+                        {
+                            return Options.Randomizer.Create(t);
+                        }
+                        catch (ToolException)
+                        {
+                            return null;
+                        }
+                    }
+                )
+        );
+    }
+
     /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
     public async Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(testAssembly);
+        ArgumentGuard.ThrowIfNull(testAssembly, canceler);
 
         IEnumerable<MethodInfo> testMethods = ScopeChecker
             .FindLoadedTypes(testAssembly)
             .Where(t => !t.IsGenericType)
-            .SelectMany(t =>
-                t.GetMethods(
-                    BindingFlags.NonPublic
-                        | BindingFlags.Public
-                        | BindingFlags.Static
-                        | BindingFlags.Instance
-                        | BindingFlags.FlattenHierarchy
-                )
-            )
+            .Select(TypeDescriber.For)
+            .SelectMany(d => d.Methods.PublicOrInternal.Concat(d.StaticMethods.PublicOrInternal))
             .Where(m =>
                 !m.IsGenericMethod && m.GetCustomAttributes(true).Any(a => a is IRandomDataMarker)
             );
 
-        foreach (MethodInfo method in testMethods)
+        List<string> generatedData = [];
+
+        foreach (MethodInfo method in testMethods.OrderBy(m => m.Name))
         {
             MethodCallWrapper? data = null;
             try
@@ -51,6 +74,7 @@ internal sealed class SupportValidator(TesterOptions options)
                 {
                     _ = Options.TestDisplayNameConverter.Invoke(item);
                 }
+                generatedData.Add(data.ToString());
             }
             catch (Exception e)
             {
@@ -61,6 +85,8 @@ internal sealed class SupportValidator(TesterOptions options)
                 await Disposer.CleanupAsync(data?.Args).ConfigureAwait(false);
             }
         }
+
+        Options.Asserter.Debug(generatedData, "All generated data for random data parameters.");
     }
 
     /// <inheritdoc cref="ITester.VerifyToolSetIntegrityAsync"/>
@@ -81,7 +107,7 @@ internal sealed class SupportValidator(TesterOptions options)
     /// <inheritdoc cref="ITester.VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
     public async Task VerifyToolSetSupportAsync(IEnumerable<Type> types, CancellationToken canceler)
     {
-        ArgumentGuard.ThrowIfNull(types);
+        ArgumentGuard.ThrowIfNull(types, canceler);
 
         Type[] testTypes =
         [
@@ -108,7 +134,7 @@ internal sealed class SupportValidator(TesterOptions options)
     /// <inheritdoc cref="VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken)"/>
     public async Task VerifyToolSetSupportAsync(Type type, CancellationToken canceler)
     {
-        ArgumentGuard.ThrowIfNull(type);
+        ArgumentGuard.ThrowIfNull(type, canceler);
 
         object? original = null,
             variant = null,
