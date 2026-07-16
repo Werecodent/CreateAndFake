@@ -32,7 +32,7 @@ public sealed record AsserterOptions : IToolOptions
 
     /// <summary>Fails any call that utilizes the Debug methods.</summary>
     [ConfigurableOption]
-    public bool DebugAssertsFail { get; init; } = false;
+    public bool DebugAssertsFail { get; init; } = true;
 
     /// <summary>
     ///     Creates options from <see langword="this"/>
