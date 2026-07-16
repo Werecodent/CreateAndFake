@@ -37,7 +37,8 @@ public static class ExceptionGuarderTests
     {
         return Tools
             .Tester.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
-                TestContext.Current.CancellationToken
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisablePassthroughTests = false }
             )
             .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
