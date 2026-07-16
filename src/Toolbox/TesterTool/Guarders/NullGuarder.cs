@@ -202,7 +202,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         finally
         {
             await AsyncSeriesHelper.TriggerCancellationAsync(cleanupCanceler).ConfigureAwait(false);
-            await DisposeAllButInjectedAsync(data).ConfigureAwait(false);
+            await DisposeAllButInjectedAsync(data?.Args).ConfigureAwait(false);
         }
     }
 

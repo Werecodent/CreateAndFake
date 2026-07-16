@@ -26,6 +26,6 @@ internal sealed class DecimalValueHandler : ValueHandler<decimal>
     /// <inheritdoc cref="IRandom.NextPercent"/>
     private static decimal NextPercent(IRandom gen)
     {
-        return new(gen.Next<int>(), gen.Next<int>(), gen.Next(542101083), false, 28);
+        return new(gen.Next<int>(), gen.Next<int>(), gen.Next(542101082), false, 28);
     }
 }
