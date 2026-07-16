@@ -102,7 +102,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If all PreventsNullRefException tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableNullRefExceptionTests { get; init; } = true;
+    public bool DisableNullRefExceptionTests { get; init; } = false;
 
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]

@@ -81,7 +81,7 @@
                 "B"
             ],
             "IgnoreAllExceptions": true,
-            "DisableNullRefExceptionTests": false,
+            "DisableNullRefExceptionTests": true,
             "DisableParameterMutationTests": false,
             "DisablePassthroughTests": true
         },
