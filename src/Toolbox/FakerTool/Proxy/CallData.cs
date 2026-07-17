@@ -1,4 +1,5 @@
 ﻿using CreateAndFake.Design;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.FakerTool.Proxy;
 
@@ -106,8 +107,8 @@ internal sealed class CallData(
     {
         string gen =
             _generics.Length != 0
-                ? "<" + string.Join(", ", _generics.Select(g => g.Name)) + ">"
+                ? $"<{string.Join(",", _generics.Select(GenericConverter.ExpandName))}>"
                 : "";
-        return _methodName + gen + "(" + string.Join(", ", _args.Select(i => i ?? "'null'")) + ")";
+        return $"{_methodName}{gen}({string.Join(",", _args.Select(i => i ?? "'NULL'"))})";
     }
 }

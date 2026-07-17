@@ -53,7 +53,7 @@ public static class ArgumentGuardTests
     [Theory, RandomData]
     public static void ThrowIfAsynchronous_TrueWithTask(string message)
     {
-        Task task = Task.Delay(1000, TestContext.Current.CancellationToken);
+        Task task = Task.Delay(2000, TestContext.Current.CancellationToken);
         task.Assert(x => ArgumentGuard.ThrowIfAsynchronous(x, message))
             .Throws<AsynchronousAccessException>()
             .With.Message.Assert()
