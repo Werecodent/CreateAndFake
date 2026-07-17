@@ -60,7 +60,7 @@
             "IncludeConstructors": false,
             "IncludeInstanceMethods": false,
             "IncludeStaticMethods": false,
-            "IncludeInternals": false,
+            "IncludeInternals": true,
             "TestClassNameSuffixes": [
                 "Test"
             ],

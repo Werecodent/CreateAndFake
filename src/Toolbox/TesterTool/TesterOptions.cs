@@ -67,7 +67,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If internal members are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeInternals { get; init; } = true;
+    public bool IncludeInternals { get; init; } = false;
 
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
     [ConfigurableOption]

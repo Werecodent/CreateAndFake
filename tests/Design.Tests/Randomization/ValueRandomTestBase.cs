@@ -18,7 +18,6 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         typeof(ArgumentOutOfRangeException),
         typeof(IterationLimitException),
         typeof(UnsupportedException),
-        typeof(EngineException),
     ];
 
     [Fact]

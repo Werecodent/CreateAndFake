@@ -30,6 +30,8 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <inheritdoc/>
     public object Create(Type type, RandomizerMod? optionConfiguration = null)
     {
+        ArgumentGuard.ThrowIfNull(type);
+
         RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
@@ -77,6 +79,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         RandomizerMod? optionConfiguration = null
     )
     {
+        ArgumentGuard.ThrowIfNull(type);
         try
         {
             return new RandomizerChainer(Options, _Engine).Inject(

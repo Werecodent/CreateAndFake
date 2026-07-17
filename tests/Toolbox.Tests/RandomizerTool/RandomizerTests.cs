@@ -15,7 +15,6 @@ public static class RandomizerTests
         opt with
         {
             InjectionValues = [GetGeneratableMethod()],
-            IgnorableExceptions = [typeof(ToolException)],
         };
 
     [Fact]

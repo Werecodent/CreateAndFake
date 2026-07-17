@@ -26,6 +26,8 @@ public static class GenericConverter
     /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
     public static Type FindConcreteType(Type child, Type genericBase)
     {
+        ArgumentGuard.ThrowIfNull(child);
+
         return AsConcreteType(child, genericBase)
             ?? throw new InvalidOperationException(
                 $"Type {child} doesn't inherit {genericBase} as a generic base class."

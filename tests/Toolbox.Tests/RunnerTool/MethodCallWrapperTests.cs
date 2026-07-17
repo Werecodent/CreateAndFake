@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using CreateAndFake.Design.Exceptions;
+﻿using System.Collections.Frozen;
+using System.Reflection;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.Samples.Scenarios;
@@ -8,30 +8,23 @@ namespace CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(KeyNotFoundException),
-                typeof(ArgumentOutOfRangeException),
-                typeof(TargetException),
-                typeof(ToolException),
-                typeof(ArgumentException),
-                typeof(TargetParameterCountException),
-                typeof(InvalidOperationException),
-                typeof(FormatException),
-                typeof(NotSupportedException),
-                typeof(TargetInvocationException),
-            ],
-        };
-
     [Fact]
     internal static Task MethodCallWrapper_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<MethodCallWrapper>(
             TestContext.Current.CancellationToken,
-            _Config
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(KeyNotFoundException),
+                        typeof(ArgumentOutOfRangeException),
+                    ],
+                    MethodsToIgnore = opt
+                        .MethodsToIgnore.Concat([nameof(MethodCallWrapper.InvokeOn)])
+                        .ToFrozenSet(),
+                }
         );
     }
 

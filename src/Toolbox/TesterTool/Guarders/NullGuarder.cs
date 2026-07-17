@@ -166,8 +166,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
             {
                 ParameterInfo param = method.GetParameters()[i];
                 if (
-                    param.ParameterType.IsValueType
-                    && Nullable.GetUnderlyingType(param.ParameterType) == null
+                    param.IsOut
+                    || (
+                        param.ParameterType.IsValueType
+                        && Nullable.GetUnderlyingType(param.ParameterType) == null
+                    )
                 )
                 {
                     continue;
