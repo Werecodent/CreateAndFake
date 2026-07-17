@@ -22,7 +22,12 @@ public static class Issue015Tests
             .Tester.PreventsParameterMutationAsync(
                 typeof(Sample),
                 TestContext.Current.CancellationToken,
-                opt => opt with { DisableParameterMutationTests = false }
+                opt =>
+                    opt with
+                    {
+                        DisableParameterMutationTests = false,
+                        IncludeStaticMethods = true,
+                    }
             )
             .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);

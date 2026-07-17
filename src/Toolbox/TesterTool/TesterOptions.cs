@@ -63,11 +63,11 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If static methods are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeStaticMethods { get; init; } = true;
+    public bool IncludeStaticMethods { get; init; } = false;
 
     /// <summary>If internal members are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeInternals { get; init; } = false;
+    public bool IncludeInternals { get; init; } = true;
 
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
     [ConfigurableOption]

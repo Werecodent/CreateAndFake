@@ -113,7 +113,12 @@ public static class NullGuarderTests
             .Tester.PreventsNullRefExceptionAsync(
                 typeof(StaticMutationSample),
                 TestContext.Current.CancellationToken,
-                opt => opt with { DisableNullRefExceptionTests = false }
+                opt =>
+                    opt with
+                    {
+                        DisableNullRefExceptionTests = false,
+                        IncludeStaticMethods = true,
+                    }
             )
             .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);

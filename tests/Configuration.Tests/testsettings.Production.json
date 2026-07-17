@@ -59,8 +59,8 @@
             "Limiter": "Once",
             "IncludeConstructors": false,
             "IncludeInstanceMethods": false,
-            "IncludeStaticMethods": false,
-            "IncludeInternals": true,
+            "IncludeStaticMethods": true,
+            "IncludeInternals": false,
             "TestClassNameSuffixes": [
                 "Test"
             ],
