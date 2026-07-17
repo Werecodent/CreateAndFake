@@ -58,7 +58,7 @@
         "Tester": {
             "Limiter": "Once",
             "IncludeConstructors": false,
-            "IncludeInstanceMethods": true,
+            "IncludeInstanceMethods": false,
             "IncludeStaticMethods": false,
             "IncludeInternals": false,
             "TestClassNameSuffixes": [
@@ -82,7 +82,7 @@
             ],
             "IgnoreAllExceptions": true,
             "DisableNullRefExceptionTests": true,
-            "DisableParameterMutationTests": false,
+            "DisableParameterMutationTests": true,
             "DisablePassthroughTests": true
         },
         "Valuer": {

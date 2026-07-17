@@ -59,7 +59,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If class methods are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeInstanceMethods { get; init; } = false;
+    public bool IncludeInstanceMethods { get; init; } = true;
 
     /// <summary>If static methods are included when running tests on classes.</summary>
     [ConfigurableOption]
@@ -106,7 +106,7 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
     [ConfigurableOption]
-    public bool DisableParameterMutationTests { get; init; } = true;
+    public bool DisableParameterMutationTests { get; init; } = false;
 
     /// <summary>If all PassthroughWithNoExceptions tests immediately pass instead.</summary>
     [ConfigurableOption]

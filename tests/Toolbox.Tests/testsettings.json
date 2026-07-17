@@ -1,0 +1,8 @@
+{
+    "CreateAndFake": {
+        "Tester": {
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true
+        }
+    }
+}
