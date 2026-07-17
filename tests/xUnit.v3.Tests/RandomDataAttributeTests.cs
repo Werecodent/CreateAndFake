@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.FakerTool;
 using Xunit.Sdk;
 
 namespace CreateAndFake.xUnit.v3.Tests;
@@ -48,6 +49,19 @@ public static class RandomDataAttributeTests
         (await new RandomDataAttribute() { Trials = 2 }.GetData(GetGeneratableMethod(), null))
             .Assert()
             .HasCount(2);
+    }
+
+    [Theory, RandomData]
+    internal static Task GetData_HandlesException([Fake] MethodInfo method)
+    {
+        method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
+
+        return new RandomDataAttribute()
+            .GetData(method, null)
+            .Assert()
+            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            .Also(() => method)
+            .Called();
     }
 
     private static MethodInfo GetGeneratableMethod()

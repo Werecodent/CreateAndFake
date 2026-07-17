@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.FakerTool;
 
 namespace CreateAndFake.MSTest.v4.Tests;
 
@@ -42,6 +43,14 @@ public class RandomDataAttributeTests
             .GetData(GetGeneratableMethod())
             .Assert()
             .HasCount(2);
+    }
+
+    [TestMethod, RandomData]
+    public void GetData_HandlesException([Fake] MethodInfo method)
+    {
+        method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
+
+        new RandomDataAttribute().GetData(method).Assert().IsEmpty().Also(method).Called();
     }
 
     private static MethodInfo GetGeneratableMethod()

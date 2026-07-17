@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.Design.Randomization;
 using CreateAndFake.FakerTool;
 
@@ -26,5 +27,11 @@ public static class IntegrationTests
     internal static void Issue118_FixesStubTypeRandomData([Stub] Type type)
     {
         type.Assert().IsNotNull();
+    }
+
+    [Theory, RandomData]
+    internal static void Issue118_FixesStubTypeRandomDataSpecific([Stub] IReflectableType type)
+    {
+        type.GetTypeInfo().Assert().Is(typeof(Type));
     }
 }

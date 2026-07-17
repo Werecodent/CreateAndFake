@@ -2,6 +2,7 @@
 using CreateAndFake.DuplicatorTool;
 using CreateAndFake.DuplicatorTool.Engine;
 using CreateAndFake.FakerTool;
+using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 
 namespace CreateAndFake.NUnit.v3.Tests;
@@ -70,6 +71,14 @@ public static class RandomDataAttributeTests
             .BuildFrom(wrapper, testStub)
             .Assert()
             .HasCount(2);
+    }
+
+    [RandomData]
+    public static void GetData_HandlesException([Stub] Test suite, [Fake] IMethodInfo method)
+    {
+        method.MethodInfo.SetupReturn(Behavior<MethodInfo>.Throw(Times.Once));
+
+        new RandomDataAttribute().BuildFrom(method, suite).Assert().IsEmpty().Also(method).Called();
     }
 
     private static MethodInfo GetGeneratableMethod()
