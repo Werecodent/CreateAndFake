@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.Fluent;
 using CreateAndFake.RunnerTool;
@@ -66,9 +67,9 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
     {
         if (arg is IFaked and Type type)
         {
-            type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType);
-            type.FullName.SetupReturn(typeof(Type).FullName);
-            type.IsArray.SetupReturn(typeof(Type).IsArray);
+            type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType, Times.Any);
+            type.FullName.SetupReturn(typeof(Type).FullName, Times.Any);
+            type.IsArray.SetupReturn(typeof(Type).IsArray, Times.Any);
         }
         return arg;
     }

@@ -1,8 +1,16 @@
 {
     "CreateAndFake": {
+        "Asserter": {},
+        "Duplicator": {},
+        "Extractor": {},
+        "Faker": {},
+        "Mutator": {},
+        "Randomizer": {},
+        "Runner": {},
         "Tester": {
             "DisableNullRefExceptionTests": true,
             "DisableParameterMutationTests": true
-        }
+        },
+        "Valuer": {}
     }
 }

@@ -70,22 +70,16 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 await Console
                     .Error.WriteLineAsync(
-                        $"Test generation failure on {testMethod.Name}:{e.Message}"
+                        $"Test generation failure on {testMethod.Name}: {e.Message}"
                     )
                     .ConfigureAwait(false);
             }
         }
 
-        /*disposalTracker?.AddRange(
+        disposalTracker?.AddRange(
             data.SelectMany(row => row.GetData())
                 .Where(item => item is IDisposable or IAsyncDisposable)
-        );*/
-
-        SafeDisposer? disposer = SafeDisposer.TryTracking(data.SelectMany(row => row.GetData()));
-        if (disposer != null)
-        {
-            disposalTracker?.Add(disposer);
-        }
+        );
 
         return data;
     }
@@ -106,7 +100,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
         {
             if (arg is IReflectableType reflectable)
             {
-                reflectable.GetTypeInfo().SetupReturn(typeof(Type));
+                reflectable.GetTypeInfo().SetupReturn(typeof(Type), Times.Any);
             }
             faked.ToString().SetupReturn(GenericConverter.ExpandName(faked), Times.Any);
         }

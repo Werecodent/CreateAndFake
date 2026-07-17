@@ -307,8 +307,6 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     {
         TestNext(max);
         TestNext(min, max);
-        TestNext(min, addSome(min));
-        TestNext(subtractSome(max), max);
 
         min.Assert(x => testInstance.Next(max, x)).Throws<ArgumentOutOfRangeException>();
 
@@ -316,6 +314,9 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
             "Minimal range adherence testing.",
             () =>
             {
+                TestNext(min, addSome(min));
+                TestNext(subtractSome(max), max);
+
                 TValueType sample = testInstance.Next(addSome(min), subtractSome(max));
                 TestNext(subtractSome(sample), sample);
                 TestNext(sample, sample);

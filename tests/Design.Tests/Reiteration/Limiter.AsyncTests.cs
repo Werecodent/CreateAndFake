@@ -239,7 +239,7 @@ public static class LimiterAsyncTests
     internal static async Task RepeatAsync_Cancelable()
     {
         await Limiter
-            .Quick.RepeatAsync(GetAMessage(), () => { }, new CancellationToken(true))
+            .Slow.RepeatAsync(GetAMessage(), () => { }, new CancellationToken(true))
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
@@ -292,7 +292,7 @@ public static class LimiterAsyncTests
     internal static async Task AttemptAsync_Cancelable(Exception exception)
     {
         await Limiter
-            .Quick.AttemptAsync(GetAMessage(), () => throw exception, new CancellationToken(true))
+            .Slow.AttemptAsync(GetAMessage(), () => throw exception, new CancellationToken(true))
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
 
