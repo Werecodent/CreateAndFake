@@ -131,7 +131,18 @@ public static class GenericConverter
     /// <returns>The built display name.</returns>
     public static string BuildTestName(MethodBase method)
     {
-        return method != null ? $"{method.Name}({BuildTestParametersName(method)})" : "";
+        if (method != null)
+        {
+            string generics = method.IsGenericMethod
+                ? $"<{string.Join(",", method.GetGenericArguments().Select(ExpandName))}>"
+                : "";
+
+            return $"{method.Name}{generics}({BuildTestParametersName(method)})";
+        }
+        else
+        {
+            return "";
+        }
     }
 
     /// <summary>Builds a display name for the <paramref name="method"/>'s parameters under test.</summary>

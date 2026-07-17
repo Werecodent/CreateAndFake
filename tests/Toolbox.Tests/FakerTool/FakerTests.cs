@@ -11,6 +11,7 @@ public static class FakerTests
         opt with
         {
             IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidOperationException)],
+            MethodsToIgnore = [nameof(Faker.InjectMocks), nameof(Faker.InjectStubs)],
         };
 
     [Fact]

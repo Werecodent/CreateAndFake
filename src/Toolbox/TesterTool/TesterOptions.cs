@@ -55,11 +55,11 @@ public sealed record TesterOptions : IToolOptions
 
     /// <summary>If constructors are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeConstructors { get; init; } = false;
+    public bool IncludeConstructors { get; init; } = true;
 
     /// <summary>If class methods are included when running tests on classes.</summary>
     [ConfigurableOption]
-    public bool IncludeInstanceMethods { get; init; } = true;
+    public bool IncludeInstanceMethods { get; init; } = false;
 
     /// <summary>If static methods are included when running tests on classes.</summary>
     [ConfigurableOption]

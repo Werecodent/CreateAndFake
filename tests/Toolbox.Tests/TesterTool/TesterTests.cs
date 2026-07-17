@@ -65,7 +65,13 @@ public static class TesterTests
 
             await _LongTestInstance.PreventsNullRefExceptionAsync<MockDisposableSample>(
                 TestContext.Current.CancellationToken,
-                opt => opt with { DisableNullRefExceptionTests = false, IncludeConstructors = true }
+                opt =>
+                    opt with
+                    {
+                        DisableNullRefExceptionTests = false,
+                        IncludeConstructors = true,
+                        IncludeInstanceMethods = true,
+                    }
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
             Tools.Asserter.Is(0, MockDisposableSample._FinalizerDisposes);
@@ -94,6 +100,7 @@ public static class TesterTests
                     {
                         DisableParameterMutationTests = false,
                         IncludeConstructors = true,
+                        IncludeInstanceMethods = true,
                     }
             );
             Tools.Asserter.Is(2, MockDisposableSample._ClassDisposes);
