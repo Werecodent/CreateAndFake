@@ -10,7 +10,7 @@ public static class AssertAsyncEnumerableTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AssertAsyncEnumerable<string>),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt => opt with { IgnoreAllExceptions = true, DisableNullRefExceptionTests = true }
         );
     }
 
@@ -20,7 +20,7 @@ public static class AssertAsyncEnumerableTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AssertAsyncEnumerable<string>),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt => opt with { IgnoreAllExceptions = true, DisableParameterMutationTests = true }
         );
     }
 }

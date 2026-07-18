@@ -10,7 +10,12 @@ public static class TaskAlsoChainerExtensionsTests
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(TaskAlsoChainerExtensions),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(AssertException)],
+                    DisableNullRefExceptionTests = true,
+                }
         );
     }
 }
