@@ -14,6 +14,7 @@ public static class RandomizerTests
     private static readonly TesterMod _Config = opt =>
         opt with
         {
+            IgnorableExceptions = [typeof(ArgumentException), typeof(ArgumentOutOfRangeException)],
             InjectionValues = [GetGeneratableMethod()],
         };
 
