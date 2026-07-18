@@ -43,7 +43,7 @@ public static class RandomDataAttributeTests
     }
 
     [Theory, RandomData]
-    internal static void GetData_HandlesException([Stub] MethodInfo method)
+    internal static void GetData_HandlesException([Fake] MethodInfo method)
     {
         method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
 

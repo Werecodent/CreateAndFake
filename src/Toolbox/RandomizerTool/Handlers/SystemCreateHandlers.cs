@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using CreateAndFake.Design.Content;
@@ -51,6 +52,9 @@ internal static class SystemCreateHandlers
         ),
         new FactoryCreateHandler<TransitionTime>(rand =>
             rand.Options.Gen.NextItem(_PossibleTransitionTimes)
+        ),
+        new FactoryCreateHandler<RuntimeMethodHandle>(rand =>
+            rand.Create<MethodInfo>().MethodHandle
         ),
         new FactoryCreateHandler<CancellationToken>(rand => new CancellationToken(
             rand.Options.Gen.Next<bool>()

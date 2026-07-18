@@ -17,6 +17,7 @@ public sealed class HandlerCompareHint : CompareHint
     private static readonly ICompareHandler[] _Handlers =
     [
         new DefaultEqualityCompareHandler(typeof(string)),
+        new DefaultEqualityCompareHandler(typeof(RuntimeMethodHandle)),
         new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
         new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
         new ConvertCompareHandler<CancellationToken>((token, _) => token.IsCancellationRequested),

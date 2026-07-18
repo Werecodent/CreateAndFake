@@ -18,6 +18,7 @@ public sealed class HandlerMutateHint : IMutateHint
         new StringDictionaryMutateHandler(),
         new NoMutateHandler(typeof(string)),
         new NoMutateHandler(typeof(ECCurve)),
+        new NoMutateHandler(typeof(RuntimeMethodHandle)),
         new FactoryMutateHandler<UriBuilder>(
             (instance, mutator) =>
                 instance.Host = mutator.Options.Randomizer.Create<string>().ToLowerInvariant()

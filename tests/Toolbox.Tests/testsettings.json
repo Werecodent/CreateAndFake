@@ -8,8 +8,8 @@
         "Randomizer": {},
         "Runner": {},
         "Tester": {
-            "DisableNullRefExceptionTests": true,
-            "DisableParameterMutationTests": true
+            "DisableNullRefExceptionTests": false,
+            "DisableParameterMutationTests": false
         },
         "Valuer": {}
     }
