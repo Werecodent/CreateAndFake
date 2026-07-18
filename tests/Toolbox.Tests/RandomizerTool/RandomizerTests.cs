@@ -16,6 +16,7 @@ public static class RandomizerTests
         {
             IgnorableExceptions = [typeof(ArgumentException), typeof(ArgumentOutOfRangeException)],
             InjectionValues = [GetGeneratableMethod()],
+            MethodsToIgnore = [nameof(Randomizer.Inject)],
         };
 
     [Fact]

@@ -27,6 +27,7 @@ public static class SerializationValidatorTests
                         typeof(AssertException),
                         typeof(SerializationException),
                         typeof(ArgumentOutOfRangeException),
+                        typeof(InvalidCastException),
                     ],
                 }
         );
