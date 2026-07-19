@@ -9,8 +9,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateHint>
 {
-    private static readonly InjectedCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(Injected<FakeHolderSample>),
@@ -27,7 +25,7 @@ public sealed class InjectedCreateHintTests : CreateHintTestBase<InjectedCreateH
     ];
 
     public InjectedCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal void Create_ValidInjections(Injected<InjectMockSample> sample)

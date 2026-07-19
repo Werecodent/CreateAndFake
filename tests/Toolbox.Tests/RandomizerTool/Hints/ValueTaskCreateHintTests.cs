@@ -6,8 +6,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class ValueTaskCreateHintTests : CreateHintTestBase<ValueTaskCreateHint>
 {
-    private static readonly ValueTaskCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(ValueTask<DataHolderSample>),
@@ -21,5 +19,5 @@ public sealed class ValueTaskCreateHintTests : CreateHintTestBase<ValueTaskCreat
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public ValueTaskCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 }

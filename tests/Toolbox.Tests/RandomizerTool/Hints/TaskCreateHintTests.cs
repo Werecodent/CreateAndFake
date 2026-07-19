@@ -5,8 +5,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
 {
-    private static readonly TaskCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(Task<DataHolderSample>),
@@ -21,7 +19,7 @@ public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public TaskCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void TryToCreate_TaskTypingCorrect()

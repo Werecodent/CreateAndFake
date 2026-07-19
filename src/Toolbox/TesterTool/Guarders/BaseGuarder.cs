@@ -58,7 +58,7 @@ internal abstract class BaseGuarder(TesterOptions options)
 
         return methods
             .Where(m => m.DeclaringType == type || m.DeclaringType!.IsAbstract)
-            .Where(m => !m.IsStatic || !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
+            .Where(m => !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
     }
 

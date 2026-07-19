@@ -24,8 +24,13 @@ public static class MutatorEngineTests
     [Theory, RandomData]
     internal static void Variant_AcceptsNull(string value)
     {
-        Tools.Mutator.Variant<string>(null).Assert().IsNotNull();
-        Tools.Mutator.Variant(value, null).Assert().IsNot(value).And.IsNotNull();
+        new Mutator(Tools.Mutator.Options).Variant<string>(null).Assert().IsNotNull();
+
+        new Mutator(Tools.Mutator.Options)
+            .Variant(value, null)
+            .Assert()
+            .IsNot(value)
+            .And.IsNotNull();
     }
 
     [Theory, RandomData]

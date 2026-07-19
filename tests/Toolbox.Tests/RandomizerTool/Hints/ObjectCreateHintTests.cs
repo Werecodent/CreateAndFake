@@ -7,8 +7,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
 {
-    private static readonly ObjectCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(DataHolderSample),
@@ -22,7 +20,7 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
     private static readonly Type[] _InvalidTypes = [typeof(VoidType)];
 
     public ObjectCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     public void ObjectCreateHint_CanHandleInfinites(

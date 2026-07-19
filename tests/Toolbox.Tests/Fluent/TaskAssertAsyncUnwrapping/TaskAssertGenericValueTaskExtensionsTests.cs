@@ -19,7 +19,6 @@ public static class TaskAssertGenericValueTaskExtensionsTests
                         typeof(AssertException),
                         typeof(ValueTaskRepeatedAccessException),
                     ],
-                    DisableNullRefExceptionTests = true,
                 }
         );
     }

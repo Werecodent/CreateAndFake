@@ -17,8 +17,6 @@ public static class AssertTaskTests
                 typeof(ArgumentException),
                 typeof(ValueTaskRepeatedAccessException),
             ],
-            DisableNullRefExceptionTests = true,
-            DisableParameterMutationTests = true,
         };
 
     [Fact]

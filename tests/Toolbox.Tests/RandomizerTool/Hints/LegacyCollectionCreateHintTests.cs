@@ -6,8 +6,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class LegacyCollectionCreateHintTests : CreateHintTestBase<LegacyCollectionCreateHint>
 {
-    private static readonly LegacyCollectionCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         .. LegacyCollectionCreateHint.PotentialCollections,
@@ -19,5 +17,5 @@ public sealed class LegacyCollectionCreateHintTests : CreateHintTestBase<LegacyC
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public LegacyCollectionCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 }

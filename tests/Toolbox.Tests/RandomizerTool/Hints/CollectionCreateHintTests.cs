@@ -8,8 +8,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCreateHint>
 {
-    private static readonly CollectionCreateHint _TestInstance = new();
-
     private static readonly Type[] _ItemTypes =
     [
         typeof(string),
@@ -51,14 +49,14 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     ];
 
     public CollectionCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
     public void TryToCreate_RetriesSetsWithDuplicates()
     {
         for (int i = 0; i < 20; i++)
         {
-            _TestInstance.TryToCreate(typeof(IDictionary<bool, int>), CreateChainer());
+            TestInstance.TryToCreate(typeof(IDictionary<bool, int>), CreateChainer());
         }
     }
 

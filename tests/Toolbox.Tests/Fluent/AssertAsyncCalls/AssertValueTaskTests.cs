@@ -16,8 +16,6 @@ public static class AssertValueTaskTests
                 typeof(InvalidCastException),
                 typeof(ArgumentException),
             ],
-            DisableNullRefExceptionTests = true,
-            DisableParameterMutationTests = true,
         };
 
     [Fact]

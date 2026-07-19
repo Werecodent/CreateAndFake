@@ -102,16 +102,15 @@ public abstract class MutateHintTestBase<T>(
     {
         object data =
             (collectionSize == null)
-                ? Tools.Randomizer.Create(type)
-                : Tools.Randomizer.Create(
-                    type,
-                    opt =>
+                ? type.Tools().CreateRandomInstance()
+                : type.Tools()
+                    .CreateRandomInstance(opt =>
                         opt with
                         {
                             CollectionMinSize = collectionSize.Value,
                             CollectionMaxSize = collectionSize.Value,
                         }
-                );
+                    );
         object original = data.Tools().Copy();
 
         TestInstance

@@ -5,8 +5,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class GenericCreateHintTests : CreateHintTestBase<GenericCreateHint>
 {
-    private static readonly GenericCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(IList<>),
@@ -23,5 +21,5 @@ public sealed class GenericCreateHintTests : CreateHintTestBase<GenericCreateHin
     ];
 
     public GenericCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 }

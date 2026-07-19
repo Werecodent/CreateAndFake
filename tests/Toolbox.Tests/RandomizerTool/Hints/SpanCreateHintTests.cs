@@ -6,8 +6,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class SpanCreateHintTests : CreateHintTestBase<SpanCreateHint>
 {
-    private static readonly SpanCreateHint _TestInstance = new();
-
     private static readonly Type[] _ItemTypes =
     [
         typeof(string),
@@ -31,7 +29,7 @@ public sealed class SpanCreateHintTests : CreateHintTestBase<SpanCreateHint>
     ];
 
     public SpanCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     private static Type MakeDefined(Type type)
     {

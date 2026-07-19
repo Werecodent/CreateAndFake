@@ -17,8 +17,7 @@ public static class MutatorTests
     [Fact]
     internal static Task Mutator_PassthroughWithNoExceptions()
     {
-        return Tools.Tester.PassthroughWithNoExceptionsAsync(
-            Tools.Mutator,
+        return Tools.Tester.PassthroughWithNoExceptionsAsync<Mutator>(
             TestContext.Current.CancellationToken
         );
     }

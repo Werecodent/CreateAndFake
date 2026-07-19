@@ -9,7 +9,7 @@ public static class AssertAsyncObjectTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertAsyncObject>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true, DisableNullRefExceptionTests = true }
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 
@@ -18,7 +18,7 @@ public static class AssertAsyncObjectTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertAsyncObject>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true, DisableParameterMutationTests = true }
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 }

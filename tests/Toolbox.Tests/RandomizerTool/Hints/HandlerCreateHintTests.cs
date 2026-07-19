@@ -10,8 +10,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHint>
 {
-    private static readonly HandlerCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(CultureInfo),
@@ -31,14 +29,14 @@ public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHin
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public HandlerCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
-    internal static void TryToCreate_ContinuesUntilMemberFound()
+    internal void TryToCreate_ContinuesUntilMemberFound()
     {
         for (int i = 0; i < 50; i++)
         {
-            _ = _TestInstance.TryToCreate(typeof(FieldInfo), CreateChainer());
+            _ = TestInstance.TryToCreate(typeof(FieldInfo), CreateChainer());
         }
     }
 }

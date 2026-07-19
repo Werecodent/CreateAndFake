@@ -6,8 +6,6 @@ namespace CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCollectionCreateHint>
 {
-    private static readonly AsyncCollectionCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(IAsyncEnumerable<int>),
@@ -18,7 +16,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample), typeof(IEnumerable)];
 
     public AsyncCollectionCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
     internal static async Task GetItemsAsync_Empty([Size(0)] IAsyncEnumerable<int> items)

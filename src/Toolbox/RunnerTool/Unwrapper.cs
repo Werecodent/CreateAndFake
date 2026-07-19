@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.Design;
 using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Types;
@@ -23,13 +24,18 @@ internal static class Unwrapper
         object? result = call?.Invoke();
 
         TypeDescriber describer = TypeDescriber.For(result?.GetType());
-        if (
-            describer.Inherits<Task>()
-            || describer.Inherits<ValueTask>()
-            || describer.Inherits(typeof(ValueTask<>))
-        )
+        if (describer.Inherits<Task>())
         {
             result = await UnwrapTaskAsync(result!).ConfigureAwait(false);
+        }
+        else if (describer.Inherits(typeof(ValueTask<>)))
+        {
+            result = await ((dynamic)result!).ConfigureAwait(false);
+        }
+        else if (describer.Inherits<ValueTask>())
+        {
+            await ((ValueTask)result!).ConfigureAwait(false);
+            result = VoidReturn.Instance;
         }
 
         if (result == null)
@@ -72,19 +78,25 @@ internal static class Unwrapper
     /// <returns>The unwrapped result.</returns>
     private static async Task<object?> UnwrapTaskAsync(object result)
     {
+        await ((Task)result).ConfigureAwait(false);
+
         Type resultType = result.GetType();
+        PropertyInfo? resultProp = TypeDescriber
+            .For(resultType)
+            .Properties.OnlyPublic.FirstOrDefault(p => p.Name == "Result");
+
         if (
             !GenericConverter
                 .ExpandName(resultType)
                 .Contains("VoidTaskResult", StringComparison.Ordinal)
-            && resultType.GetProperty("Result") != null
+            && resultProp != null
         )
         {
-            return await ((dynamic)result).ConfigureAwait(false);
+            // await ((dynamic)result) crashes legacy .NET.
+            return resultProp.GetValue(result);
         }
         else
         {
-            await ((dynamic)result).ConfigureAwait(false);
             return VoidReturn.Instance;
         }
     }

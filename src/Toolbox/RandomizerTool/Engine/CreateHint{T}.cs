@@ -14,11 +14,7 @@ public abstract class CreateHint<T> : CreateHint
     {
         ArgumentGuard.ThrowIfNull(randomizer);
 
-        if (
-            type.IsInheritedBy<T>()
-            && (type != typeof(object) || typeof(T) == typeof(object))
-            && !randomizer.AlreadyCreated<T>()
-        )
+        if (type.IsInheritedBy<T>() && !randomizer.AlreadyCreated<T>())
         {
             return new(Create(randomizer));
         }

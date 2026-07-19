@@ -40,7 +40,6 @@ public sealed class ListMutateHintTests : MutateHintTestBase<ListMutateHint>
             TestContext.Current.CancellationToken
         );
 
-        data.Assert().IsNot(original);
-        data.OfType<DataSample>().Assert().HasCount(2);
+        data.Assert().IsNot(original).Also(data.OfType<DataSample>()).HasCount(2);
     }
 }

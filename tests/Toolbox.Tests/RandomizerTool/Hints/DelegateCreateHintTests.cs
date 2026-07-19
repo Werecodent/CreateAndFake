@@ -50,8 +50,6 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Func<,,,,,,,,,,,,,,,,>),
     ];
 
-    private static readonly DelegateCreateHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(Action<string, object, int>),
@@ -63,7 +61,7 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
 
     public DelegateCreateHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Fact]
     internal static void Create_HandlesAllDelegates()
@@ -75,9 +73,9 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
     }
 
     [Fact]
-    internal static void Create_HandlesOutRef()
+    internal void Create_HandlesOutRef()
     {
-        CreateHintResult result = _TestInstance.TryToCreate(
+        CreateHintResult result = TestInstance.TryToCreate(
             typeof(Action<IOutRef>),
             CreateChainer()
         );

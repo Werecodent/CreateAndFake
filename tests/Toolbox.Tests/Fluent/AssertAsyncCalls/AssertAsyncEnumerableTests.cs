@@ -8,9 +8,9 @@ public static class AssertAsyncEnumerableTests
     internal static Task AssertAsyncEnumerable_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AssertAsyncEnumerable<string>),
+            typeof(AssertAsyncEnumerable<>),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true, DisableNullRefExceptionTests = true }
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 
@@ -18,9 +18,9 @@ public static class AssertAsyncEnumerableTests
     internal static Task AssertAsyncEnumerable_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AssertAsyncEnumerable<string>),
+            typeof(AssertAsyncEnumerable<>),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true, DisableParameterMutationTests = true }
+            opt => opt with { IgnoreAllExceptions = true }
         );
     }
 }

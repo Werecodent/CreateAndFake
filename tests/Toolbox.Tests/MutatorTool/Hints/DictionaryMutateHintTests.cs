@@ -41,8 +41,11 @@ public sealed class DictionaryMutateHintTests : MutateHintTestBase<DictionaryMut
             TestContext.Current.CancellationToken
         );
 
-        data.Assert().IsNot(original);
-        data.Keys.OfType<int>().Assert().HasCount(2);
-        data.Values.OfType<DataSample>().Assert().HasCount(2);
+        data.Assert()
+            .IsNot(original)
+            .Also(data.Keys.OfType<int>())
+            .HasCount(2)
+            .Also(data.Values.OfType<DataSample>())
+            .HasCount(2);
     }
 }

@@ -8,15 +8,13 @@ namespace CreateAndFake.Tests.RandomizerTool;
 
 /// <summary>Handles testing create hints.</summary>
 /// <typeparam name="T">Create hint to test.</typeparam>
-/// <param name="testInstance">Instance to test with.</param>
 /// <param name="validTypes">Types that can be created by the hint.</param>
 /// <param name="invalidTypes">Types that can't be created by the hint.</param>
 public abstract class CreateHintTestBase<T>(
-    T testInstance,
     IEnumerable<Type> validTypes,
     IEnumerable<Type> invalidTypes
 )
-    where T : CreateHint
+    where T : CreateHint, new()
 {
     /// <summary>Configuration to use for automatic tests.</summary>
     private static readonly TesterMod _Config = opt =>
@@ -26,7 +24,7 @@ public abstract class CreateHintTestBase<T>(
         };
 
     /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = testInstance;
+    protected T TestInstance { get; } = new T();
 
     /// <summary>Types that can be created by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? Type.EmptyTypes;
