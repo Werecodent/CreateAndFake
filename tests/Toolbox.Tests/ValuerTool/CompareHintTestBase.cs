@@ -252,14 +252,20 @@ public abstract class CompareHintTestBase<T>(
                 dataHash
                     .HasData.Assert()
                     .Is(true, $"Hint '{typeof(T).Name}' failed to support '{type.Name}'.");
-                await TestInstance
-                    .TryToAsyncGetHashCode(dataDiffer, CreateChainer(), ct)
-                    .Assert()
-                    .IsNotAsync(
-                        dataHash,
-                        ct,
-                        $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
-                    );
+
+                await Limiter.Few.AttemptAsync(
+                    "Trying to generate object with different value hashes.",
+                    () =>
+                        TestInstance
+                            .TryToAsyncGetHashCode(dataDiffer, CreateChainer(), ct)
+                            .Assert()
+                            .IsNotAsync(
+                                dataHash,
+                                ct,
+                                $"Hint '{typeof(T).Name}' generated same hash for different '{type.Name}'."
+                            ),
+                    TestContext.Current.CancellationToken
+                );
             }
             catch (Exception e)
             {

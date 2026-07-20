@@ -49,7 +49,7 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource, IRandomDat
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"Test generation failure on {methodInfo}:{e.Message}");
+                Console.Error.WriteLine($"Test generation failure on {methodInfo}= {e.Message}");
             }
         }
         return results;

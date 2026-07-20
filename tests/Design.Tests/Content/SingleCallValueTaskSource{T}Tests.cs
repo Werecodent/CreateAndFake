@@ -9,7 +9,7 @@ public static class SingleCallValueTaskSource_T_Tests
     internal static Task SingleCallValueTaskSource_T_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(SingleCallValueTaskSource<string>),
+            typeof(SingleCallValueTaskSource<>),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] }
         );

@@ -335,7 +335,7 @@ public static class LimiterTaskTests
     internal static async Task RetryAsync_Cancelable(Exception exception)
     {
         await Limiter
-            .Quick.RetryAsync(
+            .Slow.RetryAsync(
                 GetAMessage(),
                 () => Task.FromException(exception),
                 new CancellationToken(true)

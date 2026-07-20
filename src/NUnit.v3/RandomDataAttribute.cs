@@ -49,7 +49,7 @@ public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder, IRandomD
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"Test generation failure on {method}:{e.Message}");
+                Console.Error.WriteLine($"Test generation failure on {method}= {e.Message}");
                 continue;
             }
 

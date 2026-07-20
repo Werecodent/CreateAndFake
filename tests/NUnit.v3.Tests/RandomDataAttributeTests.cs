@@ -74,11 +74,27 @@ public static class RandomDataAttributeTests
     }
 
     [RandomData]
-    public static void GetData_HandlesException([Stub] Test suite, [Fake] IMethodInfo method)
+    public static async Task GetData_HandlesException([Stub] Test suite, [Fake] IMethodInfo method)
     {
         method.MethodInfo.SetupReturn(Behavior<MethodInfo>.Throw(Times.Once));
 
-        new RandomDataAttribute().BuildFrom(method, suite).Assert().IsEmpty().Also(method).Called();
+        await using StringWriter writer = new();
+
+        TextWriter errorConsole = Console.Error;
+        Console.SetError(writer);
+        try
+        {
+            new RandomDataAttribute()
+                .BuildFrom(method, suite)
+                .Assert()
+                .IsEmpty()
+                .Also(method)
+                .Called();
+        }
+        finally
+        {
+            Console.SetError(errorConsole);
+        }
     }
 
     private static MethodInfo GetGeneratableMethod()

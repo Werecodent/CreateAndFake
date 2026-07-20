@@ -8,7 +8,7 @@ public static class ResultChainerTests
     internal static Task ResultChainer_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ResultChainer<object>),
+            typeof(ResultChainer<>),
             TestContext.Current.CancellationToken
         );
     }

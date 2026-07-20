@@ -1,11 +1,12 @@
 using System.Reflection;
+using CreateAndFake.AsserterTool;
 using CreateAndFake.Fluent.AssertAsyncCalls;
 
 namespace CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
 public static class TaskAssertAsyncObjectExtensionsTests
 {
-    /*[Fact]
+    [Fact]
     internal static Task TaskAssertAsyncObjectExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
@@ -13,7 +14,7 @@ public static class TaskAssertAsyncObjectExtensionsTests
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
-    }*/
+    }
 
     [Fact]
     internal static void TaskAssertAsyncObjectExtensions_MatchesEveryMethod()

@@ -183,7 +183,7 @@ public sealed class SetCompareHint : CompareHint
         }
 
         await foreach (
-            object item in findMissingAsync(expectedByHash, actualByHash)
+            object item in findMissingAsync(actualByHash, expectedByHash)
                 .WithCancellation(canceler)
                 .ConfigureAwait(false)
         )

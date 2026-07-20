@@ -53,7 +53,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"Test generation failure on {testMethod}:{e.Message}");
+                Console.Error.WriteLine($"Test generation failure on {testMethod}= {e.Message}");
             }
         }
         return results;

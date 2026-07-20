@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using System.Reflection;
+﻿using System.Reflection;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
@@ -134,7 +133,7 @@ public static class ToolsTests
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(BigInteger)],
+            [typeof(ISet<int>)],
             TestContext.Current.CancellationToken
         );
     }

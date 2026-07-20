@@ -70,7 +70,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             {
                 await Console
                     .Error.WriteLineAsync(
-                        $"Test generation failure on {testMethod.Name}: {e.Message}"
+                        $"Test generation failure on {testMethod.Name}= {e.Message}"
                     )
                     .ConfigureAwait(false);
             }

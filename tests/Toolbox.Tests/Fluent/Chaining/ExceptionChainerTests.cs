@@ -8,7 +8,7 @@ public static class ExceptionChainerTests
     internal static Task ExceptionChainer_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ExceptionChainer<Exception>),
+            typeof(ExceptionChainer<>),
             TestContext.Current.CancellationToken
         );
     }
