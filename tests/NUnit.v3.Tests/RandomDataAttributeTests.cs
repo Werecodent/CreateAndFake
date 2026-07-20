@@ -74,11 +74,11 @@ public static class RandomDataAttributeTests
     }
 
     [RandomData]
-    public static async Task GetData_HandlesException([Stub] Test suite, [Fake] IMethodInfo method)
+    public static void GetData_HandlesException([Stub] Test suite, [Fake] IMethodInfo method)
     {
         method.MethodInfo.SetupReturn(Behavior<MethodInfo>.Throw(Times.Once));
 
-        await using StringWriter writer = new();
+        using StringWriter writer = new();
 
         TextWriter errorConsole = Console.Error;
         Console.SetError(writer);
