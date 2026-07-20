@@ -32,6 +32,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
             if (
                 instances.All(o =>
                     ArgumentGuard.IsAsynchronous(o)
+                    || o is IValuerAsyncComparable
                     || !chainer.Options.Valuer.Equals(result, o, _ => compareOptions)
                 )
             )

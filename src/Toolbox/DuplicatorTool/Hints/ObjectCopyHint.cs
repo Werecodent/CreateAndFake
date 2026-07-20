@@ -36,7 +36,7 @@ public sealed class ObjectCopyHint : CopyHint
         foreach (
             FieldInfo field in TypeDescriber
                 .For(source.GetType())
-                .Fields.OnlyPublic.Where(f => !f.IsInitOnly && !f.IsLiteral)
+                .Fields.Visible.Where(f => !f.IsInitOnly && !f.IsLiteral)
         )
         {
             object? value = field.GetValue(source);
@@ -46,7 +46,7 @@ public sealed class ObjectCopyHint : CopyHint
         foreach (
             PropertyInfo property in TypeDescriber
                 .For(source.GetType())
-                .Properties.OnlyPublic.Where(p => p.CanRead && p.CanWrite)
+                .Properties.Visible.Where(p => p.CanRead && p.CanWrite)
                 .Where(p => p.GetIndexParameters().Length == 0)
         )
         {

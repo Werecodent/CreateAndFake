@@ -4,6 +4,7 @@ using CreateAndFake.Design.Content;
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.Design.Types;
+using CreateAndFake.FakerTool.Proxy;
 using CreateAndFake.RunnerTool;
 using CreateAndFake.RunnerTool.Attributes;
 
@@ -142,6 +143,11 @@ internal sealed class SupportValidator(TesterOptions options)
         try
         {
             original = Options.Randomizer.Create(type);
+            if (original is IFaked)
+            {
+                return;
+            }
+
             dupe = Options.Duplicator.Copy(original);
 
             string failMessage =

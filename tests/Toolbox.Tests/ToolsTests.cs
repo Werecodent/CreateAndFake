@@ -2,6 +2,7 @@
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
+using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 
@@ -92,7 +93,7 @@ public static class ToolsTests
             typeof(Tools)
                 .Assembly.GetTypes()
                 .Where(t => !(t.IsAbstract && t.IsSealed))
-                .Where(t => !t.Inherits<Attribute>())
+                .Where(t => !TypeDescriber.For(t).Inherits<Attribute>())
                 .Where(t => !t.IsNestedPrivate)
                 .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute))),
             TestContext.Current.CancellationToken,
@@ -120,14 +121,14 @@ public static class ToolsTests
         );
     }*/
 
-    /* [Fact]
+    [Fact]
     internal static Task Tools_ValidSamplesWork()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
             SampleGenerator.AllValidDataSamples,
             TestContext.Current.CancellationToken
         );
-    }*/
+    }
 
     [Fact]
     internal static Task Tools_TestIndividual()
