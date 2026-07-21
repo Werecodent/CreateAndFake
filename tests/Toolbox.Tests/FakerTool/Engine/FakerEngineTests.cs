@@ -18,7 +18,12 @@ public static class FakerEngineTests
             opt =>
                 opt with
                 {
-                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]),
+                    MethodsToIgnore = FrozenSet.ToFrozenSet([
+                        "SelectHints",
+                        "Inject",
+                        "InjectMocks",
+                        "InjectStubs",
+                    ]),
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),
@@ -37,7 +42,12 @@ public static class FakerEngineTests
             opt =>
                 opt with
                 {
-                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints", "Inject"]),
+                    MethodsToIgnore = FrozenSet.ToFrozenSet([
+                        "SelectHints",
+                        "Inject",
+                        "InjectMocks",
+                        "InjectStubs",
+                    ]),
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),

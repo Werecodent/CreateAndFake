@@ -4,19 +4,18 @@ using CreateAndFake.Design.Types;
 namespace CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample]
-public sealed class FactorySample
+public sealed class FactoryAlterSample
 {
-    [ExcludeFromCodeCoverage]
     public string Data { get; }
 
-    private FactorySample(string data)
+    private FactoryAlterSample(string data)
     {
         Data = data;
     }
 
-    public static FactorySample Create(int data)
+    public static FactoryAlterSample Create(int data)
     {
-        return new FactorySample("Value:" + data);
+        return new FactoryAlterSample("Value:" + data);
     }
 
     public override string ToString()

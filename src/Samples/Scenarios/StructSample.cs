@@ -4,7 +4,7 @@ using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Samples.Scenarios;
 
-[ValidSample, ExcludeFromCodeCoverage]
+[ValidSample]
 public struct StructSample(string stringValue)
     : IEquatable<StructSample>,
         IComparable<StructSample>,

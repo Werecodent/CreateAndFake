@@ -64,6 +64,7 @@
         "Mutatable",
         "nameof",
         "NETCOREAPP",
+        "NETFRAMEWORK",
         "Newarr",
         "Newobj",
         "noreply",

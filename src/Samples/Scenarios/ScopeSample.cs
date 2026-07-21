@@ -3,7 +3,7 @@ using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Samples.Scenarios;
 
-[ValidSample, ExcludeFromCodeCoverage]
+[ValidSample]
 public class ScopeSample
 {
     public virtual string? PublicProp { get; set; }

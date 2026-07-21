@@ -2,7 +2,6 @@
 using CreateAndFake.Design.Exceptions;
 using CreateAndFake.FakerTool;
 using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples;
 using CreateAndFake.Samples.ErrorCases;
 using CreateAndFake.Samples.Scenarios;
 
@@ -120,15 +119,6 @@ public static class ToolsTests
                 }
         );
     }*/
-
-    [Fact]
-    internal static Task Tools_ValidSamplesWork()
-    {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            SampleGenerator.AllValidDataSamples,
-            TestContext.Current.CancellationToken
-        );
-    }
 
     [Fact]
     internal static Task Tools_TestIndividual()

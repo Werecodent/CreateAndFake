@@ -1,33 +1,15 @@
-using System.Collections.Frozen;
 using System.Reflection;
 
 namespace CreateAndFake.Design.Tests;
 
 public static class DesignTests
 {
+    private static readonly Assembly _DesignAssembly = Assembly.GetAssembly(typeof(ArgumentGuard));
+
     [Fact]
     internal static void Design_TestClassCoverage()
     {
-        Tools.Tester.ProvidesTestClassCoverage(
-            Assembly.GetAssembly(typeof(ArgumentGuard)),
-            Assembly.GetExecutingAssembly(),
-            opt =>
-                opt with
-                {
-                    TestClassCoverageExceptions = FrozenSet.ToFrozenSet([
-                        "CallerArgumentExpressionAttribute",
-                        "CompilerFeatureRequiredAttribute",
-                        "IsExternalInit",
-                        "RequiredMemberAttribute",
-                        "DoesNotReturnAttribute",
-                        "MaybeNullAttribute",
-                        "NotNullAttribute",
-                        "NotNullIfNotNullAttribute",
-                        "NotNullWhenAttribute",
-                        "SetsRequiredMembersAttribute",
-                    ]),
-                }
-        );
+        Tools.Tester.ProvidesTestClassCoverage(_DesignAssembly, Assembly.GetExecutingAssembly());
     }
 
     [Fact]
@@ -35,7 +17,7 @@ public static class DesignTests
     {
         Tools.Tester.VerifyTestMethodNaming(
             [typeof(FactAttribute), typeof(TheoryAttribute)],
-            Assembly.GetAssembly(typeof(ArgumentGuard)),
+            _DesignAssembly,
             Assembly.GetExecutingAssembly()
         );
     }
@@ -52,6 +34,6 @@ public static class DesignTests
     [Fact]
     internal static void Design_VerifyAllToStrings()
     {
-        Tools.Tester.VerifyAllToStrings(Assembly.GetAssembly(typeof(ArgumentGuard)));
+        Tools.Tester.VerifyAllToStrings(_DesignAssembly);
     }
 }
