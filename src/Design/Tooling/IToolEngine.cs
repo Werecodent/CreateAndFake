@@ -11,4 +11,4 @@ public interface IToolEngine<out THint>
     IEnumerable<Type> SupportedTypes { get; }
 }
 
-#pragma warning restore S2326
+#pragma warning restore

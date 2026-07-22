@@ -39,4 +39,4 @@ public interface IAsserterDelegate
     T HasResult<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null);
 }
 
-#pragma warning restore CA1711
+#pragma warning restore

@@ -26,4 +26,4 @@ internal sealed class DateTimeValueHandler : ValueHandler<DateTime>
     }
 }
 
-#pragma warning restore CA2263
+#pragma warning restore

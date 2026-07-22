@@ -51,4 +51,4 @@ public static class FakeExtensions
     }
 }
 
-#pragma warning restore IDE0060, RCS1175
+#pragma warning restore

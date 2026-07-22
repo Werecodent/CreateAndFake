@@ -15,5 +15,5 @@ namespace System.Runtime.CompilerServices;
 [EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class IsExternalInit;
 
-#pragma warning restore IDE0130, MA0036, MA0182
+#pragma warning restore
 #endif

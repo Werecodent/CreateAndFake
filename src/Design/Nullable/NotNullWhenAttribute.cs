@@ -18,5 +18,5 @@ internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute
     public bool ReturnValue { get; } = returnValue;
 }
 
-#pragma warning restore IDE0130
+#pragma warning restore
 #endif

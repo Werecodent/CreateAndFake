@@ -83,4 +83,4 @@ internal sealed class RuneValueHandler : IValueHandler
     }
 }
 
-#pragma warning restore CA2263
+#pragma warning restore

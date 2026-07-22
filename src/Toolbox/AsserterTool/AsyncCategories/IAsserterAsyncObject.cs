@@ -103,4 +103,4 @@ public interface IAsserterAsyncObject
     );
 }
 
-#pragma warning restore CA1716
+#pragma warning restore

@@ -15,5 +15,5 @@ internal sealed class CallerArgumentExpressionAttribute(string parameterName) : 
     public string ParameterName { get; } = parameterName;
 }
 
-#pragma warning restore IDE0130
+#pragma warning restore
 #endif

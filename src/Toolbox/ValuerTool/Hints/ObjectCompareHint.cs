@@ -167,4 +167,4 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
     }
 }
 
-#pragma warning restore CA1062
+#pragma warning restore

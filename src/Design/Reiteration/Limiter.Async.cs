@@ -351,11 +351,11 @@ public sealed partial class Limiter : ILimiterAsync
     {
         if (tries >= _tries)
         {
-            Fault($"Reached max attempts after '{elapsed}'", message, ex);
+            throw CreateFault($"Reached max attempts after '{elapsed}'", message, ex);
         }
         else if (elapsed + _delay >= _timeout)
         {
-            Fault($"Reached timeout after '{elapsed}'", message, ex);
+            throw CreateFault($"Reached timeout after '{elapsed}'", message, ex);
         }
         else
         {
@@ -380,7 +380,7 @@ public sealed partial class Limiter : ILimiterAsync
         }
         catch (OperationCanceledException e)
         {
-            CancelFault("Operation canceled via token", message, e);
+            throw CreateCancelFault("Operation canceled via token", message, e);
         }
     }
 }

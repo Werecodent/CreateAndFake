@@ -23,4 +23,4 @@ public sealed class CustomLock(Guid? id = null)
     }
 }
 
-#pragma warning restore IDE0001
+#pragma warning restore

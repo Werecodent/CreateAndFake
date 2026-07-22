@@ -56,4 +56,4 @@ public sealed class AsyncCollectionCreateHint : CreateHint
     }
 }
 
-#pragma warning restore CA1307
+#pragma warning restore

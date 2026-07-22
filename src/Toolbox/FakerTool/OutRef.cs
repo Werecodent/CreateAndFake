@@ -12,4 +12,4 @@ public sealed class OutRef<T> : IOutRef
     public T? Var = default;
 }
 
-#pragma warning restore S1104
+#pragma warning restore

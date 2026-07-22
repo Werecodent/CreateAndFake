@@ -173,4 +173,4 @@ public static class ValueComparerTests
     }
 }
 
-#pragma warning restore CA1859
+#pragma warning restore

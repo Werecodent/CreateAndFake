@@ -49,4 +49,4 @@ public class VirtualFakeSample : AbstractFakeSample
     }
 }
 
-#pragma warning restore CA1065, MA0025
+#pragma warning restore

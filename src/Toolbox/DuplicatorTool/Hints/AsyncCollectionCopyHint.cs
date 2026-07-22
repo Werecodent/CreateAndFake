@@ -53,4 +53,4 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     }
 }
 
-#pragma warning restore MA0079
+#pragma warning restore

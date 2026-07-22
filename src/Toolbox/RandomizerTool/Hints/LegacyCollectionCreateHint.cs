@@ -115,4 +115,4 @@ public sealed class LegacyCollectionCreateHint : CreateHint
     }
 }
 
-#pragma warning restore IDE0058, RCS1124
+#pragma warning restore

@@ -95,4 +95,4 @@ public abstract class AssertTypeBase<T>(IAsserter asserter, Type? type)
     }
 }
 
-#pragma warning restore CA1716
+#pragma warning restore

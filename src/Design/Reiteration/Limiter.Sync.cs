@@ -356,7 +356,7 @@ public sealed partial class Limiter : ILimiterSync
     /// <param name="canceler">Token indicating behavior should be canceled.</param>
     /// <param name="ex">Current <see cref="Exception"/> if present.</param>
     /// <exception cref="TimeoutException">If the limit is reached.</exception>
-    /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
+    /// <exception cref="OperationCanceledException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrFault(
         string message,
         TimeSpan elapsed,
@@ -367,11 +367,11 @@ public sealed partial class Limiter : ILimiterSync
     {
         if (tries >= _tries)
         {
-            Fault($"Reached max attempts after '{elapsed}'", message, ex);
+            throw CreateFault($"Reached max attempts after '{elapsed}'", message, ex);
         }
         else if (elapsed + _delay >= _timeout)
         {
-            Fault($"Reached timeout after '{elapsed}'", message, ex);
+            throw CreateFault($"Reached timeout after '{elapsed}'", message, ex);
         }
         else
         {
@@ -382,7 +382,7 @@ public sealed partial class Limiter : ILimiterSync
     /// <summary>Faults if behavior has been canceled; delays otherwise.</summary>
     /// <param name="message">Details to include upon a <see cref="TimeoutException"/>.</param>
     /// <param name="canceler">Token indicating behavior should be canceled.</param>
-    /// <exception cref="TimeoutException">If cancelled via <paramref name="canceler"/>.</exception>
+    /// <exception cref="OperationCanceledException">If cancelled via <paramref name="canceler"/>.</exception>
     private void DelayOrCancel(string message, CancellationToken canceler)
     {
         if (_delay > TimeSpan.Zero)
@@ -391,7 +391,7 @@ public sealed partial class Limiter : ILimiterSync
         }
         if (canceler.IsCancellationRequested)
         {
-            CancelFault("Operation canceled via token", message);
+            throw CreateCancelFault("Operation canceled via token", message);
         }
     }
 }

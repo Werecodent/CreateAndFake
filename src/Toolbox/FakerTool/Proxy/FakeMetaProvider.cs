@@ -276,4 +276,4 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     }
 }
 
-#pragma warning restore S2696
+#pragma warning restore

@@ -379,4 +379,4 @@ public static class TaskAssertEnumerableExtensions
     }
 }
 
-#pragma warning restore MA0042
+#pragma warning restore

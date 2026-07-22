@@ -17,5 +17,5 @@ namespace System.Diagnostics.CodeAnalysis;
 )]
 internal sealed class NotNullAttribute : Attribute;
 
-#pragma warning restore IDE0130
+#pragma warning restore
 #endif

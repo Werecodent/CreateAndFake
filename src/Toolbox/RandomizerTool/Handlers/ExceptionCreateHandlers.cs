@@ -83,4 +83,4 @@ internal static class ExceptionCreateHandlers
     }
 }
 
-#pragma warning restore CS0618, SYSLIB0050
+#pragma warning restore

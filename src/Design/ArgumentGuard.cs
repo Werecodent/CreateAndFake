@@ -244,4 +244,4 @@ public static class ArgumentGuard
     }
 }
 
-#pragma warning restore RCS1256
+#pragma warning restore

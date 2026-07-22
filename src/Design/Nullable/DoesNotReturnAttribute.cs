@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #if LEGACY // Attribute added in .NET Standard 2.1 & Core 3.0
-#pragma warning disable IDE0130 // Must match existing location.
+#pragma warning disable IDE0130, MA0182 // Must match existing location.
 
 namespace System.Diagnostics.CodeAnalysis;
 
@@ -10,5 +10,5 @@ namespace System.Diagnostics.CodeAnalysis;
 [AttributeUsage(AttributeTargets.Method, Inherited = false)]
 internal sealed class DoesNotReturnAttribute : Attribute;
 
-#pragma warning restore IDE0130
+#pragma warning restore
 #endif

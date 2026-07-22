@@ -80,4 +80,4 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     }
 }
 
-#pragma warning restore CA1068
+#pragma warning restore

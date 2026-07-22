@@ -60,4 +60,4 @@ public static class Issue109Tests
     }
 }
 
-#pragma warning restore CA2227
+#pragma warning restore

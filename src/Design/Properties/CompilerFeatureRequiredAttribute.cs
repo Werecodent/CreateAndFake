@@ -33,5 +33,5 @@ internal sealed class CompilerFeatureRequiredAttribute(string featureName) : Att
     public const string RequiredMembers = nameof(RequiredMembers);
 }
 
-#pragma warning restore IDE0130, MA0182
+#pragma warning restore
 #endif

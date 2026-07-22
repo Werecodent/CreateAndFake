@@ -12,4 +12,4 @@ public sealed class AssertDelegate : AssertDelegateBase<AssertDelegate>
         : base(asserter, behavior) { }
 }
 
-#pragma warning restore CA1711
+#pragma warning restore

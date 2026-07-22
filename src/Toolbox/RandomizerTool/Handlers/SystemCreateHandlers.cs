@@ -80,4 +80,4 @@ internal static class SystemCreateHandlers
     ];
 }
 
-#pragma warning restore CA1308
+#pragma warning restore

@@ -137,4 +137,4 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     }
 }
 
-#pragma warning restore CA1307, CA1310
+#pragma warning restore

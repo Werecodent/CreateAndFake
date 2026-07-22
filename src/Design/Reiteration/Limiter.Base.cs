@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using CreateAndFake.Design.Comparisons;
 
@@ -230,20 +229,15 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <param name="message">Details to include in the <see cref="TimeoutException"/>.</param>
     /// <param name="ex">Encountered exception causing the <see cref="TimeoutException"/>.</param>
     /// <exception cref="TimeoutException">With the error and message details.</exception>
-    [DoesNotReturn]
-    private void Fault(string error, string message, Exception? ex = null)
+    private TimeoutException CreateFault(string error, string message, Exception? ex = null)
     {
         string details =
             $" with Limiter '{ToString()}'"
             + (string.IsNullOrWhiteSpace(message) ? "." : $": {message}");
-        if (ex != null)
-        {
-            throw new TimeoutException(error + details, ex);
-        }
-        else
-        {
-            throw new TimeoutException(error + details);
-        }
+
+        return ex != null
+            ? new TimeoutException(error + details, ex)
+            : new TimeoutException(error + details);
     }
 
     /// <summary>Throws a <see cref="OperationCanceledException"/>.</summary>
@@ -251,20 +245,19 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <param name="message">Details to include in the <see cref="OperationCanceledException"/>.</param>
     /// <param name="ex">Encountered exception causing the <see cref="OperationCanceledException"/>.</param>
     /// <exception cref="OperationCanceledException">With the error and message details.</exception>
-    [DoesNotReturn]
-    private void CancelFault(string error, string message, Exception? ex = null)
+    private OperationCanceledException CreateCancelFault(
+        string error,
+        string message,
+        Exception? ex = null
+    )
     {
         string details =
             $" with Limiter '{ToString()}'"
             + (string.IsNullOrWhiteSpace(message) ? "." : $": {message}");
-        if (ex != null)
-        {
-            throw new OperationCanceledException(error + details, ex);
-        }
-        else
-        {
-            throw new OperationCanceledException(error + details);
-        }
+
+        return ex != null
+            ? new OperationCanceledException(error + details, ex)
+            : new OperationCanceledException(error + details);
     }
 
     /// <summary>Compares <paramref name="left"/> to <paramref name="right"/> by value.</summary>

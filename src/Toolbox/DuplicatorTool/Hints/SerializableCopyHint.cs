@@ -80,4 +80,4 @@ public sealed class SerializableCopyHint : CopyHint
     }
 }
 
-#pragma warning restore CS0252
+#pragma warning restore

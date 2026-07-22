@@ -40,4 +40,4 @@ public sealed class DuplicatorEngine : ToolEngine<ICopyHint>, IDuplicatorEngine
     }
 }
 
-#pragma warning restore RCS1165, S2955
+#pragma warning restore

@@ -60,4 +60,4 @@ public sealed class HandlerMutateHint : IMutateHint
     }
 }
 
-#pragma warning restore CA1308
+#pragma warning restore

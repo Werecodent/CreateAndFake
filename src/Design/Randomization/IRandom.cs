@@ -106,4 +106,4 @@ public interface IRandom
     IEnumerable<T>? NextSequence<T>(IEnumerable<T>? items);
 }
 
-#pragma warning restore CA1716
+#pragma warning restore

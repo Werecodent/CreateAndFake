@@ -193,4 +193,4 @@ public interface IAsserterAsyncEnumerable
     );
 }
 
-#pragma warning restore CA1716
+#pragma warning restore

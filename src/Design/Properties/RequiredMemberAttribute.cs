@@ -17,5 +17,5 @@ namespace System.Runtime.CompilerServices;
 )]
 internal sealed class RequiredMemberAttribute : Attribute;
 
-#pragma warning restore IDE0130, MA0182
+#pragma warning restore
 #endif

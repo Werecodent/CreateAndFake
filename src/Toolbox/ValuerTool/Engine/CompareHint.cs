@@ -196,4 +196,4 @@ public abstract class CompareHint : ICompareHint
     }
 }
 
-#pragma warning restore MA0042 // Using sync behavior for async versions.
+#pragma warning restore

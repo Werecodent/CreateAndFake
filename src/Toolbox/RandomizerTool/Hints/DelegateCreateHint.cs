@@ -857,4 +857,4 @@ public sealed class DelegateCreateHint : CreateHint
     }
 }
 
-#pragma warning restore S1144
+#pragma warning restore

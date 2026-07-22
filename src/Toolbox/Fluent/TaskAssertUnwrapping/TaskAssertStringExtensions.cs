@@ -188,4 +188,4 @@ public static class TaskAssertStringExtensions
     }
 }
 
-#pragma warning restore MA0042
+#pragma warning restore

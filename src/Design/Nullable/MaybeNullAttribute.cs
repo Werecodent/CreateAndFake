@@ -17,5 +17,5 @@ namespace System.Diagnostics.CodeAnalysis;
 )]
 internal sealed class MaybeNullAttribute : Attribute;
 
-#pragma warning restore IDE0130, MA0182
+#pragma warning restore
 #endif

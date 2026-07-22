@@ -252,4 +252,4 @@ public static class Fake_T_Tests
     }
 }
 
-#pragma warning restore RCS1021
+#pragma warning restore

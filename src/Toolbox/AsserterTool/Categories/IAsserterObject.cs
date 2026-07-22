@@ -146,4 +146,4 @@ public interface IAsserterObject
     void Debug(object? content, AsserterMod? optionConfiguration, string? details = null);
 }
 
-#pragma warning restore CA1716
+#pragma warning restore

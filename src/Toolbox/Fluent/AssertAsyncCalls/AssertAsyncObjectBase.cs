@@ -151,4 +151,4 @@ public abstract class AssertAsyncObjectBase<T>(IAsserter asserter, object? actua
     }
 }
 
-#pragma warning restore CA1068
+#pragma warning restore

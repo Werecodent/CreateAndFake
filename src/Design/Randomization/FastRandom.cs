@@ -37,4 +37,4 @@ public sealed class FastRandom(
     }
 }
 
-#pragma warning restore CA5394
+#pragma warning restore

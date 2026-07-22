@@ -294,4 +294,4 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     }
 }
 
-#pragma warning restore CA1068
+#pragma warning restore

@@ -93,4 +93,4 @@ public sealed class DuplicatorChainer
     }
 }
 
-#pragma warning restore IDE0028
+#pragma warning restore

@@ -282,4 +282,4 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     }
 }
 
-#pragma warning restore CA1068
+#pragma warning restore

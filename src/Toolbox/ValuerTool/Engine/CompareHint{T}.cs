@@ -90,4 +90,4 @@ public abstract class CompareHint<T> : CompareHint
     }
 }
 
-#pragma warning restore MA0042
+#pragma warning restore

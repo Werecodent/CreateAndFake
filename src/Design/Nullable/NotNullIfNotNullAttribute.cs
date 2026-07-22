@@ -23,5 +23,5 @@ internal sealed class NotNullIfNotNullAttribute(string parameterName) : Attribut
     public string ParameterName { get; } = parameterName;
 }
 
-#pragma warning restore IDE0130
+#pragma warning restore
 #endif

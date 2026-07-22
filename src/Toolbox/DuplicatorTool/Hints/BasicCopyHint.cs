@@ -32,4 +32,4 @@ public sealed class BasicCopyHint : CopyHint
     }
 }
 
-#pragma warning restore SYSLIB0050 // 'IObjectReference' is obsolete
+#pragma warning restore
