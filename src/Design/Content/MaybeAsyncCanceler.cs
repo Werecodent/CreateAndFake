@@ -5,13 +5,13 @@ namespace CreateAndFake.Design.Content;
 /// <summary>Attempts to cancel <see cref="CancellationTokenSource"/>s via <see langword="async"/>.</summary>
 internal sealed class MaybeAsyncCanceler
 {
+    /// <summary>Instance to use for canceling <see cref="CancellationTokenSource"/>s.</summary>
+    public static MaybeAsyncCanceler Use { get; } =
+        new(typeof(CancellationTokenSource).GetMethod("CancelAsync"));
+
     /// <summary>Delegate for triggering asynchronous cancellation.</summary>
     /// <remarks><see langword="null"/> when unavailable for the executing .NET version.</remarks>
     private readonly Func<CancellationTokenSource, Task>? _canceler;
-
-    /// <inheritdoc cref="MaybeAsyncCanceler"/>
-    public MaybeAsyncCanceler()
-        : this(typeof(CancellationTokenSource).GetMethod("CancelAsync")) { }
 
     /// <inheritdoc cref="MaybeAsyncCanceler"/>
     /// <param name="tokenAsyncMethod">

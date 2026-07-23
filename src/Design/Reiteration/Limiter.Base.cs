@@ -84,10 +84,9 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
             );
 
     /// <summary>Delay between attempts; no delay by default.</summary>
-    private readonly TimeSpan _delay =
-        (delay == null || delay >= TimeSpan.Zero)
-            ? delay ?? TimeSpan.Zero
-            : throw new ArgumentOutOfRangeException(nameof(delay), delay, "Minimum delay is 0.");
+    private readonly TimeSpan _delay = !(delay < TimeSpan.Zero)
+        ? delay ?? TimeSpan.Zero
+        : throw new ArgumentOutOfRangeException(nameof(delay), delay, "Minimum delay is 0.");
 
     /// <inheritdoc cref="Limiter(TimeSpan,int,TimeSpan?)"/>
     public Limiter(int tries, TimeSpan? delay = null)

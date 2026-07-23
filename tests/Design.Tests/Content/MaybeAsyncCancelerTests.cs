@@ -8,7 +8,7 @@ public static class MaybeAsyncCancelerTests
     internal static Task MaybeAsyncCanceler_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            new MaybeAsyncCanceler(),
+            MaybeAsyncCanceler.Use,
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
@@ -18,7 +18,7 @@ public static class MaybeAsyncCancelerTests
     internal static Task MaybeAsyncCanceler_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            new MaybeAsyncCanceler(),
+            MaybeAsyncCanceler.Use,
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
@@ -33,21 +33,17 @@ public static class MaybeAsyncCancelerTests
     [Fact]
     internal static async Task TriggerCancellationAsync_Cancels()
     {
-        MaybeAsyncCanceler canceler = new();
-
         using CancellationTokenSource source = new();
-        await canceler.TriggerCancellationAsync(source);
+        await MaybeAsyncCanceler.Use.TriggerCancellationAsync(source);
         source.IsCancellationRequested.Assert().Is(true);
     }
 
     [Fact]
     internal static async Task TriggerCancellationAsync_MultipleCancelSafe()
     {
-        MaybeAsyncCanceler canceler = new();
-
         using CancellationTokenSource source = new();
-        await canceler.TriggerCancellationAsync(source);
-        await canceler.TriggerCancellationAsync(source);
+        await MaybeAsyncCanceler.Use.TriggerCancellationAsync(source);
+        await MaybeAsyncCanceler.Use.TriggerCancellationAsync(source);
     }
 
     [Fact]

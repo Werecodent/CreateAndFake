@@ -491,7 +491,7 @@ public sealed partial class Limiter : ILimiterTask
 
     private static Task<T> SafeInvokeAsync<T>(Func<Task<T>> behavior)
     {
-        return behavior?.Invoke() ?? throw new ArgumentNullException(nameof(behavior));
+        return behavior.Invoke() ?? throw new ArgumentNullException(nameof(behavior));
     }
 
     private static async Task<bool> ToGenericAsync(Func<Task?> behavior)

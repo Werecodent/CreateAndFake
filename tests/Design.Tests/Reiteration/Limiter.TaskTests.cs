@@ -853,9 +853,18 @@ public static class LimiterTaskTests
 
 #pragma warning disable MA0022, RCS1210, VSTHRD114 // For testing.
     [Fact]
-    internal static Task RepeatAsync_BehaviorReturningNullThrows()
+    internal static async Task RepeatAsync_BehaviorReturningNullThrows()
     {
-        return new Limiter(2)
+        await new Limiter(2)
+            .RepeatAsync(
+                GetAMessage(),
+                (Func<Task<object>>)null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
+
+        await new Limiter(2)
             .RepeatAsync(
                 GetAMessage(),
                 () => (Task<object>)null,
@@ -863,15 +872,33 @@ public static class LimiterTaskTests
             )
             .Assert()
             .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
+
+        await new Limiter(2)
+            .RepeatAsync(
+                GetAMessage(),
+                (Func<Task<int>>)null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
+
+        await new Limiter(2)
+            .RepeatAsync(
+                GetAMessage(),
+                () => (Task<int>)null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]
-    internal static Task AttemptAsync_ResetReturningNullIgnored()
+    internal static async Task AttemptAsync_ResetReturningNullIgnored()
     {
         Exception exception = Tools.Randomizer.Create<Exception>();
         int attemptAsync = 0;
 
-        return new Limiter(2)
+        await new Limiter(2)
             .AttemptAsync(
                 GetAMessage(),
                 ToTask(() =>
@@ -881,27 +908,20 @@ public static class LimiterTaskTests
                         throw exception;
                     }
                 }),
-                () => null,
+                null,
                 TestContext.Current.CancellationToken
             )
             .Assert()
             .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
             .Also(() => attemptAsync)
             .Is(2);
-    }
 
-    [Fact]
-    internal static Task RetryAsync_ResetReturningNullIgnored()
-    {
-        Exception exception = Tools.Randomizer.Create<Exception>();
-        int attemptAsync = 0;
-
-        return new Limiter(2)
-            .RetryAsync(
+        await new Limiter(2)
+            .AttemptAsync(
                 GetAMessage(),
                 ToTask(() =>
                 {
-                    if (++attemptAsync < 2)
+                    if (++attemptAsync < 4)
                     {
                         throw exception;
                     }
@@ -912,7 +932,50 @@ public static class LimiterTaskTests
             .Assert()
             .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
             .Also(() => attemptAsync)
+            .Is(4);
+    }
+
+    [Fact]
+    internal static async Task RetryAsync_ResetReturningNullIgnored()
+    {
+        Exception exception = Tools.Randomizer.Create<Exception>();
+        int attemptAsync = 0;
+
+        await new Limiter(2)
+            .RetryAsync(
+                GetAMessage(),
+                ToTask(() =>
+                {
+                    if (++attemptAsync < 2)
+                    {
+                        throw exception;
+                    }
+                }),
+                null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            .Also(() => attemptAsync)
             .Is(2);
+
+        await new Limiter(2)
+            .RetryAsync(
+                GetAMessage(),
+                ToTask(() =>
+                {
+                    if (++attemptAsync < 4)
+                    {
+                        throw exception;
+                    }
+                }),
+                () => null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            .Also(() => attemptAsync)
+            .Is(4);
     }
 #pragma warning restore MA0022, RCS1210, VSTHRD114
 

@@ -8,9 +8,6 @@ namespace CreateAndFake.Design.Content;
 /// <remarks>Manually required as .NET 10 breaks <c>System.Linq.Async</c> compatibility.</remarks>
 public static class AsyncSeriesHelper
 {
-    /// <summary>Manages token cancellation via its source.</summary>
-    private static readonly MaybeAsyncCanceler _TokenCanceler = new();
-
     /// <summary>Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.</summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
@@ -228,6 +225,6 @@ public static class AsyncSeriesHelper
     /// <inheritdoc cref="MaybeAsyncCanceler.TriggerCancellationAsync"/>
     public static Task TriggerCancellationAsync(CancellationTokenSource source)
     {
-        return _TokenCanceler.TriggerCancellationAsync(source);
+        return MaybeAsyncCanceler.Use.TriggerCancellationAsync(source);
     }
 }
