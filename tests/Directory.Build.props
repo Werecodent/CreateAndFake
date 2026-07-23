@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
-    <PackageReference Include="coverlet.collector" Version="10.0.1" GeneratePathProperty="true" PrivateAssets="All" />
+    <PackageReference Include="coverlet.collector" Version="6.0.4" GeneratePathProperty="true" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">

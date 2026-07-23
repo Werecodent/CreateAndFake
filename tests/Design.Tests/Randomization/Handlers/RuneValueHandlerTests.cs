@@ -9,4 +9,10 @@ public static class RuneValueHandlerTests
     {
         typeof(RuneValueHandler).IsPublic.Assert().Is(false);
     }
+
+    [Fact]
+    internal static void TryToCreate_NoException()
+    {
+        1.Assert(_ => RuneValueHandler.TryToCreate()).ThrowsNo<Exception>();
+    }
 }

@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Text;
+using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.ExtractorTool;
 
@@ -80,5 +82,25 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
             .Keys.Where(t => t.Inherits(type))
             .SelectMany(t => _content[t])
             .Where(t => t.GetType().Inherits(type));
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        StringBuilder text = new();
+
+        text.AppendLine("ContentMap: {");
+        foreach (KeyValuePair<Type, ISet<object>> set in _content)
+        {
+            string type = GenericConverter.ExpandName(set.Key);
+
+            foreach (object item in set.Value)
+            {
+                text.Append("    ").Append(type).Append(", ").AppendLine(item?.ToString());
+            }
+        }
+        text.Append('}');
+
+        return text.ToString();
     }
 }

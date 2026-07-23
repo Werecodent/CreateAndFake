@@ -9,4 +9,10 @@ public static class DateOnlyValueHandlerTests
     {
         typeof(DateOnlyValueHandler).IsPublic.Assert().Is(false);
     }
+
+    [Fact]
+    internal static void TryToCreate_NoException()
+    {
+        1.Assert(_ => DateOnlyValueHandler.TryToCreate()).ThrowsNo<Exception>();
+    }
 }

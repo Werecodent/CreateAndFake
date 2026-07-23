@@ -34,6 +34,7 @@ public static class TypeSupporterTests
     internal static void GroupBySupportedType_GroupsSuccessfully(ITypeSupporter item)
     {
         ITypeSupporter item2 = item.Tools().Unique();
+
         TypeSupporter
             .GroupBySupportedType([item, item2])
             .Assert()

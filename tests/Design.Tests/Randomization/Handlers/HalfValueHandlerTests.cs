@@ -9,4 +9,10 @@ public static class HalfValueHandlerTests
     {
         typeof(HalfValueHandler).IsPublic.Assert().Is(false);
     }
+
+    [Fact]
+    internal static void TryToCreate_NoException()
+    {
+        1.Assert(_ => HalfValueHandler.TryToCreate()).ThrowsNo<Exception>();
+    }
 }

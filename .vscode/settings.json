@@ -65,6 +65,7 @@
         "nameof",
         "NETCOREAPP",
         "NETFRAMEWORK",
+        "netstandard",
         "Newarr",
         "Newobj",
         "noreply",

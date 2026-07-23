@@ -9,4 +9,10 @@ public static class TimeOnlyValueHandlerTests
     {
         typeof(TimeOnlyValueHandler).IsPublic.Assert().Is(false);
     }
+
+    [Fact]
+    internal static void TryToCreate_NoException()
+    {
+        1.Assert(_ => TimeOnlyValueHandler.TryToCreate()).ThrowsNo<Exception>();
+    }
 }
