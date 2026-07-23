@@ -54,6 +54,8 @@ public static class ValueComparerTests
     {
         ValueComparer.Use.Equals(oneValue, twoValues).Assert().Is(false);
         ValueComparer.Use.Equals(twoValues, oneValue).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues.Take(1), twoValues).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues, twoValues.Take(1)).Assert().Is(false);
     }
 
     [Theory, RandomData]

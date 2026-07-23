@@ -851,6 +851,71 @@ public static class LimiterTaskTests
             .Is(exception2);
     }
 
+#pragma warning disable MA0022, RCS1210, VSTHRD114 // For testing.
+    [Fact]
+    internal static Task RepeatAsync_BehaviorReturningNullThrows()
+    {
+        return new Limiter(2)
+            .RepeatAsync(
+                GetAMessage(),
+                () => (Task<object>)null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<ArgumentNullException>(TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static Task AttemptAsync_ResetReturningNullIgnored()
+    {
+        Exception exception = Tools.Randomizer.Create<Exception>();
+        int attemptAsync = 0;
+
+        return new Limiter(2)
+            .AttemptAsync(
+                GetAMessage(),
+                ToTask(() =>
+                {
+                    if (++attemptAsync < 2)
+                    {
+                        throw exception;
+                    }
+                }),
+                () => null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            .Also(() => attemptAsync)
+            .Is(2);
+    }
+
+    [Fact]
+    internal static Task RetryAsync_ResetReturningNullIgnored()
+    {
+        Exception exception = Tools.Randomizer.Create<Exception>();
+        int attemptAsync = 0;
+
+        return new Limiter(2)
+            .RetryAsync(
+                GetAMessage(),
+                ToTask(() =>
+                {
+                    if (++attemptAsync < 2)
+                    {
+                        throw exception;
+                    }
+                }),
+                () => null,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+            .Also(() => attemptAsync)
+            .Is(2);
+    }
+#pragma warning restore MA0022, RCS1210, VSTHRD114
+
     private static Func<Task> ToTask(Action behavior)
     {
         return () => Task.Run(behavior, TestContext.Current.CancellationToken);

@@ -96,7 +96,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
 
             foreach (object item in set.Value)
             {
-                text.Append("    ").Append(type).Append(", ").AppendLine(item?.ToString());
+                text.Append("    ").Append(type).Append(", ").Append(item).AppendLine();
             }
         }
         text.Append('}');

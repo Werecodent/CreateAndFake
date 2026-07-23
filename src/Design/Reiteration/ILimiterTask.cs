@@ -79,7 +79,7 @@ public interface ILimiterTask
     Task RetryAsync(
         string message,
         Func<Task> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     );
 
@@ -100,7 +100,7 @@ public interface ILimiterTask
     Task RetryAsync<TError>(
         string message,
         Func<Task> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception;
@@ -124,7 +124,7 @@ public interface ILimiterTask
     Task<TResult> RetryAsync<TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     );
 
@@ -149,7 +149,7 @@ public interface ILimiterTask
     Task<TResult> RetryAsync<TError, TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception;
@@ -169,7 +169,7 @@ public interface ILimiterTask
     Task AttemptAsync(
         string message,
         Func<Task> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     );
 
@@ -190,7 +190,7 @@ public interface ILimiterTask
     Task AttemptAsync<TError>(
         string message,
         Func<Task?> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception;
@@ -214,7 +214,7 @@ public interface ILimiterTask
     Task<TResult?> AttemptAsync<TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     );
 
@@ -239,7 +239,7 @@ public interface ILimiterTask
     Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception;

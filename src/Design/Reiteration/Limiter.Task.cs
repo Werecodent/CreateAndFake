@@ -156,7 +156,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task RetryAsync(
         string message,
         Func<Task> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     )
     {
@@ -191,7 +191,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task RetryAsync<TError>(
         string message,
         Func<Task> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
@@ -229,7 +229,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task<TResult> RetryAsync<TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     )
     {
@@ -280,7 +280,7 @@ public sealed partial class Limiter : ILimiterTask
     public async Task<TResult> RetryAsync<TError, TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
@@ -332,7 +332,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task AttemptAsync(
         string message,
         Func<Task> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     )
     {
@@ -371,7 +371,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task AttemptAsync<TError>(
         string message,
         Func<Task?> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception
@@ -409,7 +409,7 @@ public sealed partial class Limiter : ILimiterTask
     public Task<TResult?> AttemptAsync<TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task> resetState,
+        Func<Task?> resetState,
         CancellationToken canceler
     )
     {
@@ -460,7 +460,7 @@ public sealed partial class Limiter : ILimiterTask
     public async Task<TResult?> AttemptAsync<TError, TResult>(
         string message,
         Func<Task<TResult>> behavior,
-        Func<Task>? resetState,
+        Func<Task?>? resetState,
         CancellationToken canceler
     )
         where TError : Exception

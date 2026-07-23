@@ -346,23 +346,4 @@ public static class AsyncSeriesHelperTests
         await AsyncSeriesHelper.TriggerCancellationAsync(source);
         source.IsCancellationRequested.Assert().Is(true);
     }
-
-    [Fact]
-    internal static async Task TriggerCancellationAsync_CancelsOnce()
-    {
-        using CancellationTokenSource source = new();
-        await AsyncSeriesHelper.TriggerCancellationAsync(source);
-        await AsyncSeriesHelper.TriggerCancellationAsync(
-            _ => throw new EngineException("Cancellation triggered twice."),
-            source
-        );
-    }
-
-    [Fact]
-    internal static async Task TriggerCancellationAsync_SyncFallbackCancels()
-    {
-        using CancellationTokenSource source = new();
-        await AsyncSeriesHelper.TriggerCancellationAsync(null, source);
-        source.IsCancellationRequested.Assert().Is(true);
-    }
 }

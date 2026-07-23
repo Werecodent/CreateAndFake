@@ -8,13 +8,8 @@ namespace CreateAndFake.Design.Content;
 /// <remarks>Manually required as .NET 10 breaks <c>System.Linq.Async</c> compatibility.</remarks>
 public static class AsyncSeriesHelper
 {
-    /// <summary>Delegate for triggering asynchronous cancellation.</summary>
-    /// <remarks><see langword="null"/> when unavailable for the executing .NET version.</remarks>
-    private static readonly Func<CancellationTokenSource, Task>? _CancelAsyncForCancellationToken =
-        (Func<CancellationTokenSource, Task>?)
-            typeof(CancellationTokenSource)
-                .GetMethod("CancelAsync")
-                ?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
+    /// <summary>Manages token cancellation via its source.</summary>
+    private static readonly MaybeAsyncCanceler _TokenCanceler = new();
 
     /// <summary>Converts the <paramref name="collection"/> to an <see cref="IAsyncEnumerable{T}"/>.</summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
@@ -230,36 +225,9 @@ public static class AsyncSeriesHelper
         }
     }
 
-    /// <summary>Handles canceling a token via its <paramref name="source"/> using async if possible.</summary>
-    /// <param name="source">Owner of the <see cref="CancellationToken"/> to cancel.</param>
-    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-    /// <remarks>Asynchronous cancellation requires .NET 8 or later.</remarks>
+    /// <inheritdoc cref="MaybeAsyncCanceler.TriggerCancellationAsync"/>
     public static Task TriggerCancellationAsync(CancellationTokenSource source)
     {
-        return TriggerCancellationAsync(_CancelAsyncForCancellationToken, source);
-    }
-
-    /// <param name="cancelAsyncMethod">Delegate for canceling via async if available.</param>
-    /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
-    internal static async Task TriggerCancellationAsync(
-        Func<CancellationTokenSource, Task>? cancelAsyncMethod,
-        CancellationTokenSource source
-    )
-    {
-        ArgumentGuard.ThrowIfNull(source);
-
-        if (!source.IsCancellationRequested)
-        {
-            if (cancelAsyncMethod != null)
-            {
-                await cancelAsyncMethod(source).ConfigureAwait(false);
-            }
-            else
-            {
-#pragma warning disable AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103 // CancelAsync not available.
-                source.Cancel();
-#pragma warning restore AsyncFixer02, S6966, CA1849, MA0042, VSTHRD103
-            }
-        }
+        return _TokenCanceler.TriggerCancellationAsync(source);
     }
 }

@@ -8,7 +8,7 @@ namespace CreateAndFake.Tests.ExtractorTool;
 public static class ContentMapTests
 {
     [Theory, RandomData]
-    internal static void Debug_ContentMap_ToString(ContentMap sample)
+    internal static void Debug_ContentMap_ToString(DataSample sample)
     {
         sample.Tools().Extract().Assert().Debug();
     }

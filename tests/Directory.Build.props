@@ -29,6 +29,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+
+    <!-- Last version supporting .NET Standard 2.0. -->
     <PackageReference Include="coverlet.collector" Version="6.0.4" GeneratePathProperty="true" PrivateAssets="All" />
   </ItemGroup>
 

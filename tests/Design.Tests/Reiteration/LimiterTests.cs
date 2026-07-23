@@ -118,7 +118,8 @@ public static class LimiterTests
             .Also(() => new Limiter(TimeSpan.FromTicks(1), 1, TimeSpan.FromTicks(-1)))
             .Throws<ArgumentOutOfRangeException>()
             .Also(new Limiter(TimeSpan.FromTicks(1), 1, null))
-            .IsNotNull();
+            .IsNotNull()
+            .Also(new Limiter(TimeSpan.FromTicks(1), 1, TimeSpan.FromTicks(1)));
     }
 
     [Fact]
