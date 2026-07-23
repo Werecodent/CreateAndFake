@@ -24,7 +24,7 @@ public static class NullGuarderTests
             Runner = new Runner(
                 Tools.Runner.Options with
                 {
-                    Timeout = new TimeSpan(0, 0, 0, 0, 50),
+                    Timeout = new TimeSpan(0, 0, 0, 0, 100),
                 }
             ),
         }

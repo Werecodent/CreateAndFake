@@ -3,21 +3,26 @@ using System.Reflection;
 namespace CreateAndFake.Design.Content;
 
 /// <summary>Attempts to cancel <see cref="CancellationTokenSource"/>s via <see langword="async"/>.</summary>
-/// <param name="tokenAsyncMethod">
-///     Method for triggering asynchronous cancellation on <see cref="CancellationTokenSource"/>s.
-///     Do not set; exposed to enable testing.
-/// </param>
-internal sealed class MaybeAsyncCanceler(MethodInfo? tokenAsyncMethod = null)
+internal sealed class MaybeAsyncCanceler
 {
     /// <summary>Delegate for triggering asynchronous cancellation.</summary>
     /// <remarks><see langword="null"/> when unavailable for the executing .NET version.</remarks>
-    private readonly Func<CancellationTokenSource, Task>? _canceler = (Func<
-        CancellationTokenSource,
-        Task
-    >?)
-        (
-            tokenAsyncMethod ?? typeof(CancellationTokenSource).GetMethod("CancelAsync")
-        )?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
+    private readonly Func<CancellationTokenSource, Task>? _canceler;
+
+    /// <inheritdoc cref="MaybeAsyncCanceler"/>
+    public MaybeAsyncCanceler()
+        : this(typeof(CancellationTokenSource).GetMethod("CancelAsync")) { }
+
+    /// <inheritdoc cref="MaybeAsyncCanceler"/>
+    /// <param name="tokenAsyncMethod">
+    ///     Method for triggering asynchronous cancellation on <see cref="CancellationTokenSource"/>s.
+    /// </param>
+    /// <remarks>Do not call; exposed to enable testing.</remarks>
+    internal MaybeAsyncCanceler(MethodInfo? tokenAsyncMethod)
+    {
+        _canceler = (Func<CancellationTokenSource, Task>?)
+            tokenAsyncMethod?.CreateDelegate(typeof(Func<CancellationTokenSource, Task>));
+    }
 
     /// <summary>
     ///     Handles canceling a token via its <paramref name="source"/> using <see langword="async"/> if possible.
