@@ -25,8 +25,9 @@ internal sealed class TestValidator(TesterOptions options)
 
         Options.Asserter.IsEmpty(
             ScopeChecker
-                .FindLoadedClassTypes(codeAssembly)
+                .FindLoadedSpecificTypes(codeAssembly)
                 .Where(t => !t.IsAbstract || t.IsSealed)
+                .Where(t => t.Namespace != null)
                 .Where(t => ScopeChecker.IsVisible(t, testAssembly.GetName()))
                 .Where(t => FindPossibleTestClassNames(t).All(name => !testClasses.Contains(name)))
                 .Where(t => !Options.TestClassCoverageExceptions.Contains(t.Name))
@@ -135,31 +136,35 @@ internal sealed class TestValidator(TesterOptions options)
             testAssembly.GetName()!.Name!,
         ];
 
-        Dictionary<string, List<string>> testsByClass = ScopeChecker
-            .FindLoadedClassTypes(testAssembly)
-            .Where(t => t != null)
-            .Where(t =>
-                Options.TestClassNameSuffixes.Any(suffix =>
-                    t.Name.Contains(suffix, StringComparison.Ordinal)
+        List<Tuple<string, List<string>>> testsByClass =
+        [
+            .. ScopeChecker
+                .FindLoadedSpecificTypes(testAssembly)
+                .Where(t => t != null)
+                .Where(t =>
+                    Options.TestClassNameSuffixes.Any(suffix =>
+                        t.Name.Contains(suffix, StringComparison.Ordinal)
+                    )
                 )
-            )
-            .Select(TypeDescriber.For)
-            .ToDictionary(
-                t => stripGeneric(t.SupportedType!),
-                t =>
-                    t.Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
-                        .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
-                        .Select(m => m.Name)
-                        .Where(n =>
-                        {
-                            string target = getTarget(n);
-                            return !(
-                                t.SupportedType!.Name.Contains(target, StringComparison.Ordinal)
-                                || globalValidTargets.Contains(target)
-                            );
-                        })
-                        .ToList()
-            );
+                .Select(TypeDescriber.For)
+                .Select(t =>
+                    Tuple.Create(
+                        stripGeneric(t.SupportedType!),
+                        t.Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
+                            .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
+                            .Select(m => m.Name)
+                            .Where(n =>
+                            {
+                                string target = getTarget(n);
+                                return !(
+                                    t.SupportedType!.Name.Contains(target, StringComparison.Ordinal)
+                                    || globalValidTargets.Contains(target)
+                                );
+                            })
+                            .ToList()
+                    )
+                ),
+        ];
 
         foreach (
             Type codeClass in codeAssembly
@@ -188,24 +193,27 @@ internal sealed class TestValidator(TesterOptions options)
                         ),
                 ];
 
-            foreach (
-                string name in FindPossibleTestClassNames(codeClass)
+            List<string> possibleNames =
+            [
+                .. FindPossibleTestClassNames(codeClass)
                     .SelectMany(name =>
                         name.StartsWith("I", StringComparison.Ordinal)
                             ? new List<string>() { name, name.Substring(1) }
                             : [name]
-                    )
-            )
+                    ),
+            ];
+
+            for (int i = 0; i < testsByClass.Count; i++)
             {
-                if (testsByClass.TryGetValue(name, out List<string>? tests))
+                if (possibleNames.Contains(testsByClass[i].Item1))
                 {
-                    _ = tests.RemoveAll(n => methods.Contains(getTarget(n)));
+                    _ = testsByClass[i].Item2.RemoveAll(n => methods.Contains(getTarget(n)));
                 }
             }
         }
 
         Options.Asserter.IsEmpty(
-            testsByClass.SelectMany(t => t.Value.Select(v => t.Key + " - " + v)),
+            testsByClass.SelectMany(t => t.Item2.Select(v => t.Item1 + " - " + v)),
             $"Invalid test methods for classes from {codeAssembly} in {testAssembly}."
         );
     }

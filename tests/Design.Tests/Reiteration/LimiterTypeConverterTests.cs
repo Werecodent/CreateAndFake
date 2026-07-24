@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using CreateAndFake.Design.Reiteration;
+using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Design.Tests.Reiteration;
 
@@ -52,7 +53,7 @@ public class LimiterTypeConverterTests
     }
 
     [Theory, RandomData]
-    public void ConvertTo_InvalidTypesThrow(object item)
+    public void ConvertTo_InvalidTypesThrow(DataSample item)
     {
         _TestInstance.Assert(x => x.ConvertTo(item, typeof(string))).Throws<ArgumentException>();
         _TestInstance.Assert(x => x.ConvertFrom(item)).Throws<ArgumentException>();

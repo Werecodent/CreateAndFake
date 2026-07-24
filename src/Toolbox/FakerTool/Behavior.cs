@@ -116,8 +116,18 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     /// <returns>Instance to set up the mock with.</returns>
     public static Behavior<T> Base<TBase, T>(Times? times = null)
     {
+        return Base<T>(typeof(TBase), times);
+    }
+
+    /// <summary>Specifies behavior calling the base implementation.</summary>
+    /// <typeparam name="T">Expected value type to return.</typeparam>
+    /// <param name="baseType">Type with the base method to call.</param>
+    /// <param name="times">Behavior call limit.</param>
+    /// <returns>Instance to set up the mock with.</returns>
+    public static Behavior<T> Base<T>(Type baseType, Times? times = null)
+    {
         Behavior<T> result = Default<T>(times);
-        result.BaseCallType = typeof(TBase);
+        result.BaseCallType = baseType;
         return result;
     }
 

@@ -28,10 +28,10 @@ public static class ScopeCheckerTests
     }
 
     [Fact]
-    internal static void FindLoadedClassTypes_IncludesOnlyClasses()
+    internal static void FindLoadedSpecificTypes_IncludesOnlyClasses()
     {
         ScopeChecker
-            .FindLoadedClassTypes(typeof(DataSample).Assembly)
+            .FindLoadedSpecificTypes(typeof(DataSample).Assembly)
             .Assert()
             .Contains(typeof(DataSample))
             .And.ContainsNot(typeof(IIsGoodOrBadSample));

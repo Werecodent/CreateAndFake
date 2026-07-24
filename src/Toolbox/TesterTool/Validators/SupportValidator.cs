@@ -26,7 +26,7 @@ internal sealed class SupportValidator(TesterOptions options)
 
         Options.Asserter.Debug(
             ScopeChecker
-                .FindLoadedClassTypes(codeAssembly)
+                .FindLoadedSpecificTypes(codeAssembly)
                 .Where(t => !t.IsAbstract)
                 .Where(t => ScopeChecker.IsVisible(t, Assembly.GetExecutingAssembly().GetName()))
                 .ToDictionary(

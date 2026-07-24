@@ -59,10 +59,12 @@ public static class ScopeChecker
             );
     }
 
-    /// <summary>Finds every <see langword="class"/> in the <paramref name="assembly"/>.</summary>
-    /// <param name="assembly"><see cref="Assembly"/> containing the <see langword="class"/>es to search for.</param>
-    /// <returns>Every found <see langword="class"/> if the <paramref name="assembly"/> loads, none otherwise.</returns>
-    public static IEnumerable<Type> FindLoadedClassTypes(Assembly? assembly)
+    /// <summary>
+    ///     Finds every <see langword="class"/> and <see langword="struct"/> in the <paramref name="assembly"/>.
+    /// </summary>
+    /// <param name="assembly"><see cref="Assembly"/> containing the <see cref="Type"/>s to search for.</param>
+    /// <returns>Every found <see cref="Type"/> if the <paramref name="assembly"/> loads, none otherwise.</returns>
+    public static IEnumerable<Type> FindLoadedSpecificTypes(Assembly? assembly)
     {
         if (assembly == null)
         {
@@ -70,7 +72,7 @@ public static class ScopeChecker
         }
 
         return FindLoadedTypes(assembly)
-            .Where(t => t.IsClass)
+            .Where(t => t.IsClass || t.IsValueType)
             .Where(t => !t.IsNestedPrivate)
             .Where(t => !t.IsDefined(typeof(CompilerGeneratedAttribute), false));
     }
