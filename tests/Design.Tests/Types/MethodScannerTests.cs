@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Exceptions;
 using CreateAndFake.Design.Types;
 
 namespace CreateAndFake.Design.Tests.Types;
@@ -100,7 +101,21 @@ public static class MethodScannerTests
             .Assert()
             .Is(expectedMethods);
 
-        scanner.Visible.Assert().Is(scanner.PublicOrInternal);
+        scanner
+            .Visible.ToHashSet()
+            .Assert()
+            .Is(scanner.PublicOrInternal.Where(m => m.Name != "MemberwiseClone").ToHashSet());
+    }
+
+    [Fact]
+    internal static void Visible_FilteredByAccess()
+    {
+        HashSet<MethodInfo> expectedMethods = [.. typeof(RunnerTimeoutException).GetMethods()];
+
+        new MethodScanner(typeof(RunnerTimeoutException))
+            .Visible.ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
     }
 
     [Fact]

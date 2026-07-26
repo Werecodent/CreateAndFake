@@ -94,9 +94,11 @@ public static class PropertyScannerTests
         ];
 
         PropertyScanner scanner = new(typeof(Members));
-        scanner.PublicOrInternal.ToHashSet().Assert().Is(expectedProperties);
-
-        scanner.Visible.Assert().Is(scanner.PublicOrInternal);
+        scanner
+            .PublicOrInternal.ToHashSet()
+            .Assert()
+            .Is(expectedProperties)
+            .And.Is(scanner.Visible.ToHashSet());
     }
 
     [Fact]

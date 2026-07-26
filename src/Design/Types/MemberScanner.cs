@@ -48,9 +48,21 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     /// <returns>All found properties on the <see cref="Type"/>.</returns>
     protected internal IEnumerable<T> FindVisible(AssemblyName assembly)
     {
-        return ScopeChecker.InternalsAreVisible(SupportedType, assembly)
-            ? PublicOrInternal
-            : OnlyPublic;
+        List<Type> internalTypes = [];
+
+        Type? currentType = SupportedType;
+        while (currentType != null)
+        {
+            if (ScopeChecker.InternalsAreVisible(currentType, assembly))
+            {
+                internalTypes.Add(currentType);
+            }
+            currentType = currentType.BaseType;
+        }
+
+        return OnlyPublic
+            .Concat(PublicOrInternal.Where(m => internalTypes.Contains(m.DeclaringType)))
+            .Distinct();
     }
 
     /// <inheritdoc/>

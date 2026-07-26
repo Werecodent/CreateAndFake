@@ -98,9 +98,11 @@ public static class FieldScannerTests
         ];
 
         FieldScanner scanner = new(typeof(MemberHolder));
-        scanner.PublicOrInternal.ToHashSet().Assert().Is(expectedFields);
-
-        scanner.Visible.Assert().Is(scanner.PublicOrInternal);
+        scanner
+            .PublicOrInternal.ToHashSet()
+            .Assert()
+            .Is(expectedFields)
+            .And.Is(scanner.Visible.ToHashSet());
     }
 
     [Fact]

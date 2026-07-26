@@ -74,9 +74,11 @@ public static class StaticMethodScannerTests
         ];
 
         StaticMethodScanner scanner = new(typeof(Members));
-        scanner.PublicOrInternal.ToHashSet().Assert().Is(expectedMethods);
-
-        scanner.Visible.Assert().Is(scanner.PublicOrInternal);
+        scanner
+            .PublicOrInternal.ToHashSet()
+            .Assert()
+            .Is(expectedMethods)
+            .And.Is(scanner.Visible.ToHashSet());
     }
 
     [Fact]
