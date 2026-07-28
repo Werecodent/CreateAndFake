@@ -40,6 +40,17 @@ internal abstract class BaseGuarder(TesterOptions options)
         TypeDescriber describer = TypeDescriber.For(type);
         IEnumerable<MethodInfo> methods = [];
 
+        if (kind.HasFlag(BindingFlags.Static))
+        {
+            methods = methods
+                .Concat(
+                    Options.IncludeInternals
+                        ? describer.StaticMethods.Visible
+                        : describer.StaticMethods.OnlyPublic
+                )
+                .Where(m => !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))); // Remove local functions.
+        }
+
         if (kind.HasFlag(BindingFlags.Instance))
         {
             methods = methods.Concat(
@@ -47,17 +58,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             );
         }
 
-        if (kind.HasFlag(BindingFlags.Static))
-        {
-            methods = methods.Concat(
-                Options.IncludeInternals
-                    ? describer.StaticMethods.Visible
-                    : describer.StaticMethods.OnlyPublic
-            );
-        }
-
         return methods
-            .Where(m => !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name))
             .Where(m => !Options.OnlyDeclaredMethods || m.DeclaringType == type);
     }
