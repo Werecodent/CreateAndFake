@@ -7,7 +7,7 @@ public static class GenericConverter
 {
     /// <returns>The found inherited <see cref="Type"/>.</returns>
     /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
+    ///     FindConcreteType&lt;List&lt;int&gt;&gt;(typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     /// <inheritdoc cref="AsConcreteType(Type)"/>
     /// <inheritdoc cref="FindConcreteType(Type,Type)"/>
@@ -21,7 +21,7 @@ public static class GenericConverter
     ///     If the <see cref="Type"/> does not inherit <paramref name="genericBase"/>.
     /// </exception>
     /// <remarks>Example: <example><c>
-    ///     FindConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
+    ///     FindConcreteType(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     /// <inheritdoc cref="AsConcreteType(Type,Type)"/>
     public static Type FindConcreteType(Type child, Type genericBase)
@@ -56,7 +56,7 @@ public static class GenericConverter
     /// <param name="genericBase">Generic <see cref="Type"/> definition without generics specified.</param>
     /// <returns>The inherited <see cref="Type"/> if found, null otherwise.</returns>
     /// <remarks>Example: <example><c>
-    ///     AsConcreteInterface(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
+    ///     AsConcreteType(typeof(List&lt;int&gt;), typeof(IList&lt;&gt;)) == typeof(IList&lt;int&gt;) // true
     /// </c></example></remarks>
     public static Type? AsConcreteType(Type? child, Type genericBase)
     {

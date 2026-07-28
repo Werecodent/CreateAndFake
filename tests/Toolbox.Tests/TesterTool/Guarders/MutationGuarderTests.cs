@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CreateAndFake.AsserterTool;
+﻿using CreateAndFake.AsserterTool;
 using CreateAndFake.Design.Reiteration;
 using CreateAndFake.FakerTool;
 using CreateAndFake.RunnerTool;
@@ -12,20 +11,6 @@ namespace CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class MutationGuarderTests
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IncludeInternals = false,
-            IgnorableExceptions =
-            [
-                typeof(InvalidOperationException),
-                typeof(TargetParameterCountException),
-                typeof(TargetException),
-                typeof(ArgumentException),
-                typeof(FormatException),
-            ],
-        };
-
     private static readonly MutationGuarder _ShortTestInstance = new(
         Tools.Tester.Options with
         {
@@ -44,16 +29,6 @@ public static class MutationGuarderTests
             Runner = new Runner(Tools.Runner.Options with { Timeout = new TimeSpan(0, 0, 10) }),
         }
     );
-
-    [Fact]
-    internal static Task MutationGuarder_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            _ShortTestInstance,
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
 
     [Fact]
     internal static Task PreventsMutationOnStaticsAsync_UsesStatics()

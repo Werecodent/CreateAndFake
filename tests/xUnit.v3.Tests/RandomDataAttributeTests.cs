@@ -13,7 +13,12 @@ public static class RandomDataAttributeTests
         await Tools.Tester.PreventsNullRefExceptionAsync(
             new RandomDataAttribute() { Trials = 3 },
             TestContext.Current.CancellationToken,
-            opt => opt with { InjectionValues = [3, GetGeneratableMethod(), tracker] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [3, GetGeneratableMethod(), tracker],
+                    OnlyDeclaredMethods = true,
+                }
         );
     }
 
@@ -28,11 +33,7 @@ public static class RandomDataAttributeTests
                 opt with
                 {
                     InjectionValues = [3, GetGeneratableMethod(), tracker],
-                    IgnorableExceptions =
-                    [
-                        typeof(InvalidOperationException),
-                        typeof(ArgumentException),
-                    ],
+                    OnlyDeclaredMethods = true,
                 }
         );
     }

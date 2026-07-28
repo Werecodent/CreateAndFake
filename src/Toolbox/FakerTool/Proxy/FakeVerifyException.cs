@@ -32,22 +32,13 @@ public sealed class FakeVerifyException : CreateAndFakeException
         : base(BuildMessage(null, expected?.ToString(), log?.Count(), log)) { }
 
     /// <inheritdoc cref="FakeVerifyException"/>
-    /// <param name="invalid">Call data with behavior that aren't valid.</param>
+    /// <param name="invalidCalls">Call data with behavior that aren't valid.</param>
     /// <param name="log">Log of all made calls.</param>
     internal FakeVerifyException(
-        IEnumerable<(CallData, Behavior)> invalid,
+        IEnumerable<(CallData, Behavior)> invalidCalls,
         IEnumerable<CallData> log
     )
-        : base(
-            string.Join(
-                Environment.NewLine,
-                invalid
-                    .Select(i =>
-                        BuildMessage(i.Item1, i.Item2.ToExpectedCalls(), i.Item2.Calls, null)
-                    )
-                    .Append(BuildMessage(log))
-            )
-        ) { }
+        : base(BuildMessage(invalidCalls, log)) { }
 
     /// <inheritdoc cref="FakeVerifyException"/>
     /// <param name="info">Object data.</param>
@@ -58,6 +49,26 @@ public sealed class FakeVerifyException : CreateAndFakeException
 #endif
     private FakeVerifyException(SerializationInfo info, StreamingContext context)
         : base(info, context) { }
+
+    /// <summary>Integrates the details into the message.</summary>
+    /// <param name="invalidCalls">Call data with behavior that aren't valid.</param>
+    /// <param name="log">Log of all made calls.</param>
+    /// <returns>Message to use for the exception.</returns>
+    private static string BuildMessage(
+        IEnumerable<(CallData, Behavior)> invalidCalls,
+        IEnumerable<CallData> log
+    )
+    {
+        return string.Join(
+            Environment.NewLine,
+            (
+                invalidCalls?.Select(i =>
+                    BuildMessage(i.Item1, i.Item2.ToExpectedCalls(), i.Item2.Calls, null)
+                )
+                ?? []
+            ).Append((log == null) ? "" : $"Log: {BuildMessage(log)}")
+        );
+    }
 
     /// <summary>Integrates the details into the message.</summary>
     /// <param name="source">Associated call data.</param>

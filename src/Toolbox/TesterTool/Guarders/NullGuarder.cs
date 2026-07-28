@@ -162,6 +162,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         {
             data = Options.Runner.CreateFor(method, cleanupCanceler.Token, Options.InjectionValues);
 
+            bool called = false;
             for (int i = 0; i < data.ArgCount; i++)
             {
                 ParameterInfo param = method.GetParameters()[i];
@@ -189,6 +190,8 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                         )
                         .ConfigureAwait(false);
 
+                    called = true;
+
                     if (result != null && callAllMethods)
                     {
                         await CallAllMethodsAsync(method, param, result, cleanupCanceler.Token)
@@ -200,6 +203,14 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                     _ = data.ModifyArg(i, original);
                     await DisposeAllButInjectedAsync(result).ConfigureAwait(false);
                 }
+            }
+            if (!called)
+            {
+                await DisposeAllButInjectedAsync(
+                        await RunCheckAsync(method, null, instance, data, cleanupCanceler.Token)
+                            .ConfigureAwait(false)
+                    )
+                    .ConfigureAwait(false);
             }
         }
         finally
@@ -216,9 +227,9 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         Exception taskException
     )
     {
-        ArgumentGuard.ThrowIfNull(testOrigin, testParam, taskException);
+        ArgumentGuard.ThrowIfNull(testOrigin, taskException);
 
-        string details = $"on method '{testOrigin.Name}' with parameter '{testParam.Name}'";
+        string details = $"on method '{testOrigin.Name}' with parameter '{testParam?.Name}'";
 
         if (taskException is NullReferenceException)
         {

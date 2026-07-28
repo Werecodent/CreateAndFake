@@ -58,7 +58,8 @@ internal abstract class BaseGuarder(TesterOptions options)
 
         return methods
             .Where(m => !Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute))) // Remove local functions.
-            .Where(m => !Options.MethodsToIgnore.Contains(m.Name));
+            .Where(m => !Options.MethodsToIgnore.Contains(m.Name))
+            .Where(m => !Options.OnlyDeclaredMethods || m.DeclaringType == type);
     }
 
     /// <summary>Attempts to test all methods.</summary>
@@ -155,19 +156,18 @@ internal abstract class BaseGuarder(TesterOptions options)
         RunResult result = await Options
             .Runner.RunAsync(instance, data, canceler)
             .ConfigureAwait(false);
-        if (!result.ThrewException)
-        {
-            return result.Result;
-        }
-        else if (!HandleCheckException(testOrigin, testParam, (Exception)result.Result!))
+
+        if (
+            result.ThrewException
+            && !HandleCheckException(testOrigin, testParam, (Exception)result.Result!)
+        )
         {
             throw new TesterFailureException(
                 $"Encountered exception when testing '{data}'.",
                 (Exception)result.Result!
             );
-            // ExceptionDispatchInfo.Capture((Exception)result.Result!).Throw();
         }
-        return null;
+        return result.Result;
     }
 
     /// <summary>Checks data for disposables and disposes them.</summary>
@@ -193,10 +193,23 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="data">Data to check and dispose.</param>
     private async Task DisposeSeriesButInjectedAsync(IEnumerable? data)
     {
+        Type? series = GenericConverter.AsConcreteType(data?.GetType(), typeof(IEnumerable<>));
+        if (series != null)
+        {
+            Type arg = series.GetGenericArguments()[0];
+            if (!arg.Inherits<IDisposable>() || !arg.Inherits<IAsyncDisposable>())
+            {
+                return;
+            }
+        }
+
         if (data is not null and not string)
         {
+            int i = 0;
             foreach (object item in data)
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++, Options.Valuer.Options.IterationLimit);
+
                 if (!Options.InjectionValues.Any(v => ReferenceEquals(item, v)))
                 {
                     await Disposer.CleanupAsync(item).ConfigureAwait(false);

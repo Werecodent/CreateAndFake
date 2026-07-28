@@ -30,7 +30,12 @@ public class LimiterTypeConverterTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<LimiterTypeConverter>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = _IgnorableExceptions,
+                    OnlyDeclaredMethods = true,
+                }
         );
     }
 

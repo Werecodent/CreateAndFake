@@ -1,4 +1,5 @@
 using System.Reflection;
+using CreateAndFake.Design.Properties;
 
 namespace CreateAndFake.Design.Types;
 
@@ -48,14 +49,16 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     /// <returns>All found properties on the <see cref="Type"/>.</returns>
     protected internal IEnumerable<T> FindVisible(AssemblyName assembly)
     {
-        List<Type> internalTypes = [];
+        HashSet<Type?> internalTypes = [];
 
+        int i = 0;
         Type? currentType = SupportedType;
         while (currentType != null)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++, DesignDefaults.IterationLimit);
             if (ScopeChecker.InternalsAreVisible(currentType, assembly))
             {
-                internalTypes.Add(currentType);
+                _ = internalTypes.Add(currentType);
             }
             currentType = currentType.BaseType;
         }

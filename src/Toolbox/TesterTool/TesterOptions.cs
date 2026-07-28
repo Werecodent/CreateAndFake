@@ -69,6 +69,10 @@ public sealed record TesterOptions : IToolOptions
     [ConfigurableOption]
     public bool IncludeInternals { get; init; } = true;
 
+    /// <summary>If only methods directly declared on the type (not inherited) are tested.</summary>
+    [ConfigurableOption]
+    public bool OnlyDeclaredMethods { get; init; } = false;
+
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
     [ConfigurableOption]
     public ImmutableArray<string> TestClassNameSuffixes { get; init; } = ["Tests", "TestBase"];
@@ -149,6 +153,7 @@ public sealed record TesterOptions : IToolOptions
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
             IgnoreAllExceptions = Config.GetValue(section, IgnoreAllExceptions),
             IncludeConstructors = Config.GetValue(section, IncludeConstructors),
+            OnlyDeclaredMethods = Config.GetValue(section, OnlyDeclaredMethods),
             IncludeInternals = Config.GetValue(section, IncludeInternals),
             InjectionValues = Config.GetValue(section, InjectionValues),
             MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),
