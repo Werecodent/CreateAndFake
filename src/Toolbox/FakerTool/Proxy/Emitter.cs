@@ -40,6 +40,11 @@ internal static class Emitter
             typeof(Type).GetMethod(
                 nameof(Type.GetTypeFromHandle),
                 BindingFlags.Static | BindingFlags.Public
+            )!,
+        _CurrentMethodGrabber =
+            typeof(MethodBase).GetMethod(
+                nameof(MethodBase.GetCurrentMethod),
+                BindingFlags.Static | BindingFlags.Public
             )!;
 
     /// <summary>Module storing the faked types.</summary>
@@ -237,11 +242,11 @@ internal static class Emitter
             gen.Emit(OpCodes.Stelem_Ref);
         }
 
-        // this.FakeMeta.Call(this, 'method.Name', types, args);
+        // this.FakeMeta.Call(this, MethodBase.GetCurrentMethod(), types, args);
         gen.Emit(OpCodes.Ldarg_0);
         gen.Emit(OpCodes.Callvirt, metaGetter);
         gen.Emit(OpCodes.Ldarg_0);
-        gen.Emit(OpCodes.Ldstr, method.Name);
+        gen.Emit(OpCodes.Call, _CurrentMethodGrabber);
         gen.Emit(OpCodes.Ldloc, types);
         gen.Emit(OpCodes.Ldloc, args);
         if (method.ReturnType != typeof(void))

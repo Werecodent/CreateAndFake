@@ -1,3 +1,4 @@
+using System.Reflection;
 using CreateAndFake.Design.Tooling;
 using CreateAndFake.FakerTool.Engine;
 using CreateAndFake.Properties;
@@ -13,7 +14,7 @@ public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
     public required IValuer? Valuer { get; init; }
 
     /// <summary>If set, controls the default result returned from fake calls.</summary>
-    public Func<string, Type, object?>? FakeDefaultGenerator { get; init; }
+    public Func<MethodInfo, object?>? FakeDefaultGenerator { get; init; }
 
     /// <summary>
     ///     Creates options from <see langword="this"/>

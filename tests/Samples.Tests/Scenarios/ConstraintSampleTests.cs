@@ -3,10 +3,12 @@ using CreateAndFake.Samples.Scenarios;
 
 namespace CreateAndFake.Samples.Tests.Scenarios;
 
-public static class GenericSampleTests
+public static class ConstraintSampleTests
 {
     [Theory, RandomData]
-    public static async Task GenericSample_GuardsNulls([Fake] GenericSample<string> data)
+    public static async Task ConstraintSample_GuardsNulls(
+        [Fake] ConstraintSample<int, DataSample> data
+    )
     {
         data.ToString().SetupReturn(Behavior.Base<string>());
 
@@ -19,10 +21,10 @@ public static class GenericSampleTests
     }
 
     [Fact]
-    public static Task GenericSample_NoParameterMutation()
+    public static Task ConstraintSample_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(GenericSample<>),
+            typeof(ConstraintSample<,>),
             TestContext.Current.CancellationToken
         );
     }

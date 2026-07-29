@@ -21,7 +21,7 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
     protected internal int Calls { get; private set; } = calls;
 
     /// <summary>Triggers calling the base method of the given type instead.</summary>
-    public Type? BaseCallType { get; private set; } = null;
+    public bool CallBase { get; private set; } = false;
 
     /// <summary>Runs the behavior.</summary>
     /// <param name="args">Expected args for the behavior.</param>
@@ -103,31 +103,20 @@ public abstract class Behavior(Delegate implementation, Times? times, int calls)
         return Returns(default(T), times);
     }
 
-    /// <inheritdoc cref="Base{T,T}"/>
-    public static Behavior<VoidType> Base<TBase>(Times? times = null)
+    /// <inheritdoc cref="Base{T}"/>
+    public static Behavior<VoidType> Base(Times? times = null)
     {
-        return Base<TBase, VoidType>(times);
-    }
-
-    /// <summary>Specifies behavior calling the base implementation.</summary>
-    /// <typeparam name="TBase">Type with the base method to call.</typeparam>
-    /// <typeparam name="T">Expected value type to return.</typeparam>
-    /// <param name="times">Behavior call limit.</param>
-    /// <returns>Instance to set up the mock with.</returns>
-    public static Behavior<T> Base<TBase, T>(Times? times = null)
-    {
-        return Base<T>(typeof(TBase), times);
+        return Base<VoidType>(times);
     }
 
     /// <summary>Specifies behavior calling the base implementation.</summary>
     /// <typeparam name="T">Expected value type to return.</typeparam>
-    /// <param name="baseType">Type with the base method to call.</param>
     /// <param name="times">Behavior call limit.</param>
     /// <returns>Instance to set up the mock with.</returns>
-    public static Behavior<T> Base<T>(Type baseType, Times? times = null)
+    public static Behavior<T> Base<T>(Times? times = null)
     {
         Behavior<T> result = Default<T>(times);
-        result.BaseCallType = baseType;
+        result.CallBase = true;
         return result;
     }
 

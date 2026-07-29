@@ -19,4 +19,28 @@ public static class ValuerAsyncComparableSampleTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Theory, RandomData]
+    public static Task CompareAsync_CloneHasNoDifferences(ValuerAsyncComparableSample data)
+    {
+        return data.CompareAsync(
+                data.Tools().Copy(),
+                Tools.Valuer,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .IsEmptyAsync(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    public static Task CompareAsync_VariantHasDifferences(ValuerAsyncComparableSample data)
+    {
+        return data.CompareAsync(
+                data.Tools().Variant(),
+                Tools.Valuer,
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .IsNotEmptyAsync(TestContext.Current.CancellationToken);
+    }
 }

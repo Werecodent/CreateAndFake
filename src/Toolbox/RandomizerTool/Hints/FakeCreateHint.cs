@@ -35,6 +35,7 @@ public sealed class FakeCreateHint : CreateHint
     {
         Type target = type.GetGenericArguments().Single();
 
+        Lock resultLock = new();
         Dictionary<Tuple<string, Type>, object> resultCache = [];
         DataRandom smartData = randomizer.Options.Gen.NextData();
 
@@ -44,22 +45,28 @@ public sealed class FakeCreateHint : CreateHint
             opt =>
                 opt with
                 {
-                    FakeDefaultGenerator = (methodName, returnType) =>
+                    FakeDefaultGenerator = method =>
                     {
-                        Tuple<string, Type> key = Tuple.Create(methodName, returnType);
-                        if (!resultCache.TryGetValue(key, out object? value))
+                        ArgumentGuard.ThrowIfNull(method);
+
+                        Tuple<string, Type> key = Tuple.Create(method.Name, method.ReturnType);
+                        lock (resultLock)
                         {
-                            if (returnType.IsInheritedBy<string>())
+                            if (!resultCache.TryGetValue(key, out object? value))
                             {
-                                value = smartData.Find(methodName) ?? randomizer.Create<string>();
+                                if (key.Item2.IsInheritedBy<string>())
+                                {
+                                    value =
+                                        smartData.Find(key.Item1) ?? randomizer.Create<string>();
+                                }
+                                else
+                                {
+                                    value = randomizer.Create(key.Item2);
+                                }
+                                resultCache.Add(key, value);
                             }
-                            else
-                            {
-                                value = randomizer.Create(returnType);
-                            }
-                            resultCache.Add(key, value);
+                            return value;
                         }
-                        return value;
                     },
                 }
         );

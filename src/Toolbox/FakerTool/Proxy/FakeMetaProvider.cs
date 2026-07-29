@@ -141,17 +141,17 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
 
     /// <summary>Manager for all action calls.</summary>
     /// <param name="instance">The faked object.</param>
-    /// <param name="name">Name of the method being called.</param>
+    /// <param name="calledMethod">Method being called.</param>
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <exception cref="InvalidOperationException"></exception>
-    internal void CallVoid(object instance, string name, Type[] generics, object[] args)
+    internal void CallVoid(object instance, MethodInfo calledMethod, Type[] generics, object[] args)
     {
-        object? result = CallBehavior<object>(instance, name, generics, args, true);
+        object? result = CallBehavior<object>(instance, calledMethod, generics, args, true);
         if (result != null)
         {
             throw new InvalidOperationException(
-                $"Method '{name}' expected void but instead returned '{result}'."
+                $"Method '{GetMethodName(calledMethod)}' expected void but instead returned '{result}'."
             );
         }
     }
@@ -159,20 +159,20 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <summary>Manager for all func calls.</summary>
     /// <typeparam name="T">Return type.</typeparam>
     /// <param name="instance">The faked object.</param>
-    /// <param name="name">Name of the method being called.</param>
+    /// <param name="calledMethod">Method being called.</param>
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <returns>Faked result previously set up.</returns>
     /// <exception cref="FakeCallException"></exception>
-    internal T? CallRet<T>(object instance, string name, Type[] generics, object[] args)
+    internal T? CallRet<T>(object instance, MethodInfo calledMethod, Type[] generics, object[] args)
     {
-        return CallBehavior<T>(instance, name, generics, args, false);
+        return CallBehavior<T>(instance, calledMethod, generics, args, false);
     }
 
     /// <summary>Manager for all calls.</summary>
     /// <typeparam name="T">Return type.</typeparam>
     /// <param name="instance">The faked object.</param>
-    /// <param name="name">Name of the method being called.</param>
+    /// <param name="calledMethod">Method being called.</param>
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <param name="isVoid">If method called is void.</param>
@@ -180,26 +180,33 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="FakeCallException"></exception>
     private T? CallBehavior<T>(
         object instance,
-        string name,
+        MethodInfo calledMethod,
         Type[] generics,
         object[] args,
         bool isVoid
     )
     {
-        CallData data = new(name, generics, args, Options);
+        ArgumentGuard.ThrowIfNull(calledMethod);
+
+        CallData data = new(GetMethodName(calledMethod), generics, args, Options);
         _log.Add(data);
         _LastCall = Tuple.Create(this, data);
 
         (CallData, Behavior) match = _behavior.FirstOrDefault(t => t.Item1.MatchesCall(data));
         if (match.Equals(default))
         {
-            if (ThrowByDefault && name != "Finalizer")
+            if (ThrowByDefault && GetMethodName(calledMethod) != "Finalizer")
             {
                 throw new FakeCallException(data, _behavior.Select(b => b.Item1));
             }
             else if (!isVoid && Options.FakeDefaultGenerator != null)
             {
-                return (T?)Options.FakeDefaultGenerator.Invoke(name, typeof(T));
+                return (T?)
+                    Options.FakeDefaultGenerator.Invoke(
+                        calledMethod.IsGenericMethod
+                            ? calledMethod.MakeGenericMethod(generics)
+                            : calledMethod
+                    );
             }
             else
             {
@@ -207,9 +214,9 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
             }
         }
 
-        if (match.Item2.BaseCallType != null)
+        if (match.Item2.CallBase)
         {
-            return CallBase<T>(instance, name, match, args);
+            return CallBase<T>(instance, calledMethod, generics, match, args);
         }
         else
         {
@@ -220,7 +227,8 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <summary>Calls the base method for a behavior.</summary>
     /// <typeparam name="T">Return type.</typeparam>
     /// <param name="instance">The faked object.</param>
-    /// <param name="name">Name of the method being called.</param>
+    /// <param name="calledMethod">Method being called.</param>
+    /// <param name="generics">Generics tied to the call.</param>
     /// <param name="match">Behavior details.</param>
     /// <param name="args">Provided args to the call.</param>
     /// <returns>Base method result.</returns>
@@ -228,21 +236,53 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="InvalidOperationException"></exception>
     private static T? CallBase<T>(
         object instance,
-        string name,
+        MethodInfo calledMethod,
+        Type[] generics,
         (CallData, Behavior) match,
         object[] args
     )
     {
-        MethodInfo? method = match.Item2.BaseCallType!.GetMethod(name);
+        string specificName = GetMethodName(calledMethod);
+        Type[] specificParameters =
+        [
+            .. (
+                calledMethod.IsGenericMethod
+                    ? calledMethod.MakeGenericMethod(generics)
+                    : calledMethod
+            )
+                .GetParameters()
+                .Select(p => p.ParameterType),
+        ];
+
+        MethodInfo? method = null;
+        Type? currentType = calledMethod.DeclaringType?.BaseType;
+        while (method == null && currentType != null)
+        {
+            method = TypeDescriber
+                .For(currentType)
+                .Methods.All.Where(m => m.Name == specificName)
+                .Where(m =>
+                    generics.Length == (m.IsGenericMethod ? m.GetGenericArguments().Length : 0)
+                )
+                .Select(m => m.IsGenericMethod ? m.MakeGenericMethod(generics) : m)
+                .FirstOrDefault(m =>
+                    m.GetParameters().Select(p => p.ParameterType).SequenceEqual(specificParameters)
+                );
+
+            currentType = currentType.BaseType;
+        }
+
         if (method == null)
         {
             throw new MissingMethodException(
-                $"Method '{name}' does not exist on '{match.Item2.BaseCallType}'"
+                $"Method '{GetMethodName(calledMethod)}' does not exist on '{calledMethod.DeclaringType?.BaseType}'"
             );
         }
         else if (method.IsAbstract)
         {
-            throw new InvalidOperationException($"Cannot call base '{name}' as it's abstract.");
+            throw new InvalidOperationException(
+                $"Cannot call base '{GetMethodName(calledMethod)}' as it's abstract."
+            );
         }
         else
         {
@@ -255,6 +295,11 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
 
             return (T?)match.Item2.Invoke(caller, args);
         }
+    }
+
+    private static string GetMethodName(MethodInfo method)
+    {
+        return method.Name.Substring(method.Name.LastIndexOf('.') + 1);
     }
 
     /// <summary>Matches a delegate to the method.</summary>
