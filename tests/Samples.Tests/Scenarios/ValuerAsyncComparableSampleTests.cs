@@ -1,4 +1,6 @@
+using CreateAndFake.Design.Content;
 using CreateAndFake.Samples.Scenarios;
+using CreateAndFake.ValuerTool;
 
 namespace CreateAndFake.Samples.Tests.Scenarios;
 
@@ -35,12 +37,19 @@ public static class ValuerAsyncComparableSampleTests
     [Theory, RandomData]
     public static Task CompareAsync_VariantHasDifferences(ValuerAsyncComparableSample data)
     {
-        return data.CompareAsync(
-                data.Tools().Variant(),
-                Tools.Valuer,
+        return AsyncSeriesHelper
+            .ToListAsync(
+                data.CompareAsync(
+                    data.Tools().Variant(),
+                    Tools.Valuer,
+                    TestContext.Current.CancellationToken
+                ),
+                Tools.Valuer.Options.IterationLimit,
                 TestContext.Current.CancellationToken
             )
             .Assert()
-            .IsNotEmptyAsync(TestContext.Current.CancellationToken);
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNot(Enumerable.Empty<Difference>());
     }
 }

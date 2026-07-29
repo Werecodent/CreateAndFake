@@ -49,6 +49,11 @@ public sealed class FakeCreateHint : CreateHint
                     {
                         ArgumentGuard.ThrowIfNull(method);
 
+                        if (method.ReturnType == null)
+                        {
+                            return Behavior.None();
+                        }
+
                         Tuple<string, Type> key = Tuple.Create(method.Name, method.ReturnType);
                         lock (resultLock)
                         {
@@ -65,7 +70,7 @@ public sealed class FakeCreateHint : CreateHint
                                 }
                                 resultCache.Add(key, value);
                             }
-                            return value;
+                            return Behavior.Returns(value);
                         }
                     },
                 }

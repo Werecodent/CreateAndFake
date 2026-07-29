@@ -202,11 +202,13 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
             else if (!isVoid && Options.FakeDefaultGenerator != null)
             {
                 return (T?)
-                    Options.FakeDefaultGenerator.Invoke(
-                        calledMethod.IsGenericMethod
-                            ? calledMethod.MakeGenericMethod(generics)
-                            : calledMethod
-                    );
+                    Options
+                        .FakeDefaultGenerator.Invoke(
+                            calledMethod.IsGenericMethod
+                                ? calledMethod.MakeGenericMethod(generics)
+                                : calledMethod
+                        )
+                        .Invoke(args);
             }
             else
             {

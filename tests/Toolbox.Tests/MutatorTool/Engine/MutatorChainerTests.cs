@@ -29,6 +29,28 @@ public static class MutatorChainerTests
     }
 
     [Theory, RandomData]
+    internal static void MutatorChainer_RecursionLimited([Stub] IMutatorEngine engine, string data)
+    {
+        engine
+            .Modify(Arg.Any<string>(), Arg.Any<IMutatorChainer>())
+            .SetupReturn(
+                Behavior.Call<object, IMutatorChainer, bool>(
+                    (_, chainer) => chainer.Modify(Tools.Randomizer.Create<string>())
+                )
+            );
+
+        new MutatorChainer(
+            Tools.Mutator.Options with
+            {
+                Valuer = Tools.Valuer.WithOptions(o => o with { IterationLimit = 2 }),
+            },
+            engine
+        )
+            .Assert(x => x.Modify(data))
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
     internal static void Modify_HandlesRecursionLoop([Stub] IMutatorEngine engine, object data)
     {
         engine

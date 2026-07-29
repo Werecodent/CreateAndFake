@@ -31,7 +31,7 @@ public sealed class DictionaryMutateHintTests : MutateHintTestBase<DictionaryMut
     [Theory, RandomData]
     public void Modify_UsesInternalType(int key, DataSample value)
     {
-        ListDictionary data = new() { { key, value } };
+        ListDictionary data = new() { { key.Tools().Variant(), null }, { key, value } };
         ListDictionary original = data.Tools().Copy();
 
         Limiter.Score.StallUntil(
@@ -44,8 +44,8 @@ public sealed class DictionaryMutateHintTests : MutateHintTestBase<DictionaryMut
         data.Assert()
             .IsNot(original)
             .Also(data.Keys.OfType<int>())
-            .HasCount(2)
+            .HasCount(3)
             .Also(data.Values.OfType<DataSample>())
-            .HasCount(2);
+            .HasCountMoreThan(1);
     }
 }

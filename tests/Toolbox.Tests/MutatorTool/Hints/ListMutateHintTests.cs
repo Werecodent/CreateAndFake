@@ -30,7 +30,7 @@ public sealed class ListMutateHintTests : MutateHintTestBase<ListMutateHint>
     [Theory, RandomData]
     public void Modify_UsesInternalType(DataSample value)
     {
-        ArrayList data = new() { { value } };
+        ArrayList data = new() { { null }, { value } };
         ArrayList original = data.Tools().Copy();
 
         Limiter.Score.StallUntil(
@@ -40,6 +40,6 @@ public sealed class ListMutateHintTests : MutateHintTestBase<ListMutateHint>
             TestContext.Current.CancellationToken
         );
 
-        data.Assert().IsNot(original).Also(data.OfType<DataSample>()).HasCount(2);
+        data.Assert().IsNot(original).Also(data.OfType<DataSample>()).HasCountMoreThan(1);
     }
 }
