@@ -74,9 +74,9 @@ public sealed class CollectionCreateHint : CreateHint
         _Collections
             .Keys.SelectMany(t => TypeDescriber.For(t).InheritedTypes)
             .Where(t => t.Inherits(typeof(IEnumerable<>)))
-            .Select(t => GenericConverter.AsGenericBase(t) ?? t)
+            .Select(t => GenericConverter.AsGenericBase(t)!)
             .Distinct()
-            .ToFrozenSet()!;
+            .ToFrozenSet();
 
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.CollectionHint;

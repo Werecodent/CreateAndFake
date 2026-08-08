@@ -58,10 +58,9 @@ internal static class Config
         [CallerArgumentExpression(nameof(property))] string? name = null
     )
     {
-        ArgumentGuard.ThrowIfNull(name, section);
+        ArgumentGuard.ThrowIfNull(property);
 
-        return section
-            .GetValue(name, string.Join("", property))
+        return GetValue(section, string.Join("", property), name)
             .ToCharArray()
             .Distinct()
             .ToFrozenSet();

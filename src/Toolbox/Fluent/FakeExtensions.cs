@@ -33,7 +33,7 @@ public static class FakeExtensions
     /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
     public static void SetupReturn<T>(this T fakeCallResult, Behavior<T> behavior)
     {
-        FakeMetaProvider.SetLastCallBehavior(behavior);
+        FakeMetaProvider.SetLastCallBehavior(behavior ?? Behavior.Default<T>());
     }
 
     /// <summary>Ties a method call to <paramref name="behavior"/>.</summary>

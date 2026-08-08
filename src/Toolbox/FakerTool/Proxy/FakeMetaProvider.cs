@@ -256,31 +256,43 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
                 .Select(p => p.ParameterType),
         ];
 
-        MethodInfo? method = null;
-        Type? currentType = calledMethod.DeclaringType?.BaseType;
-        while (method == null && currentType != null)
+        MethodInfo? searchForSourceMethod()
         {
-            method = TypeDescriber
-                .For(currentType)
-                .Methods.All.Where(m => m.Name == specificName)
-                .Where(m =>
-                    generics.Length == (m.IsGenericMethod ? m.GetGenericArguments().Length : 0)
-                )
-                .Select(m => m.IsGenericMethod ? m.MakeGenericMethod(generics) : m)
-                .FirstOrDefault(m =>
-                    m.GetParameters().Select(p => p.ParameterType).SequenceEqual(specificParameters)
-                );
+            Type? currentType = calledMethod.DeclaringType?.BaseType;
+            while (currentType != null)
+            {
+                MethodInfo? method = TypeDescriber
+                    .For(currentType)
+                    .Methods.All.Where(m => m.Name == specificName)
+                    .Where(m =>
+                        generics.Length == (m.IsGenericMethod ? m.GetGenericArguments().Length : 0)
+                    )
+                    .Select(m => m.IsGenericMethod ? m.MakeGenericMethod(generics) : m)
+                    .FirstOrDefault(m =>
+                        m.GetParameters()
+                            .Select(p => p.ParameterType)
+                            .SequenceEqual(specificParameters)
+                    );
 
-            currentType = currentType.BaseType;
+                if (method != null)
+                {
+                    return method;
+                }
+
+                currentType = currentType.BaseType;
+            }
+            return null;
         }
 
-        if (method == null)
+        MethodInfo? found = searchForSourceMethod();
+
+        if (found == null)
         {
             throw new MissingMethodException(
                 $"Method '{GetMethodName(calledMethod)}' does not exist on '{calledMethod.DeclaringType?.BaseType}'"
             );
         }
-        else if (method.IsAbstract)
+        else if (found.IsAbstract)
         {
             throw new InvalidOperationException(
                 $"Cannot call base '{GetMethodName(calledMethod)}' as it's abstract."
@@ -290,9 +302,9 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
         {
             Delegate caller = (Delegate)
                 Activator.CreateInstance(
-                    FindDelegateType(method),
+                    FindDelegateType(found),
                     instance,
-                    method.MethodHandle.GetFunctionPointer()
+                    found.MethodHandle.GetFunctionPointer()
                 )!;
 
             return (T?)match.Item2.Invoke(caller, args);

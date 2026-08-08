@@ -13,6 +13,16 @@ internal static class Subclasser
     /// <summary>Cache of already created types.</summary>
     private static readonly Dictionary<TypeInfo, Type[]> _TypeCache = [];
 
+    /// <summary>Types not supported with the error message for them.</summary>
+    private static readonly Dictionary<Type, string> _InvalidTypes = new()
+    {
+        { typeof(Array), $"Cannot subclass system reserved '{nameof(Array)}' type." },
+        { typeof(ObjectDisposedException), $"{typeof(ObjectDisposedException)} not allowed." },
+#if LEGACY // Required feature shipped with C# 14 / .NET 10.0
+        { typeof(TypeInfo), $"{typeof(TypeInfo)} itself has specific issues being faked." },
+#endif
+    };
+
     /// <summary>Assembly used to contain the dynamic types.</summary>
     public static AssemblyName AssemblyName => Emitter.AssemblyName;
 
@@ -104,9 +114,15 @@ internal static class Subclasser
     /// <returns>True if possible; false if not with exception to throw.</returns>
     private static (bool, Exception?) CanBeSubclassed(Type parent)
     {
+        TypeDescriber info = TypeDescriber.For(parent);
+
         if (parent == null)
         {
             return (true, null);
+        }
+        else if (_InvalidTypes.TryGetValue(parent, out string? error))
+        {
+            return (false, new ArgumentException(error, nameof(parent)));
         }
         else if (parent.IsSealed)
         {
@@ -149,33 +165,14 @@ internal static class Subclasser
                 )
             );
         }
-        else if (parent == typeof(Array))
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"Cannot subclass system reserved '{nameof(Array)}' type.",
-                    nameof(parent)
-                )
-            );
-        }
-        else if (parent.Inherits<Delegate>())
+        else if (info.Inherits<Delegate>())
         {
             return (
                 false,
                 new ArgumentException($"Cannot subclass delegate '{parent}' type.", nameof(parent))
             );
         }
-        else if (
-            parent
-                .GetMethods(
-                    BindingFlags.FlattenHierarchy
-                        | BindingFlags.NonPublic
-                        | BindingFlags.Public
-                        | BindingFlags.Static
-                )
-                .Any(m => m.IsAbstract)
-        )
+        else if (info.StaticMethods.All.Any(m => m.IsAbstract))
         {
             return (
                 false,
@@ -192,28 +189,6 @@ internal static class Subclasser
                 )
             );
         }
-        else if (parent == typeof(ObjectDisposedException))
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"{typeof(ObjectDisposedException)} not allowed.",
-                    nameof(parent)
-                )
-            );
-        }
-#if LEGACY // Required feature shipped with C# 14 / .NET 10.0
-        else if (parent == typeof(TypeInfo))
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"{typeof(TypeInfo)} itself has specific issues being faked.",
-                    nameof(parent)
-                )
-            );
-        }
-#endif
         else
         {
             return (true, null);

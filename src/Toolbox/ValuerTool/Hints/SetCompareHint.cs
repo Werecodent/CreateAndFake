@@ -134,6 +134,19 @@ public sealed class SetCompareHint : CompareHint
             return result;
         }
 
+        async Task<bool> isMissingAsync(List<object> series, object item)
+        {
+            foreach (object otherItem in series)
+            {
+                canceler.ThrowIfCancellationRequested();
+                if (await chainer.EqualsAsync(item, otherItem, canceler).ConfigureAwait(false))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         async IAsyncEnumerable<object> findMissingAsync(
             Dictionary<int, List<object>> set,
             Dictionary<int, List<object>> other
@@ -144,23 +157,10 @@ public sealed class SetCompareHint : CompareHint
                 List<object> matches = other.TryGetValue(series.Key, out List<object>? value)
                     ? value
                     : [];
+
                 foreach (object setItem in series.Value)
                 {
-                    bool notFound = true;
-                    foreach (object otherItem in matches)
-                    {
-                        canceler.ThrowIfCancellationRequested();
-                        if (
-                            await chainer
-                                .EqualsAsync(setItem, otherItem, canceler)
-                                .ConfigureAwait(false)
-                        )
-                        {
-                            notFound = false;
-                            break;
-                        }
-                    }
-                    if (notFound)
+                    if (await isMissingAsync(matches, setItem).ConfigureAwait(false))
                     {
                         yield return setItem;
                     }

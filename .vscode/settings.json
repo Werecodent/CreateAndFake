@@ -33,6 +33,7 @@
         "cobertura",
         "codecov",
         "comparables",
+        "cooldown",
         "cref",
         "Delegators",
         "Duplicatable",
