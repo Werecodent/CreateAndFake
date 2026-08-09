@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <inheritdoc cref="IDuplicator"/>
 public interface IDuplicatorChainer : IDuplicator, IToolChainer<DuplicatorOptions, ICopyHint>

@@ -1,7 +1,7 @@
-﻿using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.ValuerTool.Engine;
+﻿using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <inheritdoc/>
 public sealed class FakedCompareHint : CompareHint<IFaked>

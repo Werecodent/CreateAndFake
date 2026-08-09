@@ -1,19 +1,19 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 internal static class SelfCreateHandlers
 {

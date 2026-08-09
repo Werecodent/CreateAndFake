@@ -1,9 +1,9 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.DuplicatorTool.Handlers;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning common types for <see cref="IDuplicator"/> .</summary>
 public sealed class HandlerCopyHint : CopyHint

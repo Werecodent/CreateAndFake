@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.MSTest.v4;
+namespace Werecodent.CreateAndFake.MSTest.v4;
 
 /// <summary>
 ///     Flags <see cref="TestMethodAttribute"/> methods

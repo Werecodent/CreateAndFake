@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public abstract class GenericSample<TClass>

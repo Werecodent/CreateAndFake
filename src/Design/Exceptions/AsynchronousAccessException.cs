@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Exceptions;
 
 /// <summary>
 ///     <see cref="Exception"/> <see cref="Type"/> for errors occurring

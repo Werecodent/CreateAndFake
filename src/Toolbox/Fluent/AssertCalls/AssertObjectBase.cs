@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see langword="object"/> assertion calls.</summary>
 /// <typeparam name="T"></typeparam>

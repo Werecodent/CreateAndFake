@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
-using CreateAndFake.ValuerTool.Handlers;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool.Handlers;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing instances utilizing <see cref="ICompareHandler"/>s for <see cref="IValuer"/>.</summary>
 public sealed class HandlerCompareHint : CompareHint

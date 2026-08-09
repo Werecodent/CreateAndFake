@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.ValuerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.Tests.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Engine;
 
 public static class ValuerChainerTests
 {

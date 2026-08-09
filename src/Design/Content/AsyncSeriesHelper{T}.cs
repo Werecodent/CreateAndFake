@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
 /// <typeparam name="T"><inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/></typeparam>

@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 #pragma warning disable CA1716 // Overriding here should be a rarity.
 

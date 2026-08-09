@@ -1,4 +1,4 @@
-namespace CreateAndFake.AsserterTool.Categories;
+namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common type test scenarios.</summary>
 public interface IAsserterType

@@ -1,11 +1,11 @@
 global using RunnerMod = System.Func<
-    CreateAndFake.RunnerTool.RunnerOptions,
-    CreateAndFake.RunnerTool.RunnerOptions
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions,
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions
 >;
 using System.Reflection;
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
 public interface IRunner : ITool<RunnerOptions>

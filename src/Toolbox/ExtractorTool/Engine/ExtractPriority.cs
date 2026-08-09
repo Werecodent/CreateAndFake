@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool.Hints;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Priorities for <see cref="ExtractHint"/>s.</summary>
 public enum ExtractPriority

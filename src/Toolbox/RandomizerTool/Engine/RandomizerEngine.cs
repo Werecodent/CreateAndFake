@@ -1,11 +1,11 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <inheritdoc cref="IRandomizer"/>
 public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngine

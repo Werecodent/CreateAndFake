@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.</summary>
 /// <typeparam name="T">The supported <see cref="IValueEquatable"/> <see cref="Type"/>.</typeparam>

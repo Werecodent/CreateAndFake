@@ -1,8 +1,8 @@
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Design.Tests.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
 public static class ReferenceComparerTests
 {

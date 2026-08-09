@@ -1,13 +1,13 @@
 global using AsserterMod = System.Func<
-    CreateAndFake.AsserterTool.AsserterOptions,
-    CreateAndFake.AsserterTool.AsserterOptions
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions,
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions
 >;
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.AsserterTool.AsyncCategories;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <summary>Handles common test scenarios.</summary>
 public interface IAsserter

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class ValuerAsyncComparableCompareHintTests
     : CompareHintTestBase<ValuerAsyncComparableCompareHint>

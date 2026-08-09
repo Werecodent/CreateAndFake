@@ -1,9 +1,9 @@
 using System.Collections.Immutable;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <inheritdoc cref="IToolHintOptions{T,T}"/>
 public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, THint>

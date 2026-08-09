@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.RandomizerTool.Engine;
 using NUnit.Framework.Internal;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.NUnit.v3;
+namespace Werecodent.CreateAndFake.NUnit.v3;
 
 /// <inheritdoc/>
 public sealed class MethodWrapperCreateHint : CreateHint<MethodWrapper>

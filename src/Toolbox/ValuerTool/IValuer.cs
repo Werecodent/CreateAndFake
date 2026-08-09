@@ -1,13 +1,13 @@
 ﻿global using ValuerMod = System.Func<
-    CreateAndFake.ValuerTool.ValuerOptions,
-    CreateAndFake.ValuerTool.ValuerOptions
+    Werecodent.CreateAndFake.ValuerTool.ValuerOptions,
+    Werecodent.CreateAndFake.ValuerTool.ValuerOptions
 >;
 using System.Collections;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool;
+namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <summary>Compares objects by value via reflection if needed.</summary>
 public interface IValuer

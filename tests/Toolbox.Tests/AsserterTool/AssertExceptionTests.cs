@@ -1,6 +1,6 @@
-﻿using CreateAndFake.AsserterTool;
+﻿using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool;
 
 public sealed class AssertExceptionTests : ExceptionTestBase<AssertException>
 {

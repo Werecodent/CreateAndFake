@@ -1,7 +1,7 @@
 using System.Reflection;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Types;
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable CA1823, CS0169, CS0414, IDE0044, IDE0051, RCS1169, RCS1213, S1144, S2933 // For testing.
 

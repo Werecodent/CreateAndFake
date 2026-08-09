@@ -1,6 +1,6 @@
-﻿using CreateAndFake.ValuerTool;
+﻿using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Tests.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Engine;
 
 public static class DifferenceTests
 {

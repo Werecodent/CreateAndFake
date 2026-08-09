@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.AsserterTool.Implementation;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterEnumerableTests
 {

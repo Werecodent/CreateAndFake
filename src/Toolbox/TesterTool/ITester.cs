@@ -1,12 +1,12 @@
 global using TesterMod = System.Func<
-    CreateAndFake.TesterTool.TesterOptions,
-    CreateAndFake.TesterTool.TesterOptions
+    Werecodent.CreateAndFake.TesterTool.TesterOptions,
+    Werecodent.CreateAndFake.TesterTool.TesterOptions
 >;
 using System.Reflection;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.TesterTool;
+namespace Werecodent.CreateAndFake.TesterTool;
 
 /// <summary>Automates common tests.</summary>
 public interface ITester : ITool<TesterOptions>

@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Method call details.</summary>
 /// <param name="methodName"><inheritdoc cref="_methodName" path="/summary"/></param>

@@ -1,10 +1,10 @@
 using System.Reflection;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.RandomizerTool.Handlers;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.RandomizerTool.Handlers;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class ReflectionCreateHandlersTests
 {

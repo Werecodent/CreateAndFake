@@ -1,10 +1,10 @@
-﻿using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateHint>
 {

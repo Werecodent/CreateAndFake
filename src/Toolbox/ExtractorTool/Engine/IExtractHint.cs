@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Handles extracting specific types for <see cref="IExtractor"/>.</summary>
 public interface IExtractHint : IToolHint

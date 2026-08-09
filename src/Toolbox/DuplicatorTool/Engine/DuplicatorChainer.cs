@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 #pragma warning disable IDE0028 // Invalid because it's not constructible.
 

@@ -2,13 +2,13 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Collections.Specialized;
-using CreateAndFake.Design;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 #pragma warning disable IDE0058 // Return isn't present on all versions.
 #pragma warning disable RCS1124 // Creates the wrong type.
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing legacy collections for <see cref="IRandomizer"/>.</summary>
 public sealed class LegacyCollectionCreateHint : CreateHint

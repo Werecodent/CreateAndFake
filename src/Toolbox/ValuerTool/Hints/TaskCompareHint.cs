@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <inheritdoc/>
 public sealed class TaskCompareHint : CompareHint<Task>

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class EquatableCompareHintTests : CompareHintTestBase<EquatableCompareHint>
 {

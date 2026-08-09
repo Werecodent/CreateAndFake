@@ -1,8 +1,8 @@
-﻿using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.Tests.FakerTool.TestSamples;
+﻿using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public static class InjectedTests
 {

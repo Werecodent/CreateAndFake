@@ -1,6 +1,6 @@
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.Tests.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
 public static class MutateHintResultTests
 {

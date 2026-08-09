@@ -1,10 +1,10 @@
 global using MutatorMod = System.Func<
-    CreateAndFake.MutatorTool.MutatorOptions,
-    CreateAndFake.MutatorTool.MutatorOptions
+    Werecodent.CreateAndFake.MutatorTool.MutatorOptions,
+    Werecodent.CreateAndFake.MutatorTool.MutatorOptions
 >;
-using CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.MutatorTool;
 
-namespace CreateAndFake.Tests.MutatorTool;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
 public static class MutatorOptionsTests
 {

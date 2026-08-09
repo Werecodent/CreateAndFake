@@ -1,4 +1,4 @@
-namespace CreateAndFake.MSTest.v4.Tests;
+namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
 public class StubAttributeTests

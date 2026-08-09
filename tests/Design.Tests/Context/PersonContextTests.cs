@@ -1,5 +1,5 @@
-using CreateAndFake.Design.Context;
+using Werecodent.CreateAndFake.Design.Context;
 
-namespace CreateAndFake.Design.Tests.Context;
+namespace Werecodent.CreateAndFake.Design.Tests.Context;
 
 public sealed class PersonContextTests : BaseDataContextTestBase<PersonContext>;

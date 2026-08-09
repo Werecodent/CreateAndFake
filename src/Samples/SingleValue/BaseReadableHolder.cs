@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.SingleValue;
+namespace Werecodent.CreateAndFake.Samples.SingleValue;
 
 [ValidSample]
 public abstract class BaseReadableHolder<T>(T value) : IReadableHolder<T>

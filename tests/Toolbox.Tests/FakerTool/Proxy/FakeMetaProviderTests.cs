@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.Tests.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
 public static class FakeMetaProviderTests
 {

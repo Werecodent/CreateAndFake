@@ -1,8 +1,8 @@
-using CreateAndFake.Design;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 #pragma warning disable MA0042 // Following the pattern.
 

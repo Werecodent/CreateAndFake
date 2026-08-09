@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
 using System.Dynamic;
 using System.Reflection;
-using CreateAndFake.Samples.DoubleValue;
-using CreateAndFake.Samples.SingleValue;
+using Werecodent.CreateAndFake.Samples.DoubleValue;
+using Werecodent.CreateAndFake.Samples.SingleValue;
 
-namespace CreateAndFake.Samples;
+namespace Werecodent.CreateAndFake.Samples;
 
 public static class SampleGenerator
 {

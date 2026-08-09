@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples.BasicData;
+namespace Werecodent.CreateAndFake.Samples.BasicData;
 
 /// <summary>Inherits and references a child class.</summary>
 [ValidSample]

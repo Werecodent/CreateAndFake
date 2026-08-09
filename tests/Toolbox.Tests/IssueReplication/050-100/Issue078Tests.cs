@@ -1,4 +1,4 @@
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue078Tests
 {

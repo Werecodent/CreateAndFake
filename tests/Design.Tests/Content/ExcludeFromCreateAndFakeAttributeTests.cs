@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Content;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
 public static class ExcludeFromCreateAndFakeAttributeTests
 {

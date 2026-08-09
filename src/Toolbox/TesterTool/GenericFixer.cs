@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.TesterTool;
+namespace Werecodent.CreateAndFake.TesterTool;
 
 /// <summary>Handles generic resolution.</summary>
 internal static class GenericFixer

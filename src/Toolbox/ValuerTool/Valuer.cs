@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool;
+namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <inheritdoc cref="IValuer"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

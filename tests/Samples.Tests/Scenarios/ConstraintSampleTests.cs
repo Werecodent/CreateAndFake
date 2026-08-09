@@ -1,7 +1,7 @@
-using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Samples.Tests.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
 public static class ConstraintSampleTests
 {

@@ -1,7 +1,7 @@
-using CreateAndFake.Design;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
 /// <summary>Handles extracting delegates for <see cref="IExtractor"/>.</summary>
 public sealed class DelegateExtractHint : ExtractHint<Delegate>

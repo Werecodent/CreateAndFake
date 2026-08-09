@@ -1,7 +1,7 @@
 using System.Collections;
-using CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.AsyncCategories;
+namespace Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 
 #pragma warning disable CA1716 // Matches existing usage.
 

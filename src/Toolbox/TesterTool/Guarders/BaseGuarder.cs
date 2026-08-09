@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool.Guarders;
+namespace Werecodent.CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates checks.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

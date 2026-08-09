@@ -1,8 +1,8 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
 /// <summary>Handles extracting final values for <see cref="IExtractor"/>.</summary>
 public sealed class EndingExtractHint : ExtractHint

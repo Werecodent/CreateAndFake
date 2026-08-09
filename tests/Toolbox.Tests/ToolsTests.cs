@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests;
+namespace Werecodent.CreateAndFake.Tests;
 
 public static class ToolsTests
 {

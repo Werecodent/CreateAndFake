@@ -1,6 +1,6 @@
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Handlers;
+namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 /// <inheritdoc cref="ICompareHandler"/>
 internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompareHandler

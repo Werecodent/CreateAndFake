@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.Design.Tests.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tests.Tooling;
 
 public static class ConfigurableOptionAttributeTests
 {

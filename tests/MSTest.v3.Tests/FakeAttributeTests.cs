@@ -1,4 +1,4 @@
-namespace CreateAndFake.MSTest.v3.Tests;
+namespace Werecodent.CreateAndFake.MSTest.v3.Tests;
 
 [TestClass]
 public class FakeAttributeTests

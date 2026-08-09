@@ -1,13 +1,13 @@
-﻿using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.TesterTool.Guarders;
-using CreateAndFake.Tests.TesterTool.TestSamples;
+﻿using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool.Guarders;
+using Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
-namespace CreateAndFake.Tests.TesterTool.Guarders;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class NullGuarderTests
 {

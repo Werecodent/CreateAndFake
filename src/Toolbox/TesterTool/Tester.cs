@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.TesterTool.Guarders;
-using CreateAndFake.TesterTool.Validators;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.TesterTool.Guarders;
+using Werecodent.CreateAndFake.TesterTool.Validators;
 
-namespace CreateAndFake.TesterTool;
+namespace Werecodent.CreateAndFake.TesterTool;
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

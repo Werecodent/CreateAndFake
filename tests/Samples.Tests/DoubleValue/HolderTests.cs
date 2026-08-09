@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.DoubleValue;
+using Werecodent.CreateAndFake.Samples.DoubleValue;
 
-namespace CreateAndFake.Samples.Tests.DoubleValue;
+namespace Werecodent.CreateAndFake.Samples.Tests.DoubleValue;
 
 public static class HolderTests
 {

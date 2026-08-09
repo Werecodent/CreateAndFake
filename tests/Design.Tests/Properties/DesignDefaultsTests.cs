@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Properties;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Properties;
+namespace Werecodent.CreateAndFake.Design.Tests.Properties;
 
 public static class DesignDefaultsTests
 {

@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.MutatorTool;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.MutatorTool;
 
-namespace CreateAndFake.Tests.MutatorTool;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
 public static class MutatorTests
 {

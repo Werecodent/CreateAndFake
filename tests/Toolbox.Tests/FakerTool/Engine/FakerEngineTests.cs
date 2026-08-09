@@ -1,11 +1,11 @@
 using System.Collections.Frozen;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Engine;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Tests.FakerTool.TestSamples;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
-namespace CreateAndFake.Tests.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
 
 public static class FakerEngineTests
 {

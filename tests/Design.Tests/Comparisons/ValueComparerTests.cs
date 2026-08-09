@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Drawing;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Design.Tests.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
 #pragma warning disable CA1859 // False positive; needed for generic resolution.
 

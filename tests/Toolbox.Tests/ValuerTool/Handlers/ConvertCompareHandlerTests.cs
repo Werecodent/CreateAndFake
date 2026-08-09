@@ -1,6 +1,6 @@
-using CreateAndFake.ValuerTool.Handlers;
+using Werecodent.CreateAndFake.ValuerTool.Handlers;
 
-namespace CreateAndFake.Tests.ValuerTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Handlers;
 
 public static class ConvertCompareHandlerTests
 {

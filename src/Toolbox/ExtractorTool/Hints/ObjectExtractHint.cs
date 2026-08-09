@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
 /// <summary>Handles extracting objects for <see cref="IExtractor"/>.</summary>
 public sealed class ObjectExtractHint : ExtractHint<object>

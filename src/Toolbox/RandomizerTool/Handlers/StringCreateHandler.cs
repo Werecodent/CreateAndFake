@@ -1,6 +1,6 @@
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 internal sealed class StringCreateHandler : ICreateHandler
 {

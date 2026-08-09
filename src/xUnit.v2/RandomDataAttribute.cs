@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Fluent;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 using Xunit.Sdk;
 
-namespace CreateAndFake.xUnit.v2;
+namespace Werecodent.CreateAndFake.xUnit.v2;
 
 /// <summary>
 ///     Flags <see cref="Xunit.TheoryAttribute"/> methods

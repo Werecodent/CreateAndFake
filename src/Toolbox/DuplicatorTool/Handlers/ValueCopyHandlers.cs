@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class ValueCopyHandlers

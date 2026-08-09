@@ -1,8 +1,8 @@
 using System.Collections;
-using CreateAndFake.Design;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
 /// <summary>Handles extracting enumerables for <see cref="IExtractor"/>.</summary>
 public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>

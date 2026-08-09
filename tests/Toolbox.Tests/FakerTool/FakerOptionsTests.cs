@@ -1,10 +1,10 @@
 global using FakerMod = System.Func<
-    CreateAndFake.FakerTool.FakerOptions,
-    CreateAndFake.FakerTool.FakerOptions
+    Werecodent.CreateAndFake.FakerTool.FakerOptions,
+    Werecodent.CreateAndFake.FakerTool.FakerOptions
 >;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public static class FakerOptionsTests
 {

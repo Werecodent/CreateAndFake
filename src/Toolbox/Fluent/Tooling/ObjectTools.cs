@@ -1,12 +1,12 @@
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Fluent.Tooling;
+namespace Werecodent.CreateAndFake.Fluent.Tooling;
 
 /// <summary>Provides fluent randomization options.</summary>
 /// <typeparam name="T"></typeparam>

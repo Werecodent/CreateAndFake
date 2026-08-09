@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Handlers;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Handlers;
 
-namespace CreateAndFake.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.MutatorTool.Hints;
 
 #pragma warning disable CA1308 // Uri support for .NET 4.8 is lowercase.
 

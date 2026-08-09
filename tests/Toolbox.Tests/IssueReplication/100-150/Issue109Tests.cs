@@ -1,7 +1,7 @@
-﻿using CreateAndFake.DuplicatorTool;
-using CreateAndFake.DuplicatorTool.Hints;
+﻿using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 #pragma warning disable CA2227 // For testing.
 

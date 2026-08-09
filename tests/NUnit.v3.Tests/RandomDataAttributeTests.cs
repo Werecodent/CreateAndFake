@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.FakerTool;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.NUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.NUnit.v3.Tests;
 
 [TestFixture]
 public static class RandomDataAttributeTests

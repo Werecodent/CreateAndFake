@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Properties;
+﻿using Werecodent.CreateAndFake.Design.Properties;
 
-namespace CreateAndFake.Design.Randomization;
+namespace Werecodent.CreateAndFake.Design.Randomization;
 
 #pragma warning disable CA5394 // Secure alternative provided.
 

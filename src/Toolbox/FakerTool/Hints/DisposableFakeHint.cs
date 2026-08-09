@@ -1,9 +1,9 @@
-using CreateAndFake.Design;
-using CreateAndFake.FakerTool.Engine;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Fluent;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent;
 
-namespace CreateAndFake.FakerTool.Hints;
+namespace Werecodent.CreateAndFake.FakerTool.Hints;
 
 /// <summary>Handles faking Span collections for <see cref="IFaker"/>.</summary>
 public sealed class DisposableFakeHint : IFakeHint

@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Reflection tool.</summary>
 /// <typeparam name="TOptions">The configuration <see cref="Type"/> for the tool.</typeparam>

@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.MutatorTool.Hints;
 
 /// <summary>Handles the mutation of <see cref="ICollection{T}"/>s.</summary>
 public sealed class CollectionMutateHint : MutateHint

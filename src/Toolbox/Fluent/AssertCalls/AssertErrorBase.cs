@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see cref="Exception"/> assertion calls.</summary>
 /// <param name="error"><inheritdoc cref="Error" path="/summary"/></param>

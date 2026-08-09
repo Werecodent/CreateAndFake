@@ -1,20 +1,20 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.Properties;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.TesterTool;
+namespace Werecodent.CreateAndFake.TesterTool;
 
 /// <summary>Configuration for controlling automated testing behavior.</summary>
 public sealed record TesterOptions : IToolOptions

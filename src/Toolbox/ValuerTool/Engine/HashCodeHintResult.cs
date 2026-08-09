@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc/>
 public sealed class HashCodeHintResult : HintResult<int>

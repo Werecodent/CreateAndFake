@@ -1,8 +1,8 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Design.Tests.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
 public class LimiterTypeConverterTests
 {

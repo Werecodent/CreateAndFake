@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Reflection tool that utilizes <see cref="IToolHint"/>s.</summary>
 /// <inheritdoc cref="IToolHintOptions{TOptions,THint}"/>

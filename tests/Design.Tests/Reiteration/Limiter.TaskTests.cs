@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Reiteration;
 
-namespace CreateAndFake.Design.Tests.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterTaskTests
 {

@@ -1,7 +1,7 @@
 using System.Diagnostics;
-using CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Reiteration;
 
-namespace CreateAndFake.Design.Tests.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterAsyncTests
 {

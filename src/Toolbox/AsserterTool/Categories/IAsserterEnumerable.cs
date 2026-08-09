@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.AsserterTool.Categories;
+namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common collection test scenarios.</summary>
 public interface IAsserterEnumerable

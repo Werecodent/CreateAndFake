@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterString

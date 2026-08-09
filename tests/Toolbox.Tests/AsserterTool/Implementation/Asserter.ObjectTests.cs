@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.AsserterTool.Implementation;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterObjectTests
 {

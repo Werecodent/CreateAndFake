@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool.Proxy;
+﻿using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Manages faking behavior.</summary>
 /// <param name="fake">Faked implementation.</param>

@@ -1,12 +1,12 @@
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.ValuerTool;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue052Tests
 {

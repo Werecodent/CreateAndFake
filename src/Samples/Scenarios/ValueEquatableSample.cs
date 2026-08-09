@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public class ValueEquatableSample : IValueEquatable

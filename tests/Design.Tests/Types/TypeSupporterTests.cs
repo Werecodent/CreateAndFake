@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Types;
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 public static class TypeSupporterTests
 {

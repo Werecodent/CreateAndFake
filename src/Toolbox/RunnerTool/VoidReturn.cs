@@ -1,4 +1,4 @@
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Represents void result for runs.</summary>
 public sealed class VoidReturn

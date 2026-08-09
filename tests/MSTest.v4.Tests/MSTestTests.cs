@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.MSTest.v4.Tests;
+namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
 public class MSTestTests

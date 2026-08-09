@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Attempts to cancel <see cref="CancellationTokenSource"/>s via <see langword="async"/>.</summary>
 internal sealed class MaybeAsyncCanceler

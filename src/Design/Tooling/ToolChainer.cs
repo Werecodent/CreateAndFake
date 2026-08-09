@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <typeparam name="TSelf">Self-reference <see cref="Type"/>.</typeparam>
 /// <typeparam name="TEngine">The <see cref="Type"/> for the hint engine.</typeparam>

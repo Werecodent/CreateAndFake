@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.MSTest.v3.Tests;
+namespace Werecodent.CreateAndFake.MSTest.v3.Tests;
 
 [TestClass]
 public class RandomDataAttributeTests

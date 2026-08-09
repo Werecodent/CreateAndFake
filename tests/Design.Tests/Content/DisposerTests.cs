@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Content;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
 public static class DisposerTests
 {

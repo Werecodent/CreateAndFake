@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 /// <summary>Handles randomizing <typeparamref name="T"/> values.</summary>
 /// <typeparam name="T">The <see cref="SupportedType"/>.</typeparam>

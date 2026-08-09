@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.Tests.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Engine;
 
 public static class DuplicatorChainerTests
 {

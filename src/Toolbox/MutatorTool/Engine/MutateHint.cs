@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <inheritdoc cref="IMutateHint"/>
 public abstract class MutateHint : IMutateHint

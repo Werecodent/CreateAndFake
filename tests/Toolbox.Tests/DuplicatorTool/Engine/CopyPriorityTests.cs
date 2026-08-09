@@ -1,6 +1,6 @@
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.Tests.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Engine;
 
 public static class CopyPriorityTests
 {

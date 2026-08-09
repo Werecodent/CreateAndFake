@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <summary>Contains whether or not the <see cref="IMutateHint"/> modified the instance.</summary>
 public sealed class MutateHintResult : HintResult<bool>

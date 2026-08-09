@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Handles extraction of the <see cref="ITypeSupporter.SupportedType"/>.</summary>
 public interface IExtractHandler : ITypeSupporter

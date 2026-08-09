@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace CreateAndFake.Design.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <inheritdoc cref="ILimiter"/>
 public sealed partial class Limiter : ILimiterSync

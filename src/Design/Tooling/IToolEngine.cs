@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 #pragma warning disable S2326 // Marker for inheritance.
 

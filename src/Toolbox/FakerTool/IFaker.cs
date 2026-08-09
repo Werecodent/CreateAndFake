@@ -1,11 +1,11 @@
 ﻿global using FakerMod = System.Func<
-    CreateAndFake.FakerTool.FakerOptions,
-    CreateAndFake.FakerTool.FakerOptions
+    Werecodent.CreateAndFake.FakerTool.FakerOptions,
+    Werecodent.CreateAndFake.FakerTool.FakerOptions
 >;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Engine;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Creates fake objects.</summary>
 public interface IFaker : IHintTool<FakerOptions, IFakeHint>

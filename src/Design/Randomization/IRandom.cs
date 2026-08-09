@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Randomization;
+namespace Werecodent.CreateAndFake.Design.Randomization;
 
 #pragma warning disable CA1716 // Matches the Random convention.
 

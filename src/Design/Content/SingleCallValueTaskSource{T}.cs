@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Threading.Tasks.Sources;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Used to enforce resolving a <see cref="ValueTask{T}"/> only once.</summary>
 /// <typeparam name="T">The contained result <see cref="Type"/>.</typeparam>

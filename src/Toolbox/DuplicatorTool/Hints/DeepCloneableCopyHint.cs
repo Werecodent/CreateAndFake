@@ -1,8 +1,8 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.DuplicatorTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning <see cref="IDeepCloneable{T}"/> instances for <see cref="IDuplicator"/>.</summary>
 public sealed class DeepCloneableCopyHint : CopyHint

@@ -1,9 +1,9 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <inheritdoc cref="IExtractor"/>
 public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine

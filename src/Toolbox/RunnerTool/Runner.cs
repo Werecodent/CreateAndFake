@@ -1,16 +1,16 @@
 using System.Collections.Specialized;
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <inheritdoc cref="IRunner"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

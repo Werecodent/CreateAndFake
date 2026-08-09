@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.MutatorTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.MutatorTool.Hints;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <summary>Priorities for <see cref="IMutateHint"/>s.</summary>
 public enum MutatePriority

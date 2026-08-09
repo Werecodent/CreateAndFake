@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Data;
-using CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Data;
+using Werecodent.CreateAndFake.Design.Randomization;
 
-namespace CreateAndFake.Design.Context;
+namespace Werecodent.CreateAndFake.Design.Context;
 
 /// <summary>Bundled random values for a person.</summary>
 /// <inheritdoc/>

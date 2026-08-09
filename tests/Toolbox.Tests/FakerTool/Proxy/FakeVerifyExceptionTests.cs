@@ -1,5 +1,5 @@
-﻿using CreateAndFake.FakerTool.Proxy;
+﻿using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.Tests.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
 public sealed class FakeVerifyExceptionTests : ExceptionTestBase<FakeVerifyException>;

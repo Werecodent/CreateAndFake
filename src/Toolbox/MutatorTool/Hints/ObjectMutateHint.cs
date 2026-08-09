@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Types;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.MutatorTool.Hints;
 
 /// <summary>Handles the mutation of data classes.</summary>
 public sealed class ObjectMutateHint : MutateHint

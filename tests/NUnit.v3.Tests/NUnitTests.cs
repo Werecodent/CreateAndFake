@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.NUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.NUnit.v3.Tests;
 
 [TestFixture]
 public static class NUnitTests

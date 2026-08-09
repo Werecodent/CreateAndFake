@@ -1,9 +1,9 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterTests
 {

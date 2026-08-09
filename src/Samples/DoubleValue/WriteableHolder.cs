@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples.DoubleValue;
+namespace Werecodent.CreateAndFake.Samples.DoubleValue;
 
 [ValidSample]
 public class WriteableHolder<T, TOther> : BaseWriteableHolder<T, TOther>

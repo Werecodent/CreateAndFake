@@ -1,4 +1,4 @@
-namespace CreateAndFake.Tests.Fluent;
+namespace Werecodent.CreateAndFake.Tests.Fluent;
 
 public static class FakeExtensionsTests
 {

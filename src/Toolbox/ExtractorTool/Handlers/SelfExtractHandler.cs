@@ -1,6 +1,6 @@
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Handlers;
+namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
 /// <summary>Prevents further extraction of the <paramref name="supportedType"/>.</summary>
 /// <param name="supportedType"><inheritdoc cref="SupportedType" path="/summary"/></param>

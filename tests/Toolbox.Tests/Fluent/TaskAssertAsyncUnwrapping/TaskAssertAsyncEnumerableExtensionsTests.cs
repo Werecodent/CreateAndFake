@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
-namespace CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
+namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
 public static class TaskAssertAsyncEnumerableExtensionsTests
 {

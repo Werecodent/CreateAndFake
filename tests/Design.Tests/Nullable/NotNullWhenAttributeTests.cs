@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.Design.Tests.Nullable;
+namespace Werecodent.CreateAndFake.Design.Tests.Nullable;
 
 public static class NotNullWhenAttributeTests
 {

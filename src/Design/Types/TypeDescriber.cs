@@ -2,10 +2,10 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
 public sealed class TypeDescriber : ITypeSupporter

@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing stateless objects for <see cref="IValuer"/>.</summary>
 public sealed class StatelessCompareHint : CompareHint

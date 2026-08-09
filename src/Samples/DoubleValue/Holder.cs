@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.SingleValue;
+using Werecodent.CreateAndFake.Samples.SingleValue;
 
-namespace CreateAndFake.Samples.DoubleValue;
+namespace Werecodent.CreateAndFake.Samples.DoubleValue;
 
 [ValidSample]
 public class Holder<T, TOther>(T value, TOther otherValue)

@@ -1,10 +1,10 @@
 global using DuplicatorMod = System.Func<
-    CreateAndFake.DuplicatorTool.DuplicatorOptions,
-    CreateAndFake.DuplicatorTool.DuplicatorOptions
+    Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions,
+    Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions
 >;
-using CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool;
 
-namespace CreateAndFake.Tests.DuplicatorTool;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
 public static class DuplicatorOptionsTests
 {

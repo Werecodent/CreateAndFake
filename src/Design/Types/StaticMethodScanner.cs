@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using System.Reflection;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <inheritdoc/>
 public sealed class StaticMethodScanner(Type? type) : MemberScanner<MethodInfo>(type)

@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Handles comparison and hashing of a specific type.</summary>
 internal interface ICompareHandler : ITypeSupporter

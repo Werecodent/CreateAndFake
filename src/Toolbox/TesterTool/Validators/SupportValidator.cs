@@ -1,14 +1,14 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.TesterTool.Validators;
+namespace Werecodent.CreateAndFake.TesterTool.Validators;
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

@@ -1,8 +1,8 @@
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.Tests.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
 public static class MutatorChainerTests
 {

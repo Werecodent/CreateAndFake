@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Priorities for <see cref="CopyHint"/>s.</summary>
 public enum CopyPriority

@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Data;
-using CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Data;
+using Werecodent.CreateAndFake.Design.Reiteration;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue021Tests
 {

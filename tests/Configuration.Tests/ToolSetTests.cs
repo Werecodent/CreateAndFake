@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Reflection;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Configuration.Tests;
+namespace Werecodent.CreateAndFake.Configuration.Tests;
 
 public static class ToolSetTests
 {

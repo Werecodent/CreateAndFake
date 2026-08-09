@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Data;
+using Werecodent.CreateAndFake.Design.Data;
 
-namespace CreateAndFake.Design.Tests.Data;
+namespace Werecodent.CreateAndFake.Design.Tests.Data;
 
 public static class NameDataTests
 {

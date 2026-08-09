@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples.Tests;
+namespace Werecodent.CreateAndFake.Samples.Tests;
 
 public static class ValidSampleAttributeTests
 {

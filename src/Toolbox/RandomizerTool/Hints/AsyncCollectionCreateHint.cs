@@ -1,9 +1,9 @@
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 #pragma warning disable CA1307 // Not available for all .NET versions.
 

@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Creates dynamic subclasses by IL code.</summary>
 internal static class Emitter
@@ -50,7 +50,7 @@ internal static class Emitter
     /// <summary>Module storing the faked types.</summary>
     private static readonly ModuleBuilder _Module = AssemblyBuilder
         .DefineDynamicAssembly(AssemblyName, AssemblyBuilderAccess.RunAndCollect)
-        .DefineDynamicModule("CreateAndFakeFakerTypesModule");
+        .DefineDynamicModule("Werecodent.CreateAndFakeFakerTypesModule");
 
     /// <summary>Creates a type with the given inheritance.</summary>
     /// <param name="parent">Base class inheriting from.</param>

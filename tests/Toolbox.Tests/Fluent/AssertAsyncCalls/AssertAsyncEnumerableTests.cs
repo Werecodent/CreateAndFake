@@ -1,6 +1,6 @@
-using CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
-namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
+namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public static class AssertAsyncEnumerableTests
 {

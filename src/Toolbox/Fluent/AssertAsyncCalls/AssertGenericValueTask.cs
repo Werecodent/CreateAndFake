@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Fluent.AssertAsyncCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
 /// <inheritdoc/>
 public sealed class AssertGenericValueTask<T>

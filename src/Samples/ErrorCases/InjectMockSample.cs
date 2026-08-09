@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool;
+﻿using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Samples.ErrorCases;
+namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample]
 public sealed class InjectMockSample(IOnlyMockSample sample1, IOnlyMockSample sample2)

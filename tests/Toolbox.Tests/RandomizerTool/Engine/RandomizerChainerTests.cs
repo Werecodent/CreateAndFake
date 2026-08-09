@@ -1,8 +1,8 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.Tests.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
 public static class RandomizerChainerTests
 {

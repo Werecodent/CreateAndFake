@@ -1,6 +1,6 @@
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.Tests.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
 public static class CreateHintResultTests
 {

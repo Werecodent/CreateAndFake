@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.ValuerTool;
+namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <summary>Expresses a value difference between two objects.</summary>
 public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>

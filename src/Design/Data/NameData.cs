@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace CreateAndFake.Design.Data;
+namespace Werecodent.CreateAndFake.Design.Data;
 
 /// <summary>Provides a pool of names.</summary>
 public static class NameData

@@ -1,8 +1,8 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Reiteration;
 
-namespace CreateAndFake.Design.Tests.Randomization;
+namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
 public sealed class FastRandomTests() : ValueRandomTestBase<FastRandom>(new())
 {

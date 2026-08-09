@@ -1,10 +1,10 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ExtractorTool;
 
-namespace CreateAndFake.TesterTool.Validators;
+namespace Werecodent.CreateAndFake.TesterTool.Validators;
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

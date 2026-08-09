@@ -1,7 +1,7 @@
 using System.Collections;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <inheritdoc/>
 public sealed class StructuralEquatableCompareHint : CompareHint<IStructuralEquatable>

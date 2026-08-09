@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <summary>Handles mutation of the <see cref="IToolHint.SupportedTypes"/>.</summary>
 public interface IMutateHint : IToolHint

@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 #pragma warning disable CA1711 // Follows existing pattern.
 

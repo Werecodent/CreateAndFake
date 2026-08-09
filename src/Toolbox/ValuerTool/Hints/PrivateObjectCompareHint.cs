@@ -1,6 +1,6 @@
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing objects for <see cref="IValuer"/>.</summary>
 public sealed class PrivateObjectCompareHint() : ObjectCompareHint(false)

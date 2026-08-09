@@ -1,10 +1,10 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public static class BehaviorTests
 {

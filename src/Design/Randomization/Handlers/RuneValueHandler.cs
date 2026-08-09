@@ -1,7 +1,7 @@
 using System.Reflection;
-using CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Content;
 
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 #pragma warning disable CA2263 // Not available in all .NET versions.
 

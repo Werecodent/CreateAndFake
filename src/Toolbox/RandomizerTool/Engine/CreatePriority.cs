@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Priorities for <see cref="CreateHint"/>s.</summary>
 public enum CreatePriority

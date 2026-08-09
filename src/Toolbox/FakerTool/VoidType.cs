@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.FakerTool;
+﻿namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Represents void type for behaviors.</summary>
 public sealed class VoidType

@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake.Design;
+namespace Werecodent.CreateAndFake.Design;
 
 #pragma warning disable RCS1256 // False positive.
 

@@ -1,6 +1,6 @@
-﻿using CreateAndFake.AsserterTool;
+﻿using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 /// <summary>Chainer enabling additional assertion calls.</summary>
 /// <typeparam name="T">Assertion base <see cref="Type"/> to chain.</typeparam>

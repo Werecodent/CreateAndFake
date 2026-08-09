@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Provides common <see cref="IAsyncEnumerable{T}"/> patterns.</summary>
 /// <remarks>Manually required as .NET 10 breaks <c>System.Linq.Async</c> compatibility.</remarks>

@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Hints;
 
-namespace CreateAndFake.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.FakerTool.Engine;
 
 /// <summary>Priorities for <see cref="IFakeHint"/>s.</summary>
 public enum FakePriority

@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.xUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
 
 public static class IntegrationTests
 {

@@ -1,10 +1,10 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.FakerTool;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.DuplicatorTool;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
 public static class DuplicatorTests
 {

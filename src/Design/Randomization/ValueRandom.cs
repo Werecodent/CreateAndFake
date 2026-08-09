@@ -1,11 +1,11 @@
 ﻿using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Properties;
-using CreateAndFake.Design.Randomization.Handlers;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Randomization.Handlers;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Randomization;
+namespace Werecodent.CreateAndFake.Design.Randomization;
 
 /// <inheritdoc cref="IRandom"/>
 /// <param name="iterationLimit"><inheritdoc cref="IterationLimit" path="/summary"/></param>

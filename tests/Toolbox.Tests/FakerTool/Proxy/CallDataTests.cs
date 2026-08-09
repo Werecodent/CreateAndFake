@@ -1,8 +1,8 @@
-﻿using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
 public static class CallDataTests
 {

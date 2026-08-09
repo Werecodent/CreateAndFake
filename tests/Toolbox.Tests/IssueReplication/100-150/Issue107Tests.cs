@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue107Tests
 {

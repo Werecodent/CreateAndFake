@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Creates dynamic subclasses.</summary>
 internal static class Subclasser

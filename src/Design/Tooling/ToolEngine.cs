@@ -1,8 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <inheritdoc cref="IToolEngine{T}"/>
 public abstract class ToolEngine<THint> : IToolEngine<THint>

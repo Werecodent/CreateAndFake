@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.RandomizerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing <c>Enum</c> values for <see cref="IRandomizer"/>.</summary>
 public sealed class EnumCreateHint : CreateHint

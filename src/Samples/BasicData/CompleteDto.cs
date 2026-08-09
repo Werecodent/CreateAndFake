@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples.BasicData;
+namespace Werecodent.CreateAndFake.Samples.BasicData;
 
 /// <summary>Combination of all basic data sample designs.</summary>
 [ValidSample]

@@ -1,10 +1,10 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design;
 
-namespace CreateAndFake.Properties;
+namespace Werecodent.CreateAndFake.Properties;
 
 /// <summary>Handles deserializing configuration values.</summary>
 internal static class Config

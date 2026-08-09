@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Handlers;
+namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 internal static class ReflectionCompareHandlers
 {

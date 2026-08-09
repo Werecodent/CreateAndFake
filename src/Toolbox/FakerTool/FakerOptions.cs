@@ -1,11 +1,11 @@
 using System.Reflection;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Engine;
-using CreateAndFake.Properties;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Configuration for controlling faking behavior.</summary>
 public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>

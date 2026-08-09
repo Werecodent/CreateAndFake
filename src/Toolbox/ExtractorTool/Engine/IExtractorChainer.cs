@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IExtractor"/> to extract child values.</summary>
 public interface IExtractorChainer : IExtractor, IToolChainer<ExtractorOptions, IExtractHint>

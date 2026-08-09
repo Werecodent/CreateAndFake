@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
 
-namespace CreateAndFake.AsserterTool.AsyncCategories;
+namespace Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 
 /// <summary>Handles common async test scenarios.</summary>
 public interface IAsserterTask

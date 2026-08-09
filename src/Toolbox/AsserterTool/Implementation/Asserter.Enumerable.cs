@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterEnumerable

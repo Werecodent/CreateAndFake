@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.MSTest.v3;
+namespace Werecodent.CreateAndFake.MSTest.v3;
 
 /// <summary>
 ///     Flags <see cref="TestMethodAttribute"/> methods

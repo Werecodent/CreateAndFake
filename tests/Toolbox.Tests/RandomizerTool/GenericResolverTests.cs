@@ -1,6 +1,6 @@
-using CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool;
 
-namespace CreateAndFake.Tests.RandomizerTool;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
 public static class GenericResolverTests
 {

@@ -1,11 +1,11 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.Properties;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <summary>Configuration for controlling assert behavior.</summary>
 public sealed record AsserterOptions : IToolOptions

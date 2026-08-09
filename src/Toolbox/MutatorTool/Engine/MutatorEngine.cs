@@ -1,12 +1,12 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <inheritdoc/>
 public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine

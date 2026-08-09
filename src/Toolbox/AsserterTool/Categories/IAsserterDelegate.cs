@@ -1,4 +1,4 @@
-namespace CreateAndFake.AsserterTool.Categories;
+namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 
 #pragma warning disable CA1711 // Follows existing pattern.
 

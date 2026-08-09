@@ -1,8 +1,8 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <inheritdoc cref="IMutatorChainer"/>
 public sealed class MutatorChainer

@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.TesterTool.TestSamples;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 internal static class StaticMutationSample
 {

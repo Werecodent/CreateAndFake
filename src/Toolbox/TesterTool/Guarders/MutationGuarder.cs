@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool.Guarders;
+namespace Werecodent.CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates parameter mutation checks.</summary>
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>

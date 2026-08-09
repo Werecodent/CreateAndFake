@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <inheritdoc cref="ICreateHint"/>
 public abstract class CreateHint : ICreateHint

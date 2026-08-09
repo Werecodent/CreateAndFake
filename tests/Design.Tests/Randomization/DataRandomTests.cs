@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Randomization;
+namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
 public static class DataRandomTests
 {

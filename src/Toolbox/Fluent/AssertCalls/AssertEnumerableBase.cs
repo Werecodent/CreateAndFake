@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Fluent.AssertAsyncCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 #pragma warning disable CA1068 // Cleaner calls.
 

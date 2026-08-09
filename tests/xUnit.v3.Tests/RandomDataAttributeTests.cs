@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool;
 using Xunit.Sdk;
 
-namespace CreateAndFake.xUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
 
 public static class RandomDataAttributeTests
 {

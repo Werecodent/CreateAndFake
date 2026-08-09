@@ -1,6 +1,6 @@
-using CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.FakerTool.Engine;
 
-namespace CreateAndFake.Tests.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
 
 public static class FakePriorityTests
 {

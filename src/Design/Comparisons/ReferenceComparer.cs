@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace CreateAndFake.Design.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>Compares <see langword="object"/>s by reference.</summary>
 /// <remarks>Ignores overrides to <see cref="object.Equals(object)"/> and <see cref="object.GetHashCode"/>.</remarks>

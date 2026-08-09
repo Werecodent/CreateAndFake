@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

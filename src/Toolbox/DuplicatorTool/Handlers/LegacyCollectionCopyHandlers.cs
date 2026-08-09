@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Specialized;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class LegacyCollectionCopyHandlers

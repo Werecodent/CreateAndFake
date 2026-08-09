@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.DuplicatorTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning <see cref="ICloneable"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class CloneableCopyHint : CopyHint<ICloneable>

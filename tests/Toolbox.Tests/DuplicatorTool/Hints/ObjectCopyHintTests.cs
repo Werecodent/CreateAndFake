@@ -1,8 +1,8 @@
-﻿using CreateAndFake.DuplicatorTool.Hints;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.DuplicatorTool.Hints;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Hints;
 
 public sealed class ObjectCopyHintTests : CopyHintTestBase<ObjectCopyHint>
 {

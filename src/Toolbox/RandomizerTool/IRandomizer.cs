@@ -1,12 +1,12 @@
 ﻿global using RandomizerMod = System.Func<
-    CreateAndFake.RandomizerTool.RandomizerOptions,
-    CreateAndFake.RandomizerTool.RandomizerOptions
+    Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions,
+    Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions
 >;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool;
+namespace Werecodent.CreateAndFake.RandomizerTool;
 
 /// <summary>Creates objects and populates them with random values.</summary>
 public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>

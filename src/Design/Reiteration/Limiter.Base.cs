@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.Globalization;
-using CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.Design.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <inheritdoc cref="ILimiter"/>
 /// <param name="timeout"><inheritdoc cref="_timeout" path="/summary"/></param>

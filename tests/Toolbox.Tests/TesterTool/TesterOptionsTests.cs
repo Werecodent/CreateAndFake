@@ -1,10 +1,10 @@
 global using TesterMod = System.Func<
-    CreateAndFake.TesterTool.TesterOptions,
-    CreateAndFake.TesterTool.TesterOptions
+    Werecodent.CreateAndFake.TesterTool.TesterOptions,
+    Werecodent.CreateAndFake.TesterTool.TesterOptions
 >;
-using CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace Werecodent.CreateAndFake.Tests.TesterTool;
 
 public static class TesterOptionsTests
 {

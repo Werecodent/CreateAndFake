@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.MSTest.v4.Tests;
+namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
 public class IntegrationTests

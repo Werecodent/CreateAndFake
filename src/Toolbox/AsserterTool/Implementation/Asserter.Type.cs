@@ -1,7 +1,7 @@
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterType

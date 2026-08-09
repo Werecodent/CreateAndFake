@@ -1,10 +1,10 @@
 global using AsserterMod = System.Func<
-    CreateAndFake.AsserterTool.AsserterOptions,
-    CreateAndFake.AsserterTool.AsserterOptions
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions,
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions
 >;
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool;
 
 public static class AsserterOptionsTests
 {

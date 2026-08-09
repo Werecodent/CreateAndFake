@@ -1,11 +1,11 @@
 using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
 
-namespace CreateAndFake.Tests.RunnerTool;
+namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class RunnerTests
 {

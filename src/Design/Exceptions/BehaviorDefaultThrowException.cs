@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace CreateAndFake.Design.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Exceptions;
 
 /// <summary>Default <see cref="Exception"/> <see cref="Type"/> when throwing via set Behavior for fakes.</summary>
 [Serializable]

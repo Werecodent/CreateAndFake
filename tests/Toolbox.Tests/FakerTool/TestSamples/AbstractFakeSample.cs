@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Tests.FakerTool.TestSamples;
+﻿namespace Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 public abstract class AbstractFakeSample : IFakeSample
 {

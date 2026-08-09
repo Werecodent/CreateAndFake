@@ -1,6 +1,6 @@
-using CreateAndFake.TesterTool.Validators;
+using Werecodent.CreateAndFake.TesterTool.Validators;
 
-namespace CreateAndFake.Tests.TesterTool.Validators;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
 public static class SupportValidatorTests
 {

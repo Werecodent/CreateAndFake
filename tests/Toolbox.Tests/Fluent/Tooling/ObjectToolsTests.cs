@@ -1,7 +1,7 @@
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Fluent.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent.Tooling;
 
-namespace CreateAndFake.Tests.Fluent.Tooling;
+namespace Werecodent.CreateAndFake.Tests.Fluent.Tooling;
 
 public static class ObjectToolsTests
 {

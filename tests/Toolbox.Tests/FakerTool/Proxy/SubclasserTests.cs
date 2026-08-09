@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.Tests.FakerTool.TestSamples;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
-namespace CreateAndFake.Tests.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
 public static class SubclasserTests
 {

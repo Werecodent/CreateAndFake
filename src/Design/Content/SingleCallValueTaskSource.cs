@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Threading.Tasks.Sources;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Used to enforce resolving a <see cref="ValueTask"/> only once.</summary>
 /// <param name="id"><inheritdoc cref="Id" path="/summary"/></param>

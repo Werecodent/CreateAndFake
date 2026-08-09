@@ -1,8 +1,8 @@
-using CreateAndFake.Fluent.AssertAsyncCalls;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Tests.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
 
 public static class AlsoChainerTests
 {

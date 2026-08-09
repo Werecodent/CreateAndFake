@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Tests.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Tests.Exceptions;
 
 public sealed class AsynchronousAccessExceptionTests
     : ExceptionTestBase<AsynchronousAccessException>;

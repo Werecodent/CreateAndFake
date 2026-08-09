@@ -1,6 +1,6 @@
-using CreateAndFake.ExtractorTool.Handlers;
+using Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
-namespace CreateAndFake.Tests.ExtractorTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Handlers;
 
 public static class ValueExtractHandlersTests
 {

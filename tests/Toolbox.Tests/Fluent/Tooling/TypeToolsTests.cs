@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Fluent.Tooling;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Fluent.Tooling;
 
-namespace CreateAndFake.Tests.Fluent.Tooling;
+namespace Werecodent.CreateAndFake.Tests.Fluent.Tooling;
 
 public static class TypeToolsTests
 {

@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 /// <inheritdoc/>
 internal sealed class TimeSpanValueHandler : ValueHandler<TimeSpan>

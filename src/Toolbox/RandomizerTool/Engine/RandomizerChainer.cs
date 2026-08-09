@@ -1,9 +1,9 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
 public sealed class RandomizerChainer

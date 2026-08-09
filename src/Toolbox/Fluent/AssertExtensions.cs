@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertAsyncCalls;
-using CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 /// <summary>Provides fluent assertions.</summary>
 public static class AssertExtensions

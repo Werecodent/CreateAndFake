@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
 
 public static class ResultChainerExtensionsTests
 {

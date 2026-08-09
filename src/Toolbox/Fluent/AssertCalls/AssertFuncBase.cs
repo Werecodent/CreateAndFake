@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.Categories;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="function">Delegate to check.</param>

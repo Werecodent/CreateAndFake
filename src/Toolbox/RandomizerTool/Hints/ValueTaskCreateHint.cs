@@ -1,10 +1,10 @@
 using System.Threading.Tasks.Sources;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing <see cref="ValueTask{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class ValueTaskCreateHint : CreateHint

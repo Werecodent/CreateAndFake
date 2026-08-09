@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public static class FakeTests
 {

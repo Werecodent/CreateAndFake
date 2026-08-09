@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Handlers;
+namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class ValueCompareHandlers

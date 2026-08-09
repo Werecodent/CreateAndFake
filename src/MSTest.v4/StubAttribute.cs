@@ -1,6 +1,6 @@
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.MSTest.v4;
+namespace Werecodent.CreateAndFake.MSTest.v4;
 
 /// <inheritdoc/>
 public sealed class StubAttribute : BaseStubAttribute;

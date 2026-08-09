@@ -1,9 +1,9 @@
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <inheritdoc/>
 public sealed class ValueTaskCompareHint : CompareHint

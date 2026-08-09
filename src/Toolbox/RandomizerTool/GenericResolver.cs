@@ -2,14 +2,14 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Handlers;
-using CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Handlers;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
 
-namespace CreateAndFake.RandomizerTool;
+namespace Werecodent.CreateAndFake.RandomizerTool;
 
 /// <summary>Fulfills generics for generic type definitions.</summary>
 public static class GenericResolver

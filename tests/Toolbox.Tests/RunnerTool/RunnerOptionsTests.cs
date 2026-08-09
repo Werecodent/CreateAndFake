@@ -1,10 +1,10 @@
 global using RunnerMod = System.Func<
-    CreateAndFake.RunnerTool.RunnerOptions,
-    CreateAndFake.RunnerTool.RunnerOptions
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions,
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions
 >;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.RunnerTool;
+namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class RunnerOptionsTests
 {

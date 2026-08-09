@@ -1,7 +1,7 @@
-using CreateAndFake.Design;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Handlers;
+namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
 /// <inheritdoc cref="IExtractHandler"/>
 /// <typeparam name="T"><inheritdoc cref="SupportedType" path="/summary"/></typeparam>

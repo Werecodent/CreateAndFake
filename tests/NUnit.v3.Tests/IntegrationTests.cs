@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.NUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.NUnit.v3.Tests;
 
 [TestFixture]
 public static class IntegrationTests

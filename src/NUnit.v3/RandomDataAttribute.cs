@@ -1,11 +1,11 @@
-﻿using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Builders;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.NUnit.v3;
+namespace Werecodent.CreateAndFake.NUnit.v3;
 
 /// <summary>Flags test methods to be populated with random values for testing.</summary>
 /// <remarks>

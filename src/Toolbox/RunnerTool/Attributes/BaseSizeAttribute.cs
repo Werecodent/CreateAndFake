@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.RunnerTool.Attributes;
+namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached collection with <paramref name="count"/> items.</summary>
 /// <param name="count"><inheritdoc cref="Count" path="/summary"/></param>

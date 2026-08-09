@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.Samples.ErrorCases;
+namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample, ExcludeFromCodeCoverage]
 public sealed class InvalidCreateSample : IOnlyMockSample

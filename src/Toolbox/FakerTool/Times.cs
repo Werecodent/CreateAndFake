@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Comparisons;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Tracks number of calls.</summary>
 public sealed class Times : IEquatable<Times>, IDeepCloneable<Times>

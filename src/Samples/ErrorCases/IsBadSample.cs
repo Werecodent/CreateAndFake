@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Types;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Samples.ErrorCases;
+namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample]
 public class IsBadSample : IIsGoodOrBadSample

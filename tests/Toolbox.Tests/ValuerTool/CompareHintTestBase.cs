@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.Tests.ValuerTool;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 
 /// <summary>Handles testing compare hints.</summary>
 /// <typeparam name="T">Compare hint to test.</typeparam>

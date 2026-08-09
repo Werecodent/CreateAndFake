@@ -1,7 +1,7 @@
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue038Tests
 {

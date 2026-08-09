@@ -1,9 +1,9 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design.Context;
-using CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Context;
+using Werecodent.CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake.Design.Randomization;
+namespace Werecodent.CreateAndFake.Design.Randomization;
 
 /// <summary>Collects random predefined values to use for data generation.</summary>
 /// <param name="gen"><inheritdoc cref="IRandom" path="/summary"/></param>

@@ -1,4 +1,4 @@
-namespace CreateAndFake.RunnerTool.Attributes;
+namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flags test methods to be populated with random values for testing.</summary>
 public interface IRandomDataMarker

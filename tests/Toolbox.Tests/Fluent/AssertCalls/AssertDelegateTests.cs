@@ -1,11 +1,11 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.Fluent.AssertCalls;
+namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
 public static class AssertDelegateTests
 {

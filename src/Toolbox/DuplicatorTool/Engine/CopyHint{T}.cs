@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.DuplicatorTool.Engine;
+﻿namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <typeparam name="T"><see cref="Type"/> being supported for cloning.</typeparam>
 /// <inheritdoc/>

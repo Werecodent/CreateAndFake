@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.TesterTool.Guarders;
+namespace Werecodent.CreateAndFake.TesterTool.Guarders;
 
 /// <summary>Automates null reference guard checks.</summary>
 /// <param name="options"><inheritdoc cref="BaseGuarder.Options" path="/summary"/></param>

@@ -1,8 +1,8 @@
 using System.Text;
-using CreateAndFake.AsserterTool.AsyncCategories;
-using CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.Design.Content;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterAsyncEnumerable

@@ -8,6 +8,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <NoWarn>$(NoWarn);NU1510;NU1903</NoWarn>
+    <RootNamespace>Werecodent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -22,9 +23,9 @@
   <PropertyGroup>
     <Authors>CreateAndFake Contributors</Authors>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://createandfake.github.io/CreateAndFake/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/CreateAndFake/CreateAndFake</RepositoryUrl>
-    <ReleaseNotes>https://github.com/CreateAndFake/CreateAndFake/releases/</ReleaseNotes>
+    <PackageProjectUrl>https://werecodent.github.io/CreateAndFake/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Werecodent/CreateAndFake</RepositoryUrl>
+    <ReleaseNotes>https://github.com/Werecodent/CreateAndFake/releases/</ReleaseNotes>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>create, fake, tdd, agile, testing, tests, stubs, mocking, mocks, mock, data, random, cloning, clones, clone</PackageTags>
   </PropertyGroup>

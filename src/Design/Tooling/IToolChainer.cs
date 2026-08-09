@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Handles the recursive portion of tool behavior.</summary>
 /// <typeparam name="TOptions">Type for the options.</typeparam>

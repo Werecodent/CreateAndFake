@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.FakerTool.Proxy;
+﻿namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Represents a faked implementation.</summary>
 public interface IFaked

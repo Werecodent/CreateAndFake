@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Design.Comparisons;
+﻿namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>Provides value equality without changing the default reference equality.</summary>
 public interface IValueEquatable

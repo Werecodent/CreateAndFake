@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 /// <inheritdoc cref="ICreateHandler"/>
 /// <param name="factory">Behavior handling creation of the supported type.</param>

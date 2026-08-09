@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Design.Tests.Types;
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 public static class ScopeCheckerTests
 {

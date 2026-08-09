@@ -1,10 +1,10 @@
-using CreateAndFake.Design.Types;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.MutatorTool;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
 /// <summary>Handles testing <see cref="IMutateHint"/>s.</summary>
 /// <typeparam name="T">Hint <see cref="Type"/> to test.</typeparam>

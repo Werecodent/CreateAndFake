@@ -1,6 +1,6 @@
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
 
 /// <summary>Prevents mutations of the <paramref name="supportedType"/>.</summary>
 /// <param name="supportedType">Specific <see cref="Type"/> to prevent mutations of.</param>

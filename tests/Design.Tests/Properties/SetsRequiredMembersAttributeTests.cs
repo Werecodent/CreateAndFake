@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.Design.Tests.Properties;
+namespace Werecodent.CreateAndFake.Design.Tests.Properties;
 
 public static class SetsRequiredMembersAttributeTests
 {

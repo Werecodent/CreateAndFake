@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Types;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryCompareHint>
 {

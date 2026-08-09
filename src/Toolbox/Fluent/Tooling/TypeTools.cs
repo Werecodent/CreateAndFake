@@ -1,6 +1,6 @@
-using CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool;
 
-namespace CreateAndFake.Fluent.Tooling;
+namespace Werecodent.CreateAndFake.Fluent.Tooling;
 
 /// <inheritdoc/>
 public sealed class TypeTools(Type source, ToolSet? tools) : ObjectTools<Type>(source, tools)

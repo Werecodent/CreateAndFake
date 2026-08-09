@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.SingleValue;
+using Werecodent.CreateAndFake.Samples.SingleValue;
 
-namespace CreateAndFake.Samples.DoubleValue;
+namespace Werecodent.CreateAndFake.Samples.DoubleValue;
 
 [ValidSample]
 public interface IWriteableHolder<in T, in TOther> : IWriteableHolder<T>

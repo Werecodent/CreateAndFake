@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.AsserterTool.Implementation;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterFuncTests
 {

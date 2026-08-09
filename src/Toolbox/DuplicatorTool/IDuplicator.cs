@@ -1,13 +1,13 @@
 ﻿global using DuplicatorMod = System.Func<
-    CreateAndFake.DuplicatorTool.DuplicatorOptions,
-    CreateAndFake.DuplicatorTool.DuplicatorOptions
+    Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions,
+    Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions
 >;
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool;
+namespace Werecodent.CreateAndFake.DuplicatorTool;
 
 /// <summary>Deep clones objects.</summary>
 public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>

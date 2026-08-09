@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Tests.Fluent;
+namespace Werecodent.CreateAndFake.Tests.Fluent;
 
 public static class ToolingExtensionsTests
 {

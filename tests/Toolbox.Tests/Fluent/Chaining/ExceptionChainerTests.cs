@@ -1,6 +1,6 @@
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Tests.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
 
 public static class ExceptionChainerTests
 {

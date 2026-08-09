@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Handles comparisons of the <see cref="IToolHint.SupportedTypes"/>.</summary>
 public interface ICompareHint : IToolHint

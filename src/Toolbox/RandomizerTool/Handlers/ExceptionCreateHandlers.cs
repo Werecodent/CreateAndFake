@@ -1,10 +1,10 @@
 using System.Collections.Frozen;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 #pragma warning disable CS0618, SYSLIB0050 // Needed for backwards compatibility.
 

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RunnerTool;
+namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {

@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RandomizerTool;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
 public static class RandomizerTests
 {

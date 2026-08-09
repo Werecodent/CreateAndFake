@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.xUnit.v3.Tests;
+namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
 
 public static class XUnitTests
 {

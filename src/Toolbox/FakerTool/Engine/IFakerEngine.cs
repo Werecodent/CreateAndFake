@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.FakerTool.Engine;
 
 /// <inheritdoc cref="IFaker"/>
 public interface IFakerEngine : IToolEngine<IFakeHint>

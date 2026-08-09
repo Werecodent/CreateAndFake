@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using System.Reflection;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Finds factories on the <see cref="MemberScanner{T}.SupportedType"/>.</summary>
 /// <inheritdoc/>

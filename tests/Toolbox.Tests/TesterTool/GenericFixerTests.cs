@@ -1,6 +1,6 @@
-﻿using CreateAndFake.TesterTool;
+﻿using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace Werecodent.CreateAndFake.Tests.TesterTool;
 
 public static class GenericFixerTests
 {

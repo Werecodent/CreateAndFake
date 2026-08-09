@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Extracts the contents from containers.</summary>
 internal static class Unwrapper

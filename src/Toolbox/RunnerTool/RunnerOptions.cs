@@ -1,16 +1,16 @@
 using System.Collections.Immutable;
 using System.Reflection;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.Properties;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Configuration for controlling run behavior.</summary>
 public sealed record RunnerOptions : IToolOptions

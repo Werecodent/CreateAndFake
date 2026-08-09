@@ -1,9 +1,9 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.AsserterTool.AsyncCategories;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent.AssertAsyncCalls;
+namespace Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
 #pragma warning disable CA1068 // Cleaner calls.
 

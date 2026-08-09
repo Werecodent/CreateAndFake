@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Handles creation of a specific type.</summary>
 internal interface ICreateHandler : ITypeSupporter

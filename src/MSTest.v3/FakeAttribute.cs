@@ -1,6 +1,6 @@
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.MSTest.v3;
+namespace Werecodent.CreateAndFake.MSTest.v3;
 
 /// <inheritdoc/>
 public sealed class FakeAttribute : BaseFakeAttribute;

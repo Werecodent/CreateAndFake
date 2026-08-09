@@ -1,9 +1,9 @@
 using System.Collections;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertAsyncCalls;
-using CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 /// <summary>Chainer enabling additional assertion calls.</summary>
 /// <param name="asserter">Configured options for <see langword="this"/>.</param>

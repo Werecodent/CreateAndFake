@@ -1,7 +1,7 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.FakerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IFaker"/> to fake child values.</summary>
 public sealed class FakerChainer

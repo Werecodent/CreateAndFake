@@ -1,7 +1,7 @@
 using System.Reflection;
-using CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Provides information only available at runtime.</summary>
 public static class RuntimeDetails

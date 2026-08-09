@@ -1,7 +1,7 @@
-﻿using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class TaskCreateHintTests : CreateHintTestBase<TaskCreateHint>
 {

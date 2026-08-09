@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Samples.Scenarios;
+﻿namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public abstract class ProtectedSample

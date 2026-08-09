@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Call and result for a <paramref name="method"/> call.</summary>
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>

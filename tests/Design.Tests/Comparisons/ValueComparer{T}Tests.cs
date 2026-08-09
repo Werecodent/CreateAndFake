@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Exceptions;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.Design.Tests.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
 public static class ValueComparer_T_Tests
 {

@@ -1,10 +1,10 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.TesterTool.Validators;
+namespace Werecodent.CreateAndFake.TesterTool.Validators;
 
 /// <summary>Automates common tests.</summary>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

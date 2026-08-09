@@ -1,8 +1,8 @@
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 #pragma warning disable MA0079 // Should not cancel the source while canceling the clone.
 

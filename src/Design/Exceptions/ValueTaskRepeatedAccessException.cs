@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace CreateAndFake.Design.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Exceptions;
 
 /// <summary>
 ///     <see cref="Exception"/> <see cref="Type"/> for awaiting a

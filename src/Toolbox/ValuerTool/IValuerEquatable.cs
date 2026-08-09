@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Comparisons;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.ValuerTool;
+namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <summary>Provides value equality with the aid of an <see cref="IValuer"/>.</summary>
 public interface IValuerEquatable

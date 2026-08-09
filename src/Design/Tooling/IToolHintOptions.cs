@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Configuration for manipulating <see cref="IHintTool{T,T}"/> behavior.</summary>
 /// <typeparam name="TSelf">Self-reference <see cref="Type"/>.</typeparam>

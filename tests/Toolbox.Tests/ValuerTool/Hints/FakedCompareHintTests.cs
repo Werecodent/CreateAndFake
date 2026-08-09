@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class FakedCompareHintTests : CompareHintTestBase<FakedCompareHint>
 {

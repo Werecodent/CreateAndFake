@@ -1,15 +1,15 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Fluent;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-namespace CreateAndFake.xUnit.v3;
+namespace Werecodent.CreateAndFake.xUnit.v3;
 
 /// <summary>
 ///     Flags <see cref="TheoryAttribute"/> methods to be populated with random values for testing.

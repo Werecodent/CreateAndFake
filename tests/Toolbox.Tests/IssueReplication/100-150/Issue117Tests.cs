@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue117Tests
 {

@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>exe</OutputType>
     <IsPackable>false</IsPackable>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
   
   <ItemGroup>

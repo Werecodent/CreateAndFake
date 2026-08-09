@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 /// <inheritdoc/>
 /// <param name="byteSize">Size of <typeparamref name="T"/> in bytes.</param>

@@ -1,6 +1,6 @@
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.RunnerTool;
+namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class RunResultTests
 {

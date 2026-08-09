@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.BasicData;
+using Werecodent.CreateAndFake.Samples.BasicData;
 
-namespace CreateAndFake.Samples.Tests.BasicData;
+namespace Werecodent.CreateAndFake.Samples.Tests.BasicData;
 
 public static class SimpleDtoTests
 {

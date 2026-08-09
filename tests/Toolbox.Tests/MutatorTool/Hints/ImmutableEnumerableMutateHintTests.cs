@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
-using CreateAndFake.MutatorTool.Hints;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.MutatorTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Hints;
 
 public sealed class ImmutableEnumerableMutateHintTests
     : MutateHintTestBase<ImmutableEnumerableMutateHint>

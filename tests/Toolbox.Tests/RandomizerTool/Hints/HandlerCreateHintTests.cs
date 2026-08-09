@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Text;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class HandlerCreateHintTests : CreateHintTestBase<HandlerCreateHint>
 {

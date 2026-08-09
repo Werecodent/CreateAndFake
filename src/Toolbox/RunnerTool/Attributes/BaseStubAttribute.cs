@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.RunnerTool.Attributes;
+namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached <see langword="object"/> as a stub.</summary>
 /// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken, IEnumerable{object?}?)"/>

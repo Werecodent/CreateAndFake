@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.TesterTool;
-using CreateAndFake.Tests.TesterTool.TestSamples;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
-namespace CreateAndFake.Tests.TesterTool;
+namespace Werecodent.CreateAndFake.Tests.TesterTool;
 
 public static class TesterTests
 {

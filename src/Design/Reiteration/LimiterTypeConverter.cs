@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <summary>Handles serialization/deserialization for <see cref="ILimiter"/>.</summary>
 public sealed class LimiterTypeConverter : TypeConverter

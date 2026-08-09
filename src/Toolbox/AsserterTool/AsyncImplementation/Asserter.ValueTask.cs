@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool.AsyncCategories;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterValueTask

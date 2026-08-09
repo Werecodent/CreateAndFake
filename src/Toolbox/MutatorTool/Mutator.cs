@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.MutatorTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool;
+namespace Werecodent.CreateAndFake.MutatorTool;
 
 /// <inheritdoc cref="IMutator"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

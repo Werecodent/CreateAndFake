@@ -1,6 +1,6 @@
-﻿using CreateAndFake.ValuerTool.Engine;
+﻿using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing <see cref="IValuerEquatable"/> instances for <see cref="IValuer"/>.</summary>
 public sealed class ValuerEquatableCompareHint : CompareHint<IValuerEquatable>

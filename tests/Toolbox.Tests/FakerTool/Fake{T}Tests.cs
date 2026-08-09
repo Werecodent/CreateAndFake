@@ -1,12 +1,12 @@
-﻿using CreateAndFake.AsserterTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.Tests.FakerTool.TestSamples;
-using CreateAndFake.Tests.TestSamples;
-using CreateAndFake.ValuerTool;
+﻿using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
+using Werecodent.CreateAndFake.Tests.TestSamples;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 #pragma warning disable RCS1021 // Expression-bodied lambda creates incorrect type.
 

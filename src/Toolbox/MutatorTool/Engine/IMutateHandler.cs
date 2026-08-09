@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <summary>Handles mutation of the <see cref="ITypeSupporter.SupportedType"/>.</summary>
 public interface IMutateHandler : ITypeSupporter

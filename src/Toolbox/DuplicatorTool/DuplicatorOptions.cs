@@ -1,13 +1,13 @@
 using System.Collections.Frozen;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.Properties;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.DuplicatorTool;
+namespace Werecodent.CreateAndFake.DuplicatorTool;
 
 /// <summary>Configuration for controlling duplication behavior.</summary>
 public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICopyHint>

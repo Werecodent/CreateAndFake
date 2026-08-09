@@ -1,6 +1,6 @@
 using System;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public sealed class InheritedPrivatesSample(string stringValue)

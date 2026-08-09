@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Design.Comparisons;
+﻿namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>Provides self copy-by-value functionality.</summary>
 /// <typeparam name="T">Self-reference <see cref="Type"/>.</typeparam>

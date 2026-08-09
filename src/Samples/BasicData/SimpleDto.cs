@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.BasicData;
+namespace Werecodent.CreateAndFake.Samples.BasicData;
 
 /// <summary>Assorted basic values.</summary>
 [ValidSample]

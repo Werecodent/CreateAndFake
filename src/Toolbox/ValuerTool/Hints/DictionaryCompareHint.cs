@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <inheritdoc/>
 public sealed class DictionaryCompareHint : CompareHint<IDictionary>

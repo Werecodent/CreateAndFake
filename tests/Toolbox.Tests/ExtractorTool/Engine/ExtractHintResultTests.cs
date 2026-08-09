@@ -1,6 +1,6 @@
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.Tests.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Engine;
 
 public static class ExtractHintResultTests
 {

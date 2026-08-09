@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Immutable;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.MutatorTool.Hints;
 
 /// <summary>
 ///     Handles the mutation of collections that don't support <see cref="ICollection{T}"/>s.

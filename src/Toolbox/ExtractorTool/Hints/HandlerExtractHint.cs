@@ -1,10 +1,10 @@
 using System.Text;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ExtractorTool.Engine;
-using CreateAndFake.ExtractorTool.Handlers;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
-namespace CreateAndFake.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
 /// <summary>Combines and utilizes available handlers for mutations.</summary>
 public sealed class HandlerExtractHint : IExtractHint

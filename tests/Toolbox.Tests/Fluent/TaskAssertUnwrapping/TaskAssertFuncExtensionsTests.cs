@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
+namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
 public static class TaskAssertFuncExtensionsTests
 {

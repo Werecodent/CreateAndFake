@@ -1,13 +1,13 @@
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Tests.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
 public static class MutatorEngineTests
 {

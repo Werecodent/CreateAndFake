@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <inheritdoc cref="ICopyHint"/>
 public abstract class CopyHint : ICopyHint

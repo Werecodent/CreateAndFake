@@ -21,9 +21,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
     <ProjectReference Include="..\..\src\xUnit.v2\CreateAndFake.xUnit.v2.csproj" />
-    <Using Include="CreateAndFake" />
-    <Using Include="CreateAndFake.Fluent" />
-    <Using Include="CreateAndFake.xUnit.v2" />
+    <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Fluent" />
+    <Using Include="Werecodent.CreateAndFake.xUnit.v2" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning immutable collection types for <see cref="IDuplicator"/> .</summary>
 public class FrozenCollectionCopyHint : CopyHint

@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool;
 
-namespace CreateAndFake.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 #pragma warning disable S2696 // Thread local.
 

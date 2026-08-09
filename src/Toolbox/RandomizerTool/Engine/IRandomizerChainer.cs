@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <summary>Provides a callback into <see cref="IRandomizer"/> to create child values.</summary>
 public interface IRandomizerChainer : IRandomizer, IToolChainer<RandomizerOptions, ICreateHint>

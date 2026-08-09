@@ -1,8 +1,8 @@
 using System.Collections.Specialized;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Handlers;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Handlers;
 
-namespace CreateAndFake.Tests.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Handlers;
 
 public static class StringDictionaryMutateHandlerTests
 {

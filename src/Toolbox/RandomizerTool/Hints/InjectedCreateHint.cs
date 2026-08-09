@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing injected dummies for <see cref="IRandomizer"/>.</summary>
 public sealed class InjectedCreateHint : CreateHint

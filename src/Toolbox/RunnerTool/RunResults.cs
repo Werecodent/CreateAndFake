@@ -1,7 +1,7 @@
 using System.Text;
-using CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Results for a series of associated calls.</summary>
 /// <param name="rawResults"><inheritdoc cref="RawResults" path="/summary"/></param>

@@ -1,8 +1,8 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Samples.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
 public class ValuerComparableSample : IValuerComparable

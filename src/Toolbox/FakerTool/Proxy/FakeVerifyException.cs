@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.FakerTool.Proxy;
+namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
 /// <summary>Exception for call counts not matching expectations.</summary>
 [Serializable]

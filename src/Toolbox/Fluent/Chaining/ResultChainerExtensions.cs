@@ -1,12 +1,12 @@
 using System.Collections;
-using CreateAndFake.Design;
-using CreateAndFake.Fluent.AssertAsyncCalls;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
 #pragma warning disable IDE0130 // Cleaner project organization.
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 #pragma warning restore
 

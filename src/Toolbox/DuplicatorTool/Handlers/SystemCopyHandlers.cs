@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class SystemCopyHandlers

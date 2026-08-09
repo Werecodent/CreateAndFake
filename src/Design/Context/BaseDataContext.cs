@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Randomization;
 
-namespace CreateAndFake.Design.Context;
+namespace Werecodent.CreateAndFake.Design.Context;
 
 /// <summary>Bundles associated random values from data pools.</summary>
 /// <param name="gen"><inheritdoc cref="Gen" path="/summary"/></param>

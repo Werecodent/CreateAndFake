@@ -1,9 +1,9 @@
-using CreateAndFake.Design;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 /// <summary>Provides fluent assertions.</summary>
 public static class TaskAssertObjectExtensions

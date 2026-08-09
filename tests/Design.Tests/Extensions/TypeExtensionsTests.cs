@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Extensions;
+﻿using Werecodent.CreateAndFake.Design.Extensions;
 
-namespace CreateAndFake.Design.Tests.Extensions;
+namespace Werecodent.CreateAndFake.Design.Tests.Extensions;
 
 public static class TypeExtensionsTests
 {

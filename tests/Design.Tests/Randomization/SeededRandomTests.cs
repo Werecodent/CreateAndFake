@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design.Randomization;
+﻿using Werecodent.CreateAndFake.Design.Randomization;
 
-namespace CreateAndFake.Design.Tests.Randomization;
+namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
 public sealed class SeededRandomTests()
     : ValueRandomTestBase<SeededRandom>(Tools.Randomizer.Create<SeededRandom>())

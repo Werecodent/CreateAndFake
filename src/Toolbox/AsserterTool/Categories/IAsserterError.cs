@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.AsserterTool.Categories;
+namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 
 /// <summary>Handles common exception test scenarios.</summary>
 public interface IAsserterError

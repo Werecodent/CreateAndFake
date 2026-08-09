@@ -1,8 +1,8 @@
-using CreateAndFake.Design;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 #pragma warning disable IDE0060, RCS1175 // Provides fluent attachment.
 

@@ -1,9 +1,9 @@
-﻿using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Hints;
-using CreateAndFake.Samples.ErrorCases;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
 public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
 {

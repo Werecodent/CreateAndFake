@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class ValuerComparableCompareHintTests
     : CompareHintTestBase<ValuerComparableCompareHint>

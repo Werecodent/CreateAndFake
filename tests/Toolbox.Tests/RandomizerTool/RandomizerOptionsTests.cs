@@ -1,10 +1,10 @@
 global using RandomizerMod = System.Func<
-    CreateAndFake.RandomizerTool.RandomizerOptions,
-    CreateAndFake.RandomizerTool.RandomizerOptions
+    Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions,
+    Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions
 >;
-using CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool;
 
-namespace CreateAndFake.Tests.RandomizerTool;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
 public static class RandomizerOptionsTests
 {

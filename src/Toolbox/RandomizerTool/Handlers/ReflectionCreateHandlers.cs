@@ -1,10 +1,10 @@
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 internal static class ReflectionCreateHandlers
 {

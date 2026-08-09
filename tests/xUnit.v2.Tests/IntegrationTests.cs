@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.xUnit.v2.Tests;
+namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
 public static class IntegrationTests
 {

@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
-using CreateAndFake.Properties;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Properties;
 
-namespace CreateAndFake.Tests.Properties;
+namespace Werecodent.CreateAndFake.Tests.Properties;
 
 public static class ConfigTests
 {

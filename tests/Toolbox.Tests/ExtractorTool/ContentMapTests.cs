@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.ExtractorTool;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
 public static class ContentMapTests
 {

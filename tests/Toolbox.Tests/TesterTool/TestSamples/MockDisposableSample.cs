@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.TesterTool.TestSamples;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 #pragma warning disable // For testing.
 

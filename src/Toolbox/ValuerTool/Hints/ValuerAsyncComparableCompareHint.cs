@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing <see cref="IValuerEquatable"/> instances for <see cref="IValuer"/>.</summary>
 public sealed class ValuerAsyncComparableCompareHint : CompareHint<IValuerAsyncComparable>

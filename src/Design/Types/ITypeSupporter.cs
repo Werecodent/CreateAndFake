@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Provides a <see cref="Type"/> that the behavior is relevant for.</summary>
 public interface ITypeSupporter

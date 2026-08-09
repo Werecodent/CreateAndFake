@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CreateAndFake.Design.Tests;
+namespace Werecodent.CreateAndFake.Design.Tests;
 
 public static class DesignTests
 {

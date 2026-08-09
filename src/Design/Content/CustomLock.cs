@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 #pragma warning disable IDE0001 // False positive: Lock is not always CustomLock.
 

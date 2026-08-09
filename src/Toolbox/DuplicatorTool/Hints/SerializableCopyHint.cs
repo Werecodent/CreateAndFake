@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
-using CreateAndFake.Design;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool;
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 #pragma warning disable CS0252 // Intended.
 

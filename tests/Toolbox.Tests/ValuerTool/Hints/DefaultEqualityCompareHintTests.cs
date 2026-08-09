@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Reflection;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.Tests.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 
 public sealed class DefaultEqualityCompareHintTests
     : CompareHintTestBase<DefaultEqualityCompareHint>

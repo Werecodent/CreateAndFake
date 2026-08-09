@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Provides common <see cref="Type"/> patterns for verifying <see cref="Assembly"/> access.</summary>
 public static class ScopeChecker

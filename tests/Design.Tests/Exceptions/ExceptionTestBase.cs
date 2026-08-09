@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Design.Tests.Exceptions;
+﻿namespace Werecodent.CreateAndFake.Design.Tests.Exceptions;
 
 public abstract class ExceptionTestBase<T>
     where T : Exception

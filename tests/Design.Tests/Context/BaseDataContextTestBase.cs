@@ -1,8 +1,8 @@
 using System.Reflection;
-using CreateAndFake.Design.Context;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Context;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Context;
+namespace Werecodent.CreateAndFake.Design.Tests.Context;
 
 public abstract class BaseDataContextTestBase<T>
     where T : BaseDataContext

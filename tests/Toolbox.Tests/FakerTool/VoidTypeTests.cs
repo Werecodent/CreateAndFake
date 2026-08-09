@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public static class VoidTypeTests
 {

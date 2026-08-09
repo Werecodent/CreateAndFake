@@ -1,6 +1,6 @@
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>
 ///     Handles <typeparamref name="T"/> cloning via the <paramref name="factory"/>.

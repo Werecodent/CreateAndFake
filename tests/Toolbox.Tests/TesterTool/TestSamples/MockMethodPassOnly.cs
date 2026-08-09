@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Samples.ErrorCases;
+﻿using Werecodent.CreateAndFake.Samples.ErrorCases;
 
-namespace CreateAndFake.Tests.TesterTool.TestSamples;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 #pragma warning disable // For testing.
 

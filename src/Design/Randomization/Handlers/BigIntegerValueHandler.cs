@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 #pragma warning disable IDE0056 // Indexing not available.
 

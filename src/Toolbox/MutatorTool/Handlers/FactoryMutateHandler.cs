@@ -1,6 +1,6 @@
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
 
 /// <summary>
 ///     Handles <typeparamref name="T"/> mutations via the <paramref name="factory"/>.

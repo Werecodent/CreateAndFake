@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Properties;
 
-namespace CreateAndFake.Design.Comparisons;
+namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>
 ///     Compares <see langword="object"/>s/collections by value via <see cref="IValueEquatable"/> if possible.

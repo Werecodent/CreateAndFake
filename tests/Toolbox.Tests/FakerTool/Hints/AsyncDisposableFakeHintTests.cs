@@ -1,6 +1,6 @@
-using CreateAndFake.FakerTool.Hints;
+using Werecodent.CreateAndFake.FakerTool.Hints;
 
-namespace CreateAndFake.Tests.FakerTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.FakerTool.Hints;
 
 public static class AsyncDisposableFakeHintTests
 {

@@ -1,10 +1,10 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.ValuerTool;
-using CreateAndFake.ValuerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.Tests.ValuerTool;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 
 public static class ValuerTests
 {

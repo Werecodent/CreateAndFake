@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.DuplicatorTool;
+﻿namespace Werecodent.CreateAndFake.DuplicatorTool;
 
 /// <summary>Enables deep copies with the aid of the duplicator.</summary>
 /// <typeparam name="T">Self-reference <see cref="Type"/>.</typeparam>

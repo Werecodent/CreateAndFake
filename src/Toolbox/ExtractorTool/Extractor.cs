@@ -1,9 +1,9 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool;
+namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <inheritdoc cref="IExtractor"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

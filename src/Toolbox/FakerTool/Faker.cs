@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.FakerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.FakerTool.Engine;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <inheritdoc cref="IFaker"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

@@ -1,6 +1,6 @@
-using CreateAndFake.RandomizerTool.Handlers;
+using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
-namespace CreateAndFake.Tests.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class FactoryCreateHandlerTests
 {

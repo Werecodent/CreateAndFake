@@ -1,7 +1,7 @@
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Hints;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Hints;
 
-namespace CreateAndFake.Tests.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Hints;
 
 public sealed class UnmodifiableMutateHintTests : MutateHintTestBase<UnmodifiableMutateHint>
 {

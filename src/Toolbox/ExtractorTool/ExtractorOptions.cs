@@ -1,12 +1,12 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool.Engine;
-using CreateAndFake.Properties;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.ExtractorTool;
+namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Configuration for controlling extraction behavior.</summary>
 public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtractHint>

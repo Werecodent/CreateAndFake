@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace CreateAndFake.Tests.TesterTool.TestSamples;
+namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 public sealed class NullReferenceSample(IValueEquatable data)
 {

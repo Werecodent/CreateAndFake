@@ -26,9 +26,9 @@
     <ProjectReference Include="..\..\src\Samples\CreateAndFake.Samples.csproj" />
     <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
     <ProjectReference Include="..\..\src\xUnit.v3\CreateAndFake.xUnit.v3.csproj" />
-    <Using Include="CreateAndFake" />
-    <Using Include="CreateAndFake.Fluent" />
-    <Using Include="CreateAndFake.xUnit.v3" />
+    <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Fluent" />
+    <Using Include="Werecodent.CreateAndFake.xUnit.v3" />
   </ItemGroup>
 
   <ItemGroup>

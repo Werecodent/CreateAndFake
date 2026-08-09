@@ -1,8 +1,8 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
-namespace CreateAndFake.Tests.Fluent.AssertAsyncCalls;
+namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
 public static class AssertTaskTests
 {

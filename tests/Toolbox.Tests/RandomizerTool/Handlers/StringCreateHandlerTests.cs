@@ -1,9 +1,9 @@
 using System.Collections.Frozen;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Handlers;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
-namespace CreateAndFake.Tests.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class StringCreateHandlerTests
 {

@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace CreateAndFake.Design.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Exceptions;
 
 /// <summary>
 ///     <see cref="Exception"/> <see cref="Type"/> for fatal errors occurring within <see cref="CreateAndFake"/> tools.

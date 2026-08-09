@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace CreateAndFake.Tests.TestSamples;
+namespace Werecodent.CreateAndFake.Tests.TestSamples;
 
 [ExcludeFromCodeCoverage]
 public class InternalScopeSample

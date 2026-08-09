@@ -1,11 +1,11 @@
 global using ExtractorMod = System.Func<
-    CreateAndFake.ExtractorTool.ExtractorOptions,
-    CreateAndFake.ExtractorTool.ExtractorOptions
+    Werecodent.CreateAndFake.ExtractorTool.ExtractorOptions,
+    Werecodent.CreateAndFake.ExtractorTool.ExtractorOptions
 >;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool;
+namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracts the contents of objects.</summary>
 public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>

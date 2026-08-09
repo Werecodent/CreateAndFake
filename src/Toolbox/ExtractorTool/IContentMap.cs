@@ -1,4 +1,4 @@
-namespace CreateAndFake.ExtractorTool;
+namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracted content of an object.</summary>
 public interface IContentMap

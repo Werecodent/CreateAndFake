@@ -1,6 +1,6 @@
-using CreateAndFake.Fluent.Tooling;
+using Werecodent.CreateAndFake.Fluent.Tooling;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 /// <summary>Provides fluent randomization options.</summary>
 public static class ToolingExtensions

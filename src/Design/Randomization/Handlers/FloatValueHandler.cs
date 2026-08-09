@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 
-namespace CreateAndFake.Design.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 /// <inheritdoc/>
 internal sealed class FloatValueHandler : ValueHandler<float>

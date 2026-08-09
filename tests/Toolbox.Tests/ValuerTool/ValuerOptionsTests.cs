@@ -1,10 +1,10 @@
 global using ValuerMod = System.Func<
-    CreateAndFake.ValuerTool.ValuerOptions,
-    CreateAndFake.ValuerTool.ValuerOptions
+    Werecodent.CreateAndFake.ValuerTool.ValuerOptions,
+    Werecodent.CreateAndFake.ValuerTool.ValuerOptions
 >;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Tests.ValuerTool;
+namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 
 public static class ValuerOptionsTests
 {

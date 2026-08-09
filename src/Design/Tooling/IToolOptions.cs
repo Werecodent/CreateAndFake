@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Randomization;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Configuration for manipulating <see cref="ITool{T}"/> behavior.</summary>
 public interface IToolOptions

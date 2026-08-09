@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Cleans <see cref="IDisposable"/> and <see cref="IAsyncDisposable"/> objects.</summary>
 public static class Disposer

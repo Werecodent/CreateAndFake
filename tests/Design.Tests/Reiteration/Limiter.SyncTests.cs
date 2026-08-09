@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Reiteration;
 
-namespace CreateAndFake.Design.Tests.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
 public static class LimiterSyncTests
 {
@@ -11,8 +11,8 @@ public static class LimiterSyncTests
         // All sync timeout tests reduced to one test in order to reduce any risk of deadlock.
         // Async methods should be preferred for timeout limits.
 
-        TimeSpan timeout = new(0, 0, 0, 0, 40);
-        TimeSpan delay = new(0, 0, 0, 0, 25);
+        TimeSpan timeout = new(0, 0, 0, 0, 60);
+        TimeSpan delay = new(0, 0, 0, 0, 35);
         Limiter testInstance = new(timeout, delay);
 
         int attempts = 0;

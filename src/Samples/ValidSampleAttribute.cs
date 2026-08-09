@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples;
+namespace Werecodent.CreateAndFake.Samples;
 
 [AttributeUsage(
     AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface,

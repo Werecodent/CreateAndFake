@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Hint for controlling <see cref="IHintTool{T,T}"/> behavior.</summary>
 public interface IToolHint

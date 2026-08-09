@@ -1,7 +1,7 @@
-using CreateAndFake.ExtractorTool.Hints;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ExtractorTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.ExtractorTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Hints;
 
 public sealed class EnumerableExtractHintTests : ExtractHintTestBase<EnumerableExtractHint>
 {

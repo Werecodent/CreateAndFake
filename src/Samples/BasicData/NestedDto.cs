@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.BasicData;
+namespace Werecodent.CreateAndFake.Samples.BasicData;
 
 /// <summary>Holds a reference to another basic data class.</summary>
 [ValidSample]

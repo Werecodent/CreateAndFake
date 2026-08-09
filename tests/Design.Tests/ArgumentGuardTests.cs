@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Design.Tests;
+namespace Werecodent.CreateAndFake.Design.Tests;
 
 public static class ArgumentGuardTests
 {

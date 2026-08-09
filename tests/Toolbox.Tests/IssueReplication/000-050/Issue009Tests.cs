@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Data;
+using Werecodent.CreateAndFake.Design.Data;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue009Tests
 {

@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <inheritdoc cref="IHintResult{T}"/>
 /// <param name="hasData"><inheritdoc cref="HasData" path="/summary"/></param>

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace CreateAndFake.Design.Properties;
+namespace Werecodent.CreateAndFake.Design.Properties;
 
 /// <summary>Handles default settings for the Design namespace.</summary>
 internal static class DesignDefaults

@@ -1,6 +1,6 @@
-using CreateAndFake.DuplicatorTool.Handlers;
+using Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
-namespace CreateAndFake.Tests.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Handlers;
 
 public static class SystemCopyHandlersTests
 {

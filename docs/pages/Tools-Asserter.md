@@ -30,7 +30,7 @@ Which gives the following message detailing the differences:
 
 ```
 Result Message:
-Test method CreateAndFake.Tests.ToolsTests.Tools_DataSampleExample threw
+Test method Werecodent.CreateAndFake.Tests.ToolsTests.Tools_DataSampleExample threw
 exception:
 CreateAndFake.AsserterTool.AssertException: Value equality failed
 for type 'DataSample'.

@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
-using CreateAndFake.Design;
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 #pragma warning disable SYSLIB0050 // 'IObjectReference' is obsolete: Still needed for compatibility.
 
-namespace CreateAndFake.DuplicatorTool.Hints;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 /// <summary>Handles cloning basic types for <see cref="IDuplicator"/>.</summary>
 public sealed class BasicCopyHint : CopyHint

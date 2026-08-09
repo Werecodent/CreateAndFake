@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.Fluent.AssertCalls;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.AsserterTool;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool;
 
 public class AsserterTests
 {

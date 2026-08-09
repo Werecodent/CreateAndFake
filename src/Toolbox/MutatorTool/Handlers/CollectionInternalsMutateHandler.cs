@@ -1,8 +1,8 @@
 using System.Collections;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Hints;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Hints;
 
-namespace CreateAndFake.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
 
 /// <summary>Handles mutating the individual contents of <see cref="ICollection"/>s.</summary>
 /// <remarks>Not for <see cref="HandlerMutateHint"/>; intended to help other hints.</remarks>

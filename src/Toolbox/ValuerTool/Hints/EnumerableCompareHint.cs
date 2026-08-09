@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Content;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles comparing <see cref="IEnumerable"/> collections for <see cref="IValuer"/>.</summary>
 public sealed class EnumerableCompareHint : CompareHint<IEnumerable>

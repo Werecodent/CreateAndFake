@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ValuerTool.Hints;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 /// <summary>Priorities for <see cref="CompareHint"/>s.</summary>
 public enum ComparePriority

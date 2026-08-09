@@ -1,4 +1,4 @@
-namespace CreateAndFake.xUnit.v2.Tests;
+namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
 public static class SizeAttributeTests
 {

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
-using CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Properties;
 
-namespace CreateAndFake.Design.Randomization;
+namespace Werecodent.CreateAndFake.Design.Randomization;
 
 /// <summary>For slowly generating cryptographically secure random values.</summary>
 /// <inheritdoc/>

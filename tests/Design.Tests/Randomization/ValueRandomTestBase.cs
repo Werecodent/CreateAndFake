@@ -1,14 +1,14 @@
 ﻿using System.Collections.Frozen;
 using System.Numerics;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 #if NET5_0_OR_GREATER
 using System.Text;
 #endif
 
-namespace CreateAndFake.Design.Tests.Randomization;
+namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
 public abstract class ValueRandomTestBase<T>(T testInstance)
     where T : ValueRandom

@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for asynchronous task repetition.</summary>
 public interface ILimiterTask

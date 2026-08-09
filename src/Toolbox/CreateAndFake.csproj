@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Design/CreateAndFake.Design.csproj" />
-    <Using Include="CreateAndFake.Design.Extensions" />
+    <Using Include="Werecodent.CreateAndFake.Design.Extensions" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,10 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool;
+namespace Werecodent.CreateAndFake.RandomizerTool;
 
 /// <inheritdoc cref="IRandomizer"/>
 /// <param name="options"><inheritdoc cref="Options" path="/summary"/></param>

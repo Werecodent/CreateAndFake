@@ -1,6 +1,6 @@
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Handlers;
+namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 /// <inheritdoc cref="ICompareHandler"/>
 /// <param name="converter">Behavior handling comparisons of the supported type.</param>

@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Reiteration;
+namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for synchronous repetition.</summary>
 public interface ILimiterSync

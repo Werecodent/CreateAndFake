@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Instance with dynamically injected fakes.</summary>
 /// <typeparam name="T"><see cref="Type"/> being injected by fakes.</typeparam>

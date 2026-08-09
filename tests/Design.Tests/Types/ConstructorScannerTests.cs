@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Tests.Types;
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable IDE0051, MA0017, RCS1160, S3442 // For testing.
 

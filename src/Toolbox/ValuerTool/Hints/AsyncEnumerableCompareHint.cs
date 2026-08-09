@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.ValuerTool.Engine;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool.Hints;
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
 
 /// <summary>Handles the comparing of <see cref="IAsyncEnumerable{T}"/>s.</summary>
 public sealed class AsyncEnumerableCompareHint : CompareHint

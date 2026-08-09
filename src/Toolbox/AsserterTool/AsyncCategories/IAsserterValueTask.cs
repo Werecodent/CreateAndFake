@@ -1,4 +1,4 @@
-namespace CreateAndFake.AsserterTool.AsyncCategories;
+namespace Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 
 #pragma warning disable CS1591
 

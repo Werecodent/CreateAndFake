@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Randomization.Handlers;
+using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
-namespace CreateAndFake.Design.Tests.Randomization.Handlers;
+namespace Werecodent.CreateAndFake.Design.Tests.Randomization.Handlers;
 
 public static class DateOnlyValueHandlerTests
 {

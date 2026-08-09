@@ -1,8 +1,8 @@
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Properties;
 
-namespace CreateAndFake.Design.Tests.Content;
+namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
 public static class AsyncSeriesHelperTests
 {

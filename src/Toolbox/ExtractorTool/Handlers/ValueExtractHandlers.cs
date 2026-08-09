@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
-namespace CreateAndFake.ExtractorTool.Handlers;
+namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class ValueExtractHandlers

@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 /// <inheritdoc cref="IValuer"/>
 public interface IValuerChainer : IValuer, IToolChainer<ValuerOptions, ICompareHint>;

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
-using CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <summary>Exception for a failed <see cref="IAsserter"/> case.</summary>
 [Serializable]

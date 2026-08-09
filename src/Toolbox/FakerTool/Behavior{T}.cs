@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Exceptions;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <inheritdoc/>
 /// <typeparam name="T">Return type.</typeparam>

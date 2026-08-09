@@ -1,19 +1,19 @@
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Reflection;
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Tests.IssueReplication;
+namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue094Tests
 {

@@ -1,7 +1,7 @@
-using CreateAndFake.Design;
-using CreateAndFake.Fluent.Chaining;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Fluent.Chaining;
 
-namespace CreateAndFake.Fluent;
+namespace Werecodent.CreateAndFake.Fluent;
 
 /// <summary>Provides fluent assertions.</summary>
 public static class TaskAssertChainerExtensions

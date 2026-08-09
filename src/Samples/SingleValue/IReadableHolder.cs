@@ -1,4 +1,4 @@
-namespace CreateAndFake.Samples.SingleValue;
+namespace Werecodent.CreateAndFake.Samples.SingleValue;
 
 [ValidSample]
 public interface IReadableHolder<out T>

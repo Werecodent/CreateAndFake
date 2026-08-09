@@ -3,14 +3,14 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.RunnerTool;
+namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Holds parameter data for a method.</summary>
 /// <param name="method"><inheritdoc cref="Method" path="/summary"/></param>

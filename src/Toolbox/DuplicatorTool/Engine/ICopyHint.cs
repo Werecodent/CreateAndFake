@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Handles cloning of the <see cref="IToolHint.SupportedTypes"/>.</summary>
 public interface ICopyHint : IToolHint

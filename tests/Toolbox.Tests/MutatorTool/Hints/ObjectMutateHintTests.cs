@@ -1,11 +1,11 @@
 using System.Collections;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.MutatorTool.Hints;
-using CreateAndFake.Samples.BasicData;
-using CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Hints;
+using Werecodent.CreateAndFake.Samples.BasicData;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
-namespace CreateAndFake.Tests.MutatorTool.Hints;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Hints;
 
 public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
 {

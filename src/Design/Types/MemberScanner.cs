@@ -1,7 +1,7 @@
 using System.Reflection;
-using CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Properties;
 
-namespace CreateAndFake.Design.Types;
+namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Finds <typeparamref name="T"/> members on the <see cref="SupportedType"/>.</summary>
 /// <typeparam name="T">The member <see cref="Type"/> being found on the <see cref="SupportedType"/>.</typeparam>

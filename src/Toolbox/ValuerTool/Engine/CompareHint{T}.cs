@@ -1,7 +1,7 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Content;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 
-namespace CreateAndFake.ValuerTool.Engine;
+namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
 #pragma warning disable MA0042 // Using sync behavior for async versions.
 

@@ -1,9 +1,9 @@
 using System.Text;
-using CreateAndFake.AsserterTool.AsyncCategories;
-using CreateAndFake.Design.Content;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.AsserterTool;
+namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <inheritdoc cref="IAsserter"/>
 public partial class Asserter : IAsserterAsyncObject

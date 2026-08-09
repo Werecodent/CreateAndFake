@@ -1,7 +1,7 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
-namespace CreateAndFake.Tests.AsserterTool.Implementation;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterErrorTests
 {

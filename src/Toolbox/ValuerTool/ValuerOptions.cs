@@ -1,12 +1,12 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design.Properties;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Properties;
-using CreateAndFake.ValuerTool.Engine;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
 
-namespace CreateAndFake.ValuerTool;
+namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <summary>Configuration for controlling comparison behavior.</summary>
 public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint>

@@ -1,8 +1,8 @@
-using CreateAndFake.Design.Content;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Samples.Tests.Scenarios;
+namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
 public static class ValuerAsyncComparableSampleTests
 {

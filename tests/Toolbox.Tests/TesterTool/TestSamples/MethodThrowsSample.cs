@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.Tests.TesterTool.TestSamples;
+﻿namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 public sealed class MethodThrowsSample
 {

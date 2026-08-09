@@ -1,4 +1,4 @@
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <summary>Handles <typeparamref name="T"/> mutations.</summary>
 /// <typeparam name="T">Specific <see cref="Type"/> the hint supports.</typeparam>

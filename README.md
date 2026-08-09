@@ -1,6 +1,6 @@
 # Create & Fake
 
-[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/CreateAndFake/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=master)](https://github.com/CreateAndFake/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/CreateAndFake/CreateAndFake/branch/master/graph/badge.svg)](https://codecov.io/gh/CreateAndFake/CreateAndFake/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=master)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/master/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/master)
 
 A C# class library that handles mocking, test data generation, and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
 
@@ -51,7 +51,7 @@ A key benefit of the library is in how the tools are logically integrated with e
 * `Valuer` - Compares objects by value.
 * `Tester` - Automates common tests.
 
-Visit the [documentation site](https://createandfake.github.io/CreateAndFake/) for more information and how to get started.
+Visit the [documentation site](https://werecodent.github.io/CreateAndFake/) for more information and how to get started.
 
 ## Installation
 
@@ -64,13 +64,13 @@ dotnet add package CreateAndFake
 * Use in a class by adding:
 
 ```
-using CreateAndFake;
-using CreateAndFake.Fluent;
+using Werecodent.CreateAndFake;
+using Werecodent.CreateAndFake.Fluent;
 ```
 
 ## Documentation
 
-The documentation site is located here: https://createandfake.github.io/CreateAndFake/
+The documentation site is located here: https://werecodent.github.io/CreateAndFake/
 
 The raw files can be viewed from the doc folder or built into a local site using Jekyll.
 

@@ -1,9 +1,9 @@
 using System.Reflection;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
 
-namespace CreateAndFake.Tests.RunnerTool;
+namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class VoidReturnTests
 {

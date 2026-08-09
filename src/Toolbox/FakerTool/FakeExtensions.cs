@@ -1,4 +1,4 @@
-﻿namespace CreateAndFake.FakerTool;
+﻿namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Niceties for fakes.</summary>
 public static class FakeExtensions

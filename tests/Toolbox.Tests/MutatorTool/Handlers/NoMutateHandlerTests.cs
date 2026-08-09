@@ -1,6 +1,6 @@
-using CreateAndFake.MutatorTool.Handlers;
+using Werecodent.CreateAndFake.MutatorTool.Handlers;
 
-namespace CreateAndFake.Tests.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.Tests.MutatorTool.Handlers;
 
 public static class NoMutateHandlerTests
 {

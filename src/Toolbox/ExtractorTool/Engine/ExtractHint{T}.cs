@@ -1,6 +1,6 @@
-using CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design;
 
-namespace CreateAndFake.ExtractorTool.Engine;
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 /// <typeparam name="T"><see cref="Type"/> being supported for extraction.</typeparam>
 /// <inheritdoc/>

@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace CreateAndFake.Design.Exceptions;
+namespace Werecodent.CreateAndFake.Design.Exceptions;
 
 /// <summary><see cref="Exception"/> <see cref="Type"/> for when the Runner tool times out.</summary>
 [Serializable]

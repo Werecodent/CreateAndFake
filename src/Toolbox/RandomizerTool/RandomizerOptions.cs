@@ -1,14 +1,14 @@
 using System.Collections.Frozen;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Properties;
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool;
-using CreateAndFake.Properties;
-using CreateAndFake.RandomizerTool.Engine;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool;
+namespace Werecodent.CreateAndFake.RandomizerTool;
 
 /// <summary>Configuration for controlling randomization behavior.</summary>
 public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICreateHint>

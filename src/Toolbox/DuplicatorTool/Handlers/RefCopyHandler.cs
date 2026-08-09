@@ -1,6 +1,6 @@
-using CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>Prevents cloning of the <paramref name="supportedType"/>.</summary>
 /// <param name="supportedType">Specific <see cref="Type"/> to prevent cloning of.</param>

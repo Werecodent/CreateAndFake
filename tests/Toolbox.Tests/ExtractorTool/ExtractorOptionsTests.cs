@@ -1,10 +1,10 @@
 global using ExtractorMod = System.Func<
-    CreateAndFake.ExtractorTool.ExtractorOptions,
-    CreateAndFake.ExtractorTool.ExtractorOptions
+    Werecodent.CreateAndFake.ExtractorTool.ExtractorOptions,
+    Werecodent.CreateAndFake.ExtractorTool.ExtractorOptions
 >;
-using CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
 
-namespace CreateAndFake.Tests.ExtractorTool;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
 public static class ExtractorOptionsTests
 {

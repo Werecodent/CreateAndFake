@@ -1,11 +1,11 @@
 using System.Reflection;
-using CreateAndFake.Design;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.Design.Types;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.FakerTool.Engine;
 
 /// <inheritdoc cref="IFaker"/>
 public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Samples.ErrorCases;
+namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
 [InvalidSample]
 public sealed class FactoryAlterSample

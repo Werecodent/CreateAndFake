@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.DuplicatorTool.Engine;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 /// <summary>Handles cloning of the <see cref="ITypeSupporter.SupportedType"/>.</summary>
 internal interface ICopyHandler : ITypeSupporter

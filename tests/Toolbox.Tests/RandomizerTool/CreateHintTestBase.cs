@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using CreateAndFake.Design.Content;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.RandomizerTool;
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
 /// <summary>Handles testing create hints.</summary>
 /// <typeparam name="T">Create hint to test.</typeparam>

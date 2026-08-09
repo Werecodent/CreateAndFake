@@ -1,6 +1,6 @@
-using CreateAndFake.RunnerTool.Attributes;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
-namespace CreateAndFake.xUnit.v3;
+namespace Werecodent.CreateAndFake.xUnit.v3;
 
 /// <inheritdoc/>
 public sealed class FakeAttribute : BaseFakeAttribute;

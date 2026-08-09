@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Text;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.ExtractorTool;
+namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracted content of an object.</summary>
 /// <param name="content"><inheritdoc cref="_content" path="/summary"/></param>

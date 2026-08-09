@@ -1,6 +1,6 @@
-using CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
 
-namespace CreateAndFake.Samples.Tests.ErrorCases;
+namespace Werecodent.CreateAndFake.Samples.Tests.ErrorCases;
 
 public static class IsBadSampleTests
 {

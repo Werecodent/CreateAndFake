@@ -1,14 +1,14 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.FakerTool;
-using CreateAndFake.MutatorTool;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.RunnerTool;
-using CreateAndFake.TesterTool;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.DuplicatorTool.Handlers;
+namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 /// <summary>Holds a collection of related handlers.</summary>
 internal static class SelfCopyHandlers

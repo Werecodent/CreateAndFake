@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Design.Types;
 
-namespace CreateAndFake.Design.Extensions;
+namespace Werecodent.CreateAndFake.Design.Extensions;
 
 /// <summary>Extends the <see cref="Type"/> <see langword="class"/> with inheritance methods.</summary>
 public static class TypeExtensions

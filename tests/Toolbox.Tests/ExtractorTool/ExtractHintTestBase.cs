@@ -1,9 +1,9 @@
-using CreateAndFake.Design.Content;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.ExtractorTool.Engine;
-using CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.ExtractorTool;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
 /// <summary>Handles testing extract hints.</summary>
 /// <typeparam name="T">Extract hint to test.</typeparam>

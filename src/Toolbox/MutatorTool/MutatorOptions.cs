@@ -1,13 +1,13 @@
-using CreateAndFake.Design.Reiteration;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.MutatorTool.Engine;
-using CreateAndFake.Properties;
-using CreateAndFake.RandomizerTool;
-using CreateAndFake.ValuerTool;
 using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.RandomizerTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.MutatorTool;
+namespace Werecodent.CreateAndFake.MutatorTool;
 
 /// <summary>Configuration for manipulating <see cref="IMutator"/> behavior.</summary>
 public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHint>

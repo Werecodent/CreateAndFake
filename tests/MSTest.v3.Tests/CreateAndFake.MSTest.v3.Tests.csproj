@@ -17,9 +17,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
     <ProjectReference Include="..\..\src\MSTest.v3\CreateAndFake.MSTest.v3.csproj" />
-    <Using Include="CreateAndFake" />
-    <Using Include="CreateAndFake.Fluent" />
-    <Using Include="CreateAndFake.MSTest.v3" />
+    <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Fluent" />
+    <Using Include="Werecodent.CreateAndFake.MSTest.v3" />
   </ItemGroup>
 
 </Project>

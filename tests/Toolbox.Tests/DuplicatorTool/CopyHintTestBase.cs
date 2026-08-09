@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
-using CreateAndFake.Design.Content;
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.Design.Types;
-using CreateAndFake.DuplicatorTool.Engine;
-using CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.TesterTool;
 
-namespace CreateAndFake.Tests.DuplicatorTool;
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
 /// <summary>Handles testing copy hints.</summary>
 /// <typeparam name="T">Copy hint to test.</typeparam>

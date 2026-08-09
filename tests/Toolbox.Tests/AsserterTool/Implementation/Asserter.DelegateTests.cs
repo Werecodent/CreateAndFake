@@ -1,7 +1,7 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.FakerTool;
 
-namespace CreateAndFake.Tests.AsserterTool.Implementation;
+namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterDelegateTests
 {

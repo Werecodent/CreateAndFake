@@ -1,7 +1,7 @@
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.FakerTool.Engine;
+namespace Werecodent.CreateAndFake.FakerTool.Engine;
 
 /// <inheritdoc/>
 public sealed class SetupHintResult : HintResult<bool>

@@ -1,6 +1,6 @@
-﻿using CreateAndFake.Design;
+﻿using Werecodent.CreateAndFake.Design;
 
-namespace CreateAndFake.RandomizerTool.Engine;
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 /// <typeparam name="T"><see cref="Type"/> being supported for randomization.</typeparam>
 /// <inheritdoc/>

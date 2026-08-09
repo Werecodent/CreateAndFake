@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Tooling;
+namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <summary>Execution result of an <see cref="IToolHint"/> with potential resulting data.</summary>
 /// <typeparam name="T">Result <see cref="Type"/> for the hint.</typeparam>

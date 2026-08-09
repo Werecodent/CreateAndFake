@@ -1,6 +1,6 @@
-using CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Design.Tooling;
 
-namespace CreateAndFake.MutatorTool.Engine;
+namespace Werecodent.CreateAndFake.MutatorTool.Engine;
 
 /// <inheritdoc cref="IToolChainer{T,T}"/>
 /// <remarks>Provides a callback into <see cref="IMutator"/> to mutate child values.</remarks>

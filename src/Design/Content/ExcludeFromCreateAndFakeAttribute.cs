@@ -1,4 +1,4 @@
-namespace CreateAndFake.Design.Content;
+namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>
 ///     Prevents the <see cref="CreateAndFake"/> framework from dynamically

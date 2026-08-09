@@ -1,6 +1,6 @@
-using CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool;
 
-namespace CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
+namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
 public static class TaskAssertValueTaskExtensionsTests
 {

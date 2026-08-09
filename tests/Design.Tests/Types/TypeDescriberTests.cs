@@ -1,10 +1,10 @@
-using CreateAndFake.Design.Comparisons;
-using CreateAndFake.Design.Randomization.Handlers;
-using CreateAndFake.Design.Types;
-using CreateAndFake.Samples.Scenarios;
-using CreateAndFake.ValuerTool;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Randomization.Handlers;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.ValuerTool;
 
-namespace CreateAndFake.Design.Tests.Types;
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 public static class TypeDescriberTests
 {

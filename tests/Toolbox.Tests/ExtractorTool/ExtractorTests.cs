@@ -1,8 +1,8 @@
-using CreateAndFake.Design.Exceptions;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
 
-namespace CreateAndFake.Tests.ExtractorTool;
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
 public static class ExtractorTests
 {

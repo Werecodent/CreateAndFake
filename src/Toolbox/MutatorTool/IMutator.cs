@@ -1,12 +1,12 @@
 ﻿global using MutatorMod = System.Func<
-    CreateAndFake.MutatorTool.MutatorOptions,
-    CreateAndFake.MutatorTool.MutatorOptions
+    Werecodent.CreateAndFake.MutatorTool.MutatorOptions,
+    Werecodent.CreateAndFake.MutatorTool.MutatorOptions
 >;
-using CreateAndFake.Design.Tooling;
-using CreateAndFake.ExtractorTool;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool;
+namespace Werecodent.CreateAndFake.MutatorTool;
 
 /// <summary>Changes the value of <see langword="object"/>s or creates alternatives.</summary>
 public interface IMutator : IHintTool<MutatorOptions, IMutateHint>

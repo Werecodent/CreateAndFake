@@ -1,7 +1,7 @@
-using CreateAndFake.AsserterTool;
-using CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
-namespace CreateAndFake.Fluent.Chaining;
+namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 #pragma warning disable CA1024 // Hurts readability.
 

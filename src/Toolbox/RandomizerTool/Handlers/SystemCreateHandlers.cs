@@ -3,11 +3,11 @@ using System.Globalization;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using CreateAndFake.Design.Content;
-using CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using static System.TimeZoneInfo;
 
-namespace CreateAndFake.RandomizerTool.Handlers;
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 #pragma warning disable CA1308 // Uri support for .NET 4.8 is lowercase.
 

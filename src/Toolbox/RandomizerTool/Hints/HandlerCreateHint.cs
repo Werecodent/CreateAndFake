@@ -1,9 +1,9 @@
-using CreateAndFake.Design;
-using CreateAndFake.Design.Types;
-using CreateAndFake.RandomizerTool.Engine;
-using CreateAndFake.RandomizerTool.Handlers;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing <see cref="ICreateHandler"/> supported types for <see cref="IRandomizer"/>.</summary>
 public sealed class HandlerCreateHint : CreateHint

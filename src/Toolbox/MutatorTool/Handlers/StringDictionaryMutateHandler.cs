@@ -1,7 +1,7 @@
 using System.Collections.Specialized;
-using CreateAndFake.MutatorTool.Engine;
+using Werecodent.CreateAndFake.MutatorTool.Engine;
 
-namespace CreateAndFake.MutatorTool.Handlers;
+namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
 
 /// <inheritdoc cref="IMutateHandler"/>
 internal sealed class StringDictionaryMutateHandler : IMutateHandler

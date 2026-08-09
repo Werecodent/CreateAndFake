@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using CreateAndFake.FakerTool;
-using CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
-namespace CreateAndFake.AsserterTool.Categories;
+namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 
 #pragma warning disable CA1716 // Matches existing usage.
 

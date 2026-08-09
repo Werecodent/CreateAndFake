@@ -1,9 +1,9 @@
-﻿using CreateAndFake.Design;
-using CreateAndFake.Design.Randomization;
-using CreateAndFake.FakerTool;
-using CreateAndFake.RandomizerTool.Engine;
+﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
-namespace CreateAndFake.RandomizerTool.Hints;
+namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 /// <summary>Handles randomizing <see cref="Fake{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class FakeCreateHint : CreateHint
