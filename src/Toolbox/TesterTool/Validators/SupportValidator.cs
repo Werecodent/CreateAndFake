@@ -195,11 +195,7 @@ internal sealed class SupportValidator(TesterOptions options)
                     .ConfigureAwait(false);
             }
 
-            if (
-                Options.Faker.Supports(type)
-                && !type.Inherits<IDisposable>()
-                && !type.Inherits<IToolOptions>()
-            )
+            if (Options.Faker.Supports(type) && !type.Inherits<IToolOptions>())
             {
                 _ = Options.Faker.Mock(type);
             }
