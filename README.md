@@ -76,7 +76,7 @@ The raw files can be viewed from the doc folder or built into a local site using
 
 ## Contributing
 
-If you're looking to contribute, thanks for your interest. Feel free to submit reports for any issues you can find, or request potential features you'd like to see [here](../../issues). If you wish to contribute code to the project, refer to the contributing guidelines [here](.github/CONTRIBUTING.md) which includes dev environment setup. Please follow the [code of conduct](.github/CODE_OF_CONDUCT.md) when contributing.
+If you're looking to contribute, thanks for your interest. Feel free to submit reports for any issues you can find, or request potential features you'd like to see [here](../../issues). If you wish to contribute code to the project, refer to the [contributing](https://github.com/Werecodent/.github/blob/main/CONTRIBUTING.md) requirements and the [support](https://github.com/Werecodent/.github/blob/main/SUPPORT.md) guide for environment setup. Please follow the [code of conduct](https://github.com/Werecodent/.github/blob/main/CODE_OF_CONDUCT.md) when contributing.
 
 ## License
 
