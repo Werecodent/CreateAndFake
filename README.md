@@ -1,6 +1,6 @@
 # Create & Fake
 
-[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=master)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/master/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main)
 
 A C# class library that handles mocking, test data generation, and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
 

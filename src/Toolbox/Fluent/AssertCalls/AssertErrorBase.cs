@@ -16,14 +16,14 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
     protected Exception? Error { get; } = error;
 
     /// <inheritdoc cref="IAsserterError.Fail(Exception,string)"/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
+    [DoesNotReturn]
     public override void Fail(string? details = null)
     {
         Asserter.Fail(Error, details);
     }
 
     /// <inheritdoc cref="IAsserterError.Fail(Exception,AsserterMod,string)"/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
+    [DoesNotReturn]
     public override void Fail(AsserterMod? optionConfiguration, string? details = null)
     {
         Asserter.Fail(Error, optionConfiguration, details);

@@ -1,3 +1,5 @@
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
@@ -9,7 +11,11 @@ public static class AssertAsyncObjectTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertAsyncObject>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+                }
         );
     }
 
@@ -18,7 +24,11 @@ public static class AssertAsyncObjectTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertAsyncObject>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+                }
         );
     }
 }

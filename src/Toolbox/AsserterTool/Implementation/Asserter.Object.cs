@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.ValuerTool;
@@ -230,7 +232,17 @@ public partial class Asserter : IAsserterObject
     public virtual void Called(object? fake, Times total, AsserterMod? optionConfiguration = null)
     {
         ReferenceNotEqual(null, fake);
-        new Fake((IFaked)fake!).Verify(total);
+        if (fake is IFaked actualFake)
+        {
+            new Fake(actualFake).Verify(total);
+        }
+        else
+        {
+            throw new ToolException(
+                $"{nameof(Called)} assertion can only be used on {nameof(IFaked)} "
+                    + $"instances and not the provided {GenericConverter.ExpandName(fake)}."
+            );
+        }
     }
 
     /// <inheritdoc/>

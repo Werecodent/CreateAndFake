@@ -91,7 +91,7 @@ public interface IAsserterEnumerable
     );
 
     /// <inheritdoc cref="Contains(object,IEnumerable,AsserterMod,string)"/>
-    void Contains(object? content, IEnumerable? collection, string? details);
+    void Contains(object? content, IEnumerable? collection, string? details = null);
 
     /// <summary>Verifies <c>collection</c> contains an element equal to <paramref name="content"/> by value.</summary>
     /// <param name="content">Expected present element.</param>
@@ -100,7 +100,7 @@ public interface IAsserterEnumerable
         object? content,
         IEnumerable? collection,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     );
 
     /// <inheritdoc cref="Contains(object,IEnumerable,string)"/>
@@ -108,7 +108,7 @@ public interface IAsserterEnumerable
         object? content,
         IEnumerable? collection,
         CancellationToken canceler,
-        string? details
+        string? details = null
     );
 
     /// <inheritdoc cref="Contains(object,IEnumerable,AsserterMod,string)"/>
@@ -117,7 +117,7 @@ public interface IAsserterEnumerable
         IEnumerable? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     );
 
     /// <inheritdoc cref="ContainsNot(object,IEnumerable,AsserterMod,string)"/>

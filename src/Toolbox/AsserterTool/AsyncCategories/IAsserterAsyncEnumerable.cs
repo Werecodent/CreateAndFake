@@ -143,7 +143,7 @@ public interface IAsserterAsyncEnumerable
         T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
-        string? details
+        string? details = null
     );
 
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,AsserterMod,string)"/>
@@ -153,7 +153,7 @@ public interface IAsserterAsyncEnumerable
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     );
 
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,string)"/>

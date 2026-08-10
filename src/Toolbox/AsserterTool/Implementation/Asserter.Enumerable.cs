@@ -18,7 +18,7 @@ public partial class Asserter : IAsserterEnumerable
     }
 
     /// <inheritdoc/>
-    [DoesNotReturn, ExcludeFromCodeCoverage]
+    [DoesNotReturn]
     public virtual void Fail(
         IEnumerable? collection,
         AsserterMod? optionConfiguration,
@@ -376,7 +376,7 @@ public partial class Asserter : IAsserterEnumerable
     }
 
     /// <inheritdoc/>
-    public virtual void Contains(object? content, IEnumerable? collection, string? details)
+    public virtual void Contains(object? content, IEnumerable? collection, string? details = null)
     {
         Contains(content, collection, Unconfigured, details);
     }
@@ -386,7 +386,7 @@ public partial class Asserter : IAsserterEnumerable
         object? content,
         IEnumerable? collection,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
@@ -428,7 +428,7 @@ public partial class Asserter : IAsserterEnumerable
         object? content,
         IEnumerable? collection,
         CancellationToken canceler,
-        string? details
+        string? details = null
     )
     {
         return ContainsAsync(content, collection, canceler, Unconfigured, details);
@@ -440,7 +440,7 @@ public partial class Asserter : IAsserterEnumerable
         IEnumerable? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 using Werecodent.CreateAndFake.Design.Content;
@@ -18,6 +19,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
     }
 
     /// <inheritdoc/>
+    [DoesNotReturn, ExcludeFromCodeCoverage]
     public virtual async Task FailAsync<T>(
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
@@ -372,7 +374,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
         T? content,
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
-        string? details
+        string? details = null
     )
     {
         return ContainsAsync(content, collection, canceler, Unconfigured, details);
@@ -384,7 +386,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
-        string? details
+        string? details = null
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);

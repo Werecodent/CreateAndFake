@@ -35,6 +35,7 @@
         "comparables",
         "cooldown",
         "cref",
+        "datacollector",
         "Delegators",
         "Duplicatable",
         "enumerables",

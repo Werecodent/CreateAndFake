@@ -1,5 +1,6 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
@@ -15,7 +16,7 @@ public static class TaskAssertObjectExtensionsTests
             opt =>
                 opt with
                 {
-                    IgnorableExceptions = [typeof(AssertException), typeof(InvalidCastException)],
+                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
                 }
         );
     }

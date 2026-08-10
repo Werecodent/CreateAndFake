@@ -1,4 +1,5 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
@@ -14,7 +15,11 @@ public static class AssertDelegateTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<AssertDelegate>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+                }
         );
     }
 
@@ -23,7 +28,11 @@ public static class AssertDelegateTests
     {
         return Tools.Tester.PreventsParameterMutationAsync<AssertDelegate>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnoreAllExceptions = true }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+                }
         );
     }
 

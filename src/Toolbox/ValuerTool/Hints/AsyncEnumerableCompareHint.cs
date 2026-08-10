@@ -121,7 +121,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         {
             throw new EngineException(
                 $"Cannot hash {nameof(Type)}s of '{nameof(IAsyncEnumerable<>)}' in "
-                    + $"synchronous context when {nameof(ValuerOptions.SkipAsyncValues)}  "
+                    + $"synchronous context when {nameof(ValuerOptions.SkipAsyncValues)} "
                     + $"is {false}. Use an asynchronous method or override the setting."
             );
         }
