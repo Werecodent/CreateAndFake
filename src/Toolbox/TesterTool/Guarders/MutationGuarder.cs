@@ -165,7 +165,11 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         object? result = null;
         try
         {
-            data = Options.Runner.CreateFor(method, cleanupCanceler.Token, Options.InjectionValues);
+            data = Options.Runner.CreateFor(
+                method,
+                opt => opt with { InjectionValues = Options.InjectionValues },
+                cleanupCanceler.Token
+            );
             copy = Options.Duplicator.Copy(data);
 
             result = await RunCheckAsync(method, null, instance, data, cleanupCanceler.Token)

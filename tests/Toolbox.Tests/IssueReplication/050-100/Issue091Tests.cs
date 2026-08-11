@@ -39,7 +39,7 @@ public static class Issue091Tests
     [Theory, RandomData]
     internal static void Issue091_FluentArgMatchesInt(
         [Fake] ILayer layer,
-        Api api,
+        [Inject] Api api,
         Item sample,
         int key
     )
@@ -52,7 +52,11 @@ public static class Issue091Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue091_FluentArgMatchesGuid([Fake] ILayer layer, Api api, Item sample)
+    internal static void Issue091_FluentArgMatchesGuid(
+        [Fake] ILayer layer,
+        [Inject] Api api,
+        Item sample
+    )
     {
         layer.GetItem(Arg.Any<Guid>()).SetupReturn(sample, Times.Once);
 
@@ -64,7 +68,7 @@ public static class Issue091Tests
     [Theory, RandomData]
     internal static void Issue091_FluentArgMatchesObject(
         [Fake] ILayer layer,
-        Api api,
+        [Inject] Api api,
         Item sample,
         object key
     )
@@ -77,7 +81,11 @@ public static class Issue091Tests
     }
 
     [Theory, RandomData]
-    internal static void Issue091_FluentArgMatchesNull([Fake] ILayer layer, Api api, Item sample)
+    internal static void Issue091_FluentArgMatchesNull(
+        [Fake] ILayer layer,
+        [Inject] Api api,
+        Item sample
+    )
     {
         layer.GetItem(null).SetupReturn(sample, Times.Once);
 

@@ -30,7 +30,9 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         bool isVariantCheck(object result)
         {
             if (
-                instances.All(o =>
+                ArgumentGuard.IsAsynchronous(result)
+                || result is IValuerAsyncComparable
+                || instances.All(o =>
                     ArgumentGuard.IsAsynchronous(o)
                     || o is IValuerAsyncComparable
                     || !chainer.Options.Valuer.Equals(result, o, _ => compareOptions)

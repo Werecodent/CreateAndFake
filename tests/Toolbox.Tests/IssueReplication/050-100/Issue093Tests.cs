@@ -35,7 +35,7 @@ public static class Issue093Tests
     [Theory, RandomData]
     internal static void Issue093_AssertInterfaceFakeCallIntegration(
         [Fake] IProvider faked,
-        Api sample,
+        [Inject] Api sample,
         string value
     )
     {
@@ -45,7 +45,7 @@ public static class Issue093Tests
     [Theory, RandomData]
     internal static void Issue093_AssertAbstractFakeCallIntegration(
         [Fake] AbstractProvider faked,
-        Api sample,
+        [Inject] Api sample,
         string value
     )
     {
@@ -55,7 +55,7 @@ public static class Issue093Tests
     [Theory, RandomData]
     internal static void Issue093_AssertUnsealedFakeCallIntegration(
         [Fake] UnsealedProvider faked,
-        Api sample,
+        [Inject] Api sample,
         string value
     )
     {

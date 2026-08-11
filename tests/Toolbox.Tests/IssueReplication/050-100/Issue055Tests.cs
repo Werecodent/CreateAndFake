@@ -39,7 +39,7 @@ public static class Issue055Tests
     [Theory, RandomData]
     internal static void Issue055_TestGetMovieDirectors(
         [Fake] IStorage db,
-        Endpoint api,
+        [Inject] Endpoint api,
         [Size(2)] Details[] movies
     )
     {

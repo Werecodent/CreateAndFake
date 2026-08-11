@@ -6,7 +6,6 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
-using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
@@ -150,21 +149,16 @@ public sealed class Runner(RunnerOptions options) : IRunner
     }
 
     /// <inheritdoc/>
-    public MethodCallWrapper CreateFor(
-        MethodBase method,
-        CancellationToken canceler,
-        params IEnumerable<object?>? values
-    )
+    public MethodCallWrapper CreateFor(MethodBase method, CancellationToken canceler)
     {
-        return CreateFor(method, opt => opt, canceler, values);
+        return CreateFor(method, opt => opt, canceler);
     }
 
     /// <inheritdoc/>
     public MethodCallWrapper CreateFor(
         MethodBase method,
         RunnerMod? optionConfiguration,
-        CancellationToken canceler,
-        params IEnumerable<object?>? values
+        CancellationToken canceler
     )
     {
         ArgumentGuard.ThrowIfNull(method);
@@ -181,9 +175,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         List<Tuple<Type, object>> data =
         [
-            .. (values ?? [])
-                .Where(v => v != null)
-                .Select(v => (v is Fake fake) ? fake.Dummy : v)
+            .. localOptions
+                .InjectionValues.Select(v => (v is Fake fake) ? fake.Dummy : v)
                 .Where(v => v != null)
                 .Select(v => Tuple.Create(v!.GetType(), v)),
         ];
@@ -194,7 +187,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         {
             args.Add(
                 param.Name ?? $"{args.Count}",
-                ExtractArg(param, data, args, localOptions, canceler)
+                ExtractArg(param, method, data, args, localOptions, canceler)
             );
         }
 
@@ -203,62 +196,41 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
     /// <summary>Randomizes an instance to fill a parameter.</summary>
     /// <param name="param">Parameter to fill.</param>
+    /// <param name="method">Method origin.</param>
     /// <param name="data">Canned data to prefer.</param>
     /// <param name="args">Already created parameter data.</param>
     /// <param name="localOptions">Potentially modified configuration to use.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The created arg to fill the parameter with.</returns>
+    /// <exception cref="ToolException"></exception>
     private static object? ExtractArg(
         ParameterInfo param,
+        MethodBase method,
         List<Tuple<Type, object>> data,
         OrderedDictionary args,
         RunnerOptions localOptions,
         CancellationToken canceler
     )
     {
+        List<ParameterHintAttribute> definedHints =
+        [
+            .. Attribute
+                .GetCustomAttributes(param, typeof(ParameterHintAttribute))
+                .Cast<ParameterHintAttribute>(),
+        ];
+        if (definedHints.Count > 1)
+        {
+            throw new ToolException("Multiple hints defined.");
+        }
+        else if (definedHints.Count == 1)
+        {
+            return definedHints[0].CreateParameterValue(param, method, args, localOptions);
+        }
+
         Tuple<Type, object> match = data.Find(t => t.Item1.Inherits(param.ParameterType))!;
         if (param.IsOut)
         {
             return null;
-        }
-        else if (Attribute.IsDefined(param, typeof(BaseFakeAttribute)))
-        {
-            return (
-                (Fake)
-                    localOptions.Randomizer.Create(
-                        typeof(Fake<>).MakeGenericType(param.ParameterType)
-                    )!
-            ).Dummy;
-        }
-        else if (Attribute.IsDefined(param, typeof(BaseStubAttribute)))
-        {
-            if (
-                localOptions.InheritIReflectableTypeOnFakedType
-                && param.ParameterType.Inherits<Type>()
-            )
-            {
-                return localOptions.Faker.Stub(param.ParameterType, typeof(IReflectableType)).Dummy;
-            }
-            else
-            {
-                return localOptions.Faker.Stub(param.ParameterType).Dummy;
-            }
-        }
-        else if (Attribute.IsDefined(param, typeof(BaseSizeAttribute)))
-        {
-            int size = param.GetCustomAttribute<BaseSizeAttribute>()!.Count;
-            return localOptions.Randomizer.Create(
-                param.ParameterType,
-                opt =>
-                    opt with
-                    {
-                        CollectionMinSize = size,
-                        CollectionMaxSize = size,
-                        StringMinSize = size,
-                        StringMaxSize = size,
-                        NestedOptions = opt,
-                    }
-            );
         }
         else if (param.ParameterType == typeof(CancellationToken))
         {
@@ -278,10 +250,25 @@ public sealed class Runner(RunnerOptions options) : IRunner
             }
         }
 
-        return localOptions.Randomizer.Inject(
-            param.ParameterType,
-            [.. args.Values.Cast<object>().Where(a => a is Fake or IFaked).Reverse()]
-        );
+        TypeDescriber info = TypeDescriber.For(param.ParameterType);
+        if (
+            args.Count > 0
+            && (
+                (
+                    localOptions.Gen.Supports(param.ParameterType)
+                    && param.ParameterType != typeof(bool)
+                )
+                || info.IsMutable()
+                || info.HasInitializableOnlyState()
+            )
+        )
+        {
+            return localOptions.Mutator.VariantOf(param.ParameterType, args.Values.Cast<object>());
+        }
+        else
+        {
+            return localOptions.Randomizer.Create(param.ParameterType);
+        }
     }
 
     /// <inheritdoc/>

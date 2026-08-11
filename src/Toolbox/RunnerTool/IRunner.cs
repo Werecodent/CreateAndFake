@@ -33,13 +33,8 @@ public interface IRunner : ITool<RunnerOptions>
     /// </summary>
     /// <param name="method">Method to create parameters for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="values">Starting values to inject into instances.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
-    MethodCallWrapper CreateFor(
-        MethodBase method,
-        CancellationToken canceler,
-        params IEnumerable<object?>? values
-    );
+    MethodCallWrapper CreateFor(MethodBase method, CancellationToken canceler);
 
     /// <summary>
     ///     Constructs the parameters for <paramref name="method"/>.
@@ -49,13 +44,11 @@ public interface IRunner : ITool<RunnerOptions>
     /// <param name="method">Method to create parameters for.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="values">Starting values to inject into instances.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
     MethodCallWrapper CreateFor(
         MethodBase method,
         RunnerMod optionConfiguration,
-        CancellationToken canceler,
-        params IEnumerable<object?>? values
+        CancellationToken canceler
     );
 
     /// <summary>Runs the given method on the instance.</summary>

@@ -155,7 +155,10 @@ public static class RandomizerTests
     }
 
     [Theory, RandomData]
-    internal static void Inject_SingleFakeInjected(Fake<DataSample> fake, InjectSample holder)
+    internal static void Inject_SingleFakeInjected(
+        Fake<DataSample> fake,
+        [Inject] InjectSample holder
+    )
     {
         holder.Data.Assert().ReferenceEqual(fake.Dummy);
         holder.Data2.Assert().ReferenceNotEqual(fake.Dummy);
@@ -165,7 +168,7 @@ public static class RandomizerTests
     internal static void Inject_DoubleFakeInjected(
         Fake<DataSample> fake,
         [Fake] DataSample fake2,
-        InjectSample holder
+        [Inject] InjectSample holder
     )
     {
         holder.Data2.Assert().ReferenceEqual(fake.Dummy);
@@ -176,7 +179,7 @@ public static class RandomizerTests
     internal static void Inject_InterfaceFakesInjected(
         Fake<IOnlyMockSample> fake,
         Fake<IOnlyMockSample> fake2,
-        InjectMockSample holder
+        [Inject] InjectMockSample holder
     )
     {
         fake.Verify(Times.Never, f => f.FailIfNotMocked());

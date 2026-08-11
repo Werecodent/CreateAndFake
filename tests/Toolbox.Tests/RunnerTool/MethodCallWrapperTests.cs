@@ -41,9 +41,7 @@ public static class MethodCallWrapperTests
         MethodBase method
     )
     {
-        runner
-            .CreateFor(Arg.Any<MethodBase>(), Arg.Any<CancellationToken>(), Arg.Any<object[]>())
-            .SetupReturn(wrapper);
+        runner.CreateFor(Arg.Any<MethodBase>(), Arg.Any<CancellationToken>()).SetupReturn(wrapper);
         runner.CreateFor(method, TestContext.Current.CancellationToken).Assert().Is(wrapper);
     }
 

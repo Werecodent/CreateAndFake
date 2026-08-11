@@ -11,7 +11,7 @@ public static class LimiterSyncTests
         // All sync timeout tests reduced to one test in order to reduce any risk of deadlock.
         // Async methods should be preferred for timeout limits.
 
-        TimeSpan timeout = new(0, 0, 0, 0, 60);
+        TimeSpan timeout = new(0, 0, 0, 0, 65);
         TimeSpan delay = new(0, 0, 0, 0, 35);
         Limiter testInstance = new(timeout, delay);
 

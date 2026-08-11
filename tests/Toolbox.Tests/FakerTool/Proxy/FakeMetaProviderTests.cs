@@ -38,7 +38,10 @@ public static class FakeMetaProviderTests
     }
 
     [Theory, RandomData]
-    internal static void Verify_PresetOutOfRangeThrows(MethodInfo method)
+    internal static void Verify_PresetOutOfRangeThrows(
+        MethodInfo method,
+        [Unique] MethodInfo otherMethod
+    )
     {
         FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
@@ -47,7 +50,7 @@ public static class FakeMetaProviderTests
         provider.SetCallBehavior(data, Behavior.None(Times.Once));
         provider.Assert(x => x.Verify()).Throws<FakeVerifyException>();
 
-        provider.CallVoid(null, Tools.Mutator.Variant(method), Type.EmptyTypes, []);
+        provider.CallVoid(null, otherMethod, Type.EmptyTypes, []);
         provider.Assert(x => x.Verify()).Throws<FakeVerifyException>();
 
         provider.CallVoid(null, method, Type.EmptyTypes, []);
@@ -58,7 +61,10 @@ public static class FakeMetaProviderTests
     }
 
     [Theory, RandomData]
-    internal static void Verify_CustomOutOfRangeThrows(MethodInfo method)
+    internal static void Verify_CustomOutOfRangeThrows(
+        MethodInfo method,
+        [Unique] MethodInfo otherMethod
+    )
     {
         FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
@@ -67,7 +73,7 @@ public static class FakeMetaProviderTests
         provider.Verify(0, data);
         provider.Assert(x => x.Verify(1, data)).Throws<FakeVerifyException>();
 
-        provider.CallVoid(null, method.Tools().Variant(), Type.EmptyTypes, []);
+        provider.CallVoid(null, otherMethod, Type.EmptyTypes, []);
         provider.Verify(0, data);
         provider.Assert(x => x.Verify(1, data)).Throws<FakeVerifyException>();
 
@@ -81,7 +87,10 @@ public static class FakeMetaProviderTests
     }
 
     [Theory, RandomData]
-    internal static void VerifyTotalCalls_OutOfRangeThrows(MethodInfo method)
+    internal static void VerifyTotalCalls_OutOfRangeThrows(
+        MethodInfo method,
+        [Unique] MethodInfo otherMethod
+    )
     {
         FakeMetaProvider provider = new(0, Tools.Faker.Options) { ThrowByDefault = false };
 
@@ -92,7 +101,7 @@ public static class FakeMetaProviderTests
         provider.Assert(x => x.VerifyTotalCalls(0)).Throws<FakeVerifyException>();
         provider.VerifyTotalCalls(1);
 
-        provider.CallVoid(null, method.Tools().Variant(), Type.EmptyTypes, []);
+        provider.CallVoid(null, otherMethod, Type.EmptyTypes, []);
         provider.Assert(x => x.VerifyTotalCalls(1)).Throws<FakeVerifyException>();
         provider.VerifyTotalCalls(2);
     }

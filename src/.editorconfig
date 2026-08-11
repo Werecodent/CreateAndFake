@@ -13,3 +13,6 @@ dotnet_diagnostic.CS1573.severity = None
 # Bad rules that advocate for less maintainable documentation.
 dotnet_diagnostic.MA0197.severity = None
 dotnet_diagnostic.MA0203.severity = None
+
+# Doesn't account for overloads.
+dotnet_diagnostic.CA1019.severity = None

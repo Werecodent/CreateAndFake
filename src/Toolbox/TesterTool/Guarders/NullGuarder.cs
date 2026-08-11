@@ -160,7 +160,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         MethodCallWrapper? data = null;
         try
         {
-            data = Options.Runner.CreateFor(method, cleanupCanceler.Token, Options.InjectionValues);
+            data = Options.Runner.CreateFor(
+                method,
+                opt => opt with { InjectionValues = Options.InjectionValues },
+                cleanupCanceler.Token
+            );
 
             bool called = false;
             for (int i = 0; i < data.ArgCount; i++)

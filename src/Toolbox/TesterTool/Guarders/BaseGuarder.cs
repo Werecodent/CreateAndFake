@@ -111,8 +111,8 @@ internal abstract class BaseGuarder(TesterOptions options)
         {
             MethodCallWrapper data = options.Runner.CreateFor(
                 method,
-                canceler,
-                Options.InjectionValues
+                opt => opt with { InjectionValues = Options.InjectionValues },
+                canceler
             );
             try
             {
