@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Numerics;
+using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Reiteration;
@@ -20,6 +21,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         typeof(IterationLimitException),
         typeof(UnsupportedException),
         typeof(InvalidCastException),
+        typeof(RuntimeBinderException),
     ];
 
     [Fact]

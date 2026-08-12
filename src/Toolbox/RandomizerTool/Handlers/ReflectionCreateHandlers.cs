@@ -28,7 +28,6 @@ internal static class ReflectionCreateHandlers
         typeof(IEnumerable<string>),
         typeof(KeyValuePair<int, string>),
         typeof(InvalidOperationException),
-        typeof(ValueTuple<Guid, long, string>),
     ];
 
     /// <summary>Potential constructors to randomize.</summary>

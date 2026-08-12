@@ -17,7 +17,7 @@ public sealed class HandlerExtractHint : IExtractHint
         new SelfExtractHandler(typeof(StringBuilder)),
         new SelfExtractHandler(typeof(CancellationToken)),
         new SelfExtractHandler(typeof(RuntimeMethodHandle)),
-        new FactoryExtractHandler<TypeDescriber>(x => [x.SupportedType]),
+        new ConvertExtractHandler(typeof(TypeDescriber), x => [((TypeDescriber)x).SupportedType]),
     ];
 
     /// <summary>All handlers by their supported type.</summary>
