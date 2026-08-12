@@ -1,12 +1,14 @@
 using System.Collections.Specialized;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Randomization;
 
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached value within a range.</summary>
+[ExcludeFromCreateAndFake]
 public abstract class BaseCapAttribute : ParameterHintAttribute
 {
     private readonly bool _minSet;

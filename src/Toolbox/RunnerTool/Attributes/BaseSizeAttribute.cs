@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
@@ -10,6 +11,7 @@ namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 /// <param name="min"><inheritdoc cref="Min" path="/summary"/></param>
 /// <param name="max"><inheritdoc cref="Max" path="/summary"/></param>
 /// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+[ExcludeFromCreateAndFake]
 public abstract class BaseSizeAttribute(int min, int max) : ParameterHintAttribute
 {
     /// <summary>Inclusive lower boundary for the generated collection size.</summary>

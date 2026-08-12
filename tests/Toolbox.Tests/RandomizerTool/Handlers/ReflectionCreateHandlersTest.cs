@@ -60,7 +60,10 @@ public static class ReflectionCreateHandlersTests
             }
             catch (Exception e)
             {
-                throw new ToolException($"Method '{method}' encountered an issue.", e);
+                throw new ToolException(
+                    $"Method '{method}' on '{method.DeclaringType}' encountered an issue.",
+                    e
+                );
             }
             finally
             {

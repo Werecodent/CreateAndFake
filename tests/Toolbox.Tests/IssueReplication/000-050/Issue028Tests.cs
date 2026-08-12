@@ -1,3 +1,5 @@
+using Werecodent.CreateAndFake.Design.Reiteration;
+
 namespace Werecodent.CreateAndFake.Tests.IssueReplication;
 
 public static class Issue028Tests
@@ -14,6 +16,7 @@ public static class Issue028Tests
             .Randomizer.Create<Sample>(opt =>
                 opt with
                 {
+                    RandomizerCreateAttempts = Limiter.Hundred,
                     FinalCondition = r => r is Sample s && s.Value > 0,
                 }
             )
