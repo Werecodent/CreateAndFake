@@ -54,7 +54,17 @@ internal static class ReflectionCreateHandlers
 
     /// <summary>Potential fields to randomize.</summary>
     internal static FrozenSet<FieldInfo> PossibleFields { get; } =
-        PossibleTypes.SelectMany(t => t.GetFields()).ToFrozenSet();
+        PossibleTypes
+            .SelectMany(t =>
+                t.GetFields(
+                    BindingFlags.Instance
+                        | BindingFlags.Static
+                        | BindingFlags.Public
+                        | BindingFlags.NonPublic
+                )
+            )
+            .Where(f => f.IsPublic || f.IsAssembly)
+            .ToFrozenSet();
 
     /// <summary>Potential constants to randomize.</summary>
     internal static FrozenSet<FieldInfo> PossibleConstants { get; } =

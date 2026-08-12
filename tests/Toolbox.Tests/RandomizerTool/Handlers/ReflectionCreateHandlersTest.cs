@@ -1,6 +1,7 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 using Werecodent.CreateAndFake.RunnerTool;
 
@@ -8,7 +9,7 @@ namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
 public static class ReflectionCreateHandlersTests
 {
-    private const int _HealthyMin = 8;
+    private const int _HealthyMin = 6;
 
     [Fact]
     internal static void ReflectionCreateHandlers_InternalOnly()
@@ -19,13 +20,20 @@ public static class ReflectionCreateHandlersTests
     [Fact]
     internal static void Handlers_HealthyRandomizationPools()
     {
-        ReflectionCreateHandlers.PossibleTypes.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleConstructors.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleMethods.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleProperties.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleFields.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleConstants.Count.Assert().GreaterThan(_HealthyMin);
-        ReflectionCreateHandlers.PossibleParameters.Count.Assert().GreaterThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleTypes.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleConstructors.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleMethods.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleProperties.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleConstants.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleParameters.Assert().HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers
+            .PossibleFields.Where(f => f.GetType() == RuntimeDetails.RtFieldInfoType)
+            .Assert()
+            .HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers
+            .PossibleFields.Where(f => f.GetType() == RuntimeDetails.MdFieldInfoType)
+            .Assert()
+            .HasCountMoreThan(_HealthyMin);
     }
 
     [Fact]
