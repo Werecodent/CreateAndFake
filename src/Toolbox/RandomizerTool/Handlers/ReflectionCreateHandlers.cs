@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
@@ -9,13 +10,7 @@ namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 internal static class ReflectionCreateHandlers
 {
     /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>
-    private static readonly ImmutableHashSet<string> _MethodsToExclude =
-    [
-        "Parse",
-        "Format",
-        "Compare",
-        "ToString",
-    ];
+    private static readonly ImmutableHashSet<string> _MethodsToExclude = ["Parse"];
 
     /// <summary>Potential types to randomize.</summary>
     internal static FrozenSet<Type> PossibleTypes { get; } =
@@ -38,7 +33,11 @@ internal static class ReflectionCreateHandlers
 
     /// <summary>Potential constructors to randomize.</summary>
     internal static FrozenSet<ConstructorInfo> PossibleConstructors { get; } =
-        PossibleTypes.SelectMany(t => TypeDescriber.For(t).Constructors.OnlyPublic).ToFrozenSet();
+        PossibleTypes
+            .Select(TypeDescriber.For)
+            .Where(t => !t.Inherits<IEnumerable>())
+            .SelectMany(t => t.Constructors.OnlyPublic)
+            .ToFrozenSet();
 
     /// <summary>Potential methods to randomize.</summary>
     internal static FrozenSet<MethodInfo> PossibleMethods { get; } =
