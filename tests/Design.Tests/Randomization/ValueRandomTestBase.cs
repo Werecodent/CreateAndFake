@@ -15,6 +15,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
 {
     private static readonly FrozenSet<Type> _IgnorableExceptions =
     [
+        typeof(ArgumentException),
         typeof(ArgumentOutOfRangeException),
         typeof(IterationLimitException),
         typeof(UnsupportedException),

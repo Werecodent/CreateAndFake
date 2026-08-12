@@ -11,7 +11,8 @@ public static class CapAttributeTests
     [Fact]
     internal static Task CapAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CapAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            new CapAttribute(5, 10),
             CancellationToken.None,
             opt =>
                 opt with
@@ -25,7 +26,8 @@ public static class CapAttributeTests
     [Fact]
     internal static Task CapAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<CapAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync(
+            new CapAttribute(5, 10),
             CancellationToken.None,
             opt =>
                 opt with

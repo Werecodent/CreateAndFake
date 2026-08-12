@@ -47,6 +47,13 @@ public abstract class ValueRandom(
     private static readonly IDictionary<Type, IValueHandler> _HandlersByType =
         TypeSupporter.GroupBySupportedType(_Handlers);
 
+    /// <summary>Default values by their type.</summary>
+    private static readonly Dictionary<Type, IComparable> _DefaultCache =
+        _HandlersByType.ToDictionary(
+            p => p.Key,
+            p => (IComparable)Activator.CreateInstance(p.Key)!
+        );
+
     /// <summary>All supported value types.</summary>
     public static IEnumerable<Type> SupportedTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
 
@@ -89,11 +96,11 @@ public abstract class ValueRandom(
     }
 
     /// <inheritdoc/>
-    public object Next(Type valueType)
+    public IComparable Next(Type valueType)
     {
         if (valueType is not null && _HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            return gen.CreateSupported(this);
+            return (IComparable)gen.CreateSupported(this);
         }
         else
         {
@@ -107,9 +114,18 @@ public abstract class ValueRandom(
     public T Next<T>(T max)
         where T : struct, IComparable, IComparable<T>, IEquatable<T>
     {
-        if (_HandlersByType.TryGetValue(typeof(T), out IValueHandler? gen))
+        return (T)Next(typeof(T), max);
+    }
+
+    /// <inheritdoc/>
+    public IComparable Next(Type valueType, IComparable max)
+    {
+        ArgumentGuard.ThrowIfNull(valueType, max);
+
+        if (_HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            T min = default;
+            IComparable min = _DefaultCache[valueType];
+
             if (min.CompareTo(max) > 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -120,7 +136,7 @@ public abstract class ValueRandom(
             }
             else
             {
-                T result = (T)gen.CreateSupported(this, max);
+                IComparable result = (IComparable)gen.CreateSupported(this, max);
 
                 // Prevent any issues stemming from scaling imprecision.
                 return result.CompareTo(max) < 0 ? result : min;
@@ -129,7 +145,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericConverter.ExpandName<T>()}' not supported."
+                $"Type '{GenericConverter.ExpandName(valueType)}' not supported."
             );
         }
     }
@@ -138,7 +154,15 @@ public abstract class ValueRandom(
     public T Next<T>(T min, T max)
         where T : struct, IComparable, IComparable<T>, IEquatable<T>
     {
-        if (_HandlersByType.TryGetValue(typeof(T), out IValueHandler? gen))
+        return (T)Next(typeof(T), min, max);
+    }
+
+    /// <inheritdoc/>
+    public IComparable Next(Type valueType, IComparable min, IComparable max)
+    {
+        ArgumentGuard.ThrowIfNull(valueType, min, max);
+
+        if (_HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
             if (min.CompareTo(max) > 0)
             {
@@ -150,7 +174,7 @@ public abstract class ValueRandom(
             }
             else
             {
-                T result = (T)gen.CreateSupported(this, min, max);
+                IComparable result = (IComparable)gen.CreateSupported(this, min, max);
 
                 // Prevent any issues stemming from scaling imprecision.
                 return result.CompareTo(max) <= 0 ? result : min;
@@ -159,7 +183,7 @@ public abstract class ValueRandom(
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericConverter.ExpandName<T>()}' not supported."
+                $"Type '{GenericConverter.ExpandName(valueType)}' not supported."
             );
         }
     }

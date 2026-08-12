@@ -6,10 +6,10 @@ namespace Werecodent.CreateAndFake.MSTest.v3;
 public sealed class CapAttribute : BaseCapAttribute
 {
     /// <inheritdoc/>
-    public CapAttribute(int min, int max)
+    public CapAttribute(object min, object max)
         : base(min, max) { }
 
     /// <inheritdoc/>
-    public CapAttribute(int max)
+    public CapAttribute(object max)
         : base(max) { }
 }

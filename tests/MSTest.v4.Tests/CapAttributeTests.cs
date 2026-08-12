@@ -14,7 +14,8 @@ public class CapAttributeTests
     [TestMethod]
     public Task CapAttribute_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CapAttribute>(
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            new CapAttribute(5, 10),
             TestContext.CancellationToken,
             opt =>
                 opt with
@@ -28,7 +29,8 @@ public class CapAttributeTests
     [TestMethod]
     public Task CapAttribute_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<CapAttribute>(
+        return Tools.Tester.PreventsParameterMutationAsync(
+            new CapAttribute(5, 10),
             TestContext.CancellationToken,
             opt =>
                 opt with

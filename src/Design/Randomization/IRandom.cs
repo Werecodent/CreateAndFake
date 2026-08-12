@@ -42,7 +42,7 @@ public interface IRandom
     /// <param name="valueType">Value <see cref="Type"/> to generate.</param>
     /// <returns>The generated <paramref name="valueType"/> value.</returns>
     /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
-    object Next(Type valueType);
+    IComparable Next(Type valueType);
 
     /// <summary>Generates a positive constrained <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
@@ -56,6 +56,17 @@ public interface IRandom
     T Next<T>(T max)
         where T : struct, IComparable, IComparable<T>, IEquatable<T>;
 
+    /// <summary>Generates a positive constrained <paramref name="valueType"/> value.</summary>
+    /// <param name="valueType">Value <see cref="Type"/> to generate.</param>
+    /// <param name="max">Positive exclusive upper boundary for the value.</param>
+    /// <returns>
+    ///     The generated <paramref name="valueType"/> value <c>&lt;</c> <paramref name="max"/> and
+    ///     <c>&gt;= 0</c>. If <paramref name="max"/> <c>== 0</c>, <c>0</c> is returned instead.
+    /// </returns>
+    /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="max"/> &lt; <c>0</c>.</exception>
+    IComparable Next(Type valueType, IComparable max);
+
     /// <summary>Generates a constrained <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
     /// <param name="min">Inclusive lower boundary for the value.</param>
@@ -68,6 +79,18 @@ public interface IRandom
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="max"/> &lt; <paramref name="min"/>.</exception>
     T Next<T>(T min, T max)
         where T : struct, IComparable, IComparable<T>, IEquatable<T>;
+
+    /// <summary>Generates a constrained <paramref name="valueType"/> value.</summary>
+    /// <param name="valueType">Value <see cref="Type"/> to generate.</param>
+    /// <param name="min">Inclusive lower boundary for the value.</param>
+    /// <param name="max">Inclusive upper boundary for the value.</param>
+    /// <returns>
+    ///     The generated <paramref name="valueType"/> value <c>&lt;=</c>
+    ///     <paramref name="max"/> and <c>&gt;=</c> <paramref name="min"/>.
+    /// </returns>
+    /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">If <paramref name="max"/> &lt; <paramref name="min"/>.</exception>
+    IComparable Next(Type valueType, IComparable min, IComparable max);
 
     /// <summary>Generates a [0,1) value for scaling.</summary>
     /// <returns>The generated value <c>&gt;= 0</c> and <c>&lt; 1</c>.</returns>
