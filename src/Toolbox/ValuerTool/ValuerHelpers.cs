@@ -1,4 +1,5 @@
 using System.Collections;
+using Werecodent.CreateAndFake.Design;
 
 namespace Werecodent.CreateAndFake.ValuerTool;
 
@@ -12,6 +13,8 @@ internal static class ValuerHelpers
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(set, valuer);
+
         Dictionary<int, IList<object>> result = [];
         foreach (object item in set)
         {
