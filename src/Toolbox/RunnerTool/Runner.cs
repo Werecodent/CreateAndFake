@@ -253,11 +253,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
         TypeDescriber info = TypeDescriber.For(param.ParameterType);
         if (
             args.Count > 0
+            && param.ParameterType != typeof(bool)
             && (
-                (
-                    localOptions.Gen.Supports(param.ParameterType)
-                    && param.ParameterType != typeof(bool)
-                )
+                localOptions.Gen.Supports(param.ParameterType)
                 || info.IsMutable()
                 || info.HasInitializableOnlyState()
             )

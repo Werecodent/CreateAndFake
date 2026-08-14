@@ -184,7 +184,7 @@ internal abstract class BaseGuarder(TesterOptions options)
         {
             await DisposeSeriesButInjectedAsync(asEnum).ConfigureAwait(false);
         }
-        else if (!Options.InjectionValues.Any(v => ReferenceEquals(data, v)))
+        else if (!Options.InjectionValues.Contains(data))
         {
             await Disposer.CleanupAsync(data).ConfigureAwait(false);
         }
@@ -211,7 +211,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             {
                 ArgumentGuard.ThrowUponIterationLimit(i++, Options.Valuer.Options.IterationLimit);
 
-                if (!Options.InjectionValues.Any(v => ReferenceEquals(item, v)))
+                if (!Options.InjectionValues.Contains(item))
                 {
                     await Disposer.CleanupAsync(item).ConfigureAwait(false);
                 }

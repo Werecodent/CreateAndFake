@@ -9,7 +9,7 @@
     "git.enableCommitSigning": true,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.organizeImports": "explicit"
+        "source.organizeImports": "always",
     },
     "editor.rulers": [
         120

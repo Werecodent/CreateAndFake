@@ -113,28 +113,7 @@ public sealed class SetCompareHint : CompareHint
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        async Task<Dictionary<int, List<object>>> byHashesAsync(IEnumerable set)
-        {
-            Dictionary<int, List<object>> result = [];
-            foreach (object item in set)
-            {
-                int valueHash = await chainer
-                    .GetHashCodeAsync(item, canceler)
-                    .ConfigureAwait(false);
-
-                if (result.TryGetValue(valueHash, out List<object>? values))
-                {
-                    values.Add(item);
-                }
-                else
-                {
-                    result[valueHash] = [item];
-                }
-            }
-            return result;
-        }
-
-        async Task<bool> isMissingAsync(List<object> series, object item)
+        async Task<bool> isMissingAsync(IList<object> series, object item)
         {
             foreach (object otherItem in series)
             {
@@ -148,13 +127,13 @@ public sealed class SetCompareHint : CompareHint
         }
 
         async IAsyncEnumerable<object> findMissingAsync(
-            Dictionary<int, List<object>> set,
-            Dictionary<int, List<object>> other
+            IDictionary<int, IList<object>> set,
+            IDictionary<int, IList<object>> other
         )
         {
-            foreach (KeyValuePair<int, List<object>> series in set)
+            foreach (KeyValuePair<int, IList<object>> series in set)
             {
-                List<object> matches = other.TryGetValue(series.Key, out List<object>? value)
+                IList<object> matches = other.TryGetValue(series.Key, out IList<object>? value)
                     ? value
                     : [];
 
@@ -168,9 +147,11 @@ public sealed class SetCompareHint : CompareHint
             }
         }
 
-        Dictionary<int, List<object>> expectedByHash = await byHashesAsync(expected)
+        IDictionary<int, IList<object>> expectedByHash = await ValuerHelpers
+            .ByHashesAsync(expected, chainer, canceler)
             .ConfigureAwait(false);
-        Dictionary<int, List<object>> actualByHash = await byHashesAsync(actual)
+        IDictionary<int, IList<object>> actualByHash = await ValuerHelpers
+            .ByHashesAsync(actual, chainer, canceler)
             .ConfigureAwait(false);
 
         await foreach (

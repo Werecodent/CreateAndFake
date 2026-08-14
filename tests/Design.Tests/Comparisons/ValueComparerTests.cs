@@ -59,11 +59,11 @@ public static class ValueComparerTests
     }
 
     [Theory, RandomData]
-    internal static void GetHashCode_SupportsParams(int item1, int item2, int item3)
+    internal static void GetHashCode_SupportsParams([Size(3)] List<int> items)
     {
         Tools.Asserter.Is(
-            ValueComparer.Use.GetHashCode(new List<int> { item1, item2, item3 }),
-            ValueComparer.Use.GetHashCode(item1, item2, item3)
+            ValueComparer.Use.GetHashCode(items),
+            ValueComparer.Use.GetHashCode(items[0], items[1], items[2])
         );
     }
 
