@@ -24,12 +24,9 @@ public static class DesignDefaultsTests
     }
 
     [Fact]
-    internal static void IterationLimit_ObjectSubclassMinimum()
+    internal static void IterationLimit_DoubleObjectSubclassMinimum()
     {
-        TypeDescriber
-            .For<object>()
-            .FindLoadedSubclasses()
-            .Count()
+        (2 * TypeDescriber.For<object>().FindLoadedSubclasses().Count())
             .Assert()
             .LessThan(DesignDefaults.IterationLimit);
     }

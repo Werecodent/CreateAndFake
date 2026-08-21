@@ -6,7 +6,7 @@ namespace Werecodent.CreateAndFake.Design.Properties;
 internal static class DesignDefaults
 {
     /// <summary>Cap to iterating <see cref="IEnumerable"/>s and loops.</summary>
-    internal const int IterationLimit = 9999;
+    internal const int IterationLimit = 19999;
 
     /// <summary>
     ///     Flag to include generating invalid floating-point values (NaN, -∞ and +∞).
