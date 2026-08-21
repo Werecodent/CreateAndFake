@@ -83,10 +83,16 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
+    public Task<int> GetHashCodeAsync(object? item, CancellationToken canceler)
+    {
+        return GetHashCodeAsync(item, canceler, null);
+    }
+
+    /// <inheritdoc/>
     public async Task<int> GetHashCodeAsync(
         object? item,
         CancellationToken canceler,
-        ValuerMod? optionConfiguration = null
+        ValuerMod? optionConfiguration
     )
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
@@ -118,11 +124,17 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     }
 
     /// <inheritdoc/>
+    public Task<bool> EqualsAsync(object? x, object? y, CancellationToken canceler)
+    {
+        return EqualsAsync(x, y, canceler, null);
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> EqualsAsync(
         object? x,
         object? y,
         CancellationToken canceler,
-        ValuerMod? optionConfiguration = null
+        ValuerMod? optionConfiguration
     )
     {
         ValuerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;

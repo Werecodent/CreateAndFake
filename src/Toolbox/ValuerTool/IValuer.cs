@@ -3,15 +3,19 @@
     Werecodent.CreateAndFake.ValuerTool.ValuerOptions
 >;
 using System.Collections;
+using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool;
 
+#pragma warning disable CA1068 // Overloaded parameter last.
+
 /// <summary>Compares objects by value via reflection if needed.</summary>
 public interface IValuer
     : IHintTool<ValuerOptions, ICompareHint>,
+        IAsyncEqualityComparer<object>,
         IEqualityComparer<object>,
         IEqualityComparer
 {
@@ -61,7 +65,7 @@ public interface IValuer
         object? x,
         object? y,
         CancellationToken canceler,
-        ValuerMod? optionConfiguration = null
+        ValuerMod? optionConfiguration
     );
 
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
@@ -80,7 +84,7 @@ public interface IValuer
     Task<int> GetHashCodeAsync(
         object? item,
         CancellationToken canceler,
-        ValuerMod? optionConfiguration = null
+        ValuerMod? optionConfiguration
     );
 
     /// <summary>...</summary>
@@ -88,3 +92,5 @@ public interface IValuer
     /// <returns></returns>
     IEqualityComparer<T> ToComparer<T>();
 }
+
+#pragma warning restore

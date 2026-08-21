@@ -113,50 +113,22 @@ public sealed class SetCompareHint : CompareHint
             yield return new Difference(expected.GetType(), actual.GetType());
         }
 
-        async Task<bool> isMissingAsync(IList<object> series, object item)
-        {
-            foreach (object otherItem in series)
-            {
-                canceler.ThrowIfCancellationRequested();
-                if (await chainer.EqualsAsync(item, otherItem, canceler).ConfigureAwait(false))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        async IAsyncEnumerable<object> findMissingAsync(
-            IDictionary<int, IList<object>> set,
-            IDictionary<int, IList<object>> other
-        )
-        {
-            foreach (KeyValuePair<int, IList<object>> series in set)
-            {
-                IList<object> matches = other.TryGetValue(series.Key, out IList<object>? value)
-                    ? value
-                    : [];
-
-                foreach (object setItem in series.Value)
-                {
-                    if (await isMissingAsync(matches, setItem).ConfigureAwait(false))
-                    {
-                        yield return setItem;
-                    }
-                }
-            }
-        }
-
-        IDictionary<int, IList<object>> expectedByHash = await ValuerHelpers
-            .ByHashesAsync(expected, chainer, canceler)
-            .ConfigureAwait(false);
-        IDictionary<int, IList<object>> actualByHash = await ValuerHelpers
-            .ByHashesAsync(actual, chainer, canceler)
-            .ConfigureAwait(false);
+        AsyncHashSet<object> expectedByHash = AsyncHashSet<object>.CreateFromAsync(
+            expected.Cast<object>(),
+            chainer,
+            chainer.Options.IterationLimit,
+            canceler
+        );
+        AsyncHashSet<object> actualByHash = AsyncHashSet<object>.CreateFromAsync(
+            expected.Cast<object>(),
+            chainer,
+            chainer.Options.IterationLimit,
+            canceler
+        );
 
         await foreach (
-            object item in findMissingAsync(expectedByHash, actualByHash)
-                .WithCancellation(canceler)
+            object item in expectedByHash
+                .FindMissingFromAsync(actualByHash, canceler)
                 .ConfigureAwait(false)
         )
         {
@@ -164,8 +136,8 @@ public sealed class SetCompareHint : CompareHint
         }
 
         await foreach (
-            object item in findMissingAsync(actualByHash, expectedByHash)
-                .WithCancellation(canceler)
+            object item in actualByHash
+                .FindMissingFromAsync(expectedByHash, canceler)
                 .ConfigureAwait(false)
         )
         {

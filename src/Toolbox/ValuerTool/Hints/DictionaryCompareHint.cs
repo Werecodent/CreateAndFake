@@ -158,7 +158,7 @@ public sealed class DictionaryCompareHint : CompareHint<IDictionary>
         foreach (DictionaryEntry entry in item)
         {
             canceler.ThrowIfCancellationRequested();
-            hash += chainer.GetHashCode(entry.Key);
+            hash += await chainer.GetHashCodeAsync(entry.Key, canceler).ConfigureAwait(false);
             hash += await chainer.GetHashCodeAsync(entry.Value, canceler).ConfigureAwait(false);
         }
 
