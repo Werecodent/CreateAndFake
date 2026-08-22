@@ -10,11 +10,23 @@ public interface IAsyncSet<T> : IAsyncEnumerable<T>
     /// <returns><see langword="true"/> if added, <see langword="false"/> if it's already been added.</returns>
     Task<bool> AddAsync(T item, CancellationToken canceler);
 
+    /// <summary>Determines if <paramref name="key"/> is in the set as a key.</summary>
+    /// <param name="key">Instance to check for.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns><see langword="true"/> if found, <see langword="false"/> otherwise.</returns>
+    Task<bool> ContainsKeyAsync(int key, CancellationToken canceler);
+
     /// <summary>Determines if <paramref name="item"/> is in the set.</summary>
     /// <param name="item">Instance to check for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns><see langword="true"/> if found, <see langword="false"/> otherwise.</returns>
     Task<bool> ContainsAsync(T item, CancellationToken canceler);
+
+    /// <summary>Determines if the <paramref name="entry"/> is in the set.</summary>
+    /// <param name="entry">Instance to check for.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns><see langword="true"/> if found, <see langword="false"/> otherwise.</returns>
+    Task<bool> ContainsAsync(KeyValuePair<int, T> entry, CancellationToken canceler);
 
     /// <summary>Enumerates all contents with their value hash.</summary>
     /// <param name="canceler">Aborts execution if triggered.</param>

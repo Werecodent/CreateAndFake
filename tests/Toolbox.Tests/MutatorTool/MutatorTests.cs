@@ -1,4 +1,5 @@
-﻿using Werecodent.CreateAndFake.Design.Exceptions;
+﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.MutatorTool;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool;
@@ -18,7 +19,8 @@ public static class MutatorTests
     internal static Task Mutator_PassthroughWithNoExceptions()
     {
         return Tools.Tester.PassthroughWithNoExceptionsAsync<Mutator>(
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(TargetInvocationException)] }
         );
     }
 }

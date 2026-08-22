@@ -129,14 +129,28 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     }
 
     /// <inheritdoc/>
+    public async Task<bool> ContainsKeyAsync(int key, CancellationToken canceler)
+    {
+        return (await _contents.ConfigureAwait(false)).ContainsKey(key);
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> ContainsAsync(T item, CancellationToken canceler)
     {
         int hash = await _comparer.GetHashCodeAsync(item, canceler).ConfigureAwait(false);
-        if ((await _contents.ConfigureAwait(false)).TryGetValue(hash, out List<T>? data))
+
+        return await ContainsAsync(new KeyValuePair<int, T>(hash, item), canceler)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> ContainsAsync(KeyValuePair<int, T> entry, CancellationToken canceler)
+    {
+        if ((await _contents.ConfigureAwait(false)).TryGetValue(entry.Key, out List<T>? data))
         {
             foreach (T found in data)
             {
-                if (await _comparer.EqualsAsync(found, item, canceler).ConfigureAwait(false))
+                if (await _comparer.EqualsAsync(found, entry.Value, canceler).ConfigureAwait(false))
                 {
                     return true;
                 }

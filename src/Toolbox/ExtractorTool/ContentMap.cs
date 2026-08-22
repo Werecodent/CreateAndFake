@@ -32,14 +32,9 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
             return false;
         }
 
-        Type itemType = item.GetType();
+        TypeDescriber info = TypeDescriber.For(item.GetType());
 
-        return itemType.IsValueType || itemType == typeof(string)
-            ? _content.Values.Any(p => p.Contains(item))
-            : _content
-                .Keys.Where(k => k.Inherits(itemType))
-                .SelectMany(k => _content[k])
-                .Any(i => _options.Valuer.Equals(item, i));
+        return _content.Any(pair => info.Inherits(pair.Key) && pair.Value.Contains(item));
     }
 
     /// <inheritdoc/>
