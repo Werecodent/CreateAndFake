@@ -38,6 +38,44 @@ public partial class Asserter : IAsserterAsyncEnumerable
     }
 
     /// <inheritdoc/>
+    public Task DebugAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return DebugAsync(collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public async Task DebugAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        string? content = AsString(
+            await AsyncSeriesHelper
+                .ToListAsync(collection, localOptions.Valuer.Options.IterationLimit, canceler)
+                .ConfigureAwait(false),
+            localOptions
+        );
+
+        if (localOptions.DebugAssertsFail)
+        {
+            throw new AssertException(
+                $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                content
+            );
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual Task IsEmptyAsync<T>(
         IAsyncEnumerable<T>? collection,
         CancellationToken canceler,

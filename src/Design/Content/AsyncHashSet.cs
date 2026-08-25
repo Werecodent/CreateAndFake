@@ -295,15 +295,15 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
 
         StringBuilder text = new();
 
-        text.AppendLine("AsyncHashSet: {");
+        text.Append("AsyncHashSet: {");
         foreach (KeyValuePair<int, List<T>> row in contents)
         {
             foreach (T item in row.Value)
             {
-                text.Append("    ").Append(row.Key).Append(", ").Append(item).AppendLine();
+                text.AppendLine("    ").Append(row.Key).Append(", ").Append(item);
             }
         }
-        text.Append('}');
+        text.AppendLine("}");
 
         return text.ToString();
     }

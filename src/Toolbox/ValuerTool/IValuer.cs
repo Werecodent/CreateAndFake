@@ -91,6 +91,11 @@ public interface IValuer
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     IEqualityComparer<T> ToComparer<T>();
+
+    /// <summary>...</summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    IAsyncEqualityComparer<T> ToAsyncComparer<T>();
 }
 
 #pragma warning restore

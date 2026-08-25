@@ -292,6 +292,31 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
             .ConfigureAwait(false);
         return ToChainer();
     }
+
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.DebugAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<TSelf>> DebugAsync(
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.DebugAsync(Collection, canceler, details).ConfigureAwait(false);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterAsyncEnumerable.DebugAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AssertChainer<TSelf>> DebugAsync(
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .DebugAsync(Collection, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+        return ToChainer();
+    }
 }
 
 #pragma warning restore

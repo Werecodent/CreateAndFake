@@ -19,7 +19,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
         : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal static async Task GetItemsAsync_Empty([Size(0)] IAsyncEnumerable<int> items)
+    internal static async Task TryToCreate_Empty([Size(0)] IAsyncEnumerable<int> items)
     {
         IAsyncEnumerator<int> gen = items.GetAsyncEnumerator(TestContext.Current.CancellationToken);
         await using (gen)
@@ -29,7 +29,7 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     }
 
     [Theory, RandomData]
-    internal static async Task GetItemsAsync_Repeatable(IAsyncEnumerable<int> items)
+    internal static async Task TryToCreate_Repeatable(IAsyncEnumerable<int> items)
     {
         List<int> first = [];
         await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
@@ -47,13 +47,13 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
     }
 
     [Theory, RandomData]
-    internal static async Task GetItemsAsync_Cancel(IAsyncEnumerable<int> items)
+    internal static async Task TryToCreate_Cancel(IAsyncEnumerable<int> items)
     {
         await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
     }
 
     [Theory, RandomData]
-    internal static async Task GetItemsAsync_Interrupt([Size(5)] IAsyncEnumerable<int> items)
+    internal static async Task TryToCreate_Interrupt([Size(5)] IAsyncEnumerable<int> items)
     {
         await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
 

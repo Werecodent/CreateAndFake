@@ -11,11 +11,7 @@ public sealed class DefaultEqualityCompareHintTests
 
     private static readonly Type[] _ValidTypes = [typeof(BindingFlags), typeof(Func<>)];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(IDictionary),
-        typeof(IAsyncEnumerable<int>),
-    ];
+    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(IEnumerable<int>)];
 
     public DefaultEqualityCompareHintTests()
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }

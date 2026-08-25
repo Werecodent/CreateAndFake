@@ -191,6 +191,22 @@ public interface IAsserterAsyncEnumerable
         AsserterMod? optionConfiguration,
         string? details = null
     );
+
+    /// <inheritdoc cref="DebugAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    Task DebugAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterEnumerable.Debug(IEnumerable,AsserterMod,string)"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    Task DebugAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 }
 
 #pragma warning restore

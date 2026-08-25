@@ -248,6 +248,12 @@ public sealed class ValuerChainer
     }
 
     /// <inheritdoc/>
+    public IAsyncEqualityComparer<T> ToAsyncComparer<T>()
+    {
+        return new ByValuerAsyncComparer<T>(this);
+    }
+
+    /// <inheritdoc/>
     public IValuer WithOptions(ValuerMod optionConfiguration)
     {
         ArgumentGuard.ThrowIfNull(optionConfiguration);

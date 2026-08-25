@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading.Tasks.Sources;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
@@ -28,6 +29,15 @@ public static class GenericResolver
         typeof(double),
         typeof(string),
         typeof(TimeSpan),
+    ];
+
+    /// <summary>Types to not use found direct implementations.</summary>
+    private static readonly FrozenSet<Type> _CraftOnlyTypes =
+    [
+        .. CollectionCreateHint.PotentialCollections,
+        typeof(IEnumerable<>),
+        typeof(IAsyncEnumerable<>),
+        typeof(IValueTaskSource<>),
     ];
 
     /// <summary>Defines the <paramref name="method"/> with randomized generics.</summary>
@@ -116,7 +126,7 @@ public static class GenericResolver
             );
         }
 
-        if (!CollectionCreateHint.PotentialCollections.Contains(type.GetGenericTypeDefinition()))
+        if (!_CraftOnlyTypes.Contains(type))
         {
             List<Type> directImplementations =
             [

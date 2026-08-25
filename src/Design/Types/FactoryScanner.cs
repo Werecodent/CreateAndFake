@@ -31,7 +31,7 @@ public sealed class FactoryScanner(Type? type) : MemberScanner<MethodInfo>(type)
     private static IEnumerable<MethodInfo> FindAllFactories(Type? type)
     {
         return type?.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(m => (GenericConverter.AsGenericBase(m.ReturnType) ?? m.ReturnType) == type)
+                .Where(m => m.ReturnType == type)
             ?? [];
     }
 }

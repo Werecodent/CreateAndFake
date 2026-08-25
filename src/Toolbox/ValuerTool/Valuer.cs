@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool;
@@ -158,6 +159,12 @@ public sealed class Valuer(ValuerOptions options) : IValuer
     public IEqualityComparer<T> ToComparer<T>()
     {
         return new ByValuerComparer<T>(this);
+    }
+
+    /// <inheritdoc/>
+    public IAsyncEqualityComparer<T> ToAsyncComparer<T>()
+    {
+        return new ByValuerAsyncComparer<T>(this);
     }
 
     /// <inheritdoc/>
