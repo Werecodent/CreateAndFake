@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Exceptions;
 
 namespace Werecodent.CreateAndFake.Design.Content;
@@ -14,6 +13,7 @@ public static class AsyncSeriesHelper
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
+    /// <remarks>The <paramref name="canceler"/> is currently unused; maintained for future compatibility.</remarks>
     [return: NotNullIfNotNull(nameof(collection))]
     public static IAsyncEnumerable<T>? CreateFromAsync<T>(
         IEnumerable<T>? collection,
@@ -21,35 +21,17 @@ public static class AsyncSeriesHelper
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(canceler);
+
         if (collection == null)
         {
             return null;
         }
         else
         {
-            return IterateAsync(collection, iterationLimit, canceler);
+            return new AsyncList<T>(collection, iterationLimit);
         }
     }
-
-#pragma warning disable IDE0390 // Purpose is to create async data from sync data.
-
-    /// <inheritdoc cref="CreateFromAsync{T}"/>
-    private static async IAsyncEnumerable<T> IterateAsync<T>(
-        IEnumerable<T> collection,
-        int iterationLimit,
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        int i = 0;
-        foreach (T value in collection)
-        {
-            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
-            canceler.ThrowIfCancellationRequested();
-            yield return value;
-        }
-    }
-
-#pragma warning restore IDE0390
 
     /// <summary>Determines if the <paramref name="collection"/> has any items.</summary>
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
@@ -15,6 +16,10 @@ public sealed class CollectionCreateHint : CreateHint
     private static readonly FrozenDictionary<Type, Func<Type, Array, object?>> _Collections =
         new Dictionary<Type, Func<Type, Array, object?>>()
         {
+            {
+                typeof(AsyncList<>),
+                (type, data) => Activator.CreateInstance(type, data, int.MaxValue)
+            },
             { typeof(List<>), (type, data) => Activator.CreateInstance(type, data) },
             { typeof(Queue<>), (type, data) => Activator.CreateInstance(type, data) },
             { typeof(Stack<>), (type, data) => Activator.CreateInstance(type, data) },
@@ -73,8 +78,9 @@ public sealed class CollectionCreateHint : CreateHint
     internal static IEnumerable<Type> PotentialCollections { get; } =
         _Collections
             .Keys.SelectMany(t => TypeDescriber.For(t).InheritedTypes)
-            .Where(t => t.Inherits(typeof(IEnumerable<>)))
+            .Where(t => t.Inherits(typeof(IEnumerable<>)) || t.Inherits(typeof(IAsyncEnumerable<>)))
             .Select(t => GenericConverter.AsGenericBase(t)!)
+            .Where(t => t != null)
             .Distinct()
             .ToFrozenSet();
 
@@ -95,6 +101,10 @@ public sealed class CollectionCreateHint : CreateHint
 
         Type? itemType = GenericConverter
             .AsConcreteType(type, typeof(IEnumerable<>))
+            ?.GetGenericArguments()[0];
+
+        itemType ??= GenericConverter
+            .AsConcreteType(type, typeof(IAsyncEnumerable<>))
             ?.GetGenericArguments()[0];
 
         if (itemType != null && FindMatches(type, itemType).Any())

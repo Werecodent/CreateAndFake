@@ -94,6 +94,24 @@ public static class GenericConverterTests
         GenericConverter.AsGenericBase(typeof(string)).Assert().IsNull();
     }
 
+    [Fact]
+    internal static void AsMatchedGeneric_FindsConcreteType()
+    {
+        GenericConverter
+            .AsMatchedGeneric(typeof(IEnumerable<>), typeof(List<int>))
+            .Assert()
+            .Is(typeof(IEnumerable<int>));
+    }
+
+    [Fact]
+    internal static void AsMatchedGeneric_NullWithoutBaseDefinition()
+    {
+        GenericConverter
+            .AsMatchedGeneric(typeof(IEnumerable<string>), typeof(List<int>))
+            .Assert()
+            .IsNull();
+    }
+
     [Theory, RandomData]
     internal static void ExpandName_ObjectGetType(IList<int> data)
     {

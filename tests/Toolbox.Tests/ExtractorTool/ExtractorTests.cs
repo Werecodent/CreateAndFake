@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
@@ -33,7 +34,11 @@ public static class ExtractorTests
     [Fact]
     internal static void Extract_CollectionsWork()
     {
-        foreach (Type type in CollectionCreateHint.PotentialCollections)
+        foreach (
+            Type type in CollectionCreateHint.PotentialCollections.Where(t =>
+                !ArgumentGuard.IsAsynchronous(t)
+            )
+        )
         {
             Tools
                 .Extractor.Extract(Tools.Randomizer.Create(type))

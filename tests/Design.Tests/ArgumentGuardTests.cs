@@ -1,4 +1,5 @@
-﻿using Werecodent.CreateAndFake.Design.Exceptions;
+﻿using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Design.Tests;
@@ -50,6 +51,12 @@ public static class ArgumentGuardTests
     public static void IsAsynchronous_FalseWithSyncData(DataSample data)
     {
         ArgumentGuard.IsAsynchronous(data).Assert().Is(false);
+    }
+
+    [Fact]
+    public static void IsAsynchronous_SafeWithTypes()
+    {
+        ArgumentGuard.IsAsynchronous(typeof(AsyncList<int>)).Assert().Is(true);
     }
 
     [Theory, RandomData]

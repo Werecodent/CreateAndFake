@@ -293,6 +293,11 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         Dictionary<int, List<T>> contents = _contents.Result;
 #pragma warning restore
 
+        if (contents.Count == 0)
+        {
+            return "AsyncHashSet: { }";
+        }
+
         StringBuilder text = new();
 
         text.Append("AsyncHashSet: {");
@@ -300,10 +305,10 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         {
             foreach (T item in row.Value)
             {
-                text.AppendLine("    ").Append(row.Key).Append(", ").Append(item);
+                text.AppendLine().Append("    ").Append(row.Key).Append(", ").Append(item);
             }
         }
-        text.AppendLine("}");
+        text.AppendLine().Append('}');
 
         return text.ToString();
     }

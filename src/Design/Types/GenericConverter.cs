@@ -90,6 +90,22 @@ public static class GenericConverter
         return type?.IsGenericType == true ? type.GetGenericTypeDefinition() : null;
     }
 
+    /// <summary>
+    ///     Attempts to convert the <paramref name="genericBase"/> to the concrete
+    ///     representation inherited by the <paramref name="concreteType"/>.
+    /// </summary>
+    /// <param name="genericBase">Generic base to define generics for.</param>
+    /// <param name="concreteType">Type inheriting generic base with defined generics.</param>
+    /// <returns>The concrete type if a match is found, <see langword="null"/> otherwise.</returns>
+    public static Type? AsMatchedGeneric(Type? genericBase, Type concreteType)
+    {
+        if (genericBase?.IsGenericTypeDefinition ?? false)
+        {
+            return AsConcreteType(concreteType, genericBase);
+        }
+        return null;
+    }
+
     /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>
     /// <param name="instance">The instance to create a <see cref="Type"/> name for.</param>
     /// <returns>The built display name.</returns>

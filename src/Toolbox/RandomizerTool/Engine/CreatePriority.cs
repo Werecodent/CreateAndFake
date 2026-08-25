@@ -41,19 +41,16 @@ public enum CreatePriority
     /// <summary>Priority for <see cref="CollectionCreateHint"/>.</summary>
     CollectionHint = 9,
 
-    /// <summary>Priority for <see cref="AsyncCollectionCreateHint"/>.</summary>
-    AsyncCollectionHint = 10,
-
     /// <summary>Priority for <see cref="GenericCreateHint"/>.</summary>
-    GenericHint = 11,
+    GenericHint = 10,
 
     /// <summary>Priority for <see cref="EnumCreateHint"/>.</summary>
-    EnumHint = 12,
+    EnumHint = 11,
 
     /// <summary>Priority for <see cref="HandlerCreateHint"/>.</summary>
-    HandlerHint = 13,
+    HandlerHint = 12,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 14,
+    Highest = 13,
 }

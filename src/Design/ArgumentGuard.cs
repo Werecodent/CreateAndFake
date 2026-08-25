@@ -205,8 +205,19 @@ public static class ArgumentGuard
     /// <param name="value">Passed parameter value.</param>
     public static bool IsAsynchronous(object? value)
     {
-        return (value is Task task && !task.IsCompleted)
-            || (value?.GetType()).Inherits(typeof(IAsyncEnumerable<>));
+        if (value == null)
+        {
+            return false;
+        }
+
+        if (value is Task task && !task.IsCompleted)
+        {
+            return true;
+        }
+
+        Type type = value as Type ?? value.GetType();
+
+        return type.Inherits(typeof(IAsyncEnumerable<>));
     }
 
     /// <summary>Prevents further execution if <paramref name="value"/> is an asynchronous <see cref="Type"/>.</summary>

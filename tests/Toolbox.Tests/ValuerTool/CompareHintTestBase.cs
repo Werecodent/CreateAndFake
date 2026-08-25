@@ -160,7 +160,9 @@ public abstract class CompareHintTestBase<T>(
             try
             {
                 one = Tools.Randomizer.Create(type);
-                two = Tools.Randomizer.Create(one.GetType());
+                two = Tools.Randomizer.Create(
+                    GenericConverter.AsMatchedGeneric(type, one.GetType()) ?? type
+                );
 
                 await TestInstance
                     .TryToAsyncCompare(

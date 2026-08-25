@@ -3,14 +3,31 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Content;
 
+#pragma warning disable IDE0390 // Purpose is to create async data from sync data.
+
 /// <summary>Provides a repeatable asynchronous source.</summary>
-/// <typeparam name="T">The <paramref name="content"/>'s item <see cref="Type"/>.</typeparam>
-/// <param name="content"><inheritdoc cref="Content" path="/summary"/></param>
-public sealed class AsyncList<T>(IReadOnlyCollection<T> content) : IAsyncEnumerable<T>
+/// <typeparam name="T">The <see cref="Content"/>'s item <see cref="Type"/>.</typeparam>
+public sealed class AsyncList<T> : IAsyncEnumerable<T>
 {
     /// <summary>Backing content for the async enumerator.</summary>
-    public IReadOnlyCollection<T> Content { get; } =
-        content.ToArray() ?? throw new ArgumentNullException(nameof(content));
+    public IEnumerable<T> Content { get; }
+
+    /// <inheritdoc cref="AsyncList{T}"/>
+    /// <param name="content"><inheritdoc cref="Content" path="/summary"/></param>
+    /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
+    public AsyncList(IEnumerable<T> content, int iterationLimit)
+    {
+        List<T> list = [];
+
+        int i = 0;
+        foreach (T item in content ?? throw new ArgumentNullException(nameof(content)))
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
+            list.Add(item);
+        }
+
+        Content = list;
+    }
 
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
@@ -28,7 +45,6 @@ public sealed class AsyncList<T>(IReadOnlyCollection<T> content) : IAsyncEnumera
         foreach (T item in Content)
         {
             canceler.ThrowIfCancellationRequested();
-            await Task.Delay(0, canceler).ConfigureAwait(false);
             yield return item;
         }
     }
@@ -39,3 +55,5 @@ public sealed class AsyncList<T>(IReadOnlyCollection<T> content) : IAsyncEnumera
         return GenericConverter.ExpandName(GetType());
     }
 }
+
+#pragma warning restore

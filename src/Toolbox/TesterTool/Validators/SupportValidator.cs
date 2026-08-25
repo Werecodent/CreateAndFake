@@ -164,6 +164,13 @@ internal sealed class SupportValidator(TesterOptions options)
                 )
                 .ConfigureAwait(false);
 
+            Options.Asserter.Is(
+                original.GetType(),
+                dupe.GetType(),
+                failMessage
+                    + $" Cloned type '{GenericConverter.ExpandName(dupe.GetType())}' mismatch."
+            );
+
             if (
                 type.IsAbstract
                 || TypeDescriber.For(type).IsMutable()
