@@ -52,7 +52,7 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
     /// <inheritdoc/>
     public override string ToString()
     {
-        return GenericConverter.ExpandName(GetType());
+        return $"{GenericConverter.ExpandName(GetType())}[{Content.Count()}]";
     }
 }
 

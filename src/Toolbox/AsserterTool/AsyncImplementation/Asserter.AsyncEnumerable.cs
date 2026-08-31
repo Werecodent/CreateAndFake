@@ -1,7 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.AsserterTool;
 
@@ -521,5 +523,69 @@ public partial class Asserter : IAsserterAsyncEnumerable
                 contents.ToString()
             );
         }
+    }
+
+    /// <inheritdoc/>
+    public Task<TException> ThrowsAsync<TException, TContent>(
+        IAsyncEnumerable<TContent>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+        where TException : Exception
+    {
+        return ThrowsAsync<TException, TContent>(collection, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public async Task<TException> ThrowsAsync<TException, TContent>(
+        IAsyncEnumerable<TContent>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where TException : Exception
+    {
+        ArgumentGuard.ThrowIfNull(collection);
+
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        string errorMessage =
+            $"Expected exception of type '{GenericConverter.ExpandName<TException>()}' but received: ";
+        try
+        {
+            await foreach (
+                TContent item in collection.WithCancellation(canceler).ConfigureAwait(false)
+            )
+            {
+                await Disposer.CleanupAsync(item).ConfigureAwait(false);
+            }
+        }
+        catch (Exception e)
+        {
+            return UnwrapException<TException>(e, errorMessage, localOptions, details);
+        }
+
+        throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
+    }
+
+    /// <inheritdoc/>
+    public Task<Exception> ThrowsExceptionAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return ThrowsAsync<Exception, T>(collection, canceler, details);
+    }
+
+    /// <inheritdoc/>
+    public Task<Exception> ThrowsExceptionAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return ThrowsAsync<Exception, T>(collection, canceler, optionConfiguration, details);
     }
 }

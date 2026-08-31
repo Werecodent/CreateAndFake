@@ -207,6 +207,38 @@ public interface IAsserterAsyncEnumerable
         AsserterMod? optionConfiguration,
         string? details = null
     );
+
+    /// <inheritdoc cref="ThrowsAsync{T,T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    Task<TException> ThrowsAsync<TException, TContent>(
+        IAsyncEnumerable<TContent>? collection,
+        CancellationToken canceler,
+        string? details = null
+    )
+        where TException : Exception;
+
+    /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T,T}(ValueTask{T}?,CancellationToken,string)"/>
+    Task<TException> ThrowsAsync<TException, TContent>(
+        IAsyncEnumerable<TContent>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where TException : Exception;
+
+    /// <inheritdoc cref="ThrowsAsync{T,T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    Task<Exception> ThrowsExceptionAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="ThrowsAsync{T,T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
+    Task<Exception> ThrowsExceptionAsync<T>(
+        IAsyncEnumerable<T>? collection,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 }
 
 #pragma warning restore

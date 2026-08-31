@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Exceptions;
 
 namespace Werecodent.CreateAndFake.Design.Content;
@@ -75,7 +76,7 @@ public static class AsyncSeriesHelper
     /// <exception cref="IterationLimitException">
     ///     If the <paramref name="collection"/> size is <c>&gt;= iterationLimit</c>.
     /// </exception>
-    public static async Task ForEachAsync<T>(
+    public static Task ForEachAsync<T>(
         IAsyncEnumerable<T>? collection,
         int iterationLimit,
         CancellationToken canceler,
@@ -83,22 +84,16 @@ public static class AsyncSeriesHelper
     )
     {
         ArgumentGuard.ThrowIfNull(itemHandler);
-        if (collection == null)
-        {
-            return;
-        }
-
-        canceler.ThrowIfCancellationRequested();
-
-        int i = 0;
-        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
-            canceler.ThrowIfCancellationRequested();
-            itemHandler.Invoke(item);
-        }
-
-        canceler.ThrowIfCancellationRequested();
+        return ForEachAsync(
+            collection,
+            iterationLimit,
+            canceler,
+            item =>
+            {
+                itemHandler(item);
+                return Task.CompletedTask;
+            }
+        );
     }
 
     /// <inheritdoc cref="ForEachAsync{T}(IAsyncEnumerable{T},int,CancellationToken,Action{T})"/>
@@ -123,6 +118,64 @@ public static class AsyncSeriesHelper
             ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
             canceler.ThrowIfCancellationRequested();
             await itemHandler(item).ConfigureAwait(false);
+        }
+
+        canceler.ThrowIfCancellationRequested();
+    }
+
+    /// <inheritdoc cref="HandleSelectAsync"/>
+    public static IAsyncEnumerable<TOut> SelectAsync<TIn, TOut>(
+        IAsyncEnumerable<TIn>? collection,
+        int iterationLimit,
+        CancellationToken canceler,
+        Func<TIn, TOut> itemHandler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(itemHandler);
+        return SelectAsync(
+            collection,
+            iterationLimit,
+            canceler,
+            item => Task.FromResult(itemHandler(item))
+        );
+    }
+
+    /// <inheritdoc cref="HandleSelectAsync"/>
+    public static IAsyncEnumerable<TOut> SelectAsync<TIn, TOut>(
+        IAsyncEnumerable<TIn>? collection,
+        int iterationLimit,
+        CancellationToken canceler,
+        Func<TIn, Task<TOut>> itemHandler
+    )
+    {
+        return HandleSelectAsync(collection, itemHandler, iterationLimit, canceler);
+    }
+
+    /// <summary>Sequentially modifies the <paramref name="collection"/>.</summary>
+    /// <typeparam name="TIn">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
+    /// <typeparam name="TOut">The <see langword="return"/> item <see cref="Type"/>.</typeparam>
+    /// <inheritdoc cref="ForEachAsync{T}(IAsyncEnumerable{T},int,CancellationToken,Action{T})"/>
+    private static async IAsyncEnumerable<TOut> HandleSelectAsync<TIn, TOut>(
+        IAsyncEnumerable<TIn>? collection,
+        Func<TIn, Task<TOut>> itemHandler,
+        int iterationLimit,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        ArgumentGuard.ThrowIfNull(itemHandler);
+        if (collection == null)
+        {
+            yield break;
+        }
+
+        canceler.ThrowIfCancellationRequested();
+
+        int i = 0;
+        await foreach (TIn item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
+            canceler.ThrowIfCancellationRequested();
+            yield return await itemHandler(item).ConfigureAwait(false);
         }
 
         canceler.ThrowIfCancellationRequested();

@@ -30,6 +30,15 @@ public static class AsyncListTests
         );
     }
 
+    [Fact]
+    internal static Task AsyncList_FrameworkSupport()
+    {
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            [typeof(AsyncList<>)],
+            TestContext.Current.CancellationToken
+        );
+    }
+
     [Theory, RandomData]
     internal static async Task GetAsyncEnumerator_Repeatable(IReadOnlyCollection<DataSample> sample)
     {

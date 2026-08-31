@@ -6,22 +6,28 @@ namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
 public static class AsyncSeriesHelperTests
 {
-    [Fact]
-    internal static Task AsyncSeriesHelper_GuardsNulls()
+    [Theory, RandomData]
+    internal static Task AsyncSeriesHelper_GuardsNulls([Cap(6, 9)] int iterationLimit)
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AsyncSeriesHelper),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [iterationLimit] }
         );
     }
 
-    [Fact]
-    internal static Task AsyncSeriesHelper_NoParameterMutation()
+    [Theory, RandomData]
+    internal static Task AsyncSeriesHelper_NoParameterMutation([Cap(6, 9)] int iterationLimit)
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncSeriesHelper),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [iterationLimit],
+                    IgnorableExceptions = [typeof(IterationLimitException)],
+                }
         );
     }
 
@@ -208,6 +214,117 @@ public static class AsyncSeriesHelperTests
                 data.Count,
                 source.Token,
                 _ => Task.CompletedTask
+            )
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task SelectAsync_IteratesSuccessfully(
+        [Size(2)] IAsyncEnumerable<string> data
+    )
+    {
+        IList<string> results = await AsyncSeriesHelper.ToListAsync(
+            AsyncSeriesHelper.SelectAsync(data, 2, new CancellationToken(false), item => item),
+            2,
+            TestContext.Current.CancellationToken
+        );
+        await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+
+        results = await AsyncSeriesHelper.ToListAsync(
+            AsyncSeriesHelper.SelectAsync(
+                data,
+                2,
+                new CancellationToken(false),
+                v => Task.FromResult(v)
+            ),
+            2,
+            TestContext.Current.CancellationToken
+        );
+        await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task SelectAsync_HasIterationLimit(
+        [Size(2)] IAsyncEnumerable<string> data
+    )
+    {
+        await AsyncSeriesHelper
+            .SelectAsync(data, 1, new CancellationToken(false), x => x)
+            .Assert()
+            .ThrowsAsync<IterationLimitException>(TestContext.Current.CancellationToken);
+
+        await AsyncSeriesHelper
+            .SelectAsync(data, 1, new CancellationToken(false), x => Task.FromResult(x))
+            .Assert()
+            .ThrowsAsync<IterationLimitException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task SelectAsync_CanBeCanceledInitially(
+        [Size(0)] IAsyncEnumerable<string> data
+    )
+    {
+        await AsyncSeriesHelper
+            .SelectAsync(data, 0, new CancellationToken(true), x => x)
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+
+        await AsyncSeriesHelper
+            .SelectAsync(data, 0, new CancellationToken(true), x => Task.FromResult(x))
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static async Task SelectAsync_CanBeCanceledAtIteration()
+    {
+        using CancellationTokenSource source = new();
+        await AsyncSeriesHelper
+            .SelectAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
+                10,
+                source.Token,
+                x => x
+            )
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+
+        using CancellationTokenSource source2 = new();
+        await AsyncSeriesHelper
+            .SelectAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source2),
+                10,
+                source.Token,
+                x => Task.FromResult(x)
+            )
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task SelectAsync_CanBeCanceledAfterIterating(
+        [Size(1)] ICollection<string> data
+    )
+    {
+        using CancellationTokenSource source = new();
+        await AsyncSeriesHelper
+            .SelectAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source),
+                data.Count,
+                source.Token,
+                x => x
+            )
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+
+        using CancellationTokenSource source2 = new();
+        await AsyncSeriesHelper
+            .SelectAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source2),
+                data.Count,
+                source.Token,
+                x => Task.FromResult(x)
             )
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);

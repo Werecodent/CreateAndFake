@@ -339,4 +339,33 @@ public static class TaskAssertAsyncEnumerableExtensions
             .DebugAsync(canceler, optionConfiguration, details)
             .ConfigureAwait(false);
     }
+
+    /// <inheritdoc cref="AssertAsyncEnumerableBase{T,T}.DebugAsync(CancellationToken,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsAsync<T>(
+        this Task<AssertAsyncEnumerable<T>> origin,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsAsync<Exception>(canceler, details)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc cref="AssertAsyncEnumerableBase{T,T}.DebugAsync(CancellationToken,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsAsync<T>(
+        this Task<AssertAsyncEnumerable<T>> origin,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsAsync<Exception>(canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+    }
 }
