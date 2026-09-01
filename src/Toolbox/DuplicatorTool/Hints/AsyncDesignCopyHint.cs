@@ -27,7 +27,7 @@ public sealed class AsyncDesignCopyHint : CopyHint
             return new(
                 Activator.CreateInstance(
                     type,
-                    duplicator.Copy(((dynamic)source).Content),
+                    duplicator.Copy(((dynamic)source).Content, null),
                     int.MaxValue
                 )
             );
@@ -51,7 +51,7 @@ public sealed class AsyncDesignCopyHint : CopyHint
     )
     {
         return AsyncHashSet<T>.CreateFromAsync(
-            source.ByHashesAsync(CancellationToken.None),
+            duplicator.Copy(source.ByHashesAsync(CancellationToken.None)),
             source.Comparer,
             duplicator.Options.Valuer.Options.IterationLimit,
             CancellationToken.None
