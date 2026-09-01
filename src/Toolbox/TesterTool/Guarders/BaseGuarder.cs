@@ -109,11 +109,13 @@ internal abstract class BaseGuarder(TesterOptions options)
                 .Select(m => GenericFixer.FixMethod(m, options))
         )
         {
-            MethodCallWrapper data = options.Runner.CreateFor(
-                method,
-                opt => opt with { InjectionValues = Options.InjectionValues },
-                canceler
-            );
+            MethodCallWrapper data = await options
+                .Runner.CreateForAsync(
+                    method,
+                    canceler,
+                    opt => opt with { InjectionValues = Options.InjectionValues }
+                )
+                .ConfigureAwait(false);
             try
             {
                 await Disposer

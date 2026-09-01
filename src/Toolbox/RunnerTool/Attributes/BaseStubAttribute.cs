@@ -5,12 +5,12 @@ using Werecodent.CreateAndFake.Design;
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached <see langword="object"/> as a stub.</summary>
-/// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+/// <seealso cref="IRunner.CreateFor(MethodBase,CancellationToken,RunnerMod)"/>
 /// <seealso cref="FakerTool.IFaker.Stub(Type,IEnumerable{Type})"/>
 public abstract class BaseStubAttribute : ParameterHintAttribute
 {
     /// <inheritdoc/>
-    protected internal override object CreateParameterValue(
+    protected internal override object? CreateParameterValue(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,

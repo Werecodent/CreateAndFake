@@ -53,11 +53,13 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
         {
             try
             {
-                MethodCallWrapper test = Tools.Runner.CreateFor(
-                    testMethod,
-                    opt => opt with { InheritIReflectableTypeOnFakedType = true },
-                    default
-                );
+                MethodCallWrapper test = await Tools
+                    .Runner.CreateForAsync(
+                        testMethod,
+                        default,
+                        opt => opt with { InheritIReflectableTypeOnFakedType = true }
+                    )
+                    .ConfigureAwait(false);
 
                 data.Add(
                     new TheoryDataRow([.. test.Args.Select(FixArg)])

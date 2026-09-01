@@ -61,8 +61,8 @@ public static class RunnerTests
         Tools
             .Runner.CreateFor(
                 TypeDescriber.For<InjectMockSample>().Constructors.OnlyPublic.Single(),
-                opt => opt with { InjectionValues = [fake, fake2] },
-                TestContext.Current.CancellationToken
+                TestContext.Current.CancellationToken,
+                opt => opt with { InjectionValues = [fake, fake2] }
             )
             .Args.ToArray()
             .Assert()

@@ -10,7 +10,7 @@ namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 /// </summary>
 /// <param name="min"><inheritdoc cref="Min" path="/summary"/></param>
 /// <param name="max"><inheritdoc cref="Max" path="/summary"/></param>
-/// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+/// <seealso cref="IRunner.CreateFor(MethodBase,CancellationToken,RunnerMod)"/>
 [ExcludeFromCreateAndFake]
 public abstract class BaseSizeAttribute(int min, int max) : ParameterHintAttribute
 {
@@ -22,12 +22,12 @@ public abstract class BaseSizeAttribute(int min, int max) : ParameterHintAttribu
 
     /// <summary>Flag to create the attached collection with <paramref name="count"/> items.</summary>
     /// <param name="count">Number of items to generate and populate the attached collection with.</param>
-    /// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+    /// <seealso cref="IRunner.CreateFor(MethodBase,CancellationToken,RunnerMod)"/>
     protected BaseSizeAttribute(int count)
         : this(count, count) { }
 
     /// <inheritdoc/>
-    protected internal override object CreateParameterValue(
+    protected internal override object? CreateParameterValue(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,

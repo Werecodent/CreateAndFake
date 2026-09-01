@@ -7,12 +7,12 @@ using Werecodent.CreateAndFake.FakerTool.Proxy;
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached parameter using value injection of previous parameters.</summary>.
-/// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+/// <seealso cref="IRunner.CreateFor(MethodBase,CancellationToken,RunnerMod)"/>
 /// <seealso cref="RandomizerTool.IRandomizer.Inject"/>
 public abstract class BaseInjectAttribute : ParameterHintAttribute
 {
     /// <inheritdoc/>
-    protected internal override object CreateParameterValue(
+    protected internal override object? CreateParameterValue(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,

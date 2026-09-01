@@ -43,7 +43,7 @@ public abstract class BaseCapAttribute : ParameterHintAttribute
     }
 
     /// <inheritdoc/>
-    protected internal override object CreateParameterValue(
+    protected internal override object? CreateParameterValue(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,

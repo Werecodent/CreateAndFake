@@ -6,12 +6,12 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached <see langword="object"/> as a deep clone of a previous parameter.</summary>.
-/// <seealso cref="IRunner.CreateFor(MethodBase, CancellationToken)"/>
+/// <seealso cref="IRunner.CreateFor(MethodBase,CancellationToken,RunnerMod)"/>
 /// <seealso cref="DuplicatorTool.IDuplicator.Copy"/>
 public abstract class BaseCopyAttribute : ParameterHintAttribute
 {
     /// <inheritdoc/>
-    protected internal override object CreateParameterValue(
+    protected internal override object? CreateParameterValue(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,

@@ -55,16 +55,20 @@ public sealed class Runner(RunnerOptions options) : IRunner
     }
 
     /// <inheritdoc/>
-    public Task<RunResult> RunAsync(
+    public async Task<RunResult> RunAsync(
         object? instance,
         MethodInfo method,
         CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     )
     {
-        MethodCallWrapper data = CreateFor(method, optionConfiguration, canceler);
-
-        return RunAsync(instance, data, canceler, optionConfiguration);
+        return await RunAsync(
+                instance,
+                await CreateForAsync(method, canceler, optionConfiguration).ConfigureAwait(false),
+                canceler,
+                optionConfiguration
+            )
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -149,16 +153,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
     }
 
     /// <inheritdoc/>
-    public MethodCallWrapper CreateFor(MethodBase method, CancellationToken canceler)
-    {
-        return CreateFor(method, opt => opt, canceler);
-    }
-
-    /// <inheritdoc/>
     public MethodCallWrapper CreateFor(
         MethodBase method,
-        RunnerMod? optionConfiguration,
-        CancellationToken canceler
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
     )
     {
         ArgumentGuard.ThrowIfNull(method);
@@ -192,6 +190,16 @@ public sealed class Runner(RunnerOptions options) : IRunner
         }
 
         return new MethodCallWrapper(method, args);
+    }
+
+    /// <inheritdoc/>
+    public Task<MethodCallWrapper> CreateForAsync(
+        MethodBase method,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    )
+    {
+        return Task.FromResult(CreateFor(method, canceler, optionConfiguration));
     }
 
     /// <summary>Randomizes an instance to fill a parameter.</summary>
