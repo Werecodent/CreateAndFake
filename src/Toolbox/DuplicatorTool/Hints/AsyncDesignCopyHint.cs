@@ -24,17 +24,11 @@ public sealed class AsyncDesignCopyHint : CopyHint
 
         if (asGeneric == typeof(AsyncList<>))
         {
-            return new(
-                Activator.CreateInstance(
-                    type,
-                    duplicator.Copy(((dynamic)source).Content, null),
-                    int.MaxValue
-                )
-            );
+            return new(CopyListAsync((dynamic)source, duplicator));
         }
         else if (asGeneric == typeof(AsyncHashSet<>))
         {
-            return new(CopyContentsAsync((dynamic)source, duplicator));
+            return new(CopySetAsync((dynamic)source, duplicator));
         }
         else
         {
@@ -45,7 +39,14 @@ public sealed class AsyncDesignCopyHint : CopyHint
     /// <typeparam name="T">Item type being copied.</typeparam>
     /// <returns>Iteration of cloned <paramref name="source"/> values.</returns>
     /// <inheritdoc cref="TryCopy"/>
-    private static AsyncHashSet<T> CopyContentsAsync<T>(
+    private static AsyncList<T> CopyListAsync<T>(AsyncList<T> source, IDuplicatorChainer duplicator)
+    {
+        // Beware that 'duplicator.Copy' does not work in dynamic context for legacy .NET.
+        return new AsyncList<T>(duplicator.Copy(source.Content), int.MaxValue);
+    }
+
+    /// <inheritdoc cref="CopyListAsync"/>
+    private static AsyncHashSet<T> CopySetAsync<T>(
         AsyncHashSet<T> source,
         IDuplicatorChainer duplicator
     )
