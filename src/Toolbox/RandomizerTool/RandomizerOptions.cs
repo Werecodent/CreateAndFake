@@ -7,12 +7,16 @@ using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Properties;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.RandomizerTool;
 
 /// <summary>Configuration for controlling randomization behavior.</summary>
 public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICreateHint>
 {
+    /// <summary>Handles comparisons.</summary>
+    public required IValuer Valuer { get; init; }
+
     /// <summary>Provides stubs.</summary>
     public required IFaker Faker { get; init; }
 

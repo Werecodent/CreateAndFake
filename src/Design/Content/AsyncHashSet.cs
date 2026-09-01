@@ -7,37 +7,69 @@ namespace Werecodent.CreateAndFake.Design.Content;
 /// <inheritdoc cref="IAsyncSet{T}"/>
 public sealed class AsyncHashSet<T> : IAsyncSet<T>
 {
-    /// <summary>Determines value equality for the set.</summary>
-    private readonly IAsyncEqualityComparer<T> _comparer;
-
     /// <summary>Current contents for the set.</summary>
-    private readonly Task<Dictionary<int, List<T>>> _contents;
+    private readonly Task<IDictionary<int, IList<T>>> _contents;
+
+    /// <inheritdoc/>
+    public IAsyncEqualityComparer<T> Comparer { get; }
 
     /// <summary>Creates an empty set.</summary>
-    /// <param name="comparer"><inheritdoc cref="_comparer" path="/summary"/></param>
+    /// <param name="comparer"><inheritdoc cref="Comparer" path="/summary"/></param>
     public AsyncHashSet(IAsyncEqualityComparer<T> comparer)
-        : this(Task.FromResult(new Dictionary<int, List<T>>()), comparer) { }
+        : this(
+            Task.FromResult<IDictionary<int, IList<T>>>(new Dictionary<int, IList<T>>()),
+            comparer
+        ) { }
 
     /// <summary>Creates a populated set.</summary>
     /// <param name="contents"><inheritdoc cref="_contents" path="/summary"/></param>
-    /// <param name="comparer"><inheritdoc cref="_comparer" path="/summary"/></param>
+    /// <param name="comparer"><inheritdoc cref="Comparer" path="/summary"/></param>
     private AsyncHashSet(
-        Task<Dictionary<int, List<T>>> contents,
+        Task<IDictionary<int, IList<T>>> contents,
         IAsyncEqualityComparer<T> comparer
     )
     {
         ArgumentGuard.ThrowIfNull(comparer);
 
-        _comparer = comparer;
+        Comparer = comparer;
         _contents = contents;
     }
 
     /// <summary>Creates a set with initial <paramref name="contents"/>.</summary>
     /// <param name="contents"><inheritdoc cref="_contents" path="/summary"/></param>
-    /// <param name="comparer"><inheritdoc cref="_comparer" path="/summary"/></param>
+    /// <param name="comparer"><inheritdoc cref="Comparer" path="/summary"/></param>
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The created set.</returns>
+    public static AsyncHashSet<T> CreateFromAsync(
+        IAsyncEnumerable<T> contents,
+        IAsyncEqualityComparer<T> comparer,
+        int iterationLimit,
+        CancellationToken canceler
+    )
+    {
+        async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
+        {
+            IDictionary<int, IList<T>> results = new Dictionary<int, IList<T>>();
+
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    contents,
+                    iterationLimit,
+                    canceler,
+                    async item =>
+                        _ = await AddToAsync(results, item, comparer, canceler)
+                            .ConfigureAwait(false)
+                )
+                .ConfigureAwait(false);
+
+            return results;
+        }
+
+        return new AsyncHashSet<T>(setInitialContentsAsync(), comparer);
+    }
+
+    /// <inheritdoc cref="CreateFromAsync(IAsyncEnumerable{T},IAsyncEqualityComparer{T},int,CancellationToken)"/>
     public static AsyncHashSet<T> CreateFromAsync(
         IEnumerable<T> contents,
         IAsyncEqualityComparer<T> comparer,
@@ -53,40 +85,41 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         );
     }
 
-    /// <inheritdoc cref="CreateFromAsync(IEnumerable{T},IAsyncEqualityComparer{T},int,CancellationToken)"/>
+    /// <inheritdoc cref="CreateFromAsync(IAsyncEnumerable{T},IAsyncEqualityComparer{T},int,CancellationToken)"/>
     public static AsyncHashSet<T> CreateFromAsync(
-        IAsyncEnumerable<T> contents,
+        IAsyncEnumerable<KeyValuePair<int, T>> contents,
         IAsyncEqualityComparer<T> comparer,
         int iterationLimit,
         CancellationToken canceler
     )
     {
-        return new AsyncHashSet<T>(
-            SetInitialContentsAsync(contents, comparer, iterationLimit, canceler),
-            comparer
-        );
-    }
+        async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
+        {
+            Dictionary<int, IList<T>> results = [];
 
-    private static async Task<Dictionary<int, List<T>>> SetInitialContentsAsync(
-        IAsyncEnumerable<T> contents,
-        IAsyncEqualityComparer<T> comparer,
-        int iterationLimit,
-        CancellationToken canceler
-    )
-    {
-        Dictionary<int, List<T>> results = [];
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    contents,
+                    iterationLimit,
+                    canceler,
+                    pair =>
+                    {
+                        if (results.TryGetValue(pair.Key, out IList<T>? list))
+                        {
+                            list.Add(pair.Value);
+                        }
+                        else
+                        {
+                            results.Add(pair.Key, [pair.Value]);
+                        }
+                    }
+                )
+                .ConfigureAwait(false);
 
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                contents,
-                iterationLimit,
-                canceler,
-                async item =>
-                    _ = await AddToAsync(results, item, comparer, canceler).ConfigureAwait(false)
-            )
-            .ConfigureAwait(false);
+            return results;
+        }
 
-        return results;
+        return new AsyncHashSet<T>(setInitialContentsAsync(), comparer);
     }
 
     /// <inheritdoc/>
@@ -118,7 +151,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        foreach (KeyValuePair<int, List<T>> row in await _contents.ConfigureAwait(false))
+        foreach (KeyValuePair<int, IList<T>> row in await _contents.ConfigureAwait(false))
         {
             foreach (T item in row.Value)
             {
@@ -137,7 +170,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public async Task<bool> ContainsAsync(T item, CancellationToken canceler)
     {
-        int hash = await _comparer.GetHashCodeAsync(item, canceler).ConfigureAwait(false);
+        int hash = await Comparer.GetHashCodeAsync(item, canceler).ConfigureAwait(false);
 
         return await ContainsAsync(new KeyValuePair<int, T>(hash, item), canceler)
             .ConfigureAwait(false);
@@ -146,11 +179,11 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public async Task<bool> ContainsAsync(KeyValuePair<int, T> entry, CancellationToken canceler)
     {
-        if ((await _contents.ConfigureAwait(false)).TryGetValue(entry.Key, out List<T>? data))
+        if ((await _contents.ConfigureAwait(false)).TryGetValue(entry.Key, out IList<T>? data))
         {
             foreach (T found in data)
             {
-                if (await _comparer.EqualsAsync(found, entry.Value, canceler).ConfigureAwait(false))
+                if (await Comparer.EqualsAsync(found, entry.Value, canceler).ConfigureAwait(false))
                 {
                     return true;
                 }
@@ -162,19 +195,19 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public async Task<bool> AddAsync(T item, CancellationToken canceler)
     {
-        return await AddToAsync(await _contents.ConfigureAwait(false), item, _comparer, canceler)
+        return await AddToAsync(await _contents.ConfigureAwait(false), item, Comparer, canceler)
             .ConfigureAwait(false);
     }
 
     private static async Task<bool> AddToAsync(
-        Dictionary<int, List<T>> contents,
+        IDictionary<int, IList<T>> contents,
         T item,
         IAsyncEqualityComparer<T> comparer,
         CancellationToken canceler
     )
     {
         int hash = await comparer.GetHashCodeAsync(item, canceler).ConfigureAwait(false);
-        if (contents.TryGetValue(hash, out List<T>? data))
+        if (contents.TryGetValue(hash, out IList<T>? data))
         {
             foreach (T found in data)
             {
@@ -210,18 +243,18 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        Dictionary<int, List<T>> contents = await _contents.ConfigureAwait(false);
+        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
 
         await foreach (
             KeyValuePair<int, T> item in collection.ByHashesAsync(canceler).ConfigureAwait(false)
         )
         {
-            if (contents.TryGetValue(item.Key, out List<T>? match))
+            if (contents.TryGetValue(item.Key, out IList<T>? match))
             {
                 foreach (T found in match)
                 {
                     if (
-                        await _comparer
+                        await Comparer
                             .EqualsAsync(item.Value, found, canceler)
                             .ConfigureAwait(false)
                     )
@@ -250,7 +283,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        Dictionary<int, List<T>> contents = await _contents.ConfigureAwait(false);
+        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
 
         await foreach (
             KeyValuePair<int, T> item in collection.ByHashesAsync(canceler).ConfigureAwait(false)
@@ -258,12 +291,12 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         {
             bool missing = true;
 
-            if (contents.TryGetValue(item.Key, out List<T>? match))
+            if (contents.TryGetValue(item.Key, out IList<T>? match))
             {
                 foreach (T found in match)
                 {
                     if (
-                        await _comparer
+                        await Comparer
                             .EqualsAsync(item.Value, found, canceler)
                             .ConfigureAwait(false)
                     )
@@ -290,7 +323,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         }
 
 #pragma warning disable VSTHRD002, VSTHRD104 // Completion verified.
-        Dictionary<int, List<T>> contents = _contents.Result;
+        IDictionary<int, IList<T>> contents = _contents.Result;
 #pragma warning restore
 
         if (contents.Count == 0)
@@ -301,7 +334,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         StringBuilder text = new();
 
         text.Append("AsyncHashSet: {");
-        foreach (KeyValuePair<int, List<T>> row in contents)
+        foreach (KeyValuePair<int, IList<T>> row in contents)
         {
             foreach (T item in row.Value)
             {

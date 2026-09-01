@@ -1,9 +1,14 @@
+using Werecodent.CreateAndFake.Design.Comparisons;
+
 namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <summary>Collection using asynchronously calculated hashes and equality.</summary>
 /// <typeparam name="T"><inheritdoc cref="IAsyncEnumerable{T}" path="/typeparam[@name='T']"/></typeparam>
 public interface IAsyncSet<T> : IAsyncEnumerable<T>
 {
+    /// <summary>Determines value equality for the set.</summary>
+    IAsyncEqualityComparer<T> Comparer { get; }
+
     /// <summary>Tries to add <paramref name="item"/> to the set.</summary>
     /// <param name="item">Instance to add.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>

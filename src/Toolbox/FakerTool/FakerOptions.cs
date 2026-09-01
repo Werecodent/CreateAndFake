@@ -11,7 +11,7 @@ namespace Werecodent.CreateAndFake.FakerTool;
 public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
 {
     /// <summary>Handles comparisons.</summary>
-    public required IValuer? Valuer { get; init; }
+    public required IValuer Valuer { get; init; }
 
     /// <summary>If set, controls the default behavior for fake calls.</summary>
     public Func<MethodInfo, Behavior>? FakeDefaultGenerator { get; init; }

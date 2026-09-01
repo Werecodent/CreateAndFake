@@ -32,9 +32,29 @@ public sealed class AsyncDesignCopyHint : CopyHint
                 )
             );
         }
+        else if (asGeneric == typeof(AsyncHashSet<>))
+        {
+            return new(CopyContentsAsync((dynamic)source, duplicator));
+        }
         else
         {
             return CopyHintResult.None;
         }
+    }
+
+    /// <typeparam name="T">Item type being copied.</typeparam>
+    /// <returns>Iteration of cloned <paramref name="source"/> values.</returns>
+    /// <inheritdoc cref="TryCopy"/>
+    private static AsyncHashSet<T> CopyContentsAsync<T>(
+        AsyncHashSet<T> source,
+        IDuplicatorChainer duplicator
+    )
+    {
+        return AsyncHashSet<T>.CreateFromAsync(
+            source.ByHashesAsync(CancellationToken.None),
+            source.Comparer,
+            duplicator.Options.Valuer.Options.IterationLimit,
+            CancellationToken.None
+        );
     }
 }

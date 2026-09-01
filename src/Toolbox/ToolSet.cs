@@ -99,7 +99,12 @@ public sealed class ToolSet(
         Valuer valuer = new(new ValuerOptions { Gen = gen }.WithConfig(config));
         Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer }.WithConfig(config));
         Randomizer randomizer = new(
-            new RandomizerOptions { Gen = gen, Faker = faker }.WithConfig(config)
+            new RandomizerOptions
+            {
+                Gen = gen,
+                Valuer = valuer,
+                Faker = faker,
+            }.WithConfig(config)
         );
         Extractor extractor = new(
             new ExtractorOptions

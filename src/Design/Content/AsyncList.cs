@@ -3,8 +3,6 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Content;
 
-#pragma warning disable IDE0390 // Purpose is to create async data from sync data.
-
 /// <summary>Provides a repeatable asynchronous source.</summary>
 /// <typeparam name="T">The <see cref="Content"/>'s item <see cref="Type"/>.</typeparam>
 public sealed class AsyncList<T> : IAsyncEnumerable<T>
@@ -44,6 +42,8 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
     {
         foreach (T item in Content)
         {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+
             canceler.ThrowIfCancellationRequested();
             yield return item;
         }
@@ -55,5 +55,3 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
         return $"{GenericConverter.ExpandName(GetType())}[{Content.Count()}]";
     }
 }
-
-#pragma warning restore

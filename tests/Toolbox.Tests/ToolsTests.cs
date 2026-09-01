@@ -125,7 +125,7 @@ public static class ToolsTests
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(AsyncList<>)],
+            [typeof(AsyncHashSet<>)],
             TestContext.Current.CancellationToken
         );
     }
