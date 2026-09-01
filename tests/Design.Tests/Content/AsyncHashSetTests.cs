@@ -156,7 +156,7 @@ public static class AsyncHashSetTests
         await set.ContainsAsync(clone, ct).Assert().HasResultAsync(true, ct);
         await set.AddAsync(clone, ct).Assert().HasResultAsync(false, ct);
 
-        await set.ContainsAsync(KeyValuePair.Create(valueHash, variant), ct)
+        await set.ContainsAsync(new KeyValuePair<int, DataHolderSample>(valueHash, variant), ct)
             .Assert()
             .HasResultAsync(false, ct);
 
@@ -164,10 +164,10 @@ public static class AsyncHashSetTests
         await set.AddAsync(variant, ct).Assert().HasResultAsync(true, ct);
         await set.ContainsAsync(variant, ct).Assert().HasResultAsync(true, ct);
 
-        await set.ContainsAsync(KeyValuePair.Create(otherHash, original), ct)
+        await set.ContainsAsync(new KeyValuePair<int, DataHolderSample>(otherHash, original), ct)
             .Assert()
             .HasResultAsync(false, ct);
-        await set.ContainsAsync(KeyValuePair.Create(valueHash, original), ct)
+        await set.ContainsAsync(new KeyValuePair<int, DataHolderSample>(valueHash, original), ct)
             .Assert()
             .HasResultAsync(true, ct);
         await set.ContainsAsync(original, ct).Assert().HasResultAsync(true, ct);
