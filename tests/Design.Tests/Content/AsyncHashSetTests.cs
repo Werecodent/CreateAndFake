@@ -316,6 +316,22 @@ public static class AsyncHashSetTests
             .HasCountAsync(0, TestContext.Current.CancellationToken);
     }
 
+    [Theory, RandomData]
+    internal static Task IterateAsync_Cancelable([Size(1)] List<AsyncDataSample> items)
+    {
+        return AsyncHashSet<AsyncDataSample>
+            .CreateFromAsync(
+                items,
+                Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                1,
+                TestContext.Current.CancellationToken
+            )
+            .GetAsyncEnumerator(new CancellationToken(true))
+            .MoveNextAsync()
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
     private static async IAsyncEnumerable<AsyncDataSample> SlowlyIterate(
         IEnumerable<AsyncDataSample> list
     )

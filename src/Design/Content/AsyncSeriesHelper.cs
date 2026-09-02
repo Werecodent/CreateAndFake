@@ -221,7 +221,6 @@ public static class AsyncSeriesHelper
     ///     cancellation via the <paramref name="source"/> upon attempted iteration.
     /// </summary>
     /// <returns>An empty asynchronous series.</returns>
-    /// <inheritdoc cref="CreateFromAsync{T}"/>
     /// <inheritdoc cref="TriggerCancellationAsync(CancellationTokenSource)"/>
     public static async IAsyncEnumerable<T> CreateCancelingIterationAsync<T>(
         CancellationTokenSource source

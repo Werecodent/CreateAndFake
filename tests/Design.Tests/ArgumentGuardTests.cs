@@ -29,7 +29,7 @@ public static class ArgumentGuardTests
     [Fact]
     public static Task IsAsynchronous_TrueWithUncompletedTask()
     {
-        Task task = Task.Delay(100, TestContext.Current.CancellationToken);
+        Task task = Task.Delay(1000, TestContext.Current.CancellationToken);
         ArgumentGuard.IsAsynchronous(task).Assert().Is(true);
         ArgumentGuard.IsAsynchronous(Task.CompletedTask).Assert().Is(false);
         return task;

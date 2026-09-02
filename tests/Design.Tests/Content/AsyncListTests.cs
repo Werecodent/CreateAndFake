@@ -55,4 +55,14 @@ public static class AsyncListTests
             .Assert()
             .HasCountAsync(0, TestContext.Current.CancellationToken);
     }
+
+    [Theory, RandomData]
+    internal static Task IterateContentAsync_Cancelable([Size(1)] List<DataSample> items)
+    {
+        return new AsyncList<DataSample>(items, 1)
+            .GetAsyncEnumerator(new CancellationToken(true))
+            .MoveNextAsync()
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
 }

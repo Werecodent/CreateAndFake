@@ -42,9 +42,9 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
     {
         foreach (T item in Content)
         {
-            await Task.Delay(0, canceler).ConfigureAwait(false);
-
             canceler.ThrowIfCancellationRequested();
+
+            await Task.Delay(0, canceler).ConfigureAwait(false);
             yield return item;
         }
     }
