@@ -14,6 +14,7 @@ public sealed class HandlerExtractHint : IExtractHint
     [
         new SelfExtractHandler(typeof(Lock)),
         new SelfExtractHandler(typeof(string)),
+new SelfExtractHandler(typeof(AssemblyName)),
         new SelfExtractHandler(typeof(StringBuilder)),
         new SelfExtractHandler(typeof(CancellationToken)),
         new SelfExtractHandler(typeof(RuntimeMethodHandle)),
