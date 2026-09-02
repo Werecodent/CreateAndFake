@@ -11,7 +11,7 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
     private static readonly Type[] _ItemTypes =
     [
         typeof(string),
-        typeof(object),
+        typeof(IComparable),
         typeof(int),
         typeof(double),
         typeof(KeyValuePair<string, int>),
