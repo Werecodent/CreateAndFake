@@ -308,6 +308,14 @@ public static class AsyncHashSetTests
             .IsAsync(missing2, TestContext.Current.CancellationToken);
     }
 
+    [Fact]
+    internal static Task IterateAsync_EmptyWorks()
+    {
+        return new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>())
+            .Assert()
+            .HasCountAsync(0, TestContext.Current.CancellationToken);
+    }
+
     private static async IAsyncEnumerable<AsyncDataSample> SlowlyIterate(
         IEnumerable<AsyncDataSample> list
     )

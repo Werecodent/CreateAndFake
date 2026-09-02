@@ -53,7 +53,10 @@ public static class ReflectionCreateHandlersTests
             {
                 instance = method.ReflectedType.Tools().CreateRandomInstance();
 
-                wrapper = Tools.Runner.CreateFor(method, TestContext.Current.CancellationToken);
+                wrapper = await Tools.Runner.CreateForAsync(
+                    method,
+                    TestContext.Current.CancellationToken
+                );
                 await wrapper
                     .Tools()
                     .Copy()

@@ -45,5 +45,14 @@ public static class AsyncListTests
         AsyncList<DataSample> instance = new(sample, Tools.Valuer.Options.IterationLimit);
         await instance.Assert().IsAsync(sample, TestContext.Current.CancellationToken);
         await instance.Assert().IsAsync(sample, TestContext.Current.CancellationToken);
+        await instance.Assert().HasCountAsync(sample.Count, TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static Task IterateContentAsync_EmptyWorks()
+    {
+        return new AsyncList<DataSample>([], 1)
+            .Assert()
+            .HasCountAsync(0, TestContext.Current.CancellationToken);
     }
 }

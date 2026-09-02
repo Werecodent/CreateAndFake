@@ -24,11 +24,13 @@ public abstract class ParameterHintAttribute : Attribute
     );
 
     /// <inheritdoc cref="CreateParameterValue"/>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     protected internal virtual Task<object?> CreateParameterValueAsync(
         ParameterInfo param,
         MethodBase method,
         OrderedDictionary args,
-        RunnerOptions localOptions
+        RunnerOptions localOptions,
+        CancellationToken canceler
     )
     {
         return Task.FromResult(CreateParameterValue(param, method, args, localOptions));

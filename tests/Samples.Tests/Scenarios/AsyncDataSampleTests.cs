@@ -19,4 +19,13 @@ public static class AsyncDataSampleTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Fact]
+    public static Task ReadFromNumberValueAsync_InitialDefault()
+    {
+        return new AsyncDataSample()
+            .ReadFromNumberValueAsync()
+            .Assert()
+            .HasResultAsync(default, TestContext.Current.CancellationToken);
+    }
 }

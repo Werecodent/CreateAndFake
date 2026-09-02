@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
@@ -183,41 +184,80 @@ public sealed class Runner(RunnerOptions options) : IRunner
 
         foreach (ParameterInfo param in method.GetParameters())
         {
-            args.Add(
-                param.Name ?? $"{args.Count}",
-                ExtractArg(param, method, data, args, localOptions, canceler)
-            );
+            string argName = param.Name ?? $"{args.Count}";
+
+            if (TryGetAttachedHint(param, out ParameterHintAttribute? hint))
+            {
+                args.Add(argName, hint.CreateParameterValue(param, method, args, localOptions));
+            }
+            else
+            {
+                args.Add(argName, ExtractArg(param, data, args, localOptions, canceler));
+            }
         }
 
         return new MethodCallWrapper(method, args);
     }
 
     /// <inheritdoc/>
-    public Task<MethodCallWrapper> CreateForAsync(
+    public async Task<MethodCallWrapper> CreateForAsync(
         MethodBase method,
         CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     )
     {
-        return Task.FromResult(CreateFor(method, canceler, optionConfiguration));
+        ArgumentGuard.ThrowIfNull(method);
+
+        if (method.IsGenericMethodDefinition)
+        {
+            throw new UnsupportedException(
+                $"Method '{GenericConverter.BuildTestName(method)}' must have "
+                    + "generics specified before data can be populated for it."
+            );
+        }
+
+        RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        List<Tuple<Type, object>> data =
+        [
+            .. localOptions
+                .InjectionValues.Select(v => (v is Fake fake) ? fake.Dummy : v)
+                .Where(v => v != null)
+                .Select(v => Tuple.Create(v!.GetType(), v)),
+        ];
+
+        OrderedDictionary args = new(method.GetParameters().Length);
+
+        foreach (ParameterInfo param in method.GetParameters())
+        {
+            string argName = param.Name ?? $"{args.Count}";
+
+            if (TryGetAttachedHint(param, out ParameterHintAttribute? hint))
+            {
+                args.Add(
+                    argName,
+                    await hint.CreateParameterValueAsync(
+                            param,
+                            method,
+                            args,
+                            localOptions,
+                            canceler
+                        )
+                        .ConfigureAwait(false)
+                );
+            }
+            else
+            {
+                args.Add(argName, ExtractArg(param, data, args, localOptions, canceler));
+            }
+        }
+
+        return new MethodCallWrapper(method, args);
     }
 
-    /// <summary>Randomizes an instance to fill a parameter.</summary>
-    /// <param name="param">Parameter to fill.</param>
-    /// <param name="method">Method origin.</param>
-    /// <param name="data">Canned data to prefer.</param>
-    /// <param name="args">Already created parameter data.</param>
-    /// <param name="localOptions">Potentially modified configuration to use.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <returns>The created arg to fill the parameter with.</returns>
-    /// <exception cref="ToolException"></exception>
-    private static object? ExtractArg(
+    private static bool TryGetAttachedHint(
         ParameterInfo param,
-        MethodBase method,
-        List<Tuple<Type, object>> data,
-        OrderedDictionary args,
-        RunnerOptions localOptions,
-        CancellationToken canceler
+        [NotNullWhen(true)] out ParameterHintAttribute? result
     )
     {
         List<ParameterHintAttribute> definedHints =
@@ -232,9 +272,32 @@ public sealed class Runner(RunnerOptions options) : IRunner
         }
         else if (definedHints.Count == 1)
         {
-            return definedHints[0].CreateParameterValue(param, method, args, localOptions);
+            result = definedHints[0];
+            return true;
         }
+        else
+        {
+            result = null;
+            return false;
+        }
+    }
 
+    /// <summary>Randomizes an instance to fill a parameter.</summary>
+    /// <param name="param">Parameter to fill.</param>
+    /// <param name="data">Canned data to prefer.</param>
+    /// <param name="args">Already created parameter data.</param>
+    /// <param name="localOptions">Potentially modified configuration to use.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns>The created arg to fill the parameter with.</returns>
+    /// <exception cref="ToolException"></exception>
+    private static object? ExtractArg(
+        ParameterInfo param,
+        List<Tuple<Type, object>> data,
+        OrderedDictionary args,
+        RunnerOptions localOptions,
+        CancellationToken canceler
+    )
+    {
         Tuple<Type, object> match = data.Find(t => t.Item1.Inherits(param.ParameterType))!;
         if (param.IsOut)
         {
