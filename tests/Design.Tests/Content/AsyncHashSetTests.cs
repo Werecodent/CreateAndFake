@@ -332,6 +332,30 @@ public static class AsyncHashSetTests
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
+    [Fact]
+    internal static Task IterateAsync_EmptyWorks()
+    {
+        return new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>())
+            .IterateAsync(TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountAsync(0, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task IterateAsync_Cancelable([Size(1)] List<AsyncDataSample> items)
+    {
+        return AsyncHashSet<AsyncDataSample>
+            .CreateFromAsync(
+                items,
+                Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                1,
+                TestContext.Current.CancellationToken
+            )
+            .IterateAsync(new CancellationToken(true))
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
     private static async IAsyncEnumerable<AsyncDataSample> SlowlyIterate(
         IEnumerable<AsyncDataSample> list
     )
