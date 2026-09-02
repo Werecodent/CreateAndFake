@@ -30,6 +30,7 @@ internal static class ExceptionCreateHandlers
         "System.Runtime.Serialization.SerializationException",
         "System.Configuration.ConfigurationErrorsException",
         "System.Deployment.Application.DeploymentException",
+        "System.Net.Mail.SmtpFailedRecipientsException",
         "System.Net.NetworkInformation.PingException",
         "System.Net.Http.HttpRequestException",
         "System.Security.SecurityException",

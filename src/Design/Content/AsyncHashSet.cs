@@ -125,19 +125,18 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        return IterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
-    }
-
-    /// <inheritdoc cref="GetAsyncEnumerator"/>
-    private async IAsyncEnumerable<T> IterateAsync(
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        foreach (T item in (await _contents.ConfigureAwait(false)).SelectMany(x => x.Value))
+        async IAsyncEnumerable<T> iterateAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
+        )
         {
-            canceler.ThrowIfCancellationRequested();
-            yield return item;
+            foreach (T item in (await _contents.ConfigureAwait(false)).SelectMany(x => x.Value))
+            {
+                canceler.ThrowIfCancellationRequested();
+                yield return item;
+            }
         }
+
+        return iterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>

@@ -49,7 +49,7 @@ public static class AsyncListTests
     }
 
     [Fact]
-    internal static Task IterateContentAsync_EmptyWorks()
+    internal static Task GetAsyncEnumerator_EmptyWorks()
     {
         return new AsyncList<DataSample>([], 1)
             .Assert()
@@ -57,7 +57,7 @@ public static class AsyncListTests
     }
 
     [Theory, RandomData]
-    internal static Task IterateContentAsync_Cancelable([Size(1)] List<DataSample> items)
+    internal static Task GetAsyncEnumerator_Cancelable([Size(1)] List<DataSample> items)
     {
         return new AsyncList<DataSample>(items, 1)
             .GetAsyncEnumerator(new CancellationToken(true))

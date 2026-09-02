@@ -309,7 +309,7 @@ public static class AsyncHashSetTests
     }
 
     [Fact]
-    internal static Task IterateAsync_EmptyWorks()
+    internal static Task GetAsyncEnumerator_EmptyWorks()
     {
         return new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>())
             .Assert()
@@ -317,7 +317,7 @@ public static class AsyncHashSetTests
     }
 
     [Theory, RandomData]
-    internal static Task IterateAsync_Cancelable([Size(1)] List<AsyncDataSample> items)
+    internal static Task GetAsyncEnumerator_Cancelable([Size(1)] List<AsyncDataSample> items)
     {
         return AsyncHashSet<AsyncDataSample>
             .CreateFromAsync(
