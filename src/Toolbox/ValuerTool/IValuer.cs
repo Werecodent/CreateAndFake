@@ -30,7 +30,6 @@ public interface IValuer
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
     /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
-    /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
@@ -56,7 +55,6 @@ public interface IValuer
     ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value, <see langword="false"/> otherwise.
     /// </returns>
     /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
-    /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
@@ -76,7 +74,6 @@ public interface IValuer
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <exception cref="UnsupportedException">If no hint supports hashing the object.</exception>
-    /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     int GetHashCode(object? item, ValuerMod? optionConfiguration);
 
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>

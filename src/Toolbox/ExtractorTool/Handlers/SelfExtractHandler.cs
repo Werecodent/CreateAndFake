@@ -14,4 +14,14 @@ internal sealed class SelfExtractHandler(Type supportedType) : IExtractHandler
     {
         return chainer.AddFoundValue(source);
     }
+
+    /// <inheritdoc/>
+    public Task<bool> ExtractSupportedAsync(
+        object source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        return chainer.AddFoundValueAsync(source, canceler);
+    }
 }

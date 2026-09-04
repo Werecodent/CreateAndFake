@@ -15,9 +15,17 @@ public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>
     /// <returns>The created tool.</returns>
     IExtractor WithOptions(ExtractorMod optionConfiguration);
 
+    /// <inheritdoc cref="ExtractAsync"/>
+    IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null);
+
     /// <summary>Finds data associated with <paramref name="source"/>.</summary>
     /// <param name="source">Instance being deconstructed.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>Extracted content of <paramref name="source"/>.</returns>
-    IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null);
+    Task<IAsyncContentMap> ExtractAsync(
+        object? source,
+        CancellationToken canceler,
+        ExtractorMod? optionConfiguration = null
+    );
 }

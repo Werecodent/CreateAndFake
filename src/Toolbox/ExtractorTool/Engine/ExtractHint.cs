@@ -15,6 +15,13 @@ public abstract class ExtractHint : IExtractHint
     public abstract ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer);
 
     /// <inheritdoc/>
+    public abstract Task<ExtractHintResult> TryToExtractAsync(
+        object? source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    );
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return GenericConverter.ExpandName(GetType());

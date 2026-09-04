@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Text;
-using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracted content of an object.</summary>
 /// <param name="content"><inheritdoc cref="_content" path="/summary"/></param>
 /// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
-public sealed class ContentMap(IDictionary<Type, ISet<object>> content, ExtractorOptions options)
-    : IContentMap
+public sealed class ContentMap(ISet<object> content, ExtractorOptions options) : IContentMap
 {
     /// <summary>Flattened object data.</summary>
-    private readonly IDictionary<Type, ISet<object>> _content =
+    private readonly ISet<object> _content =
         content ?? throw new ArgumentNullException(nameof(content));
 
     /// <summary>Configured options used to extract the contents.</summary>
@@ -21,7 +19,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     /// <inheritdoc/>
     public IEnumerable<object> AllContent()
     {
-        return _content.Values.SelectMany(x => x);
+        return _content;
     }
 
     /// <inheritdoc/>
@@ -32,9 +30,7 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
             return false;
         }
 
-        TypeDescriber info = TypeDescriber.For(item.GetType());
-
-        return _content.Any(pair => info.Inherits(pair.Key) && pair.Value.Contains(item));
+        return _content.Contains(item);
     }
 
     /// <inheritdoc/>
@@ -67,16 +63,13 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
     /// <inheritdoc/>
     public IEnumerable<T> FindAll<T>()
     {
-        return _content.Keys.Where(t => t.Inherits<T>()).SelectMany(t => _content[t]).OfType<T>();
+        return _content.OfType<T>();
     }
 
     /// <inheritdoc/>
     public IEnumerable<object> FindAll(Type type)
     {
-        return _content
-            .Keys.Where(t => t.Inherits(type))
-            .SelectMany(t => _content[t])
-            .Where(t => t.GetType().Inherits(type));
+        return _content.Where(t => t.GetType().Inherits(type));
     }
 
     /// <inheritdoc/>
@@ -85,14 +78,9 @@ public sealed class ContentMap(IDictionary<Type, ISet<object>> content, Extracto
         StringBuilder text = new();
 
         text.AppendLine("ContentMap: {");
-        foreach (KeyValuePair<Type, ISet<object>> set in _content)
+        foreach (object item in _content)
         {
-            string type = GenericConverter.ExpandName(set.Key);
-
-            foreach (object item in set.Value)
-            {
-                text.Append("    ").Append(type).Append(", ").Append(item).AppendLine();
-            }
+            text.Append("    ").Append(item).AppendLine();
         }
         text.Append('}');
 

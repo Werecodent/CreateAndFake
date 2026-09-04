@@ -5,6 +5,8 @@ using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
+#pragma warning disable MA0042, VSTHRD103 // For testing.
+
 /// <summary>Handles testing extract hints.</summary>
 /// <typeparam name="T">Extract hint to test.</typeparam>
 /// <param name="testInstance">Instance to test with.</param>
@@ -99,3 +101,5 @@ public abstract class ExtractHintTestBase<T>(
         return new ExtractorChainer(options ?? Tools.Extractor.Options, new ExtractorEngine());
     }
 }
+
+#pragma warning restore

@@ -71,6 +71,7 @@
         "netstandard",
         "Newarr",
         "Newobj",
+        "Newtonsoft",
         "noreply",
         "nuget",
         "nunit",

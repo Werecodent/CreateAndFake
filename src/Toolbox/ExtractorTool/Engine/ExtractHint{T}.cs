@@ -21,6 +21,32 @@ public abstract class ExtractHint<T> : ExtractHint
         }
     }
 
+    /// <inheritdoc/>
+    public sealed override async Task<ExtractHintResult> TryToExtractAsync(
+        object? source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (source is T supported)
+        {
+            return new(await ExtractAsync(supported, chainer, canceler).ConfigureAwait(false));
+        }
+        else
+        {
+            return ExtractHintResult.None;
+        }
+    }
+
     /// <inheritdoc cref="TryToExtract"/>
     protected abstract bool Extract(T source, IExtractorChainer chainer);
+
+    /// <inheritdoc cref="TryToExtractAsync"/>
+    protected abstract Task<bool> ExtractAsync(
+        T source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    );
 }

@@ -16,4 +16,16 @@ public sealed class DelegateExtractHint : ExtractHint<Delegate>
 
         return chainer.AddFoundValue(source);
     }
+
+    /// <inheritdoc/>
+    protected override Task<bool> ExtractAsync(
+        Delegate source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        return chainer.AddFoundValueAsync(source, canceler);
+    }
 }

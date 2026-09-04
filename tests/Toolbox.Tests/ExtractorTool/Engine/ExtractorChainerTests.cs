@@ -14,6 +14,7 @@ public static class ExtractorChainerTests
                 typeof(UnsupportedException),
                 typeof(ToolException),
                 typeof(TargetParameterCountException),
+                typeof(MismatchedAccessException),
             ],
         };
 
@@ -27,13 +28,13 @@ public static class ExtractorChainerTests
         );
     }
 
-    /*[Fact]
+    [Fact]
     internal static Task ExtractorChainer_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
             TestContext.Current.CancellationToken,
-            config
+            _Config
         );
-    }*/
+    }
 }

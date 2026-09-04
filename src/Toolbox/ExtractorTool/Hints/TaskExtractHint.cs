@@ -16,4 +16,16 @@ public sealed class TaskExtractHint : ExtractHint<Task>
 
         return chainer.AddFoundValue(source);
     }
+
+    /// <inheritdoc/>
+    protected override Task<bool> ExtractAsync(
+        Task source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        return chainer.AddFoundValueAsync(source, canceler);
+    }
 }

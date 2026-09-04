@@ -16,7 +16,7 @@ public partial class Asserter : IAsserterAsyncObject
         string? details = null
     )
     {
-        return IsAsync(expected, actual, canceler, Unconfigured, details);
+        return ValuesEqualAsync(expected, actual, canceler, details);
     }
 
     /// <inheritdoc/>
@@ -39,7 +39,7 @@ public partial class Asserter : IAsserterAsyncObject
         string? details = null
     )
     {
-        return IsNotAsync(expected, actual, canceler, Unconfigured, details);
+        return ValuesNotEqualAsync(expected, actual, canceler, details);
     }
 
     /// <inheritdoc/>
@@ -139,7 +139,7 @@ public partial class Asserter : IAsserterAsyncObject
     }
 
     /// <inheritdoc/>
-    public virtual Task AreUniqueAsync(
+    public virtual async Task AreUniqueAsync(
         object? expected,
         object? actual,
         CancellationToken canceler,
@@ -153,10 +153,17 @@ public partial class Asserter : IAsserterAsyncObject
 
         int i = 0;
         StringBuilder contents = new();
-        foreach (
-            object value in localOptions
-                .Extractor.Extract(actual)
-                .FindSharedContent(localOptions.Extractor.Extract(expected))
+        await foreach (
+            object value in (
+                await localOptions.Extractor.ExtractAsync(actual, canceler).ConfigureAwait(false)
+            )
+                .FindSharedContentAsync(
+                    await localOptions
+                        .Extractor.ExtractAsync(expected, canceler)
+                        .ConfigureAwait(false),
+                    canceler
+                )
+                .ConfigureAwait(false)
         )
         {
             _ = contents.Append('#').Append(i++).Append(':').Append(value).AppendLine();
@@ -171,7 +178,5 @@ public partial class Asserter : IAsserterAsyncObject
                 contents.ToString()
             );
         }
-
-        return Task.CompletedTask;
     }
 }

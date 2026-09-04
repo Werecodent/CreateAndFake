@@ -7,6 +7,8 @@ using Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
+#pragma warning disable MA0042 // Using sync behavior for async versions.
+
 /// <summary>Combines and utilizes available handlers for mutations.</summary>
 public sealed class HandlerExtractHint : IExtractHint
 {
@@ -15,7 +17,7 @@ public sealed class HandlerExtractHint : IExtractHint
     [
         new SelfExtractHandler(typeof(Lock)),
         new SelfExtractHandler(typeof(string)),
-new SelfExtractHandler(typeof(AssemblyName)),
+        new SelfExtractHandler(typeof(AssemblyName)),
         new SelfExtractHandler(typeof(StringBuilder)),
         new SelfExtractHandler(typeof(CancellationToken)),
         new SelfExtractHandler(typeof(RuntimeMethodHandle)),
@@ -55,8 +57,34 @@ new SelfExtractHandler(typeof(AssemblyName)),
     }
 
     /// <inheritdoc/>
+    public async Task<ExtractHintResult> TryToExtractAsync(
+        object? source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (
+            source != null
+            && _MutatorsByType.TryGetValue(source.GetType(), out IExtractHandler? handler)
+        )
+        {
+            return new(
+                await handler.ExtractSupportedAsync(source, chainer, canceler).ConfigureAwait(false)
+            );
+        }
+        else
+        {
+            return ExtractHintResult.None;
+        }
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return GenericConverter.ExpandName(GetType());
     }
 }
+
+#pragma warning restore

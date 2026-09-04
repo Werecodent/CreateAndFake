@@ -33,4 +33,43 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
             );
         }
     }
+
+    /// <inheritdoc/>
+    public async Task<bool> ExtractAsync(
+        object? value,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+        if (value == null)
+        {
+            return false;
+        }
+
+        ExtractHintResult? result = null;
+        foreach (IExtractHint hint in SelectHints(chainer))
+        {
+            ExtractHintResult? current = await hint.TryToExtractAsync(value, chainer, canceler)
+                .ConfigureAwait(false);
+
+            if (current?.HasData ?? false)
+            {
+                result = current;
+                break;
+            }
+        }
+
+        if (result != null)
+        {
+            return result.Data;
+        }
+        else
+        {
+            throw new UnsupportedException(
+                $"Type '{GenericConverter.ExpandName(value)}' not supported by the extractor. "
+                    + "Create a hint to extract the type."
+            );
+        }
+    }
 }

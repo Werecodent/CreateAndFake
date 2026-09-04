@@ -25,6 +25,10 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<SingleCallValueTaskSource>(rand => new SingleCallValueTaskSource(
             rand.Create<Guid>()
         )),
+        new FactoryCreateHandler<ContentMap>(rand => new ContentMap(
+            new HashSet<object>(rand.Create<IEnumerable<object>>(), rand.Options.Valuer),
+            rand.Create<ExtractorOptions>()
+        )),
         new FactoryCreateHandler<IFaked>(rand => (IFaked)rand.Options.Faker.Stub<object>().Dummy),
         new FactoryCreateHandler<ToolSet>(rand =>
             ToolSet.CreateViaSeed(rand.Options.Gen.Next<int>())

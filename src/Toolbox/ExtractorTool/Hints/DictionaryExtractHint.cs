@@ -29,4 +29,28 @@ public sealed class DictionaryExtractHint : ExtractHint<IDictionary>
             return false;
         }
     }
+
+    /// <inheritdoc/>
+    protected override async Task<bool> ExtractAsync(
+        IDictionary source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
+        {
+            foreach (DictionaryEntry item in source)
+            {
+                _ = await chainer.InnerExtractAsync(item.Key, canceler).ConfigureAwait(false);
+                _ = await chainer.InnerExtractAsync(item.Value, canceler).ConfigureAwait(false);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

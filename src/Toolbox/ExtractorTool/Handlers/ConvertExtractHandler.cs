@@ -30,4 +30,28 @@ internal sealed class ConvertExtractHandler(Type type, Func<object, ICollection<
             return false;
         }
     }
+
+    /// <inheritdoc/>
+    public async Task<bool> ExtractSupportedAsync(
+        object source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
+        {
+            foreach (object? item in factory.Invoke(source))
+            {
+                if (item != null)
+                {
+                    _ = await chainer.InnerExtractAsync(item, canceler).ConfigureAwait(false);
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

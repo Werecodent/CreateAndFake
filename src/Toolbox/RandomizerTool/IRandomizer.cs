@@ -2,7 +2,6 @@
     Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions,
     Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions
 >;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
@@ -26,9 +25,6 @@ public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
     /// <param name="type">Type to create.</param>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     /// <returns>The created instance.</returns>
-    /// <exception cref="UnsupportedException">If no hint supports generating the type.</exception>
-    /// <exception cref="TimeoutException">If an instance couldn't be created to match the condition.</exception>
-    /// <exception cref="InsufficientExecutionStackException">If infinite recursion occurs.</exception>
     object Create(Type type, RandomizerMod? optionConfiguration = null);
 
     /// <summary>

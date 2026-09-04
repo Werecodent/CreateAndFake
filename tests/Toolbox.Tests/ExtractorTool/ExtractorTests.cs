@@ -1,7 +1,10 @@
+using Newtonsoft.Json;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
@@ -60,4 +63,31 @@ public static class ExtractorTests
                 .IsNotEmpty();
         }
     }
+
+#pragma warning disable MA0042, VSTHRD103 // Behavior specifically being tested.
+
+    [Theory, RandomData]
+    internal static async Task ExtractAsync_MatchesExtract(DataHolderSample sample)
+    {
+        ISet<object> asyncContent = (
+            await AsyncSeriesHelper.ToListAsync(
+                (
+                    await Tools.Extractor.ExtractAsync(
+                        sample,
+                        TestContext.Current.CancellationToken
+                    )
+                ).AllContentAsync(TestContext.Current.CancellationToken),
+                Tools.Valuer.Options.IterationLimit,
+                TestContext.Current.CancellationToken
+            )
+        ).ToHashSet();
+
+        ISet<object> syncContent = Tools.Extractor.Extract(sample).AllContent().ToHashSet();
+
+        asyncContent
+            .Assert()
+            .Is(syncContent, JsonConvert.SerializeObject(sample, Formatting.Indented));
+    }
+
+#pragma warning restore
 }

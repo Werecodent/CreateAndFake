@@ -23,10 +23,31 @@ public sealed class Extractor(ExtractorOptions options) : IExtractor
     /// <inheritdoc/>
     public IContentMap Extract(object? source, ExtractorMod? optionConfiguration = null)
     {
-        ExtractorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
         try
         {
-            return new ExtractorChainer(localOptions, _Engine).Extract(source);
+            return new ExtractorChainer(Options, _Engine).Extract(source, optionConfiguration);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Issue extracting type '{GenericConverter.ExpandName(source)}'.",
+                e
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<IAsyncContentMap> ExtractAsync(
+        object? source,
+        CancellationToken canceler,
+        ExtractorMod? optionConfiguration = null
+    )
+    {
+        try
+        {
+            return await new ExtractorChainer(Options, _Engine)
+                .ExtractAsync(source, canceler, optionConfiguration)
+                .ConfigureAwait(false);
         }
         catch (Exception e)
         {

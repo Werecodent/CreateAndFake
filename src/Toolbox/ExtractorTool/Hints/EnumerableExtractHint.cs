@@ -33,4 +33,32 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
             return false;
         }
     }
+
+    /// <inheritdoc/>
+    protected override async Task<bool> ExtractAsync(
+        IEnumerable source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
+        {
+            int i = 0;
+            foreach (object item in source)
+            {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i++,
+                    chainer.Options.Valuer.Options.IterationLimit
+                );
+                _ = await chainer.InnerExtractAsync(item, canceler).ConfigureAwait(false);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

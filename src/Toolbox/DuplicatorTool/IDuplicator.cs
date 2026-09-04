@@ -29,9 +29,6 @@ public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
     /// <exception cref="UnsupportedException">
     ///     If no hint supports cloning <paramref name="source"/>.
     /// </exception>
-    /// <exception cref="InsufficientExecutionStackException">
-    ///     If infinite recursion occurs.
-    /// </exception>
     [return: NotNullIfNotNull(nameof(source))]
     T Copy<T>(T source, DuplicatorMod? optionConfiguration = null);
 }

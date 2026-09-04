@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections;
+using System.Runtime.Serialization;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 using Werecodent.CreateAndFake.ExtractorTool;
@@ -75,6 +76,9 @@ public sealed class SerializableCopyHint : CopyHint
         if (source is AggregateException)
         {
             yield return typeof(Exception[]);
+            yield return typeof(IDictionary).Assembly.GetType(
+                "System.Collections.ListDictionaryInternal"
+            )!;
         }
         yield return typeof(string[]);
     }

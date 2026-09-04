@@ -46,4 +46,48 @@ public sealed class ObjectExtractHint : ExtractHint<object>
             return false;
         }
     }
+
+    /// <inheritdoc/>
+    protected override async Task<bool> ExtractAsync(
+        object source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
+        {
+            Type type = source.GetType();
+            foreach (
+                PropertyInfo property in (
+                    chainer.Options.ExtractPrivateMembers
+                        ? TypeDescriber.For(type).Properties.All
+                        : TypeDescriber.For(type).Properties.OnlyPublic
+                )
+                    .Where(p => p.CanRead)
+                    .Where(p => source is not Exception || p.Name != "HResult")
+            )
+            {
+                _ = await chainer
+                    .InnerExtractAsync(property.GetValue(source), canceler)
+                    .ConfigureAwait(false);
+            }
+            foreach (
+                FieldInfo field in chainer.Options.ExtractPrivateMembers
+                    ? TypeDescriber.For(type).Fields.All
+                    : TypeDescriber.For(type).Fields.OnlyPublic
+            )
+            {
+                _ = await chainer
+                    .InnerExtractAsync(field.GetValue(source), canceler)
+                    .ConfigureAwait(false);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

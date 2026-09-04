@@ -1,4 +1,6 @@
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
@@ -9,13 +11,21 @@ public sealed class ExtractorChainer
         IExtractorChainer
 {
     /// <summary>Flattened internal data.</summary>
-    private readonly Dictionary<Type, ISet<object>> _foundContents;
+    private readonly ISet<object> _foundContents;
+
+    /// <summary>Flattened internal data.</summary>
+    private readonly IAsyncSet<object> _asyncFoundContents;
+
+    /// <summary>First context used.</summary>
+    private bool? _isSync;
 
     /// <inheritdoc/>
     public ExtractorChainer(ExtractorOptions options, IExtractorEngine engine)
         : base(options, engine)
     {
-        _foundContents = [];
+        _foundContents = new HashSet<object>(Options.Valuer);
+        _asyncFoundContents = new AsyncHashSet<object>(Options.Valuer);
+        _isSync = null;
     }
 
     /// <inheritdoc/>
@@ -23,6 +33,8 @@ public sealed class ExtractorChainer
         : base(options, prevChainer)
     {
         _foundContents = prevChainer._foundContents;
+        _asyncFoundContents = prevChainer._asyncFoundContents;
+        _isSync = prevChainer._isSync;
     }
 
     /// <inheritdoc/>
@@ -39,19 +51,34 @@ public sealed class ExtractorChainer
     }
 
     /// <inheritdoc/>
+    public async Task<IAsyncContentMap> ExtractAsync(
+        object? source,
+        CancellationToken canceler,
+        ExtractorMod? optionConfiguration = null
+    )
+    {
+        _ = await InnerExtractAsync(source, canceler, optionConfiguration).ConfigureAwait(false);
+
+        return new AsyncContentMap(
+            _asyncFoundContents,
+            optionConfiguration?.Invoke(Options) ?? Options
+        );
+    }
+
+    /// <inheritdoc/>
     public bool InnerExtract(object? value, ExtractorMod? optionConfiguration = null)
     {
-        try
-        {
-            return Engine.Extract(value, GetSubChainer(optionConfiguration));
-        }
-        catch (InsufficientExecutionStackException e)
-        {
-            throw new InsufficientExecutionStackException(
-                $"Ran into infinite generation trying to extract type '{value?.GetType()}'.",
-                e
-            );
-        }
+        return Engine.Extract(value, GetSubChainer(optionConfiguration));
+    }
+
+    /// <inheritdoc/>
+    public Task<bool> InnerExtractAsync(
+        object? value,
+        CancellationToken canceler,
+        ExtractorMod? optionConfiguration = null
+    )
+    {
+        return Engine.ExtractAsync(value, GetSubChainer(optionConfiguration), canceler);
     }
 
     /// <inheritdoc/>
@@ -62,14 +89,40 @@ public sealed class ExtractorChainer
             return false;
         }
 
-        Type keyType = value.GetType();
-        if (!_foundContents.TryGetValue(keyType, out ISet<object>? data))
+        if (_isSync == false)
         {
-            data = new HashSet<object>(Options.Valuer);
-            _foundContents.Add(keyType, data);
+            throw new MismatchedAccessException(
+                value,
+                "Cannot add values in synchronous context once asynchronous content has been established."
+            );
+        }
+        _isSync = true;
+
+        return _foundContents.Add(value);
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> AddFoundValueAsync(
+        object value,
+        CancellationToken canceler,
+        ExtractorMod? optionConfiguration = null
+    )
+    {
+        if (value == null)
+        {
+            return false;
         }
 
-        return data.Add(value);
+        if (_isSync == true)
+        {
+            throw new MismatchedAccessException(
+                value,
+                "Cannot add values in asynchronous context once synchronous content has been established."
+            );
+        }
+        _isSync = false;
+
+        return await _asyncFoundContents.AddAsync(value, canceler).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
