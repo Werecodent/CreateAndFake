@@ -13,6 +13,8 @@ internal static class ExceptionCreateHandlers
     /// <summary>Exceptions that have issues in legacy .NET.</summary>
     private static readonly FrozenSet<string> _UnsupportedExceptions =
     [
+        "System.DirectoryServices.ActiveDirectory.SyncFromAllServersOperationException",
+        "System.DirectoryServices.ActiveDirectory.ForestTrustCollisionException",
         "System.Diagnostics.Eventing.Reader.EventLogProviderDisabledException",
         "System.Deployment.Application.CompatibleFrameworkMissingException",
         "System.Diagnostics.Eventing.Reader.EventLogInvalidDataException",
@@ -26,10 +28,12 @@ internal static class ExceptionCreateHandlers
         "System.Deployment.Application.InvalidDeploymentException",
         "System.Deployment.Application.TrustNotGrantedException",
         "System.ComponentModel.Composition.CompositionException",
+        "System.Security.Principal.IdentityNotMappedException",
         "System.Diagnostics.Eventing.Reader.EventLogException",
         "System.Runtime.Serialization.SerializationException",
         "System.Configuration.ConfigurationErrorsException",
         "System.Deployment.Application.DeploymentException",
+        "System.DirectoryServices.Protocols.LdapException",
         "System.Net.Mail.SmtpFailedRecipientsException",
         "System.Net.NetworkInformation.PingException",
         "System.Net.Http.HttpRequestException",

@@ -1,5 +1,4 @@
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -21,17 +20,12 @@ public static class ContentMapTests
         );
     }
 
-    [Fact]
-    internal static Task ContentMap_NoParameterMutation()
+    [Theory, RandomData]
+    internal static Task ContentMap_NoParameterMutation(ContentMap map)
     {
-        return Tools.Tester.PreventsParameterMutationAsync<ContentMap>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [Tools.Extractor.Options],
-                    IgnorableExceptions = [typeof(ToolException)],
-                }
+        return Tools.Tester.PreventsParameterMutationAsync(
+            map,
+            TestContext.Current.CancellationToken
         );
     }
 

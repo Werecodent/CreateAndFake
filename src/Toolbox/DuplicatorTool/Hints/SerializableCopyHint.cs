@@ -11,6 +11,11 @@ namespace Werecodent.CreateAndFake.DuplicatorTool.Hints;
 /// <summary>Handles cloning <see cref="ISerializable"/> instances for <see cref="IDuplicator"/> .</summary>
 public sealed class SerializableCopyHint : CopyHint
 {
+    /// <summary>Internal type needed for AggregateException serialization.</summary>
+    private static readonly Type _ListDictionaryInternalType = typeof(IDictionary).Assembly.GetType(
+        "System.Collections.ListDictionaryInternal"
+    )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)CopyPriority.SerializableHint;
 
@@ -76,9 +81,7 @@ public sealed class SerializableCopyHint : CopyHint
         if (source is AggregateException)
         {
             yield return typeof(Exception[]);
-            yield return typeof(IDictionary).Assembly.GetType(
-                "System.Collections.ListDictionaryInternal"
-            )!;
+            yield return _ListDictionaryInternalType;
         }
         yield return typeof(string[]);
     }

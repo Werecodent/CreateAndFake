@@ -2,13 +2,14 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Extensions;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
-public sealed class TypeDescriber : ITypeSupporter
+public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
 {
     /// <summary>Every possible specific type.</summary>
     private static readonly FrozenSet<Type> _AllTypesFromAllAssemblies = FindAllAssemblies()
@@ -302,5 +303,23 @@ public sealed class TypeDescriber : ITypeSupporter
     public override string ToString()
     {
         return $"{nameof(TypeDescriber)}({GenericConverter.ExpandName(SupportedType)})";
+    }
+
+    /// <inheritdoc/>
+    public bool Equals(TypeDescriber? other)
+    {
+        return SupportedType == other?.SupportedType;
+    }
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as TypeDescriber);
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return SupportedType?.GetHashCode() ?? ValueComparer.NullHash;
     }
 }
