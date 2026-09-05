@@ -1,0 +1,178 @@
+﻿using System.Collections;
+using System.Drawing;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+
+namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
+
+#pragma warning disable CA1859 // False positive; needed for generic resolution.
+
+public static class ValueComparerTests
+{
+    [Fact]
+    internal static Task ValueComparer_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            ValueComparer.Use,
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task ValueComparer_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync(
+            ValueComparer.Use,
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(IterationLimitException),
+                    ],
+                }
+        );
+    }
+
+    [Fact]
+    internal static Task ValueComparer_VerifyToolSupport()
+    {
+        return Tools.Tester.VerifyToolSetSupportAsync(
+            typeof(ValueComparer),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Theory, RandomData]
+    internal static void Equals_MismatchSizeFalse(
+        [Size(1)] int[] oneValue,
+        [Size(2)] int[] twoValues
+    )
+    {
+        ValueComparer.Use.Equals(oneValue, twoValues).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues, oneValue).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues.Take(1), twoValues).Assert().Is(false);
+        ValueComparer.Use.Equals(twoValues, twoValues.Take(1)).Assert().Is(false);
+    }
+
+    [Theory, RandomData]
+    internal static void GetHashCode_SupportsParams([Size(3)] List<int> items)
+    {
+        Tools.Asserter.Is(
+            ValueComparer.Use.GetHashCode(items),
+            ValueComparer.Use.GetHashCode(items[0], items[1], items[2])
+        );
+    }
+
+    [Theory, RandomData]
+    internal static void Equals_SupportsValueEquatable(
+        [Fake] IValueEquatable stub1,
+        [Fake] IValueEquatable stub2,
+        bool result
+    )
+    {
+        stub1.ValuesEqual(stub2).SetupReturn(result);
+        stub2.ValuesEqual(stub1).SetupReturn(result);
+
+        ValueComparer.Use.Equals(stub1, stub2).Assert().Is(result);
+        ValueComparer.Use.Equals((object)stub1, stub2).Assert().Is(result);
+    }
+
+    [Theory, RandomData]
+    internal static void Equals_SupportsValueEquatableNulls(
+        [Fake] IValueEquatable stub,
+        bool result
+    )
+    {
+        stub.ValuesEqual(null).SetupReturn(result, 2);
+        ValueComparer.Use.Equals(stub, null).Assert().Is(result);
+        ValueComparer.Use.Equals(null, stub).Assert().Is(result);
+        ValueComparer.Use.Equals((IValueEquatable)null, null).Assert().Is(true);
+        stub.Assert().Called();
+    }
+
+    [Theory, RandomData]
+    internal static void GetHashCode_SupportsValueEquatable([Fake] IValueEquatable stub, int hash)
+    {
+        stub.GetValueHash().SetupReturn(hash, 2);
+        ValueComparer.Use.GetHashCode(stub).Assert().Is(hash);
+        ValueComparer.Use.GetHashCode((object)stub).Assert().Is(hash);
+        stub.Assert().Called();
+    }
+
+    [Fact]
+    internal static void ValueComparer_SupportsValueEquatable()
+    {
+        TestBehavior<IValueEquatable, IValueEquatable>(ValueComparer.Use, ValueComparer.Use);
+    }
+
+    [Fact]
+    internal static void ValueComparer_SupportsObject()
+    {
+        TestBehavior<int, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<string, object>(ValueComparer.Use, ValueComparer.Use);
+    }
+
+    [Fact]
+    internal static void ValueComparer_SupportsIEnumerable()
+    {
+        TestBehavior<IEnumerable<int>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IEnumerable<int>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+
+        TestBehavior<IEnumerable<string>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IEnumerable<string>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+    }
+
+    [Fact]
+    internal static void ValueComparer_SupportsIDictionary()
+    {
+        TestBehavior<Dictionary<int, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<int, int>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<int, int>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+
+        TestBehavior<Dictionary<string, int>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<string, int>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<string, int>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+
+        TestBehavior<Dictionary<int, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<int, string>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<int, string>, IEnumerable>(ValueComparer.Use, ValueComparer.Use);
+
+        TestBehavior<Dictionary<string, string>, IDictionary>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<string, string>, object>(ValueComparer.Use, ValueComparer.Use);
+        TestBehavior<IDictionary<string, string>, IEnumerable>(
+            ValueComparer.Use,
+            ValueComparer.Use
+        );
+    }
+
+    private static void TestBehavior<TActual, TComparer>(
+        IComparer<TComparer> comparer,
+        IEqualityComparer<TComparer> equalityComparer
+    )
+        where TActual : TComparer
+    {
+        TActual baseObject = Tools.Randomizer.Create<TActual>();
+        TActual equalObject = Tools.Duplicator.Copy(baseObject);
+        TActual unequalObject = Tools.Mutator.Variant(baseObject);
+
+        Tools.Asserter.Is(true, equalityComparer.Equals(default, default));
+        Tools.Asserter.Is(true, equalityComparer.Equals(baseObject, baseObject));
+        Tools.Asserter.Is(true, equalityComparer.Equals(baseObject, equalObject));
+        Tools.Asserter.Is(false, equalityComparer.Equals(baseObject, unequalObject));
+        Tools.Asserter.Is(false, equalityComparer.Equals(baseObject, default));
+        Tools.Asserter.Is(false, equalityComparer.Equals(default, baseObject));
+
+        Tools.Asserter.Is(0, comparer.Compare(default, default));
+        Tools.Asserter.Is(0, comparer.Compare(baseObject, baseObject));
+        Tools.Asserter.Is(0, comparer.Compare(baseObject, equalObject));
+        Tools.Asserter.IsNot(0, comparer.Compare(baseObject, unequalObject));
+        Tools.Asserter.IsNot(0, comparer.Compare(baseObject, default));
+        Tools.Asserter.IsNot(0, comparer.Compare(default, baseObject));
+    }
+}
+
+#pragma warning restore

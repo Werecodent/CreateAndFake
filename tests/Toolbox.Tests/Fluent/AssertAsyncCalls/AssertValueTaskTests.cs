@@ -1,0 +1,56 @@
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+
+namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
+
+public static class AssertValueTaskTests
+{
+    private static readonly TesterMod _Config = opt =>
+        opt with
+        {
+            IgnorableExceptions =
+            [
+                typeof(AssertException),
+                typeof(ToolException),
+                typeof(InvalidCastException),
+                typeof(ArgumentException),
+            ],
+        };
+
+    [Fact]
+    internal static Task AssertValueTask_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertValueTask>(
+            TestContext.Current.CancellationToken,
+            _Config
+        );
+    }
+
+    [Fact]
+    internal static Task AssertValueTask_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<AssertValueTask>(
+            TestContext.Current.CancellationToken,
+            _Config
+        );
+    }
+
+    /*[Theory, RandomData]
+    internal static async Task AssertValueTask_CallsAndChains(Injected<AssertValueTask> instance)
+    {
+        RunResults results = await Tools.Runner.CallMethodsOnAsync(
+            instance.Dummy,
+            TestContext.Current.CancellationToken
+        );
+        results
+            .RawResults.Where(r => r.Result != null)
+            .Where(r =>
+                r.Result is not Task<AssertChainer<AssertValueTask>>
+                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
+                && r.Result is not AlsoChainer
+            )
+            .Assert()
+            .IsEmpty();
+    }*/
+}

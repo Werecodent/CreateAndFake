@@ -1,0 +1,41 @@
+using System.Reflection;
+
+namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
+
+public static class XUnitTests
+{
+    [Fact]
+    internal static Task XUnit_v3_VerifyIntegrity()
+    {
+        return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static void XUnit_v3_TestClassCoverage()
+    {
+        Tools.Tester.ProvidesTestClassCoverage(
+            Assembly.GetAssembly(typeof(RandomDataAttribute)),
+            Assembly.GetExecutingAssembly()
+        );
+    }
+
+    [Fact]
+    internal static void XUnit_v3_ValidateTestMethodNaming()
+    {
+        Tools.Tester.VerifyTestMethodNaming(
+            [typeof(FactAttribute), typeof(TheoryAttribute)],
+            Assembly.GetAssembly(typeof(RandomDataAttribute)),
+            Assembly.GetExecutingAssembly(),
+            opt => opt with { TestMethodNameAllowedTargets = ["Issue118"] }
+        );
+    }
+
+    [Fact]
+    internal static Task XUnit_v3_ValidateRandomDataParameters()
+    {
+        return Tools.Tester.ValidateRandomDataParametersAsync(
+            Assembly.GetExecutingAssembly(),
+            TestContext.Current.CancellationToken
+        );
+    }
+}

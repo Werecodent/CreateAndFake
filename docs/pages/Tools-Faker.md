@@ -32,7 +32,7 @@ public void Setup_ObjectEquality()
     Tools.Asserter.Is(false, fake.Dummy.Equals(new object()));
     Tools.Asserter.Is(true, fake.Dummy.Equals(data));
 
-    fake.VerifyAll(Times.Exactly(2));
+    fake.Verify(Times.Exactly(2));
 }
 ```
 
@@ -50,8 +50,8 @@ The `Faker` requires a `Valuer` to be given at creation, which controls value eq
 
 There are a variety of options to verify methods were called as expected:
 
-* `Fake.VerifyAll()` - Automatically checks methods based upon `Times` in each Behavior.
-* `Fake.VerifyAll(Times)` - Does the above and that the total matches the provided `Times`.
+* `Fake.Verify()` - Automatically checks methods based upon `Times` in each Behavior.
+* `Fake.Verify(Times)` - Does the above and that the total matches the provided `Times`.
 * `Fake.Verify(Times, delegate)` - Verifies the given delegate was called the given `Times`.
 * `Fake.VerifyTotalCalls(Times)` - Only verifies the total number of calls made.
 
@@ -67,7 +67,7 @@ There are two special useful types provided:
 The assembly containing the internals to fake needs to grant visibility to the dynamic assembly by adding somewhere (typically AssemblyInfo.cs):
 
 ```c#
-[assembly: InternalsVisibleTo("FakerTypes")]
+[assembly: InternalsVisibleTo("CreateAndFake.FakerTypes")]
 ```
 
 ## Faking Protected
@@ -84,10 +84,10 @@ public void GetHashCode_ValidHint()
 
     Fake<CompareHint> hint = Tools.Faker.Mock<CompareHint>();
     hint.Setup("Supports",
-        new[] { data, data, Arg.LambdaAny<ValuerChainer>() },
+        new[] { data, data, Arg.LambdaAny<IValuerChainer>() },
         Behavior.Returns(true, Times.Once));
     hint.Setup("GetHashCode",
-        new[] { data, Arg.LambdaAny<ValuerChainer>() },
+        new[] { data, Arg.LambdaAny<IValuerChainer>() },
         Behavior.Returns(result, Times.Once));
 
     Tools.Asserter.Is(result, new Valuer(false, hint.Dummy).GetHashCode(data));

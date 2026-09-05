@@ -1,0 +1,97 @@
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.FakerTool;
+
+namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
+
+public static class DuplicatorTests
+{
+    private static readonly TesterMod _Config = opt =>
+        opt with
+        {
+            IgnorableExceptions = [typeof(ToolException)],
+        };
+
+    [Fact]
+    internal static Task Duplicator_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<Duplicator>(
+            TestContext.Current.CancellationToken,
+            _Config
+        );
+    }
+
+    [Fact]
+    internal static Task Duplicator_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<Duplicator>(
+            TestContext.Current.CancellationToken,
+            _Config
+        );
+    }
+
+    [Fact]
+    internal static void Copy_MissingMatchThrows()
+    {
+        new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
+            .Assert(x => x.Copy(new object()))
+            .Throws<ToolException>()
+            .With.InnerException.GetType()
+            .Assert()
+            .Is(typeof(UnsupportedException));
+    }
+
+    [Fact]
+    internal static void Copy_NullWorks()
+    {
+        new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
+            .Copy<object>(null)
+            .Assert()
+            .IsNull();
+    }
+
+    [Theory, RandomData]
+    internal static void Copy_ValidHintWorks(object data, [Stub] CopyHint hint)
+    {
+        hint.TryCopy(data, Arg.Any<IDuplicatorChainer>())
+            .SetupReturn(new CopyHintResult(data), Times.Once);
+
+        new Duplicator(
+            Tools.Duplicator.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint],
+            }
+        )
+            .Copy(data)
+            .Assert()
+            .Is(data);
+
+        hint.Assert().Called();
+    }
+
+    [Theory, RandomData]
+    internal static void Copy_InfiniteLoopDetails(object instance, [Stub] CopyHint hint)
+    {
+        hint.Tools()
+            .ToFake()
+            .Setup(
+                m => m.TryCopy(instance, Arg.Any<IDuplicatorChainer>()),
+                Behavior.Throw<InsufficientExecutionStackException>(Times.Once)
+            );
+
+        new Duplicator(
+            Tools.Duplicator.Options with
+            {
+                IncludeFrameworkHints = false,
+                Hints = [hint],
+            }
+        )
+            .Assert(x => x.Copy(instance))
+            .Throws<ToolException>()
+            .With.Message.Assert()
+            .Contains(GenericConverter.ExpandName(instance));
+    }
+}

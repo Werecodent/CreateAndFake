@@ -1,0 +1,102 @@
+{
+    "CreateAndFake": {
+        "Seed": 2,
+        "Asserter": {
+            "StringCompareOption": "CurrentCulture",
+            "DisableAssertThrowCatching": true,
+            "DebugAssertsFail": true
+        },
+        "Duplicator": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "VerifyCloneResult": false
+        },
+        "Extractor": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "ExtractPrivateMembers": true
+        },
+        "Faker": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9
+        },
+        "Mutator": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 8,
+            "CreateVariantAttemptLimit": 16,
+            "CreateUniqueAttemptLimit": 18
+        },
+        "Randomizer": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "PreferLocalSubclasses": false,
+            "RandomizerCreateAttempts": "Few",
+            "ObjectCreateAttempts": "00:01:00",
+            "CollectionAttempts": 5,
+            "CollectionMinSize": 2,
+            "CollectionMaxSize": 4,
+            "StringMinSize": 2,
+            "StringMaxSize": 4,
+            "StringCharacterSet": "ABC1",
+            "IncludeInfinityAndNaNGeneration": true,
+            "ContentRandomizationRequired": false
+        },
+        "Runner": {
+            "InheritIReflectableTypeOnFakedType": true,
+            "IncludeFinalize": true,
+            "IncludeDispose": true,
+            "IncludeStaticMethods": false,
+            "IncludeInstanceMethods": false,
+            "IncludeBaseObjectMethods": false,
+            "Timeout": "00:00:10"
+        },
+        "Tester": {
+            "Limiter": "Once",
+            "IncludeConstructors": false,
+            "IncludeInstanceMethods": false,
+            "IncludeStaticMethods": false,
+            "IncludeInternals": false,
+            "TestClassNameSuffixes": [
+                "Test"
+            ],
+            "TestMethodNameAllowedTargets": [
+                "Start"
+            ],
+            "TestClassNameGenericSubstitutes": [
+                "",
+                "_T_",
+                "_"
+            ],
+            "TestClassCoverageExceptions": [
+                "A",
+                "C"
+            ],
+            "MethodsToIgnore": [
+                "A",
+                "B"
+            ],
+            "IgnoreAllExceptions": true,
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true,
+            "DisablePassthroughTests": true,
+            "OnlyDeclaredMethods": true
+        },
+        "Valuer": {
+            "IncludeFrameworkHints": false,
+            "IncludeFoundHints": false,
+            "MaxHintRecursion": 9,
+            "UseEquatableComparisons": false,
+            "CheckCollectionType": true,
+            "IgnoreCurrentRandomSeed": false,
+            "AsyncTimeout": "00:00:33",
+            "SkipAsyncValues": true,
+            "IncludeValueHashInComparison": false,
+            "IterationLimit": 876
+        }
+    }
+}

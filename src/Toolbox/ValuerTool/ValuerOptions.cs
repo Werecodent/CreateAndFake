@@ -1,0 +1,75 @@
+using System.Collections.Frozen;
+using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.Design.Properties;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.Properties;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
+
+namespace Werecodent.CreateAndFake.ValuerTool;
+
+/// <summary>Configuration for controlling comparison behavior.</summary>
+public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint>
+{
+    /// <summary>Allows <see cref="IEquatable{T}"/> to handle comparisons if applicable.</summary>
+    [ConfigurableOption]
+    public bool UseEquatableComparisons { get; init; } = true;
+
+    /// <summary>Triggers type checking for collections.</summary>
+    /// <remarks>By default, collections are compared by contents and not the container type.</remarks>
+    [ConfigurableOption]
+    public bool CheckCollectionType { get; init; } = false;
+
+    /// <summary>Excludes <see cref="SeededRandom.Seed"/> from comparison checks.</summary>
+    [ConfigurableOption]
+    public bool IgnoreCurrentRandomSeed { get; init; } = true;
+
+    /// <summary>Types to use default equality/hashing.</summary>
+    //[ConfigurableOption]
+    public FrozenSet<Type> DefaultEqualityTypes { get; init; } = [];
+
+    /// <summary>How long to wait for async comparisons to complete.</summary>
+    [ConfigurableOption]
+    public TimeSpan AsyncTimeout { get; init; } = new(0, 1, 0);
+
+    /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
+    [ConfigurableOption]
+    public bool SkipAsyncValues { get; init; } = false;
+
+    /// <inheritdoc cref="DesignDefaults.IterationLimit"/>
+    [ConfigurableOption]
+    public int IterationLimit { get; init; } = DesignDefaults.IterationLimit;
+
+    /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
+    [ConfigurableOption]
+    public bool IncludeValueHashInComparison { get; init; } = true;
+
+    /// <summary>
+    ///     Creates options from <see langword="this"/>
+    ///     overridden with values from <paramref name="config"/>.
+    /// </summary>
+    /// <param name="config">Configuration with overrides to use.</param>
+    /// <returns>The created options.</returns>
+    internal ValuerOptions WithConfig(IConfigurationSection? config)
+    {
+        IConfigurationSection? section = config?.GetSection(nameof(Valuer));
+        if (section == null)
+        {
+            return this;
+        }
+
+        return this with
+        {
+            IncludeValueHashInComparison = Config.GetValue(section, IncludeValueHashInComparison),
+            IgnoreCurrentRandomSeed = Config.GetValue(section, IgnoreCurrentRandomSeed),
+            UseEquatableComparisons = Config.GetValue(section, UseEquatableComparisons),
+            IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            CheckCollectionType = Config.GetValue(section, CheckCollectionType),
+            IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
+            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            SkipAsyncValues = Config.GetValue(section, SkipAsyncValues),
+            IterationLimit = Config.GetValue(section, IterationLimit),
+            AsyncTimeout = Config.GetValue(section, AsyncTimeout),
+        };
+    }
+}
