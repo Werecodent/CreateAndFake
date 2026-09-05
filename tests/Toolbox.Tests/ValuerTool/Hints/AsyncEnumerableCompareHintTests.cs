@@ -14,9 +14,9 @@ public sealed class AsyncEnumerableCompareHintTests
 
     private static readonly Type[] _ValidTypes =
     [
-        // typeof(IAsyncEnumerable<int>),
-        // typeof(IAsyncEnumerable<string>),
-        // typeof(IAsyncEnumerable<object>),
+        typeof(IAsyncEnumerable<int>),
+        typeof(IAsyncEnumerable<string>),
+        typeof(IAsyncEnumerable<object>),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(DataHolderSample)];

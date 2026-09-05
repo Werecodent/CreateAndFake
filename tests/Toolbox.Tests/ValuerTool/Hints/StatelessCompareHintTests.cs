@@ -8,9 +8,7 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
 {
     private static readonly StatelessCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes =
-    [ /*typeof(StatelessSample)*/
-    ];
+    private static readonly Type[] _ValidTypes = [typeof(StatelessSample)];
 
     private static readonly Type[] _InvalidTypes =
     [
@@ -24,6 +22,12 @@ public sealed class StatelessCompareHintTests : CompareHintTestBase<StatelessCom
         : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
 
     public override Task TryToCompare_SupportsDifferentValidTypes()
+    {
+        // Stateless objects can't be different.
+        return Task.CompletedTask;
+    }
+
+    public override Task TryToGetHashCode_SupportsDifferentValidTypes()
     {
         // Stateless objects can't be different.
         return Task.CompletedTask;

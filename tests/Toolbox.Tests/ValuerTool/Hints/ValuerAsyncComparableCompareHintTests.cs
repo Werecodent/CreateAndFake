@@ -11,9 +11,7 @@ public sealed class ValuerAsyncComparableCompareHintTests
 {
     private static readonly ValuerAsyncComparableCompareHint _TestInstance = new();
 
-    private static readonly Type[] _ValidTypes =
-    [ //typeof(IValuerAsyncComparable)
-    ];
+    private static readonly Type[] _ValidTypes = [typeof(IValuerAsyncComparable)];
 
     private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(DataHolderSample)];
 

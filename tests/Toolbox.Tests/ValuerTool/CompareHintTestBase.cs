@@ -234,7 +234,7 @@ public abstract class CompareHintTestBase<T>(
     /// <summary>Verifies the hint supports the correct types.</summary>
     /// <exception cref="EngineException">When an exception is encountered.</exception>
     [Fact]
-    public async Task TryToGetHashCode_SupportsDifferentValidTypes()
+    public virtual async Task TryToGetHashCode_SupportsDifferentValidTypes()
     {
         CancellationToken ct = TestContext.Current.CancellationToken;
         foreach (Type type in _validTypes)

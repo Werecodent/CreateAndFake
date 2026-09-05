@@ -1,5 +1,4 @@
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.Fluent.Tooling;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.Tooling;
 
@@ -9,7 +8,7 @@ public static class TypeToolsTests
     internal static Task TypeTools_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TypeTools),
+            typeof(object).Tools(),
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
@@ -23,7 +22,7 @@ public static class TypeToolsTests
     internal static Task TypeTools_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TypeTools),
+            typeof(object).Tools(),
             TestContext.Current.CancellationToken,
             opt =>
                 opt with
