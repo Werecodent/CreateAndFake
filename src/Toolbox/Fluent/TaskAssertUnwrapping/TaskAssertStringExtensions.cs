@@ -67,6 +67,37 @@ public static class TaskAssertStringExtensions
         );
     }
 
+    /// <inheritdoc cref="AssertStringBase{T}.StartsWith(char,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> StartsWith<T>(
+        this Task<T> origin,
+        char content,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).StartsWith(content, details);
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.StartsWith(char,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> StartsWith<T>(
+        this Task<T> origin,
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).StartsWith(
+            content,
+            optionConfiguration,
+            details
+        );
+    }
+
     /// <inheritdoc cref="AssertStringBase{T}.StartsWith(string,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AssertChainer<T>> StartsWith<T>(
@@ -92,6 +123,37 @@ public static class TaskAssertStringExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).StartsWith(
+            content,
+            optionConfiguration,
+            details
+        );
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.StartsNotWith(char,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> StartsNotWith<T>(
+        this Task<T> origin,
+        char content,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).StartsNotWith(content, details);
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.StartsNotWith(char,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> StartsNotWith<T>(
+        this Task<T> origin,
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).StartsNotWith(
             content,
             optionConfiguration,
             details
@@ -129,6 +191,33 @@ public static class TaskAssertStringExtensions
         );
     }
 
+    /// <inheritdoc cref="AssertStringBase{T}.EndsWith(char,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> EndsWith<T>(
+        this Task<T> origin,
+        char content,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).EndsWith(content, details);
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.EndsWith(char,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> EndsWith<T>(
+        this Task<T> origin,
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).EndsWith(content, optionConfiguration, details);
+    }
+
     /// <inheritdoc cref="AssertStringBase{T}.EndsWith(string,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AssertChainer<T>> EndsWith<T>(
@@ -154,6 +243,37 @@ public static class TaskAssertStringExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).EndsWith(content, optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.EndsNotWith(char,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> EndsNotWith<T>(
+        this Task<T> origin,
+        char content,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).EndsNotWith(content, details);
+    }
+
+    /// <inheritdoc cref="AssertStringBase{T}.EndsNotWith(char,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<T>> EndsNotWith<T>(
+        this Task<T> origin,
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertStringBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).EndsNotWith(
+            content,
+            optionConfiguration,
+            details
+        );
     }
 
     /// <inheritdoc cref="AssertStringBase{T}.EndsNotWith(string,string)"/>

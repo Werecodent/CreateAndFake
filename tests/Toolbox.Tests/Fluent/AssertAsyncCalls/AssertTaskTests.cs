@@ -58,4 +58,66 @@ public static class AssertTaskTests
             .Assert()
             .IsEmpty();
     }
+
+    [Theory, RandomData]
+    internal static async Task ThrowsAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await thrower().Assert().ThrowsAsync<Exception>(canceler);
+        await thrower().Assert().ThrowsAsync<Exception>(canceler, mod);
+        await data.Assert()
+            .ThrowsAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await data.Assert()
+            .ThrowsAsync<Exception>(canceler, mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal static async Task ThrowsNoAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await data.Assert().ThrowsNoAsync<Exception>(canceler);
+        await data.Assert().ThrowsNoAsync<Exception>(canceler, mod);
+        await thrower()
+            .Assert()
+            .ThrowsNoAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await thrower()
+            .Assert()
+            .ThrowsNoAsync<Exception>(canceler, mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        modCount.Assert().Is(2);
+    }
 }

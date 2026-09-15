@@ -58,6 +58,23 @@ public partial class Asserter : IAsserterString
     }
 
     /// <inheritdoc/>
+    public void StartsWith(char content, string? text, string? details = null)
+    {
+        StartsWith(content, text, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void StartsWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        StartsWith(content.ToString(), text, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
     public virtual void StartsWith(string content, string? text, string? details = null)
     {
         StartsWith(content, text, Unconfigured, details);
@@ -81,6 +98,23 @@ public partial class Asserter : IAsserterString
                 text
             );
         }
+    }
+
+    /// <inheritdoc/>
+    public void StartsNotWith(char content, string? text, string? details = null)
+    {
+        StartsNotWith(content, text, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void StartsNotWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        StartsNotWith(content.ToString(), text, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
@@ -110,6 +144,23 @@ public partial class Asserter : IAsserterString
     }
 
     /// <inheritdoc/>
+    public void EndsWith(char content, string? text, string? details = null)
+    {
+        EndsWith(content, text, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void EndsWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        EndsWith(content.ToString(), text, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
     public virtual void EndsWith(string content, string? text, string? details = null)
     {
         EndsWith(content, text, Unconfigured, details);
@@ -133,6 +184,23 @@ public partial class Asserter : IAsserterString
                 text
             );
         }
+    }
+
+    /// <inheritdoc/>
+    public void EndsNotWith(char content, string? text, string? details = null)
+    {
+        EndsNotWith(content, text, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void EndsNotWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        EndsNotWith(content.ToString(), text, optionConfiguration, details);
     }
 
     /// <inheritdoc/>

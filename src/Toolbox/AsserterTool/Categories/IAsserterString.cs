@@ -31,6 +31,17 @@ public interface IAsserterString
     );
 
     /// <inheritdoc cref="StartsWith(string,string,AsserterMod,string)"/>
+    void StartsWith(char content, string? text, string? details = null);
+
+    /// <inheritdoc cref="StartsWith(string,string,AsserterMod,string)"/>
+    void StartsWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="StartsWith(string,string,AsserterMod,string)"/>
     void StartsWith(string content, string? text, string? details = null);
 
     /// <summary>Verifies <c>text</c> starts with <paramref name="content"/>.</summary>
@@ -38,6 +49,17 @@ public interface IAsserterString
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void StartsWith(
         string content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="StartsNotWith(string,string,AsserterMod,string)"/>
+    void StartsNotWith(char content, string? text, string? details = null);
+
+    /// <inheritdoc cref="StartsNotWith(string,string,AsserterMod,string)"/>
+    void StartsNotWith(
+        char content,
         string? text,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -57,6 +79,17 @@ public interface IAsserterString
     );
 
     /// <inheritdoc cref="EndsWith(string,string,AsserterMod,string)"/>
+    void EndsWith(char content, string? text, string? details = null);
+
+    /// <inheritdoc cref="EndsWith(string,string,AsserterMod,string)"/>
+    void EndsWith(
+        char content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="EndsWith(string,string,AsserterMod,string)"/>
     void EndsWith(string content, string? text, string? details = null);
 
     /// <summary>Verifies <c>text</c> ends with <paramref name="content"/>.</summary>
@@ -64,6 +97,17 @@ public interface IAsserterString
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void EndsWith(
         string content,
+        string? text,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="EndsNotWith(string,string,AsserterMod,string)"/>
+    void EndsNotWith(char content, string? text, string? details = null);
+
+    /// <inheritdoc cref="EndsNotWith(string,string,AsserterMod,string)"/>
+    void EndsNotWith(
+        char content,
         string? text,
         AsserterMod? optionConfiguration,
         string? details = null

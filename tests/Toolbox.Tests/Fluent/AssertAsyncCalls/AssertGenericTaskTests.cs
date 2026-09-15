@@ -62,4 +62,76 @@ public static class AssertGenericTaskTests
             .Assert()
             .IsEmpty();
     }
+
+    [Theory, RandomData]
+    internal static async Task HasResultAsync_WithMatchForwarded(string value, string variant)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async Task<string> getValue()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            return value;
+        }
+
+        await getValue().Assert().HasResultAsync(value, canceler);
+        await getValue().Assert().HasResultAsync(value, canceler, mod);
+        await getValue()
+            .Assert()
+            .HasResultAsync(variant, canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await getValue()
+            .Assert()
+            .HasResultAsync(variant, canceler, mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal static async Task HasResultAsync_Forwarded(
+        Task<string> dataA,
+        Task<int> dataB,
+        Exception error
+    )
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async Task<DataSample> thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await dataA.Assert().HasResultAsync(canceler);
+        await dataB.Assert().HasResultAsync(canceler, mod);
+        await thrower()
+            .Assert()
+            .HasResultAsync(canceler)
+            .Assert()
+            .ThrowsAsync<Exception>(canceler)
+            .That()
+            .Is(error);
+        await thrower()
+            .Assert()
+            .HasResultAsync(canceler, mod)
+            .Assert()
+            .ThrowsAsync<Exception>(canceler)
+            .That()
+            .Is(error);
+
+        modCount.Assert().Is(2);
+    }
 }

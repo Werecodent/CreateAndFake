@@ -56,6 +56,26 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
+    /// <inheritdoc cref="IAsserterString.StartsWith(char,string,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> StartsWith(char content, string? details = null)
+    {
+        Asserter.StartsWith(content, Text, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.StartsWith(char,string,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> StartsWith(
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.StartsWith(content, Text, optionConfiguration, details);
+        return ToChainer();
+    }
+
     /// <inheritdoc cref="IAsserterString.StartsWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> StartsWith(string content, string? details = null)
@@ -73,6 +93,26 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     )
     {
         Asserter.StartsWith(content, Text, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.StartsNotWith(char,string,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> StartsNotWith(char content, string? details = null)
+    {
+        Asserter.StartsNotWith(content, Text, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.StartsNotWith(char,string,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> StartsNotWith(
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.StartsNotWith(content, Text, optionConfiguration, details);
         return ToChainer();
     }
 
@@ -96,6 +136,26 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
         return ToChainer();
     }
 
+    /// <inheritdoc cref="IAsserterString.EndsWith(char,string,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> EndsWith(char content, string? details = null)
+    {
+        Asserter.EndsWith(content, Text, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.EndsWith(char,string,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> EndsWith(
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.EndsWith(content, Text, optionConfiguration, details);
+        return ToChainer();
+    }
+
     /// <inheritdoc cref="IAsserterString.EndsWith(string,string,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> EndsWith(string content, string? details = null)
@@ -113,6 +173,26 @@ public abstract class AssertStringBase<T>(IAsserter asserter, string? text)
     )
     {
         Asserter.EndsWith(content, Text, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.EndsNotWith(char,string,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> EndsNotWith(char content, string? details = null)
+    {
+        Asserter.EndsNotWith(content, Text, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterString.EndsNotWith(char,string,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AssertChainer<T> EndsNotWith(
+        char content,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.EndsNotWith(content, Text, optionConfiguration, details);
         return ToChainer();
     }
 
