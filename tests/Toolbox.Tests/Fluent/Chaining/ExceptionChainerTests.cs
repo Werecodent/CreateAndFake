@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
@@ -20,5 +21,11 @@ public static class ExceptionChainerTests
             typeof(ExceptionChainer<>),
             TestContext.Current.CancellationToken
         );
+    }
+
+    [Theory, RandomData]
+    internal static void That_SupportsArgumentException(ExceptionChainer<ArgumentException> chainer)
+    {
+        chainer.That().GetType().Assert().Is(typeof(AssertError));
     }
 }

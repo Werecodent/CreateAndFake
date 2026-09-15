@@ -59,4 +59,76 @@ public static class AssertValueTaskTests
             .Assert()
             .IsEmpty();
     }
+
+    [Theory, RandomData]
+    internal static async Task ThrowsAsync_Forwarded(
+        ValueTask dataA,
+        ValueTask dataB,
+        Exception error
+    )
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async ValueTask thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await thrower().Assert().ThrowsAsync<Exception>(canceler);
+        await thrower().Assert().ThrowsAsync<Exception>(canceler, mod);
+        await dataA
+            .Assert()
+            .ThrowsAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await dataB
+            .Assert()
+            .ThrowsAsync<Exception>(canceler, mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal static async Task ThrowsNoAsync_Forwarded(
+        ValueTask dataA,
+        ValueTask dataB,
+        Exception error
+    )
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        int modCount = 0;
+        AsserterOptions mod(AsserterOptions opt)
+        {
+            modCount++;
+            return opt;
+        }
+        async ValueTask thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await dataA.Assert().ThrowsNoAsync<Exception>(canceler);
+        await dataB.Assert().ThrowsNoAsync<Exception>(canceler, mod);
+        await thrower()
+            .Assert()
+            .ThrowsNoAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await thrower()
+            .Assert()
+            .ThrowsNoAsync<Exception>(canceler, mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        modCount.Assert().Is(2);
+    }
 }

@@ -1,41 +1,42 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
-public static class TaskAssertValueTaskExtensionsTests
+public static class TaskAssertGenericTaskExtensionsTests
 {
     [Fact]
-    internal static Task TaskAssertValueTaskExtensions_GuardsNulls()
+    internal static Task TaskAssertGenericTaskExtensions_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertValueTaskExtensions),
+            typeof(TaskAssertGenericTaskExtensions),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
     }
 
     [Fact]
-    internal static Task TaskAssertValueTaskExtensions_NoParameterMutation()
+    internal static Task TaskAssertGenericTaskExtensions_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskAssertValueTaskExtensions),
+            typeof(TaskAssertGenericTaskExtensions),
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
     }
 
     [Fact]
-    internal static void TaskAssertValueTaskExtensions_MatchesEveryMethod()
+    internal static void TaskAssertGenericTaskExtensions_MatchesEveryMethod()
     {
-        typeof(AssertValueTaskBase<>)
+        typeof(AssertGenericTaskBase<,>)
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .OrderBy(m => m.Name)
             .Select(m => m.Name)
             .Assert()
             .Is(
-                typeof(TaskAssertValueTaskExtensions)
+                typeof(TaskAssertGenericTaskExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
@@ -43,11 +44,7 @@ public static class TaskAssertValueTaskExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsAsync_Forwarded(
-        ValueTask dataA,
-        ValueTask dataB,
-        Exception error
-    )
+    internal static async Task HasResultAsync_WithMatchForwarded(string value, string variant)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
         int modCount = 0;
@@ -56,20 +53,20 @@ public static class TaskAssertValueTaskExtensionsTests
             modCount++;
             return opt;
         }
-        async ValueTask thrower()
+        async Task<string> getValue()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
-            throw error;
+            return value;
         }
 
-        await Task.FromResult(thrower().Assert()).ThrowsAsync<Exception>(canceler);
-        await Task.FromResult(thrower().Assert()).ThrowsAsync<Exception>(canceler, mod);
-        await Task.FromResult(dataA.Assert())
-            .ThrowsAsync<Exception>(canceler)
+        await Task.FromResult(getValue().Assert()).HasResultAsync(value, canceler);
+        await Task.FromResult(getValue().Assert()).HasResultAsync(value, canceler, mod);
+        await Task.FromResult(getValue().Assert())
+            .HasResultAsync(variant, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
-        await Task.FromResult(dataB.Assert())
-            .ThrowsAsync<Exception>(canceler, mod)
+        await Task.FromResult(getValue().Assert())
+            .HasResultAsync(variant, canceler, mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
@@ -77,9 +74,9 @@ public static class TaskAssertValueTaskExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsNoAsync_Forwarded(
-        ValueTask dataA,
-        ValueTask dataB,
+    internal static async Task HasResultAsync_Forwarded(
+        Task<string> dataA,
+        Task<int> dataB,
         Exception error
     )
     {
@@ -90,22 +87,26 @@ public static class TaskAssertValueTaskExtensionsTests
             modCount++;
             return opt;
         }
-        async ValueTask thrower()
+        async Task<DataSample> thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
             throw error;
         }
 
-        await Task.FromResult(dataA.Assert()).ThrowsNoAsync<Exception>(canceler);
-        await Task.FromResult(dataB.Assert()).ThrowsNoAsync<Exception>(canceler, mod);
+        await Task.FromResult(dataA.Assert()).HasResultAsync(canceler);
+        await Task.FromResult(dataB.Assert()).HasResultAsync(canceler, mod);
         await Task.FromResult(thrower().Assert())
-            .ThrowsNoAsync<Exception>(canceler)
+            .HasResultAsync(canceler)
             .Assert()
-            .ThrowsAsync<AssertException>(canceler);
+            .ThrowsAsync<Exception>(canceler)
+            .That()
+            .Is(error);
         await Task.FromResult(thrower().Assert())
-            .ThrowsNoAsync<Exception>(canceler, mod)
+            .HasResultAsync(canceler, mod)
             .Assert()
-            .ThrowsAsync<AssertException>(canceler);
+            .ThrowsAsync<Exception>(canceler)
+            .That()
+            .Is(error);
 
         modCount.Assert().Is(2);
     }

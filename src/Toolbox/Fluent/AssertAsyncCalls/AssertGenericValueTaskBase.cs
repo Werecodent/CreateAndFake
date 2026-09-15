@@ -72,12 +72,15 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         string? details = null
     )
     {
-        TItem result = await Asserter
-            .HasResultAsync(Operation, canceler, optionConfiguration, details)
+        IAsserter testAsserter =
+            (optionConfiguration == null) ? Asserter : Asserter.WithOptions(optionConfiguration);
+
+        TItem result = await testAsserter
+            .HasResultAsync(Operation, canceler, details)
             .ConfigureAwait(false);
-        await Asserter
-            .IsAsync(expected, result, canceler, optionConfiguration, details)
-            .ConfigureAwait(false);
+
+        await testAsserter.IsAsync(expected, result, canceler, details).ConfigureAwait(false);
+
         return ToChainer();
     }
 
