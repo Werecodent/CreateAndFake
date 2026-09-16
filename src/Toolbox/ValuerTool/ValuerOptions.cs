@@ -45,7 +45,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
     [ConfigurableOption]
-    public bool IncludeValueHashInComparison { get; init; } = true;
+    public bool IncludeValueHashInComparison { get; init; } = false;
 
     /// <summary>
     ///     Creates options from <see langword="this"/>

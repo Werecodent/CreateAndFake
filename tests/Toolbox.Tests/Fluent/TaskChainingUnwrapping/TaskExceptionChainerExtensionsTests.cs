@@ -208,10 +208,4 @@ public static class TaskExceptionChainerExtensionsTests
     {
         chainer.With(x => x.ToString()).GetType().Assert().Is(typeof(Task<AssertString>));
     }
-
-    [Theory, RandomData]
-    internal static void With_SupportsType(Task<ExceptionChainer<Exception>> chainer)
-    {
-        chainer.With(x => x.GetType()).GetType().Assert().Is(typeof(Task<AssertType>));
-    }
 }

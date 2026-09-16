@@ -120,7 +120,7 @@ public sealed class SetCompareHint : CompareHint
             canceler
         );
         AsyncHashSet<object> actualByHash = AsyncHashSet.CreateFromAsync(
-            expected.Cast<object>(),
+            actual.Cast<object>(),
             chainer,
             chainer.Options.IterationLimit,
             canceler

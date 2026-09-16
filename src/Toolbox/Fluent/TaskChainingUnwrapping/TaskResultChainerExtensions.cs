@@ -641,13 +641,6 @@ public static class TaskResultChainerExtensions
     }
 
     /// <inheritdoc cref="That{T}(Task{ResultChainer{Func{T}}})"/>
-    public static async Task<AssertType> That(this Task<ResultChainer<Type?>> origin)
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).That();
-    }
-
-    /// <inheritdoc cref="That{T}(Task{ResultChainer{Func{T}}})"/>
     public static async Task<AssertComparable> That(this Task<ResultChainer<bool>> origin)
     {
         ArgumentGuard.ThrowIfNull(origin);

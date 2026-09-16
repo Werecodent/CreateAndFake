@@ -23,8 +23,7 @@ public interface IAsserter
         IAsserterError,
         IAsserterFunc,
         IAsserterObject,
-        IAsserterString,
-        IAsserterType
+        IAsserterString
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
     /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>

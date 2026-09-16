@@ -136,14 +136,6 @@ public static class AssertExtensions
         return new AssertString(GetAsserter(tools), text);
     }
 
-    /// <inheritdoc cref="AssertType"/>
-    /// <param name="type"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="type"/> with.</returns>
-    public static AssertType Assert(this Type? type, ToolSet? tools = null)
-    {
-        return new AssertType(GetAsserter(tools), type);
-    }
-
     /// <summary>Handles assertion calls for runtime <paramref name="behavior"/>.</summary>
     /// <typeparam name="T"><see cref="Type"/> of <paramref name="origin"/>.</typeparam>
     /// <param name="origin">Object with <paramref name="behavior"/> to test.</param>

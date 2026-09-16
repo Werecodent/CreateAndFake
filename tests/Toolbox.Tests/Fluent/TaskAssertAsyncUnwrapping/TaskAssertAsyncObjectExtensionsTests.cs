@@ -1,6 +1,7 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
@@ -40,6 +41,8 @@ public static class TaskAssertAsyncObjectExtensionsTests
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
+                    .Where(m => m != nameof(AssertObjectBase<>.Inherits))
+                    .Where(m => m != nameof(AssertObjectBase<>.InheritedBy))
             );
     }
 

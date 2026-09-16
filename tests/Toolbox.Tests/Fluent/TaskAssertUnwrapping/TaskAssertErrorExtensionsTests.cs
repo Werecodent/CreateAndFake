@@ -39,6 +39,8 @@ public static class TaskAssertErrorExtensionsTests
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
+                    .Where(m => m != nameof(AssertObjectBase<>.Inherits))
+                    .Where(m => m != nameof(AssertObjectBase<>.InheritedBy))
             );
     }
 }

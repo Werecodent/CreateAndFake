@@ -45,7 +45,7 @@ public static class SubclasserTests
     [Fact]
     internal static void Create_IFakedDefault()
     {
-        Subclasser.Create<object>(Tools.Faker.Options).GetType().Assert().Inherits<IFaked>();
+        Subclasser.Create<object>(Tools.Faker.Options).Assert().Inherits<IFaked>();
         Subclasser.Create(null, Tools.Faker.Options, null).Assert().IsNotNull();
     }
 

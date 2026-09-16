@@ -128,11 +128,4 @@ public abstract class WithChainer<T>(T result, IAsserter asserter) : AlsoChainer
         ArgumentGuard.ThrowIfNull(selector);
         return Also(selector.Invoke(Result));
     }
-
-    /// <inheritdoc cref="With{TContent}(Func{T,Func{TContent}})"/>
-    public AssertType With(Func<T, Type?> selector)
-    {
-        ArgumentGuard.ThrowIfNull(selector);
-        return Also(selector.Invoke(Result));
-    }
 }

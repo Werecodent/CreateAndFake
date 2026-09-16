@@ -552,12 +552,6 @@ public static class ResultChainerExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static void That_SupportsType(ResultChainer<Type> chainer)
-    {
-        chainer.That().GetType().Assert().Is(typeof(AssertType));
-    }
-
-    [Theory, RandomData]
     internal static void That_SupportsBool(ResultChainer<bool> chainer)
     {
         chainer.That().GetType().Assert().Is(typeof(AssertComparable));

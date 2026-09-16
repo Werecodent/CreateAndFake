@@ -124,14 +124,6 @@ public class AlsoChainer(IAsserter asserter)
         return new AssertString(asserter, text);
     }
 
-    /// <inheritdoc cref="AssertType"/>
-    /// <param name="type"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="type"/> with.</returns>
-    public AssertType Also(Type? type)
-    {
-        return new AssertType(asserter, type);
-    }
-
     /// <inheritdoc/>
     public override string ToString()
     {

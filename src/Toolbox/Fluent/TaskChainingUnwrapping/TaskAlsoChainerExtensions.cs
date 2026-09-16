@@ -185,17 +185,4 @@ public static class TaskAlsoChainerExtensions
         ArgumentGuard.ThrowIfNull(origin, actual);
         return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
     }
-
-    /// <inheritdoc cref="AssertType"/>
-    /// <param name="actual"><inheritdoc cref="AssertTypeBase{T}.Type" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertType> Also<TOrigin>(
-        this Task<TOrigin> origin,
-        Func<Type?> actual
-    )
-        where TOrigin : AlsoChainer
-    {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
-    }
 }

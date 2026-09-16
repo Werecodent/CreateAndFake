@@ -191,15 +191,4 @@ public static class TaskExceptionChainerExtensions
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).With(selector);
     }
-
-    /// <inheritdoc cref="With{T,TContent}(Task{ExceptionChainer{T}},Func{T,Func{TContent}})"/>
-    public static async Task<AssertType> With<T>(
-        this Task<ExceptionChainer<T>> origin,
-        Func<T, Type?> selector
-    )
-        where T : Exception
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).With(selector);
-    }
 }

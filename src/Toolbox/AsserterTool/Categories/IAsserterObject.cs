@@ -116,6 +116,57 @@ public interface IAsserterObject
         string? details = null
     );
 
+    /// <inheritdoc cref="Inherits{T}(object,AsserterMod,string)"/>
+    void Inherits<TChild>(object? instance, string? details = null);
+
+    /// <summary>Verifies <see cref="Type"/> inherits <typeparamref name="TChild"/>.</summary>
+    /// <typeparam name="TChild">Expected child of <see cref="Type"/>.</typeparam>
+    /// <param name="instance">Instance to run assertion checks with.</param>
+    /// <inheritdoc cref="Is(object,object,AsserterMod,string)"/>
+    void Inherits<TChild>(
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="Inherits(Type,object,AsserterMod,string)"/>
+    void Inherits(Type? child, object? instance, string? details = null);
+
+    /// <summary>Verifies <see cref="Type"/> inherits <paramref name="child"/>.</summary>
+    /// <param name="child">Expected child of <see cref="Type"/>.</param>
+    /// <inheritdoc cref="Inherits{T}(object,AsserterMod,string)"/>
+    void Inherits(
+        Type? child,
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="InheritedBy{T}(object,AsserterMod,string)"/>
+    void InheritedBy<TParent>(object? instance, string? details = null);
+
+    /// <summary>Verifies <typeparamref name="TParent"/> inherits <see cref="Type"/>.</summary>
+    /// <typeparam name="TParent">Expected parent of <see cref="Type"/>.</typeparam>
+    /// <inheritdoc cref="Inherits{T}(object,AsserterMod,string)"/>
+    void InheritedBy<TParent>(
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="InheritedBy(Type,object,AsserterMod,string)"/>
+    void InheritedBy(Type? parent, object? instance, string? details = null);
+
+    /// <summary>Verifies <paramref name="parent"/> inherits <see cref="Type"/>.</summary>
+    /// <param name="parent">Expected parent of <see cref="Type"/>.</param>
+    /// <inheritdoc cref="InheritedBy{T}(object,AsserterMod,string)"/>
+    void InheritedBy(
+        Type? parent,
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
     /// <inheritdoc cref="Called(object,Times,AsserterMod)"/>
     void Called(object? fake, AsserterMod? optionConfiguration = null);
 

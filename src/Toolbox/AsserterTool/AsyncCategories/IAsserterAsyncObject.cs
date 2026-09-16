@@ -2,8 +2,6 @@ using Werecodent.CreateAndFake.AsserterTool.Categories;
 
 namespace Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 
-#pragma warning disable CA1716 // Matches existing usage.
-
 /// <summary>Handles common object test scenarios.</summary>
 public interface IAsserterAsyncObject
 {
@@ -102,5 +100,3 @@ public interface IAsserterAsyncObject
         string? details = null
     );
 }
-
-#pragma warning restore

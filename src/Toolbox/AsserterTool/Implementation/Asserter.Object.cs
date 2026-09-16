@@ -223,6 +223,116 @@ public partial class Asserter : IAsserterObject
     }
 
     /// <inheritdoc/>
+    public void Inherits<TChild>(object? instance, string? details = null)
+    {
+        Inherits<TChild>(instance, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void Inherits<TChild>(
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        Type? type = instance is Type asType ? asType : instance?.GetType();
+
+        if (!type.Inherits<TChild>())
+        {
+            throw new AssertException(
+                $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName<TChild>()}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Inherits(Type? child, object? instance, string? details = null)
+    {
+        Inherits(child, instance, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void Inherits(
+        Type? child,
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        Type? type = instance is Type asType ? asType : instance?.GetType();
+
+        if (!type.Inherits(child))
+        {
+            throw new AssertException(
+                $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName(child)}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public void InheritedBy<TParent>(object? instance, string? details = null)
+    {
+        InheritedBy<TParent>(instance, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void InheritedBy<TParent>(
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        Type? type = instance is Type asType ? asType : instance?.GetType();
+
+        if (!type.IsInheritedBy<TParent>())
+        {
+            throw new AssertException(
+                $"'{GenericConverter.ExpandName<TParent>()}' does not inherit '{GenericConverter.ExpandName(type)}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+    }
+
+    /// <inheritdoc/>
+    public void InheritedBy(Type? parent, object? instance, string? details = null)
+    {
+        InheritedBy(parent, instance, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public void InheritedBy(
+        Type? parent,
+        object? instance,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        Type? type = instance is Type asType ? asType : instance?.GetType();
+
+        if (!type.IsInheritedBy(parent))
+        {
+            throw new AssertException(
+                $"'{GenericConverter.ExpandName(parent)}' does not inherit '{GenericConverter.ExpandName(type)}'.",
+                details,
+                localOptions.Gen.InitialSeed
+            );
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void Called(object? fake, AsserterMod? optionConfiguration = null)
     {
         Called(fake, Times.AtLeast(1), Unconfigured);

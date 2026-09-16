@@ -6,6 +6,10 @@ namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterObjectTests
 {
+    private interface IParentType : IChildType;
+
+    private interface IChildType;
+
     private readonly AsserterMod _config;
 
     private bool _configCalled;
@@ -230,5 +234,53 @@ public sealed class AsserterObjectTests
             .Assert(x => x.Assert().UniqueFrom(sample.Tools().Copy()))
             .Throws<AssertException>(_config);
         _configCalled.Assert().Is(true);
+    }
+
+    [Fact]
+    internal static void Inherits_ParentToChild()
+    {
+        typeof(IParentType).Assert().Inherits<IChildType>().And().Inherits(typeof(IChildType));
+    }
+
+    [Theory, RandomData]
+    internal static void Inherits_ParentToChildWithOptions(AsserterMod mod)
+    {
+        typeof(IParentType)
+            .Assert()
+            .Inherits<IChildType>(mod)
+            .And()
+            .Inherits(typeof(IChildType), mod);
+    }
+
+    [Fact]
+    internal static void Inherits_ChildToParent()
+    {
+        typeof(IChildType)
+            .Assert(x => x.Assert().Inherits<IParentType>())
+            .Throws<AssertException>();
+        typeof(IChildType)
+            .Assert(x => x.Assert().Inherits(typeof(IParentType)))
+            .Throws<AssertException>();
+    }
+
+    [Fact]
+    internal static void InheritedBy_ChildToParent()
+    {
+        typeof(IChildType)
+            .Assert()
+            .InheritedBy<IParentType>()
+            .And()
+            .InheritedBy(typeof(IParentType));
+    }
+
+    [Fact]
+    internal static void InheritedBy_ParentToChild()
+    {
+        typeof(IParentType)
+            .Assert(x => x.Assert().InheritedBy<IChildType>())
+            .Throws<AssertException>();
+        typeof(IParentType)
+            .Assert(x => x.Assert().InheritedBy(typeof(IChildType)))
+            .Throws<AssertException>();
     }
 }

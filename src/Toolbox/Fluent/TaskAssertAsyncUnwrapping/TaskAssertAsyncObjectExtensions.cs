@@ -1,5 +1,6 @@
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Fluent;
@@ -171,4 +172,57 @@ public static class TaskAssertAsyncObjectExtensions
             .UniqueFromAsync(expected, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
     }
+
+#pragma warning disable VSTHRD200 // Matches underlying method.
+
+    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TChild>(
+        this Task<AssertAsyncObject> origin,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Inherits<TChild>(details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TChild>(
+        this Task<AssertAsyncObject> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Inherits<TChild>(optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TParent>(
+        this Task<AssertAsyncObject> origin,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TParent>(
+        this Task<AssertAsyncObject> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(
+            optionConfiguration,
+            details
+        );
+    }
+
+#pragma warning restore
 }

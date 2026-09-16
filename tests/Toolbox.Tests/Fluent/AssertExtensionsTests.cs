@@ -49,10 +49,4 @@ public static class AssertExtensionsTests
     {
         data.Assert().GreaterThanOrEqualTo(int.MinValue).And().LessThanOrEqualTo(int.MaxValue);
     }
-
-    [Theory, RandomData]
-    public static void Assert_TypeIsFluent(Exception data)
-    {
-        data.GetType().Assert().Inherits<Exception>().And().Inherits<object>();
-    }
 }

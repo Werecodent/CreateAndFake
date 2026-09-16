@@ -185,10 +185,4 @@ public static class TaskAlsoChainerExtensionsTests
     {
         chainer.Also(() => data).GetType().Assert().Is(typeof(Task<AssertString>));
     }
-
-    [Theory, RandomData]
-    internal static void Also_SupportsType(Task<AlsoChainer> chainer, Type data)
-    {
-        chainer.Also(() => data).GetType().Assert().Is(typeof(Task<AssertType>));
-    }
 }

@@ -173,10 +173,4 @@ public static class ResultChainerTests
     {
         chainer.With(x => x.ToString()).GetType().Assert().Is(typeof(AssertString));
     }
-
-    [Theory, RandomData]
-    internal static void With_SupportsType(ResultChainer<object> chainer)
-    {
-        chainer.With(x => x.GetType()).GetType().Assert().Is(typeof(AssertType));
-    }
 }

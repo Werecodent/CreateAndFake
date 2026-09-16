@@ -30,7 +30,11 @@ public static class Issue096Tests
         {
             T sample = Tools.Randomizer.Create<T>();
             await Tools.Asserter.IsNotAsync(null, sample, ct);
-            await Tools.Asserter.IsNotAsync(sample, Tools.Mutator.Variant(sample), ct);
+            await Tools.Asserter.IsNotAsync(
+                sample,
+                await Tools.Mutator.VariantAsync(sample, ct),
+                ct
+            );
 
             T dupe = Tools.Duplicator.Copy(sample);
 

@@ -564,13 +564,6 @@ public static class ResultChainerExtensions
     }
 
     /// <inheritdoc cref="That{T}(ResultChainer{Func{T}})"/>
-    public static AssertType That(this ResultChainer<Type?> origin)
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return origin.Also(origin.GetResultValue());
-    }
-
-    /// <inheritdoc cref="That{T}(ResultChainer{Func{T}})"/>
     public static AssertComparable That(this ResultChainer<bool> origin)
     {
         ArgumentGuard.ThrowIfNull(origin);
