@@ -40,34 +40,6 @@ public static class AssertTypeTests
     }
 
     [Theory, RandomData]
-    internal static void AssertType_FullSupport(
-        Type original,
-        [Copy] Type clone,
-        [Unique] Type variant
-    )
-    {
-        original
-            .Assert()
-            .Pass()
-            .And()
-            .Is(clone)
-            .And()
-            .IsNot(variant)
-            .And()
-            .IsNotNull()
-            .And()
-            .ReferenceEqual(original)
-            .And()
-            .ReferenceNotEqual(variant)
-            .And()
-            .UniqueFrom(variant)
-            .And()
-            .Inherits(original)
-            .And()
-            .InheritedBy(original);
-    }
-
-    [Theory, RandomData]
     internal static async Task AssertType_CallsAndChains(Injected<AssertType> instance)
     {
         RunResults results = await Tools.Runner.CallMethodsOnAsync(

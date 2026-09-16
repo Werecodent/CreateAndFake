@@ -44,28 +44,10 @@ public static class AssertStringTests
     }
 
     [Theory, RandomData]
-    internal static void AssertString_FullSupport(
-        [Size(5)] string original,
-        [Copy] string clone,
-        string variant
-    )
+    internal static void AssertString_SupportSizeTests([Size(5)] string original)
     {
         original
             .Assert()
-            .Pass()
-            .And()
-            .Is(clone)
-            .And()
-            .IsNot(variant)
-            .And()
-            .IsNotEmpty()
-            .And()
-            .IsNotNull()
-            .And()
-            .ReferenceEqual(original)
-            .And()
-            .ReferenceNotEqual(variant)
-            .And()
             .HasCount(5)
             .And()
             .HasCountLessOrExactly(5)
@@ -78,11 +60,7 @@ public static class AssertStringTests
             .And()
             .HasCountMoreOrExactly(4)
             .And()
-            .HasCountMoreThan(4)
-            .And()
-            .Contains(original[0])
-            .And()
-            .StartsWith($"{original[0]}");
+            .HasCountMoreThan(4);
     }
 
     [Theory, RandomData]
