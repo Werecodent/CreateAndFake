@@ -8,7 +8,7 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public static class AssertActionTests
+public sealed class AssertActionTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -21,6 +21,20 @@ public static class AssertActionTests
                 typeof(ArgumentException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertActionTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertAction_GuardsNulls()
@@ -58,5 +72,31 @@ public static class AssertActionTests
             .Where(r => r.Result as string != nameof(AssertAction))
             .Assert()
             .IsEmpty();
+    }
+
+    [Theory, RandomData]
+    internal void Throws_Forwarded(Action behavior, Exception error)
+    {
+        Action thrower = () => throw error;
+
+        thrower.Assert().Throws<Exception>();
+        thrower.Assert().Throws<Exception>(_mod);
+        behavior.Assert(x => x.Assert().Throws<Exception>()).Throws<AssertException>();
+        behavior.Assert(x => x.Assert().Throws<Exception>(_mod)).Throws<AssertException>();
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal void ThrowsNo_Forwarded(Action behavior, Exception error)
+    {
+        Action thrower = () => throw error;
+
+        behavior.Assert().ThrowsNo<Exception>();
+        behavior.Assert().ThrowsNo<Exception>(_mod);
+        thrower.Assert(x => x.Assert().ThrowsNo<Exception>()).Throws<AssertException>();
+        thrower.Assert(x => x.Assert().ThrowsNo<Exception>(_mod)).Throws<AssertException>();
+
+        _modCount.Assert().Is(2);
     }
 }

@@ -6,8 +6,22 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
-public static class TaskAssertAsyncObjectExtensionsTests
+public sealed class TaskAssertAsyncObjectExtensionsTests
 {
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public TaskAssertAsyncObjectExtensionsTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
+
     [Fact]
     internal static Task TaskAssertAsyncObjectExtensions_GuardsNulls()
     {
@@ -47,147 +61,157 @@ public static class TaskAssertAsyncObjectExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task IsAsync_Forwarded(
+    internal async Task IsAsync_Forwarded(
         AsyncDataSample data,
         [Copy] AsyncDataSample clone,
         AsyncDataSample variant
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).IsAsync(clone, canceler);
-        await Task.FromResult(data.Assert()).IsAsync(clone, canceler, mod);
+        await Task.FromResult(data.Assert()).IsAsync(clone, canceler, _mod);
         await Task.FromResult(data.Assert())
             .IsAsync(variant, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .IsAsync(variant, canceler, mod)
+            .IsAsync(variant, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task IsNotAsync_Forwarded(
+    internal async Task IsNotAsync_Forwarded(
         AsyncDataSample data,
         [Copy] AsyncDataSample clone,
         AsyncDataSample variant
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).IsNotAsync(variant, canceler);
-        await Task.FromResult(data.Assert()).IsNotAsync(variant, canceler, mod);
+        await Task.FromResult(data.Assert()).IsNotAsync(variant, canceler, _mod);
         await Task.FromResult(data.Assert())
             .IsNotAsync(clone, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .IsNotAsync(clone, canceler, mod)
+            .IsNotAsync(clone, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ValuesEqualAsync_Forwarded(
+    internal async Task ValuesEqualAsync_Forwarded(
         AsyncDataSample data,
         [Copy] AsyncDataSample clone,
         AsyncDataSample variant
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).ValuesEqualAsync(clone, canceler);
-        await Task.FromResult(data.Assert()).ValuesEqualAsync(clone, canceler, mod);
+        await Task.FromResult(data.Assert()).ValuesEqualAsync(clone, canceler, _mod);
         await Task.FromResult(data.Assert())
             .ValuesEqualAsync(variant, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .ValuesEqualAsync(variant, canceler, mod)
+            .ValuesEqualAsync(variant, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ValuesNotEqualAsync_Forwarded(
+    internal async Task ValuesNotEqualAsync_Forwarded(
         AsyncDataSample data,
         [Copy] AsyncDataSample clone,
         AsyncDataSample variant
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).ValuesNotEqualAsync(variant, canceler);
-        await Task.FromResult(data.Assert()).ValuesNotEqualAsync(variant, canceler, mod);
+        await Task.FromResult(data.Assert()).ValuesNotEqualAsync(variant, canceler, _mod);
         await Task.FromResult(data.Assert())
             .ValuesNotEqualAsync(clone, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .ValuesNotEqualAsync(clone, canceler, mod)
+            .ValuesNotEqualAsync(clone, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task UniqueFromAsync_Forwarded(
+    internal async Task UniqueFromAsync_Forwarded(
         AsyncDataSample data,
         [Copy] AsyncDataSample clone,
         [Unique] AsyncDataSample unique
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).UniqueFromAsync(unique, canceler);
-        await Task.FromResult(data.Assert()).UniqueFromAsync(unique, canceler, mod);
+        await Task.FromResult(data.Assert()).UniqueFromAsync(unique, canceler, _mod);
         await Task.FromResult(data.Assert())
             .UniqueFromAsync(clone, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .UniqueFromAsync(clone, canceler, mod)
+            .UniqueFromAsync(clone, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal async Task Inherits_Forwarded([Fake] IParentType parent, [Fake] IChildType child)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        await Task.FromResult(child.Assert()).Inherits<IParentType>();
+        await Task.FromResult(child.Assert()).Inherits<IParentType>(_mod);
+        await Task.FromResult(parent.Assert())
+            .Inherits<IChildType>()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(parent.Assert())
+            .Inherits<IChildType>(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal async Task InheritedBy_Forwarded([Fake] IChildType child)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        Type parentType = typeof(IParentType);
+
+        await Task.FromResult(parentType.Assert()).InheritedBy<IChildType>();
+        await Task.FromResult(parentType.Assert()).InheritedBy<IChildType>(_mod);
+        await Task.FromResult(child.Assert())
+            .InheritedBy<IParentType>()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(child.Assert())
+            .InheritedBy<IParentType>(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
     }
 }

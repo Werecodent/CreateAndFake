@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public static class AssertGenericValueTaskTests
+public sealed class AssertGenericValueTaskTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -19,6 +19,20 @@ public static class AssertGenericValueTaskTests
                 typeof(ValueTaskRepeatedAccessException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertGenericValueTaskTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertGenericValueTask_GuardsNulls()
@@ -59,15 +73,10 @@ public static class AssertGenericValueTaskTests
     }*/
 
     [Theory, RandomData]
-    internal static async Task HasResultAsync_WithMatchForwarded(string value, string variant)
+    internal async Task HasResultAsync_WithMatchForwarded(string value, string variant)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask<string> getValue()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -75,7 +84,7 @@ public static class AssertGenericValueTaskTests
         }
 
         await getValue().Assert().HasResultAsync(value, canceler);
-        await getValue().Assert().HasResultAsync(value, canceler, mod);
+        await getValue().Assert().HasResultAsync(value, canceler, _mod);
         await getValue()
             .Assert()
             .HasResultAsync(variant, canceler)
@@ -83,27 +92,22 @@ public static class AssertGenericValueTaskTests
             .ThrowsAsync<AssertException>(canceler);
         await getValue()
             .Assert()
-            .HasResultAsync(variant, canceler, mod)
+            .HasResultAsync(variant, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasResultAsync_Forwarded(
+    internal async Task HasResultAsync_Forwarded(
         ValueTask<string> dataA,
         ValueTask<int> dataB,
         Exception error
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask<DataSample> thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -111,7 +115,7 @@ public static class AssertGenericValueTaskTests
         }
 
         await dataA.Assert().HasResultAsync(canceler);
-        await dataB.Assert().HasResultAsync(canceler, mod);
+        await dataB.Assert().HasResultAsync(canceler, _mod);
         await thrower()
             .Assert()
             .HasResultAsync(canceler)
@@ -121,29 +125,24 @@ public static class AssertGenericValueTaskTests
             .Is(error);
         await thrower()
             .Assert()
-            .HasResultAsync(canceler, mod)
+            .HasResultAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<Exception>(canceler)
             .That()
             .Is(error);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsAsync_Forwarded(
+    internal async Task ThrowsAsync_Forwarded(
         ValueTask<string> dataA,
         ValueTask<int> dataB,
         Exception error
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask<DataSample> thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -151,7 +150,7 @@ public static class AssertGenericValueTaskTests
         }
 
         await thrower().Assert().ThrowsAsync<Exception>(canceler);
-        await thrower().Assert().ThrowsAsync<Exception>(canceler, mod);
+        await thrower().Assert().ThrowsAsync<Exception>(canceler, _mod);
         await dataA
             .Assert()
             .ThrowsAsync<Exception>(canceler)
@@ -159,27 +158,22 @@ public static class AssertGenericValueTaskTests
             .ThrowsAsync<AssertException>(canceler);
         await dataB
             .Assert()
-            .ThrowsAsync<Exception>(canceler, mod)
+            .ThrowsAsync<Exception>(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsNoAsync_Forwarded(
+    internal async Task ThrowsNoAsync_Forwarded(
         ValueTask<string> dataA,
         ValueTask<int> dataB,
         Exception error
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask<DataSample> thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -187,7 +181,7 @@ public static class AssertGenericValueTaskTests
         }
 
         await dataA.Assert().ThrowsNoAsync<Exception>(canceler);
-        await dataB.Assert().ThrowsNoAsync<Exception>(canceler, mod);
+        await dataB.Assert().ThrowsNoAsync<Exception>(canceler, _mod);
         await thrower()
             .Assert()
             .ThrowsNoAsync<Exception>(canceler)
@@ -195,10 +189,10 @@ public static class AssertGenericValueTaskTests
             .ThrowsAsync<AssertException>(canceler);
         await thrower()
             .Assert()
-            .ThrowsNoAsync<Exception>(canceler, mod)
+            .ThrowsNoAsync<Exception>(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 }

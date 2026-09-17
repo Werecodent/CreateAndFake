@@ -6,10 +6,6 @@ namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;
 
 public sealed class AsserterObjectTests
 {
-    private interface IParentType : IChildType;
-
-    private interface IChildType;
-
     private readonly AsserterMod _config;
 
     private bool _configCalled;
@@ -239,48 +235,48 @@ public sealed class AsserterObjectTests
     [Fact]
     internal static void Inherits_ParentToChild()
     {
-        typeof(IParentType).Assert().Inherits<IChildType>().And().Inherits(typeof(IChildType));
+        typeof(IChildType).Assert().Inherits<IParentType>().And().Inherits(typeof(IParentType));
     }
 
     [Theory, RandomData]
     internal static void Inherits_ParentToChildWithOptions(AsserterMod mod)
     {
-        typeof(IParentType)
+        typeof(IChildType)
             .Assert()
-            .Inherits<IChildType>(mod)
+            .Inherits<IParentType>(mod)
             .And()
-            .Inherits(typeof(IChildType), mod);
+            .Inherits(typeof(IParentType), mod);
     }
 
     [Fact]
     internal static void Inherits_ChildToParent()
     {
-        typeof(IChildType)
-            .Assert(x => x.Assert().Inherits<IParentType>())
+        typeof(IParentType)
+            .Assert(x => x.Assert().Inherits<IChildType>())
             .Throws<AssertException>();
-        typeof(IChildType)
-            .Assert(x => x.Assert().Inherits(typeof(IParentType)))
+        typeof(IParentType)
+            .Assert(x => x.Assert().Inherits(typeof(IChildType)))
             .Throws<AssertException>();
     }
 
     [Fact]
     internal static void InheritedBy_ChildToParent()
     {
-        typeof(IChildType)
+        typeof(IParentType)
             .Assert()
-            .InheritedBy<IParentType>()
+            .InheritedBy<IChildType>()
             .And()
-            .InheritedBy(typeof(IParentType));
+            .InheritedBy(typeof(IChildType));
     }
 
     [Fact]
     internal static void InheritedBy_ParentToChild()
     {
-        typeof(IParentType)
-            .Assert(x => x.Assert().InheritedBy<IChildType>())
+        typeof(IChildType)
+            .Assert(x => x.Assert().InheritedBy<IParentType>())
             .Throws<AssertException>();
-        typeof(IParentType)
-            .Assert(x => x.Assert().InheritedBy(typeof(IChildType)))
+        typeof(IChildType)
+            .Assert(x => x.Assert().InheritedBy(typeof(IParentType)))
             .Throws<AssertException>();
     }
 }

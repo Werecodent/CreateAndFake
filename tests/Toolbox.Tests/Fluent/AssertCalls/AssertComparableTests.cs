@@ -7,7 +7,7 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public static class AssertComparableTests
+public sealed class AssertComparableTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -20,6 +20,20 @@ public static class AssertComparableTests
                 typeof(ArgumentException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertComparableTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertComparable_GuardsNulls()
@@ -56,163 +70,114 @@ public static class AssertComparableTests
     }
 
     [Theory, RandomData]
-    internal static void GreaterThan_Forwarded(
+    internal void GreaterThan_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().GreaterThan(less);
-        data.Assert().GreaterThan(less, mod);
+        data.Assert().GreaterThan(less, _mod);
         data.Assert(d => d.Assert().GreaterThan(same)).Throws<AssertException>();
-        data.Assert(d => d.Assert().GreaterThan(more, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().GreaterThan(more, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void GreaterThanOrEqualTo_Forwarded(
+    internal void GreaterThanOrEqualTo_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().GreaterThanOrEqualTo(less);
-        data.Assert().GreaterThanOrEqualTo(same, mod);
+        data.Assert().GreaterThanOrEqualTo(same, _mod);
         data.Assert(d => d.Assert().GreaterThanOrEqualTo(more)).Throws<AssertException>();
-        data.Assert(d => d.Assert().GreaterThanOrEqualTo(more, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().GreaterThanOrEqualTo(more, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void GreaterThanOrIs_Forwarded(
+    internal void GreaterThanOrIs_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().GreaterThanOrIs(less);
-        data.Assert().GreaterThanOrIs(same, mod);
+        data.Assert().GreaterThanOrIs(same, _mod);
         data.Assert(d => d.Assert().GreaterThanOrIs(more)).Throws<AssertException>();
-        data.Assert(d => d.Assert().GreaterThanOrIs(more, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().GreaterThanOrIs(more, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void LessThan_Forwarded(
+    internal void LessThan_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().LessThan(more);
-        data.Assert().LessThan(more, mod);
+        data.Assert().LessThan(more, _mod);
         data.Assert(d => d.Assert().LessThan(same)).Throws<AssertException>();
-        data.Assert(d => d.Assert().LessThan(less, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().LessThan(less, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void LessThanOrEqualTo_Forwarded(
+    internal void LessThanOrEqualTo_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().LessThanOrEqualTo(more);
-        data.Assert().LessThanOrEqualTo(same, mod);
+        data.Assert().LessThanOrEqualTo(same, _mod);
         data.Assert(d => d.Assert().LessThanOrEqualTo(less)).Throws<AssertException>();
-        data.Assert(d => d.Assert().LessThanOrEqualTo(less, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().LessThanOrEqualTo(less, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void LessThanOrIs_Forwarded(
+    internal void LessThanOrIs_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().LessThanOrIs(more);
-        data.Assert().LessThanOrIs(same, mod);
+        data.Assert().LessThanOrIs(same, _mod);
         data.Assert(d => d.Assert().LessThanOrIs(less)).Throws<AssertException>();
-        data.Assert(d => d.Assert().LessThanOrIs(less, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().LessThanOrIs(less, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void InRange_Forwarded(
+    internal void InRange_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
         [Cap(0, 2)] int less
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().InRange(less, same);
-        data.Assert().InRange(same, more, mod);
+        data.Assert().InRange(same, more, _mod);
         data.Assert(d => d.Assert().InRange(less, less)).Throws<AssertException>();
-        data.Assert(d => d.Assert().InRange(more, more, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().InRange(more, more, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 }

@@ -5,8 +5,22 @@ using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
-public static class TaskAssertAsyncEnumerableExtensionsTests
+public sealed class TaskAssertAsyncEnumerableExtensionsTests
 {
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public TaskAssertAsyncEnumerableExtensionsTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
+
     [Fact]
     internal static Task TaskAssertAsyncEnumerableExtensions_GuardsNulls()
     {
@@ -46,7 +60,7 @@ public static class TaskAssertAsyncEnumerableExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task TaskAssertAsyncEnumerableExtensions_ObjectExtensionsWork(
+    internal async Task TaskAssertAsyncEnumerableExtensions_ObjectExtensionsWork(
         IAsyncEnumerable<int> sampleA,
         IAsyncEnumerable<int> sampleB
     )
@@ -57,281 +71,212 @@ public static class TaskAssertAsyncEnumerableExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task IsEmptyAsync_Forwarded(
+    internal async Task IsEmptyAsync_Forwarded(
         [Size(0)] IAsyncEnumerable<int> valid,
         [Size(1)] IAsyncEnumerable<int> invalid
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(valid.Assert()).IsEmptyAsync(canceler);
-        await Task.FromResult(valid.Assert()).IsEmptyAsync(canceler, mod);
+        await Task.FromResult(valid.Assert()).IsEmptyAsync(canceler, _mod);
         await Task.FromResult(invalid.Assert())
             .IsEmptyAsync(canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(invalid.Assert())
-            .IsEmptyAsync(canceler, mod)
+            .IsEmptyAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task IsNotEmptyAsync_Forwarded(
+    internal async Task IsNotEmptyAsync_Forwarded(
         [Size(1)] IAsyncEnumerable<int> valid,
         [Size(0)] IAsyncEnumerable<int> invalid
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(valid.Assert()).IsNotEmptyAsync(canceler);
-        await Task.FromResult(valid.Assert()).IsNotEmptyAsync(canceler, mod);
+        await Task.FromResult(valid.Assert()).IsNotEmptyAsync(canceler, _mod);
         await Task.FromResult(invalid.Assert())
             .IsNotEmptyAsync(canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(invalid.Assert())
-            .IsNotEmptyAsync(canceler, mod)
+            .IsNotEmptyAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasCountAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
+    internal async Task HasCountAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).HasCountAsync(1, canceler);
-        await Task.FromResult(data.Assert()).HasCountAsync(1, canceler, mod);
+        await Task.FromResult(data.Assert()).HasCountAsync(1, canceler, _mod);
         await Task.FromResult(data.Assert())
             .HasCountAsync(0, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .HasCountAsync(2, canceler, mod)
+            .HasCountAsync(2, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasCountLessThanAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
+    internal async Task HasCountLessThanAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).HasCountLessThanAsync(2, canceler);
-        await Task.FromResult(data.Assert()).HasCountLessThanAsync(2, canceler, mod);
+        await Task.FromResult(data.Assert()).HasCountLessThanAsync(2, canceler, _mod);
         await Task.FromResult(data.Assert())
             .HasCountLessThanAsync(1, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .HasCountLessThanAsync(0, canceler, mod)
+            .HasCountLessThanAsync(0, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasCountLessOrExactlyAsync_Forwarded(
-        [Size(1)] IAsyncEnumerable<int> data
-    )
+    internal async Task HasCountLessOrExactlyAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).HasCountLessOrExactlyAsync(2, canceler);
-        await Task.FromResult(data.Assert()).HasCountLessOrExactlyAsync(1, canceler, mod);
+        await Task.FromResult(data.Assert()).HasCountLessOrExactlyAsync(1, canceler, _mod);
         await Task.FromResult(data.Assert())
             .HasCountLessOrExactlyAsync(0, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .HasCountLessOrExactlyAsync(0, canceler, mod)
+            .HasCountLessOrExactlyAsync(0, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasCountMoreThanAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
+    internal async Task HasCountMoreThanAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).HasCountMoreThanAsync(0, canceler);
-        await Task.FromResult(data.Assert()).HasCountMoreThanAsync(0, canceler, mod);
+        await Task.FromResult(data.Assert()).HasCountMoreThanAsync(0, canceler, _mod);
         await Task.FromResult(data.Assert())
             .HasCountMoreThanAsync(1, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .HasCountMoreThanAsync(2, canceler, mod)
+            .HasCountMoreThanAsync(2, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task HasCountMoreOrExactlyAsync_Forwarded(
-        [Size(1)] IAsyncEnumerable<int> data
-    )
+    internal async Task HasCountMoreOrExactlyAsync_Forwarded([Size(1)] IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).HasCountMoreOrExactlyAsync(0, canceler);
-        await Task.FromResult(data.Assert()).HasCountMoreOrExactlyAsync(1, canceler, mod);
+        await Task.FromResult(data.Assert()).HasCountMoreOrExactlyAsync(1, canceler, _mod);
         await Task.FromResult(data.Assert())
             .HasCountMoreOrExactlyAsync(2, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .HasCountMoreOrExactlyAsync(2, canceler, mod)
+            .HasCountMoreOrExactlyAsync(2, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ContainsAsync_Forwarded(int valid, int invalid)
+    internal async Task ContainsAsync_Forwarded(int valid, int invalid)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([valid], 1, canceler);
 
         await Task.FromResult(data.Assert()).ContainsAsync(valid, canceler);
-        await Task.FromResult(data.Assert()).ContainsAsync(valid, canceler, mod);
+        await Task.FromResult(data.Assert()).ContainsAsync(valid, canceler, _mod);
         await Task.FromResult(data.Assert())
             .ContainsAsync(invalid, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .ContainsAsync(invalid, canceler, mod)
+            .ContainsAsync(invalid, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ContainsNotAsync_Forwarded(int valid, int invalid)
+    internal async Task ContainsNotAsync_Forwarded(int valid, int invalid)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([invalid], 1, canceler);
 
         await Task.FromResult(data.Assert()).ContainsNotAsync(valid, canceler);
-        await Task.FromResult(data.Assert()).ContainsNotAsync(valid, canceler, mod);
+        await Task.FromResult(data.Assert()).ContainsNotAsync(valid, canceler, _mod);
         await Task.FromResult(data.Assert())
             .ContainsNotAsync(invalid, canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .ContainsNotAsync(invalid, canceler, mod)
+            .ContainsNotAsync(invalid, canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task FailAsync_Forwarded(
-        IAsyncEnumerable<int> data,
-        [Fake] IAsserter asserter
-    )
+    internal async Task FailAsync_Forwarded(IAsyncEnumerable<int> data, [Fake] IAsserter asserter)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         ToolSet silentFailSet = MakeSet(asserter);
 
         await Task.FromResult(data.Assert(silentFailSet)).FailAsync(canceler);
-        await Task.FromResult(data.Assert(silentFailSet)).FailAsync(canceler, mod);
+        await Task.FromResult(data.Assert(silentFailSet)).FailAsync(canceler, _mod);
         await Task.FromResult(data.Assert())
             .FailAsync(canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .FailAsync(canceler, mod)
+            .FailAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(1);
+        _modCount.Assert().Is(1);
     }
 
     [Theory, RandomData]
-    internal static async Task DebugAsync_Forwarded(IAsyncEnumerable<int> data)
+    internal async Task DebugAsync_Forwarded(IAsyncEnumerable<int> data)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         ToolSet debugPassSet = MakeSet(
             Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = false })
         );
@@ -340,32 +285,24 @@ public static class TaskAssertAsyncEnumerableExtensionsTests
         );
 
         await Task.FromResult(data.Assert(debugPassSet)).DebugAsync(canceler);
-        await Task.FromResult(data.Assert(debugPassSet)).DebugAsync(canceler, mod);
+        await Task.FromResult(data.Assert(debugPassSet)).DebugAsync(canceler, _mod);
         await Task.FromResult(data.Assert(debugFailSet))
             .DebugAsync(canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert(debugFailSet))
-            .DebugAsync(canceler, mod)
+            .DebugAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsExceptionAsync_Forwarded(
-        IAsyncEnumerable<int> data,
-        Exception error
-    )
+    internal async Task ThrowsExceptionAsync_Forwarded(IAsyncEnumerable<int> data, Exception error)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async IAsyncEnumerable<int> thrower()
         {
             yield return 1;
@@ -374,17 +311,17 @@ public static class TaskAssertAsyncEnumerableExtensionsTests
         }
 
         await Task.FromResult(thrower().Assert()).ThrowsExceptionAsync(canceler);
-        await Task.FromResult(thrower().Assert()).ThrowsExceptionAsync(canceler, mod);
+        await Task.FromResult(thrower().Assert()).ThrowsExceptionAsync(canceler, _mod);
         await Task.FromResult(data.Assert())
             .ThrowsExceptionAsync(canceler)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .ThrowsExceptionAsync(canceler, mod)
+            .ThrowsExceptionAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     private static ToolSet MakeSet(IAsserter asserter)

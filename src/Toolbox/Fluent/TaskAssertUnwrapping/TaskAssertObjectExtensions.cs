@@ -267,29 +267,6 @@ public static class TaskAssertObjectExtensions
         );
     }
 
-    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertObject>> Inherits<TChild>(
-        this Task<AssertObject> origin,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).Inherits<TChild>(details);
-    }
-
-    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(AsserterMod,string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertObject>> Inherits<TChild>(
-        this Task<AssertObject> origin,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).Inherits<TChild>(optionConfiguration, details);
-    }
-
     /// <inheritdoc cref="AssertObjectBase{T}.Inherits(Type,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AssertChainer<T>> Inherits<T>(
@@ -315,32 +292,6 @@ public static class TaskAssertObjectExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Inherits(child, optionConfiguration, details);
-    }
-
-    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertObject>> InheritedBy<TParent>(
-        this Task<AssertObject> origin,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(details);
-    }
-
-    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(AsserterMod,string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertObject>> InheritedBy<TParent>(
-        this Task<AssertObject> origin,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(
-            optionConfiguration,
-            details
-        );
     }
 
     /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy(Type,string)"/>

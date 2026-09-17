@@ -4,8 +4,22 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertComparableExtensionsTests
+public sealed class TaskAssertComparableExtensionsTests
 {
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public TaskAssertComparableExtensionsTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
+
     [Fact]
     internal static Task TaskAssertComparableExtensions_GuardsNulls()
     {
@@ -51,7 +65,7 @@ public static class TaskAssertComparableExtensionsTests
     }
 
     [Theory, RandomData]
-    internal static async Task GreaterThan_Forwarded(
+    internal async Task GreaterThan_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -59,29 +73,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).GreaterThan(less);
-        await Task.FromResult(data.Assert()).GreaterThan(less, mod);
+        await Task.FromResult(data.Assert()).GreaterThan(less, _mod);
         await Task.FromResult(data.Assert())
             .GreaterThan(same)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .GreaterThan(more, mod)
+            .GreaterThan(more, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task GreaterThanOrEqualTo_Forwarded(
+    internal async Task GreaterThanOrEqualTo_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -89,29 +97,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).GreaterThanOrEqualTo(less);
-        await Task.FromResult(data.Assert()).GreaterThanOrEqualTo(same, mod);
+        await Task.FromResult(data.Assert()).GreaterThanOrEqualTo(same, _mod);
         await Task.FromResult(data.Assert())
             .GreaterThanOrEqualTo(more)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .GreaterThanOrEqualTo(more, mod)
+            .GreaterThanOrEqualTo(more, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task GreaterThanOrIs_Forwarded(
+    internal async Task GreaterThanOrIs_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -119,29 +121,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).GreaterThanOrIs(less);
-        await Task.FromResult(data.Assert()).GreaterThanOrIs(same, mod);
+        await Task.FromResult(data.Assert()).GreaterThanOrIs(same, _mod);
         await Task.FromResult(data.Assert())
             .GreaterThanOrIs(more)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .GreaterThanOrIs(more, mod)
+            .GreaterThanOrIs(more, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task LessThan_Forwarded(
+    internal async Task LessThan_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -149,29 +145,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).LessThan(more);
-        await Task.FromResult(data.Assert()).LessThan(more, mod);
+        await Task.FromResult(data.Assert()).LessThan(more, _mod);
         await Task.FromResult(data.Assert())
             .LessThan(same)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .LessThan(less, mod)
+            .LessThan(less, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task LessThanOrEqualTo_Forwarded(
+    internal async Task LessThanOrEqualTo_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -179,29 +169,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).LessThanOrEqualTo(more);
-        await Task.FromResult(data.Assert()).LessThanOrEqualTo(same, mod);
+        await Task.FromResult(data.Assert()).LessThanOrEqualTo(same, _mod);
         await Task.FromResult(data.Assert())
             .LessThanOrEqualTo(less)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .LessThanOrEqualTo(less, mod)
+            .LessThanOrEqualTo(less, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task LessThanOrIs_Forwarded(
+    internal async Task LessThanOrIs_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -209,29 +193,23 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).LessThanOrIs(more);
-        await Task.FromResult(data.Assert()).LessThanOrIs(same, mod);
+        await Task.FromResult(data.Assert()).LessThanOrIs(same, _mod);
         await Task.FromResult(data.Assert())
             .LessThanOrIs(less)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .LessThanOrIs(less, mod)
+            .LessThanOrIs(less, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task InRange_Forwarded(
+    internal async Task InRange_Forwarded(
         [Cap(3, 5)] int data,
         [Copy] int same,
         [Cap(6, 8)] int more,
@@ -239,24 +217,18 @@ public static class TaskAssertComparableExtensionsTests
     )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
 
         await Task.FromResult(data.Assert()).InRange(less, same);
-        await Task.FromResult(data.Assert()).InRange(same, more, mod);
+        await Task.FromResult(data.Assert()).InRange(same, more, _mod);
         await Task.FromResult(data.Assert())
             .InRange(less, less)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
-            .InRange(more, more, mod)
+            .InRange(more, more, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 }

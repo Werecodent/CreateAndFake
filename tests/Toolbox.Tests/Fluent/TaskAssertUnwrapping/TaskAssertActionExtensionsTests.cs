@@ -4,8 +4,22 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertActionExtensionsTests
+public sealed class TaskAssertActionExtensionsTests
 {
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public TaskAssertActionExtensionsTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
+
     [Fact]
     internal static Task TaskAssertActionExtensions_GuardsNulls()
     {
@@ -48,5 +62,46 @@ public static class TaskAssertActionExtensionsTests
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
             );
+    }
+
+    [Theory, RandomData]
+    internal async Task Throws_Forwarded(Action behavior, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        Action thrower = () => throw error;
+
+        await Task.FromResult(thrower.Assert()).Throws<Exception>();
+        await Task.FromResult(thrower.Assert()).Throws<Exception>(_mod);
+
+        await Task.FromResult(behavior.Assert())
+            .Throws<Exception>()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(behavior.Assert())
+            .Throws<Exception>(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal async Task ThrowsNo_Forwarded(Action behavior, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        Action thrower = () => throw error;
+
+        await Task.FromResult(behavior.Assert()).ThrowsNo<Exception>();
+        await Task.FromResult(behavior.Assert()).ThrowsNo<Exception>(_mod);
+        await Task.FromResult(thrower.Assert())
+            .ThrowsNo<Exception>()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(thrower.Assert())
+            .ThrowsNo<Exception>(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
     }
 }

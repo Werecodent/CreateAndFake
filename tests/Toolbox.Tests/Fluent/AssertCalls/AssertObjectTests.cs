@@ -9,7 +9,7 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public static class AssertObjectTests
+public sealed class AssertObjectTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -22,6 +22,20 @@ public static class AssertObjectTests
                 typeof(InvalidCastException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertObjectTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertObject_GuardsNulls()
@@ -58,211 +72,132 @@ public static class AssertObjectTests
     }
 
     [Theory, RandomData]
-    internal static void Is_Forwarded(DataSample data, [Copy] DataSample clone, DataSample variant)
+    internal void Is_Forwarded(DataSample data, [Copy] DataSample clone, DataSample variant)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().Is(clone);
-        data.Assert().Is(clone, mod);
+        data.Assert().Is(clone, _mod);
         data.Assert(d => d.Assert().Is(variant)).Throws<AssertException>();
-        data.Assert(d => d.Assert().Is(variant, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().Is(variant, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void IsNull_Forwarded(DataSample data)
+    internal void IsNull_Forwarded(DataSample data)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         ((object)null).Assert().IsNull();
-        ((object)null).Assert().IsNull(mod);
+        ((object)null).Assert().IsNull(_mod);
         data.Assert(d => d.Assert().IsNull()).Throws<AssertException>();
-        data.Assert(d => d.Assert().IsNull(mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().IsNull(_mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void IsNot_Forwarded(
-        DataSample data,
-        [Copy] DataSample clone,
-        DataSample variant
-    )
+    internal void IsNot_Forwarded(DataSample data, [Copy] DataSample clone, DataSample variant)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().IsNot(variant);
-        data.Assert().IsNot(variant, mod);
+        data.Assert().IsNot(variant, _mod);
         data.Assert(d => d.Assert().IsNot(clone)).Throws<AssertException>();
-        data.Assert(d => d.Assert().IsNot(clone, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().IsNot(clone, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void IsNotNull_Forwarded(DataSample data)
+    internal void IsNotNull_Forwarded(DataSample data)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().IsNotNull();
-        data.Assert().IsNotNull(mod);
+        data.Assert().IsNotNull(_mod);
         ((object)null).Assert(d => d.Assert().IsNotNull()).Throws<AssertException>();
-        ((object)null).Assert(d => d.Assert().IsNotNull(mod)).Throws<AssertException>();
+        ((object)null).Assert(d => d.Assert().IsNotNull(_mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void ReferenceEqual_Forwarded(DataSample data, [Copy] DataSample clone)
+    internal void ReferenceEqual_Forwarded(DataSample data, [Copy] DataSample clone)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().ReferenceEqual(data);
-        data.Assert().ReferenceEqual(data, mod);
+        data.Assert().ReferenceEqual(data, _mod);
         data.Assert(d => d.Assert().ReferenceEqual(clone)).Throws<AssertException>();
-        data.Assert(d => d.Assert().ReferenceEqual(clone, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().ReferenceEqual(clone, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void ReferenceNotEqual_Forwarded(DataSample data, [Copy] DataSample clone)
+    internal void ReferenceNotEqual_Forwarded(DataSample data, [Copy] DataSample clone)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().ReferenceNotEqual(clone);
-        data.Assert().ReferenceNotEqual(clone, mod);
+        data.Assert().ReferenceNotEqual(clone, _mod);
         data.Assert(d => d.Assert().ReferenceNotEqual(data)).Throws<AssertException>();
-        data.Assert(d => d.Assert().ReferenceNotEqual(data, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().ReferenceNotEqual(data, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void ValuesEqual_Forwarded(
+    internal void ValuesEqual_Forwarded(
         DataSample data,
         [Copy] DataSample clone,
         DataSample variant
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().ValuesEqual(clone);
-        data.Assert().ValuesEqual(clone, mod);
+        data.Assert().ValuesEqual(clone, _mod);
         data.Assert(d => d.Assert().ValuesEqual(variant)).Throws<AssertException>();
-        data.Assert(d => d.Assert().ValuesEqual(variant, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().ValuesEqual(variant, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void ValuesNotEqual_Forwarded(
+    internal void ValuesNotEqual_Forwarded(
         DataSample data,
         [Copy] DataSample clone,
         DataSample variant
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().ValuesNotEqual(variant);
-        data.Assert().ValuesNotEqual(variant, mod);
+        data.Assert().ValuesNotEqual(variant, _mod);
         data.Assert(d => d.Assert().ValuesNotEqual(clone)).Throws<AssertException>();
-        data.Assert(d => d.Assert().ValuesNotEqual(clone, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().ValuesNotEqual(clone, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void UniqueFrom_Forwarded(
+    internal void UniqueFrom_Forwarded(
         DataSample data,
         [Copy] DataSample clone,
         [Unique] DataSample unique
     )
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().UniqueFrom(unique);
-        data.Assert().UniqueFrom(unique, mod);
+        data.Assert().UniqueFrom(unique, _mod);
         data.Assert(d => d.Assert().UniqueFrom(clone)).Throws<AssertException>();
-        data.Assert(d => d.Assert().UniqueFrom(clone, mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().UniqueFrom(clone, _mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void Fail_Forwarded(DataSample data, [Fake] IAsserter asserter)
+    internal void Fail_Forwarded(DataSample data, [Fake] IAsserter asserter)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
         ToolSet silentFailSet = MakeSet(asserter);
 
         data.Assert(silentFailSet).Fail();
-        data.Assert(silentFailSet).Fail(mod);
+        data.Assert(silentFailSet).Fail(_mod);
         data.Assert(d => d.Assert().Fail()).Throws<AssertException>();
-        data.Assert(d => d.Assert().Fail(mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert().Fail(_mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(1);
+        _modCount.Assert().Is(1);
     }
 
     [Theory, RandomData]
-    internal static void Debug_Forwarded(DataSample data)
+    internal void Debug_Forwarded(DataSample data)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
         ToolSet debugPassSet = MakeSet(
             Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = false })
         );
@@ -271,53 +206,39 @@ public static class AssertObjectTests
         );
 
         data.Assert(debugPassSet).Debug();
-        data.Assert(debugPassSet).Debug(mod);
+        data.Assert(debugPassSet).Debug(_mod);
         data.Assert(d => d.Assert(debugFailSet).Debug()).Throws<AssertException>();
-        data.Assert(d => d.Assert(debugFailSet).Debug(mod)).Throws<AssertException>();
+        data.Assert(d => d.Assert(debugFailSet).Debug(_mod)).Throws<AssertException>();
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static void Pass_Forwarded(DataSample data)
+    internal void Pass_Forwarded(DataSample data)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.Assert().Pass();
-        data.Assert().Pass(mod);
+        data.Assert().Pass(_mod);
 
-        modCount.Assert().Is(1);
+        _modCount.Assert().Is(1);
     }
 
     [Theory, RandomData]
-    internal static void Called_Forwarded([Fake] DataSample data, DataSample nonFake)
+    internal void Called_Forwarded([Fake] DataSample data, DataSample nonFake)
     {
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
-
         data.ToString();
 
         data.Assert().Called();
-        data.Assert().Called(mod);
+        data.Assert().Called(_mod);
 
         data.Equals(Arg.Any<object>()).SetupReturn(Behavior<bool>.Throw());
 
         data.Assert(d => d.Assert().Called()).Throws<FakeVerifyException>();
-        data.Assert(d => d.Assert().Called(mod)).Throws<FakeVerifyException>();
+        data.Assert(d => d.Assert().Called(_mod)).Throws<FakeVerifyException>();
 
         nonFake.Assert(d => d.Assert().Called()).Throws<ToolException>();
-        nonFake.Assert(d => d.Assert().Called(mod)).Throws<ToolException>();
+        nonFake.Assert(d => d.Assert().Called(_mod)).Throws<ToolException>();
 
-        modCount.Assert().Is(0);
+        _modCount.Assert().Is(0);
     }
 
     private static ToolSet MakeSet(IAsserter asserter)

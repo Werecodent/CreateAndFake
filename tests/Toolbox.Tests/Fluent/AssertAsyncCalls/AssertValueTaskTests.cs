@@ -8,7 +8,7 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public static class AssertValueTaskTests
+public sealed class AssertValueTaskTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -21,6 +21,20 @@ public static class AssertValueTaskTests
                 typeof(ArgumentException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertValueTaskTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertValueTask_GuardsNulls()
@@ -41,7 +55,7 @@ public static class AssertValueTaskTests
     }
 
     [Theory, RandomData]
-    internal static async Task AssertValueTask_CallsAndChains(Injected<AssertValueTask> instance)
+    internal async Task AssertValueTask_CallsAndChains(Injected<AssertValueTask> instance)
     {
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
@@ -61,19 +75,10 @@ public static class AssertValueTaskTests
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsAsync_Forwarded(
-        ValueTask dataA,
-        ValueTask dataB,
-        Exception error
-    )
+    internal async Task ThrowsAsync_Forwarded(ValueTask dataA, ValueTask dataB, Exception error)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -81,7 +86,7 @@ public static class AssertValueTaskTests
         }
 
         await thrower().Assert().ThrowsAsync<Exception>(canceler);
-        await thrower().Assert().ThrowsAsync<Exception>(canceler, mod);
+        await thrower().Assert().ThrowsAsync<Exception>(canceler, _mod);
         await dataA
             .Assert()
             .ThrowsAsync<Exception>(canceler)
@@ -89,27 +94,18 @@ public static class AssertValueTaskTests
             .ThrowsAsync<AssertException>(canceler);
         await dataB
             .Assert()
-            .ThrowsAsync<Exception>(canceler, mod)
+            .ThrowsAsync<Exception>(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
-    internal static async Task ThrowsNoAsync_Forwarded(
-        ValueTask dataA,
-        ValueTask dataB,
-        Exception error
-    )
+    internal async Task ThrowsNoAsync_Forwarded(ValueTask dataA, ValueTask dataB, Exception error)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        int modCount = 0;
-        AsserterOptions mod(AsserterOptions opt)
-        {
-            modCount++;
-            return opt;
-        }
+
         async ValueTask thrower()
         {
             await Task.Delay(0, canceler).ConfigureAwait(false);
@@ -117,7 +113,7 @@ public static class AssertValueTaskTests
         }
 
         await dataA.Assert().ThrowsNoAsync<Exception>(canceler);
-        await dataB.Assert().ThrowsNoAsync<Exception>(canceler, mod);
+        await dataB.Assert().ThrowsNoAsync<Exception>(canceler, _mod);
         await thrower()
             .Assert()
             .ThrowsNoAsync<Exception>(canceler)
@@ -125,10 +121,10 @@ public static class AssertValueTaskTests
             .ThrowsAsync<AssertException>(canceler);
         await thrower()
             .Assert()
-            .ThrowsNoAsync<Exception>(canceler, mod)
+            .ThrowsNoAsync<Exception>(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        modCount.Assert().Is(2);
+        _modCount.Assert().Is(2);
     }
 }
