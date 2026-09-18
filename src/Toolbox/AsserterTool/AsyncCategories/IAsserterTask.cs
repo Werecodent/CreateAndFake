@@ -22,6 +22,23 @@ public interface IAsserterTask
         string? details = null
     );
 
+    /// <inheritdoc cref="IAsserterDelegate.HasResultAsync{T}(T,Delegate,CancellationToken,string)"/>
+    Task<T> HasResultAsync<T>(
+        T content,
+        Task<T>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterDelegate.HasResultAsync{T}(T,Delegate,CancellationToken,AsserterMod,string)"/>
+    Task<T> HasResultAsync<T>(
+        T content,
+        Task<T>? behavior,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
     Task<T> ThrowsAsync<T>(Task? behavior, CancellationToken canceler, string? details = null)

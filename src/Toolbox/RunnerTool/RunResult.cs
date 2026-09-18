@@ -1,4 +1,5 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.RunnerTool;
 
@@ -37,6 +38,6 @@ public sealed class RunResult(
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Method.Name}({(HasSuccessfulResult ? "Success" : "Exception")}): {Result?.ToString()}";
+        return $"{GenericConverter.BuildTestName(Method)}{{{(HasSuccessfulResult ? "Success" : "Exception")}}}: {Result?.ToString()}";
     }
 }

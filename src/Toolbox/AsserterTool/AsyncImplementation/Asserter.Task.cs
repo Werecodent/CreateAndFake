@@ -30,6 +30,35 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
+    public Task<T> HasResultAsync<T>(
+        T content,
+        Task<T>? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasResultAsync(content, behavior, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public async Task<T> HasResultAsync<T>(
+        T content,
+        Task<T>? behavior,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        T result = await HasResultAsync(behavior, canceler, _ => localOptions, details)
+            .ConfigureAwait(false);
+
+        await IsAsync(content, result, canceler, _ => localOptions, details).ConfigureAwait(false);
+        return result;
+    }
+
+    /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
         Task? behavior,
         CancellationToken canceler,

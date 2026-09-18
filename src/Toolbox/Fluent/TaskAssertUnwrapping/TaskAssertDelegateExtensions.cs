@@ -4,6 +4,8 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Fluent;
 
+#pragma warning disable MA0042 // Following the pattern.
+
 /// <summary>Provides fluent assertions.</summary>
 public static class TaskAssertDelegateExtensions
 {
@@ -88,4 +90,70 @@ public static class TaskAssertDelegateExtensions
             details
         );
     }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.HasResult{T}(T,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TItem>> HasResult<T, TItem>(
+        this Task<T> origin,
+        TItem expected,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).HasResult(expected, details);
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.HasResult{T}(T,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TItem>> HasResult<T, TItem>(
+        this Task<T> origin,
+        TItem expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).HasResult(
+            expected,
+            optionConfiguration,
+            details
+        );
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.HasResultAsync{T}(T,CancellationToken,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TItem>> HasResultAsync<T, TItem>(
+        this Task<T> origin,
+        TItem expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .HasResultAsync(expected, canceler, details)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.HasResultAsync{T}(T,CancellationToken,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TItem>> HasResultAsync<T, TItem>(
+        this Task<T> origin,
+        TItem expected,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .HasResultAsync(expected, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+    }
 }
+
+#pragma warning restore

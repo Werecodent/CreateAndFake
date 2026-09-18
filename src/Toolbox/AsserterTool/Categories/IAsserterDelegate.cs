@@ -29,14 +29,44 @@ public interface IAsserterDelegate
     /// <inheritdoc cref="HasResult{T}(Delegate,AsserterMod,string)"/>
     T HasResult<T>(Delegate? behavior, string? details = null);
 
+    /// <inheritdoc cref="HasResult{T}(T,Delegate,AsserterMod,string)"/>
+    T HasResult<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null);
+
+    /// <inheritdoc cref="HasResult{T}(Delegate,AsserterMod,string)"/>
+    T HasResult<T>(T content, Delegate? behavior, string? details = null);
+
+    /// <inheritdoc cref="HasResultAsync{T}(T,Delegate,CancellationToken,AsserterMod,string)"/>
+    T HasResult<T>(
+        T content,
+        Delegate? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="HasResultAsync{T}(T,Delegate,CancellationToken,AsserterMod,string)"/>
+    Task<T> HasResultAsync<T>(
+        T content,
+        Delegate? behavior,
+        CancellationToken canceler,
+        string? details = null
+    );
+
     /// <summary>
     ///     Verifies the <paramref name="behavior"/> successfully
     ///     executes with a resulting <typeparamref name="T"/> value.
     /// </summary>
     /// <typeparam name="T">Expected return <see cref="Type"/> of the <paramref name="behavior"/>.</typeparam>
+    /// <param name="content">Expected present element.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Result from invoking the <paramref name="behavior"/>.</returns>
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
-    T HasResult<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null);
+    Task<T> HasResultAsync<T>(
+        T content,
+        Delegate? behavior,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 }
 
 #pragma warning restore

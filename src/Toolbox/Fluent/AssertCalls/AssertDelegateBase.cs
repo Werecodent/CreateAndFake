@@ -1,8 +1,11 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
+
+#pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles assertion calls for delegates.</summary>
 /// <param name="behavior">Delegate to check.</param>
@@ -79,4 +82,60 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
             Asserter
         );
     }
+
+    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    public virtual ResultChainer<TItem> HasResult<TItem>(TItem expected, string? details = null)
+    {
+        return new ResultChainer<TItem>(Asserter.HasResult(expected, Behavior, details), Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    public virtual ResultChainer<TItem> HasResult<TItem>(
+        TItem expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            Asserter.HasResult(expected, Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
+        TItem expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            await Asserter
+                .HasResultAsync(expected, Behavior, canceler, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
+        TItem expected,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            await Asserter
+                .HasResultAsync(expected, Behavior, canceler, optionConfiguration, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
 }
+
+#pragma warning restore

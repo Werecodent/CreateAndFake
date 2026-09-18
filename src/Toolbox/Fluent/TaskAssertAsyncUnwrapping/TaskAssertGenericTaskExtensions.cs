@@ -38,7 +38,7 @@ public static class TaskAssertGenericTaskExtensions
 
     /// <inheritdoc cref="AssertGenericTaskBase{T,T}.HasResultAsync(CancellationToken,string)"/>
     /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
-    public static async Task<AssertChainer<AssertGenericTask<T>>> HasResultAsync<T>(
+    public static async Task<ResultChainer<T>> HasResultAsync<T>(
         this Task<AssertGenericTask<T>> origin,
         T expected,
         CancellationToken canceler,
@@ -53,7 +53,7 @@ public static class TaskAssertGenericTaskExtensions
 
     /// <inheritdoc cref="AssertGenericTaskBase{T,T}.HasResultAsync(CancellationToken,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
-    public static async Task<AssertChainer<AssertGenericTask<T>>> HasResultAsync<T>(
+    public static async Task<ResultChainer<T>> HasResultAsync<T>(
         this Task<AssertGenericTask<T>> origin,
         T expected,
         CancellationToken canceler,

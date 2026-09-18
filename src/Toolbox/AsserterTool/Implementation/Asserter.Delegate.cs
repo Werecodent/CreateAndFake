@@ -172,6 +172,54 @@ public partial class Asserter : IAsserterDelegate
         }
     }
 
+    /// <inheritdoc/>
+    public virtual T HasResult<T>(T content, Delegate? behavior, string? details = null)
+    {
+        return HasResult(content, behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual T HasResult<T>(
+        T content,
+        Delegate? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        T result = HasResult<T>(behavior, _ => localOptions, details);
+        Is(content, result, _ => localOptions, details);
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public virtual Task<T> HasResultAsync<T>(
+        T content,
+        Delegate? behavior,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return HasResultAsync(content, behavior, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<T> HasResultAsync<T>(
+        T content,
+        Delegate? behavior,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
+
+        T result = HasResult<T>(behavior, _ => localOptions, details);
+        await IsAsync(content, result, canceler, _ => localOptions, details).ConfigureAwait(false);
+        return result;
+    }
+
     private static void VerifyCanCall(Delegate? behavior, AsserterOptions options, string? details)
     {
         if (behavior is null)
