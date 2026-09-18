@@ -1,0 +1,16 @@
+using Werecodent.CreateAndFake.Design.Types;
+
+namespace Werecodent.CreateAndFake.Samples.SingleValue;
+
+[ValidSample]
+public abstract class BaseReadableHolder<T>(T value) : IReadableHolder<T>
+{
+    public virtual T Value { get; } = value;
+
+    public abstract T ReadValue();
+
+    public override string ToString()
+    {
+        return GenericConverter.ExpandName(GetType());
+    }
+}

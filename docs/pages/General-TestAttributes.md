@@ -5,11 +5,11 @@ For many test frameworks, attributes can create parameter data for test methods.
 ```c#
 /// <summary>Verifies the option works.</summary>
 [Theory, RandomData]
-public static void Min_Works(int value)
+public static void AtLeast_Works(int value)
 {
-    Tools.Asserter.Is(false, Times.Min(value).IsInRange(value - 1));
-    Tools.Asserter.Is(true, Times.Min(value).IsInRange(value));
-    Tools.Asserter.Is(true, Times.Min(value).IsInRange(value + 1));
+    Tools.Asserter.Is(false, Times.AtLeast(value).IsInRange(value - 1));
+    Tools.Asserter.Is(true, Times.AtLeast(value).IsInRange(value));
+    Tools.Asserter.Is(true, Times.AtLeast(value).IsInRange(value + 1));
 }
 ```
 

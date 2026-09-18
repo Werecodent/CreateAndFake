@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Design/CreateAndFake.Design.csproj" />
+    <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
+    <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Fluent" />
+  </ItemGroup>
+
+</Project>
