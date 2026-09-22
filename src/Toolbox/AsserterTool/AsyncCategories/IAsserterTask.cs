@@ -54,62 +54,20 @@ public interface IAsserterTask
     )
         where T : Exception;
 
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Task<object?>? behavior,
+    /// <inheritdoc cref="ThrowsAsync{T}(Task,CancellationToken,string)"/>
+    Task<Exception> ThrowsExceptionAsync(
+        Task? behavior,
         CancellationToken canceler,
         string? details = null
-    )
-        where T : Exception;
+    );
 
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Task<object?>? behavior,
+    /// <inheritdoc cref="ThrowsAsync{T}(Task,CancellationToken,AsserterMod,string)"/>
+    Task<Exception> ThrowsExceptionAsync(
+        Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Func<Task?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Func<Task?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task<T> ThrowsAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception;
+    );
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
@@ -126,56 +84,14 @@ public interface IAsserterTask
     )
         where T : Exception;
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(
-        Task<object?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception;
+    /// <inheritdoc cref="ThrowsNoAsync{T}(Task,CancellationToken,string)"/>
+    Task ThrowsNoExceptionAsync(Task? behavior, CancellationToken canceler, string? details = null);
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(
-        Task<object?>? behavior,
+    /// <inheritdoc cref="ThrowsNoAsync{T}(Task,CancellationToken,AsserterMod,string)"/>
+    Task ThrowsNoExceptionAsync(
+        Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(Func<Task?>? behavior, CancellationToken canceler, string? details = null)
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(
-        Func<Task?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception;
-
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    Task ThrowsNoAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception;
+    );
 }

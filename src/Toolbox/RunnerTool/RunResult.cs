@@ -1,4 +1,5 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.RunnerTool;
@@ -28,7 +29,7 @@ public sealed class RunResult(
     ///     If the <see cref="Method"/> call completed successfully and <see cref="Result"/> contains the returned data.
     /// </summary>
     public bool HasSuccessfulResult { get; } =
-        !threwException && result?.GetType() != typeof(VoidReturn);
+        !threwException && result?.GetType() != typeof(VoidType);
 
     /// <summary>
     ///     If the <see cref="Method"/> call threw an exception and <see cref="Result"/> contains the exception.

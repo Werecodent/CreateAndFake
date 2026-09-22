@@ -1,8 +1,9 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -53,14 +54,26 @@ public sealed class AssertAsyncObjectTests
     [Theory, RandomData]
     internal async Task AssertAsyncObject_CallsAndChains(Injected<AssertAsyncObject> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertAsyncObject",
+            "ExceptionChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertAsyncObject>)
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
+            )
             .Where(r => r.Result as string != nameof(AssertAsyncObject))
             .Assert()
             .IsEmpty();

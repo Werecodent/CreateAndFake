@@ -129,6 +129,10 @@ public sealed class Runner(RunnerOptions options) : IRunner
         try
         {
             object? result = await task.ConfigureAwait(false);
+            if (data.Method is MethodInfo info && info.ReturnType == typeof(void))
+            {
+                result = VoidType.Instance;
+            }
             return new(data.Method, data.Args, result, false);
         }
         catch (Exception taskException)

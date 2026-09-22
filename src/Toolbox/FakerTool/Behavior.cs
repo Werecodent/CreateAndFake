@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 
 namespace Werecodent.CreateAndFake.FakerTool;

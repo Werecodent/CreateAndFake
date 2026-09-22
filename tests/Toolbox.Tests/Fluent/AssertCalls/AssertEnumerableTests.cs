@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -60,17 +61,27 @@ public sealed class AssertEnumerableTests
     [Theory, RandomData]
     internal static async Task AssertEnumerable_CallsAndChains(Injected<AssertEnumerable> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertEnumerable>",
+            "ResultChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r =>
-                r.Result
-                    is not AssertChainer<AssertEnumerable>
-                        and Task<AssertChainer<AssertEnumerable>>
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
             )
+            .Where(r => r.Result as string != nameof(AssertEnumerable))
             .Assert()
             .IsEmpty();
     }

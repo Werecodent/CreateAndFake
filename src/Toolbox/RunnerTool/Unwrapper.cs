@@ -1,4 +1,3 @@
-using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
@@ -22,29 +21,47 @@ internal static class Unwrapper
         ArgumentGuard.ThrowIfNull(options);
 
         object? result = call?.Invoke();
-
-        TypeDescriber describer = TypeDescriber.For(result?.GetType());
-        if (describer.Inherits<Task>())
-        {
-            result = await UnwrapTaskAsync(result!).ConfigureAwait(false);
-        }
-        else if (describer.Inherits(typeof(ValueTask<>)))
-        {
-            result = await ((dynamic)result!).ConfigureAwait(false);
-        }
-        else if (describer.Inherits<ValueTask>())
-        {
-            await ((ValueTask)result!).ConfigureAwait(false);
-            result = VoidReturn.Instance;
-        }
-
         if (result == null)
         {
             return null;
         }
 
-        Type resultType = result.GetType();
+        TypeDescriber describer = TypeDescriber.For(result.GetType());
 
+        if (result is Task plainTask)
+        {
+            object? content = await TaskHelper.AwaitAsync(plainTask).ConfigureAwait(false);
+            if (content == VoidType.Instance)
+            {
+                return Task.CompletedTask;
+            }
+            else
+            {
+                return result;
+            }
+        }
+        else if (result is ValueTask valueTask)
+        {
+            await valueTask.ConfigureAwait(false);
+            return Task.CompletedTask;
+        }
+        else if (describer.Inherits(typeof(ValueTask<>)))
+        {
+            dynamic? content = await ((dynamic)result).ConfigureAwait(false);
+            if (content == null)
+            {
+                return typeof(Task)
+                    .GetMethod(nameof(Task.FromResult))!
+                    .MakeGenericMethod(result.GetType().GetGenericArguments().Single())
+                    .Invoke(null, [null]);
+            }
+            else
+            {
+                return Task.FromResult(content);
+            }
+        }
+
+        Type resultType = result.GetType();
         if (resultType == typeof(string) || resultType.Inherits(typeof(ICollection<>)))
         {
             return result;
@@ -71,34 +88,6 @@ internal static class Unwrapper
         }
 
         return result;
-    }
-
-    /// <summary>Ensures the result is completed.</summary>
-    /// <param name="result">Potentially wrapped data.</param>
-    /// <returns>The unwrapped result.</returns>
-    private static async Task<object?> UnwrapTaskAsync(object result)
-    {
-        await ((Task)result).ConfigureAwait(false);
-
-        Type resultType = result.GetType();
-        PropertyInfo? resultProp = TypeDescriber
-            .For(resultType)
-            .Properties.OnlyPublic.FirstOrDefault(p => p.Name == "Result");
-
-        if (
-            !GenericConverter
-                .ExpandName(resultType)
-                .Contains("VoidTaskResult", StringComparison.Ordinal)
-            && resultProp != null
-        )
-        {
-            // await ((dynamic)result) crashes legacy .NET.
-            return resultProp.GetValue(result);
-        }
-        else
-        {
-            return VoidReturn.Instance;
-        }
     }
 
     /// <summary>Iterates through yielded results.</summary>

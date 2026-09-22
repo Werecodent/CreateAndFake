@@ -24,6 +24,22 @@ public partial class Asserter : IAsserterAction
     }
 
     /// <inheritdoc/>
+    public virtual Exception ThrowsException(Action? behavior, string? details = null)
+    {
+        return ThrowsException(behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Exception ThrowsException(
+        Action? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return Throws<Exception>(behavior, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
     public virtual void ThrowsNo<T>(Action? behavior, string? details = null)
         where T : Exception
     {
@@ -39,5 +55,21 @@ public partial class Asserter : IAsserterAction
         where T : Exception
     {
         ThrowsNo<T>((Delegate?)behavior, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void ThrowsNoException(Action? behavior, string? details = null)
+    {
+        ThrowsNoException(behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void ThrowsNoException(
+        Action? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ThrowsNo<Exception>(behavior, optionConfiguration, details);
     }
 }

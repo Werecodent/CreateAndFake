@@ -1,4 +1,5 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
@@ -57,17 +58,27 @@ public sealed class AssertActionTests
     [Theory, RandomData]
     internal static async Task AssertAction_CallsAndChains(Injected<AssertAction> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertAction>",
+            "ExceptionChainer<",
+            nameof(AlsoChainer),
+            "ResultChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r =>
-                r.Result is not AssertChainer<AssertAction>
-                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
-                && r.Result is not AlsoChainer
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
             )
             .Where(r => r.Result as string != nameof(AssertAction))
             .Assert()

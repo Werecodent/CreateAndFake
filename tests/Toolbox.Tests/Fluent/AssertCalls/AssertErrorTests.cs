@@ -1,9 +1,9 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
@@ -42,15 +42,26 @@ public static class AssertErrorTests
     [Theory, RandomData]
     internal static async Task AssertError_CallsAndChains(Injected<AssertError> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertError>",
+            "ExceptionChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertError>)
-            .Where(r => !r.Result?.GetType().Inherits(typeof(ExceptionChainer<>)) ?? false)
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
+            )
             .Where(r => r.Result as string != nameof(AssertError))
             .Assert()
             .IsEmpty();

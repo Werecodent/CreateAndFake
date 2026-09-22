@@ -78,7 +78,7 @@ public sealed class SerializableCopyHint : CopyHint
     /// <returns>Known types to add.</returns>
     private static IEnumerable<Type> FindExtraKnownTypes(object source)
     {
-        if (source is AggregateException)
+        if (source is Exception)
         {
             yield return typeof(Exception[]);
             yield return _ListDictionaryInternalType;

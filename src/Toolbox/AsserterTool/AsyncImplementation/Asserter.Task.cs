@@ -30,7 +30,7 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public Task<T> HasResultAsync<T>(
+    public virtual Task<T> HasResultAsync<T>(
         T content,
         Task<T>? behavior,
         CancellationToken canceler,
@@ -41,7 +41,7 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public async Task<T> HasResultAsync<T>(
+    public virtual async Task<T> HasResultAsync<T>(
         T content,
         Task<T>? behavior,
         CancellationToken canceler,
@@ -70,43 +70,8 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(
-        Task? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsAsync<T>(
-            async () =>
-            {
-                if (behavior != null)
-                {
-                    await behavior.ConfigureAwait(false);
-                }
-                return null;
-            },
-            canceler,
-            optionConfiguration,
-            details
-        );
-    }
-
-    /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(
-        Task<object?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
-        Task<object?>? behavior,
+        Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -122,7 +87,7 @@ public partial class Asserter : IAsserterTask
             try
             {
                 await Disposer
-                    .CleanupAsync(await behavior.ConfigureAwait(false))
+                    .CleanupAsync(await TaskHelper.AwaitAsync(behavior).ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -135,120 +100,29 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(
-        Func<Task?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(
-        Func<Task?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsAsync<T>(
-            async () =>
-            {
-                Task? task = behavior?.Invoke();
-                if (task != null)
-                {
-                    await task.ConfigureAwait(false);
-                }
-                return null;
-            },
-            canceler,
-            optionConfiguration,
-            details
-        );
-    }
-
-    /// <inheritdoc/>
-    public virtual Task<T> ThrowsAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual async Task<T> ThrowsAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-
-        string errorMessage =
-            $"Expected exception of type '{GenericConverter.ExpandName<T>()}' but received: ";
-
-        Task<object?>? task = behavior?.Invoke();
-        if (task != null)
-        {
-            try
-            {
-                await Disposer.CleanupAsync(await task.ConfigureAwait(false)).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                return UnwrapException<T>(e, errorMessage, localOptions, details);
-            }
-        }
-
-        throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
-    }
-
-    /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(
+    public virtual Task<Exception> ThrowsExceptionAsync(
         Task? behavior,
         CancellationToken canceler,
         string? details = null
     )
-        where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
+        return ThrowsExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(
+    public virtual Task<Exception> ThrowsExceptionAsync(
         Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
-        where T : Exception
     {
-        return ThrowsNoAsync<T>(
-            async () =>
-            {
-                if (behavior != null)
-                {
-                    await behavior.ConfigureAwait(false);
-                }
-                return null;
-            },
-            canceler,
-            optionConfiguration,
-            details
-        );
+        return ThrowsAsync<Exception>(behavior, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
-        Task<object?>? behavior,
+        Task? behavior,
         CancellationToken canceler,
         string? details = null
     )
@@ -259,7 +133,7 @@ public partial class Asserter : IAsserterTask
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
-        Task<object?>? behavior,
+        Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -272,7 +146,7 @@ public partial class Asserter : IAsserterTask
             try
             {
                 await Disposer
-                    .CleanupAsync(await behavior.ConfigureAwait(false))
+                    .CleanupAsync(await TaskHelper.AwaitAsync(behavior).ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -291,81 +165,23 @@ public partial class Asserter : IAsserterTask
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(
-        Func<Task?>? behavior,
+    public virtual Task ThrowsNoExceptionAsync(
+        Task? behavior,
         CancellationToken canceler,
         string? details = null
     )
-        where T : Exception
     {
-        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
+        return ThrowsNoExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(
-        Func<Task?>? behavior,
+    public virtual Task ThrowsNoExceptionAsync(
+        Task? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
-        where T : Exception
     {
-        return ThrowsNoAsync<T>(
-            async () =>
-            {
-                Task? task = behavior?.Invoke();
-                if (task != null)
-                {
-                    await task.ConfigureAwait(false);
-                }
-                return null;
-            },
-            canceler,
-            optionConfiguration,
-            details
-        );
-    }
-
-    /// <inheritdoc/>
-    public virtual Task ThrowsNoAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        string? details = null
-    )
-        where T : Exception
-    {
-        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
-    }
-
-    /// <inheritdoc/>
-    public virtual async Task ThrowsNoAsync<T>(
-        Func<Task<object?>?>? behavior,
-        CancellationToken canceler,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where T : Exception
-    {
-        AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        Task<object?>? task = behavior?.Invoke();
-        if (task != null)
-        {
-            try
-            {
-                await Disposer.CleanupAsync(await task.ConfigureAwait(false)).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                if (e is T)
-                {
-                    throw new AssertException(
-                        $"Expected no exception of type '{typeof(T).Name}'.",
-                        details,
-                        localOptions.Gen.InitialSeed,
-                        e
-                    );
-                }
-            }
-        }
+        return ThrowsNoAsync<Exception>(behavior, canceler, optionConfiguration, details);
     }
 }

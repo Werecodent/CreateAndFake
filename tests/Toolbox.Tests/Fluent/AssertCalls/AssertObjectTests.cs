@@ -1,9 +1,10 @@
 ﻿using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -58,14 +59,21 @@ public sealed class AssertObjectTests
     [Theory, RandomData]
     internal static async Task AssertObject_CallsAndChains(Injected<AssertObject> instance)
     {
+        string[] allowedResults = ["AssertChainer<AssertObject>", nameof(VoidType)];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertObject>)
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
+            )
             .Where(r => r.Result as string != nameof(AssertObject))
             .Assert()
             .IsEmpty();

@@ -41,6 +41,22 @@ public partial class Asserter : IAsserterDelegate
         throw new AssertException(errorMessage + "None", details, localOptions.Gen.InitialSeed);
     }
 
+    /// <inheritdoc/>
+    public virtual Exception ThrowsException(Delegate? behavior, string? details = null)
+    {
+        return ThrowsException(behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Exception ThrowsException(
+        Delegate? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return Throws<Exception>(behavior, optionConfiguration, details);
+    }
+
     private static T UnwrapException<T>(
         Exception e,
         string errorMessage,
@@ -107,6 +123,22 @@ public partial class Asserter : IAsserterDelegate
                 );
             }
         }
+    }
+
+    /// <inheritdoc/>
+    public virtual void ThrowsNoException(Delegate? behavior, string? details = null)
+    {
+        ThrowsNoException(behavior, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual void ThrowsNoException(
+        Delegate? behavior,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ThrowsNo<Exception>(behavior, optionConfiguration, details);
     }
 
     /// <inheritdoc/>

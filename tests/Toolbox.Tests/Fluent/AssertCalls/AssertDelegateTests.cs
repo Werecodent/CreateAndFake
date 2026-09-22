@@ -1,4 +1,5 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
@@ -140,18 +141,27 @@ public static class AssertDelegateTests
     [Theory, RandomData]
     internal static async Task AssertDelegate_CallsAndChains(Injected<AssertDelegate> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertDelegate>",
+            "ExceptionChainer<",
+            nameof(AlsoChainer),
+            "ResultChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r =>
-                r.Result is not AssertChainer<AssertDelegate>
-                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ResultChainer<>))
-                && !TypeDescriber.For(r.Result?.GetType()).Inherits(typeof(ExceptionChainer<>))
-                && r.Result is not AlsoChainer
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
             )
             .Where(r => r.Result as string != nameof(AssertDelegate))
             .Assert()

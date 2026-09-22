@@ -1,8 +1,9 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
@@ -56,14 +57,26 @@ public sealed class AssertComparableTests
     [Theory, RandomData]
     internal static async Task AssertComparable_CallsAndChains(Injected<AssertComparable> instance)
     {
+        string[] allowedResults =
+        [
+            "AssertChainer<AssertComparable>",
+            "ResultChainer<",
+            nameof(VoidType),
+        ];
+
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
             TestContext.Current.CancellationToken,
             opt => opt with { IncludeBaseObjectMethods = false }
         );
         results
-            .RawResults.Where(r => r.Result != null)
-            .Where(r => r.Result is not AssertChainer<AssertComparable>)
+            .RawResults.Where(r =>
+                !allowedResults.Any(x =>
+                    GenericConverter
+                        .ExpandName(r.Result?.GetType())
+                        .Contains(x, StringComparison.Ordinal)
+                )
+            )
             .Where(r => r.Result as string != nameof(AssertComparable))
             .Assert()
             .IsEmpty();

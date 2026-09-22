@@ -35,7 +35,7 @@ public sealed class AsserterDelegateTests
     internal Task Throws_HandlesAsyncNoError()
     {
         return _testInstance.ThrowsAsync<InvalidDataException>(
-            async () => await WaitTest(),
+            WaitTest(),
             TestContext.Current.CancellationToken
         );
     }

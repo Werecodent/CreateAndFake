@@ -55,7 +55,7 @@ public static class UnwrapperTests
         }
 
         object result = await Unwrapper.UnwrapResultAsync(
-            () => Task.Run(iterate, TestContext.Current.CancellationToken),
+            iterate,
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -93,7 +93,7 @@ public static class UnwrapperTests
         }
 
         object result = await Unwrapper.UnwrapResultAsync(
-            () => Task.Run(iterate, TestContext.Current.CancellationToken),
+            iterate,
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -106,57 +106,62 @@ public static class UnwrapperTests
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResultAsync_UnwrapsIntTask(int data)
+    internal static Task UnwrapResultAsync_UnwrapsIntTask(Task<int> data)
     {
-        Task<int> run = Task.Run(() => data, TestContext.Current.CancellationToken);
-        return TestUnwrap(() => run, data);
+        return TestUnwrap(() => data, data);
     }
 
     [Theory, RandomData]
-    internal static Task UnwrapResultAsync_UnwrapsStringTask(string data)
+    internal static Task UnwrapResultAsync_UnwrapsStringTask(Task<string> data)
     {
-        Task<string> run = Task.Run(() => data, TestContext.Current.CancellationToken);
-        return TestUnwrap(() => run, data);
+        return TestUnwrap(() => data, data);
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNullTask()
     {
         Task<object> run = Task.Run(() => (object)null, TestContext.Current.CancellationToken);
-        return TestUnwrap(() => run, null);
+        return TestUnwrap(() => run, run);
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsTask()
     {
-        return TestUnwrap(() => Task.CompletedTask, VoidReturn.Instance);
+        return TestUnwrap(() => Task.CompletedTask, Task.CompletedTask);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsIntValueTask(int data)
     {
         ValueTask<int> run = new(data);
-        return TestUnwrap(() => run, data);
+        return TestUnwrap(() => run, Task.FromResult(data));
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsStringValueTask(string data)
     {
         ValueTask<string> run = new(Task.FromResult(data));
-        return TestUnwrap(() => run, data);
+        return TestUnwrap(() => run, Task.FromResult(data));
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNullValueTask()
     {
         ValueTask<object> run = new(Task.FromResult<object>(null));
-        return TestUnwrap(() => run, null);
+        return TestUnwrap(() => run, Task.FromResult((object)null));
+    }
+
+    [Fact]
+    internal static Task UnwrapResultAsync_UnwrapsNullValueTaskWithType()
+    {
+        ValueTask<string> run = new(Task.FromResult<string>(null));
+        return TestUnwrap(() => run, Task.FromResult((string)null));
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsValueTask()
     {
-        return TestUnwrap(() => new ValueTask(Task.CompletedTask), VoidReturn.Instance);
+        return TestUnwrap(() => new ValueTask(Task.CompletedTask), Task.CompletedTask);
     }
 
     [Theory, RandomData]
