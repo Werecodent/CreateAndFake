@@ -29,41 +29,6 @@ public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
         Asserter.Fail(Error, optionConfiguration, details);
     }
 
-    /// <inheritdoc cref="IAsserterError.HasInner{T}(Exception,string)"/>
-    public ExceptionChainer<TException> HasInner<TException>(string? details = null)
-        where TException : Exception
-    {
-        return new(Asserter.HasInner<TException>(Error, details), Asserter);
-    }
-
-    /// <inheritdoc cref="IAsserterError.HasInner{T}(Exception,AsserterMod,string)"/>
-    public ExceptionChainer<TException> HasInner<TException>(
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-        where TException : Exception
-    {
-        return new(Asserter.HasInner<TException>(Error, optionConfiguration, details), Asserter);
-    }
-
-    /// <inheritdoc cref="IAsserterError.HasInnerException(Exception,Exception,string)"/>
-    public AssertChainer<T> HasInnerException(Exception? inner, string? details = null)
-    {
-        Asserter.HasInnerException(Error, inner, details);
-        return ToChainer();
-    }
-
-    /// <inheritdoc cref="IAsserterError.HasInnerException(Exception,Exception,AsserterMod,string)"/>
-    public AssertChainer<T> HasInnerException(
-        Exception? inner,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-    {
-        Asserter.HasInnerException(Error, inner, optionConfiguration, details);
-        return ToChainer();
-    }
-
     /// <inheritdoc cref="IAsserterError.Debug(Exception,string)"/>
     public override AssertChainer<T> Debug(string? details = null)
     {

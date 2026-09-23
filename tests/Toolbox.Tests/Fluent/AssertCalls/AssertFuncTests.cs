@@ -9,7 +9,7 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public static class AssertFuncTests
+public sealed class AssertFuncTests
 {
     private static readonly TesterMod _Config = opt =>
         opt with
@@ -22,6 +22,20 @@ public static class AssertFuncTests
                 typeof(ArgumentException),
             ],
         };
+
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public AssertFuncTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
 
     [Fact]
     internal static Task AssertFunc_GuardsNulls()
@@ -69,5 +83,19 @@ public static class AssertFuncTests
             .Where(r => r.Result as string != "AssertFunc<String>")
             .Assert()
             .IsEmpty();
+    }
+
+    [Theory, RandomData]
+    internal void HasResult_Forwarded(Func<string> behavior, Exception error)
+    {
+        Func<string> thrower = () => throw error;
+
+        behavior.Assert().HasResult();
+        behavior.Assert().HasResult(_mod);
+
+        thrower.Assert(x => x.Assert().HasResult()).Throws<AssertException>();
+        thrower.Assert(x => x.Assert().HasResult(_mod)).Throws<AssertException>();
+
+        _modCount.Assert().Is(2);
     }
 }

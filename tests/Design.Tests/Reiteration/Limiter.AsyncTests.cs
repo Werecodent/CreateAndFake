@@ -58,8 +58,8 @@ public static class LimiterAsyncTests
             )
             .Assert()
             .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken)
-            .That()
-            .HasInnerException(exception)
+            .With(x => x.InnerException)
+            .ValuesEqual(exception)
             .Also(() => attempts)
             .Is(tries);
     }
@@ -126,8 +126,8 @@ public static class LimiterAsyncTests
             .RetryAsync(GetAMessage(), () => throw exception, TestContext.Current.CancellationToken)
             .Assert()
             .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken)
-            .That()
-            .HasInnerException(exception)
+            .With(x => x.InnerException)
+            .ValuesEqual(exception)
             .Also(() => watch.Elapsed.TotalMilliseconds)
             .GreaterThanOrEqualTo(_SmallDelay.TotalMilliseconds - _WaitAccuracy);
     }

@@ -62,14 +62,14 @@ public sealed class TaskAssertErrorExtensionsTests
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
-        await Task.FromResult(error.Assert()).Inherits(typeof(Exception));
-        await Task.FromResult(error.Assert()).Inherits(typeof(Exception), _mod);
+        await Task.FromResult(error.Assert()).Inherits<Exception>();
+        await Task.FromResult(error.Assert()).Inherits<Exception>(_mod);
         await Task.FromResult(error.Assert())
-            .Inherits(typeof(InvalidOperationException))
+            .Inherits<InvalidOperationException>()
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(error.Assert())
-            .Inherits(typeof(InvalidOperationException), _mod)
+            .Inherits<InvalidOperationException>(_mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
