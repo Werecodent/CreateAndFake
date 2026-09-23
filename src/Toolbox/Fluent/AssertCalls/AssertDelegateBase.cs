@@ -42,6 +42,29 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         );
     }
 
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
+    {
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Behavior, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ExceptionChainer<Exception> ThrowsException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
@@ -60,6 +83,25 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         where TException : Exception
     {
         Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AlsoChainer ThrowsNoException(string? details = null)
+    {
+        Asserter.ThrowsNoException(Behavior, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AlsoChainer ThrowsNoException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.ThrowsNoException(Behavior, optionConfiguration, details);
         return new AlsoChainer(Asserter);
     }
 

@@ -99,6 +99,19 @@ public sealed class AssertActionTests
     }
 
     [Theory, RandomData]
+    internal void ThrowsException_Forwarded(Action behavior, Exception error)
+    {
+        Action thrower = () => throw error;
+
+        thrower.Assert().ThrowsException();
+        thrower.Assert().ThrowsException(_mod);
+        behavior.Assert(x => x.Assert().ThrowsException()).Throws<AssertException>();
+        behavior.Assert(x => x.Assert().ThrowsException(_mod)).Throws<AssertException>();
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
     internal void ThrowsNo_Forwarded(Action behavior, Exception error)
     {
         Action thrower = () => throw error;
@@ -107,6 +120,19 @@ public sealed class AssertActionTests
         behavior.Assert().ThrowsNo<Exception>(_mod);
         thrower.Assert(x => x.Assert().ThrowsNo<Exception>()).Throws<AssertException>();
         thrower.Assert(x => x.Assert().ThrowsNo<Exception>(_mod)).Throws<AssertException>();
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal void ThrowsNoException_Forwarded(Action behavior, Exception error)
+    {
+        Action thrower = () => throw error;
+
+        behavior.Assert().ThrowsNoException();
+        behavior.Assert().ThrowsNoException(_mod);
+        thrower.Assert(x => x.Assert().ThrowsNoException()).Throws<AssertException>();
+        thrower.Assert(x => x.Assert().ThrowsNoException(_mod)).Throws<AssertException>();
 
         _modCount.Assert().Is(2);
     }

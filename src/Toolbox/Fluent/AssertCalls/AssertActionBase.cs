@@ -39,6 +39,26 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
         );
     }
 
+    /// <inheritdoc cref="IAsserterAction.ThrowsException(Action,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
+    {
+        return new ExceptionChainer<Exception>(Asserter.ThrowsException(Action, details), Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterAction.ThrowsException(Action,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual ExceptionChainer<Exception> ThrowsException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Action, optionConfiguration, details),
+            Asserter
+        );
+    }
+
     /// <inheritdoc cref="IAsserterAction.ThrowsNo{T}(Action,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
@@ -57,6 +77,25 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
         where TException : Exception
     {
         Asserter.ThrowsNo<TException>(Action, optionConfiguration, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterAction.ThrowsNoException(Action,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AlsoChainer ThrowsNoException(string? details = null)
+    {
+        Asserter.ThrowsNoException(Action, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterAction.ThrowsNoException(Action,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual AlsoChainer ThrowsNoException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.ThrowsNoException(Action, optionConfiguration, details);
         return new AlsoChainer(Asserter);
     }
 }

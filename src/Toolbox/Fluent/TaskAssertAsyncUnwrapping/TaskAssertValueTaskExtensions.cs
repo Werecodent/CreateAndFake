@@ -38,6 +38,37 @@ public static class TaskAssertValueTaskExtensions
             .ConfigureAwait(false);
     }
 
+    /// <inheritdoc cref="AssertValueTaskBase{T}.ThrowsExceptionAsync(CancellationToken,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync<T>(
+        this Task<T> origin,
+        CancellationToken canceler,
+        string? details = null
+    )
+        where T : AssertValueTaskBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsExceptionAsync(canceler, details)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc cref="AssertValueTaskBase{T}.ThrowsExceptionAsync(CancellationToken,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync<T>(
+        this Task<T> origin,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertValueTaskBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsExceptionAsync(canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+    }
+
     /// <inheritdoc cref="AssertValueTaskBase{T}.ThrowsNoAsync{T}(CancellationToken,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AlsoChainer> ThrowsNoAsync<TException>(
@@ -66,6 +97,37 @@ public static class TaskAssertValueTaskExtensions
         ArgumentGuard.ThrowIfNull(origin);
         return await (await origin.ConfigureAwait(false))
             .ThrowsNoAsync<TException>(canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc cref="AssertValueTaskBase{T}.ThrowsNoExceptionAsync(CancellationToken,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AlsoChainer> ThrowsNoExceptionAsync<T>(
+        this Task<T> origin,
+        CancellationToken canceler,
+        string? details = null
+    )
+        where T : AssertValueTaskBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsNoExceptionAsync(canceler, details)
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc cref="AssertValueTaskBase{T}.ThrowsNoExceptionAsync(CancellationToken,AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AlsoChainer> ThrowsNoExceptionAsync<T>(
+        this Task<T> origin,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertValueTaskBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return await (await origin.ConfigureAwait(false))
+            .ThrowsNoExceptionAsync(canceler, optionConfiguration, details)
             .ConfigureAwait(false);
     }
 }

@@ -30,7 +30,7 @@ public partial class Asserter : IAsserterValueTask
     }
 
     /// <inheritdoc/>
-    public Task<T> HasResultAsync<T>(
+    public virtual Task<T> HasResultAsync<T>(
         T content,
         ValueTask<T>? operation,
         CancellationToken canceler,
@@ -41,7 +41,7 @@ public partial class Asserter : IAsserterValueTask
     }
 
     /// <inheritdoc/>
-    public async Task<T> HasResultAsync<T>(
+    public virtual async Task<T> HasResultAsync<T>(
         T content,
         ValueTask<T>? operation,
         CancellationToken canceler,
@@ -139,7 +139,28 @@ public partial class Asserter : IAsserterValueTask
     }
 
     /// <inheritdoc/>
-    public Task<Exception> ThrowsExceptionAsync<T>(
+    public virtual Task<Exception> ThrowsExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return ThrowsExceptionAsync(operation, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task<Exception> ThrowsExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return ThrowsAsync<Exception>(operation, canceler, optionConfiguration, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task<Exception> ThrowsExceptionAsync<T>(
         ValueTask<T>? operation,
         CancellationToken canceler,
         string? details = null
@@ -149,7 +170,7 @@ public partial class Asserter : IAsserterValueTask
     }
 
     /// <inheritdoc/>
-    public Task<Exception> ThrowsExceptionAsync<T>(
+    public virtual Task<Exception> ThrowsExceptionAsync<T>(
         ValueTask<T>? operation,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -247,6 +268,27 @@ public partial class Asserter : IAsserterValueTask
                 }
             }
         }
+    }
+
+    /// <inheritdoc/>
+    public virtual Task ThrowsNoExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return ThrowsNoExceptionAsync(operation, canceler, Unconfigured, details);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task ThrowsNoExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return ThrowsNoAsync<Exception>(operation, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>

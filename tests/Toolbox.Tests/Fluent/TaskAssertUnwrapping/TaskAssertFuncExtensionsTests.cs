@@ -4,8 +4,22 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public static class TaskAssertFuncExtensionsTests
+public sealed class TaskAssertFuncExtensionsTests
 {
+    private int _modCount;
+
+    private readonly AsserterMod _mod;
+
+    public TaskAssertFuncExtensionsTests()
+    {
+        _modCount = 0;
+        _mod = opt =>
+        {
+            _modCount++;
+            return opt;
+        };
+    }
+
     [Fact]
     internal static Task TaskAssertFuncExtensions_GuardsNulls()
     {
@@ -47,8 +61,27 @@ public static class TaskAssertFuncExtensionsTests
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsException))
-                    .Where(n => n != nameof(TaskAssertFuncExtensions.ThrowsNoException))
             );
+    }
+
+    [Theory, RandomData]
+    internal async Task HasResult_Forwarded(Func<string> behavior, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+        Func<string> thrower = () => throw error;
+
+        await Task.FromResult(behavior.Assert()).HasResult();
+        await Task.FromResult(behavior.Assert()).HasResult(_mod);
+
+        await Task.FromResult(thrower.Assert())
+            .HasResult()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(thrower.Assert())
+            .HasResult(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
     }
 }

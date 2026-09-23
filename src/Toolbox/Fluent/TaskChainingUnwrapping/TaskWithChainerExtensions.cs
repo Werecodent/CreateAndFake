@@ -120,6 +120,16 @@ public static class TaskWithChainerExtensions
     }
 
     /// <inheritdoc cref="With{T,TContent}(Task{ResultChainer{T}},Func{T,Func{TContent}})"/>
+    public static async Task<AssertDelegate> With<T>(
+        this Task<ResultChainer<T>> origin,
+        Func<T, Delegate?> selector
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).With(selector);
+    }
+
+    /// <inheritdoc cref="With{T,TContent}(Task{ResultChainer{T}},Func{T,Func{TContent}})"/>
     public static async Task<AssertEnumerable> With<T>(
         this Task<ResultChainer<T>> origin,
         Func<T, IEnumerable?> selector

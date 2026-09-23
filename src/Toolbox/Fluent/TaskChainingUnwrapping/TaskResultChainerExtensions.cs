@@ -129,6 +129,13 @@ public static class TaskResultChainerExtensions
     }
 
     /// <inheritdoc cref="That{T}(Task{ResultChainer{Func{T}}})"/>
+    public static async Task<AssertDelegate> That(this Task<ResultChainer<Delegate?>> origin)
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).That();
+    }
+
+    /// <inheritdoc cref="That{T}(Task{ResultChainer{Func{T}}})"/>
     public static async Task<AssertEnumerable> That<T>(this Task<ResultChainer<T[]?>> origin)
     {
         ArgumentGuard.ThrowIfNull(origin);

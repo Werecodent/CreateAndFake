@@ -87,8 +87,8 @@ public static class AssertExtensions
         return new AssertValueTask(GetAsserter(tools), actual);
     }
 
-    /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <inheritdoc cref="AssertAction"/>
+    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Action" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static AssertAction Assert(this Action? behavior, ToolSet? tools = null)
     {
@@ -101,6 +101,14 @@ public static class AssertExtensions
     public static AssertComparable Assert(this IComparable? value, ToolSet? tools = null)
     {
         return new AssertComparable(GetAsserter(tools), value);
+    }
+
+    /// <inheritdoc cref="AssertDelegate"/>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static AssertDelegate Assert(this Delegate? behavior, ToolSet? tools = null)
+    {
+        return new AssertDelegate(GetAsserter(tools), behavior);
     }
 
     /// <inheritdoc cref="AssertEnumerable"/>

@@ -75,8 +75,8 @@ public class AlsoChainer(IAsserter asserter)
         return new AssertValueTask(asserter, actual);
     }
 
-    /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <inheritdoc cref="AssertAction"/>
+    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Action" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public AssertAction Also(Action? behavior)
     {
@@ -89,6 +89,14 @@ public class AlsoChainer(IAsserter asserter)
     public AssertComparable Also(IComparable? value)
     {
         return new AssertComparable(asserter, value);
+    }
+
+    /// <inheritdoc cref="AssertDelegate"/>
+    /// <param name="behavior"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public AssertDelegate Also(Delegate? behavior)
+    {
+        return new AssertDelegate(asserter, behavior);
     }
 
     /// <inheritdoc cref="AssertEnumerable"/>

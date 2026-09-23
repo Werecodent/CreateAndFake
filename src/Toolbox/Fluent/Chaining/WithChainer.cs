@@ -99,6 +99,13 @@ public abstract class WithChainer<T>(T result, IAsserter asserter) : AlsoChainer
     }
 
     /// <inheritdoc cref="With{TContent}(Func{T,Func{TContent}})"/>
+    public AssertDelegate With(Func<T, Delegate?> selector)
+    {
+        ArgumentGuard.ThrowIfNull(selector);
+        return Also(selector.Invoke(Result));
+    }
+
+    /// <inheritdoc cref="With{TContent}(Func{T,Func{TContent}})"/>
     public AssertEnumerable With(Func<T, IEnumerable?> selector)
     {
         ArgumentGuard.ThrowIfNull(selector);

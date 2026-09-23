@@ -9,8 +9,7 @@ public static class TaskAssertErrorExtensions
 {
     /// <inheritdoc cref="AssertErrorBase{T}.Fail(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task Fail<T>(this Task<T> origin, string? details = null)
-        where T : AssertErrorBase<T>
+    public static async Task Fail(this Task<AssertError> origin, string? details = null)
     {
         ArgumentGuard.ThrowIfNull(origin);
         (await origin.ConfigureAwait(false)).Fail(details);
@@ -18,12 +17,11 @@ public static class TaskAssertErrorExtensions
 
     /// <inheritdoc cref="AssertErrorBase{T}.Fail(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task Fail<T>(
-        this Task<T> origin,
+    public static async Task Fail(
+        this Task<AssertError> origin,
         AsserterMod? optionConfiguration,
         string? details = null
     )
-        where T : AssertErrorBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
         (await origin.ConfigureAwait(false)).Fail(optionConfiguration, details);
@@ -90,8 +88,10 @@ public static class TaskAssertErrorExtensions
 
     /// <inheritdoc cref="AssertErrorBase{T}.Debug(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<T>> Debug<T>(this Task<T> origin, string? details = null)
-        where T : AssertErrorBase<T>
+    public static async Task<AssertChainer<AssertError>> Debug(
+        this Task<AssertError> origin,
+        string? details = null
+    )
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Debug(details);
@@ -99,12 +99,11 @@ public static class TaskAssertErrorExtensions
 
     /// <inheritdoc cref="AssertErrorBase{T}.Debug(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<T>> Debug<T>(
-        this Task<T> origin,
+    public static async Task<AssertChainer<AssertError>> Debug(
+        this Task<AssertError> origin,
         AsserterMod? optionConfiguration,
         string? details = null
     )
-        where T : AssertErrorBase<T>
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Debug(optionConfiguration, details);
@@ -133,32 +132,6 @@ public static class TaskAssertErrorExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return (await origin.ConfigureAwait(false)).Inherits<TChild>(optionConfiguration, details);
-    }
-
-    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertError>> InheritedBy<TParent>(
-        this Task<AssertError> origin,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(details);
-    }
-
-    /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(AsserterMod,string)"/>
-    /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertError>> InheritedBy<TParent>(
-        this Task<AssertError> origin,
-        AsserterMod? optionConfiguration,
-        string? details = null
-    )
-    {
-        ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(
-            optionConfiguration,
-            details
-        );
     }
 
 #pragma warning restore

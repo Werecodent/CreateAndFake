@@ -47,17 +47,38 @@ public sealed class TaskAssertTaskExtensionsTests
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Where(m => m != nameof(AssertTaskBase<>.ThrowsAsync))
-            .Where(m => m != nameof(AssertTaskBase<>.ThrowsNoAsync))
             .Assert()
             .Is(
                 typeof(TaskAssertTaskExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Where(m => m != nameof(TaskAssertTaskExtensions.ThrowsExceptionAsync))
-                    .Where(m => m != nameof(TaskAssertTaskExtensions.ThrowsNoExceptionAsync))
             );
+    }
+
+    [Theory, RandomData]
+    internal async Task ThrowsAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await Task.FromResult(thrower().Assert()).ThrowsAsync<Exception>(canceler);
+        await Task.FromResult(thrower().Assert()).ThrowsAsync<Exception>(canceler, _mod);
+        await Task.FromResult(data.Assert())
+            .ThrowsAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(data.Assert())
+            .ThrowsAsync<Exception>(canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
     }
 
     [Theory, RandomData]
@@ -79,6 +100,31 @@ public sealed class TaskAssertTaskExtensionsTests
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
             .ThrowsExceptionAsync(canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal async Task ThrowsNoAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await Task.FromResult(data.Assert()).ThrowsNoAsync<Exception>(canceler);
+        await Task.FromResult(data.Assert()).ThrowsNoAsync<Exception>(canceler, _mod);
+        await Task.FromResult(thrower().Assert())
+            .ThrowsNoAsync<Exception>(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(thrower().Assert())
+            .ThrowsNoAsync<Exception>(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 

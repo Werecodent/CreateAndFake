@@ -99,6 +99,31 @@ public sealed class AssertTaskTests
     }
 
     [Theory, RandomData]
+    internal async Task ThrowsExceptionAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await thrower().Assert().ThrowsExceptionAsync(canceler);
+        await thrower().Assert().ThrowsExceptionAsync(canceler, _mod);
+        await data.Assert()
+            .ThrowsExceptionAsync(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await data.Assert()
+            .ThrowsExceptionAsync(canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
     internal async Task ThrowsNoAsync_Forwarded(Task data, Exception error)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
@@ -119,6 +144,33 @@ public sealed class AssertTaskTests
         await thrower()
             .Assert()
             .ThrowsNoAsync<Exception>(canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
+    internal async Task ThrowsNoExceptionAsync_Forwarded(Task data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        async Task thrower()
+        {
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await data.Assert().ThrowsNoExceptionAsync(canceler);
+        await data.Assert().ThrowsNoExceptionAsync(canceler, _mod);
+        await thrower()
+            .Assert()
+            .ThrowsNoExceptionAsync(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await thrower()
+            .Assert()
+            .ThrowsNoExceptionAsync(canceler, _mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 

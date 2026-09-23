@@ -121,6 +121,12 @@ public static class ResultChainerTests
     }
 
     [Theory, RandomData]
+    internal static void With_SupportsDelegate(ResultChainer<object> chainer, Delegate data)
+    {
+        chainer.With(_ => data).GetType().Assert().Is(typeof(AssertDelegate));
+    }
+
+    [Theory, RandomData]
     internal static void With_SupportsInt(ResultChainer<DataSample> chainer)
     {
         chainer.With(x => x.NumberValue).GetType().Assert().Is(typeof(AssertComparable));

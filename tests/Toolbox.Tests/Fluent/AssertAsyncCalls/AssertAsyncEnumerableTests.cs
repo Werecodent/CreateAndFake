@@ -348,6 +348,32 @@ public sealed class AssertAsyncEnumerableTests
         _modCount.Assert().Is(2);
     }
 
+    [Theory, RandomData]
+    internal async Task ThrowsExceptionAsync_Forwarded(IAsyncEnumerable<int> data, Exception error)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        async IAsyncEnumerable<int> thrower()
+        {
+            yield return 1;
+            await Task.Delay(0, canceler).ConfigureAwait(false);
+            throw error;
+        }
+
+        await thrower().Assert().ThrowsExceptionAsync(canceler);
+        await thrower().Assert().ThrowsExceptionAsync(canceler, _mod);
+        await data.Assert()
+            .ThrowsExceptionAsync(canceler)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await data.Assert()
+            .ThrowsExceptionAsync(canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
     private static ToolSet MakeSet(IAsserter asserter)
     {
         return new(

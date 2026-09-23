@@ -68,6 +68,21 @@ public interface IAsserterValueTask
         where TException : Exception;
 
     /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task,CancellationToken,string)"/>
+    Task<Exception> ThrowsExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task,CancellationToken,AsserterMod,string)"/>
+    Task<Exception> ThrowsExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task,CancellationToken,string)"/>
     Task<Exception> ThrowsExceptionAsync<T>(
         ValueTask<T>? operation,
         CancellationToken canceler,
@@ -111,6 +126,21 @@ public interface IAsserterValueTask
         string? details = null
     )
         where TException : Exception;
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task,CancellationToken,string)"/>
+    Task ThrowsNoExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        string? details = null
+    );
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task,CancellationToken,AsserterMod,string)"/>
+    Task ThrowsNoExceptionAsync(
+        ValueTask? operation,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    );
 
     /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task,CancellationToken,string)"/>
     Task ThrowsNoExceptionAsync<T>(

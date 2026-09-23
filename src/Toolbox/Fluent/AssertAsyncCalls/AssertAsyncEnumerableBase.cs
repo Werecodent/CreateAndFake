@@ -350,6 +350,37 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
             Asserter
         );
     }
+
+    /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            await Asserter
+                .ThrowsExceptionAsync(Collection, canceler, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            await Asserter
+                .ThrowsExceptionAsync(Collection, canceler, optionConfiguration, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
 }
 
 #pragma warning restore

@@ -37,6 +37,31 @@ public static class TaskAssertDelegateExtensions
         );
     }
 
+    /// <inheritdoc cref="AssertDelegateBase{T}.ThrowsException(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsException<T>(
+        this Task<T> origin,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).ThrowsException(details);
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.ThrowsException(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ExceptionChainer<Exception>> ThrowsException<T>(
+        this Task<T> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).ThrowsException(optionConfiguration, details);
+    }
+
     /// <inheritdoc cref="AssertDelegateBase{T}.ThrowsNo{T}(string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AlsoChainer> ThrowsNo<TException>(
@@ -63,6 +88,31 @@ public static class TaskAssertDelegateExtensions
             optionConfiguration,
             details
         );
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.ThrowsNoException(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AlsoChainer> ThrowsNoException<T>(
+        this Task<T> origin,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).ThrowsNoException(details);
+    }
+
+    /// <inheritdoc cref="AssertDelegateBase{T}.ThrowsNoException(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AlsoChainer> ThrowsNoException<T>(
+        this Task<T> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where T : AssertDelegateBase<T>
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).ThrowsNoException(optionConfiguration, details);
     }
 
     /// <inheritdoc cref="AssertDelegateBase{T}.HasResult{T}(string)"/>

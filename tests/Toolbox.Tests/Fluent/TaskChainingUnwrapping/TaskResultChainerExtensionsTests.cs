@@ -126,6 +126,12 @@ public static class TaskResultChainerExtensionsTests
     }
 
     [Theory, RandomData]
+    internal static void That_SupportsDelegate(Task<ResultChainer<Delegate>> chainer)
+    {
+        chainer.That().GetType().Assert().Is(typeof(Task<AssertDelegate>));
+    }
+
+    [Theory, RandomData]
     internal static void That_SupportsGenericIEnumerable(
         Task<ResultChainer<IEnumerable<string>>> chainer
     )

@@ -73,12 +73,6 @@ public sealed class TaskAssertGenericValueTaskExtensionsTests
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Where(m =>
-                        m != nameof(TaskAssertGenericValueTaskExtensions.ThrowsExceptionAsync)
-                    )
-                    .Where(m =>
-                        m != nameof(TaskAssertGenericValueTaskExtensions.ThrowsNoExceptionAsync)
-                    )
             );
     }
 

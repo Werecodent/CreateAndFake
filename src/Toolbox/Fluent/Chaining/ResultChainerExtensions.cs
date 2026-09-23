@@ -112,6 +112,13 @@ public static class ResultChainerExtensions
     }
 
     /// <inheritdoc cref="That{T}(ResultChainer{Func{T}})"/>
+    public static AssertDelegate That(this ResultChainer<Delegate?> origin)
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return origin.Also(origin.GetResultValue());
+    }
+
+    /// <inheritdoc cref="That{T}(ResultChainer{Func{T}})"/>
     public static AssertEnumerable That<T>(this ResultChainer<T[]?> origin)
     {
         ArgumentGuard.ThrowIfNull(origin);

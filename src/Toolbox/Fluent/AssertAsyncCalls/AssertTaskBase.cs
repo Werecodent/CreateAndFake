@@ -50,6 +50,35 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
         );
     }
 
+    /// <inheritdoc cref="IAsserterTask.ThrowsExceptionAsync(Task?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            await Asserter.ThrowsExceptionAsync(Operation, canceler, details).ConfigureAwait(false),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsExceptionAsync(Task?,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
+    public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            await Asserter
+                .ThrowsExceptionAsync(Operation, canceler, optionConfiguration, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
+
     /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task?,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
@@ -75,6 +104,31 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     {
         await Asserter
             .ThrowsNoAsync<TException>(Operation, canceler, optionConfiguration, details)
+            .ConfigureAwait(false);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync(Task?,CancellationToken,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        await Asserter.ThrowsNoExceptionAsync(Operation, canceler, details).ConfigureAwait(false);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterTask.ThrowsNoExceptionAsync(Task?,CancellationToken,AsserterMod,string)"/>
+    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        await Asserter
+            .ThrowsNoExceptionAsync(Operation, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }

@@ -77,7 +77,7 @@ public static class TaskAssertGenericValueTaskExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return await (await origin.ConfigureAwait(false))
-            .ThrowsAsync<Exception>(canceler, details)
+            .ThrowsExceptionAsync(canceler, details)
             .ConfigureAwait(false);
     }
 
@@ -92,7 +92,7 @@ public static class TaskAssertGenericValueTaskExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return await (await origin.ConfigureAwait(false))
-            .ThrowsAsync<Exception>(canceler, optionConfiguration, details)
+            .ThrowsExceptionAsync(canceler, optionConfiguration, details)
             .ConfigureAwait(false);
     }
 
@@ -106,7 +106,7 @@ public static class TaskAssertGenericValueTaskExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return await (await origin.ConfigureAwait(false))
-            .ThrowsNoAsync<Exception>(canceler, details)
+            .ThrowsNoExceptionAsync(canceler, details)
             .ConfigureAwait(false);
     }
 
@@ -121,7 +121,7 @@ public static class TaskAssertGenericValueTaskExtensions
     {
         ArgumentGuard.ThrowIfNull(origin);
         return await (await origin.ConfigureAwait(false))
-            .ThrowsNoAsync<Exception>(canceler, optionConfiguration, details)
+            .ThrowsNoExceptionAsync(canceler, optionConfiguration, details)
             .ConfigureAwait(false);
     }
 }

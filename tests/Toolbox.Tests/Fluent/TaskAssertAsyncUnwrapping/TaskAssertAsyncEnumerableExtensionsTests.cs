@@ -48,14 +48,13 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
             .OrderBy(m => m.Name)
             .Select(m => m.Name)
-            .Except([nameof(AssertAsyncEnumerableBase<,>.ThrowsAsync)])
+            .Where(x => x != nameof(AssertAsyncEnumerableBase<,>.ThrowsAsync))
             .Assert()
             .Is(
                 typeof(TaskAssertAsyncEnumerableExtensions)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
                     .OrderBy(m => m.Name)
                     .Select(m => m.Name)
-                    .Except([nameof(TaskAssertAsyncEnumerableExtensions.ThrowsExceptionAsync)])
             );
     }
 
