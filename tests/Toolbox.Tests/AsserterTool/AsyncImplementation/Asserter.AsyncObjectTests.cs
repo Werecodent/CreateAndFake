@@ -43,6 +43,15 @@ public sealed class AsserterAsyncObjectTests
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
     }
 
+    [Fact]
+    internal Task IsNotAsync_ThrowsWithSameNull()
+    {
+        return _testInstance
+            .IsNotAsync(null, null, TestContext.Current.CancellationToken)
+            .Assert()
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+    }
+
     [Theory, RandomData]
     internal Task AreUniqueAsync_ThrowsWithSame(AsyncDataSample item, [Copy] AsyncDataSample item2)
     {

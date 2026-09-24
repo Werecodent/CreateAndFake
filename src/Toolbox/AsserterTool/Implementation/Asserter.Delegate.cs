@@ -1,4 +1,3 @@
-using System.Reflection;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
@@ -31,7 +30,7 @@ public partial class Asserter : IAsserterDelegate
             $"Expected exception of type '{GenericConverter.ExpandName<T>()}' but received: ";
         try
         {
-            Invoke(behavior);
+            JustInvoke(behavior);
         }
         catch (Exception e)
         {
@@ -109,7 +108,7 @@ public partial class Asserter : IAsserterDelegate
         VerifyCanCall(behavior, localOptions, details);
         try
         {
-            Invoke(behavior);
+            JustInvoke(behavior);
         }
         catch (Exception e)
         {
@@ -158,26 +157,10 @@ public partial class Asserter : IAsserterDelegate
 
         VerifyCanCall(behavior, localOptions, details);
 
-        if (behavior is Action)
-        {
-            throw new AssertException(
-                $"Expected result type of '{GenericConverter.ExpandName<T>()}, but was 'void'.",
-                details,
-                localOptions.Gen.InitialSeed
-            );
-        }
-
         object? result;
         try
         {
-            if (behavior?.GetType().Inherits(typeof(Func<>)) ?? false)
-            {
-                result = ((dynamic)behavior).Invoke();
-            }
-            else
-            {
-                result = behavior?.DynamicInvoke([]);
-            }
+            result = Invoke(behavior);
         }
         catch (Exception e)
         {
@@ -259,39 +242,39 @@ public partial class Asserter : IAsserterDelegate
             return;
         }
 
-        try
+        if (behavior.Method.GetParameters().Length != 0)
         {
-            if (
-                behavior.Method.GetParameters().Length != 0
-                || !behavior.Method.CallingConvention.HasFlag(CallingConventions.HasThis)
-            )
-            {
-                throw new AssertException(
-                    "Delegate to test must not require an instance or arguments.",
-                    details,
-                    options.Gen.InitialSeed
-                );
-            }
-        }
-        catch (MemberAccessException)
-        {
-            // Without permissions, can only try invoking to determine validity.
+            throw new AssertException(
+                "Delegate to test must not require an instance or arguments.",
+                details,
+                options.Gen.InitialSeed
+            );
         }
     }
 
-    private static void Invoke(Delegate? behavior)
+    private static void JustInvoke(Delegate? behavior)
     {
-        if (behavior is Action action)
+        Disposer.Cleanup(Invoke(behavior));
+    }
+
+    private static object? Invoke(Delegate? behavior)
+    {
+        if (behavior == null)
+        {
+            return null;
+        }
+        else if (behavior is Action action)
         {
             action.Invoke();
+            return VoidType.Instance;
         }
-        else if (behavior?.GetType().Inherits(typeof(Func<>)) ?? false)
+        else if (behavior.GetType().Inherits(typeof(Func<>)))
         {
-            Disposer.Cleanup([((dynamic)behavior).Invoke()]);
+            return ((dynamic)behavior).Invoke();
         }
         else
         {
-            Disposer.Cleanup(behavior?.DynamicInvoke([]));
+            return behavior.DynamicInvoke([]);
         }
     }
 }

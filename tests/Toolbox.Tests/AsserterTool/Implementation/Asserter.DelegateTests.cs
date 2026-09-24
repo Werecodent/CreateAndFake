@@ -128,4 +128,45 @@ public sealed class AsserterDelegateTests
             .With(e => e.InnerException)
             .Is(ex);
     }
+
+    [Theory, RandomData]
+    internal void Throws_RethrowsWhenCatchingDisabled(ArgumentException error)
+    {
+        _testInstance
+            .Assert(x =>
+                x.Throws<ArgumentException>(
+                    () => throw error,
+                    opt => opt with { DisableAssertThrowCatching = true }
+                )
+            )
+            .Throws<ArgumentException>()
+            .That()
+            .Is(error);
+    }
+
+    [Fact]
+    internal void Throws_StaticRequired()
+    {
+        _testInstance
+            .Assert(x => x.Throws<ArgumentException>(HasThisMethod))
+            .Throws<AssertException>();
+    }
+
+    [Fact]
+    internal void Throws_ParameterlessRequired()
+    {
+        _testInstance
+            .Assert(x => x.Throws<Exception>(HasParameterMethod))
+            .Throws<AssertException>();
+    }
+
+    private Asserter HasThisMethod()
+    {
+        return _testInstance;
+    }
+
+    private static object HasParameterMethod(object item)
+    {
+        return item;
+    }
 }

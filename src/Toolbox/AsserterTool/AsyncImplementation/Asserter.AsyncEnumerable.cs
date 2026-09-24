@@ -575,7 +575,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
         string? details = null
     )
     {
-        return ThrowsAsync<Exception, T>(collection, canceler, details);
+        return ThrowsExceptionAsync(collection, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
