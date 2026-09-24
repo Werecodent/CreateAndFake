@@ -34,4 +34,11 @@ public sealed class CollectionMutateHintTests : MutateHintTestBase<CollectionMut
             .Also(data)
             .HasCount(original.Count + 1);
     }
+
+    [Fact]
+    public void Alter_CappedAttempts()
+    {
+        HashSet<bool> full = [true, false];
+        full.Tools().Modify().Assert().Is(false);
+    }
 }

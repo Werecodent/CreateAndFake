@@ -34,6 +34,12 @@ public static class MutatorEngineTests
             .IsNotNull();
     }
 
+    [Fact]
+    internal static void VariantOf_ThrowsIfImpossible()
+    {
+        Tools.Mutator.Assert(x => x.VariantOf([true, false])).Throws<ToolException>();
+    }
+
     [Theory, RandomData]
     internal static void VariantOf_ManyValuesWorks([Size(3000)] int[] data)
     {
@@ -118,10 +124,152 @@ public static class MutatorEngineTests
     }
 
     [Theory, RandomData]
+    internal static async Task VariantAsync_AcceptsNull(string value)
+    {
+        await new Mutator(Tools.Mutator.Options)
+            .VariantAsync<string>(null, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNotNull();
+
+        await new Mutator(Tools.Mutator.Options)
+            .VariantAsync(value, TestContext.Current.CancellationToken, null)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNot(value);
+    }
+
+    [Fact]
+    internal static Task VariantOfAsync_ThrowsIfImpossible()
+    {
+        return Tools
+            .Mutator.VariantOfAsync([true, false], TestContext.Current.CancellationToken)
+            .Assert()
+            .ThrowsAsync<ToolException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task VariantOfAsync_ManyValuesWorks([Size(3000)] int[] data)
+    {
+        IValuer valuer = Tools.Valuer.WithOptions(opt =>
+            opt with
+            {
+                IterationLimit = data.Length + 1,
+            }
+        );
+
+        int result = await Tools.Mutator.VariantOfAsync(
+            data,
+            TestContext.Current.CancellationToken,
+            opt => opt with { Valuer = valuer }
+        );
+        await data.Assert()
+            .ContainsNotAsync(
+                result,
+                TestContext.Current.CancellationToken,
+                opt => opt with { Valuer = valuer }
+            );
+    }
+
+    [Theory, RandomData]
+    internal static async Task VariantAsync_TimesOut([Fake] IValuer fakeValuer, DataSample sample)
+    {
+        fakeValuer
+            .EqualsAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(Task.FromResult(true));
+
+        await new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                CreateVariantAttemptLimit = new Limiter(3),
+            }
+        )
+            .VariantAsync(sample, TestContext.Current.CancellationToken)
+            .Assert()
+            .ThrowsAsync<ToolException>(TestContext.Current.CancellationToken);
+
+        fakeValuer.Assert().Called();
+    }
+
+    [Theory, RandomData]
+    internal static async Task VariantAsync_RepeatsUntilUnequal(
+        [Fake] IValuer fakeValuer,
+        DataSample sample
+    )
+    {
+        fakeValuer
+            .EqualsAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(
+                Behavior.Series(
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false)
+                )
+            );
+
+        await new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                CreateVariantAttemptLimit = new Limiter(5),
+            }
+        )
+            .VariantAsync(sample, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNotNull();
+
+        fakeValuer.Assert().Called();
+    }
+
+    [Theory, RandomData]
+    internal static async Task VariantAsync_RepeatsUntilBothUnequal(
+        [Fake] IValuer fakeValuer,
+        DataSample sample1,
+        DataSample sample2
+    )
+    {
+        fakeValuer
+            .EqualsAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(
+                Behavior.Series(
+                    Task.FromResult(false),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false),
+                    Task.FromResult(false)
+                )
+            );
+
+        await new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                CreateVariantAttemptLimit = new Limiter(5),
+            }
+        )
+            .VariantOfAsync([sample1, sample2], TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNotNull();
+
+        fakeValuer.Assert().Called();
+    }
+
+    [Theory, RandomData]
     internal static void Unique_AcceptsNull(string value)
     {
         Tools.Mutator.Unique<string>(null).Assert().IsNotNull();
-        Tools.Mutator.Unique(value, null).Assert().IsNot(value).And().IsNotNull();
+        Tools.Mutator.UniqueOf(value, null).Assert().IsNot(value).And().IsNotNull();
     }
 
     [Theory, RandomData]
@@ -189,6 +337,128 @@ public static class MutatorEngineTests
         )
             .UniqueOf([sample1, sample2])
             .Assert()
+            .IsNotNull();
+    }
+
+    [Theory, RandomData]
+    internal static async Task UniqueAsync_AcceptsNull(string value)
+    {
+        await Tools
+            .Mutator.UniqueAsync<string>(null, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNotNull();
+        await Tools
+            .Mutator.UniqueOfAsync([value, null], TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNot(value)
+            .And()
+            .IsNotNull();
+    }
+
+    [Theory, RandomData]
+    internal static async Task UniqueOfAsync_ManyValuesWorks([Size(100)] int[] data)
+    {
+        int result = await Tools.Mutator.UniqueOfAsync(data, TestContext.Current.CancellationToken);
+        await data.Assert().ContainsNotAsync(result, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task UniqueAsync_TimesOut([Fake] IValuer fakeValuer, DataSample sample)
+    {
+        fakeValuer
+            .EqualsAsync(
+                Arg.Any<object>(),
+                Arg.Any<object>(),
+                TestContext.Current.CancellationToken
+            )
+            .SetupReturn(Task.FromResult(true));
+        fakeValuer
+            .GetHashCodeAsync(Arg.Any<object>(), TestContext.Current.CancellationToken)
+            .SetupReturn(Task.FromResult(0));
+
+        return new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                Extractor = new Extractor(Tools.Extractor.Options with { Valuer = fakeValuer }),
+            }
+        )
+            .UniqueAsync(sample, TestContext.Current.CancellationToken)
+            .Assert()
+            .ThrowsAsync<ToolException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task UniqueAsync_RepeatsUntilUnequal([Fake] IValuer fakeValuer, string sample)
+    {
+        fakeValuer
+            .EqualsAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(
+                Behavior.Series(
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false)
+                )
+            );
+        fakeValuer
+            .GetHashCodeAsync(Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(Task.FromResult(0));
+
+        return new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                CreateUniqueAttemptLimit = new Limiter(5),
+            }
+        )
+            .UniqueAsync(sample, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
+            .IsNotNull();
+    }
+
+    [Theory, RandomData]
+    internal static Task UniqueAsync_RepeatsUntilBothUnequal(
+        [Fake] IValuer fakeValuer,
+        string sample1,
+        string sample2
+    )
+    {
+        fakeValuer
+            .EqualsAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(
+                Behavior.Series(
+                    Task.FromResult(false),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false),
+                    Task.FromResult(true),
+                    Task.FromResult(true),
+                    Task.FromResult(false),
+                    Task.FromResult(false)
+                )
+            );
+        fakeValuer
+            .GetHashCodeAsync(Arg.Any<object>(), Arg.Any<CancellationToken>())
+            .SetupReturn(Task.FromResult(0));
+
+        return new Mutator(
+            Tools.Mutator.Options with
+            {
+                Valuer = fakeValuer,
+                CreateUniqueAttemptLimit = new Limiter(5),
+            }
+        )
+            .UniqueOfAsync([sample1, sample2], TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(TestContext.Current.CancellationToken)
+            .That()
             .IsNotNull();
     }
 
