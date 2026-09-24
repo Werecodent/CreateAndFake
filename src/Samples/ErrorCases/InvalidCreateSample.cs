@@ -2,7 +2,7 @@
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample, ExcludeFromCodeCoverage]
+[InvalidSample]
 public sealed class InvalidCreateSample : IOnlyMockSample
 {
     public InvalidCreateSample()
@@ -10,6 +10,7 @@ public sealed class InvalidCreateSample : IOnlyMockSample
         throw new InvalidOperationException("Tried to create invalid sample.");
     }
 
+    [ExcludeFromCodeCoverage] // Designed to never be reached.
     public bool FailIfNotMocked()
     {
         throw new InvalidOperationException("Mock was not created.");

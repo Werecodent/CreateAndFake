@@ -1,10 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
+﻿namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 public static class LongMethodSample
 {
-    [ExcludeFromCodeCoverage]
     public static void BeSlow<T>(string data, out T output)
         where T : new()
     {

@@ -7,7 +7,7 @@
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>Specifies the attached data may actually be <see langword="null"/>.</summary>
-[ExcludeFromCodeCoverage]
+[ExcludeFromCodeCoverage] // Not present in all versions.
 [AttributeUsage(
     AttributeTargets.Parameter
         | AttributeTargets.Property

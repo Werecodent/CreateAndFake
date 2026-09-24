@@ -2,22 +2,22 @@ using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class TaskHelperTests
+public static class InvokerTests
 {
     [Fact]
-    internal static Task TaskHelper_GuardsNulls()
+    internal static Task Invoker_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskHelper),
+            typeof(Invoker),
             TestContext.Current.CancellationToken
         );
     }
 
     [Fact]
-    internal static Task TaskHelper_NoParameterMutation()
+    internal static Task Invoker_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskHelper),
+            typeof(Invoker),
             TestContext.Current.CancellationToken
         );
     }
@@ -25,7 +25,7 @@ public static class TaskHelperTests
     [Theory, RandomData]
     internal static Task AwaitAsync_HandlesGenericTasks(string data)
     {
-        return TaskHelper
+        return Invoker
             .AwaitAsync(Task.FromResult(data))
             .Assert()
             .HasResultAsync(data, TestContext.Current.CancellationToken);
@@ -34,7 +34,7 @@ public static class TaskHelperTests
     [Fact]
     internal static Task AwaitAsync_HandlesTasks()
     {
-        return TaskHelper
+        return Invoker
             .AwaitAsync(Task.CompletedTask)
             .Assert()
             .HasResultAsync(VoidType.Instance, TestContext.Current.CancellationToken);

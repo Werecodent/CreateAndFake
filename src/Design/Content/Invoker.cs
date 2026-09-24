@@ -3,8 +3,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Content;
 
-/// <summary>Provides common <see cref="Task"/> patterns.</summary>
-public static class TaskHelper
+/// <summary>Provides common patterns around executing code.</summary>
+public static class Invoker
 {
     /// <summary>Ensures the result is completed.</summary>
     /// <param name="task">Potentially wrapped data.</param>

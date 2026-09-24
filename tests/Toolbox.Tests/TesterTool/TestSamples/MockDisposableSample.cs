@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Werecodent.CreateAndFake.FakerTool;
+﻿using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
@@ -15,7 +14,6 @@ public sealed class MockDisposableSample(object value) : IDisposable
 
     internal static int _FinalizerDisposes = 0;
 
-    [ExcludeFromCodeCoverage]
     ~MockDisposableSample()
     {
         try

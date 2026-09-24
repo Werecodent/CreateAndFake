@@ -1,10 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
+﻿namespace Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 #pragma warning disable CA1065, MA0025 // For testing.
 
-[ExcludeFromCodeCoverage]
 public class VirtualFakeSample : AbstractFakeSample
 {
     public override int Num => throw new NotImplementedException();

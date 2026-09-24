@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Werecodent.CreateAndFake.Tests.TestSamples;
 
-[ExcludeFromCodeCoverage]
 public class InternalScopeSample
 {
     public virtual string PublicProp { get; set; }

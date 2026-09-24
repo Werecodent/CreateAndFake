@@ -13,7 +13,7 @@ namespace System.Runtime.CompilerServices;
 ///     is required for the location where this attribute is applied.
 /// </summary>
 /// <param name="featureName"><inheritdoc cref="FeatureName" path="/summary"/></param>
-[ExcludeFromCodeCoverage]
+[ExcludeFromCodeCoverage] // Not present in all versions.
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
 internal sealed class CompilerFeatureRequiredAttribute(string featureName) : Attribute
 {

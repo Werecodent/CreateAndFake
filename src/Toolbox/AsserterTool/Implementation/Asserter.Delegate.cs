@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
@@ -56,6 +59,7 @@ public partial class Asserter : IAsserterDelegate
         return Throws<Exception>(behavior, optionConfiguration, details);
     }
 
+    [ExcludeFromCodeCoverage] // Captured rethrow impossible to reach ending bracket.
     private static T UnwrapException<T>(
         Exception e,
         string errorMessage,
@@ -66,7 +70,7 @@ public partial class Asserter : IAsserterDelegate
     {
         if (localOptions.DisableAssertThrowCatching)
         {
-            throw e;
+            ExceptionDispatchInfo.Capture(e).Throw();
         }
 
         if (e is T noWrap)
@@ -257,24 +261,25 @@ public partial class Asserter : IAsserterDelegate
         Disposer.Cleanup(Invoke(behavior));
     }
 
+    [ExcludeFromCodeCoverage] // Rethrow impossible to reach.
     private static object? Invoke(Delegate? behavior)
     {
-        if (behavior == null)
-        {
-            return null;
-        }
-        else if (behavior is Action action)
+        if (behavior is Action action)
         {
             action.Invoke();
             return VoidType.Instance;
         }
-        else if (behavior.GetType().Inherits(typeof(Func<>)))
-        {
-            return ((dynamic)behavior).Invoke();
-        }
         else
         {
-            return behavior.DynamicInvoke([]);
+            try
+            {
+                return behavior?.DynamicInvoke([]);
+            }
+            catch (TargetInvocationException e)
+            {
+                ExceptionDispatchInfo.Capture(e.InnerException!).Throw();
+                throw;
+            }
         }
     }
 }

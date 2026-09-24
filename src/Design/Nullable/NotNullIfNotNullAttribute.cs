@@ -11,7 +11,7 @@ namespace System.Diagnostics.CodeAnalysis;
 ///     when <paramref name="parameterName"/> is not <see langword="null"/>.
 /// </summary>
 /// <param name="parameterName"><inheritdoc cref="ParameterName" path="/summary"/></param>
-[ExcludeFromCodeCoverage]
+[ExcludeFromCodeCoverage] // Not present in all versions.
 [AttributeUsage(
     AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue,
     AllowMultiple = true,

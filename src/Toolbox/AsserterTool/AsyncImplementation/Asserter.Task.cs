@@ -87,7 +87,7 @@ public partial class Asserter : IAsserterTask
             try
             {
                 await Disposer
-                    .CleanupAsync(await TaskHelper.AwaitAsync(behavior).ConfigureAwait(false))
+                    .CleanupAsync(await Invoker.AwaitAsync(behavior).ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -146,7 +146,7 @@ public partial class Asserter : IAsserterTask
             try
             {
                 await Disposer
-                    .CleanupAsync(await TaskHelper.AwaitAsync(behavior).ConfigureAwait(false))
+                    .CleanupAsync(await Invoker.AwaitAsync(behavior).ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)

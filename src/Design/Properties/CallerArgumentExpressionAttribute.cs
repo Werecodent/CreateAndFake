@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace System.Runtime.CompilerServices;
 
-[ExcludeFromCodeCoverage]
+[ExcludeFromCodeCoverage] // Not present in all versions.
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
 internal sealed class CallerArgumentExpressionAttribute(string parameterName) : Attribute
 {

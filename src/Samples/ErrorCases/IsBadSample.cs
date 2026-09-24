@@ -7,7 +7,6 @@ namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 [InvalidSample]
 public class IsBadSample : IIsGoodOrBadSample
 {
-    [ExcludeFromCodeCoverage]
     public int GoodOrBadProp
     {
         get => 0;

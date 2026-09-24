@@ -30,7 +30,7 @@ internal static class Unwrapper
 
         if (result is Task plainTask)
         {
-            object? content = await TaskHelper.AwaitAsync(plainTask).ConfigureAwait(false);
+            object? content = await Invoker.AwaitAsync(plainTask).ConfigureAwait(false);
             if (content == VoidType.Instance)
             {
                 return Task.CompletedTask;
