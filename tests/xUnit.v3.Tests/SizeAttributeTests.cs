@@ -1,0 +1,30 @@
+using System.Reflection;
+
+namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
+
+public static class SizeAttributeTests
+{
+    private static readonly ParameterInfo _SizeParam = IntegrationTests
+        .AttributeMethod.GetParameters()
+        .First(p => Attribute.IsDefined(p, typeof(SizeAttribute)));
+
+    [Theory, RandomData]
+    internal static Task SizeAttribute_GuardsNulls([Cap(1, 3)] int min, [Cap(3, 5)] int max)
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync(
+            new SizeAttribute(min, max),
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [_SizeParam, IntegrationTests.AttributeMethod] }
+        );
+    }
+
+    [Theory, RandomData]
+    internal static Task SizeAttribute_NoParameterMutation([Cap(1, 3)] int min, [Cap(3, 5)] int max)
+    {
+        return Tools.Tester.PreventsParameterMutationAsync(
+            new SizeAttribute(min, max),
+            TestContext.Current.CancellationToken,
+            opt => opt with { InjectionValues = [_SizeParam, IntegrationTests.AttributeMethod] }
+        );
+    }
+}

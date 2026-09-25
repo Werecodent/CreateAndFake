@@ -1,0 +1,137 @@
+using System.Reflection;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Types;
+
+namespace Werecodent.CreateAndFake.Design.Tests.Types;
+
+#pragma warning disable CS0628, IDE0051, CA1822, RCS1213, S1144, S1186 // For testing.
+
+public static class MethodScannerTests
+{
+    private const BindingFlags _AllScope =
+        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+    internal abstract class BaseMembers
+    {
+        public static void BaseStaticMethod() { }
+
+        public void BasePublicMethod() { }
+
+        protected void BaseProtectedMethod() { }
+
+        protected internal void BaseProtectedInternalMethod() { }
+
+        internal void BaseInternalMethod() { }
+
+        private void BasePrivateMethod() { }
+    }
+
+    internal sealed class Members : BaseMembers
+    {
+        public static void StaticMethod() { }
+
+        public void PublicMethod() { }
+
+        protected void ProtectedMethod() { }
+
+        protected internal void ProtectedInternalMethod() { }
+
+        internal void InternalMethod() { }
+
+        private void PrivateMethod() { }
+    }
+
+    [Fact]
+    internal static Task MethodScanner_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<MethodScanner>(
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task MethodScanner_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<MethodScanner>(
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static void All_MethodsFound()
+    {
+        HashSet<MethodInfo> expectedMethods =
+        [
+            typeof(BaseMembers).GetMethod("BasePrivateMethod", _AllScope),
+            typeof(Members).GetMethod("BaseProtectedMethod", _AllScope),
+            typeof(Members).GetMethod("PrivateMethod", _AllScope),
+            typeof(Members).GetMethod("ProtectedMethod", _AllScope),
+            typeof(Members).GetMethod(nameof(Members.BasePublicMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.BaseProtectedInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.BaseInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
+        ];
+
+        new MethodScanner(typeof(Members))
+            .All.Where(m => m.DeclaringType != typeof(object))
+            .ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
+    }
+
+    [Fact]
+    internal static void PublicOrInternal_MethodsFound()
+    {
+        HashSet<MethodInfo> expectedMethods =
+        [
+            typeof(Members).GetMethod(nameof(Members.BasePublicMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.BaseProtectedInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.BaseInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.ProtectedInternalMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.InternalMethod), _AllScope),
+        ];
+
+        MethodScanner scanner = new(typeof(Members));
+        scanner
+            .PublicOrInternal.Where(m => m.DeclaringType != typeof(object))
+            .ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
+
+        scanner
+            .Visible.ToHashSet()
+            .Assert()
+            .Is(scanner.PublicOrInternal.Where(m => m.Name != "MemberwiseClone").ToHashSet());
+    }
+
+    [Fact]
+    internal static void Visible_FilteredByAccess()
+    {
+        HashSet<MethodInfo> expectedMethods = [.. typeof(RunnerTimeoutException).GetMethods()];
+
+        new MethodScanner(typeof(RunnerTimeoutException))
+            .Visible.ToHashSet()
+            .Assert()
+            .Is(expectedMethods);
+    }
+
+    [Fact]
+    internal static void OnlyPublic_MethodsFound()
+    {
+        HashSet<MethodInfo> expectedMethods =
+        [
+            typeof(Members).GetMethod(nameof(Members.BasePublicMethod), _AllScope),
+            typeof(Members).GetMethod(nameof(Members.PublicMethod), _AllScope),
+            .. typeof(object)
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Select(m => typeof(Members).GetMethod(m.Name, _AllScope)),
+        ];
+
+        new MethodScanner(typeof(Members)).OnlyPublic.ToHashSet().Assert().Is(expectedMethods);
+    }
+}
+
+#pragma warning restore

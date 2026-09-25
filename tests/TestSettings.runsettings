@@ -2,5 +2,6 @@
 <RunSettings>
   <RunConfiguration>
     <ResultsDirectory>../artifacts/testing</ResultsDirectory>
+    <TestSessionTimeout>300000</TestSessionTimeout>
   </RunConfiguration>
 </RunSettings>

@@ -1,0 +1,76 @@
+global using RunnerMod = System.Func<
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions,
+    Werecodent.CreateAndFake.RunnerTool.RunnerOptions
+>;
+using System.Reflection;
+using Werecodent.CreateAndFake.Design.Tooling;
+
+namespace Werecodent.CreateAndFake.RunnerTool;
+
+/// <summary>Creates objects and populates them with random values.</summary>
+public interface IRunner : ITool<RunnerOptions>
+{
+    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IRunner WithOptions(RunnerMod optionConfiguration);
+
+    /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
+    /// <param name="instance">Instance whose methods to call.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <returns>Results of the method calls.</returns>
+    Task<RunResults> CallMethodsOnAsync(
+        object instance,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
+
+    /// <inheritdoc cref="CreateForAsync"/>
+    MethodCallWrapper CreateFor(
+        MethodBase method,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
+
+    /// <summary>
+    ///     Constructs the parameters for <paramref name="method"/>.
+    ///     Randomizes types by default.
+    ///     Earlier types will be used to construct later types if possible.
+    /// </summary>
+    /// <param name="method">Method to create parameters for.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
+    Task<MethodCallWrapper> CreateForAsync(
+        MethodBase method,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
+
+    /// <summary>Runs the given method on the instance.</summary>
+    /// <param name="instance">Instance to run on.</param>
+    /// <param name="method">Method to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <returns>Results of the run.</returns>
+    Task<RunResult> RunAsync(
+        object? instance,
+        MethodInfo method,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
+
+    /// <summary>Runs the given method on the instance.</summary>
+    /// <param name="instance">Instance to run on.</param>
+    /// <param name="data">Method to run.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <returns>Results of the run.</returns>
+    Task<RunResult> RunAsync(
+        object? instance,
+        MethodCallWrapper data,
+        CancellationToken canceler,
+        RunnerMod? optionConfiguration = null
+    );
+}
