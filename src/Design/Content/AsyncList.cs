@@ -30,23 +30,20 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        return IterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
-    }
-
-    /// <inheritdoc cref="GetAsyncEnumerator"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <remarks>Visible for testing.</remarks>
-    internal async IAsyncEnumerable<T> IterateAsync(
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        foreach (T item in Content)
+        async IAsyncEnumerable<T> iterateAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
+        )
         {
-            canceler.ThrowIfCancellationRequested();
+            foreach (T item in Content)
+            {
+                canceler.ThrowIfCancellationRequested();
 
-            await Task.Delay(0, canceler).ConfigureAwait(false);
-            yield return item;
+                await Task.Delay(0, canceler).ConfigureAwait(false);
+                yield return item;
+            }
         }
+
+        return iterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>

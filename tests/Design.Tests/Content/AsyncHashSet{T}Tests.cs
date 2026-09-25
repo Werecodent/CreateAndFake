@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.FakerTool;
@@ -302,23 +303,44 @@ public static class AsyncHashSet_T_Tests
     }
 
     [Fact]
-    internal static Task IterateAsync_EmptyWorks()
+    internal static Task GetAsyncEnumerator_EmptyWorksViaEnumerator()
     {
-        return new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>())
-            .IterateAsync(TestContext.Current.CancellationToken)
+        return IterateAsync(
+                new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>()),
+                TestContext.Current.CancellationToken
+            )
             .Assert()
             .HasCountAsync(0, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal static Task IterateAsync_Cancelable([Size(1)] List<AsyncDataSample> items)
+    internal static Task GetAsyncEnumerator_CancelableViaEnumerator(
+        [Size(1)] List<AsyncDataSample> items
+    )
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
-        return AsyncHashSet
-            .CreateFromAsync(items, Tools.Valuer.ToAsyncComparer<AsyncDataSample>(), 1, canceler)
-            .IterateAsync(new CancellationToken(true))
+        return IterateAsync(
+                AsyncHashSet.CreateFromAsync(
+                    items,
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    1,
+                    canceler
+                ),
+                new CancellationToken(true)
+            )
             .Assert()
             .ThrowsAsync<OperationCanceledException>(canceler);
+    }
+
+    private static async IAsyncEnumerable<T> IterateAsync<T>(
+        AsyncHashSet<T> set,
+        [EnumeratorCancellation] CancellationToken canceler
+    )
+    {
+        await foreach (T item in set.WithCancellation(canceler))
+        {
+            yield return item;
+        }
     }
 }

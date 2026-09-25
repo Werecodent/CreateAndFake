@@ -8,6 +8,8 @@
         "Randomizer": {},
         "Runner": {},
         "Tester": {},
-        "Valuer": {}
+        "Valuer": {
+            "IncludeValueHashInComparison": true
+        }
     }
 }

@@ -38,42 +38,38 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        return IterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
-    }
-
-    /// <inheritdoc cref="GetAsyncEnumerator"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <remarks>Visible for testing.</remarks>
-    internal async IAsyncEnumerable<T> IterateAsync(
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        foreach (T item in (await _contents.ConfigureAwait(false)).SelectMany(x => x.Value))
+        async IAsyncEnumerable<T> iterateAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
+        )
         {
-            canceler.ThrowIfCancellationRequested();
-            yield return item;
+            foreach (T item in (await _contents.ConfigureAwait(false)).SelectMany(x => x.Value))
+            {
+                canceler.ThrowIfCancellationRequested();
+                yield return item;
+            }
         }
+
+        return iterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>
     public IAsyncEnumerable<KeyValuePair<int, T>> ByHashesAsync(CancellationToken canceler)
     {
-        return ThisByHashesAsync(canceler);
-    }
-
-    /// <inheritdoc cref="ByHashesAsync"/>
-    private async IAsyncEnumerable<KeyValuePair<int, T>> ThisByHashesAsync(
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        foreach (KeyValuePair<int, IList<T>> row in await _contents.ConfigureAwait(false))
+        async IAsyncEnumerable<KeyValuePair<int, T>> iterateHashesAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
+        )
         {
-            foreach (T item in row.Value)
+            foreach (KeyValuePair<int, IList<T>> row in await _contents.ConfigureAwait(false))
             {
-                canceler.ThrowIfCancellationRequested();
-                yield return new KeyValuePair<int, T>(row.Key, item);
+                foreach (T item in row.Value)
+                {
+                    canceler.ThrowIfCancellationRequested();
+                    yield return new KeyValuePair<int, T>(row.Key, item);
+                }
             }
         }
+
+        return iterateHashesAsync(canceler);
     }
 
     /// <inheritdoc/>
@@ -151,36 +147,36 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     {
         ArgumentGuard.ThrowIfNull(collection);
 
-        return ThisFindMatchesInAsync(collection, canceler);
-    }
-
-    /// <inheritdoc cref="FindMatchesInAsync"/>
-    private async IAsyncEnumerable<T> ThisFindMatchesInAsync(
-        IAsyncSet<T> collection,
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
-
-        await foreach (
-            KeyValuePair<int, T> item in collection.ByHashesAsync(canceler).ConfigureAwait(false)
+        async IAsyncEnumerable<T> findMatchesAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
         )
         {
-            if (contents.TryGetValue(item.Key, out IList<T>? match))
+            IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
+
+            await foreach (
+                KeyValuePair<int, T> item in collection
+                    .ByHashesAsync(canceler)
+                    .ConfigureAwait(false)
+            )
             {
-                foreach (T found in match)
+                if (contents.TryGetValue(item.Key, out IList<T>? match))
                 {
-                    if (
-                        await Comparer
-                            .EqualsAsync(item.Value, found, canceler)
-                            .ConfigureAwait(false)
-                    )
+                    foreach (T found in match)
                     {
-                        yield return found;
+                        if (
+                            await Comparer
+                                .EqualsAsync(item.Value, found, canceler)
+                                .ConfigureAwait(false)
+                        )
+                        {
+                            yield return found;
+                        }
                     }
                 }
             }
         }
+
+        return findMatchesAsync(canceler);
     }
 
     /// <inheritdoc/>
@@ -191,44 +187,44 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     {
         ArgumentGuard.ThrowIfNull(collection);
 
-        return ThisFindMissingFromAsync(collection, canceler);
-    }
-
-    /// <inheritdoc cref="FindMissingFromAsync"/>
-    private async IAsyncEnumerable<T> ThisFindMissingFromAsync(
-        IAsyncSet<T> collection,
-        [EnumeratorCancellation] CancellationToken canceler = default
-    )
-    {
-        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
-
-        await foreach (
-            KeyValuePair<int, T> item in collection.ByHashesAsync(canceler).ConfigureAwait(false)
+        async IAsyncEnumerable<T> findMissingAsync(
+            [EnumeratorCancellation] CancellationToken canceler = default
         )
         {
-            bool missing = true;
+            IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
 
-            if (contents.TryGetValue(item.Key, out IList<T>? match))
+            await foreach (
+                KeyValuePair<int, T> item in collection
+                    .ByHashesAsync(canceler)
+                    .ConfigureAwait(false)
+            )
             {
-                foreach (T found in match)
+                bool missing = true;
+
+                if (contents.TryGetValue(item.Key, out IList<T>? match))
                 {
-                    if (
-                        await Comparer
-                            .EqualsAsync(item.Value, found, canceler)
-                            .ConfigureAwait(false)
-                    )
+                    foreach (T found in match)
                     {
-                        missing = false;
-                        break;
+                        if (
+                            await Comparer
+                                .EqualsAsync(item.Value, found, canceler)
+                                .ConfigureAwait(false)
+                        )
+                        {
+                            missing = false;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (missing)
-            {
-                yield return item.Value;
+                if (missing)
+                {
+                    yield return item.Value;
+                }
             }
         }
+
+        return findMissingAsync(canceler);
     }
 
     /// <inheritdoc/>

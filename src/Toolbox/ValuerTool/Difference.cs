@@ -6,7 +6,7 @@ using Werecodent.CreateAndFake.Design.Types;
 namespace Werecodent.CreateAndFake.ValuerTool;
 
 /// <summary>Expresses a value difference between two objects.</summary>
-public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
+public sealed class Difference : IValueEquatable, IEquatable<Difference>, IDeepCloneable<Difference>
 {
     /// <summary>Message stating the difference.</summary>
     private readonly Lazy<string> _message;
@@ -16,7 +16,7 @@ public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
     /// <param name="actualType"><see cref="Type"/> of the compared actual object.</param>
     public Difference(Type expectedType, Type? actualType)
     {
-        _message = new Lazy<string>(() =>
+        _message = new(() =>
             $"-> Expected type:<{GenericConverter.ExpandName(expectedType)}>, "
             + $"Actual type:<{GenericConverter.ExpandName(actualType)}>"
         );
@@ -27,7 +27,7 @@ public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
     /// <param name="actual"><see langword="object"/> compared against <paramref name="expected"/>.</param>
     public Difference(object? expected, object? actual)
     {
-        _message = new Lazy<string>(() => $" -> Expected:<{expected}>, Actual:<{actual}>");
+        _message = new(() => $" -> Expected:<{expected}>, Actual:<{actual}>");
     }
 
     /// <inheritdoc cref="Difference"/>
@@ -50,17 +50,16 @@ public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
     /// <param name="difference">Found difference for the compared objects.</param>
     public Difference(string access, Difference difference)
     {
-        ArgumentGuard.ThrowIfNull(access);
-        ArgumentGuard.ThrowIfNull(difference);
+        ArgumentGuard.ThrowIfNull(access, difference);
 
-        _message = new Lazy<string>(() => access + difference);
+        _message = new(() => $"{access}{difference}");
     }
 
     /// <inheritdoc cref="Difference"/>
     /// <param name="message"><inheritdoc cref="_message" path="/summary"/></param>
     public Difference(string message)
     {
-        _message = new Lazy<string>(() => message);
+        _message = new(() => message);
     }
 
     /// <inheritdoc/>
@@ -72,13 +71,29 @@ public sealed class Difference : IValueEquatable, IDeepCloneable<Difference>
     /// <inheritdoc/>
     public bool ValuesEqual(object? other)
     {
-        return other != null
-            && GetType() == other.GetType()
-            && _message.Value == ((Difference)other)._message.Value;
+        return Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Difference);
+    }
+
+    /// <inheritdoc/>
+    public bool Equals(Difference? other)
+    {
+        return _message.Value == other?._message.Value;
     }
 
     /// <inheritdoc/>
     public int GetValueHash()
+    {
+        return GetHashCode();
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
     {
         return ValueComparer.Use.GetHashCode(_message.Value);
     }

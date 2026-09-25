@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -69,20 +70,31 @@ public static class AsyncListTests
     }
 
     [Fact]
-    internal static Task IterateAsync_EmptyWorks()
+    internal static Task GetAsyncEnumerator_EmptyWorksViaEnumerator()
     {
-        return new AsyncList<DataSample>([], 1)
-            .IterateAsync(TestContext.Current.CancellationToken)
+        return IterateAsync(new AsyncList<DataSample>([], 1), TestContext.Current.CancellationToken)
             .Assert()
             .HasCountAsync(0, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal static Task IterateAsync_Cancelable([Size(1)] List<DataSample> items)
+    internal static Task GetAsyncEnumerator_CancelableViaEnumerator(
+        [Size(1)] List<DataSample> items
+    )
     {
-        return new AsyncList<DataSample>(items, 1)
-            .IterateAsync(new CancellationToken(true))
+        return IterateAsync(new AsyncList<DataSample>(items, 1), new CancellationToken(true))
             .Assert()
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
+    private static async IAsyncEnumerable<T> IterateAsync<T>(
+        AsyncList<T> set,
+        [EnumeratorCancellation] CancellationToken canceler
+    )
+    {
+        await foreach (T item in set.WithCancellation(canceler))
+        {
+            yield return item;
+        }
     }
 }

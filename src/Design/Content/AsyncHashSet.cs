@@ -21,7 +21,7 @@ public static class AsyncHashSet
     {
         async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
         {
-            IDictionary<int, IList<T>> results = new Dictionary<int, IList<T>>();
+            Dictionary<int, IList<T>> results = [];
 
             await AsyncSeriesHelper
                 .ForEachAsync(

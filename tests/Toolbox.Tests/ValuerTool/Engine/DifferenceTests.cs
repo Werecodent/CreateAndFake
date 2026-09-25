@@ -19,4 +19,10 @@ public static class DifferenceTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Fact]
+    internal static void Difference_VerifyValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<Difference>();
+    }
 }
