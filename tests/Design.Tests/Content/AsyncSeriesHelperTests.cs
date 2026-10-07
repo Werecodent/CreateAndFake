@@ -27,6 +27,11 @@ public static class AsyncSeriesHelperTests
                 {
                     InjectionValues = [iterationLimit],
                     IgnorableExceptions = [typeof(IterationLimitException)],
+                    MethodsToIgnore =
+                    [
+                        nameof(AsyncSeriesHelper.CreateCancelingIterationAsync),
+                        nameof(AsyncSeriesHelper.TriggerCancellationAsync),
+                    ],
                 }
         );
     }

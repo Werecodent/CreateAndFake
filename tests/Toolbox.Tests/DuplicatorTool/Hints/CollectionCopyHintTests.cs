@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
 using Werecodent.CreateAndFake.DuplicatorTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Hints;
 
@@ -26,8 +25,6 @@ public sealed class CollectionCopyHintTests : CopyHintTestBase<CollectionCopyHin
         typeof(Array),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
-
     public CollectionCopyHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 }

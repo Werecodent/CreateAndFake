@@ -34,27 +34,25 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<CultureInfo>(
             (source, _) => source.IsReadOnly ? source : (CultureInfo)source.Clone()
         ),
-        /*new FactoryCopyHandler<WeakReference>(
+        new FactoryCopyHandler<WeakReference>(
             (source, _) => new WeakReference(source.Target, source.TrackResurrection)
-        ),*/
+        ),
         new FactoryCopyHandler<CancellationTokenSource>(
             (source, _) =>
             {
-#pragma warning disable S2930 // Must only be GC when the resulting token has expired.
                 CancellationTokenSource result = new();
-#pragma warning restore S2930
                 if (source.IsCancellationRequested)
                 {
                     result.Cancel();
                 }
-                return source;
+                return result;
             }
         ),
         new FactoryCopyHandler<CancellationToken>(
             (source, _) => new CancellationToken(source.IsCancellationRequested)
         ),
 #if NET9_0_OR_GREATER
-        new RefCopyHandler(typeof(System.Threading.Lock)),
+        new RefCopyHandler(typeof(Lock)),
 #endif
     ];
 }

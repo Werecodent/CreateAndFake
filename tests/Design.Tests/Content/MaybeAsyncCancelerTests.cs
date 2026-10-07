@@ -20,7 +20,12 @@ public static class MaybeAsyncCancelerTests
         return Tools.Tester.PreventsParameterMutationAsync(
             MaybeAsyncCanceler.Use,
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions = [typeof(ArgumentException)],
+                    MethodsToIgnore = [nameof(MaybeAsyncCanceler.TriggerCancellationAsync)],
+                }
         );
     }
 

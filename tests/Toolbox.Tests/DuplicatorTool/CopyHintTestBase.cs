@@ -4,6 +4,7 @@ using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
@@ -13,8 +14,8 @@ namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 /// <param name="validTypes">Types that can be copied by the hint.</param>
 /// <param name="invalidTypes">Types that can't be copied by the hint.</param>
 public abstract class CopyHintTestBase<T>(
-    IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes
+    IEnumerable<Type> validTypes = null,
+    IEnumerable<Type> invalidTypes = null
 )
     where T : CopyHint, new()
 {
@@ -39,17 +40,16 @@ public abstract class CopyHintTestBase<T>(
     protected T TestInstance { get; } = new T();
 
     /// <summary>Types that can be copied by the hint.</summary>
-    private readonly IEnumerable<Type> _validTypes = validTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that can't be copied by the hint.</summary>
-    private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? [typeof(DataHolderSample)];
 
     /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
     public Task CopyHint_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            TestInstance,
+        return Tools.Tester.PreventsNullRefExceptionAsync<T>(
             TestContext.Current.CancellationToken,
             _Config
         );
@@ -59,8 +59,7 @@ public abstract class CopyHintTestBase<T>(
     [Fact]
     public virtual Task CopyHint_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            TestInstance,
+        return Tools.Tester.PreventsParameterMutationAsync<T>(
             TestContext.Current.CancellationToken,
             _Config
         );
@@ -76,20 +75,18 @@ public abstract class CopyHintTestBase<T>(
             CopyHintResult result = CopyHintResult.None;
             try
             {
-                data = Tools.Randomizer.Create(type);
+                data = type.Tools().CreateRandomInstance();
                 result = TestInstance.TryCopy(data, CreateChainer());
 
-                await Tools.Asserter.IsAsync(
-                    new CopyHintResult(data),
-                    result,
-                    TestContext.Current.CancellationToken,
-                    $"Hint '{GenericConverter.ExpandName<T>()}' failed to clone type "
-                        + $"'{GenericConverter.ExpandName(type)}'. "
-                        + $"Actual type: '{GenericConverter.ExpandName(data)}'."
-                );
-
                 await result
-                    .Data.Assert()
+                    .HasData.Assert()
+                    .Is(
+                        true,
+                        $"Hint '{GenericConverter.ExpandName<T>()}' failed to support "
+                            + $"value of type '{GenericConverter.ExpandName(type)}'. "
+                            + $"Actual type '{GenericConverter.ExpandName(data)}'."
+                    )
+                    .Also(result.Data)
                     .IsAsync(
                         data,
                         TestContext.Current.CancellationToken,
@@ -111,7 +108,7 @@ public abstract class CopyHintTestBase<T>(
     {
         foreach (Type type in _invalidTypes)
         {
-            object data = Tools.Randomizer.Create(type);
+            object data = type.Tools().CreateRandomInstance();
             try
             {
                 await TestInstance
@@ -120,7 +117,9 @@ public abstract class CopyHintTestBase<T>(
                     .IsAsync(
                         CopyHintResult.None,
                         TestContext.Current.CancellationToken,
-                        "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
+                        $"Hint '{GenericConverter.ExpandName<T>()}' should not support "
+                            + $"value of type '{GenericConverter.ExpandName(type)}'. "
+                            + $"Actual type '{GenericConverter.ExpandName(data)}'."
                     );
             }
             finally

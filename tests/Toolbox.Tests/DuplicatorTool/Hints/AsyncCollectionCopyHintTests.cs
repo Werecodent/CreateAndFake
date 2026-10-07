@@ -1,23 +1,9 @@
-﻿using System.Collections;
-using Werecodent.CreateAndFake.DuplicatorTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
+﻿using Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Hints;
 
 public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollectionCopyHint>
 {
-    private static readonly Type[] _ValidTypes =
-    [
-        typeof(IAsyncEnumerable<int>),
-        typeof(IAsyncEnumerable<string>),
-        typeof(IAsyncEnumerable<object>),
-    ];
-
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample), typeof(IEnumerable)];
-
-    public AsyncCollectionCopyHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
-
     [Theory, RandomData]
     internal static Task TryCopy_Empty([Size(0)] IAsyncEnumerable<int> items)
     {

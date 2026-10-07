@@ -40,7 +40,7 @@ public sealed class HandlerCompareHint : CompareHint
                 }
         ),
 #if NET9_0_OR_GREATER
-        new DefaultEqualityCompareHandler(typeof(System.Threading.Lock)),
+        new DefaultEqualityCompareHandler(typeof(Lock)),
 #endif
     ];
 

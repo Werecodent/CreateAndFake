@@ -13,10 +13,8 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
         typeof(Task<string>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
-
     public TaskCopyHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 
     [Fact]
     internal async Task TryCopy_NonGenericTaskSupport()
