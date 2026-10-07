@@ -24,16 +24,10 @@ internal static class SystemCopyHandlers
         new RefCopyHandler(typeof(object)),
         new RefCopyHandler(typeof(StringSegmentComparer)),
         new RefCopyHandler(typeof(RuntimeMethodHandle)),
+        new RefCopyHandler(typeof(DateTimeFormatInfo)),
+        new RefCopyHandler(typeof(NumberFormatInfo)),
+        new RefCopyHandler(typeof(CultureInfo)),
         new FactoryCopyHandler<UriBuilder>((source, _) => new UriBuilder(source.Uri)),
-        new FactoryCopyHandler<DateTimeFormatInfo>(
-            (source, _) => source.IsReadOnly ? source : (DateTimeFormatInfo)source.Clone()
-        ),
-        new FactoryCopyHandler<NumberFormatInfo>(
-            (source, _) => source.IsReadOnly ? source : (NumberFormatInfo)source.Clone()
-        ),
-        new FactoryCopyHandler<CultureInfo>(
-            (source, _) => source.IsReadOnly ? source : (CultureInfo)source.Clone()
-        ),
         new FactoryCopyHandler<WeakReference>(
             (source, _) => new WeakReference(source.Target, source.TrackResurrection)
         ),

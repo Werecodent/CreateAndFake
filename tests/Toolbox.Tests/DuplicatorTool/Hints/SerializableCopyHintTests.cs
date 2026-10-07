@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.DuplicatorTool.Hints;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Hints;
@@ -10,6 +11,7 @@ public sealed class SerializableCopyHintTests : CopyHintTestBase<SerializableCop
         typeof(Exception),
         typeof(AggregateException),
         typeof(IOException),
+        typeof(AssertException),
     ];
 
     public SerializableCopyHintTests()
