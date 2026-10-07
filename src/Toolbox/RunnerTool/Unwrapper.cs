@@ -76,8 +76,7 @@ internal static class Unwrapper
 
             return AsyncSeriesHelper.CreateFromAsync(
                 collection,
-                options.Valuer.Options.IterationLimit,
-                canceler
+                options.Valuer.Options.IterationLimit
             );
         }
 

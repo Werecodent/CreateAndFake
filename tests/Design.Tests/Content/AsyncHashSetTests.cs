@@ -59,7 +59,7 @@ public static class AsyncHashSetTests
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
         AsyncHashSet<AsyncDataSample> set = AsyncHashSet.CreateFromAsync(
-            AsyncSeriesHelper.CreateFromAsync([pair, pair], 2, canceler),
+            AsyncSeriesHelper.CreateFromAsync([pair, pair], 2),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             Tools.Valuer.Options.IterationLimit,
             canceler

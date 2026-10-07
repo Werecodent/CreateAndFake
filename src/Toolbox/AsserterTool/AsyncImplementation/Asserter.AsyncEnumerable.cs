@@ -177,14 +177,27 @@ public partial class Asserter : IAsserterAsyncEnumerable
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
-            )
-            .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    item =>
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection of '{count}' elements, but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (i != count)
         {
@@ -230,14 +243,27 @@ public partial class Asserter : IAsserterAsyncEnumerable
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
-            )
-            .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    item =>
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection of '< {count}' elements, but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (i >= count)
         {
@@ -283,14 +309,27 @@ public partial class Asserter : IAsserterAsyncEnumerable
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
-            )
-            .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    item =>
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection of '<= {count}' elements, but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (i > count)
         {
@@ -336,14 +375,27 @@ public partial class Asserter : IAsserterAsyncEnumerable
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
-            )
-            .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    item =>
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection of '> {count}' elements, but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (i <= count)
         {
@@ -389,14 +441,27 @@ public partial class Asserter : IAsserterAsyncEnumerable
         StringBuilder contents = new();
 
         int i = 0;
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                item => _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
-            )
-            .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    item =>
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection of '>= {count}' elements, but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (i < count)
         {
@@ -442,21 +507,33 @@ public partial class Asserter : IAsserterAsyncEnumerable
         int i = 0;
         bool found = false;
         StringBuilder contents = new();
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                async item =>
-                {
-                    found |= await localOptions
-                        .Valuer.EqualsAsync(content, item, canceler)
-                        .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    async item =>
+                    {
+                        found |= await localOptions
+                            .Valuer.EqualsAsync(content, item, canceler)
+                            .ConfigureAwait(false);
 
-                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
-                }
-            )
-            .ConfigureAwait(false);
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+                    }
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection to contain '{content}', but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (!found)
         {
@@ -498,21 +575,33 @@ public partial class Asserter : IAsserterAsyncEnumerable
         int i = 0;
         bool notFound = true;
         StringBuilder contents = new();
-        await AsyncSeriesHelper
-            .ForEachAsync(
-                collection,
-                localOptions.Valuer.Options.IterationLimit,
-                canceler,
-                async item =>
-                {
-                    notFound &= !await localOptions
-                        .Valuer.EqualsAsync(content, item, canceler)
-                        .ConfigureAwait(false);
+        try
+        {
+            await AsyncSeriesHelper
+                .ForEachAsync(
+                    collection,
+                    localOptions.Valuer.Options.IterationLimit,
+                    canceler,
+                    async item =>
+                    {
+                        notFound &= !await localOptions
+                            .Valuer.EqualsAsync(content, item, canceler)
+                            .ConfigureAwait(false);
 
-                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
-                }
-            )
-            .ConfigureAwait(false);
+                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
+                    }
+                )
+                .ConfigureAwait(false);
+        }
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection to not contain '{content}', but exception occurred at index '{i}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (!notFound)
         {

@@ -67,6 +67,31 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     }
 
     /// <inheritdoc/>
+    public T CreateSized<T>(int size, RandomizerMod? optionConfiguration = null)
+    {
+        return (T)CreateSized(size, typeof(T), optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public object CreateSized(int size, Type type, RandomizerMod? optionConfiguration = null)
+    {
+        RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        return Create(
+            type,
+            _ =>
+                localOptions with
+                {
+                    CollectionMinSize = size,
+                    CollectionMaxSize = size,
+                    StringMinSize = size,
+                    StringMaxSize = size,
+                    NestedOptions = localOptions,
+                }
+        );
+    }
+
+    /// <inheritdoc/>
     public T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null)
     {
         return (T)Inject(typeof(T), values, optionConfiguration);

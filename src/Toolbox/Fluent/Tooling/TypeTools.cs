@@ -10,4 +10,10 @@ public sealed class TypeTools(Type source, ToolSet? tools) : ObjectTools<Type>(s
     {
         return Tools.Randomizer.Create(Source, optionConfiguration);
     }
+
+    /// <inheritdoc cref="IRandomizer.CreateSized(int, Type,RandomizerMod)"/>
+    public object CreateRandomSizedInstance(int size, RandomizerMod? optionConfiguration = null)
+    {
+        return Tools.Randomizer.CreateSized(size, Source, optionConfiguration);
+    }
 }

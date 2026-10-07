@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.FakerTool;
@@ -79,6 +78,103 @@ public static class AsyncHashSet_T_Tests
             typeof(AsyncHashSet<>).Tools().CreateRandomInstance(),
             TestContext.Current.CancellationToken,
             opt => opt with { MethodsToIgnore = [nameof(AsyncHashSet<>.AddToAsync)] }
+        );
+    }
+
+    [Theory, RandomData]
+    internal static Task AsyncHashSet_T_AttributeSupport(
+        AsyncHashSet<AsyncDataSample> sample,
+        [Copy] AsyncHashSet<AsyncDataSample> clone,
+        AsyncHashSet<AsyncDataSample> variant
+    )
+    {
+        return sample
+            .Assert()
+            .IsAsync(clone, TestContext.Current.CancellationToken)
+            .And()
+            .IsNotAsync(variant, TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static Task GetAsyncEnumerator_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            size =>
+                AsyncHashSet.CreateFromAsync(
+                    Tools.Randomizer.CreateSized<IAsyncEnumerable<AsyncDataSample>>(size),
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    Tools.Valuer.Options.IterationLimit,
+                    TestContext.Current.CancellationToken
+                ),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task ByHashesAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+                Tools
+                    .Randomizer.CreateSized<AsyncHashSet<AsyncDataSample>>(size)
+                    .ByHashesAsync(canceler),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task FindMatchesInAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+            {
+                IEnumerable<AsyncDataSample> series =
+                    Tools.Randomizer.CreateSized<AsyncDataSample[]>(size);
+
+                AsyncHashSet<AsyncDataSample> setA = AsyncHashSet.CreateFromAsync(
+                    series,
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    Tools.Valuer.Options.IterationLimit,
+                    TestContext.Current.CancellationToken
+                );
+                AsyncHashSet<AsyncDataSample> setB = AsyncHashSet.CreateFromAsync(
+                    series,
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    Tools.Valuer.Options.IterationLimit,
+                    TestContext.Current.CancellationToken
+                );
+
+                return setA.FindMatchesInAsync(setB, canceler);
+            },
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task FindMissingFromAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+            {
+                IEnumerable<AsyncDataSample> series =
+                    Tools.Randomizer.CreateSized<AsyncDataSample[]>(size);
+
+                AsyncHashSet<AsyncDataSample> setA = AsyncHashSet.CreateFromAsync(
+                    [],
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    Tools.Valuer.Options.IterationLimit,
+                    TestContext.Current.CancellationToken
+                );
+                AsyncHashSet<AsyncDataSample> setB = AsyncHashSet.CreateFromAsync(
+                    series,
+                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
+                    Tools.Valuer.Options.IterationLimit,
+                    TestContext.Current.CancellationToken
+                );
+
+                return setA.FindMissingFromAsync(setB, canceler);
+            },
+            TestContext.Current.CancellationToken
         );
     }
 
@@ -196,8 +292,7 @@ public static class AsyncHashSet_T_Tests
                     new KeyValuePair<int, AsyncDataSample>(hashD, sampleD),
                     new KeyValuePair<int, AsyncDataSample>(hashE, sampleE),
                 ],
-                5,
-                canceler
+                5
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
@@ -212,8 +307,7 @@ public static class AsyncHashSet_T_Tests
                     new KeyValuePair<int, AsyncDataSample>(hashD, sampleD),
                     new KeyValuePair<int, AsyncDataSample>(hashF, sampleF),
                 ],
-                5,
-                canceler
+                5
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
@@ -250,8 +344,7 @@ public static class AsyncHashSet_T_Tests
                     new KeyValuePair<int, AsyncDataSample>(hashD, sampleD),
                     new KeyValuePair<int, AsyncDataSample>(hashE, sampleE),
                 ],
-                5,
-                canceler
+                5
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
@@ -266,8 +359,7 @@ public static class AsyncHashSet_T_Tests
                     new KeyValuePair<int, AsyncDataSample>(hashD, sampleD),
                     new KeyValuePair<int, AsyncDataSample>(hashF, sampleF),
                 ],
-                5,
-                canceler
+                5
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
@@ -287,60 +379,5 @@ public static class AsyncHashSet_T_Tests
         return new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>())
             .Assert()
             .HasCountAsync(0, TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static Task GetAsyncEnumerator_Cancelable([Size(1)] List<AsyncDataSample> items)
-    {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
-
-        return AsyncHashSet
-            .CreateFromAsync(items, Tools.Valuer.ToAsyncComparer<AsyncDataSample>(), 1, canceler)
-            .GetAsyncEnumerator(new CancellationToken(true))
-            .MoveNextAsync()
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(canceler);
-    }
-
-    [Fact]
-    internal static Task GetAsyncEnumerator_EmptyWorksViaEnumerator()
-    {
-        return IterateAsync(
-                new AsyncHashSet<AsyncDataSample>(Tools.Valuer.ToAsyncComparer<AsyncDataSample>()),
-                TestContext.Current.CancellationToken
-            )
-            .Assert()
-            .HasCountAsync(0, TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static Task GetAsyncEnumerator_CancelableViaEnumerator(
-        [Size(1)] List<AsyncDataSample> items
-    )
-    {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
-
-        return IterateAsync(
-                AsyncHashSet.CreateFromAsync(
-                    items,
-                    Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    1,
-                    canceler
-                ),
-                new CancellationToken(true)
-            )
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(canceler);
-    }
-
-    private static async IAsyncEnumerable<T> IterateAsync<T>(
-        AsyncHashSet<T> set,
-        [EnumeratorCancellation] CancellationToken canceler
-    )
-    {
-        await foreach (T item in set.WithCancellation(canceler))
-        {
-            yield return item;
-        }
     }
 }

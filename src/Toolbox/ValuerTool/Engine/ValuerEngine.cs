@@ -70,8 +70,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected, actual)],
-                chainer.Options.IterationLimit,
-                canceler
+                chainer.Options.IterationLimit
             );
         }
 

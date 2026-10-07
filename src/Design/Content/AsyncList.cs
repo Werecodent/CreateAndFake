@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Content;
@@ -30,20 +29,18 @@ public sealed class AsyncList<T> : IAsyncEnumerable<T>
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        async IAsyncEnumerable<T> iterateAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
-        )
+        async IAsyncEnumerable<T> iterateAsync()
         {
+            cancellationToken.ThrowIfCancellationRequested();
             foreach (T item in Content)
             {
-                canceler.ThrowIfCancellationRequested();
-
-                await Task.Delay(0, canceler).ConfigureAwait(false);
+                await Task.Delay(0, cancellationToken).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return item;
             }
         }
 
-        return iterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
+        return iterateAsync().GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>

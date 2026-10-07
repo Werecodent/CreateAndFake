@@ -192,6 +192,8 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
     /// <exception cref="FormatException">When <paramref name="data"/> is not valid.</exception>
     public static Limiter ConvertFrom(string data, CultureInfo? culture)
     {
+        ArgumentGuard.ThrowIfNull(data);
+
         if (_NamedLimiters.TryGetValue(data, out Limiter? named))
         {
             return named;
@@ -206,7 +208,7 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         }
         else
         {
-            string[] parts = data?.Split('-') ?? [];
+            string[] parts = data.Split('-') ?? [];
             if (
                 parts.Length == 3
                 && int.TryParse(parts[0], NumberStyles.Any, culture, out int tries)

@@ -31,33 +31,41 @@ public static class AsyncSeriesHelperTests
         );
     }
 
+    [Fact]
+    internal static Task CreateFromAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            size =>
+                AsyncSeriesHelper.CreateFromAsync(
+                    Tools.Randomizer.CreateSized<string[]>(size),
+                    size
+                ),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task SelectAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+                AsyncSeriesHelper.SelectAsync(
+                    Tools.Randomizer.CreateSized<IAsyncEnumerable<string>>(size),
+                    size,
+                    canceler,
+                    item => item[0]
+                ),
+            TestContext.Current.CancellationToken
+        );
+    }
+
     [Theory, RandomData]
     internal static Task CreateFromAsync_ConvertsObjectsSuccessfully(IList<string> data)
     {
         return AsyncSeriesHelper
-            .CreateFromAsync(data, data.Count, TestContext.Current.CancellationToken)
+            .CreateFromAsync(data, data.Count)
             .Assert()
             .IsAsync(data, TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static async Task CreateFromAsync_CanBeCanceled(IList<string> data)
-    {
-        try
-        {
-            await foreach (
-                string value in AsyncSeriesHelper
-                    .CreateFromAsync(data, data.Count, TestContext.Current.CancellationToken)
-                    .WithCancellation(new CancellationToken(true))
-            )
-            {
-                value.Assert().Fail();
-            }
-        }
-        catch (OperationCanceledException)
-        {
-            data.Assert().Pass();
-        }
     }
 
     [Fact]
@@ -260,76 +268,6 @@ public static class AsyncSeriesHelperTests
             .SelectAsync(data, 1, new CancellationToken(false), x => Task.FromResult(x))
             .Assert()
             .ThrowsAsync<IterationLimitException>(TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static async Task SelectAsync_CanBeCanceledInitially(
-        [Size(0)] IAsyncEnumerable<string> data
-    )
-    {
-        await AsyncSeriesHelper
-            .SelectAsync(data, 0, new CancellationToken(true), x => x)
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
-
-        await AsyncSeriesHelper
-            .SelectAsync(data, 0, new CancellationToken(true), x => Task.FromResult(x))
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
-    }
-
-    [Fact]
-    internal static async Task SelectAsync_CanBeCanceledAtIteration()
-    {
-        using CancellationTokenSource source = new();
-        await AsyncSeriesHelper
-            .SelectAsync(
-                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
-                10,
-                source.Token,
-                x => x
-            )
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
-
-        using CancellationTokenSource source2 = new();
-        await AsyncSeriesHelper
-            .SelectAsync(
-                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source2),
-                10,
-                source.Token,
-                x => Task.FromResult(x)
-            )
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
-    }
-
-    [Theory, RandomData]
-    internal static async Task SelectAsync_CanBeCanceledAfterIterating(
-        [Size(1)] ICollection<string> data
-    )
-    {
-        using CancellationTokenSource source = new();
-        await AsyncSeriesHelper
-            .SelectAsync(
-                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source),
-                data.Count,
-                source.Token,
-                x => x
-            )
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
-
-        using CancellationTokenSource source2 = new();
-        await AsyncSeriesHelper
-            .SelectAsync(
-                AsyncSeriesHelper.CreateCancelingIterationAsync(data, source2),
-                data.Count,
-                source.Token,
-                x => Task.FromResult(x)
-            )
-            .Assert()
-            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

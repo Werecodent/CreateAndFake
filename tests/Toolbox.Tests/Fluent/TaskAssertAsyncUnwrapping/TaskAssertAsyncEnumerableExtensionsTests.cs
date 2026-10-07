@@ -213,7 +213,7 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
-        IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([valid], 1, canceler);
+        IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([valid], 1);
 
         await Task.FromResult(data.Assert()).ContainsAsync(valid, canceler);
         await Task.FromResult(data.Assert()).ContainsAsync(valid, canceler, _mod);
@@ -234,7 +234,7 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
-        IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([invalid], 1, canceler);
+        IAsyncEnumerable<int> data = AsyncSeriesHelper.CreateFromAsync([invalid], 1);
 
         await Task.FromResult(data.Assert()).ContainsNotAsync(valid, canceler);
         await Task.FromResult(data.Assert()).ContainsNotAsync(valid, canceler, _mod);

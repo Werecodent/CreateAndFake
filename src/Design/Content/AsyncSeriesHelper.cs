@@ -12,18 +12,13 @@ public static class AsyncSeriesHelper
     /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
     /// <param name="collection">Series to convert via iteration.</param>
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Asynchronous iteration of the <paramref name="collection"/>.</returns>
-    /// <remarks>The <paramref name="canceler"/> is currently unused; maintained for future compatibility.</remarks>
     [return: NotNullIfNotNull(nameof(collection))]
     public static IAsyncEnumerable<T>? CreateFromAsync<T>(
         IEnumerable<T>? collection,
-        int iterationLimit,
-        CancellationToken canceler
+        int iterationLimit
     )
     {
-        ArgumentGuard.ThrowIfNull(canceler);
-
         if (collection == null)
         {
             return null;
@@ -153,29 +148,31 @@ public static class AsyncSeriesHelper
     {
         ArgumentGuard.ThrowIfNull(itemHandler);
 
-        async IAsyncEnumerable<TOut> handleSelectAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
-        )
+        return IterateSelectAsync(collection, iterationLimit, itemHandler, canceler);
+    }
+
+    /// <inheritdoc cref="SelectAsync{TIn,TOut}(IAsyncEnumerable{TIn},int,CancellationToken,Func{TIn,Task{TOut}})"/>
+    private static async IAsyncEnumerable<TOut> IterateSelectAsync<TIn, TOut>(
+        IAsyncEnumerable<TIn>? collection,
+        int iterationLimit,
+        Func<TIn, Task<TOut>> itemHandler,
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        if (collection == null)
         {
-            if (collection == null)
-            {
-                yield break;
-            }
-
-            canceler.ThrowIfCancellationRequested();
-
-            int i = 0;
-            await foreach (TIn item in collection.WithCancellation(canceler).ConfigureAwait(false))
-            {
-                ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
-                canceler.ThrowIfCancellationRequested();
-                yield return await itemHandler(item).ConfigureAwait(false);
-            }
-
-            canceler.ThrowIfCancellationRequested();
+            yield break;
         }
 
-        return handleSelectAsync(canceler);
+        canceler.ThrowIfCancellationRequested();
+
+        int i = 0;
+        await foreach (TIn item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i++, iterationLimit);
+            canceler.ThrowIfCancellationRequested();
+            yield return await itemHandler(item).ConfigureAwait(false);
+        }
     }
 
 #pragma warning restore CA1068

@@ -99,6 +99,32 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
+    public virtual Task VerifySupportsCancellationAsync<T>(
+        Func<int, IAsyncEnumerable<T>> factory,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        return new CancelValidator(Configure(optionConfiguration)).VerifySupportsCancellationAsync(
+            factory,
+            canceler
+        );
+    }
+
+    /// <inheritdoc/>
+    public virtual Task VerifySupportsCancellationAsync<T>(
+        Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        return new CancelValidator(Configure(optionConfiguration)).VerifySupportsCancellationAsync(
+            factory,
+            canceler
+        );
+    }
+
+    /// <inheritdoc/>
     public virtual Task PreventsNullRefExceptionAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null

@@ -76,6 +76,10 @@ public sealed record TesterOptions : IToolOptions
     [ConfigurableOption]
     public bool OnlyDeclaredMethods { get; init; } = false;
 
+    /// <summary>If empty series should throw when canceled before iteration.</summary>
+    [ConfigurableOption]
+    public bool ThrowsUponCancelWithEmptySeries { get; init; } = true;
+
     /// <summary>Common suffix attached to class names to name the test classes.</summary>
     [ConfigurableOption]
     public ImmutableArray<string> TestClassNameSuffixes { get; init; } = ["Tests", "TestBase"];
@@ -157,6 +161,10 @@ public sealed record TesterOptions : IToolOptions
             InjectionValues = Config.GetValue(section, InjectionValues),
             MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),
             Limiter = Config.GetValue(section, Limiter),
+            ThrowsUponCancelWithEmptySeries = Config.GetValue(
+                section,
+                ThrowsUponCancelWithEmptySeries
+            ),
             TestClassNameGenericSubstitutes = Config.GetArray(
                 section,
                 TestClassNameGenericSubstitutes

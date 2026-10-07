@@ -38,38 +38,39 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     /// <inheritdoc/>
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        async IAsyncEnumerable<T> iterateAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
-        )
+        async IAsyncEnumerable<T> iterateAsync()
         {
+            cancellationToken.ThrowIfCancellationRequested();
             foreach (T item in (await _contents.ConfigureAwait(false)).SelectMany(x => x.Value))
             {
-                canceler.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return item;
             }
         }
 
-        return iterateAsync(cancellationToken).GetAsyncEnumerator(cancellationToken);
+        return iterateAsync().GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>
     public IAsyncEnumerable<KeyValuePair<int, T>> ByHashesAsync(CancellationToken canceler)
     {
-        async IAsyncEnumerable<KeyValuePair<int, T>> iterateHashesAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
-        )
+        return IterateHashesAsync(canceler);
+    }
+
+    /// <inheritdoc cref="ByHashesAsync"/>
+    private async IAsyncEnumerable<KeyValuePair<int, T>> IterateHashesAsync(
+        [EnumeratorCancellation] CancellationToken canceler = default
+    )
+    {
+        canceler.ThrowIfCancellationRequested();
+        foreach (KeyValuePair<int, IList<T>> row in await _contents.ConfigureAwait(false))
         {
-            foreach (KeyValuePair<int, IList<T>> row in await _contents.ConfigureAwait(false))
+            foreach (T item in row.Value)
             {
-                foreach (T item in row.Value)
-                {
-                    canceler.ThrowIfCancellationRequested();
-                    yield return new KeyValuePair<int, T>(row.Key, item);
-                }
+                canceler.ThrowIfCancellationRequested();
+                yield return new KeyValuePair<int, T>(row.Key, item);
             }
         }
-
-        return iterateHashesAsync(canceler);
     }
 
     /// <inheritdoc/>
@@ -147,36 +148,32 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     {
         ArgumentGuard.ThrowIfNull(collection);
 
-        async IAsyncEnumerable<T> findMatchesAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
+        return IterateFindMatchesInAsync(collection, canceler);
+    }
+
+    /// <inheritdoc cref="FindMatchesInAsync"/>
+    private async IAsyncEnumerable<T> IterateFindMatchesInAsync(
+        IAsyncSet<T> collection,
+        [EnumeratorCancellation] CancellationToken token = default
+    )
+    {
+        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
+
+        await foreach (
+            KeyValuePair<int, T> item in collection.ByHashesAsync(token).ConfigureAwait(false)
         )
         {
-            IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
-
-            await foreach (
-                KeyValuePair<int, T> item in collection
-                    .ByHashesAsync(canceler)
-                    .ConfigureAwait(false)
-            )
+            if (contents.TryGetValue(item.Key, out IList<T>? match))
             {
-                if (contents.TryGetValue(item.Key, out IList<T>? match))
+                foreach (T found in match)
                 {
-                    foreach (T found in match)
+                    if (await Comparer.EqualsAsync(item.Value, found, token).ConfigureAwait(false))
                     {
-                        if (
-                            await Comparer
-                                .EqualsAsync(item.Value, found, canceler)
-                                .ConfigureAwait(false)
-                        )
-                        {
-                            yield return found;
-                        }
+                        yield return found;
                     }
                 }
             }
         }
-
-        return findMatchesAsync(canceler);
     }
 
     /// <inheritdoc/>
@@ -187,44 +184,42 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
     {
         ArgumentGuard.ThrowIfNull(collection);
 
-        async IAsyncEnumerable<T> findMissingAsync(
-            [EnumeratorCancellation] CancellationToken canceler = default
+        return IterateFindMissingFromAsync(collection, canceler);
+    }
+
+    /// <inheritdoc cref="FindMissingFromAsync"/>
+    private async IAsyncEnumerable<T> IterateFindMissingFromAsync(
+        IAsyncSet<T> collection,
+        [EnumeratorCancellation] CancellationToken token = default
+    )
+    {
+        IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
+
+        token.ThrowIfCancellationRequested();
+        await foreach (
+            KeyValuePair<int, T> item in collection.ByHashesAsync(token).ConfigureAwait(false)
         )
         {
-            IDictionary<int, IList<T>> contents = await _contents.ConfigureAwait(false);
+            bool missing = true;
 
-            await foreach (
-                KeyValuePair<int, T> item in collection
-                    .ByHashesAsync(canceler)
-                    .ConfigureAwait(false)
-            )
+            if (contents.TryGetValue(item.Key, out IList<T>? match))
             {
-                bool missing = true;
-
-                if (contents.TryGetValue(item.Key, out IList<T>? match))
+                foreach (T found in match)
                 {
-                    foreach (T found in match)
+                    if (await Comparer.EqualsAsync(item.Value, found, token).ConfigureAwait(false))
                     {
-                        if (
-                            await Comparer
-                                .EqualsAsync(item.Value, found, canceler)
-                                .ConfigureAwait(false)
-                        )
-                        {
-                            missing = false;
-                            break;
-                        }
+                        missing = false;
+                        break;
                     }
                 }
+            }
 
-                if (missing)
-                {
-                    yield return item.Value;
-                }
+            token.ThrowIfCancellationRequested();
+            if (missing)
+            {
+                yield return item.Value;
             }
         }
-
-        return findMissingAsync(canceler);
     }
 
     /// <inheritdoc/>

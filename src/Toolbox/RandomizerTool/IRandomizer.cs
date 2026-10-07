@@ -27,6 +27,12 @@ public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
     /// <returns>The created instance.</returns>
     object Create(Type type, RandomizerMod? optionConfiguration = null);
 
+    /// <inheritdoc cref="Create{T}"/>
+    T CreateSized<T>(int size, RandomizerMod? optionConfiguration = null);
+
+    /// <inheritdoc cref="Create"/>
+    object CreateSized(int size, Type type, RandomizerMod? optionConfiguration = null);
+
     /// <summary>
     ///     Creates a <typeparamref name="T"/> instance using <paramref name="values"/> or random data as needed.
     /// </summary>

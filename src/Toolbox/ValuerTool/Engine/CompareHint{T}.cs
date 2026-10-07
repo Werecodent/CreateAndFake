@@ -55,8 +55,7 @@ public abstract class CompareHint<T> : CompareHint
 
         return AsyncSeriesHelper.CreateFromAsync(
             Compare(expected, actual, chainer),
-            chainer.Options.IterationLimit,
-            canceler
+            chainer.Options.IterationLimit
         );
     }
 

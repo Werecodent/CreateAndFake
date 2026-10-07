@@ -66,6 +66,30 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
     void VerifyValueEquality(Type type, TesterMod? optionConfiguration = null);
 
+    /// <summary>Verifies cancellation behavior.</summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="factory"></param>
+    /// <param name="canceler"></param>
+    /// <param name="optionConfiguration"></param>
+    /// <returns></returns>
+    Task VerifySupportsCancellationAsync<T>(
+        Func<int, IAsyncEnumerable<T>> factory,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
+
+    /// <summary>Verifies cancellation behavior.</summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="factory"></param>
+    /// <param name="canceler"></param>
+    /// <param name="optionConfiguration"></param>
+    /// <returns></returns>
+    Task VerifySupportsCancellationAsync<T>(
+        Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
+
     /// <inheritdoc cref="PreventsNullRefExceptionAsync(Type,CancellationToken,TesterMod)"/>
     /// <typeparam name="T">Type to verify.</typeparam>
     Task PreventsNullRefExceptionAsync<T>(

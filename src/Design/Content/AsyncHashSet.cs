@@ -50,7 +50,7 @@ public static class AsyncHashSet
     )
     {
         return CreateFromAsync(
-            AsyncSeriesHelper.CreateFromAsync(contents, iterationLimit, canceler),
+            AsyncSeriesHelper.CreateFromAsync(contents, iterationLimit),
             comparer,
             iterationLimit,
             canceler

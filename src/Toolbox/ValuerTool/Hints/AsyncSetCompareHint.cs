@@ -81,8 +81,7 @@ public sealed class AsyncSetCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
-                chainer.Options.IterationLimit,
-                canceler
+                chainer.Options.IterationLimit
             );
         }
 
