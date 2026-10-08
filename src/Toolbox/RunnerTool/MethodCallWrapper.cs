@@ -32,6 +32,9 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
     /// <summary>Number of args.</summary>
     public int ArgCount => _args.Count;
 
+    /// <summary>Type created from calling <see cref="Method"/>.</summary>
+    public Type ResultType => Method is MethodInfo info ? info.ReturnType : Method.DeclaringType;
+
     /// <summary>Sets parameter named <paramref name="name"/> to <paramref name="value"/>.</summary>
     /// <param name="name">Name for the parameter to modify.</param>
     /// <param name="value">New value to use.</param>

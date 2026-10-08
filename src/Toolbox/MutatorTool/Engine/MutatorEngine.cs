@@ -283,7 +283,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             throw new UnsupportedException(
                 $"Type '{instance.GetType()}' not supported by the {nameof(IMutator)}."
-                    + $"Create a {nameof(IMutateHint)} to handle the {nameof(Type)}."
+                    + $" Create an {nameof(IMutateHint)} to handle the {nameof(Type)}."
             );
         }
     }

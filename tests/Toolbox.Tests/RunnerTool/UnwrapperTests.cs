@@ -5,6 +5,8 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
+#pragma warning disable IDE0059
+
 public static class UnwrapperTests
 {
     [Fact]
@@ -12,7 +14,8 @@ public static class UnwrapperTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Unwrapper),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
     }
 
@@ -21,7 +24,8 @@ public static class UnwrapperTests
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Unwrapper),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
     }
 
@@ -54,8 +58,12 @@ public static class UnwrapperTests
             iterated = true;
         }
 
+        IAsyncEnumerable<T> series = iterate();
+        iterated.Assert().Is(false);
+
         object result = await Unwrapper.UnwrapResultAsync(
-            iterate,
+            series,
+            typeof(IAsyncEnumerable<T>),
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -92,8 +100,12 @@ public static class UnwrapperTests
             iterated = true;
         }
 
+        IEnumerable<T> series = iterate();
+        iterated.Assert().Is(false);
+
         object result = await Unwrapper.UnwrapResultAsync(
-            iterate,
+            series,
+            typeof(IEnumerable<T>),
             Tools.Runner.Options,
             TestContext.Current.CancellationToken
         );
@@ -179,7 +191,7 @@ public static class UnwrapperTests
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNull()
     {
-        return TestUnwrap(() => null, null);
+        return TestUnwrap<object>(() => null, null);
     }
 
     [Theory, RandomData]
@@ -212,16 +224,23 @@ public static class UnwrapperTests
         return TestUnwrap(() => data, data);
     }
 
-    private static Task<AssertChainer<AssertAsyncObject>> TestUnwrap(
-        Func<object> call,
+    private static Task<AssertChainer<AssertAsyncObject>> TestUnwrap<T>(
+        Func<T> call,
         object expectedResult
     )
     {
         return Unwrapper
-            .UnwrapResultAsync(call, Tools.Runner.Options, TestContext.Current.CancellationToken)
+            .UnwrapResultAsync(
+                call(),
+                typeof(T),
+                Tools.Runner.Options,
+                TestContext.Current.CancellationToken
+            )
             .Assert()
             .HasResultAsync(TestContext.Current.CancellationToken)
             .That()
             .Is(expectedResult);
     }
 }
+
+#pragma warning restore

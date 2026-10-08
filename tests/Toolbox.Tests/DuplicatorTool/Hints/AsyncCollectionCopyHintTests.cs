@@ -14,6 +14,22 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
         );
     }
 
+    [Fact]
+    internal Task CopyAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            size =>
+                (IAsyncEnumerable<int>)
+                    TestInstance
+                        .TryCopy(
+                            Tools.Randomizer.CreateSized<IAsyncEnumerable<int>>(size),
+                            CreateChainer()
+                        )
+                        .Data,
+            TestContext.Current.CancellationToken
+        );
+    }
+
     [Theory, RandomData]
     internal static async Task CopyAsync_Interrupt([Size(5)] IAsyncEnumerable<int> original)
     {
@@ -30,6 +46,7 @@ public sealed class AsyncCollectionCopyHintTests : CopyHintTestBase<AsyncCollect
                 break;
             }
         }
+        count.Assert().Is(3);
 
         count = 0;
         await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))

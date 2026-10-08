@@ -1,4 +1,3 @@
-using System.Collections;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 using Werecodent.CreateAndFake.MutatorTool.Hints;
@@ -10,7 +9,7 @@ namespace Werecodent.CreateAndFake.Tests.MutatorTool.Hints;
 public sealed class ObjectMutateHintTests : MutateHintTestBase<ObjectMutateHint>
 {
     public ObjectMutateHintTests()
-        : base([typeof(DataHolderSample)], [typeof(ICollection)]) { }
+        : base([typeof(DataHolderSample)], []) { }
 
     [Fact]
     internal void SupportedTypes_SupportsObject()

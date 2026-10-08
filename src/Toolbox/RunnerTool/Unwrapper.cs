@@ -8,22 +8,35 @@ namespace Werecodent.CreateAndFake.RunnerTool;
 internal static class Unwrapper
 {
     /// <summary>Ensures the result is completed.</summary>
-    /// <param name="call">Potentially wrapped data.</param>
+    /// <param name="result">Potentially wrapped data.</param>
+    /// <param name="methodReturnType"></param>
     /// <param name="options">Configured options to apply to this call.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The unwrapped result.</returns>
+    /// <exception cref="ArgumentException">
+    ///     If <paramref name="result"/> does not inherit <paramref name="methodReturnType"/>.
+    /// </exception>
     internal static async Task<object?> UnwrapResultAsync(
-        Func<object?> call,
+        object? result,
+        Type methodReturnType,
         RunnerOptions options,
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(options);
+        ArgumentGuard.ThrowIfNull(options, methodReturnType);
 
-        object? result = call?.Invoke();
         if (result == null)
         {
             return null;
+        }
+
+        if (!methodReturnType.IsInstanceOfType(result))
+        {
+            throw new ArgumentException(
+                $"Result of type '{GenericConverter.ExpandName(result.GetType())}' was not of"
+                    + $" the provided type '{GenericConverter.ExpandName(methodReturnType)}'.",
+                nameof(methodReturnType)
+            );
         }
 
         TypeDescriber describer = TypeDescriber.For(result.GetType());
@@ -81,7 +94,7 @@ internal static class Unwrapper
         }
 
         // Required to execute yield return methods.
-        if (resultType.Inherits(typeof(IEnumerable<>)))
+        if (GenericConverter.AsGenericBase(methodReturnType) == typeof(IEnumerable<>))
         {
             return Enumerable.AsEnumerable(CollectYieldedResults((dynamic)result, options));
         }

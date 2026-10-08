@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
@@ -20,7 +19,7 @@ public sealed class ObjectMutateHint : MutateHint
     /// <inheritdoc/>
     protected override bool Supports(object instance)
     {
-        return instance is not IEnumerable;
+        return true;
     }
 
     /// <inheritdoc/>

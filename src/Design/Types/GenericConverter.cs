@@ -70,13 +70,17 @@ public static class GenericConverter
             }
         }
 
-        return Enumerable
-            .Empty<Type>()
-            .Concat(child?.GetInterfaces() ?? [])
-            .Concat(loopBaseTypes(child))
-            .Where(i => i.IsGenericType)
-            .Where(i => !i.IsGenericTypeDefinition)
-            .SingleOrDefault(i => i.GetGenericTypeDefinition() == genericBase);
+        List<Type> matches =
+        [
+            .. Enumerable
+                .Empty<Type>()
+                .Concat(child?.GetInterfaces() ?? [])
+                .Concat(loopBaseTypes(child))
+                .Where(i => i.IsGenericType)
+                .Where(i => !i.IsGenericTypeDefinition)
+                .Where(i => i.GetGenericTypeDefinition() == genericBase),
+        ];
+        return matches.Count == 1 ? matches[0] : null;
     }
 
     /// <summary>Attempts to convert the <paramref name="type"/> to its generic <see cref="Type"/> definition.</summary>

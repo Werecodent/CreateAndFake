@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
@@ -34,6 +35,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Iteration of cloned <paramref name="source"/> values.</returns>
     /// <inheritdoc cref="TryCopy"/>
+    [ExcludeFromCodeCoverage] // Generated EnumeratorCancellation code can only be partially covered.
     private static async IAsyncEnumerable<T?> CopyAsync<T>(
         IAsyncEnumerable<T> source,
         IDuplicatorChainer duplicator,
@@ -41,13 +43,12 @@ public sealed class AsyncCollectionCopyHint : CopyHint
     )
     {
         int index = 0;
-        await foreach (T item in source.ConfigureAwait(false))
+        await foreach (T item in source.WithCancellation(canceler).ConfigureAwait(false))
         {
             ArgumentGuard.ThrowUponIterationLimit(
                 index++,
                 duplicator.Options.Valuer.Options.IterationLimit
             );
-            canceler.ThrowIfCancellationRequested();
             yield return duplicator.Copy(item);
         }
     }

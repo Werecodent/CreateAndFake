@@ -37,13 +37,6 @@ public sealed class CollectionCopyHint : CopyHint
             {
                 return new(result);
             }
-            else
-            {
-                throw new UnsupportedException(
-                    $"Collection '{GenericConverter.ExpandName(source)}' not supported by the "
-                        + "duplicator. Create a hint to generate the type."
-                );
-            }
         }
         return CopyHintResult.None;
     }
@@ -51,11 +44,11 @@ public sealed class CollectionCopyHint : CopyHint
     private static IEnumerable? Copy(IEnumerable source, IDuplicatorChainer duplicator)
     {
         Type type = source.GetType();
-        Type? itemType = FindItemType(type);
-        if (itemType == null)
-        {
-            return null;
-        }
+
+        Type itemType =
+            GenericConverter.AsConcreteType(type, typeof(IEnumerable<>))?.GetGenericArguments()[0]
+            ?? type.GetElementType()
+            ?? typeof(object);
 
         Array contents = CopyContents(
             source,
@@ -80,6 +73,7 @@ public sealed class CollectionCopyHint : CopyHint
         }
         else if (GenericConverter.AsGenericBase(collectionType) == typeof(Dictionary<,>))
         {
+            // Constructor missing in .NET 4.8.
             dynamic result = Activator.CreateInstance(collectionType)!;
             foreach (dynamic item in contents)
             {
@@ -88,19 +82,18 @@ public sealed class CollectionCopyHint : CopyHint
             return result;
         }
 
-        ConstructorInfo? constructor = TypeDescriber
-            .For(collectionType)
-            .Constructors.OnlyPublic.Where(c => c.GetParameters().Length == 1)
-            .FirstOrDefault(c => c.GetParameters()[0].ParameterType.Inherits<IEnumerable>());
-
-        if (constructor != null)
+        foreach (
+            ConstructorInfo constructor in TypeDescriber
+                .For(collectionType)
+                .Constructors.OnlyPublic.Where(c => c.GetParameters().Length == 1)
+                .Where(c =>
+                {
+                    Type requiredArg = c.GetParameters()[0].ParameterType;
+                    return requiredArg != collectionType && requiredArg.Inherits<IEnumerable>();
+                })
+        )
         {
             Type requiredArg = constructor.GetParameters()[0].ParameterType;
-
-            if (requiredArg == collectionType)
-            {
-                return null;
-            }
 
             object? wrapped = requiredArg.IsInheritedBy(contents.GetType())
                 ? contents
@@ -111,24 +104,8 @@ public sealed class CollectionCopyHint : CopyHint
                 return (IEnumerable)constructor.Invoke([wrapped]);
             }
         }
-        return null;
-    }
 
-    private static Type? FindItemType(Type type)
-    {
-        Type[] args = type.IsGenericType ? type.GetGenericArguments() : [];
-        switch (args.Length)
-        {
-            case 2:
-                Type pair = typeof(KeyValuePair<,>).MakeGenericType(args);
-                return type.Inherits(typeof(IEnumerable<>).MakeGenericType(pair)) ? pair : null;
-            case 1:
-                return args[0];
-            case 0:
-                return type.GetElementType() ?? typeof(object);
-            default:
-                return null;
-        }
+        return null;
     }
 
     /// <summary>Copies the contents of <paramref name="source"/>.</summary>

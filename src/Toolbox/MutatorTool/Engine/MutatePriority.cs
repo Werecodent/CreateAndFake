@@ -14,23 +14,23 @@ public enum MutatePriority
     /// <remarks>Subtract from this priority for even lower priorities.</remarks>
     None = 0,
 
+    /// <summary>Priority for <see cref="ObjectMutateHint"/>.</summary>
+    ObjectHint = 1,
+
     /// <summary>Priority for <see cref="ImmutableEnumerableMutateHint"/>.</summary>
-    ImmutableEnumerableHint = 1,
+    ImmutableEnumerableHint = 2,
 
     /// <summary>Priority for <see cref="LegacyCollectionMutateHint"/>.</summary>
-    LegacyCollectionHint = 2,
+    LegacyCollectionHint = 3,
 
     /// <summary>Priority for <see cref="CollectionMutateHint"/>.</summary>
-    CollectionHint = 3,
+    CollectionHint = 4,
 
     /// <summary>Priority for <see cref="ListMutateHint"/>.</summary>
-    ListHint = 4,
+    ListHint = 5,
 
     /// <summary>Priority for <see cref="DictionaryMutateHint"/>.</summary>
-    DictionaryHint = 5,
-
-    /// <summary>Priority for <see cref="ObjectMutateHint"/>.</summary>
-    ObjectHint = 6,
+    DictionaryHint = 6,
 
     /// <summary>Priority for <see cref="UnmodifiableMutateHint"/>.</summary>
     UnmodifiableHint = 7,
