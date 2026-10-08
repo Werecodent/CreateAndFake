@@ -116,9 +116,8 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
-        using CancellationTokenSource source = new();
-        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
-            .IsNotEmptyAsync(source.Token)
+        await Task.FromResult(valid.Assert())
+            .IsNotEmptyAsync(new CancellationToken(true))
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
