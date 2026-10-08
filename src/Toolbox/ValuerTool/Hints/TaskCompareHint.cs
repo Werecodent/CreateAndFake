@@ -81,7 +81,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
     /// <returns>The found data to use for comparisons.</returns>
     private static object? ExtractData(Task item)
     {
-        if (item.Status == TaskStatus.RanToCompletion && IsGenericTask(item))
+        if (item.IsCompleted && !item.IsCanceled && !item.IsFaulted && IsGenericTask(item))
         {
             return GrabResult(item);
         }
@@ -112,8 +112,7 @@ public sealed class TaskCompareHint : CompareHint<Task>
             );
         }
 
-        await item.ConfigureAwait(false);
-        if (IsGenericTask(item))
+        if (!item.IsCanceled && !item.IsFaulted && IsGenericTask(item))
         {
             return GrabResult(item);
         }

@@ -127,12 +127,23 @@ public partial class Asserter : IAsserterAsyncEnumerable
         }
 
         bool hasItems = false;
-        await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
+        try
         {
-            hasItems = true;
-            break;
+            await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
+            {
+                hasItems = true;
+                break;
+            }
         }
-        canceler.ThrowIfCancellationRequested();
+        catch (Exception e)
+        {
+            throw new AssertException(
+                $"Expected collection with elements, but exception occurred at index '{0}'.",
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
 
         if (!hasItems)
         {

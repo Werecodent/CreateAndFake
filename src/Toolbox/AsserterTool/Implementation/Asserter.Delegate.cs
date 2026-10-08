@@ -78,10 +78,29 @@ public partial class Asserter : IAsserterDelegate
             return noWrap;
         }
 
-        Exception error =
-            (e is AggregateException agg && agg.InnerExceptions.Count == 1)
-                ? agg.InnerExceptions[0]
-                : e;
+        if (!localOptions.UnwrapExceptionsForThrowAssertions)
+        {
+            throw new AssertException(
+                errorMessage + GenericConverter.ExpandName(e),
+                details,
+                localOptions.Gen.InitialSeed,
+                e
+            );
+        }
+
+        Exception? error;
+        if (e is AggregateException agg && agg.InnerExceptions.Count == 1)
+        {
+            error = agg.InnerExceptions[0];
+        }
+        else if (e is TargetInvocationException invoked)
+        {
+            error = invoked.InnerException;
+        }
+        else
+        {
+            error = e;
+        }
 
         return error as T
             ?? throw new AssertException(

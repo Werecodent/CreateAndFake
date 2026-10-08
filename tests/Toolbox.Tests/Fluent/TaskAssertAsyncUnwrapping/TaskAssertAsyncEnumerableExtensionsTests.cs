@@ -88,6 +88,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .IsEmptyAsync(source.Token)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
         _modCount.Assert().Is(2);
     }
 
@@ -110,6 +116,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .IsNotEmptyAsync(source.Token)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
         _modCount.Assert().Is(2);
     }
 
@@ -126,6 +138,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
             .HasCountAsync(2, canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .HasCountAsync(0, source.Token)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
@@ -148,6 +166,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .HasCountLessThanAsync(0, source.Token)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
         _modCount.Assert().Is(2);
     }
 
@@ -164,6 +188,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
             .HasCountLessOrExactlyAsync(0, canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .HasCountLessOrExactlyAsync(0, source.Token)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
@@ -186,6 +216,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .HasCountMoreThanAsync(0, source.Token)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
         _modCount.Assert().Is(2);
     }
 
@@ -202,6 +238,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
             .HasCountMoreOrExactlyAsync(2, canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .HasCountMoreOrExactlyAsync(0, source.Token)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
@@ -226,6 +268,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .ContainsAsync(valid, source.Token)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
         _modCount.Assert().Is(2);
     }
 
@@ -244,6 +292,12 @@ public sealed class TaskAssertAsyncEnumerableExtensionsTests
             .ThrowsAsync<AssertException>(canceler);
         await Task.FromResult(data.Assert())
             .ContainsNotAsync(invalid, canceler, _mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        using CancellationTokenSource source = new();
+        await Task.FromResult(AsyncSeriesHelper.CreateCancelingIterationAsync<int>(source).Assert())
+            .ContainsNotAsync(valid, source.Token)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
 

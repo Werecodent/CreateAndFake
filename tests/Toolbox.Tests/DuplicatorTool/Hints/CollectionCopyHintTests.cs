@@ -29,6 +29,7 @@ public sealed class CollectionCopyHintTests : CopyHintTestBase<CollectionCopyHin
     private static readonly Type[] _InvalidTypes =
     [
         typeof(DoubleEnumerableSample),
+        typeof(ContentEnumerableSample),
         typeof(DataHolderSample),
     ];
 

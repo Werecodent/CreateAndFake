@@ -57,15 +57,10 @@ public sealed class CollectionCopyHint : CopyHint
             _ReverseCases.Contains(GenericConverter.AsGenericBase(type) ?? type)
         );
 
-        return MakeCollection(contents, type, itemType, duplicator);
+        return MakeCollection(contents, type);
     }
 
-    private static IEnumerable? MakeCollection(
-        Array contents,
-        Type collectionType,
-        Type itemType,
-        IDuplicatorChainer duplicator
-    )
+    private static IEnumerable? MakeCollection(Array contents, Type collectionType)
     {
         if (collectionType.IsArray)
         {
@@ -86,23 +81,10 @@ public sealed class CollectionCopyHint : CopyHint
             ConstructorInfo constructor in TypeDescriber
                 .For(collectionType)
                 .Constructors.OnlyPublic.Where(c => c.GetParameters().Length == 1)
-                .Where(c =>
-                {
-                    Type requiredArg = c.GetParameters()[0].ParameterType;
-                    return requiredArg != collectionType && requiredArg.Inherits<IEnumerable>();
-                })
+                .Where(c => c.GetParameters()[0].ParameterType.IsInstanceOfType(contents))
         )
         {
-            Type requiredArg = constructor.GetParameters()[0].ParameterType;
-
-            object? wrapped = requiredArg.IsInheritedBy(contents.GetType())
-                ? contents
-                : MakeCollection(contents, requiredArg, itemType, duplicator);
-
-            if (wrapped != null)
-            {
-                return (IEnumerable)constructor.Invoke([wrapped]);
-            }
+            return (IEnumerable)constructor.Invoke([contents]);
         }
 
         return null;

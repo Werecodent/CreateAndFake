@@ -59,7 +59,7 @@ public sealed class TaskCopyHint : CopyHint
         }
         else if (task.IsFaulted)
         {
-            return Task.FromException(duplicator.Copy(task.Exception));
+            return Task.FromException(duplicator.Copy(task.Exception.InnerException!));
         }
         else if (task.IsCompleted)
         {
@@ -81,7 +81,7 @@ public sealed class TaskCopyHint : CopyHint
         }
         else if (task.IsFaulted)
         {
-            return Task.FromException<T>(duplicator.Copy(task.Exception));
+            return Task.FromException<T>(duplicator.Copy(task.Exception.InnerException!));
         }
         else if (task.IsCompleted)
         {

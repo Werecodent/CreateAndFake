@@ -33,6 +33,10 @@ public sealed record AsserterOptions : IToolOptions
     [ConfigurableOption]
     public bool DisableAssertThrowCatching { get; init; } = false;
 
+    /// <summary>Determines if inner exceptions are check for throw assertions.</summary>
+    [ConfigurableOption]
+    public bool UnwrapExceptionsForThrowAssertions { get; init; } = true;
+
     /// <summary>Fails any call that utilizes the Debug methods.</summary>
     [ConfigurableOption]
     public bool DebugAssertsFail { get; init; } = false;
@@ -56,6 +60,10 @@ public sealed record AsserterOptions : IToolOptions
             DisableAssertThrowCatching = Config.GetValue(section, DisableAssertThrowCatching),
             StringCompareOption = Config.GetValue(section, StringCompareOption),
             DebugAssertsFail = Config.GetValue(section, DebugAssertsFail),
+            UnwrapExceptionsForThrowAssertions = Config.GetValue(
+                section,
+                UnwrapExceptionsForThrowAssertions
+            ),
         };
     }
 

@@ -14,12 +14,13 @@ internal sealed class StringDictionaryMutateHandler : IMutateHandler
     {
         StringDictionary dict = (StringDictionary)instance;
 
-        string key =
-            dict.Count > 0 && chainer.Options.Gen.Next<bool>()
-                ? chainer.Options.Gen.NextItem(dict.Keys.Cast<string>())
-                : chainer.VariantOf(dict.Keys.Cast<string>());
+        IEnumerable<string> keys = dict.Keys.Cast<string>();
+        if (dict.Count > 0)
+        {
+            dict[chainer.Options.Gen.NextItem(keys)] = chainer.Options.Randomizer.Create<string>();
+        }
 
-        dict[key] = chainer.Options.Randomizer.Create<string>();
+        dict.Add(chainer.VariantOf(keys), chainer.Options.Randomizer.Create<string>());
         return true;
     }
 }

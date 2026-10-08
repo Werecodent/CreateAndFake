@@ -5,16 +5,16 @@ using Werecodent.CreateAndFake.Design.Types;
 namespace Werecodent.CreateAndFake.Samples.Scenarios;
 
 [ValidSample]
-public sealed class ContentEnumerableSample(string? data) : IEnumerable<char>
+public sealed class ContentEnumerableSample(string? data) : IEnumerable<int>
 {
     public string Data { get; } = data ?? "";
 
     public ContentEnumerableSample(ContentEnumerableSample original)
         : this(original?.Data) { }
 
-    public IEnumerator<char> GetEnumerator()
+    public IEnumerator<int> GetEnumerator()
     {
-        return Data.GetEnumerator();
+        return Data.Select(x => (int)x).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

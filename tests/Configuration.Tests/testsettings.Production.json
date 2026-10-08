@@ -4,6 +4,7 @@
         "Asserter": {
             "StringCompareOption": "CurrentCulture",
             "DisableAssertThrowCatching": true,
+            "UnwrapExceptionsForThrowAssertions": false,
             "DebugAssertsFail": true
         },
         "Duplicator": {
