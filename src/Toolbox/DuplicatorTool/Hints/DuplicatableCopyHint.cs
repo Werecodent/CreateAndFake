@@ -25,7 +25,7 @@ public sealed class DuplicatableCopyHint : CopyHint
             {
                 cloneType = typeof(IDuplicatable<>).MakeGenericType(sourceType);
             }
-            catch (TypeLoadException)
+            catch (ArgumentException)
             {
                 return CopyHintResult.None;
             }

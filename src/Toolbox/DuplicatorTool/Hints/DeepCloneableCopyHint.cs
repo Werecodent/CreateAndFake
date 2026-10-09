@@ -26,7 +26,7 @@ public sealed class DeepCloneableCopyHint : CopyHint
             {
                 cloneType = typeof(IDeepCloneable<>).MakeGenericType(sourceType);
             }
-            catch (TypeLoadException)
+            catch (ArgumentException)
             {
                 return CopyHintResult.None;
             }
