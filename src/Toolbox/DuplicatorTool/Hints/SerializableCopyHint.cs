@@ -33,11 +33,7 @@ public sealed class SerializableCopyHint : CopyHint
 
             DataContractSerializer serializer = new(
                 source.GetType(),
-                contents
-                    .AllContent()
-                    .Select(d => d.GetType())
-                    .Concat(FindExtraKnownTypes(source))
-                    .Distinct()
+                contents.Select(d => d.GetType()).Concat(FindExtraKnownTypes(source)).Distinct()
             );
 
             using MemoryStream stream = new();

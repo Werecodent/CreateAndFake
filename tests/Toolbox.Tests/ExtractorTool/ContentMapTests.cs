@@ -20,12 +20,12 @@ public static class ContentMapTests
         );
     }
 
-    [Theory, RandomData]
-    internal static Task ContentMap_NoParameterMutation(ContentMap map)
+    [Fact]
+    internal static Task ContentMap_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            map,
-            TestContext.Current.CancellationToken
+        return Tools.Tester.PreventsParameterMutationAsync<ContentMap>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
     }
 
@@ -70,11 +70,11 @@ public static class ContentMapTests
     }
 
     [Theory, RandomData]
-    internal static void AllContent_ContainsEverything(DataHolderSample sample)
+    internal static void GetEnumerator_ContainsEverything(DataHolderSample sample)
     {
         IContentMap map = Tools.Extractor.Extract(sample);
-        map.AllContent().Assert().Contains(sample.NestedValue);
-        map.AllContent().Assert().Contains(sample.NestedValue.NumberValue);
+        map.Assert().Contains(sample.NestedValue);
+        map.Assert().Contains(sample.NestedValue.NumberValue);
     }
 
     [Theory, RandomData]

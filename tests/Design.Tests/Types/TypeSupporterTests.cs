@@ -9,7 +9,8 @@ public static class TypeSupporterTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(TypeSupporter),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
     }
 
@@ -19,14 +20,7 @@ public static class TypeSupporterTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(TypeSupporter),
             TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException), // Duplicate key.
-                    ],
-                }
+            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
         );
     }
 

@@ -2,6 +2,7 @@
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
@@ -11,8 +12,8 @@ namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 /// <param name="validTypes">Types that can be created by the hint.</param>
 /// <param name="invalidTypes">Types that can't be created by the hint.</param>
 public abstract class CreateHintTestBase<T>(
-    IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes
+    IEnumerable<Type> validTypes = null,
+    IEnumerable<Type> invalidTypes = null
 )
     where T : CreateHint, new()
 {
@@ -27,10 +28,11 @@ public abstract class CreateHintTestBase<T>(
     protected T TestInstance { get; } = new T();
 
     /// <summary>Types that can be created by the hint.</summary>
-    private readonly IEnumerable<Type> _validTypes = validTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that can't be created by the hint.</summary>
-    private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _invalidTypes =
+        invalidTypes ?? [typeof(DataHolderSample), typeof(IEnumerable), typeof(IEnumerable<>)];
 
     /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]

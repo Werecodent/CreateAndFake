@@ -16,8 +16,6 @@ public sealed class ValueTaskCreateHintTests : CreateHintTestBase<ValueTaskCreat
         typeof(SingleCallValueTaskSource<string>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
-
     public ValueTaskCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 }

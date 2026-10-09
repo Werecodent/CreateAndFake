@@ -1,6 +1,4 @@
-using System.Collections;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -21,15 +19,8 @@ public sealed class SpanCreateHintTests : CreateHintTestBase<SpanCreateHint>
         MakeDefined(typeof(ReadOnlySpan<>)),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(DataHolderSample),
-        typeof(IEnumerable),
-        typeof(IEnumerable<>),
-    ];
-
     public SpanCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 
     private static Type MakeDefined(Type type)
     {

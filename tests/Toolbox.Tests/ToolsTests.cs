@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
@@ -133,7 +134,7 @@ public static class ToolsTests
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(List<double>)],
+            [typeof(ContentMap)],
             TestContext.Current.CancellationToken
         );
     }

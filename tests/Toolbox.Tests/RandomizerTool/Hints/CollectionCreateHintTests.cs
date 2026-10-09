@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -42,15 +40,8 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
             .Select(MakeDefined),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(DataHolderSample),
-        typeof(IEnumerable),
-        typeof(IEnumerable<>),
-    ];
-
     public CollectionCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 
     [Fact]
     public void TryToCreate_RetriesSetsWithDuplicates()

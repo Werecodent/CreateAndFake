@@ -1,4 +1,5 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -32,6 +33,18 @@ public static class AsyncContentMapTests
                     InjectionValues = [Tools.Extractor.Options],
                     IgnorableExceptions = [typeof(ToolException)],
                 }
+        );
+    }
+
+    [Fact]
+    internal static Task GetAsyncEnumerator_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            size => new AsyncContentMap(
+                Tools.Randomizer.CreateSized<IAsyncSet<object>>(size),
+                Tools.Extractor.Options
+            ),
+            TestContext.Current.CancellationToken
         );
     }
 
@@ -131,17 +144,14 @@ public static class AsyncContentMapTests
     }
 
     [Theory, RandomData]
-    internal static async Task AllContentAsync_ContainsEverything(DataHolderSample sample)
+    internal static async Task GetAsyncEnumerator_ContainsEverything(DataHolderSample sample)
     {
         IAsyncContentMap map = await Tools.Extractor.ExtractAsync(
             sample,
             TestContext.Current.CancellationToken
         );
-        await map.AllContentAsync(TestContext.Current.CancellationToken)
-            .Assert()
-            .ContainsAsync(sample.NestedValue, TestContext.Current.CancellationToken);
-        await map.AllContentAsync(TestContext.Current.CancellationToken)
-            .Assert()
+        await map.Assert().ContainsAsync(sample.NestedValue, TestContext.Current.CancellationToken);
+        await map.Assert()
             .ContainsAsync(sample.NestedValue.NumberValue, TestContext.Current.CancellationToken);
     }
 

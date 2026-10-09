@@ -33,13 +33,19 @@ public static class TypeSupporter
     /// </summary>
     /// <typeparam name="T">The <see cref="ITypeSupporter"/> <see cref="Type"/> being grouped.</typeparam>
     /// <param name="typeHandlers">The collection to group via iteration.</param>
+    /// <param name="exclusions">Types to prevent being added.</param>
     /// <returns>
     ///     The collected <paramref name="typeHandlers"/> keyed by every <see langword="class"/> &amp;
     ///     <see langword="interface"/> their <see cref="ITypeSupporter.SupportedType"/> inherits.
     /// </returns>
-    public static IDictionary<Type, T[]> GroupByInheritance<T>(IEnumerable<T> typeHandlers)
+    public static IDictionary<Type, T[]> GroupByInheritance<T>(
+        IEnumerable<T> typeHandlers,
+        params ICollection<Type> exclusions
+    )
         where T : ITypeSupporter
     {
+        ArgumentGuard.ThrowIfNull(exclusions);
+
         Dictionary<Type, IList<T>> results = [];
         foreach (T handler in typeHandlers ?? [])
         {
@@ -48,6 +54,7 @@ public static class TypeSupporter
                     .For(handler.SupportedType)
                     .InheritedTypes.Where(t => !t.IsGenericTypeDefinition)
                     .Where(t => !t.Inherits<Delegate>() || t == handler.SupportedType)
+                    .Where(t => !exclusions.Contains(t))
             )
             {
                 if (results.TryGetValue(type, out IList<T>? values))

@@ -1,13 +1,10 @@
+using Werecodent.CreateAndFake.ValuerTool;
+
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracted content of an object.</summary>
-public interface IAsyncContentMap
+public interface IAsyncContentMap : IAsyncEnumerable<object>, IValuerAsyncComparable
 {
-    /// <summary>Iterates all the extracted contents.</summary>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <returns>The extracted contents.</returns>
-    IAsyncEnumerable<object> AllContentAsync(CancellationToken canceler);
-
     /// <summary>Determines if the map has <paramref name="item"/> in it.</summary>
     /// <param name="item">Content to check for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>

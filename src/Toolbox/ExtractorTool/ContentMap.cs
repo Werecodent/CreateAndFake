@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Text;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
@@ -17,9 +19,15 @@ public sealed class ContentMap(ISet<object> content, ExtractorOptions options) :
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IEnumerable<object> AllContent()
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        return _content;
+        return GetEnumerator();
+    }
+
+    /// <inheritdoc/>
+    public IEnumerator<object> GetEnumerator()
+    {
+        return _content.GetEnumerator();
     }
 
     /// <inheritdoc/>
@@ -42,8 +50,8 @@ public sealed class ContentMap(ISet<object> content, ExtractorOptions options) :
     /// <inheritdoc/>
     public IEnumerable<object> FindSharedContent(params IEnumerable<IContentMap> maps)
     {
-        return maps.SelectMany(m => m.AllContent())
-            .Intersect(AllContent(), _options.Valuer)
+        return maps.SelectMany(m => m)
+            .Intersect(this, _options.Valuer)
             .Where(d => !_options.UniqueIgnoredTypes.Contains(d.GetType()))
             .Where(d => !d.GetType().IsEnum)
             .Where(d =>
@@ -70,6 +78,31 @@ public sealed class ContentMap(ISet<object> content, ExtractorOptions options) :
     public IEnumerable<object> FindAll(Type type)
     {
         return _content.Where(t => t.GetType().Inherits(type));
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<Difference> Compare(object? other, IValuer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        ContentMap? map = other as ContentMap;
+        return valuer.Compare((_content, _options), (map?._content, map?._options));
+    }
+
+    /// <inheritdoc/>
+    public bool ValuesEqual(object? other, IValuer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        ContentMap? map = other as ContentMap;
+        return valuer.Equals((_content, _options), (map?._content, map?._options));
+    }
+
+    /// <inheritdoc/>
+    public int GetValueHash(IValuer valuer)
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+        return valuer.GetHashCode((_content, _options));
     }
 
     /// <inheritdoc/>

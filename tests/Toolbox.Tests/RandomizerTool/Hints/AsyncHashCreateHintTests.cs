@@ -1,7 +1,5 @@
-using System.Collections;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -15,15 +13,8 @@ public sealed class AsyncHashCreateHintTests : CreateHintTestBase<AsyncHashCreat
         typeof(IAsyncSet<int>),
     ];
 
-    private static readonly Type[] _InvalidTypes =
-    [
-        typeof(DataHolderSample),
-        typeof(IEnumerable),
-        typeof(IEnumerable<>),
-    ];
-
     public AsyncHashCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 
     [Theory, RandomData]
     internal static async Task TryToCreate_Empty([Size(0)] IAsyncSet<int> items)

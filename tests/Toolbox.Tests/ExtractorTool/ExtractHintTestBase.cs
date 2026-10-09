@@ -1,6 +1,7 @@
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
@@ -9,24 +10,22 @@ namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
 /// <summary>Handles testing extract hints.</summary>
 /// <typeparam name="T">Extract hint to test.</typeparam>
-/// <param name="testInstance">Instance to test with.</param>
-/// <param name="validTypes">Types that can be created by the hint.</param>
-/// <param name="invalidTypes">Types that can't be created by the hint.</param>
+/// <param name="validTypes"><inheritdoc cref="_validTypes" path="/summary"/></param>
+/// <param name="invalidTypes"><inheritdoc cref="_invalidTypes" path="/summary"/></param>
 public abstract class ExtractHintTestBase<T>(
-    T testInstance,
-    IEnumerable<Type> validTypes,
-    IEnumerable<Type> invalidTypes
+    IEnumerable<Type> validTypes = null,
+    IEnumerable<Type> invalidTypes = null
 )
-    where T : IExtractHint
+    where T : IExtractHint, new()
 {
     /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = testInstance;
+    protected T TestInstance { get; } = new();
 
     /// <summary>Types that can be created by the hint.</summary>
-    private readonly IEnumerable<Type> _validTypes = validTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that can't be created by the hint.</summary>
-    private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? Type.EmptyTypes;
+    private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? [typeof(DataHolderSample)];
 
     /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
     [Fact]
@@ -68,6 +67,40 @@ public abstract class ExtractHintTestBase<T>(
         }
     }
 
+    /// <summary>Verifies the hint supports the correct types.</summary>
+    [Fact]
+    public async Task TryToExtractAsync_SupportsValidTypes()
+    {
+        foreach (Type type in _validTypes)
+        {
+            object value = Tools.Randomizer.Create(type);
+            ExtractHintResult result = await TestInstance.TryToExtractAsync(
+                value,
+                CreateChainer(),
+                TestContext.Current.CancellationToken
+            );
+            try
+            {
+                result
+                    .HasData.Assert()
+                    .Is(
+                        true,
+                        "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'."
+                    );
+                result
+                    .Data.Assert()
+                    .IsNot(
+                        null,
+                        "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
+                    );
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(value, result.Data);
+            }
+        }
+    }
+
     /// <summary>Verifies the hint doesn't support the wrong types.</summary>
     [Fact]
     public async Task TryToExtract_InvalidTypesFail()
@@ -81,6 +114,35 @@ public abstract class ExtractHintTestBase<T>(
                     .TryToExtract(value, CreateChainer())
                     .Assert()
                     .IsAsync(
+                        ExtractHintResult.None,
+                        TestContext.Current.CancellationToken,
+                        "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
+                    );
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(value);
+            }
+        }
+    }
+
+    /// <summary>Verifies the hint doesn't support the wrong types.</summary>
+    [Fact]
+    public async Task TryToExtractAsync_InvalidTypesFail()
+    {
+        foreach (Type type in _invalidTypes)
+        {
+            object value = Tools.Randomizer.Create(type);
+            try
+            {
+                await TestInstance
+                    .TryToExtractAsync(
+                        value,
+                        CreateChainer(),
+                        TestContext.Current.CancellationToken
+                    )
+                    .Assert()
+                    .HasResultAsync(
                         ExtractHintResult.None,
                         TestContext.Current.CancellationToken,
                         "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."

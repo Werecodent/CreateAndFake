@@ -10,6 +10,12 @@ public sealed class StructuralEquatableCompareHint : CompareHint<IStructuralEqua
     public override int EnginePriority => (int)ComparePriority.StructuralEquatableHint;
 
     /// <inheritdoc/>
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
+    {
+        return chainer.Options.UseEquatableComparisons && expected is IStructuralEquatable;
+    }
+
+    /// <inheritdoc/>
     protected override IEnumerable<Difference> Compare(
         IStructuralEquatable expected,
         IStructuralEquatable actual,

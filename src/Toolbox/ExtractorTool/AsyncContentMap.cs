@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
@@ -8,7 +11,8 @@ namespace Werecodent.CreateAndFake.ExtractorTool;
 /// <param name="content"><inheritdoc cref="_content" path="/summary"/></param>
 /// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
 public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions options)
-    : IAsyncContentMap
+    : IAsyncContentMap,
+        IDuplicatable<AsyncContentMap>
 {
     /// <summary>Flattened object data.</summary>
     private readonly IAsyncSet<object> _content =
@@ -19,21 +23,11 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         options ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
-    public IAsyncEnumerable<object> AllContentAsync(CancellationToken canceler)
-    {
-        return GetAllContentAsync(canceler);
-    }
-
-    /// <inheritdoc cref="AllContentAsync"/>
-    private async IAsyncEnumerable<object> GetAllContentAsync(
-        [EnumeratorCancellation] CancellationToken canceler = default
+    public IAsyncEnumerator<object> GetAsyncEnumerator(
+        CancellationToken cancellationToken = default
     )
     {
-        await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
-        {
-            canceler.ThrowIfCancellationRequested();
-            yield return item;
-        }
+        return _content.GetAsyncEnumerator(cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -189,6 +183,43 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
                 yield return item;
             }
         }
+    }
+
+    /// <inheritdoc/>
+    public AsyncContentMap DeepClone(IDuplicator duplicator)
+    {
+        ArgumentGuard.ThrowIfNull(duplicator);
+        return new AsyncContentMap(duplicator.Copy(_content), duplicator.Copy(_options));
+    }
+
+    /// <inheritdoc/>
+    public IAsyncEnumerable<Difference> CompareAsync(
+        object? other,
+        IValuer valuer,
+        CancellationToken canceler = default
+    )
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        AsyncContentMap? map = other as AsyncContentMap;
+        return valuer.CompareAsync(
+            (_content, _options),
+            (map?._content, map?._options),
+            canceler,
+            opt => opt with { UseEquatableComparisons = false }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<int> GetValueHashAsync(IValuer valuer, CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(valuer);
+
+        return valuer.GetHashCodeAsync(
+            (_content, _options),
+            canceler,
+            opt => opt with { UseEquatableComparisons = false }
+        );
     }
 
     /// <inheritdoc/>

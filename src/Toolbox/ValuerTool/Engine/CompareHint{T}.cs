@@ -10,7 +10,7 @@ namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 public abstract class CompareHint<T> : CompareHint
 {
     /// <inheritdoc/>
-    protected sealed override bool Supports(object expected, object actual, IValuerChainer chainer)
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected is T && actual is T;
     }

@@ -2,7 +2,6 @@
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
-using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;
 
@@ -58,10 +57,8 @@ public sealed class DelegateCreateHintTests : CreateHintTestBase<DelegateCreateH
         typeof(Action),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
-
     public DelegateCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 
     [Fact]
     internal static void Create_HandlesAllDelegates()

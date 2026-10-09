@@ -43,11 +43,7 @@ public static class ExtractorTests
             )
         )
         {
-            Tools
-                .Extractor.Extract(Tools.Randomizer.Create(type))
-                .AllContent()
-                .Assert()
-                .IsNotEmpty();
+            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).Assert().IsNotEmpty();
         }
     }
 
@@ -56,11 +52,7 @@ public static class ExtractorTests
     {
         foreach (Type type in LegacyCollectionCreateHint.PotentialCollections)
         {
-            Tools
-                .Extractor.Extract(Tools.Randomizer.Create(type))
-                .AllContent()
-                .Assert()
-                .IsNotEmpty();
+            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).Assert().IsNotEmpty();
         }
     }
 
@@ -71,18 +63,13 @@ public static class ExtractorTests
     {
         ISet<object> asyncContent = (
             await AsyncSeriesHelper.ToListAsync(
-                (
-                    await Tools.Extractor.ExtractAsync(
-                        sample,
-                        TestContext.Current.CancellationToken
-                    )
-                ).AllContentAsync(TestContext.Current.CancellationToken),
+                await Tools.Extractor.ExtractAsync(sample, TestContext.Current.CancellationToken),
                 Tools.Valuer.Options.IterationLimit,
                 TestContext.Current.CancellationToken
             )
         ).ToHashSet();
 
-        ISet<object> syncContent = Tools.Extractor.Extract(sample).AllContent().ToHashSet();
+        ISet<object> syncContent = Tools.Extractor.Extract(sample).ToHashSet();
 
         asyncContent
             .Assert()

@@ -1,12 +1,10 @@
+using Werecodent.CreateAndFake.ValuerTool;
+
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
 /// <summary>Extracted content of an object.</summary>
-public interface IContentMap
+public interface IContentMap : IEnumerable<object>, IValuerComparable
 {
-    /// <summary>Iterates all the extracted contents.</summary>
-    /// <returns>The extracted contents.</returns>
-    IEnumerable<object> AllContent();
-
     /// <summary>Determines if the map has <paramref name="item"/> in it.</summary>
     /// <param name="item">Content to check for.</param>
     /// <returns><see langword="true"/> if <see langword="this"/> has the item, <see langword="false"/> otherwise.</returns>

@@ -17,7 +17,16 @@ public sealed class DefaultEqualityCompareHint : CompareHint
         Type actualType = actual.GetType();
         return (
                 expectedType != actualType
-                && !(expectedType.Inherits<IEnumerable>() && actualType.Inherits<IEnumerable>())
+                && !(
+                    (
+                        expectedType.Inherits<IEnumerable>()
+                        || expectedType.Inherits(typeof(IAsyncEnumerable<>))
+                    )
+                    && (
+                        actualType.Inherits<IEnumerable>()
+                        || actualType.Inherits(typeof(IAsyncEnumerable<>))
+                    )
+                )
             )
             || expectedType.IsPrimitive
             || expectedType.IsEnum

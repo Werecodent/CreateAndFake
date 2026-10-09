@@ -65,10 +65,7 @@ internal sealed class SerializationValidator(TesterOptions options)
     private void VerifyXmlSerialization(Type type, object? instance)
     {
         IContentMap contents = Options.Extractor.Extract(instance);
-        DataContractSerializer serializer = new(
-            type,
-            contents.AllContent().Select(d => d.GetType()).Distinct()
-        );
+        DataContractSerializer serializer = new(type, contents.Select(d => d.GetType()).Distinct());
 
         VerifySerialization(type, instance, serializer);
     }

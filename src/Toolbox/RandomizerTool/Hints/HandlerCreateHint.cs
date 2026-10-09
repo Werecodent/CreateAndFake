@@ -1,3 +1,4 @@
+using System.Collections;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
@@ -18,14 +19,17 @@ public sealed class HandlerCreateHint : CreateHint
         new ConfigurationSectionCreateHandler(),
     ];
 
-    private static readonly IDictionary<Type, ICreateHandler[]> _CreatorsByType =
+    internal static readonly IDictionary<Type, ICreateHandler[]> _CreatorsByType =
         TypeSupporter.GroupByInheritance(
             _Creators
                 .Concat(SelfCreateHandlers.Handlers)
                 .Concat(ValueCreateHandlers.Handlers)
                 .Concat(SystemCreateHandlers.Handlers)
                 .Concat(ExceptionCreateHandlers.Handlers)
-                .Concat(ReflectionCreateHandlers.Handlers)
+                .Concat(ReflectionCreateHandlers.Handlers),
+            typeof(IEnumerable<object>),
+            typeof(IEnumerable<>),
+            typeof(IEnumerable)
         );
 
     /// <inheritdoc/>

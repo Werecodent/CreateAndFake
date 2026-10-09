@@ -13,8 +13,6 @@ public sealed class FakeCreateHintTests : CreateHintTestBase<FakeCreateHint>
         typeof(Fake<GenericSample<string>>),
     ];
 
-    private static readonly Type[] _InvalidTypes = [typeof(DataHolderSample)];
-
     public FakeCreateHintTests()
-        : base(_ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes) { }
 }
