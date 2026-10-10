@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
@@ -71,9 +70,7 @@ public static class ExtractorTests
 
         ISet<object> syncContent = Tools.Extractor.Extract(sample).ToHashSet();
 
-        asyncContent
-            .Assert()
-            .Is(syncContent, JsonConvert.SerializeObject(sample, Formatting.Indented));
+        asyncContent.Assert().Is(syncContent);
     }
 
 #pragma warning restore

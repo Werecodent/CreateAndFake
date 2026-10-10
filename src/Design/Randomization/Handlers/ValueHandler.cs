@@ -11,7 +11,7 @@ internal abstract class ValueHandler<T> : IValueHandler
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen)
     {
-        return Create(gen)!;
+        return Create(gen);
     }
 
     /// <inheritdoc/>
@@ -23,7 +23,7 @@ internal abstract class ValueHandler<T> : IValueHandler
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object min, object max)
     {
-        return Create(gen, (T)min, (T)max)!;
+        return Create(gen, (T)min, (T)max);
     }
 
     /// <inheritdoc cref="CreateSupported(IRandom)"/>

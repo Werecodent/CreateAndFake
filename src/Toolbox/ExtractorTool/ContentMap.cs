@@ -85,17 +85,20 @@ public sealed class ContentMap(ISet<object> content, ExtractorOptions options) :
     {
         ArgumentGuard.ThrowIfNull(valuer);
 
-        ContentMap? map = other as ContentMap;
-        return valuer.Compare((_content, _options), (map?._content, map?._options));
+        if (other is ContentMap map)
+        {
+            return valuer.Compare((_content, _options), (map._content, map._options));
+        }
+        else
+        {
+            return valuer.Compare(GetType(), other?.GetType());
+        }
     }
 
     /// <inheritdoc/>
     public bool ValuesEqual(object? other, IValuer valuer)
     {
-        ArgumentGuard.ThrowIfNull(valuer);
-
-        ContentMap? map = other as ContentMap;
-        return valuer.Equals((_content, _options), (map?._content, map?._options));
+        return !Compare(other, valuer).Any();
     }
 
     /// <inheritdoc/>

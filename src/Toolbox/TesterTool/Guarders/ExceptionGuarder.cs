@@ -17,7 +17,7 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
             return Task.CompletedTask;
         }
 
-        object instance = Options.Randomizer.Create<Injected<T>>()!.Dummy!;
+        object instance = Options.Randomizer.Create<Injected<T>>().Dummy!;
         return new ExceptionGuarder(Options).CallAllMethodsAsync(instance, canceler);
     }
 

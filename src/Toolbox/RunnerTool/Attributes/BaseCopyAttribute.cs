@@ -32,7 +32,7 @@ public abstract class BaseCopyAttribute : ParameterHintAttribute
         {
             if (param.ParameterType == methodParams[i].ParameterType)
             {
-                return localOptions.Duplicator.Copy(args[i])!;
+                return localOptions.Duplicator.Copy(args[i]);
             }
         }
 

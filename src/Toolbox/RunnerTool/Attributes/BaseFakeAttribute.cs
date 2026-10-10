@@ -23,7 +23,7 @@ public abstract class BaseFakeAttribute : ParameterHintAttribute
 
         return (
             (Fake)
-                localOptions.Randomizer.Create(typeof(Fake<>).MakeGenericType(param.ParameterType))!
+                localOptions.Randomizer.Create(typeof(Fake<>).MakeGenericType(param.ParameterType))
         ).Dummy;
     }
 }

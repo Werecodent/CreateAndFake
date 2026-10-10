@@ -65,7 +65,7 @@ internal static class Emitter
                 + string.Join("|", interfaces.Prepend(parent).Select(GenericConverter.ExpandName))
                 + "_"
                 + Guid.NewGuid(),
-            TypeAttributes.NotPublic | TypeAttributes.Sealed,
+            TypeAttributes.Sealed,
             parent,
             interfaces
         );
@@ -336,7 +336,7 @@ internal static class Emitter
             getterInfo.Attributes & ~MethodAttributes.Abstract,
             MetaType,
             Type.EmptyTypes
-        )!;
+        );
         {
             // return this._FakeMeta;
             ILGenerator gen = getMetaMethod.GetILGenerator();

@@ -67,7 +67,7 @@ internal static class ExceptionCreateHandlers
             .Where(t => !_UnsupportedExceptions.Contains(t.FullName!))
             .Where(t => !_FatalExceptions.Contains(t))
             .Where(t => t.GetConstructor([typeof(string)]) != null)
-            .ToFrozenSet()!;
+            .ToFrozenSet();
 
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
         PotentialExceptions

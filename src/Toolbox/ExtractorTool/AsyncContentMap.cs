@@ -201,13 +201,19 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
     {
         ArgumentGuard.ThrowIfNull(valuer);
 
-        AsyncContentMap? map = other as AsyncContentMap;
-        return valuer.CompareAsync(
-            (_content, _options),
-            (map?._content, map?._options),
-            canceler,
-            opt => opt with { UseEquatableComparisons = false }
-        );
+        if (other is AsyncContentMap map)
+        {
+            return valuer.CompareAsync(
+                (_content, _options),
+                (map._content, map._options),
+                canceler,
+                opt => opt with { UseEquatableComparisons = false }
+            );
+        }
+        else
+        {
+            return valuer.CompareAsync(GetType(), other?.GetType(), canceler);
+        }
     }
 
     /// <inheritdoc/>

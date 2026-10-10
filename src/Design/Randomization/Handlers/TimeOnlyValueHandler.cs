@@ -45,7 +45,7 @@ internal sealed class TimeOnlyValueHandler : IValueHandler
     public object CreateSupported(IRandom gen)
     {
         long ticks = gen.Next(0, _MaxTicks);
-        return _fromTicks.Invoke([ticks])!;
+        return _fromTicks.Invoke([ticks]);
     }
 
     /// <inheritdoc/>

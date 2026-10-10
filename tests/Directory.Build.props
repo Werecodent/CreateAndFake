@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
 
     <!-- Last version supporting .NET Standard 2.0. -->
     <PackageReference Include="coverlet.collector" Version="6.0.4" GeneratePathProperty="true" PrivateAssets="All" />
@@ -38,11 +38,11 @@
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" />
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="3.2.0" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="3.0.122" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="5.6.0" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.296" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="5.9.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" version="18.7.23" PrivateAssets="All" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.28.0.143324" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="5.0.1" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.35.0.4138" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

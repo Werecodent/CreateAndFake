@@ -78,6 +78,7 @@ dotnet_diagnostic.MA0051.severity = None
 dotnet_diagnostic.CA1000.severity = None
 dotnet_diagnostic.CA1040.severity = None
 dotnet_diagnostic.MA0018.severity = None
+dotnet_diagnostic.MA0130.severity = None
 dotnet_diagnostic.MA0165.severity = None
 dotnet_diagnostic.RCS1241.severity = None
 dotnet_diagnostic.S1133.severity = None
@@ -109,6 +110,7 @@ dotnet_diagnostic.MA0003.severity = None
 dotnet_diagnostic.MA0006.severity = None
 dotnet_diagnostic.MA0076.severity = None
 dotnet_diagnostic.MA0169.severity = None
+dotnet_diagnostic.MA0219.severity = None
 dotnet_diagnostic.RCS1089.severity = None
 dotnet_diagnostic.RCS1123.severity = None
 dotnet_diagnostic.S1751.severity = None
@@ -137,6 +139,7 @@ dotnet_diagnostic.IDE0057.severity = None
 dotnet_diagnostic.IDE0370.severity = None
 dotnet_diagnostic.MA0001.severity = None
 dotnet_diagnostic.MA0089.severity = None
+dotnet_diagnostic.S8969.severity = None
 
 # Specifically for Visual Studio extensions and don't apply to this library.
 dotnet_diagnostic.VSTHRD003.severity = None
