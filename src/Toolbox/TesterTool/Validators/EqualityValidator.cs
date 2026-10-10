@@ -141,9 +141,7 @@ internal sealed class EqualityValidator(TesterOptions options)
             );
         }
 
-        foreach (
-            PropertyInfo prop in TypeDescriber.For(describer.SupportedType).Properties.SetAndGetable
-        )
+        foreach (PropertyInfo prop in describer.Properties.SetAndGetable)
         {
             object? originalValue = prop.GetValue(x);
             object newValue = Options.Mutator.Variant(prop.PropertyType, originalValue);

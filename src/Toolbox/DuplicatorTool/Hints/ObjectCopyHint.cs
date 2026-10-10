@@ -71,7 +71,7 @@ public sealed class ObjectCopyHint : CopyHint
     /// <returns>The created instance.</returns>
     private static object? CreateNew(object source, IDuplicatorChainer duplicator)
     {
-        TypeDescriber describer = TypeDescriber.For(source.GetType());
+        TypeDescriber describer = TypeDescriber.For(source);
 
         return describer
             .Constructors.Visible.OrderByDescending(c => c.GetParameters().Length)

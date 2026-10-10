@@ -39,7 +39,7 @@ internal static class Unwrapper
             );
         }
 
-        TypeDescriber describer = TypeDescriber.For(result.GetType());
+        TypeDescriber describer = TypeDescriber.For(result);
 
         if (result is Task plainTask)
         {

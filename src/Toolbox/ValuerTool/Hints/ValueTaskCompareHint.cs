@@ -20,7 +20,7 @@ public sealed class ValueTaskCompareHint : CompareHint
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
-        return TypeDescriber.For(expected.GetType()).Inherits(typeof(ValueTask<>));
+        return TypeDescriber.For(expected).Inherits(typeof(ValueTask<>));
     }
 
     /// <inheritdoc/>

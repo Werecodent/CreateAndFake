@@ -36,6 +36,20 @@ public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
         return For(typeof(T));
     }
 
+    /// <param name="instance">The instance whose <see cref="Type"/> to find inheritance for.</param>
+    /// <inheritdoc cref="For(Type)"/>
+    public static TypeDescriber For(object? instance)
+    {
+        if (instance is Type type)
+        {
+            return For(type);
+        }
+        else
+        {
+            return For(instance?.GetType());
+        }
+    }
+
     /// <summary>Finds or loads inheritance data for the <paramref name="type"/>.</summary>
     /// <param name="type">The <see cref="Type"/> to find inheritance for.</param>
     /// <returns>The found/loaded inheritance data.</returns>

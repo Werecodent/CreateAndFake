@@ -48,6 +48,32 @@ public static class AsyncContentMapTests
         );
     }
 
+    [Fact]
+    internal static Task FindAllAsync_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+                new AsyncContentMap(
+                    Tools.Randomizer.CreateSized<IAsyncSet<object>>(size),
+                    Tools.Extractor.Options
+                ).FindAllAsync(typeof(object), canceler),
+            TestContext.Current.CancellationToken
+        );
+    }
+
+    [Fact]
+    internal static Task FindAllAsync_T_CanCancel()
+    {
+        return Tools.Tester.VerifySupportsCancellationAsync(
+            (size, canceler) =>
+                new AsyncContentMap(
+                    Tools.Randomizer.CreateSized<IAsyncSet<object>>(size),
+                    Tools.Extractor.Options
+                ).FindAllAsync<object>(canceler),
+            TestContext.Current.CancellationToken
+        );
+    }
+
     [Theory, RandomData]
     internal static async Task HasContentAsync_UsesObjectByValue(DataHolderSample sample)
     {
@@ -278,5 +304,21 @@ public static class AsyncContentMapTests
             )
             .Assert()
             .IsEmptyAsync(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task CompareAsync_LibrarySupport(
+        AsyncContentMap original,
+        [Copy] AsyncContentMap dupe,
+        AsyncContentMap variant
+    )
+    {
+        return original
+            .Assert()
+            .IsAsync(original, TestContext.Current.CancellationToken)
+            .And()
+            .IsAsync(dupe, TestContext.Current.CancellationToken)
+            .And()
+            .IsNotAsync(variant, TestContext.Current.CancellationToken);
     }
 }

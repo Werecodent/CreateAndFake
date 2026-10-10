@@ -22,7 +22,7 @@ public sealed class CollectionMutateHint : MutateHint
     /// <inheritdoc/>
     protected override bool Supports(object instance)
     {
-        return TypeDescriber.For(instance?.GetType()).Inherits(typeof(ICollection<>));
+        return TypeDescriber.For(instance).Inherits(typeof(ICollection<>));
     }
 
     /// <inheritdoc/>

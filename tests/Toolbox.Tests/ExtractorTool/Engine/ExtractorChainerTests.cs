@@ -21,8 +21,7 @@ public static class ExtractorChainerTests
     [Fact]
     internal static Task ExtractorChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
+        return Tools.Tester.PreventsNullRefExceptionAsync<ExtractorChainer>(
             TestContext.Current.CancellationToken,
             _Config
         );
@@ -31,10 +30,43 @@ public static class ExtractorChainerTests
     [Fact]
     internal static Task ExtractorChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            new ExtractorChainer(Tools.Extractor.Options, new ExtractorEngine()),
+        return Tools.Tester.PreventsParameterMutationAsync<ExtractorChainer>(
             TestContext.Current.CancellationToken,
             _Config
         );
     }
+
+    [Theory, RandomData]
+    internal static async Task AddFoundValue_CannotUseAfterAsyncCall(
+        ExtractorChainer chainer,
+        object item1,
+        object item2
+    )
+    {
+        await chainer
+            .AddFoundValueAsync(item1, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasResultAsync(true, TestContext.Current.CancellationToken);
+
+        chainer.Assert(x => x.AddFoundValue(item2)).Throws<MismatchedAccessException>();
+    }
+
+#pragma warning disable MA0042, VSTHRD103 // Behavior specifically being tested.
+
+    [Theory, RandomData]
+    internal static Task AddFoundValueAsync_CannotUseAfterSyncCall(
+        ExtractorChainer chainer,
+        object item1,
+        object item2
+    )
+    {
+        chainer.AddFoundValue(item1).Assert().Is(true);
+
+        return chainer
+            .AddFoundValueAsync(item2, TestContext.Current.CancellationToken)
+            .Assert()
+            .ThrowsAsync<MismatchedAccessException>(TestContext.Current.CancellationToken);
+    }
+
+#pragma warning restore
 }

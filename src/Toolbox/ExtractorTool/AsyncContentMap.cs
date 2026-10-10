@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ValuerTool;
 
@@ -91,11 +92,6 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
 
         await foreach (object item in GetAllIntersectsAsync(maps, canceler).ConfigureAwait(false))
         {
-            if (item == null)
-            {
-                continue;
-            }
-
             Type itemType = item.GetType();
 
             if (!_options.UniqueIgnoredTypes.Contains(itemType) && !itemType.IsEnum)
@@ -121,11 +117,6 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        if (maps == null)
-        {
-            yield break;
-        }
-
         await foreach (
             KeyValuePair<int, object> entry in _content
                 .ByHashesAsync(canceler)
@@ -178,7 +169,7 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
     {
         await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
         {
-            if (item?.GetType().Inherits(type) ?? false)
+            if (TypeDescriber.For(item).Inherits(type))
             {
                 yield return item;
             }
