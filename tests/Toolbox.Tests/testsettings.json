@@ -1,0 +1,15 @@
+{
+    "CreateAndFake": {
+        "Asserter": {},
+        "Duplicator": {},
+        "Extractor": {},
+        "Faker": {},
+        "Mutator": {},
+        "Randomizer": {},
+        "Runner": {},
+        "Tester": {},
+        "Valuer": {
+            "IncludeValueHashInComparison": true
+        }
+    }
+}

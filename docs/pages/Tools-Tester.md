@@ -14,9 +14,9 @@ Simply create a test method and call the `Tester` case:
 ```c#
 /// <summary>Verifies null reference exceptions are prevented.</summary>
 [Fact]
-public void ValueRandom_GuardsNulls()
+public Task ValueRandom_GuardsNulls()
 {
-    Tools.Tester.PreventsNullRefException<ValueRandom>();
+    return Tools.Tester.PreventsNullRefException<ValueRandom>();
 }
 ```
 

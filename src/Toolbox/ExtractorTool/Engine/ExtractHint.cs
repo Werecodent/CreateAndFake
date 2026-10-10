@@ -1,0 +1,29 @@
+using Werecodent.CreateAndFake.Design.Types;
+
+namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
+
+/// <inheritdoc cref="IExtractHint"/>
+public abstract class ExtractHint : IExtractHint
+{
+    /// <inheritdoc/>
+    public abstract int EnginePriority { get; }
+
+    /// <inheritdoc/>
+    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+
+    /// <inheritdoc/>
+    public abstract ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer);
+
+    /// <inheritdoc/>
+    public abstract Task<ExtractHintResult> TryToExtractAsync(
+        object? source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    );
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return GenericConverter.ExpandName(GetType());
+    }
+}

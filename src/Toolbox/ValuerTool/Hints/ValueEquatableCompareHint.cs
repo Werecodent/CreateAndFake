@@ -1,0 +1,55 @@
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
+
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
+
+/// <summary>Handles comparing <see cref="IValueEquatable"/> instances for <see cref="IValuer"/>.</summary>
+public sealed class ValueEquatableCompareHint : CompareHint<IValueEquatable>
+{
+    /// <summary>Compares equatables by value as well.</summary>
+    private static readonly PrivateObjectCompareHint _NestedHint = new();
+
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.ValueEquatableHint;
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Difference> Compare(
+        IValueEquatable expected,
+        IValueEquatable actual,
+        IValuerChainer chainer
+    )
+    {
+        return LazyCompare(expected, actual, chainer);
+    }
+
+    /// <inheritdoc cref="Compare"/>
+    private static IEnumerable<Difference> LazyCompare(
+        IValueEquatable expected,
+        IValueEquatable actual,
+        IValuerChainer chainer
+    )
+    {
+        if (!expected.ValuesEqual(actual))
+        {
+            yield return new Difference(
+                $".{nameof(IValuerEquatable.ValuesEqual)}",
+                new Difference(true, false)
+            );
+
+            DifferenceHintResult byValues = _NestedHint.TryToCompare(expected, actual, chainer);
+            if (byValues.HasData)
+            {
+                foreach (Difference difference in byValues.Data!)
+                {
+                    yield return difference;
+                }
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override int GetHashCode(IValueEquatable item, IValuerChainer chainer)
+    {
+        return ValueComparer.Use.GetHashCode(item);
+    }
+}
