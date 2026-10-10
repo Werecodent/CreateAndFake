@@ -130,4 +130,21 @@ public static class FakeMetaProviderTests
             })
             .Throws<InvalidOperationException>();
     }
+
+    [Theory, RandomData]
+    internal static void CallVoid_MissingBaseThrows([Stub] MethodInfo method, string name)
+    {
+        CallData call = new(name, [], [], null);
+        method.Name.SetupReturn(name);
+        method.IsGenericMethod.SetupReturn(false);
+        method.GetParameters().SetupReturn([]);
+        method.DeclaringType.SetupReturn(null);
+
+        FakeMetaProvider provider = new(0, Tools.Faker.Options);
+        provider.SetCallBehavior(call, Behavior.Base());
+
+        provider
+            .Assert(p => p.CallVoid(new object(), method, [], []))
+            .Throws<MissingMethodException>();
+    }
 }

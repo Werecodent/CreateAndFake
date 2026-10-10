@@ -24,7 +24,6 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
         ArgumentGuard.ThrowIfNull(chainer);
 
         FakeHintResult? result = SelectHints(chainer)
-            .Where(h => h.SupportsToFake)
             .Select(h => h.TryToFake(parent, interfaces, chainer))
             .FirstOrDefault(r => r?.HasData ?? false);
 
@@ -42,7 +41,6 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
         }
 
         _ = SelectHints(chainer)
-            .Where(h => h.SupportsToSetup)
             .Select(h => h.TryToSetup(instance, chainer))
             .FirstOrDefault(r => r?.HasData ?? false && !r.Data);
 

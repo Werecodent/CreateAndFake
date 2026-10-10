@@ -15,15 +15,9 @@ public sealed class AsyncDisposableFakeHint : IFakeHint
     public IEnumerable<Type> SupportedTypes => [typeof(IAsyncDisposable)];
 
     /// <inheritdoc/>
-    public bool SupportsToFake => false;
-
-    /// <inheritdoc/>
-    public bool SupportsToSetup => true;
-
-    /// <inheritdoc/>
     public FakeHintResult TryToFake(Type parent, IEnumerable<Type> interfaces, IFakerChainer faker)
     {
-        throw new NotSupportedException();
+        return FakeHintResult.None;
     }
 
     /// <inheritdoc/>

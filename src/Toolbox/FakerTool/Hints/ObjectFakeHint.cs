@@ -14,12 +14,6 @@ public sealed class ObjectFakeHint : IFakeHint
     public IEnumerable<Type> SupportedTypes => [typeof(object)];
 
     /// <inheritdoc/>
-    public bool SupportsToFake => true;
-
-    /// <inheritdoc/>
-    public bool SupportsToSetup => false;
-
-    /// <inheritdoc/>
     public FakeHintResult TryToFake(Type parent, IEnumerable<Type> interfaces, IFakerChainer faker)
     {
         ArgumentGuard.ThrowIfNull(faker);
@@ -30,6 +24,6 @@ public sealed class ObjectFakeHint : IFakeHint
     /// <inheritdoc/>
     public SetupHintResult TryToSetup(IFaked instance, IFakerChainer faker)
     {
-        throw new NotSupportedException();
+        return SetupHintResult.None;
     }
 }
