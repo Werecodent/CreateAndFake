@@ -9,8 +9,6 @@ using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
-#pragma warning disable MA0031 // Bug with empty collections.
-
 /// <summary>Handles randomizing collections for <see cref="IRandomizer"/>.</summary>
 public sealed class CollectionCreateHint : CreateHint
 {
@@ -66,7 +64,7 @@ public sealed class CollectionCreateHint : CreateHint
                     }
                     return result;
 #else
-                    return Activator.CreateInstance(type, data);
+                    return Activator.CreateInstance(type, data)!;
 #endif
                 }
             },
@@ -112,7 +110,10 @@ public sealed class CollectionCreateHint : CreateHint
                 () =>
                 {
                     IEnumerable result = (IEnumerable)Create(type, itemType, randomizer);
-                    if (result.Cast<object>().Count() >= randomizer.Options.CollectionMinSize)
+                    if (
+                        result.Cast<object>().Take(randomizer.Options.CollectionMinSize).Count()
+                        >= randomizer.Options.CollectionMinSize
+                    )
                     {
                         return new CreateHintResult(result);
                     }
@@ -212,5 +213,3 @@ public sealed class CollectionCreateHint : CreateHint
         }
     }
 }
-
-#pragma warning restore

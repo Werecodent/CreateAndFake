@@ -109,6 +109,7 @@ internal static class SelfCreateHandlers
                 CollectionMaxSize = rand.Options.Gen.Next(0, 4),
                 StringMinSize = rand.Options.Gen.Next(0, 3),
                 StringMaxSize = rand.Options.Gen.Next(0, 9),
+                CollectionAttempts = Limiter.Score,
                 FinalCondition = null,
             }
         ),
