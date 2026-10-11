@@ -18,10 +18,23 @@ public static class FakerChainerTests
                         typeof(InvalidOperationException),
                         typeof(ArgumentOutOfRangeException),
                     ],
-                    MethodsToIgnore =
+                }
+        );
+    }
+
+    [Fact]
+    internal static Task FakerChainer_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<FakerChainer>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
                     [
-                        nameof(FakerChainer.InjectMocks),
-                        nameof(FakerChainer.InjectStubs),
+                        typeof(ArgumentException),
+                        typeof(InvalidOperationException),
+                        typeof(ArgumentOutOfRangeException),
                     ],
                 }
         );

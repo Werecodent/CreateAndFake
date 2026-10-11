@@ -11,13 +11,21 @@ public static class FakerTests
         opt with
         {
             IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidOperationException)],
-            MethodsToIgnore = [nameof(Faker.InjectMocks), nameof(Faker.InjectStubs)],
         };
 
     [Fact]
     internal static Task Faker_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<Faker>(
+            TestContext.Current.CancellationToken,
+            _Config
+        );
+    }
+
+    [Fact]
+    internal static Task Faker_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<Faker>(
             TestContext.Current.CancellationToken,
             _Config
         );
@@ -32,7 +40,7 @@ public static class FakerTests
     [Fact]
     internal static void Mock_SampleWorks()
     {
-        Fake<DataHolderSample> sample = Tools.Faker.Mock<DataHolderSample>();
+        Fake<DataHolderSample> sample = Tools.Faker.Mock<DataHolderSample>([]);
         sample.ThrowByDefault.Assert().Is(true);
         sample.Dummy.Assert(x => x.HasNested(sample.Dummy.NestedValue)).Throws<FakeCallException>();
     }
@@ -40,7 +48,7 @@ public static class FakerTests
     [Fact]
     internal static void Stub_SampleWorks()
     {
-        Fake<DataHolderSample> sample = Tools.Faker.Stub<DataHolderSample>();
+        Fake<DataHolderSample> sample = Tools.Faker.Stub<DataHolderSample>([]);
         sample.ThrowByDefault.Assert().Is(false);
         sample.Dummy.HasNested(null).Assert().Is(false);
     }

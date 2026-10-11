@@ -28,4 +28,11 @@ public sealed class ObjectCopyHintTests : CopyHintTestBase<ObjectCopyHint>
     {
         return Task.CompletedTask;
     }
+
+    [Fact]
+    internal void Copy_IgnoresBadSetters()
+    {
+        IsBadSample sample = new();
+        TestInstance.TryCopy(sample, CreateChainer()).Data.Assert().Is(sample);
+    }
 }
