@@ -29,8 +29,8 @@ public enum CreatePriority
     /// <summary>Priority for <see cref="ComparerCreateHint"/>.</summary>
     ComparerHint = 5,
 
-    /// <summary>Priority for <see cref="AsyncHashCreateHint"/>.</summary>
-    AsyncHashHint = 6,
+    /// <summary>Priority for <see cref="AsyncCollectionCreateHint"/>.</summary>
+    AsyncCollectionHint = 6,
 
     /// <summary>Priority for <see cref="TaskCreateHint"/>.</summary>
     TaskHint = 7,

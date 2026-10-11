@@ -6,14 +6,20 @@ using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
-/// <summary>Handles randomizing <see cref="AsyncHashSet{T}"/> instances for <see cref="IRandomizer"/>.</summary>
-public sealed class AsyncHashCreateHint : CreateHint
+/// <summary>Handles randomizing async collection instances for <see cref="IRandomizer"/>.</summary>
+public sealed class AsyncCollectionCreateHint : CreateHint
 {
     /// <inheritdoc/>
-    public override int EnginePriority => (int)CreatePriority.AsyncHashHint;
+    public override int EnginePriority => (int)CreatePriority.AsyncCollectionHint;
 
     /// <inheritdoc/>
-    public override IEnumerable<Type> SupportedTypes => [typeof(AsyncHashSet<>)];
+    public override IEnumerable<Type> SupportedTypes =>
+        [
+            typeof(AsyncHashSet<>),
+            typeof(IAsyncSet<>),
+            typeof(AsyncList<>),
+            typeof(IAsyncEnumerable<>),
+        ];
 
     /// <inheritdoc/>
     public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
@@ -27,7 +33,7 @@ public sealed class AsyncHashCreateHint : CreateHint
             Type contentType = type.GetGenericArguments().Single();
 
             dynamic backingData = randomizer.Create(
-                typeof(List<>).MakeGenericType(contentType),
+                typeof(HashSet<>).MakeGenericType(contentType),
                 _ => randomizer.Options
             );
 
@@ -42,6 +48,17 @@ public sealed class AsyncHashCreateHint : CreateHint
                     CancellationToken.None
                 )
             );
+        }
+        else if (asGeneric == typeof(AsyncList<>) || asGeneric == typeof(IAsyncEnumerable<>))
+        {
+            Type contentType = type.GetGenericArguments().Single();
+
+            dynamic backingData = randomizer.Create(
+                typeof(List<>).MakeGenericType(contentType),
+                _ => randomizer.Options
+            );
+
+            return new(AsyncSeriesHelper.CreateFromAsync(backingData, int.MaxValue));
         }
         else
         {

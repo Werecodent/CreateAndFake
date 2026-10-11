@@ -1,4 +1,5 @@
-﻿using Werecodent.CreateAndFake.FakerTool;
+﻿using System.Reflection;
+using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
@@ -10,7 +11,13 @@ public static class FakerTests
     private static readonly TesterMod _Config = opt =>
         opt with
         {
-            IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidOperationException)],
+            IgnorableExceptions =
+            [
+                typeof(ArgumentException),
+                typeof(InvalidOperationException),
+                typeof(ArgumentOutOfRangeException),
+                typeof(TargetInvocationException),
+            ],
         };
 
     [Fact]

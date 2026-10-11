@@ -35,7 +35,6 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
                 typeof(IImmutableDictionary<,>),
                 typeof(FrozenSet<>),
                 typeof(FrozenDictionary<,>),
-                typeof(IAsyncEnumerable<>),
             ])
             .Select(MakeDefined),
     ];
@@ -52,61 +51,13 @@ public sealed class CollectionCreateHintTests : CreateHintTestBase<CollectionCre
         }
     }
 
-    [Theory, RandomData]
-    internal static async Task TryToCreate_Empty([Size(0)] IAsyncEnumerable<int> items)
+    [Fact]
+    public void TryToCreate_CorrectSizeEvenWithDuplicates()
     {
-        IAsyncEnumerator<int> gen = items.GetAsyncEnumerator(TestContext.Current.CancellationToken);
-        await using (gen)
+        for (int i = 0; i < 20; i++)
         {
-            (await gen.MoveNextAsync()).Assert().Is(false);
+            Tools.Randomizer.CreateSized<HashSet<bool>>(2).Assert().HasCount(2);
         }
-    }
-
-    [Theory, RandomData]
-    internal static async Task TryToCreate_Repeatable(IAsyncEnumerable<int> items)
-    {
-        List<int> first = [];
-        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
-        {
-            first.Add(item);
-        }
-
-        List<int> second = [];
-        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
-        {
-            second.Add(item);
-        }
-
-        first.Assert().Is(second);
-    }
-
-    [Theory, RandomData]
-    internal static async Task TryToCreate_Cancel(IAsyncEnumerable<int> items)
-    {
-        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
-    }
-
-    [Theory, RandomData]
-    internal static async Task TryToCreate_Interrupt([Size(5)] IAsyncEnumerable<int> items)
-    {
-        await items.GetAsyncEnumerator(TestContext.Current.CancellationToken).DisposeAsync();
-
-        int count = 0;
-        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
-        {
-            count++;
-            if (count == 3)
-            {
-                break;
-            }
-        }
-
-        count = 0;
-        await foreach (int item in items.WithCancellation(TestContext.Current.CancellationToken))
-        {
-            count++;
-        }
-        count.Assert().Is(5);
     }
 
     private static Type MakeDefined(Type type)

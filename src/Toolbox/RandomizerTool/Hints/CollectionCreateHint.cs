@@ -3,30 +3,28 @@ using System.Collections.Concurrent;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 
+#pragma warning disable MA0031 // Bug with empty collections.
+
 /// <summary>Handles randomizing collections for <see cref="IRandomizer"/>.</summary>
 public sealed class CollectionCreateHint : CreateHint
 {
     /// <summary>Collections able to be randomized.</summary>
-    private static readonly FrozenDictionary<Type, Func<Type, Array, object?>> _Collections =
-        new Dictionary<Type, Func<Type, Array, object?>>()
+    private static readonly FrozenDictionary<Type, Func<Type, Array, object>> _Collections =
+        new Dictionary<Type, Func<Type, Array, object>>()
         {
-            {
-                typeof(AsyncList<>),
-                (type, data) => Activator.CreateInstance(type, data, int.MaxValue)
-            },
-            { typeof(List<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(Queue<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(Stack<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(HashSet<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(LinkedList<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(ConcurrentQueue<>), (type, data) => Activator.CreateInstance(type, data) },
-            { typeof(ConcurrentStack<>), (type, data) => Activator.CreateInstance(type, data) },
+            { typeof(List<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(Queue<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(Stack<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(HashSet<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(LinkedList<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(ConcurrentQueue<>), (type, data) => Activator.CreateInstance(type, data)! },
+            { typeof(ConcurrentStack<>), (type, data) => Activator.CreateInstance(type, data)! },
             { typeof(FrozenSet<>), (_, data) => FrozenSet.ToFrozenSet((dynamic)data) },
             { typeof(ImmutableList<>), (_, data) => ImmutableList.CreateRange((dynamic)data) },
             { typeof(ImmutableArray<>), (_, data) => ImmutableArray.CreateRange((dynamic)data) },
@@ -34,7 +32,7 @@ public sealed class CollectionCreateHint : CreateHint
             { typeof(ImmutableStack<>), (_, data) => ImmutableStack.CreateRange((dynamic)data) },
             {
                 typeof(ConcurrentDictionary<,>),
-                (type, data) => Activator.CreateInstance(type, data)
+                (type, data) => Activator.CreateInstance(type, data)!
             },
             {
                 typeof(FrozenDictionary<,>),
@@ -78,7 +76,7 @@ public sealed class CollectionCreateHint : CreateHint
     internal static IEnumerable<Type> PotentialCollections { get; } =
         _Collections
             .Keys.SelectMany(t => TypeDescriber.For(t).InheritedTypes)
-            .Where(t => t.Inherits(typeof(IEnumerable<>)) || t.Inherits(typeof(IAsyncEnumerable<>)))
+            .Where(t => t.Inherits(typeof(IEnumerable<>)))
             .Select(t => GenericConverter.AsGenericBase(t)!)
             .Where(t => t != null)
             .Distinct()
@@ -111,7 +109,21 @@ public sealed class CollectionCreateHint : CreateHint
         {
             return randomizer.Options.CollectionAttempts.Retry(
                 $"Generating '{GenericConverter.ExpandName(type)}' collection.",
-                () => new CreateHintResult(Create(type, itemType, randomizer))
+                () =>
+                {
+                    IEnumerable result = (IEnumerable)Create(type, itemType, randomizer);
+                    if (result.Cast<object>().Count() >= randomizer.Options.CollectionMinSize)
+                    {
+                        return new CreateHintResult(result);
+                    }
+                    else
+                    {
+                        throw new ToolException(
+                            $"Failed to create an appropriately sized '{GenericConverter.ExpandName(type)}'"
+                                + $" collection with a min size of: '{randomizer.Options.CollectionMinSize}'"
+                        );
+                    }
+                }
             );
         }
         else
@@ -123,7 +135,7 @@ public sealed class CollectionCreateHint : CreateHint
     /// <param name="itemType">Item <see cref="Type"/> to be contained in the collection.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryToCreate"/>
-    private static object? Create(Type type, Type itemType, IRandomizerChainer randomizer)
+    private static object Create(Type type, Type itemType, IRandomizerChainer randomizer)
     {
         Array internalData = CreateInternalData(itemType, randomizer);
 
@@ -200,3 +212,5 @@ public sealed class CollectionCreateHint : CreateHint
         }
     }
 }
+
+#pragma warning restore
