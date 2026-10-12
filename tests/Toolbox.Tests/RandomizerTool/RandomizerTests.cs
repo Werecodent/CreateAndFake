@@ -155,11 +155,9 @@ public static class RandomizerTests
     }
 
     [Theory, RandomData]
-    internal static void Inject_SingleFakeInjected(
-        Fake<DataSample> fake,
-        [Inject] InjectSample holder
-    )
+    internal static void Inject_SingleFakeInjected(Fake<DataSample> fake)
     {
+        InjectSample holder = Tools.Randomizer.Inject<InjectSample>([fake]);
         holder.Data.Assert().ReferenceEqual(fake.Dummy);
         holder.Data2.Assert().ReferenceNotEqual(fake.Dummy);
     }
@@ -187,6 +185,14 @@ public static class RandomizerTests
         holder.TestIfMockedSeparately();
         fake.Verify(Times.Once, f => f.FailIfNotMocked());
         fake2.Verify(Times.Once, f => f.FailIfNotMocked());
+    }
+
+    [Fact]
+    internal static void Inject_ThrowsHandled()
+    {
+        Tools
+            .Randomizer.Assert(x => x.Inject(typeof(PrivateCreateSample), null))
+            .Throws<ToolException>();
     }
 
     [Fact]

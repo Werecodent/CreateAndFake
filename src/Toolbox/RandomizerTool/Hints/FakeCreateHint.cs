@@ -49,7 +49,7 @@ public sealed class FakeCreateHint : CreateHint
                     {
                         ArgumentGuard.ThrowIfNull(method);
 
-                        if (method.ReturnType == null)
+                        if (method.ReturnType == typeof(void))
                         {
                             return Behavior.None();
                         }

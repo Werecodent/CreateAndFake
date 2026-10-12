@@ -47,17 +47,35 @@ public static class FakerTests
     [Fact]
     internal static void Mock_SampleWorks()
     {
-        Fake<DataHolderSample> sample = Tools.Faker.Mock<DataHolderSample>([]);
+        Fake<DataHolderSample> sample = Tools.Faker.Mock<DataHolderSample>();
         sample.ThrowByDefault.Assert().Is(true);
         sample.Dummy.Assert(x => x.HasNested(sample.Dummy.NestedValue)).Throws<FakeCallException>();
     }
 
     [Fact]
+    internal static void Mock_OverridesWork()
+    {
+        Tools.Faker.Mock<DataHolderSample>().Assert().IsNotNull();
+        Tools.Faker.Mock<DataHolderSample>([]).Assert().IsNotNull();
+        Tools.Faker.Mock(typeof(DataHolderSample)).Assert().IsNotNull();
+        Tools.Faker.Mock(typeof(DataHolderSample), []).Assert().IsNotNull();
+    }
+
+    [Fact]
     internal static void Stub_SampleWorks()
     {
-        Fake<DataHolderSample> sample = Tools.Faker.Stub<DataHolderSample>([]);
+        Fake<DataHolderSample> sample = Tools.Faker.Stub<DataHolderSample>();
         sample.ThrowByDefault.Assert().Is(false);
         sample.Dummy.HasNested(null).Assert().Is(false);
+    }
+
+    [Fact]
+    internal static void Stub_OverridesWork()
+    {
+        Tools.Faker.Stub<DataHolderSample>().Assert().IsNotNull();
+        Tools.Faker.Stub<DataHolderSample>([]).Assert().IsNotNull();
+        Tools.Faker.Stub(typeof(DataHolderSample)).Assert().IsNotNull();
+        Tools.Faker.Stub(typeof(DataHolderSample), []).Assert().IsNotNull();
     }
 
     [Fact]
@@ -80,11 +98,25 @@ public static class FakerTests
     }
 
     [Fact]
+    internal static void InjectMocks_OverridesWork()
+    {
+        Tools.Faker.InjectMocks<FakeHolderSample>().Assert().IsNotNull();
+        Tools.Faker.InjectMocks<FakeHolderSample>([]).Assert().IsNotNull();
+    }
+
+    [Fact]
     internal static void InjectStubs_AreStubs()
     {
         Injected<FakeHolderSample> sample = Tools.Faker.InjectStubs<FakeHolderSample>();
 
         sample.Dummy.Sample1.Calc().Assert().Is(0);
         sample.Dummy.Sample2.Text.Assert().IsNull();
+    }
+
+    [Fact]
+    internal static void InjectStubs_OverridesWork()
+    {
+        Tools.Faker.InjectStubs<FakeHolderSample>().Assert().IsNotNull();
+        Tools.Faker.InjectStubs<FakeHolderSample>([]).Assert().IsNotNull();
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Randomization;
@@ -109,8 +110,11 @@ internal static class SelfCreateHandlers
                 CollectionMaxSize = rand.Options.Gen.Next(0, 4),
                 StringMinSize = rand.Options.Gen.Next(0, 3),
                 StringMaxSize = rand.Options.Gen.Next(0, 9),
-                CollectionAttempts = Limiter.Score,
                 FinalCondition = null,
+                CollectionAttempts = rand.Options.Gen.NextItem([Limiter.Dozen, Limiter.Score]),
+                StringCharacterSet = FrozenSet.ToFrozenSet(
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                ),
             }
         ),
         new FactoryCreateHandler<RunnerOptions>(rand =>

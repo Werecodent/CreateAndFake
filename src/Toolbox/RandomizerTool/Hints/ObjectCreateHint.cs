@@ -29,22 +29,16 @@ public sealed class ObjectCreateHint : CreateHint
                 ? null
                 : randomizer.Options.ObjectCreateAttempts.Attempt(
                     $"Create object of type '{GenericConverter.ExpandName(type)}'",
-                    () => Create(type, type, randomizer)
+                    () => Create(type, randomizer)
                 );
 
         return result != null ? new(result) : CreateHintResult.None;
     }
 
-    /// <param name="rootType">Original <see cref="Type"/> being generated.</param>
     /// <returns>The randomized instance.</returns>
     /// <inheritdoc cref="CreateHint.TryToCreate"/>
-    private static object? Create(Type type, Type rootType, IRandomizerChainer randomizer)
+    private static object? Create(Type type, IRandomizerChainer randomizer)
     {
-        if (type != rootType)
-        {
-            return randomizer.Create(type);
-        }
-
         DataRandom smartData = randomizer.Options.Gen.NextData();
         object? data = CreateNew(type, randomizer, smartData);
         if (data is null or IFaked or Exception)
@@ -204,14 +198,13 @@ public sealed class ObjectCreateHint : CreateHint
     /// <returns>Found constructors.</returns>
     private static IEnumerable<ConstructorInfo> FindConstructors(
         Type type,
-        IRandomizerChainer? randomizer
+        IRandomizerChainer randomizer
     )
     {
         return TypeDescriber
             .For(type)
             .Constructors.Visible.Where(c =>
-                randomizer == null
-                || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
+                c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
             );
     }
 
@@ -219,15 +212,14 @@ public sealed class ObjectCreateHint : CreateHint
     /// <param name="type"><see cref="Type"/> to search for.</param>
     /// <param name="randomizer">Handles randomizing child values.</param>
     /// <returns>Found factory methods.</returns>
-    private static IEnumerable<MethodInfo> FindFactories(Type type, IRandomizerChainer? randomizer)
+    private static IEnumerable<MethodInfo> FindFactories(Type type, IRandomizerChainer randomizer)
     {
         MethodInfo[] factories =
         [
             .. TypeDescriber
                 .For(type)
                 .Factories.Visible.Where(c =>
-                    randomizer == null
-                    || c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
+                    c.GetParameters().All(p => !randomizer.AlreadyCreated(p.ParameterType))
                 ),
         ];
 

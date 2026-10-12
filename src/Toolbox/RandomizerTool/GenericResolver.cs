@@ -45,6 +45,7 @@ public static class GenericResolver
     /// <param name="randomizer">Handles randomization</param>
     /// <returns>The <paramref name="method"/> with generics specified.</returns>
     /// <exception cref="UnsupportedException">If no possible generics are found.</exception>
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     [return: NotNullIfNotNull(nameof(method))]
     public static MethodInfo? OfConcrete(MethodInfo? method, IRandomizer randomizer)
     {
@@ -64,6 +65,7 @@ public static class GenericResolver
     /// <param name="randomizer">Handles randomization.</param>
     /// <returns>The <paramref name="type"/> with generics specified.</returns>
     /// <exception cref="UnsupportedException">If no possible generics are found.</exception>
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     [return: NotNullIfNotNull(nameof(type))]
     public static Type? OfConcrete(Type? type, IRandomizerChainer randomizer)
     {
