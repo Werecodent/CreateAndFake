@@ -1,6 +1,7 @@
 ﻿using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
@@ -15,7 +16,11 @@ public static class RandomizerChainerTests
                 opt with
                 {
                     InjectionValues = [Tools.Gen.Next(3, 5)],
-                    MethodsToIgnore = [nameof(RandomizerChainer.CreateInternal)],
+                    MethodsToIgnore =
+                    [
+                        nameof(RandomizerChainer.CreateInternal),
+                        nameof(RandomizerChainer.Inject),
+                    ],
                     IgnorableExceptions = [typeof(ArgumentOutOfRangeException)],
                 }
         );
@@ -30,7 +35,11 @@ public static class RandomizerChainerTests
                 opt with
                 {
                     InjectionValues = [Tools.Gen.Next(3, 5)],
-                    MethodsToIgnore = [nameof(RandomizerChainer.CreateInternal)],
+                    MethodsToIgnore =
+                    [
+                        nameof(RandomizerChainer.CreateInternal),
+                        nameof(RandomizerChainer.Inject),
+                    ],
                     IgnorableExceptions =
                     [
                         typeof(ArgumentOutOfRangeException),
@@ -123,5 +132,19 @@ public static class RandomizerChainerTests
             .CreateInternal(data.GetType(), data)
             .Assert()
             .Is(data);
+    }
+
+    [Theory, RandomData]
+    internal static void Inject_InterfaceFakesInjected(
+        [Fake] IOnlyMockSample fake,
+        [Fake] IOnlyMockSample fake2
+    )
+    {
+        InjectMockSample holder = Tools.Randomizer.Inject<InjectMockSample>([fake, fake2]);
+        fake.Tools().ToFake().Verify(Times.Never, f => f.FailIfNotMocked());
+        fake2.Tools().ToFake().Verify(Times.Never, f => f.FailIfNotMocked());
+        holder.TestIfMockedSeparately();
+        fake.Tools().ToFake().Verify(Times.Once, f => f.FailIfNotMocked());
+        fake2.Tools().ToFake().Verify(Times.Once, f => f.FailIfNotMocked());
     }
 }
