@@ -147,7 +147,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="InvalidOperationException"></exception>
     internal void CallVoid(object instance, MethodInfo calledMethod, Type[] generics, object[] args)
     {
-        object? result = CallBehavior<object>(instance, calledMethod, generics, args, true);
+        object? result = CallBehavior<object>(instance, calledMethod, generics, args);
         if (result != null)
         {
             throw new InvalidOperationException(
@@ -166,7 +166,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <exception cref="FakeCallException"></exception>
     internal T? CallRet<T>(object instance, MethodInfo calledMethod, Type[] generics, object[] args)
     {
-        return CallBehavior<T>(instance, calledMethod, generics, args, false);
+        return CallBehavior<T>(instance, calledMethod, generics, args);
     }
 
     /// <summary>Manager for all calls.</summary>
@@ -175,15 +175,13 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <param name="calledMethod">Method being called.</param>
     /// <param name="generics">Generics tied to the call.</param>
     /// <param name="args">Provided args to the call.</param>
-    /// <param name="isVoid">If method called is void.</param>
     /// <returns>Faked result previously set up.</returns>
     /// <exception cref="FakeCallException"></exception>
     private T? CallBehavior<T>(
         object instance,
         MethodInfo calledMethod,
         Type[] generics,
-        object[] args,
-        bool isVoid
+        object[] args
     )
     {
         ArgumentGuard.ThrowIfNull(calledMethod);
@@ -199,7 +197,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
             {
                 throw new FakeCallException(data, _behavior.Select(b => b.Item1));
             }
-            else if (!isVoid && Options.FakeDefaultGenerator != null)
+            else if (Options.FakeDefaultGenerator != null)
             {
                 return (T?)
                     Options

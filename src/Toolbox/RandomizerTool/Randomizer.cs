@@ -132,15 +132,13 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <returns>Exception to throw.</returns>
     private static ToolException WrapCreateError(Type type, Exception e)
     {
-        Exception error = (e is AggregateException agg) ? agg.InnerException ?? e : e;
-
         string message;
-        if (error is InsufficientExecutionStackException)
+        if (e is InsufficientExecutionStackException)
         {
             message =
                 $"Ran into infinite generation trying to randomize type '{GenericConverter.ExpandName(type)}'.";
         }
-        else if (error is TimeoutException)
+        else if (e is TimeoutException)
         {
             message =
                 $"Could not create instance of type '{GenericConverter.ExpandName(type)}' matching condition.";
@@ -150,6 +148,6 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
             message =
                 $"Encountered issue creating instance of type '{GenericConverter.ExpandName(type)}'.";
         }
-        return new ToolException(message, error);
+        return new ToolException(message, e);
     }
 }

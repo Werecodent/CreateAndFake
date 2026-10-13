@@ -15,6 +15,7 @@ public sealed class ObjectCreateHintTests : CreateHintTestBase<ObjectCreateHint>
         typeof(IUnimplementedSample),
         typeof(FieldSample),
         typeof(FactoryAlterSample),
+        typeof(object),
     ];
 
     private static readonly Type[] _InvalidTypes = [typeof(PrivateCreateSample)];

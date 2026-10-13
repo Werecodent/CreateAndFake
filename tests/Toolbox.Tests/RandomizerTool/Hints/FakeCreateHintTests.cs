@@ -22,4 +22,10 @@ public sealed class FakeCreateHintTests : CreateHintTestBase<FakeCreateHint>
     {
         sample.Assert(x => x.WriteValue(data)).ThrowsNoException();
     }
+
+    [Theory, RandomData]
+    internal static void TryToCreate_GenericsCovered([Fake] GenericSample<string> sample)
+    {
+        sample.Run("").Assert().IsNotNull();
+    }
 }

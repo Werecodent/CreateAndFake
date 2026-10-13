@@ -57,8 +57,10 @@ public static class FakerTests
     {
         Tools.Faker.Mock<DataHolderSample>().Assert().IsNotNull();
         Tools.Faker.Mock<DataHolderSample>([]).Assert().IsNotNull();
+        Tools.Faker.Mock<DataHolderSample>([], null).Assert().IsNotNull();
         Tools.Faker.Mock(typeof(DataHolderSample)).Assert().IsNotNull();
         Tools.Faker.Mock(typeof(DataHolderSample), []).Assert().IsNotNull();
+        Tools.Faker.Mock(typeof(DataHolderSample), [], null).Assert().IsNotNull();
     }
 
     [Fact]
@@ -74,8 +76,10 @@ public static class FakerTests
     {
         Tools.Faker.Stub<DataHolderSample>().Assert().IsNotNull();
         Tools.Faker.Stub<DataHolderSample>([]).Assert().IsNotNull();
+        Tools.Faker.Stub<DataHolderSample>([], null).Assert().IsNotNull();
         Tools.Faker.Stub(typeof(DataHolderSample)).Assert().IsNotNull();
         Tools.Faker.Stub(typeof(DataHolderSample), []).Assert().IsNotNull();
+        Tools.Faker.Stub(typeof(DataHolderSample), [], null).Assert().IsNotNull();
     }
 
     [Fact]
