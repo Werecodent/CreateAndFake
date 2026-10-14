@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Comparisons;
@@ -152,6 +153,7 @@ public sealed class AsyncSetCompareHint : CompareHint
 
     /// <inheritdoc cref="Compare"/>
     /// <typeparam name="T">The enumerable's item <see cref="Type"/>.</typeparam>
+    [ExcludeFromCodeCoverage] // Generated await foreach code can only be partially covered.
     private static async IAsyncEnumerable<Difference> ContentsCompareAsync<T>(
         IAsyncSet<T> expected,
         IAsyncSet<T> actual,

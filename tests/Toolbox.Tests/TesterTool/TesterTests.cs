@@ -1,4 +1,7 @@
 ﻿using System.Reflection;
+using System.Runtime.Serialization;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.TesterTool;
@@ -28,6 +31,50 @@ public static class TesterTests
     );
 
     [Fact]
+    internal static Task Tester_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<Tester>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    MethodsToIgnore = [nameof(Tester.VerifyAllToStrings)],
+                    IgnorableExceptions =
+                    [
+                        typeof(AssertException),
+                        typeof(FileNotFoundException),
+                        typeof(ArgumentException),
+                        typeof(ToolException),
+                        typeof(TesterFailureException),
+                        typeof(SerializationException),
+                    ],
+                }
+        );
+    }
+
+    [Fact]
+    internal static Task Tester_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<Tester>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    MethodsToIgnore = [nameof(Tester.VerifyAllToStrings)],
+                    IgnorableExceptions =
+                    [
+                        typeof(AssertException),
+                        typeof(FileNotFoundException),
+                        typeof(ArgumentException),
+                        typeof(ToolException),
+                        typeof(TesterFailureException),
+                        typeof(SerializationException),
+                    ],
+                }
+        );
+    }
+
+    [Fact]
     internal static void Tester_AllMethodsVirtual()
     {
         Tools.Asserter.IsEmpty(
@@ -40,7 +87,7 @@ public static class TesterTests
     }
 
     [Fact]
-    internal static async Task Tester_GuardsNulls()
+    internal static async Task Tester_GuardsAllNulls()
     {
         Type nullType = null;
         await _ShortTestInstance

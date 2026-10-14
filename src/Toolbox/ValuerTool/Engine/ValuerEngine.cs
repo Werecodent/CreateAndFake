@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Comparisons;
@@ -224,6 +225,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
     /// <summary>Iterates the result and wraps any exception encountered with details.</summary>
     /// <param name="result">Result of the tool hint being returned.</param>
     /// <inheritdoc cref="CompareAsync"/>
+    [ExcludeFromCodeCoverage] // Generated AsyncEnumerator code can only be partially covered.
     private static async IAsyncEnumerable<T> WithErrorHandlingAsync<T>(
         IAsyncEnumerable<T> result,
         object? expected,

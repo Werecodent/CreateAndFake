@@ -307,13 +307,28 @@ public static class AsyncContentMapTests
     }
 
     [Theory, RandomData]
-    internal static Task CompareAsync_LibrarySupport(
+    internal static async Task CompareAsync_LibrarySupport(
         AsyncContentMap original,
         [Copy] AsyncContentMap dupe,
         AsyncContentMap variant
     )
     {
-        return original
+        await original
+            .CompareAsync(dupe, Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .IsEmptyAsync(TestContext.Current.CancellationToken);
+
+        await original
+            .CompareAsync(variant, Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
+
+        await original
+            .CompareAsync(new object(), Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
+
+        await original
             .Assert()
             .IsAsync(original, TestContext.Current.CancellationToken)
             .And()
