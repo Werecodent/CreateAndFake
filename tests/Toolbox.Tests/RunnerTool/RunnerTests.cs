@@ -72,7 +72,7 @@ public static class RunnerTests
                 opt => opt with { Timeout = TimeSpan.FromMilliseconds(-1) }
             )
             .Assert()
-            .ThrowsNoAsync<TimeoutException>(TestContext.Current.CancellationToken);
+            .ThrowsNoAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]

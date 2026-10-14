@@ -12,4 +12,13 @@ public sealed class SubclassCreateHintTests : CreateHintTestBase<SubclassCreateH
 
     public SubclassCreateHintTests()
         : base(_ValidTypes, _InvalidTypes) { }
+
+    [Fact]
+    internal void TryToCreate_CanUseLocalSubclasses()
+    {
+        TestInstance.TryToCreate(
+            typeof(IIsGoodOrBadSample),
+            CreateChainer(Tools.Randomizer.Options with { PreferLocalSubclasses = true })
+        );
+    }
 }

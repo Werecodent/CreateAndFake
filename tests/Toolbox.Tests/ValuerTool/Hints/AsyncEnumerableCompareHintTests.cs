@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Werecodent.CreateAndFake.Design.Content;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 using Werecodent.CreateAndFake.ValuerTool.Hints;
@@ -10,8 +9,6 @@ namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 public sealed class AsyncEnumerableCompareHintTests
     : CompareHintTestBase<AsyncEnumerableCompareHint>
 {
-    private static readonly AsyncEnumerableCompareHint _TestInstance = new();
-
     private static readonly Type[] _ValidTypes =
     [
         typeof(IAsyncEnumerable<int>),
@@ -21,27 +18,40 @@ public sealed class AsyncEnumerableCompareHintTests
 
     private static readonly Type[] _InvalidTypes = [typeof(IEnumerable), typeof(DataHolderSample)];
 
+    protected override bool RequiresAsync { get; } = true;
+
     public AsyncEnumerableCompareHintTests()
-        : base(_TestInstance, _ValidTypes, _InvalidTypes) { }
+        : base(_ValidTypes, _InvalidTypes) { }
 
     [Theory, RandomData]
-    internal void TryToCompare_BlocksComparison(IAsyncEnumerable<string> data)
+    internal Task TryToAsyncCompare_CanCheckCollectionType(IAsyncEnumerable<string> data)
     {
-        TestInstance
-            .Assert(x => x.TryToCompare(data, data, CreateChainer()))
-            .Throws<EngineException>();
+        async IAsyncEnumerable<string> iterate()
+        {
+            await foreach (
+                string item in data.WithCancellation(TestContext.Current.CancellationToken)
+                    .ConfigureAwait(false)
+            )
+            {
+                yield return item;
+            }
+        }
+
+        return TestInstance
+            .TryToAsyncCompare(
+                data,
+                iterate(),
+                CreateChainer(Tools.Valuer.Options with { CheckCollectionType = true }),
+                TestContext.Current.CancellationToken
+            )
+            .Data.Assert()
+            .HasCountAsync(1, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal void TryToGetHashCode_BlocksHashing(IAsyncEnumerable<int> data)
-    {
-        TestInstance
-            .Assert(x => x.TryToGetHashCode(data, CreateChainer()))
-            .Throws<EngineException>();
-    }
-
-    [Theory, RandomData]
-    internal async Task TryToCompare_NoDifferencesWhenEqual(IAsyncEnumerable<string> data)
+    internal async Task TryToAsyncCompare_NoDifferencesWhenEqualWithDifferentTypes(
+        IAsyncEnumerable<string> data
+    )
     {
         IEnumerable<string> data2 = await AsyncSeriesHelper.ToListAsync(
             data,
@@ -57,19 +67,11 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (
-            await AsyncSeriesHelper.ToListAsync(
-                result.Data,
-                Tools.Valuer.Options.IterationLimit,
-                TestContext.Current.CancellationToken
-            )
-        )
-            .Assert()
-            .IsEmpty();
+        await result.Data.Assert().HasCountAsync(0, TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal async Task TryToCompare_FindsDifferences(
+    internal Task TryToAsyncCompare_FindsDifferencesWithDifferentTypes(
         IAsyncEnumerable<string> data,
         IEnumerable<string> data2
     )
@@ -82,14 +84,6 @@ public sealed class AsyncEnumerableCompareHintTests
         );
 
         result.HasData.Assert().Is(true);
-        (
-            await AsyncSeriesHelper.ToListAsync(
-                result.Data,
-                Tools.Valuer.Options.IterationLimit,
-                TestContext.Current.CancellationToken
-            )
-        )
-            .Assert()
-            .IsNotEmpty();
+        return result.Data.Assert().HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RandomizerTool;
@@ -134,7 +135,13 @@ public static class RandomizerTests
     internal static void Create_ConditionMatchReturned()
     {
         Tools
-            .Randomizer.Create<int>(opt => opt with { FinalCondition = r => r is int v && v < 0 })
+            .Randomizer.Create<int>(opt =>
+                opt with
+                {
+                    ObjectCreateAttempts = Limiter.Hundred,
+                    FinalCondition = r => r is int v && v < 0,
+                }
+            )
             .Assert()
             .LessThan(0);
     }
@@ -190,6 +197,8 @@ public static class RandomizerTests
     [Fact]
     internal static void Inject_ThrowsHandled()
     {
+        Tools.Randomizer.Assert(x => x.Inject<PrivateCreateSample>(null)).Throws<ToolException>();
+
         Tools
             .Randomizer.Assert(x => x.Inject(typeof(PrivateCreateSample), null))
             .Throws<ToolException>();

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
@@ -99,9 +100,15 @@ public sealed class TaskCompareHint : CompareHint<Task>
         CancellationToken canceler
     )
     {
+        using CancellationTokenSource timeoutTokenSource =
+            CancellationTokenSource.CreateLinkedTokenSource(canceler);
+
         if (
             !item.IsCompleted
-            && await Task.WhenAny(item, Task.Delay(chainer.Options.AsyncTimeout, canceler))
+            && await Task.WhenAny(
+                    item,
+                    Task.Delay(chainer.Options.AsyncTimeout, timeoutTokenSource.Token)
+                )
                 .ConfigureAwait(false) != item
         )
         {
@@ -111,6 +118,8 @@ public sealed class TaskCompareHint : CompareHint<Task>
                     + $"({nameof(ValuerOptions.AsyncTimeout)}) of '{chainer.Options.AsyncTimeout}'."
             );
         }
+
+        await AsyncSeriesHelper.TriggerCancellationAsync(timeoutTokenSource).ConfigureAwait(false);
 
         if (!item.IsCanceled && !item.IsFaulted && IsGenericTask(item))
         {

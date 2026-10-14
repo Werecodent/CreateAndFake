@@ -85,7 +85,7 @@ public sealed class AsyncSetCompareHint : CompareHint
             );
         }
 
-        return ContentsCompareAsync(convertedExpected, convertedActual, chainer, canceler);
+        return ContentsCompareAsync(convertedExpected, convertedActual, canceler);
     }
 
     /// <summary>Converts <paramref name="collection"/> to asynchronous if not already.</summary>
@@ -109,9 +109,10 @@ public sealed class AsyncSetCompareHint : CompareHint
         {
             return AsyncHashSet.CreateFromAsync(
                 (dynamic)collection,
-                _ComparerMaker
-                    .MakeGenericMethod(type.GetGenericArguments().Single())
-                    .Invoke(chainer, []),
+                (dynamic?)
+                    _ComparerMaker
+                        .MakeGenericMethod(type.GetGenericArguments().Single())
+                        .Invoke(chainer, []),
                 chainer.Options.IterationLimit,
                 canceler
             );
@@ -154,16 +155,10 @@ public sealed class AsyncSetCompareHint : CompareHint
     private static async IAsyncEnumerable<Difference> ContentsCompareAsync<T>(
         IAsyncSet<T> expected,
         IAsyncSet<T> actual,
-        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
         canceler.ThrowIfCancellationRequested();
-        if (chainer.Options.CheckCollectionType && expected.GetType() != actual.GetType())
-        {
-            yield return new Difference(expected.GetType(), actual.GetType());
-        }
-
         await foreach (
             T item in expected.FindMissingFromAsync(actual, canceler).ConfigureAwait(false)
         )
