@@ -1,6 +1,8 @@
-﻿using Werecodent.CreateAndFake.Design;
+﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
@@ -36,7 +38,9 @@ public sealed class FakeCreateHint : CreateHint
         Type target = type.GetGenericArguments().Single();
 
         Lock resultLock = new();
-        Dictionary<Tuple<string, Type>, object> resultCache = [];
+        Dictionary<Tuple<MethodInfo, CallData>, Behavior> resultCache = new(
+            randomizer.Options.Valuer.WithOptions(opt => opt with { SkipAsyncValues = true })
+        );
         DataRandom smartData = randomizer.Options.Gen.NextData();
 
         Fake mock = randomizer.Options.Faker.Stub(
@@ -45,7 +49,7 @@ public sealed class FakeCreateHint : CreateHint
             opt =>
                 opt with
                 {
-                    FakeDefaultGenerator = method =>
+                    FakeDefaultGenerator = (method, callData) =>
                     {
                         ArgumentGuard.ThrowIfNull(method);
 
@@ -54,23 +58,26 @@ public sealed class FakeCreateHint : CreateHint
                             return Behavior.None();
                         }
 
-                        Tuple<string, Type> key = Tuple.Create(method.Name, method.ReturnType);
+                        Tuple<MethodInfo, CallData> key = Tuple.Create(method, callData);
                         lock (resultLock)
                         {
-                            if (!resultCache.TryGetValue(key, out object? value))
+                            if (!resultCache.TryGetValue(key, out Behavior? behavior))
                             {
-                                if (key.Item2.IsInheritedBy<string>())
+                                if (method.ReturnType.IsInheritedBy<string>())
                                 {
-                                    value =
-                                        smartData.Find(key.Item1) ?? randomizer.Create<string>();
+                                    behavior = Behavior.Returns(
+                                        smartData.Find(method.Name) ?? randomizer.Create<string>()
+                                    );
                                 }
                                 else
                                 {
-                                    value = randomizer.Create(key.Item2);
+                                    behavior = Behavior.Returns(
+                                        randomizer.Create(method.ReturnType)
+                                    );
                                 }
-                                resultCache.Add(key, value);
+                                resultCache.Add(key, behavior);
                             }
-                            return Behavior.Returns(value);
+                            return behavior;
                         }
                     },
                 }

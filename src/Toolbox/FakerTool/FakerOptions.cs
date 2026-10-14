@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.FakerTool.Engine;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Properties;
 using Werecodent.CreateAndFake.ValuerTool;
 
@@ -17,7 +18,7 @@ public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
     public required IValuer Valuer { get; init; }
 
     /// <summary>If set, controls the default behavior for fake calls.</summary>
-    public Func<MethodInfo, Behavior>? FakeDefaultGenerator { get; init; }
+    internal Func<MethodInfo, CallData, Behavior>? FakeDefaultGenerator { get; init; }
 
     /// <summary>
     ///     Creates options from <see langword="this"/>

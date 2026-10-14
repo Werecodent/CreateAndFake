@@ -23,11 +23,6 @@ public abstract class BaseCopyAttribute : ParameterHintAttribute
         ParameterInfo[] methodParams = method.GetParameters();
 
         int current = Array.FindIndex(methodParams, p => p.Name == param.Name);
-        if (current < 0)
-        {
-            throw new ToolException($"Parameter '{param}' was not found on '{method}'.");
-        }
-
         for (int i = current - 1; i >= 0; i--)
         {
             if (param.ParameterType == methodParams[i].ParameterType)

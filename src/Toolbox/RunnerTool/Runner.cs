@@ -85,7 +85,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         TimeSpan timeout =
-            (localOptions.Timeout.TotalMilliseconds is >= -1)
+            (localOptions.Timeout.TotalMilliseconds is > -1)
                 ? localOptions.Timeout
                 : TimeSpan.FromMilliseconds(30000);
 
@@ -127,25 +127,18 @@ public sealed class Runner(RunnerOptions options) : IRunner
             return new(data.Method, data.Args, UnwrapException(task.Exception), true);
         }
 
-        try
+        object? result = await task.ConfigureAwait(false);
+        if (data.Method is MethodInfo info && info.ReturnType == typeof(void))
         {
-            object? result = await task.ConfigureAwait(false);
-            if (data.Method is MethodInfo info && info.ReturnType == typeof(void))
-            {
-                result = VoidType.Instance;
-            }
-            return new(data.Method, data.Args, result, false);
+            result = VoidType.Instance;
         }
-        catch (Exception taskException)
-        {
-            return new(data.Method, data.Args, UnwrapException(taskException), true);
-        }
+        return new(data.Method, data.Args, result, false);
     }
 
     private static Exception? UnwrapException(Exception? error)
     {
         Exception? result = error;
-        if (result is AggregateException multi && multi.InnerExceptions.Count == 1)
+        if (result is AggregateException multi)
         {
             result = multi.InnerException;
         }

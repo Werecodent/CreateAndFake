@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Collections.Specialized;
 using System.Reflection;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
@@ -8,6 +9,12 @@ namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 public static class MethodCallWrapperTests
 {
+    [Theory, RandomData]
+    internal static void Debug_MethodCallWrapper_ToString(MethodCallWrapper sample)
+    {
+        sample.ToString().Assert().Debug();
+    }
+
     [Fact]
     internal static Task MethodCallWrapper_GuardsNulls()
     {
@@ -78,5 +85,51 @@ public static class MethodCallWrapperTests
         wrapper.InvokeOn(sample).Assert().Is(false);
         wrapper.ModifyArg("obj", sample);
         wrapper.InvokeOn(sample).Assert().Is(true);
+    }
+
+    [Theory, RandomData]
+    internal static Task CompareAsync_NoDifferencesWithCopy(
+        MethodBase originalMethod,
+        [Copy] MethodBase cloneMethod,
+        OrderedDictionary originalArgs,
+        [Copy] OrderedDictionary cloneArgs
+    )
+    {
+        MethodCallWrapper original = new(originalMethod, originalArgs);
+        MethodCallWrapper clone = new(cloneMethod, cloneArgs);
+
+        return original
+            .CompareAsync(clone, Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountAsync(0, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task CompareAsync_DifferencesWithVariant(
+        MethodBase originalMethod,
+        MethodBase variantMethod,
+        OrderedDictionary originalArgs,
+        OrderedDictionary variantArgs
+    )
+    {
+        MethodCallWrapper original = new(originalMethod, originalArgs);
+        MethodCallWrapper variant = new(variantMethod, variantArgs);
+
+        return original
+            .CompareAsync(variant, Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task CompareAsync_DifferenceWithDifferentType(
+        MethodCallWrapper wrapper,
+        DataSample sample
+    )
+    {
+        return wrapper
+            .CompareAsync(sample, Tools.Valuer, TestContext.Current.CancellationToken)
+            .Assert()
+            .HasCountAsync(1, TestContext.Current.CancellationToken);
     }
 }

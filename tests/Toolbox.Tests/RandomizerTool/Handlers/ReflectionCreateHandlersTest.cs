@@ -47,25 +47,30 @@ public static class ReflectionCreateHandlersTests
         )
         {
             object instance = null;
-            MethodCallWrapper wrapper = null;
+            MethodCallWrapper syncWrapper = null;
+            MethodCallWrapper asyncWrapper = null;
             RunResult result = null;
             try
             {
                 instance = method.ReflectedType.Tools().CreateRandomInstance();
 
-                wrapper = await Tools.Runner.CreateForAsync(
+#pragma warning disable CA1849, MA0042, S6966, VSTHRD103 // For testing.
+                syncWrapper = Tools.Runner.CreateFor(method, TestContext.Current.CancellationToken);
+#pragma warning restore
+
+                asyncWrapper = await Tools.Runner.CreateForAsync(
                     method,
                     TestContext.Current.CancellationToken
                 );
-                await wrapper
+                await asyncWrapper
                     .Tools()
                     .Copy()
                     .Assert()
-                    .IsAsync(wrapper, TestContext.Current.CancellationToken);
+                    .IsAsync(asyncWrapper, TestContext.Current.CancellationToken);
 
                 result = await Tools.Runner.RunAsync(
                     instance,
-                    wrapper,
+                    asyncWrapper,
                     TestContext.Current.CancellationToken
                 );
             }
@@ -78,7 +83,12 @@ public static class ReflectionCreateHandlersTests
             }
             finally
             {
-                await Disposer.CleanupAsync(instance, wrapper?.Args, result?.Result);
+                await Disposer.CleanupAsync(
+                    instance,
+                    syncWrapper?.Args,
+                    asyncWrapper?.Args,
+                    result?.Result
+                );
             }
         }
     }

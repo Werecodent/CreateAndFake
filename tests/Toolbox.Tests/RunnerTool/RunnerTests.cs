@@ -4,6 +4,7 @@ using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
@@ -53,6 +54,28 @@ public static class RunnerTests
     }
 
     [Theory, RandomData]
+    internal static async Task RunAsync_DefaultTimeoutWhenNegative(AsyncDataSample sample)
+    {
+        await Tools
+            .Runner.CallMethodsOnAsync(
+                sample,
+                TestContext.Current.CancellationToken,
+                opt => opt with { Timeout = TimeSpan.Zero }
+            )
+            .Assert()
+            .ThrowsAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
+
+        await Tools
+            .Runner.CallMethodsOnAsync(
+                sample,
+                TestContext.Current.CancellationToken,
+                opt => opt with { Timeout = TimeSpan.FromMilliseconds(-1) }
+            )
+            .Assert()
+            .ThrowsNoAsync<TimeoutException>(TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
     internal static void CreateFor_InterfaceFakesInjected(
         Fake<IOnlyMockSample> fake,
         Fake<IOnlyMockSample> fake2
@@ -88,5 +111,50 @@ public static class RunnerTests
         injected.Fakes.Contains(inner2).Assert().Is(false);
 
         injected.Dummy.TestIfMockedSeparately();
+    }
+
+    [Fact]
+    internal static void CreateFor_ThrowsWithUnspecifiedGenerics()
+    {
+        Tools
+            .Runner.Assert(x =>
+                x.CreateFor(
+                    typeof(Enumerable).GetMethod(nameof(Enumerable.Empty)),
+                    TestContext.Current.CancellationToken
+                )
+            )
+            .Throws<UnsupportedException>();
+    }
+
+    [Fact]
+    internal static Task CreateForAsync_ThrowsWithUnspecifiedGenerics()
+    {
+        return Tools
+            .Runner.CreateForAsync(
+                typeof(Enumerable).GetMethod(nameof(Enumerable.Empty)),
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<UnsupportedException>(TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static Task CreateForAsync_ThrowsWithMultipleHints()
+    {
+        return Tools
+            .Runner.CreateForAsync(
+                typeof(RunnerTests).GetMethod(
+                    nameof(BadMultipleHints),
+                    BindingFlags.Static | BindingFlags.NonPublic
+                ),
+                TestContext.Current.CancellationToken
+            )
+            .Assert()
+            .ThrowsAsync<ToolException>(TestContext.Current.CancellationToken);
+    }
+
+    private static DataSample BadMultipleHints([Fake] [Stub] DataSample sample)
+    {
+        return sample;
     }
 }

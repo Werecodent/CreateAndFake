@@ -182,6 +182,6 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
             }
         }
 
-        return GenericConverter.BuildTestName(Method) + argDetails;
+        return $"{GenericConverter.BuildTestName(Method)}{argDetails}";
     }
 }

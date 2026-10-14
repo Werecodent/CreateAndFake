@@ -120,7 +120,7 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<RunnerOptions>(rand =>
             CreateRandomOptionsBase<RunnerOptions>(rand) with
             {
-                Timeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 10)),
+                Timeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 25)),
             }
         ),
         new FactoryCreateHandler<TesterOptions>(CreateRandomOptionsBase<TesterOptions>),

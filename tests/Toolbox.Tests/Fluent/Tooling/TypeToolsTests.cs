@@ -13,6 +13,7 @@ public static class TypeToolsTests
             opt =>
                 opt with
                 {
+                    InjectionValues = [Tools.Gen.Next(5, 8)],
                     IgnorableExceptions = [typeof(ToolException), typeof(InvalidCastException)],
                 }
         );

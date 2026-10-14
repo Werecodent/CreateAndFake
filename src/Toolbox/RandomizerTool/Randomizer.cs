@@ -94,7 +94,14 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <inheritdoc/>
     public T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null)
     {
-        return (T)Inject(typeof(T), values, optionConfiguration);
+        try
+        {
+            return new RandomizerChainer(Options, _Engine).Inject<T>(values, optionConfiguration);
+        }
+        catch (Exception e)
+        {
+            throw WrapCreateError(typeof(T), e);
+        }
     }
 
     /// <inheritdoc/>

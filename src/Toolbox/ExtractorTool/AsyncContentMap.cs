@@ -155,9 +155,12 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        await foreach (object result in GetAllAsync(typeof(T), canceler).ConfigureAwait(false))
+        await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
         {
-            yield return (T)result;
+            if (TypeDescriber.For(item).Inherits<T>())
+            {
+                yield return (T)item;
+            }
         }
     }
 

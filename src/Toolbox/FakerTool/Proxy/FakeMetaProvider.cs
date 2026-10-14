@@ -204,7 +204,8 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
                         .FakeDefaultGenerator.Invoke(
                             calledMethod.IsGenericMethod
                                 ? calledMethod.MakeGenericMethod(generics)
-                                : calledMethod
+                                : calledMethod,
+                            data
                         )
                         .Invoke(args);
             }

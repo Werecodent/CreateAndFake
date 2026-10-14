@@ -1,4 +1,5 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Data;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.FakerTool;
 
@@ -27,6 +28,19 @@ public static class IntegrationTests
         name.Length.Assert().Is(2);
         gen.NextItem(Arg.Any<string[]>()).SetupReturn(name);
         context.NextName.Assert().Is(name);
+    }
+
+    [Theory, RandomData]
+    internal static void Integration_SyncParameterCoverage(
+        string firstName,
+        CancellationToken canceler,
+        out int value
+    )
+    {
+        value = 5;
+        NameData.Values.Assert().Contains(firstName);
+        canceler.Assert().Is(CancellationToken.None);
+        value.Assert().Is(5);
     }
 
     [Theory, RandomData]
