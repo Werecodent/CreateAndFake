@@ -231,6 +231,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
+        // Cannot use await foreach because yield return cannot be inside try/catch.
         IAsyncEnumerator<T> enumerator = result.GetAsyncEnumerator(canceler);
         await using (enumerator.ConfigureAwait(false))
         {

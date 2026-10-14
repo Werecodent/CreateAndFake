@@ -27,14 +27,6 @@ public sealed class SetCompareHint : CompareHint
         IValuerChainer chainer
     )
     {
-        Type expectedType = GenericConverter.FindConcreteType(expected.GetType(), typeof(ISet<>));
-        Type actualType = GenericConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
-
-        if (expectedType != actualType)
-        {
-            return [new Difference(expected.GetType(), actual.GetType())];
-        }
-
         return HandleCompare((IEnumerable)expected, (IEnumerable)actual, chainer);
     }
 
@@ -84,17 +76,6 @@ public sealed class SetCompareHint : CompareHint
         CancellationToken canceler
     )
     {
-        Type expectedType = GenericConverter.FindConcreteType(expected.GetType(), typeof(ISet<>));
-        Type actualType = GenericConverter.FindConcreteType(actual.GetType(), typeof(ISet<>));
-
-        if (expectedType != actualType)
-        {
-            return AsyncSeriesHelper.CreateFromAsync(
-                [new Difference(expected.GetType(), actual.GetType())],
-                chainer.Options.IterationLimit
-            );
-        }
-
         return HandleCompareAsync((dynamic)expected, (dynamic)actual, chainer, canceler);
     }
 

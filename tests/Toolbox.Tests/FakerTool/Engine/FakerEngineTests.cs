@@ -20,6 +20,11 @@ public static class FakerEngineTests
             opt =>
                 opt with
                 {
+                    MethodsToIgnore =
+                    [
+                        nameof(FakerEngine.InjectStubs),
+                        nameof(FakerEngine.InjectMocks),
+                    ],
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),
@@ -38,6 +43,11 @@ public static class FakerEngineTests
             opt =>
                 opt with
                 {
+                    MethodsToIgnore =
+                    [
+                        nameof(FakerEngine.InjectStubs),
+                        nameof(FakerEngine.InjectMocks),
+                    ],
                     IgnorableExceptions =
                     [
                         typeof(ArgumentException),

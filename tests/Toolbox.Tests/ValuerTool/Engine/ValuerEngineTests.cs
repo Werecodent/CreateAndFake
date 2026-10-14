@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
@@ -19,7 +18,6 @@ public static class ValuerEngineTests
             opt =>
                 opt with
                 {
-                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
                     IgnorableExceptions = [typeof(UnsupportedException), typeof(ToolException)],
                 }
         );
@@ -34,7 +32,6 @@ public static class ValuerEngineTests
                 opt with
                 {
                     InjectionValues = [Tools.Valuer.Options],
-                    MethodsToIgnore = FrozenSet.ToFrozenSet(["SelectHints"]),
                     IgnorableExceptions =
                     [
                         typeof(UnsupportedException),
@@ -122,7 +119,35 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static Task CompareAsync_WithErrorHandling(
+    internal static void CompareAsync_WithErrorHandling(
+        [Stub] ICompareHint hint,
+        object expected,
+        object actual,
+        ArgumentException error
+    )
+    {
+        hint.TryToAsyncCompare(
+                expected,
+                actual,
+                Arg.Any<IValuerChainer>(),
+                Arg.Any<CancellationToken>()
+            )
+            .SetupReturn(Behavior<DifferenceHintAsyncResult>.Throw(error));
+
+        _TestInstance
+            .Assert(x =>
+                x.CompareAsync(
+                    expected,
+                    actual,
+                    CreateHintChainer(hint),
+                    TestContext.Current.CancellationToken
+                )
+            )
+            .Throws<ToolException>();
+    }
+
+    [Theory, RandomData]
+    internal static Task CompareAsync_WithErrorHandlingDuringYield(
         [Stub] ICompareHint hint,
         object expected,
         object actual,
@@ -200,7 +225,28 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static Task GetHashCodeAsync_WithErrorHandling(
+    internal static void GetHashCodeAsync_WithErrorHandling(
+        [Stub] ICompareHint hint,
+        object item,
+        ArgumentException error
+    )
+    {
+        hint.TryToAsyncGetHashCode(item, Arg.Any<IValuerChainer>(), Arg.Any<CancellationToken>())
+            .SetupReturn(Behavior<HashCodeHintAsyncResult>.Throw(error));
+
+        _TestInstance
+            .Assert(x =>
+                x.GetHashCodeAsync(
+                    item,
+                    CreateHintChainer(hint),
+                    TestContext.Current.CancellationToken
+                )
+            )
+            .Throws<ToolException>();
+    }
+
+    [Theory, RandomData]
+    internal static Task GetHashCodeAsync_WithErrorHandlingDuringAwait(
         [Stub] ICompareHint hint,
         object item,
         ArgumentException error

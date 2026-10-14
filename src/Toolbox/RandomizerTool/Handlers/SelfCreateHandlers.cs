@@ -106,10 +106,10 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
                 MaxHintRecursion = rand.Options.Gen.Next(28, 32),
-                CollectionMinSize = rand.Options.Gen.Next(0, 1),
-                CollectionMaxSize = rand.Options.Gen.Next(0, 4),
+                CollectionMinSize = rand.Options.Gen.Next(0, 2),
+                CollectionMaxSize = rand.Options.Gen.Next(1, 4),
                 StringMinSize = rand.Options.Gen.Next(0, 3),
-                StringMaxSize = rand.Options.Gen.Next(0, 9),
+                StringMaxSize = rand.Options.Gen.Next(2, 9),
                 FinalCondition = null,
                 CollectionAttempts = rand.Options.Gen.NextItem([Limiter.Dozen, Limiter.Score]),
                 StringCharacterSet = FrozenSet.ToFrozenSet(

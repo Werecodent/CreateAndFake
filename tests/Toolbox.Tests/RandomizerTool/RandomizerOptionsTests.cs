@@ -45,4 +45,15 @@ public static class RandomizerOptionsTests
             .Assert()
             .Is(int.MaxValue);
     }
+
+    [Fact]
+    internal static void NextStringSize_InvertsSizeWhenFlipped()
+    {
+        (Tools.Randomizer.Options with { StringMinSize = 1, StringMaxSize = 0 })
+            .NextStringSize()
+            .Assert()
+            .GreaterThanOrEqualTo(0)
+            .And()
+            .LessThanOrEqualTo(1);
+    }
 }
