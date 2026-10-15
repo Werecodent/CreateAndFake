@@ -1,5 +1,7 @@
 using System.Runtime.Serialization;
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
 using Werecodent.CreateAndFake.TesterTool.Validators;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
@@ -45,5 +47,13 @@ public static class SerializationValidatorTests
     {
         Tools.Tester.VerifyXmlSerialization<string>();
         Tools.Tester.VerifyXmlSerialization(sample);
+    }
+
+    [Fact]
+    internal static void VerifyXmlSerialization_ExceptionsWrapped()
+    {
+        Tools
+            .Tester.Assert(x => x.VerifyXmlSerialization<InjectMockSample>())
+            .Throws<TesterFailureException>();
     }
 }

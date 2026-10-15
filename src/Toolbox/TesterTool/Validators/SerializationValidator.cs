@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ExtractorTool;
 
@@ -69,7 +70,7 @@ internal sealed class SerializationValidator(TesterOptions options)
         }
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)
         {
-            throw new SerializationException(
+            throw new TesterFailureException(
                 $"Ran into problem trying to serialize type '{GenericConverter.ExpandName(type)}'.",
                 e
             );
