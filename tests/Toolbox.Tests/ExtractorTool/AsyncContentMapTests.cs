@@ -67,9 +67,14 @@ public static class AsyncContentMapTests
         return Tools.Tester.VerifySupportsCancellationAsync(
             (size, canceler) =>
                 new AsyncContentMap(
-                    Tools.Randomizer.CreateSized<IAsyncSet<object>>(size),
+                    AsyncHashSet.CreateFromAsync(
+                        Tools.Randomizer.CreateSized<IEnumerable<string>>(size).Cast<object>(),
+                        Tools.Valuer,
+                        size,
+                        TestContext.Current.CancellationToken
+                    ),
                     Tools.Extractor.Options
-                ).FindAllAsync<object>(canceler),
+                ).FindAllAsync<string>(canceler),
             TestContext.Current.CancellationToken
         );
     }
