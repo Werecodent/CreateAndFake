@@ -10,7 +10,7 @@ public struct StructSample(string stringValue)
         IComparable<StructSample>,
         IComparable
 {
-    public string StringValue { get; } = stringValue;
+    public string StringValue { get; set; } = stringValue;
 
     public int CompareTo(StructSample other)
     {

@@ -61,4 +61,22 @@ public static class ExceptionGuarderTests
 
         asserter.Assert().Called();
     }
+
+    [Theory, RandomData]
+    internal static async Task PassthroughWithNoExceptionsAsync_CanBeDisabled(
+        MethodThrowsSample sample
+    )
+    {
+        await Tools.Tester.PreventsParameterMutationAsync(
+            sample,
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableParameterMutationTests = true }
+        );
+
+        await Tools.Tester.PreventsParameterMutationAsync(
+            typeof(MethodThrowsSample),
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableParameterMutationTests = true }
+        );
+    }
 }

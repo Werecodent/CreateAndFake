@@ -185,4 +185,21 @@ public static class NullGuarderTests
             MockDisposableSample._Lock.Release();
         }
     }
+
+    [Theory, RandomData]
+    internal static async Task PreventsNullRefExceptionAsync_CanBeDisabled(
+        NullReferenceSample sample
+    )
+    {
+        await Tools.Tester.PreventsNullRefExceptionAsync<NullReferenceSample>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableNullRefExceptionTests = true }
+        );
+
+        await Tools.Tester.PreventsNullRefExceptionAsync(
+            sample,
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableNullRefExceptionTests = true }
+        );
+    }
 }

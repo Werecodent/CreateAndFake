@@ -148,4 +148,22 @@ public static class MutationGuarderTests
             MockDisposableSample._Lock.Release();
         }
     }
+
+    [Theory, RandomData]
+    internal static async Task PreventsParameterMutationAsync_CanBeDisabled(
+        MockMethodPassOnly sample
+    )
+    {
+        await Tools.Tester.PreventsParameterMutationAsync(
+            sample,
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableParameterMutationTests = true }
+        );
+
+        await Tools.Tester.PreventsParameterMutationAsync(
+            typeof(StaticMutationSample),
+            TestContext.Current.CancellationToken,
+            opt => opt with { DisableParameterMutationTests = true }
+        );
+    }
 }

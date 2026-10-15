@@ -1,6 +1,6 @@
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Comparisons;
-using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool.Validators;
 using Werecodent.CreateAndFake.ValuerTool;
 
@@ -46,6 +46,6 @@ public static class EqualityValidatorTests
     [Fact]
     internal static void VerifyEqualsMatchesHashCodes_ValidatesObjects()
     {
-        _TestInstance.VerifyEqualsMatchesHashCodes(typeof(Times));
+        _TestInstance.VerifyEqualsMatchesHashCodes(typeof(StructSample));
     }
 }
