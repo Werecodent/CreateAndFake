@@ -35,11 +35,7 @@ internal sealed class CancelValidator(TesterOptions options)
         CancellationToken canceler
     )
     {
-        async IAsyncEnumerable<T> iterateUsingForeachAsync(
-            int size,
-            int cancelPoint,
-            CancellationToken canceler
-        )
+        async IAsyncEnumerable<T> iterateUsingForeachAsync(int size, int cancelPoint)
         {
             using CancellationTokenSource source = CancellationTokenSource.CreateLinkedTokenSource(
                 canceler
@@ -76,11 +72,7 @@ internal sealed class CancelValidator(TesterOptions options)
         CancellationToken canceler
     )
     {
-        async IAsyncEnumerable<T> iterateUsingForeachAsync(
-            int size,
-            int cancelPoint,
-            CancellationToken canceler
-        )
+        async IAsyncEnumerable<T> iterateUsingForeachAsync(int size, int cancelPoint)
         {
             using CancellationTokenSource source = CancellationTokenSource.CreateLinkedTokenSource(
                 canceler
@@ -107,7 +99,7 @@ internal sealed class CancelValidator(TesterOptions options)
     }
 
     private async Task RunCancelTestsAsync<T>(
-        Func<int, int, CancellationToken, IAsyncEnumerable<T>> modifiedTestFactory,
+        Func<int, int, IAsyncEnumerable<T>> modifiedTestFactory,
         string testNote,
         CancellationToken canceler
     )
@@ -115,7 +107,7 @@ internal sealed class CancelValidator(TesterOptions options)
         Task runThrowTestAsync(int size, int cancelPoint)
         {
             return options.Asserter.ThrowsAsync<OperationCanceledException, T>(
-                modifiedTestFactory(size, cancelPoint, canceler),
+                modifiedTestFactory(size, cancelPoint),
                 canceler,
                 $"ThrowIfCancellationRequested() missing when {testNote}: Size={size}, Cancellation Point={cancelPoint}"
             );
@@ -125,7 +117,7 @@ internal sealed class CancelValidator(TesterOptions options)
         {
             return options.Asserter.HasCountAsync(
                 size,
-                modifiedTestFactory(size, cancelPoint, canceler),
+                modifiedTestFactory(size, cancelPoint),
                 canceler,
                 $"Results should be returned fully when {testNote}: Size={size}, Cancellation Point={cancelPoint}"
             );

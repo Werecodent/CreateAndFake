@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
@@ -109,6 +110,7 @@ internal sealed class SupportValidator(TesterOptions options)
     }
 
     /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
+    [ExcludeFromCodeCoverage] // Assert.Fail throws and never returns.
     public async Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler

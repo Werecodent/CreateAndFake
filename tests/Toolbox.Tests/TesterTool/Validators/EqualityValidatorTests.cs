@@ -1,10 +1,15 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.TesterTool.Validators;
+using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
 public static class EqualityValidatorTests
 {
+    private static readonly EqualityValidator _TestInstance = new(Tools.Tester.Options);
+
     [Fact]
     internal static Task EqualityValidator_GuardsNulls()
     {
@@ -20,5 +25,23 @@ public static class EqualityValidatorTests
             TestContext.Current.CancellationToken,
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
+    }
+
+    [Theory, RandomData]
+    internal static void VerifyValueEquality_ValidatesIValuerEquatable(IValuerEquatable sample)
+    {
+        _TestInstance.VerifyValueEquality(sample.GetType());
+    }
+
+    [Theory, RandomData]
+    internal static void VerifyValueEquality_ValidatesIValueEquatable(IValueEquatable sample)
+    {
+        _TestInstance.VerifyValueEquality(sample.GetType());
+    }
+
+    [Fact]
+    internal static void VerifyValueEquality_ValidatesObjects()
+    {
+        _TestInstance.VerifyValueEquality(typeof(Times));
     }
 }

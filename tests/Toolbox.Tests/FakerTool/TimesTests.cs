@@ -21,6 +21,12 @@ public static class TimesTests
     }
 
     [Fact]
+    internal static void Times_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<Times>();
+    }
+
+    [Fact]
     internal static void Never_Works()
     {
         Times.Never.IsInRange(0).Assert().Is(true);

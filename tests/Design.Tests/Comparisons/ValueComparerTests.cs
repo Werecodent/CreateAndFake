@@ -38,6 +38,12 @@ public static class ValueComparerTests
     }
 
     [Fact]
+    internal static void ValueComparer_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<ValueComparer>();
+    }
+
+    [Fact]
     internal static Task ValueComparer_VerifyToolSupport()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(

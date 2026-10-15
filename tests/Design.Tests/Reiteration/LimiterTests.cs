@@ -57,6 +57,12 @@ public static class LimiterTests
     }
 
     [Fact]
+    internal static void Limiter_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<Limiter>();
+    }
+
+    [Fact]
     internal static void Limiter_DefaultsConvertible()
     {
         foreach (

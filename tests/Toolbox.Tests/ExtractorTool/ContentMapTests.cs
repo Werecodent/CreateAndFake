@@ -29,6 +29,12 @@ public static class ContentMapTests
         );
     }
 
+    [Fact]
+    internal static void ContentMap_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<ContentMap>();
+    }
+
     [Theory, RandomData]
     internal static void HasContent_UsesObjectByValue(DataHolderSample sample)
     {

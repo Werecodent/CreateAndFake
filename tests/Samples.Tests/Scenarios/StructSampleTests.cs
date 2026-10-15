@@ -19,4 +19,10 @@ public static class StructSampleTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Fact]
+    internal static void StructSample_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<StructSample>();
+    }
 }

@@ -41,8 +41,8 @@ internal sealed class EqualityValidator(TesterOptions options)
                 y,
                 y => x.ValuesEqual(y, Options.Valuer),
                 x => y.ValuesEqual(x, Options.Valuer),
-                x.GetHashCode,
-                y.GetHashCode,
+                () => x.GetValueHash(Options.Valuer),
+                () => y.GetValueHash(Options.Valuer),
                 mustIncludeAllValues
             );
         }
@@ -56,8 +56,8 @@ internal sealed class EqualityValidator(TesterOptions options)
                 y,
                 x.ValuesEqual,
                 y.ValuesEqual,
-                x.GetHashCode,
-                y.GetHashCode,
+                x.GetValueHash,
+                y.GetValueHash,
                 mustIncludeAllValues
             );
         }

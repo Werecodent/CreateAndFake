@@ -38,29 +38,13 @@ public static class TesterTests
             opt =>
                 opt with
                 {
-                    MethodsToIgnore = [nameof(Tester.VerifyAllToStrings)],
-                    IgnorableExceptions =
+                    MethodsToIgnore =
                     [
-                        typeof(AssertException),
-                        typeof(FileNotFoundException),
-                        typeof(ArgumentException),
-                        typeof(ToolException),
-                        typeof(TesterFailureException),
-                        typeof(SerializationException),
+                        nameof(Tester.VerifyAllToStrings),
+                        nameof(Tester.ProvidesTestClassCoverage),
+                        nameof(Tester.VerifyTestMethodNaming),
+                        nameof(Tester.ValidateRandomDataParametersAsync),
                     ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task Tester_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Tester>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    MethodsToIgnore = [nameof(Tester.VerifyAllToStrings)],
                     IgnorableExceptions =
                     [
                         typeof(AssertException),

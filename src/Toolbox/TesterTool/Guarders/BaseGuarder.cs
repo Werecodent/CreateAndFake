@@ -5,6 +5,7 @@ using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.TesterTool.Guarders;
@@ -196,17 +197,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="data">Data to check and dispose.</param>
     private async Task DisposeSeriesButInjectedAsync(IEnumerable? data)
     {
-        Type? series = GenericConverter.AsConcreteType(data?.GetType(), typeof(IEnumerable<>));
-        if (series != null)
-        {
-            Type arg = series.GetGenericArguments()[0];
-            if (!arg.Inherits<IDisposable>() || !arg.Inherits<IAsyncDisposable>())
-            {
-                return;
-            }
-        }
-
-        if (data is not null and not string)
+        if (data is not null and not string and not IFaked)
         {
             int i = 0;
             foreach (object item in data)

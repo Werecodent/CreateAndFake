@@ -21,7 +21,7 @@ public static class DifferenceTests
     }
 
     [Fact]
-    internal static void Difference_VerifyValueEquality()
+    internal static void Difference_UsesValueEquality()
     {
         Tools.Tester.VerifyValueEquality<Difference>();
     }

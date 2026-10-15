@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.RunnerTool;
@@ -227,6 +228,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     }
 
     /// <inheritdoc/>
+    [ExcludeFromCodeCoverage] // Assert.Fail throws and never returns.
     protected override bool HandleCheckException(
         MethodBase testOrigin,
         ParameterInfo? testParam,

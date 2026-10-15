@@ -19,4 +19,10 @@ public static class ValuerEquatableSampleTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Fact]
+    internal static void ValuerEquatableSample_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<ValuerEquatableSample>();
+    }
 }

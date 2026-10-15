@@ -31,6 +31,12 @@ public static class TypeDescriberTests
     }
 
     [Fact]
+    internal static void TypeDescriber_UsesValueEquality()
+    {
+        Tools.Tester.VerifyValueEquality<TypeDescriber>();
+    }
+
+    [Fact]
     internal static void For_Cached()
     {
         TypeDescriber.For<string>().Assert().ReferenceEqual(TypeDescriber.For<string>());

@@ -26,7 +26,7 @@ public static class SingleCallValueTaskSourceTests
     }
 
     [Fact]
-    internal static void SingleCallValueTaskSource_VerifyValueEquality()
+    internal static void SingleCallValueTaskSource_UsesValueEquality()
     {
         Tools.Tester.VerifyValueEquality<SingleCallValueTaskSource>();
     }

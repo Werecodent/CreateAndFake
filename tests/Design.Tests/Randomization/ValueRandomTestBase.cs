@@ -24,21 +24,31 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         typeof(RuntimeBinderException),
     ];
 
-    [Fact]
-    public Task ValueRandom_GuardsNulls()
+    [Theory, RandomData]
+    public Task ValueRandom_GuardsNulls([Cap(20, 30)] int length)
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<T>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [(short)length],
+                    IgnorableExceptions = _IgnorableExceptions,
+                }
         );
     }
 
-    [Fact]
-    public Task ValueRandom_NoParameterMutation()
+    [Theory, RandomData]
+    public Task ValueRandom_NoParameterMutation([Cap(20, 30)] int length)
     {
         return Tools.Tester.PreventsParameterMutationAsync<T>(
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [(short)length],
+                    IgnorableExceptions = _IgnorableExceptions,
+                }
         );
     }
 
