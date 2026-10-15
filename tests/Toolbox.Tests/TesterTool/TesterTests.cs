@@ -143,4 +143,10 @@ public static class TesterTests
             MockDisposableSample._Lock.Release();
         }
     }
+
+    [Theory, RandomData]
+    internal static void WithOptions_CreatesAnotherInstance(TesterMod mod)
+    {
+        Tools.Tester.WithOptions(mod).Assert().IsNotNull().And().IsNot(Tools.Tester);
+    }
 }

@@ -96,4 +96,20 @@ public sealed class DictionaryCompareHintTests : CompareHintTestBase<DictionaryC
         result.HasData.Assert().Is(true);
         return result.Data.Assert().HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
     }
+
+    [Theory, RandomData]
+    internal Task TryToAsyncCompare_DifferencesWithSameKeyButNotValues(
+        IDictionary<int, string> data
+    )
+    {
+        DifferenceHintAsyncResult result = TestInstance.TryToAsyncCompare(
+            data,
+            data.ToDictionary(p => p.Key, p => p.Value.Tools().Variant()),
+            CreateChainer(),
+            TestContext.Current.CancellationToken
+        );
+
+        result.HasData.Assert().Is(true);
+        return result.Data.Assert().HasCountMoreThanAsync(0, TestContext.Current.CancellationToken);
+    }
 }

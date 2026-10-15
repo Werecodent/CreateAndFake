@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.TesterTool.Validators;
@@ -35,6 +36,7 @@ internal sealed class CancelValidator(TesterOptions options)
         CancellationToken canceler
     )
     {
+        [ExcludeFromCodeCoverage] // Generated await foreach code can only be partially covered.
         async IAsyncEnumerable<T> iterateUsingForeachAsync(int size, int cancelPoint)
         {
             using CancellationTokenSource source = CancellationTokenSource.CreateLinkedTokenSource(
@@ -59,7 +61,6 @@ internal sealed class CancelValidator(TesterOptions options)
                 if (++i == cancelPoint)
                 {
                     await AsyncSeriesHelper.TriggerCancellationAsync(source).ConfigureAwait(false);
-                    await Task.Delay(50, canceler).ConfigureAwait(false);
                 }
             }
         }
@@ -72,6 +73,7 @@ internal sealed class CancelValidator(TesterOptions options)
         CancellationToken canceler
     )
     {
+        [ExcludeFromCodeCoverage] // Generated await foreach code can only be partially covered.
         async IAsyncEnumerable<T> iterateUsingForeachAsync(int size, int cancelPoint)
         {
             using CancellationTokenSource source = CancellationTokenSource.CreateLinkedTokenSource(
