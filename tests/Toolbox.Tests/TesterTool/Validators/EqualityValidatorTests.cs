@@ -8,8 +8,6 @@ namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
 public static class EqualityValidatorTests
 {
-    private static readonly EqualityValidator _TestInstance = new(Tools.Tester.Options);
-
     [Fact]
     internal static Task EqualityValidator_GuardsNulls()
     {
@@ -32,7 +30,7 @@ public static class EqualityValidatorTests
         IValuerEquatable sample
     )
     {
-        _TestInstance.VerifyEqualsMatchesHashCodes(sample.GetType());
+        Tools.Tester.VerifyEqualsMatchesHashCodes(sample.GetType());
     }
 
     [Theory, RandomData]
@@ -40,12 +38,12 @@ public static class EqualityValidatorTests
         IValueEquatable sample
     )
     {
-        _TestInstance.VerifyEqualsMatchesHashCodes(sample.GetType());
+        Tools.Tester.VerifyEqualsMatchesHashCodes(sample.GetType());
     }
 
     [Fact]
     internal static void VerifyEqualsMatchesHashCodes_ValidatesObjects()
     {
-        _TestInstance.VerifyEqualsMatchesHashCodes(typeof(StructSample));
+        Tools.Tester.VerifyEqualsMatchesHashCodes(typeof(StructSample));
     }
 }

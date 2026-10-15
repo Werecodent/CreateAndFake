@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ExtractorTool;
 
@@ -15,53 +14,39 @@ internal sealed class SerializationValidator(TesterOptions options)
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
+    /// <inheritdoc cref="ITester.VerifyJsonSerialization{T}(TesterMod)"/>
     public void VerifyJsonSerialization<T>()
     {
         VerifyJsonSerialization(Options.Randomizer.Create<T>());
     }
 
-    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
+    /// <inheritdoc cref="ITester.VerifyJsonSerialization{T}(T,TesterMod)"/>
     public void VerifyJsonSerialization<T>(T instance)
     {
         VerifyJsonSerialization(typeof(T), instance);
     }
 
-    /// <inheritdoc cref="ITester.VerifyJsonSerialization"/>
-    public void VerifyJsonSerialization(object instance)
-    {
-        ArgumentGuard.ThrowIfNull(instance);
-        VerifyJsonSerialization(instance.GetType(), instance);
-    }
-
     /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
-    /// <inheritdoc cref="VerifyJsonSerialization(object)"/>
+    /// <inheritdoc cref="VerifyJsonSerialization"/>
     private void VerifyJsonSerialization(Type type, object? instance)
     {
         VerifySerialization(type, instance, new DataContractJsonSerializer(type));
     }
 
-    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
+    /// <inheritdoc cref="ITester.VerifyXmlSerialization{T}(TesterMod)"/>
     public void VerifyXmlSerialization<T>()
     {
         VerifyXmlSerialization(Options.Randomizer.Create<T>());
     }
 
-    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
+    /// <inheritdoc cref="ITester.VerifyXmlSerialization{T}(T,TesterMod)"/>
     public void VerifyXmlSerialization<T>(T instance)
     {
         VerifyXmlSerialization(typeof(T), instance);
     }
 
-    /// <inheritdoc cref="ITester.VerifyXmlSerialization"/>
-    public void VerifyXmlSerialization(object instance)
-    {
-        ArgumentGuard.ThrowIfNull(instance);
-        VerifyXmlSerialization(instance.GetType(), instance);
-    }
-
     /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
-    /// <inheritdoc cref="VerifyXmlSerialization(object)"/>
+    /// <inheritdoc cref="VerifyXmlSerialization"/>
     private void VerifyXmlSerialization(Type type, object? instance)
     {
         IContentMap contents = Options.Extractor.Extract(instance);

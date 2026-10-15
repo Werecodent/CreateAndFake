@@ -32,4 +32,18 @@ public static class SerializationValidatorTests
                 }
         );
     }
+
+    [Theory, RandomData]
+    internal static void VerifyJsonSerialization_Functional(string sample)
+    {
+        Tools.Tester.VerifyJsonSerialization<string>();
+        Tools.Tester.VerifyJsonSerialization(sample);
+    }
+
+    [Theory, RandomData]
+    internal static void VerifyXmlSerialization_Functional(string sample)
+    {
+        Tools.Tester.VerifyXmlSerialization<string>();
+        Tools.Tester.VerifyXmlSerialization(sample);
+    }
 }

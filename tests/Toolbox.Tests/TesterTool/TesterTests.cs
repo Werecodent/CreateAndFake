@@ -1,7 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.Serialization;
-using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.TesterTool;
@@ -31,34 +28,6 @@ public static class TesterTests
     );
 
     [Fact]
-    internal static Task Tester_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Tester>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    MethodsToIgnore =
-                    [
-                        nameof(Tester.VerifyAllToStrings),
-                        nameof(Tester.ProvidesTestClassCoverage),
-                        nameof(Tester.VerifyTestMethodNaming),
-                        nameof(Tester.ValidateRandomDataParametersAsync),
-                    ],
-                    IgnorableExceptions =
-                    [
-                        typeof(AssertException),
-                        typeof(FileNotFoundException),
-                        typeof(ArgumentException),
-                        typeof(ToolException),
-                        typeof(TesterFailureException),
-                        typeof(SerializationException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
     internal static void Tester_AllMethodsVirtual()
     {
         Tools.Asserter.IsEmpty(
@@ -71,8 +40,10 @@ public static class TesterTests
     }
 
     [Fact]
-    internal static async Task Tester_GuardsAllNulls()
+    internal static async Task Tester_GuardsNulls()
     {
+        1.Assert(_ => new Tester(null)).Throws<ArgumentNullException>();
+
         Type nullType = null;
         await _ShortTestInstance
             .PreventsNullRefExceptionAsync(nullType, TestContext.Current.CancellationToken)

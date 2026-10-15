@@ -67,16 +67,15 @@ public static class ExceptionGuarderTests
         MethodThrowsSample sample
     )
     {
-        await Tools.Tester.PreventsParameterMutationAsync(
+        await Tools.Tester.PassthroughWithNoExceptionsAsync(
             sample,
             TestContext.Current.CancellationToken,
-            opt => opt with { DisableParameterMutationTests = true }
+            opt => opt with { DisablePassthroughTests = true }
         );
 
-        await Tools.Tester.PreventsParameterMutationAsync(
-            typeof(MethodThrowsSample),
+        await Tools.Tester.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
             TestContext.Current.CancellationToken,
-            opt => opt with { DisableParameterMutationTests = true }
+            opt => opt with { DisablePassthroughTests = true }
         );
     }
 }

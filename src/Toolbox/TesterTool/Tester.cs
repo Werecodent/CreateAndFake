@@ -40,17 +40,6 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void VerifyJsonSerialization(
-        object instance,
-        TesterMod? optionConfiguration = null
-    )
-    {
-        new SerializationValidator(Configure(optionConfiguration)).VerifyJsonSerialization(
-            instance
-        );
-    }
-
-    /// <inheritdoc/>
     public virtual void VerifyXmlSerialization<T>(TesterMod? optionConfiguration = null)
     {
         new SerializationValidator(Configure(optionConfiguration)).VerifyXmlSerialization<T>();
@@ -58,15 +47,6 @@ public class Tester(TesterOptions options) : ITester
 
     /// <inheritdoc/>
     public virtual void VerifyXmlSerialization<T>(T instance, TesterMod? optionConfiguration = null)
-    {
-        new SerializationValidator(Configure(optionConfiguration)).VerifyXmlSerialization(instance);
-    }
-
-    /// <inheritdoc/>
-    public virtual void VerifyXmlSerialization(
-        object instance,
-        TesterMod? optionConfiguration = null
-    )
     {
         new SerializationValidator(Configure(optionConfiguration)).VerifyXmlSerialization(instance);
     }
