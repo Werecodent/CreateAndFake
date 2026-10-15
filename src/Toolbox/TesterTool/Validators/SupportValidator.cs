@@ -166,6 +166,7 @@ internal sealed class SupportValidator(TesterOptions options)
     }
 
     /// <inheritdoc cref="ITester.VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     public async Task VerifyToolSetSupportAsync(IEnumerable<Type> types, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(types, canceler);

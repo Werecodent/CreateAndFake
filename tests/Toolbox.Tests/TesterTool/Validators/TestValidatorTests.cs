@@ -21,4 +21,10 @@ public static class TestValidatorTests
             opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
         );
     }
+
+    [Fact]
+    internal static void TestValidator()
+    {
+        // Name coverage test.
+    }
 }

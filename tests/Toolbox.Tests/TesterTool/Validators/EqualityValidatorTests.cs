@@ -28,20 +28,24 @@ public static class EqualityValidatorTests
     }
 
     [Theory, RandomData]
-    internal static void VerifyValueEquality_ValidatesIValuerEquatable(IValuerEquatable sample)
+    internal static void VerifyEqualsMatchesHashCodes_ValidatesIValuerEquatable(
+        IValuerEquatable sample
+    )
     {
-        _TestInstance.VerifyValueEquality(sample.GetType());
+        _TestInstance.VerifyEqualsMatchesHashCodes(sample.GetType());
     }
 
     [Theory, RandomData]
-    internal static void VerifyValueEquality_ValidatesIValueEquatable(IValueEquatable sample)
+    internal static void VerifyEqualsMatchesHashCodes_ValidatesIValueEquatable(
+        IValueEquatable sample
+    )
     {
-        _TestInstance.VerifyValueEquality(sample.GetType());
+        _TestInstance.VerifyEqualsMatchesHashCodes(sample.GetType());
     }
 
     [Fact]
-    internal static void VerifyValueEquality_ValidatesObjects()
+    internal static void VerifyEqualsMatchesHashCodes_ValidatesObjects()
     {
-        _TestInstance.VerifyValueEquality(typeof(Times));
+        _TestInstance.VerifyEqualsMatchesHashCodes(typeof(Times));
     }
 }
