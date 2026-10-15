@@ -44,6 +44,6 @@ public static class EqualityValidatorTests
     [Fact]
     internal static void VerifyEqualsMatchesHashCodes_ValidatesObjects()
     {
-        Tools.Tester.VerifyEqualsMatchesHashCodes(typeof(StructSample));
+        Tools.Tester.VerifyEqualsMatchesHashCodes<StructSample>();
     }
 }

@@ -149,6 +149,26 @@ public static class MutationGuarderTests
         }
     }
 
+    [Fact]
+    internal static Task PreventsParameterMutationAsync_InstanceMethodsCanBeIgnored()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync(
+            typeof(StructSample),
+            TestContext.Current.CancellationToken,
+            opt => opt with { IncludeInstanceMethods = false }
+        );
+    }
+
+    [Fact]
+    internal static Task PreventsParameterMutationAsync_StaticMethodsCanBeIgnored()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync(
+            typeof(StaticMutationSample),
+            TestContext.Current.CancellationToken,
+            opt => opt with { IncludeStaticMethods = false }
+        );
+    }
+
     [Theory, RandomData]
     internal static async Task PreventsParameterMutationAsync_CanBeDisabled(
         MockMethodPassOnly sample

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
@@ -9,6 +10,12 @@ namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing async collection instances for <see cref="IRandomizer"/>.</summary>
 public sealed class AsyncCollectionCreateHint : CreateHint
 {
+    /// <summary>Method used to create collection contents.</summary>
+    private static readonly MethodInfo _TaskMaker = typeof(AsyncCollectionCreateHint).GetMethod(
+        nameof(CreateContentItem),
+        BindingFlags.Static | BindingFlags.NonPublic
+    )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.AsyncCollectionHint;
 
@@ -21,6 +28,11 @@ public sealed class AsyncCollectionCreateHint : CreateHint
             typeof(IAsyncEnumerable<>),
         ];
 
+    private static T CreateContentItem<T>(IRandomizerChainer randomizer)
+    {
+        return randomizer.Create<T>();
+    }
+
     /// <inheritdoc/>
     public override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
     {
@@ -32,14 +44,16 @@ public sealed class AsyncCollectionCreateHint : CreateHint
         {
             Type contentType = type.GetGenericArguments().Single();
 
-            dynamic backingData = randomizer.Create(
-                typeof(HashSet<>).MakeGenericType(contentType),
-                _ => randomizer.Options
-            );
+            MethodInfo genericMaker = _TaskMaker.MakeGenericMethod(contentType);
+            object contentFactory()
+            {
+                return genericMaker.Invoke(null, [randomizer])!;
+            }
 
             return new(
-                AsyncHashSet.CreateFromAsync(
-                    backingData,
+                AsyncHashSet.CreateViaGeneratorAsync(
+                    randomizer.Options.NextCollectionSize(),
+                    (Func<object>)contentFactory,
                     (dynamic)
                         randomizer.Create(
                             typeof(IAsyncEqualityComparer<>).MakeGenericType(contentType)

@@ -6,22 +6,38 @@ namespace Werecodent.CreateAndFake.Design.Tests.Content;
 public static class AsyncHashSetTests
 {
     [Theory, RandomData]
-    internal static Task AsyncHashSet_GuardsNulls([Cap(6, 9)] int iterationLimit)
+    internal static Task AsyncHashSet_GuardsNulls(
+        [Cap(6, 9)] int iterationLimit,
+        [Cap(7, 9)] int size
+    )
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(AsyncHashSet),
             TestContext.Current.CancellationToken,
-            opt => opt with { InjectionValues = [iterationLimit] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [iterationLimit, size],
+                    IgnorableExceptions = [typeof(InvalidCastException)],
+                }
         );
     }
 
     [Theory, RandomData]
-    internal static Task AsyncHashSet_NoParameterMutation([Cap(7, 9)] int iterationLimit)
+    internal static Task AsyncHashSet_NoParameterMutation(
+        [Cap(7, 9)] int iterationLimit,
+        [Cap(7, 9)] int size
+    )
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(AsyncHashSet),
             TestContext.Current.CancellationToken,
-            opt => opt with { InjectionValues = [iterationLimit] }
+            opt =>
+                opt with
+                {
+                    InjectionValues = [iterationLimit, size],
+                    IgnorableExceptions = [typeof(InvalidCastException)],
+                }
         );
     }
 

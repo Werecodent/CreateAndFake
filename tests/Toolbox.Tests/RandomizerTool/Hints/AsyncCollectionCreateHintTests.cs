@@ -133,4 +133,10 @@ public sealed class AsyncCollectionCreateHintTests : CreateHintTestBase<AsyncCol
         }
         count.Assert().Is(5);
     }
+
+    [Theory, RandomData]
+    internal static Task TryToCreate_LargeAsyncSetsValid([Size(100)] IAsyncSet<object> items)
+    {
+        return items.Assert().HasCountAsync(100, TestContext.Current.CancellationToken);
+    }
 }

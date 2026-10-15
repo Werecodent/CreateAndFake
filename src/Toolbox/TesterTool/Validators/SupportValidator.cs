@@ -110,7 +110,7 @@ internal sealed class SupportValidator(TesterOptions options)
     }
 
     /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
-    [ExcludeFromCodeCoverage] // Assert.Fail throws and never returns.
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     public async Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler
@@ -129,6 +129,7 @@ internal sealed class SupportValidator(TesterOptions options)
 
         List<string> generatedData = [];
 
+        Dictionary<MethodInfo, Exception> failures = [];
         foreach (MethodInfo method in testMethods.OrderBy(m => m.Name))
         {
             MethodCallWrapper? data = null;
@@ -139,7 +140,7 @@ internal sealed class SupportValidator(TesterOptions options)
             }
             catch (Exception e)
             {
-                Options.Asserter.Fail(e, $"Randomization failed for method '{method}'");
+                failures.Add(method, e);
             }
             finally
             {
@@ -147,6 +148,7 @@ internal sealed class SupportValidator(TesterOptions options)
             }
         }
 
+        Options.Asserter.IsEmpty(failures, "Randomization failed for test methods.");
         Options.Asserter.Debug(generatedData, "All generated data for random data parameters.");
     }
 
