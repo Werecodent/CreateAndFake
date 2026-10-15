@@ -18,7 +18,7 @@ public static class TypeDescriberTests
     internal static Task TypeDescriber_GuardsNulls()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
-            TypeDescriber.For<string>(),
+            TypeDescriber.For(null),
             TestContext.Current.CancellationToken
         );
     }
@@ -27,7 +27,7 @@ public static class TypeDescriberTests
     internal static Task TypeDescriber_NoParameterMutation()
     {
         return Tools.Tester.PreventsParameterMutationAsync(
-            TypeDescriber.For<string>(),
+            TypeDescriber.For(null),
             TestContext.Current.CancellationToken
         );
     }
