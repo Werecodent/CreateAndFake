@@ -39,10 +39,10 @@ public partial class Asserter : IAsserterError
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (localOptions.DebugAssertsFail)
+        if (localOptions.TriggerFailureForDebugAsserts)
         {
             throw new AssertException(
-                $"{nameof(AsserterOptions.DebugAssertsFail)} set to '{true}'.",
+                $"{nameof(AsserterOptions.TriggerFailureForDebugAsserts)} set to '{true}'.",
                 details,
                 localOptions.Gen.InitialSeed,
                 exception

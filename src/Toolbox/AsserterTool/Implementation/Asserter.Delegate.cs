@@ -68,7 +68,7 @@ public partial class Asserter : IAsserterDelegate
     )
         where T : Exception
     {
-        if (localOptions.DisableAssertThrowCatching)
+        if (localOptions.DisableCatchingForThrowAsserts)
         {
             ExceptionDispatchInfo.Capture(e).Throw();
         }
@@ -78,7 +78,7 @@ public partial class Asserter : IAsserterDelegate
             return noWrap;
         }
 
-        if (!localOptions.UnwrapExceptionsForThrowAssertions)
+        if (!localOptions.IncludeInternalExceptionForThrowAsserts)
         {
             throw new AssertException(
                 errorMessage + GenericConverter.ExpandName(e),
@@ -88,18 +88,17 @@ public partial class Asserter : IAsserterDelegate
             );
         }
 
-        Exception? error;
-        if (e is AggregateException agg && agg.InnerExceptions.Count == 1)
+        Exception? error = e.InnerException;
+        if (e is AggregateException agg)
         {
-            error = agg.InnerExceptions[0];
-        }
-        else if (e is TargetInvocationException invoked)
-        {
-            error = invoked.InnerException;
-        }
-        else
-        {
-            error = e;
+            if (agg.InnerExceptions.Count == 1)
+            {
+                error = agg.InnerExceptions[0];
+            }
+            else
+            {
+                error = e;
+            }
         }
 
         return error as T

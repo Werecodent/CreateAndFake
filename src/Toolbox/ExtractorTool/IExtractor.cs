@@ -7,7 +7,8 @@ using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
-/// <summary>Extracts the contents of objects.</summary>
+/// <summary>Tool to extract the contents of <see cref="object"/>s.</summary>
+/// <remarks>Useful for determining what data is shared among <see cref="object"/>s.</remarks>
 public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

@@ -2,10 +2,10 @@
     "CreateAndFake": {
         "Seed": 2,
         "Asserter": {
-            "StringCompareOption": "CurrentCulture",
-            "DisableAssertThrowCatching": true,
-            "UnwrapExceptionsForThrowAssertions": false,
-            "DebugAssertsFail": true
+            "ComparisonModeForStringAsserts": "CurrentCulture",
+            "DisableCatchingForThrowAsserts": true,
+            "IncludeInternalExceptionForThrowAsserts": false,
+            "TriggerFailureForDebugAsserts": true
         },
         "Duplicator": {
             "IncludeFrameworkHints": false,

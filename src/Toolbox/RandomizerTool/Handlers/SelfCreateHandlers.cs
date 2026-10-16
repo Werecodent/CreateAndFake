@@ -53,7 +53,7 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<AsserterOptions>(rand =>
             CreateRandomOptionsBase<AsserterOptions>(rand) with
             {
-                DisableAssertThrowCatching = false,
+                DisableCatchingForThrowAsserts = false,
             }
         ),
         new FactoryCreateHandler<DuplicatorOptions>(rand =>

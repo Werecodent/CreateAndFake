@@ -20,7 +20,10 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text == null || text.IndexOf(content, localOptions.StringCompareOption) == -1)
+        if (
+            text == null
+            || text.IndexOf(content, localOptions.ComparisonModeForStringAsserts) == -1
+        )
         {
             throw new AssertException(
                 $"Text was missing '{content}'.",
@@ -46,7 +49,7 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text?.IndexOf(content, localOptions.StringCompareOption) >= 0)
+        if (text?.IndexOf(content, localOptions.ComparisonModeForStringAsserts) >= 0)
         {
             throw new AssertException(
                 $"Text contained '{content}'.",
@@ -89,7 +92,7 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text?.StartsWith(content, localOptions.StringCompareOption) != true)
+        if (text?.StartsWith(content, localOptions.ComparisonModeForStringAsserts) != true)
         {
             throw new AssertException(
                 $"Text did not start with '{content}'.",
@@ -132,7 +135,7 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text?.StartsWith(content, localOptions.StringCompareOption) == true)
+        if (text?.StartsWith(content, localOptions.ComparisonModeForStringAsserts) == true)
         {
             throw new AssertException(
                 $"Text started with '{content}'.",
@@ -175,7 +178,7 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text?.EndsWith(content, localOptions.StringCompareOption) != true)
+        if (text?.EndsWith(content, localOptions.ComparisonModeForStringAsserts) != true)
         {
             throw new AssertException(
                 $"Text did not end with '{content}'.",
@@ -218,7 +221,7 @@ public partial class Asserter : IAsserterString
     )
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (text?.EndsWith(content, localOptions.StringCompareOption) == true)
+        if (text?.EndsWith(content, localOptions.ComparisonModeForStringAsserts) == true)
         {
             throw new AssertException(
                 $"Text ended with '{content}'.",

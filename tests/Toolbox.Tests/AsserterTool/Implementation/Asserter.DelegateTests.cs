@@ -136,7 +136,7 @@ public sealed class AsserterDelegateTests
             .Assert(x =>
                 x.Throws<ArgumentException>(
                     () => throw error,
-                    opt => opt with { DisableAssertThrowCatching = true }
+                    opt => opt with { DisableCatchingForThrowAsserts = true }
                 )
             )
             .Throws<ArgumentException>()

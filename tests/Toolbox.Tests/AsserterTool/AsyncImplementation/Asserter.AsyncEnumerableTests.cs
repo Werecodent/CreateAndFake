@@ -43,7 +43,7 @@ public sealed class AsserterAsyncEnumerableTests
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
         return _testInstance
-            .DebugAsync(series, canceler, opt => opt with { DebugAssertsFail = false })
+            .DebugAsync(series, canceler, opt => opt with { TriggerFailureForDebugAsserts = false })
             .Assert()
             .ThrowsNoAsync<Exception>(canceler);
     }
@@ -54,7 +54,7 @@ public sealed class AsserterAsyncEnumerableTests
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
         return _testInstance
-            .DebugAsync(series, canceler, opt => opt with { DebugAssertsFail = true })
+            .DebugAsync(series, canceler, opt => opt with { TriggerFailureForDebugAsserts = true })
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
     }
@@ -385,7 +385,7 @@ public sealed class AsserterAsyncEnumerableTests
             .ThrowsAsync<ArgumentException, int>(
                 throwError(),
                 canceler,
-                opt => opt with { DisableAssertThrowCatching = true }
+                opt => opt with { DisableCatchingForThrowAsserts = true }
             )
             .Assert()
             .ThrowsAsync<ArgumentException>(canceler)

@@ -100,10 +100,10 @@ public sealed class TaskAssertErrorExtensionsTests
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
         ToolSet debugPassSet = MakeSet(
-            Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = false })
+            Tools.Asserter.WithOptions(opt => opt with { TriggerFailureForDebugAsserts = false })
         );
         ToolSet debugFailSet = MakeSet(
-            Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = true })
+            Tools.Asserter.WithOptions(opt => opt with { TriggerFailureForDebugAsserts = true })
         );
 
         await Task.FromResult(data.Assert(debugPassSet)).Debug();

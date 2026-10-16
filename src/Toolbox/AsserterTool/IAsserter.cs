@@ -9,7 +9,8 @@ using Werecodent.CreateAndFake.Design.Tooling;
 
 namespace Werecodent.CreateAndFake.AsserterTool;
 
-/// <summary>Handles common test scenarios.</summary>
+/// <summary>Tool to verify <see cref="object"/> states and <see cref="Type"/> behavior.</summary>
+/// <remarks>Useful for handling common test scenarios.</remarks>
 public interface IAsserter
     : ITool<AsserterOptions>,
         IAsserterAsyncEnumerable,

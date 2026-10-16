@@ -372,10 +372,10 @@ public sealed class AssertAsyncEnumerableTests
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
         ToolSet debugPassSet = MakeSet(
-            Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = false })
+            Tools.Asserter.WithOptions(opt => opt with { TriggerFailureForDebugAsserts = false })
         );
         ToolSet debugFailSet = MakeSet(
-            Tools.Asserter.WithOptions(opt => opt with { DebugAssertsFail = true })
+            Tools.Asserter.WithOptions(opt => opt with { TriggerFailureForDebugAsserts = true })
         );
 
         await data.Assert(debugPassSet).DebugAsync(canceler);

@@ -12,7 +12,11 @@ namespace Werecodent.CreateAndFake.ValuerTool;
 
 #pragma warning disable CA1068 // Overloaded parameter last.
 
-/// <summary>Compares objects by value via reflection if needed.</summary>
+/// <summary>Tool to compare <see cref="object"/>s by value via reflection if needed.</summary>
+/// <remarks>
+///     Useful for checking equality between <see cref="object"/>s without having to override
+///     <see cref="Equals(object,object)"/> and <see cref="GetHashCode(object)"/> manually.
+/// </remarks>
 public interface IValuer
     : IHintTool<ValuerOptions, ICompareHint>,
         IAsyncEqualityComparer<object>,
