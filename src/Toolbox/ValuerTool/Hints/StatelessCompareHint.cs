@@ -1,0 +1,35 @@
+﻿using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.ValuerTool.Engine;
+
+namespace Werecodent.CreateAndFake.ValuerTool.Hints;
+
+/// <summary>Handles comparing stateless objects for <see cref="IValuer"/>.</summary>
+public sealed class StatelessCompareHint : CompareHint
+{
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)ComparePriority.StatelessHint;
+
+    /// <inheritdoc/>
+    protected override bool Supports(object expected, object actual, IValuerChainer chainer)
+    {
+        Type type = expected.GetType();
+        return !TypeDescriber.For(type).Properties.All.Any(p => p.CanRead)
+            && !TypeDescriber.For(type).Fields.All.Any();
+    }
+
+    /// <inheritdoc/>
+    protected override IEnumerable<Difference> Compare(
+        object expected,
+        object actual,
+        IValuerChainer chainer
+    )
+    {
+        return [];
+    }
+
+    /// <inheritdoc/>
+    protected override int GetHashCode(object item, IValuerChainer chainer)
+    {
+        return item.GetType().GetHashCode();
+    }
+}

@@ -1,0 +1,4 @@
+[*.cs]
+
+# Samples intended to be of broken designs in order to test the framework.
+dotnet_analyzer_diagnostic.severity = None

@@ -1,0 +1,64 @@
+using System.Collections;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.ExtractorTool.Engine;
+
+namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
+
+/// <summary>Handles extracting enumerables for <see cref="IExtractor"/>.</summary>
+public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
+{
+    /// <inheritdoc/>
+    public override int EnginePriority => (int)ExtractPriority.EnumerableHint;
+
+    /// <inheritdoc/>
+    protected override bool Extract(IEnumerable source, IExtractorChainer chainer)
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (chainer.AddFoundValue(source))
+        {
+            int i = 0;
+            foreach (object item in source)
+            {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i++,
+                    chainer.Options.Valuer.Options.IterationLimit
+                );
+                _ = chainer.InnerExtract(item);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override async Task<bool> ExtractAsync(
+        IEnumerable source,
+        IExtractorChainer chainer,
+        CancellationToken canceler
+    )
+    {
+        ArgumentGuard.ThrowIfNull(chainer);
+
+        if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
+        {
+            int i = 0;
+            foreach (object item in source)
+            {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i++,
+                    chainer.Options.Valuer.Options.IterationLimit
+                );
+                _ = await chainer.InnerExtractAsync(item, canceler).ConfigureAwait(false);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}

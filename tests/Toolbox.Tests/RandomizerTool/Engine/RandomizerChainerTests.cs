@@ -1,0 +1,150 @@
+﻿using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Samples.ErrorCases;
+
+namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
+
+public static class RandomizerChainerTests
+{
+    [Fact]
+    internal static Task RandomizerChainer_GuardsNulls()
+    {
+        return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    InjectionValues = [Tools.Gen.Next(3, 5)],
+                    MethodsToIgnore =
+                    [
+                        nameof(RandomizerChainer.CreateInternal),
+                        nameof(RandomizerChainer.Inject),
+                    ],
+                    IgnorableExceptions = [typeof(ArgumentOutOfRangeException)],
+                }
+        );
+    }
+
+    [Fact]
+    internal static Task RandomizerChainer_NoParameterMutation()
+    {
+        return Tools.Tester.PreventsParameterMutationAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken,
+            opt =>
+                opt with
+                {
+                    InjectionValues = [Tools.Gen.Next(3, 5)],
+                    MethodsToIgnore =
+                    [
+                        nameof(RandomizerChainer.CreateInternal),
+                        nameof(RandomizerChainer.Inject),
+                    ],
+                    IgnorableExceptions =
+                    [
+                        typeof(ArgumentOutOfRangeException),
+                        typeof(ArgumentException),
+                    ],
+                }
+        );
+    }
+
+    [Fact]
+    internal static Task RandomizerChainer_PassthroughWithNoExceptions()
+    {
+        return Tools.Tester.PassthroughWithNoExceptionsAsync<RandomizerChainer>(
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] }
+        );
+    }
+
+    [Theory, RandomData]
+    internal static void CreateSpecific_ThrowsWhenRecreatingSameType(
+        [Stub] IRandomizerEngine engine,
+        Type specificType,
+        Type parentType
+    )
+    {
+        engine
+            .Create(specificType, Arg.Any<IRandomizerChainer>())
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateSpecific(specificType, parentType)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .Assert(x => x.CreateSpecific(specificType, parentType))
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_ThrowsWhenSameTypeRecreated(
+        [Stub] IRandomizerEngine engine,
+        object data
+    )
+    {
+        Type type = Tools.Mutator.Variant(data.GetType());
+
+        engine
+            .Create(type, Arg.Any<IRandomizerChainer>())
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateInternal(type, data)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .Assert(x => x.CreateInternal(type, data))
+            .Throws<EngineException>();
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_CreatesParentLoop(
+        [Stub] IRandomizerEngine engine,
+        object parentData,
+        object childData
+    )
+    {
+        Type type = Tools.Mutator.VariantOf([parentData.GetType(), childData.GetType()]);
+
+        engine
+            .Create(type, Arg.Any<IRandomizerChainer>())
+            .SetupReturn(
+                Behavior.Call<Type, IRandomizerChainer, object>(
+                    (_, chainer) => chainer.CreateInternal(parentData.GetType(), childData)
+                )
+            );
+
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .CreateInternal(type, parentData)
+            .Assert()
+            .Is(parentData);
+    }
+
+    [Theory, RandomData]
+    internal static void CreateInternal_CreatesSelfLoop(
+        [Stub] IRandomizerEngine engine,
+        object data
+    )
+    {
+        new RandomizerChainer(Tools.Randomizer.Options, engine)
+            .CreateInternal(data.GetType(), data)
+            .Assert()
+            .Is(data);
+    }
+
+    [Theory, RandomData]
+    internal static void Inject_InterfaceFakesInjected(
+        [Fake] IOnlyMockSample fake,
+        [Fake] IOnlyMockSample fake2
+    )
+    {
+        InjectMockSample holder = Tools.Randomizer.Inject<InjectMockSample>([fake, fake2]);
+        fake.Tools().ToFake().Verify(Times.Never, f => f.FailIfNotMocked());
+        fake2.Tools().ToFake().Verify(Times.Never, f => f.FailIfNotMocked());
+        holder.TestIfMockedSeparately();
+        fake.Tools().ToFake().Verify(Times.Once, f => f.FailIfNotMocked());
+        fake2.Tools().ToFake().Verify(Times.Once, f => f.FailIfNotMocked());
+    }
+}

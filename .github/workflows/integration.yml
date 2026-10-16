@@ -2,51 +2,48 @@ name: Integration
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-latest
+  testing:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    environment: staging
+    timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: | 
-          8.0.x
-          7.0.x
+          10.0.x
+          9.0.x
     - name: Build & Test
       run: ./build/run.sh test
-
-  mac:
-    runs-on: macOS-latest
+      shell: bash
+    
+  coverage:
+    runs-on: windows-2025
+    environment: staging
+    timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: | 
-          8.0.x
-          7.0.x
-    - name: Build & Test
-      run: bash build/run.sh test
-
-  windows:
-    runs-on: windows-2019
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: | 
-          8.0.x
-          7.0.x
-    - name: Build & Test & Coverage
-      run: ./build/run.cmd test coverage
-    - name: Upload coverage
-      uses: codecov/codecov-action@v4
+          10.0.x
+          9.0.x
+    - name: Build & Check Test Coverage
+      shell: cmd
+      run: ./build/run.cmd coverage
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v6
       with:
         directory: ./artifacts/coverage
-        token: ${{ secrets.CODECOV_TOKEN }}
+        token: ${{ Secrets.CODECOV_TOKEN }}
