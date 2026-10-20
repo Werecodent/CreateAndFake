@@ -62,7 +62,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         try
         {
             return chainer
-                .Options.CreateVariantAttemptLimit.StallUntil(
+                .Options.AttemptLimitForVariants.StallUntil(
                     $"Create variant of type '{GenericConverter.ExpandName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isVariantCheck
@@ -111,7 +111,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return (
                 await chainer
-                    .Options.CreateVariantAttemptLimit.StallUntilAsync(
+                    .Options.AttemptLimitForVariants.StallUntilAsync(
                         $"Create variant of type '{GenericConverter.ExpandName(type)}'",
                         () => chainer.Options.Randomizer.Create(type),
                         isVariantCheckAsync,
@@ -174,7 +174,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         try
         {
             return chainer
-                .Options.CreateUniqueAttemptLimit.StallUntil(
+                .Options.AttemptLimitForUniques.StallUntil(
                     $"Create unique of type '{GenericConverter.ExpandName(type)}'",
                     () => chainer.Options.Randomizer.Create(type),
                     isUniqueCheck
@@ -231,7 +231,7 @@ public sealed class MutatorEngine : ToolEngine<IMutateHint>, IMutatorEngine
         {
             return (
                 await chainer
-                    .Options.CreateUniqueAttemptLimit.StallUntilAsync(
+                    .Options.AttemptLimitForUniques.StallUntilAsync(
                         $"Create unique of type '{GenericConverter.ExpandName(type)}'",
                         () => chainer.Options.Randomizer.Create(type),
                         isUniqueCheckAsync,

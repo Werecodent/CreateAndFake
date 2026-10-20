@@ -8,23 +8,21 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.FakerTool;
 
-/// <summary>Configuration for controlling faking behavior.</summary>
+/// <summary>Settings for manipulating <see cref="IFaker"/> behavior.</summary>
 public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
 {
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Faker);
 
-    /// <summary>Handles comparisons.</summary>
+    /// <inheritdoc cref="IValuer"/>
     public required IValuer Valuer { get; init; }
 
     /// <summary>If set, controls the default behavior for fake calls.</summary>
-    internal Func<MethodInfo, CallData, Behavior>? FakeDefaultGenerator { get; init; }
+    /// <value><see langword="null"/></value>
+    internal Func<MethodInfo, CallData, Behavior>? FakeDefaultGenerator { get; init; } = null;
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/>
-    ///     overridden with values from <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal FakerOptions WithConfig(IConfigurationSection? config)
     {

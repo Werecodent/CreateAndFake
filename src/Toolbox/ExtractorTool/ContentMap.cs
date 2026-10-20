@@ -52,7 +52,7 @@ public sealed class ContentMap(ISet<object> content, ExtractorOptions options) :
     {
         return maps.SelectMany(m => m)
             .Intersect(this, _options.Valuer)
-            .Where(d => !_options.UniqueIgnoredTypes.Contains(d.GetType()))
+            .Where(d => !_options.IgnoredTypesForUniques.Contains(d.GetType()))
             .Where(d => !d.GetType().IsEnum)
             .Where(d =>
             {

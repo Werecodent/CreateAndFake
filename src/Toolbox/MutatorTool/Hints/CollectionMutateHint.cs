@@ -46,7 +46,7 @@ public sealed class CollectionMutateHint : MutateHint
         {
             if (instance is ISet<T> set)
             {
-                for (int i = 0; i < chainer.Options.SetMutationAttemptMax && !modified; i++)
+                for (int i = 0; i < chainer.Options.MaxAttemptsForMutatingSets && !modified; i++)
                 {
                     modified = set.Add(chainer.Options.Randomizer.Create<T>());
                 }

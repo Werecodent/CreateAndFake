@@ -10,10 +10,8 @@ public sealed record ConfiguredDesignOptions : DesignOptions
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = "Design";
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/> overridden by values in the <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal ConfiguredDesignOptions WithConfig(IConfigurationSection? config)
     {

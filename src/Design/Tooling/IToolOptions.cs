@@ -5,7 +5,8 @@ namespace Werecodent.CreateAndFake.Design.Tooling;
 /// <summary>Settings for manipulating <see cref="ITool{T}"/> behavior.</summary>
 public interface IToolOptions
 {
-    /// <summary>Notes.</summary>
+    /// <inheritdoc cref="DesignOptions"/>
+    /// <remarks>These options are shared among all tools from a configured toolset.</remarks>
     DesignOptions Design { get; init; }
 
     /// <summary>Value generator used for base randomization.</summary>

@@ -15,7 +15,7 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
-            "VerifyCloneResult": false
+            "VerifyEqualityForClones": false
         },
         "Extractor": {
             "IncludeFrameworkHints": false,
@@ -32,16 +32,16 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxRecursionDepth": 8,
-            "CreateVariantAttemptLimit": 16,
-            "CreateUniqueAttemptLimit": 18,
-            "SetMutationAttemptMax": 10
+            "AttemptLimitForVariants": 16,
+            "AttemptLimitForUniques": 18,
+            "MaxAttemptsForMutatingSets": 10
         },
         "Randomizer": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
             "PreferLocalSubclasses": false,
-            "RandomizerCreateAttempts": "Few",
+            "FinalConditionAttemptLimit": "Few",
             "ObjectCreateAttempts": "00:01:00",
             "CollectionAttempts": 5,
             "CollectionMinSize": 2,

@@ -36,7 +36,7 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
         try
         {
             return localOptions
-                .RandomizerCreateAttempts.StallUntil(
+                .FinalConditionAttemptLimit.StallUntil(
                     $"Trying to create instance of '{GenericConverter.ExpandName(type)}'",
                     () =>
                     {

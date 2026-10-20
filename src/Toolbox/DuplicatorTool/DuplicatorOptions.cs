@@ -1,6 +1,6 @@
-using System.Collections.Frozen;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 using Werecodent.CreateAndFake.ExtractorTool;
@@ -21,21 +21,18 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
     /// <inheritdoc cref="IExtractor"/>
     public required IExtractor Extractor { get; init; }
 
-    /// <inheritdoc cref="IValuer"/>
-    public required IValuer Valuer { get; init; }
-
-    /// <summary>If results are verified via the <see cref="Asserter"/>.</summary>
+    /// <summary>If generated clones are compared to their original source before being returned.</summary>
+    /// <remarks>
+    ///     Useful for ensuring cloning is successfully accomplished by the <see cref="IDuplicator"/>.
+    ///     <see cref="ValuerOptions.SkipAsyncValues"/> is overridden to <see langword="true"/>
+    ///     for this verification in order to prevent <see cref="AsynchronousAccessException"/>s.
+    /// </remarks>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
-    public bool VerifyCloneResult { get; init; } = true;
+    public bool VerifyEqualityForClones { get; init; } = true;
 
-    /// <summary>Types that need no further inspection for serialization/deserialization.</summary>
-    public FrozenSet<Type> SerializableTypes { get; init; } =
-        FrozenSet.ToFrozenSet([typeof(string), typeof(Type)]);
-
-    /// <summary>
-    ///     Creates options from <see langword="this"/> overridden by values in the <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal DuplicatorOptions WithConfig(IConfigurationSection? config)
     {
@@ -47,9 +44,9 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
 
         return this with
         {
+            VerifyEqualityForClones = Config.GetValue(section, VerifyEqualityForClones),
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            VerifyCloneResult = Config.GetValue(section, VerifyCloneResult),
             MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
     }

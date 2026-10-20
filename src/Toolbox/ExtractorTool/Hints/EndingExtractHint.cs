@@ -24,7 +24,7 @@ public sealed class EndingExtractHint : ExtractHint
             && (
                 ValueRandom.SupportedTypes.Contains(type)
                 || type.IsEnum
-                || chainer.Options.ContentEndTypes.Contains(type)
+                || chainer.Options.NonExtractableTypes.Contains(type)
             )
         )
         {
@@ -52,7 +52,7 @@ public sealed class EndingExtractHint : ExtractHint
             && (
                 ValueRandom.SupportedTypes.Contains(type)
                 || type.IsEnum
-                || chainer.Options.ContentEndTypes.Contains(type)
+                || chainer.Options.NonExtractableTypes.Contains(type)
             )
         )
         {

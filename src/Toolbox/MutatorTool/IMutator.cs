@@ -136,7 +136,7 @@ public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
     /// <param name="instances">The <see langword="object"/>s to share no values with.</param>
     /// <remarks>
     ///     Ignores <see cref="Type"/>s with too small of range.
-    ///     See <see cref="ExtractorOptions.UniqueIgnoredTypes"/>.
+    ///     See <see cref="ExtractorOptions.IgnoredTypesForUniques"/>.
     /// </remarks>
     /// <inheritdoc cref="VariantOf"/>
     object UniqueOf(

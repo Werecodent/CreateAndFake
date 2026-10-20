@@ -94,7 +94,7 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         {
             Type itemType = item.GetType();
 
-            if (!_options.UniqueIgnoredTypes.Contains(itemType) && !itemType.IsEnum)
+            if (!_options.IgnoredTypesForUniques.Contains(itemType) && !itemType.IsEnum)
             {
                 if (item is IEnumerable series)
                 {

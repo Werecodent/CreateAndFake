@@ -7,67 +7,68 @@ using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.MutatorTool;
 using Werecodent.CreateAndFake.Properties;
 using Werecodent.CreateAndFake.RandomizerTool;
-using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.RunnerTool;
 
-/// <summary>Configuration for controlling run behavior.</summary>
+/// <summary>Configuration for manipulating <see cref="IRunner"/> behavior.</summary>
 public sealed record RunnerOptions : ToolOptions<RunnerOptions>
 {
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Runner);
 
-    /// <summary>Handles randomization.</summary>
+    /// <inheritdoc cref="IRandomizer"/>
     public required IRandomizer Randomizer { get; init; }
 
-    /// <summary>Handles object variance.</summary>
+    /// <inheritdoc cref="IMutator"/>
     public required IMutator Mutator { get; init; }
 
-    /// <summary>Handles cloning.</summary>
+    /// <inheritdoc cref="IDuplicator"/>
     public required IDuplicator Duplicator { get; init; }
 
-    /// <summary>Provides stubs.</summary>
+    /// <inheritdoc cref="IFaker"/>
     public required IFaker Faker { get; init; }
 
-    /// <summary>Provides equality.</summary>
-    public required IValuer Valuer { get; init; }
-
     /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
+    /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool InheritIReflectableTypeOnFakedType { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool IncludeFinalize { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool IncludeDispose { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeStaticMethods { get; init; } = true;
 
     /// <summary>Option for which methods to include.</summary>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeInstanceMethods { get; init; } = true;
 
     /// <summary>Option for which methods to include.</summary>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeBaseObjectMethods { get; init; } = true;
 
     /// <summary>How long to wait for methods to complete.</summary>
+    /// <value><c>00:00:50.0000000</c></value>
     [ConfigurableOption]
     public TimeSpan Timeout { get; init; } = new(0, 0, 50);
 
     /// <summary>Values to inject into called methods.</summary>
+    /// <value><c>[]</c></value>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/>
-    ///     overridden with values from <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal RunnerOptions WithConfig(IConfigurationSection? config)
     {
@@ -90,11 +91,5 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
                 InheritIReflectableTypeOnFakedType
             ),
         };
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(RunnerOptions);
     }
 }

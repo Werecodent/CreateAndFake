@@ -42,11 +42,8 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
     [ConfigurableOption]
     public bool IncludeValueHashInComparison { get; init; } = false;
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/>
-    ///     overridden with values from <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal ValuerOptions WithConfig(IConfigurationSection? config)
     {

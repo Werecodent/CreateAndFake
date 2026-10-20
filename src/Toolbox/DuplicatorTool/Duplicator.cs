@@ -29,7 +29,7 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
         try
         {
             T result = new DuplicatorChainer(localOptions, _Engine).Copy(source);
-            if (localOptions.VerifyCloneResult)
+            if (localOptions.VerifyEqualityForClones)
             {
                 Options.Asserter.ValuesEqual(
                     source,

@@ -10,7 +10,7 @@ public interface IToolHintOptions<TSelf, THint> : IToolOptions
     where THint : IToolHint
 {
     /// <summary>
-    ///     Maximum number of nested Tool method calls from <typeparamref name="THint"/>s allowed before failing.
+    ///     Maximum number of nested tool method calls from <typeparamref name="THint"/>s allowed before failing.
     /// </summary>
     /// <remarks>Helps prevent infinite loops from custom <typeparamref name="THint"/>s.</remarks>
     [ConfigurableOption]
@@ -33,10 +33,10 @@ public interface IToolHintOptions<TSelf, THint> : IToolOptions
     bool IncludeFoundHints { get; }
 
     /// <summary>Additional hints to be used by the tool.</summary>
-    /// <remarks>These hints are used in the order specified before any other hint.</remarks>
+    /// <remarks>These hints are used in the order given before any other hint.</remarks>
     ImmutableArray<THint> Hints { get; }
 
     /// <summary>Options to use when working on child values during recursion.</summary>
-    /// <remarks>If <see langword="null"/>, the previous options are utilized.</remarks>
+    /// <remarks>If <see langword="null"/>, the current options are utilized.</remarks>
     TSelf? NestedOptions { get; }
 }

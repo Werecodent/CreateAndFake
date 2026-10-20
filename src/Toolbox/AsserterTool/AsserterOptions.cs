@@ -20,8 +20,8 @@ public sealed record AsserterOptions : ToolOptions<AsserterOptions>
     public required IValuer Valuer { get; init; }
 
     /// <summary>Comparison method used for <see langword="string"/> assertions.</summary>
-    /// <value><c>StringComparison.Ordinal</c></value>
     /// <remarks>Useful for specifying cultures or ignoring case.</remarks>
+    /// <value><c>StringComparison.Ordinal</c></value>
     [ConfigurableOption]
     public StringComparison ComparisonModeForStringAsserts { get; init; } =
         StringComparison.Ordinal;
@@ -58,10 +58,8 @@ public sealed record AsserterOptions : ToolOptions<AsserterOptions>
     [ConfigurableOption]
     public bool TriggerFailureForDebugAsserts { get; init; } = false;
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/> overridden by values in the <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal AsserterOptions WithConfig(IConfigurationSection? config)
     {
@@ -87,11 +85,5 @@ public sealed record AsserterOptions : ToolOptions<AsserterOptions>
             ),
             TriggerFailureForDebugAsserts = Config.GetValue(section, TriggerFailureForDebugAsserts),
         };
-    }
-
-    /// <inheritdoc/>
-    public override string ToString()
-    {
-        return nameof(AsserterOptions);
     }
 }

@@ -66,7 +66,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(3),
+                AttemptLimitForVariants = new Limiter(3),
             }
         )
             .Assert(x => x.Variant(sample))
@@ -87,7 +87,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(5),
+                AttemptLimitForVariants = new Limiter(5),
             }
         )
             .Variant(sample)
@@ -113,7 +113,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(5),
+                AttemptLimitForVariants = new Limiter(5),
             }
         )
             .VariantOf([sample1, sample2])
@@ -184,7 +184,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(3),
+                AttemptLimitForVariants = new Limiter(3),
             }
         )
             .VariantAsync(sample, TestContext.Current.CancellationToken)
@@ -215,7 +215,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(5),
+                AttemptLimitForVariants = new Limiter(5),
             }
         )
             .VariantAsync(sample, TestContext.Current.CancellationToken)
@@ -253,7 +253,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateVariantAttemptLimit = new Limiter(5),
+                AttemptLimitForVariants = new Limiter(5),
             }
         )
             .VariantOfAsync([sample1, sample2], TestContext.Current.CancellationToken)
@@ -308,7 +308,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateUniqueAttemptLimit = new Limiter(5),
+                AttemptLimitForUniques = new Limiter(5),
             }
         )
             .Unique(sample)
@@ -332,7 +332,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateUniqueAttemptLimit = new Limiter(5),
+                AttemptLimitForUniques = new Limiter(5),
             }
         )
             .UniqueOf([sample1, sample2])
@@ -413,7 +413,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateUniqueAttemptLimit = new Limiter(5),
+                AttemptLimitForUniques = new Limiter(5),
             }
         )
             .UniqueAsync(sample, TestContext.Current.CancellationToken)
@@ -452,7 +452,7 @@ public static class MutatorEngineTests
             Tools.Mutator.Options with
             {
                 Valuer = fakeValuer,
-                CreateUniqueAttemptLimit = new Limiter(5),
+                AttemptLimitForUniques = new Limiter(5),
             }
         )
             .UniqueOfAsync([sample1, sample2], TestContext.Current.CancellationToken)

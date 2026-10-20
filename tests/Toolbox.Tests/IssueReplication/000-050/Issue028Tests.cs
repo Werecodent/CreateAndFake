@@ -16,7 +16,7 @@ public static class Issue028Tests
             .Randomizer.Create<Sample>(opt =>
                 opt with
                 {
-                    RandomizerCreateAttempts = Limiter.Hundred,
+                    FinalConditionAttemptLimit = Limiter.Hundred,
                     FinalCondition = r => r is Sample s && s.Value > 0,
                 }
             )

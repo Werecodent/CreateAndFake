@@ -105,7 +105,7 @@ public sealed class ToolSet(
         IRandom gen = new SeededRandom(
             commonOptions.IterationLimit,
             !commonOptions.IncludeInfinityAndNaNGeneration,
-            seed ?? commonOptions.Seed ?? Environment.TickCount
+            (seed ?? commonOptions.Seed) ?? Environment.TickCount
         );
 
         Valuer valuer = new(
@@ -133,7 +133,6 @@ public sealed class ToolSet(
             {
                 Design = commonOptions,
                 Gen = gen,
-                Randomizer = randomizer,
                 Valuer = valuer,
             }.WithConfig(config)
         );
@@ -163,7 +162,6 @@ public sealed class ToolSet(
                 Gen = gen,
                 Asserter = asserter,
                 Extractor = extractor,
-                Valuer = valuer,
             }.WithConfig(config)
         );
         Runner runner = new(
@@ -175,7 +173,6 @@ public sealed class ToolSet(
                 Randomizer = randomizer,
                 Mutator = mutator,
                 Duplicator = duplicator,
-                Valuer = valuer,
             }.WithConfig(config)
         );
         Tester tester = new(

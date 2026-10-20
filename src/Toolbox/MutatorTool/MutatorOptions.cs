@@ -15,32 +15,35 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Mutator);
 
-    /// <summary>Handles randomization.</summary>
+    /// <inheritdoc cref="IRandomizer"/>
     public required IRandomizer Randomizer { get; init; }
 
-    /// <summary>Handles value comparison to ensure object variance.</summary>
+    /// <inheritdoc cref="IValuer"/>
     public required IValuer Valuer { get; init; }
 
-    /// <summary>Handles value extraction for creating unique instances.</summary>
+    /// <inheritdoc cref="IExtractor"/>
     public required IExtractor Extractor { get; init; }
 
     /// <summary>Limits attempts at creating variants.</summary>
+    /// <remarks>Attempts fail due to the expected variant actually being equal to the original.</remarks>
+    /// <value><c>Limiter.Score</c></value>
     [ConfigurableOption]
-    public ILimiter CreateVariantAttemptLimit { get; init; } = Limiter.Score;
+    public ILimiter AttemptLimitForVariants { get; init; } = Limiter.Score;
 
     /// <summary>Limits attempts at creating uniques.</summary>
+    /// <remarks>Attempts fail due to the expected unique actually sharing data with the original.</remarks>
+    /// <value><c>Limiter.Score</c></value>
     [ConfigurableOption]
-    public ILimiter CreateUniqueAttemptLimit { get; init; } = Limiter.Score;
+    public ILimiter AttemptLimitForUniques { get; init; } = Limiter.Score;
 
     /// <summary>Limits attempts at mutating sets.</summary>
+    /// <remarks>Attempts fail due to randomized values already existing in the set.</remarks>
+    /// <value><c>6</c></value>
     [ConfigurableOption]
-    public int SetMutationAttemptMax { get; init; } = 6;
+    public int MaxAttemptsForMutatingSets { get; init; } = 6;
 
-    /// <summary>
-    ///     Creates options from <see langword="this"/>
-    ///     overridden with values from <paramref name="config"/>.
-    /// </summary>
-    /// <param name="config">Configuration with overrides to use.</param>
+    /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
+    /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
     internal MutatorOptions WithConfig(IConfigurationSection? config)
     {
@@ -52,10 +55,10 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
         return this with
         {
-            CreateVariantAttemptLimit = Config.GetValue(section, CreateVariantAttemptLimit),
-            CreateUniqueAttemptLimit = Config.GetValue(section, CreateUniqueAttemptLimit),
+            MaxAttemptsForMutatingSets = Config.GetValue(section, MaxAttemptsForMutatingSets),
+            AttemptLimitForVariants = Config.GetValue(section, AttemptLimitForVariants),
+            AttemptLimitForUniques = Config.GetValue(section, AttemptLimitForUniques),
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
-            SetMutationAttemptMax = Config.GetValue(section, SetMutationAttemptMax),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
             MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
