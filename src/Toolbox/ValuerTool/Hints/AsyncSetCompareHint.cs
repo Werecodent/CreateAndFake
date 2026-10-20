@@ -82,7 +82,7 @@ public sealed class AsyncSetCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
-                chainer.Options.IterationLimit
+                chainer.Options.Design.IterationLimit
             );
         }
 
@@ -114,7 +114,7 @@ public sealed class AsyncSetCompareHint : CompareHint
                     _ComparerMaker
                         .MakeGenericMethod(type.GetGenericArguments().Single())
                         .Invoke(chainer, []),
-                chainer.Options.IterationLimit,
+                chainer.Options.Design.IterationLimit,
                 canceler
             );
         }
@@ -188,7 +188,7 @@ public sealed class AsyncSetCompareHint : CompareHint
         await AsyncSeriesHelper
             .ForEachAsync(
                 item,
-                chainer.Options.IterationLimit,
+                chainer.Options.Design.IterationLimit,
                 canceler,
                 async current =>
                 {

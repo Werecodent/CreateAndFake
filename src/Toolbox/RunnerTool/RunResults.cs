@@ -23,7 +23,7 @@ public sealed class RunResults(IEnumerable<RunResult> rawResults, RunnerOptions 
         int i = 0;
         foreach (object item in RawResults)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, Options.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, Options.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
         return contents.ToString();

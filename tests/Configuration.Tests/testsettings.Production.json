@@ -1,6 +1,10 @@
 {
     "CreateAndFake": {
-        "Seed": 2,
+        "Design": {
+            "Seed": 2,
+            "IterationLimit": 876,
+            "IncludeInfinityAndNaNGeneration": true
+        },
         "Asserter": {
             "ComparisonModeForStringAsserts": "CurrentCulture",
             "DisableCatchingForThrowAsserts": true,
@@ -10,24 +14,24 @@
         "Duplicator": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 9,
+            "MaxRecursionDepth": 9,
             "VerifyCloneResult": false
         },
         "Extractor": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 9,
+            "MaxRecursionDepth": 9,
             "ExtractPrivateMembers": true
         },
         "Faker": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 9
+            "MaxRecursionDepth": 9
         },
         "Mutator": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 8,
+            "MaxRecursionDepth": 8,
             "CreateVariantAttemptLimit": 16,
             "CreateUniqueAttemptLimit": 18,
             "SetMutationAttemptMax": 10
@@ -35,7 +39,7 @@
         "Randomizer": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 9,
+            "MaxRecursionDepth": 9,
             "PreferLocalSubclasses": false,
             "RandomizerCreateAttempts": "Few",
             "ObjectCreateAttempts": "00:01:00",
@@ -45,7 +49,6 @@
             "StringMinSize": 2,
             "StringMaxSize": 4,
             "StringCharacterSet": "ABC1",
-            "IncludeInfinityAndNaNGeneration": true,
             "ContentRandomizationRequired": false
         },
         "Runner": {
@@ -92,14 +95,13 @@
         "Valuer": {
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
-            "MaxHintRecursion": 9,
-            "UseEquatableComparisons": false,
+            "MaxRecursionDepth": 9,
+            "UseEquatableComparisons": true,
             "CheckCollectionType": true,
             "IgnoreCurrentRandomSeed": false,
             "AsyncTimeout": "00:00:33",
             "SkipAsyncValues": true,
-            "IncludeValueHashInComparison": true,
-            "IterationLimit": 876
+            "IncludeValueHashInComparison": true
         }
     }
 }

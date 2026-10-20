@@ -57,7 +57,7 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             SetMutationAttemptMax = Config.GetValue(section, SetMutationAttemptMax),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
     }
 }

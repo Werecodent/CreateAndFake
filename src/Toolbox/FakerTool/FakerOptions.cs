@@ -38,7 +38,7 @@ public sealed record FakerOptions : ToolHintOptions<FakerOptions, IFakeHint>
         {
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
     }
 }

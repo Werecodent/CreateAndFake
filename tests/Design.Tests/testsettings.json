@@ -1,5 +1,6 @@
 {
     "CreateAndFake": {
+        "Design": {},
         "Asserter": {},
         "Duplicator": {},
         "Extractor": {},

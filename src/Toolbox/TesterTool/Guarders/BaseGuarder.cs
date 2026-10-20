@@ -202,7 +202,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             int i = 0;
             foreach (object item in data)
             {
-                ArgumentGuard.ThrowUponIterationLimit(i++, Options.Valuer.Options.IterationLimit);
+                ArgumentGuard.ThrowUponIterationLimit(i++, Options.Design.IterationLimit);
 
                 if (!Options.InjectionValues.Contains(item))
                 {

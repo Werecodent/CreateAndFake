@@ -69,7 +69,7 @@ public static class AsyncListTests
     internal static async Task GetAsyncEnumerator_Repeatable(IReadOnlyCollection<DataSample> sample)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
-        AsyncList<DataSample> instance = new(sample, Tools.Valuer.Options.IterationLimit);
+        AsyncList<DataSample> instance = new(sample, Tools.Valuer.Options.Design.IterationLimit);
 
         await instance.Assert().IsAsync(sample, canceler);
         await instance.Assert().IsAsync(sample, canceler);

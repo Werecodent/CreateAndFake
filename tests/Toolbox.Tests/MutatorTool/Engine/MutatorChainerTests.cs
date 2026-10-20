@@ -42,7 +42,12 @@ public static class MutatorChainerTests
         new MutatorChainer(
             Tools.Mutator.Options with
             {
-                Valuer = Tools.Valuer.WithOptions(o => o with { IterationLimit = 2 }),
+                Valuer = Tools.Valuer.WithOptions(o =>
+                    o with
+                    {
+                        Design = o.Design with { IterationLimit = 2 },
+                    }
+                ),
             },
             engine
         )

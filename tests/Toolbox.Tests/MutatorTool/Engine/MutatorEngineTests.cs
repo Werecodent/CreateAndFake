@@ -46,7 +46,7 @@ public static class MutatorEngineTests
         IValuer valuer = Tools.Valuer.WithOptions(opt =>
             opt with
             {
-                IterationLimit = data.Length + 1,
+                Design = opt.Design with { IterationLimit = data.Length + 1 },
             }
         );
 
@@ -156,7 +156,7 @@ public static class MutatorEngineTests
         IValuer valuer = Tools.Valuer.WithOptions(opt =>
             opt with
             {
-                IterationLimit = data.Length + 1,
+                Design = opt.Design with { IterationLimit = data.Length + 1 },
             }
         );
 

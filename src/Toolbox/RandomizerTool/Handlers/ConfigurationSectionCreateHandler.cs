@@ -20,6 +20,7 @@ internal sealed class ConfigurationSectionCreateHandler : ICreateHandler
         Fake<IConfigurationSection> config = randomizer.Create<Fake<IConfigurationSection>>();
         Behavior<IConfigurationSection> nullSection = Behavior.Returns<IConfigurationSection>(null);
 
+        config.Setup(c => c.GetSection("Design"), nullSection);
         config.Setup(c => c.GetSection(nameof(Asserter)), nullSection);
         config.Setup(c => c.GetSection(nameof(Duplicator)), nullSection);
         config.Setup(c => c.GetSection(nameof(Extractor)), nullSection);

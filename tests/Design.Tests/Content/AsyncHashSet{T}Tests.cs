@@ -48,7 +48,7 @@ public static class AsyncHashSet_T_Tests
             .CreateFromAsync(
                 slowlyIterate(),
                 Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                Tools.Valuer.Options.IterationLimit,
+                Tools.Valuer.Options.Design.IterationLimit,
                 TestContext.Current.CancellationToken
             )
             .ToString()
@@ -103,7 +103,7 @@ public static class AsyncHashSet_T_Tests
                 AsyncHashSet.CreateFromAsync(
                     Tools.Randomizer.CreateSized<IAsyncEnumerable<AsyncDataSample>>(size),
                     Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    Tools.Valuer.Options.IterationLimit,
+                    Tools.Valuer.Options.Design.IterationLimit,
                     TestContext.Current.CancellationToken
                 ),
             TestContext.Current.CancellationToken
@@ -134,13 +134,13 @@ public static class AsyncHashSet_T_Tests
                 AsyncHashSet<AsyncDataSample> setA = AsyncHashSet.CreateFromAsync(
                     series,
                     Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    Tools.Valuer.Options.IterationLimit,
+                    Tools.Valuer.Options.Design.IterationLimit,
                     TestContext.Current.CancellationToken
                 );
                 AsyncHashSet<AsyncDataSample> setB = AsyncHashSet.CreateFromAsync(
                     series,
                     Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    Tools.Valuer.Options.IterationLimit,
+                    Tools.Valuer.Options.Design.IterationLimit,
                     TestContext.Current.CancellationToken
                 );
 
@@ -162,13 +162,13 @@ public static class AsyncHashSet_T_Tests
                 AsyncHashSet<AsyncDataSample> setA = AsyncHashSet.CreateFromAsync(
                     [],
                     Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    Tools.Valuer.Options.IterationLimit,
+                    Tools.Valuer.Options.Design.IterationLimit,
                     TestContext.Current.CancellationToken
                 );
                 AsyncHashSet<AsyncDataSample> setB = AsyncHashSet.CreateFromAsync(
                     series,
                     Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-                    Tools.Valuer.Options.IterationLimit,
+                    Tools.Valuer.Options.Design.IterationLimit,
                     TestContext.Current.CancellationToken
                 );
 
@@ -190,7 +190,7 @@ public static class AsyncHashSet_T_Tests
         AsyncHashSet<AsyncDataSample> set = AsyncHashSet.CreateFromAsync(
             [original],
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
-            Tools.Valuer.Options.IterationLimit,
+            Tools.Valuer.Options.Design.IterationLimit,
             canceler
         );
 

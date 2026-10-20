@@ -55,7 +55,7 @@ public sealed class AsyncEnumerableCompareHintTests
     {
         IEnumerable<string> data2 = await AsyncSeriesHelper.ToListAsync(
             data,
-            Tools.Valuer.Options.IterationLimit,
+            Tools.Valuer.Options.Design.IterationLimit,
             TestContext.Current.CancellationToken
         );
 

@@ -2,7 +2,6 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool;
@@ -17,13 +16,10 @@ using Werecodent.CreateAndFake.ValuerTool;
 namespace Werecodent.CreateAndFake.TesterTool;
 
 /// <summary>Configuration for controlling automated testing behavior.</summary>
-public sealed record TesterOptions : IToolOptions
+public sealed record TesterOptions : ToolOptions<TesterOptions>
 {
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Tester);
-
-    /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
 
     /// <summary>Creates objects and populates them with random values.</summary>
     public required IRandomizer Randomizer { get; init; }

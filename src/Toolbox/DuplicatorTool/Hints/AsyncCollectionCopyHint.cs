@@ -47,7 +47,7 @@ public sealed class AsyncCollectionCopyHint : CopyHint
         {
             ArgumentGuard.ThrowUponIterationLimit(
                 index++,
-                duplicator.Options.Valuer.Options.IterationLimit
+                duplicator.Options.Design.IterationLimit
             );
             yield return duplicator.Copy(item);
         }

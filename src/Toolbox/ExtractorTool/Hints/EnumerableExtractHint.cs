@@ -20,10 +20,7 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
             int i = 0;
             foreach (object item in source)
             {
-                ArgumentGuard.ThrowUponIterationLimit(
-                    i++,
-                    chainer.Options.Valuer.Options.IterationLimit
-                );
+                ArgumentGuard.ThrowUponIterationLimit(i++, chainer.Options.Design.IterationLimit);
                 _ = chainer.InnerExtract(item);
             }
             return true;
@@ -48,10 +45,7 @@ public sealed class EnumerableExtractHint : ExtractHint<IEnumerable>
             int i = 0;
             foreach (object item in source)
             {
-                ArgumentGuard.ThrowUponIterationLimit(
-                    i++,
-                    chainer.Options.Valuer.Options.IterationLimit
-                );
+                ArgumentGuard.ThrowUponIterationLimit(i++, chainer.Options.Design.IterationLimit);
                 _ = await chainer.InnerExtractAsync(item, canceler).ConfigureAwait(false);
             }
             return true;

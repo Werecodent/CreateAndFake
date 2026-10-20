@@ -1,5 +1,7 @@
 {
     "CreateAndFake": {
-        "Seed": 1
+        "Design": {
+            "Seed": 1
+        }
     }
 }

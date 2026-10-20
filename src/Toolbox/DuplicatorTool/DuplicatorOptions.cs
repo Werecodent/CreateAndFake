@@ -9,19 +9,19 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.DuplicatorTool;
 
-/// <summary>Configuration for controlling duplication behavior.</summary>
+/// <summary>Settings for manipulating <see cref="IDuplicator"/> behavior.</summary>
 public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICopyHint>
 {
-    /// <summary>Identifies the configuration section containing these settings.</summary>
+    /// <summary>Identifier for the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Duplicator);
 
-    /// <summary>Verifies duplicates are valid.</summary>
+    /// <inheritdoc cref="IAsserter"/>
     public required IAsserter Asserter { get; init; }
 
-    /// <summary>Finds contents for objects.</summary>
+    /// <inheritdoc cref="IExtractor"/>
     public required IExtractor Extractor { get; init; }
 
-    /// <summary>Handles value comparison to ensure object cloning.</summary>
+    /// <inheritdoc cref="IValuer"/>
     public required IValuer Valuer { get; init; }
 
     /// <summary>If results are verified via the <see cref="Asserter"/>.</summary>
@@ -33,8 +33,7 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
         FrozenSet.ToFrozenSet([typeof(string), typeof(Type)]);
 
     /// <summary>
-    ///     Creates options from <see langword="this"/>
-    ///     overridden with values from <paramref name="config"/>.
+    ///     Creates options from <see langword="this"/> overridden by values in the <paramref name="config"/>.
     /// </summary>
     /// <param name="config">Configuration with overrides to use.</param>
     /// <returns>The created options.</returns>
@@ -51,7 +50,7 @@ public sealed record DuplicatorOptions : ToolHintOptions<DuplicatorOptions, ICop
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
             VerifyCloneResult = Config.GetValue(section, VerifyCloneResult),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
     }
 }

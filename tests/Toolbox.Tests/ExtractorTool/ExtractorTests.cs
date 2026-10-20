@@ -63,7 +63,7 @@ public static class ExtractorTests
         ISet<object> asyncContent = (
             await AsyncSeriesHelper.ToListAsync(
                 await Tools.Extractor.ExtractAsync(sample, TestContext.Current.CancellationToken),
-                Tools.Valuer.Options.IterationLimit,
+                Tools.Valuer.Options.Design.IterationLimit,
                 TestContext.Current.CancellationToken
             )
         ).ToHashSet();

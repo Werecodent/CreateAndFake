@@ -1,7 +1,6 @@
 using System.Collections.Frozen;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.Design.Properties;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.FakerTool;
@@ -63,11 +62,6 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICre
     public FrozenSet<char> StringCharacterSet { get; init; } =
         FrozenSet.ToFrozenSet("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 
-    /// <summary><inheritdoc cref="DesignDefaults.IncludeInfinityAndNaNGeneration"/></summary>
-    [ConfigurableOption]
-    public bool IncludeInfinityAndNaNGeneration { get; init; } =
-        DesignDefaults.IncludeInfinityAndNaNGeneration;
-
     /// <summary>
     ///     If object contents must also be randomized for randomization to be successful.
     /// </summary>
@@ -107,13 +101,9 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICre
             CollectionMinSize = Config.GetValue(section, CollectionMinSize),
             CollectionMaxSize = Config.GetValue(section, CollectionMaxSize),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
             StringMinSize = Config.GetValue(section, StringMinSize),
             StringMaxSize = Config.GetValue(section, StringMaxSize),
-            IncludeInfinityAndNaNGeneration = Config.GetValue(
-                section,
-                IncludeInfinityAndNaNGeneration
-            ),
         };
     }
 

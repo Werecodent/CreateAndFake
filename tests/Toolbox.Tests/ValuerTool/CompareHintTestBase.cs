@@ -657,7 +657,7 @@ public abstract class CompareHintTestBase<T>(
     /// <summary>Create a chainer to use for testing.</summary>
     /// <returns>Chainer to use for testing.</returns>
     /// <param name="options">Options to pass via the chainer.</param>
-    protected static IValuerChainer CreateChainer(ValuerOptions options = null)
+    protected virtual IValuerChainer CreateChainer(ValuerOptions options = null)
     {
         return new ValuerChainer(options ?? Tools.Valuer.Options, new ValuerEngine());
     }

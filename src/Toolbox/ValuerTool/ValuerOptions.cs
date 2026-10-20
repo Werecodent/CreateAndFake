@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using Microsoft.Extensions.Configuration;
-using Werecodent.CreateAndFake.Design.Properties;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.Properties;
@@ -16,7 +15,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>Allows <see cref="IEquatable{T}"/> to handle comparisons if applicable.</summary>
     [ConfigurableOption]
-    public bool UseEquatableComparisons { get; init; } = true;
+    public bool UseEquatableComparisons { get; init; } = false;
 
     /// <summary>Triggers type checking for collections.</summary>
     /// <remarks>By default, collections are compared by contents and not the container type.</remarks>
@@ -29,7 +28,7 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
 
     /// <summary>Types to use default equality/hashing.</summary>
     //[ConfigurableOption]
-    public FrozenSet<Type> DefaultEqualityTypes { get; init; } = [];
+    public FrozenSet<Type> DefaultEqualityTypes { get; init; } = [typeof(ValueTuple)];
 
     /// <summary>How long to wait for async comparisons to complete.</summary>
     [ConfigurableOption]
@@ -38,10 +37,6 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
     /// <summary>If asynchronous values should be skipped in synchronous contexts instead of throwing.</summary>
     [ConfigurableOption]
     public bool SkipAsyncValues { get; init; } = false;
-
-    /// <inheritdoc cref="DesignDefaults.IterationLimit"/>
-    [ConfigurableOption]
-    public int IterationLimit { get; init; } = DesignDefaults.IterationLimit;
 
     /// <summary>If calculated value hashes should be included in equality comparisons.</summary>
     [ConfigurableOption]
@@ -69,9 +64,8 @@ public sealed record ValuerOptions : ToolHintOptions<ValuerOptions, ICompareHint
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             CheckCollectionType = Config.GetValue(section, CheckCollectionType),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
             SkipAsyncValues = Config.GetValue(section, SkipAsyncValues),
-            IterationLimit = Config.GetValue(section, IterationLimit),
             AsyncTimeout = Config.GetValue(section, AsyncTimeout),
         };
     }

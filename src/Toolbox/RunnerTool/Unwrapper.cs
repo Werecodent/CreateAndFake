@@ -84,13 +84,10 @@ internal static class Unwrapper
         if (resultType.Inherits(typeof(IAsyncEnumerable<>)))
         {
             dynamic collection = await AsyncSeriesHelper
-                .ToListAsync((dynamic)result, options.Valuer.Options.IterationLimit, canceler)
+                .ToListAsync((dynamic)result, options.Design.IterationLimit, canceler)
                 .ConfigureAwait(false);
 
-            return AsyncSeriesHelper.CreateFromAsync(
-                collection,
-                options.Valuer.Options.IterationLimit
-            );
+            return AsyncSeriesHelper.CreateFromAsync(collection, options.Design.IterationLimit);
         }
 
         // Required to execute yield return methods.
@@ -113,7 +110,7 @@ internal static class Unwrapper
         List<T> results = [];
         foreach (T item in series)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, options.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i++, options.Design.IterationLimit);
             results.Add(item);
         }
         return results;

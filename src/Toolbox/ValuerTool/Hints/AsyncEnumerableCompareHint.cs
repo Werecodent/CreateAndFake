@@ -78,7 +78,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 [new Difference(expected.GetType(), actual.GetType())],
-                chainer.Options.IterationLimit
+                chainer.Options.Design.IterationLimit
             );
         }
 
@@ -99,7 +99,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         {
             return AsyncSeriesHelper.CreateFromAsync(
                 (dynamic)collection,
-                chainer.Options.IterationLimit
+                chainer.Options.Design.IterationLimit
             );
         }
     }
@@ -155,7 +155,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             int index = 0;
             while (
                 await expectedEnumerator.MoveNextAsync().ConfigureAwait(false)
-                && index < chainer.Options.IterationLimit
+                && index < chainer.Options.Design.IterationLimit
             )
             {
                 canceler.ThrowIfCancellationRequested();
@@ -193,7 +193,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
             while (
                 await actualEnumerator.MoveNextAsync().ConfigureAwait(false)
-                && index < chainer.Options.IterationLimit
+                && index < chainer.Options.Design.IterationLimit
             )
             {
                 yield return new Difference(
@@ -205,7 +205,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
 
             canceler.ThrowIfCancellationRequested();
 
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
     }
 
@@ -221,7 +221,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
         await AsyncSeriesHelper
             .ForEachAsync(
                 item,
-                chainer.Options.IterationLimit,
+                chainer.Options.Design.IterationLimit,
                 canceler,
                 async current =>
                 {

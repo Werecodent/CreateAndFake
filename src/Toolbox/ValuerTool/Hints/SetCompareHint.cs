@@ -96,13 +96,13 @@ public sealed class SetCompareHint : CompareHint
         AsyncHashSet<object> expectedByHash = AsyncHashSet.CreateFromAsync(
             expected.Cast<object>(),
             chainer,
-            chainer.Options.IterationLimit,
+            chainer.Options.Design.IterationLimit,
             canceler
         );
         AsyncHashSet<object> actualByHash = AsyncHashSet.CreateFromAsync(
             actual.Cast<object>(),
             chainer,
-            chainer.Options.IterationLimit,
+            chainer.Options.Design.IterationLimit,
             canceler
         );
 

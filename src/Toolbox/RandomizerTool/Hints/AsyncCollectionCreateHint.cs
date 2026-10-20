@@ -58,7 +58,7 @@ public sealed class AsyncCollectionCreateHint : CreateHint
                         randomizer.Create(
                             typeof(IAsyncEqualityComparer<>).MakeGenericType(contentType)
                         ),
-                    randomizer.Options.Valuer.Options.IterationLimit,
+                    randomizer.Options.Design.IterationLimit,
                     CancellationToken.None
                 )
             );

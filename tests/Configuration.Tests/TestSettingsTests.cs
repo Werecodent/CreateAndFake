@@ -34,6 +34,12 @@ public static class TestSettingsTests
     }
 
     [Fact]
+    internal static void CreateViaConfig_SetsDesignOptions()
+    {
+        TestConfigurableOptions(Tools.Asserter.Options.Design, _PlainTools.Asserter.Options.Design);
+    }
+
+    [Fact]
     internal static void CreateViaConfig_SetsAsserterOptions()
     {
         TestConfigurableOptions(Tools.Asserter.Options, _PlainTools.Asserter.Options);

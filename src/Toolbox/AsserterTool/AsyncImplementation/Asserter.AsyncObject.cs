@@ -79,7 +79,7 @@ public partial class Asserter : IAsserterAsyncObject
         IList<Difference> differences = await AsyncSeriesHelper
             .ToListAsync(
                 localOptions.Valuer.CompareAsync(expected, actual, canceler),
-                localOptions.Valuer.Options.IterationLimit,
+                localOptions.Design.IterationLimit,
                 canceler
             )
             .ConfigureAwait(false);

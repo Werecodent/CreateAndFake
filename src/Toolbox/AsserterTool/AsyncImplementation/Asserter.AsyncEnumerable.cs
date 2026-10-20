@@ -32,7 +32,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
         Fail(
             await AsyncSeriesHelper
-                .ToListAsync(collection, localOptions.Valuer.Options.IterationLimit, canceler)
+                .ToListAsync(collection, localOptions.Design.IterationLimit, canceler)
                 .ConfigureAwait(false),
             optionConfiguration != null ? _ => localOptions : null,
             details
@@ -61,7 +61,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
 
         string? content = AsString(
             await AsyncSeriesHelper
-                .ToListAsync(collection, localOptions.Valuer.Options.IterationLimit, canceler)
+                .ToListAsync(collection, localOptions.Design.IterationLimit, canceler)
                 .ConfigureAwait(false),
             localOptions
         );
@@ -193,7 +193,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     item =>
                         _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
@@ -259,7 +259,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     item =>
                         _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
@@ -325,7 +325,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     item =>
                         _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
@@ -391,7 +391,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     item =>
                         _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
@@ -457,7 +457,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     item =>
                         _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
@@ -523,7 +523,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     async item =>
                     {
@@ -591,7 +591,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await AsyncSeriesHelper
                 .ForEachAsync(
                     collection,
-                    localOptions.Valuer.Options.IterationLimit,
+                    localOptions.Design.IterationLimit,
                     canceler,
                     async item =>
                     {

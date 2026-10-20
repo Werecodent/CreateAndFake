@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.Properties;
@@ -9,13 +8,10 @@ using Werecodent.CreateAndFake.ValuerTool;
 namespace Werecodent.CreateAndFake.AsserterTool;
 
 /// <summary>Settings for manipulating <see cref="IAsserter"/> behavior.</summary>
-public sealed record AsserterOptions : IToolOptions
+public sealed record AsserterOptions : ToolOptions<AsserterOptions>
 {
     /// <summary>Identifier for the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Asserter);
-
-    /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
 
     /// <inheritdoc cref="IExtractor"/>
     public required IExtractor Extractor { get; init; }

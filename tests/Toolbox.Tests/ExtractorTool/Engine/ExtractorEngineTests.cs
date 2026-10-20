@@ -36,7 +36,6 @@ public static class ExtractorEngineTests
             opt =>
                 opt with
                 {
-                    InjectionValues = [Tools.Extractor.Options],
                     IgnorableExceptions =
                     [
                         typeof(ToolException),

@@ -43,7 +43,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             actualEnumerator = actual.GetEnumerator();
             int index = 0;
 
-            while (expectedEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
+            while (expectedEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
                 if (actualEnumerator.MoveNext())
                 {
@@ -66,7 +66,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 }
                 index++;
             }
-            while (actualEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
+            while (actualEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
                 yield return new Difference(
                     index++,
@@ -74,7 +74,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 );
             }
 
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
         finally
         {
@@ -103,7 +103,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             actualEnumerator = actual.GetEnumerator();
             int index = 0;
 
-            while (expectedEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
+            while (expectedEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
                 if (actualEnumerator.MoveNext())
                 {
@@ -129,7 +129,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 }
                 index++;
             }
-            while (actualEnumerator.MoveNext() && index < chainer.Options.IterationLimit)
+            while (actualEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
                 yield return new Difference(
                     index++,
@@ -137,7 +137,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
                 );
             }
 
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
         finally
         {
@@ -152,7 +152,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
-            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.Design.IterationLimit);
             hash = hash * ValueComparer.HashMultiplier + chainer.GetHashCode(value);
         }
         return hash;
@@ -169,7 +169,7 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
         int hash = ValueComparer.BaseHash;
         foreach (object value in item)
         {
-            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(index++, chainer.Options.Design.IterationLimit);
             hash =
                 hash * ValueComparer.HashMultiplier
                 + await chainer.GetHashCodeAsync(value, canceler).ConfigureAwait(false);

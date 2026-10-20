@@ -28,6 +28,8 @@ public static class BaseCapAttributeTests
                         typeof(ArgumentException),
                         typeof(InvalidCastException),
                         typeof(ToolException),
+                        typeof(TesterFailureException),
+                        typeof(ArgumentOutOfRangeException),
                     ],
                 }
         );

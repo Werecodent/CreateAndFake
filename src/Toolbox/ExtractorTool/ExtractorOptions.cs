@@ -50,7 +50,7 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtra
             ExtractPrivateMembers = Config.GetValue(section, ExtractPrivateMembers),
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
-            MaxHintRecursion = Config.GetValue(section, MaxHintRecursion),
+            MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };
     }
 }

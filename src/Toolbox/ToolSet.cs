@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Properties;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ExtractorTool;
@@ -84,9 +83,7 @@ public sealed class ToolSet(
     /// <returns>The created reflection tools.</returns>
     public static ToolSet CreateViaConfig()
     {
-        IConfigurationSection config = GetConfig(true, null, _EnvironmentName);
-
-        return Create(config.GetValue("Seed", Environment.TickCount), config);
+        return Create(null, GetConfig(true, null, _EnvironmentName));
     }
 
     /// <summary>Creates all the reflection tools using <paramref name="seed"/>.</summary>
@@ -101,28 +98,31 @@ public sealed class ToolSet(
     /// <param name="seed"><inheritdoc cref="SeededRandom(int?)" path="/param[@name='seed']"/></param>
     /// <param name="config">Loaded configuration to use.</param>
     /// <returns>The created reflection tools.</returns>
-    internal static ToolSet Create(int seed, IConfigurationSection? config)
+    internal static ToolSet Create(int? seed, IConfigurationSection? config)
     {
+        ConfiguredDesignOptions commonOptions = new ConfiguredDesignOptions().WithConfig(config);
+
         IRandom gen = new SeededRandom(
-            config
-                ?.GetSection(nameof(Valuer))
-                ?.GetValue(nameof(ValuerOptions.IterationLimit), DesignDefaults.IterationLimit)
-                ?? DesignDefaults.IterationLimit,
-            !config
-                ?.GetSection(nameof(Randomizer))
-                ?.GetValue(
-                    nameof(RandomizerOptions.IncludeInfinityAndNaNGeneration),
-                    DesignDefaults.IncludeInfinityAndNaNGeneration
-                )
-                ?? DesignDefaults.IncludeInfinityAndNaNGeneration,
-            seed
+            commonOptions.IterationLimit,
+            !commonOptions.IncludeInfinityAndNaNGeneration,
+            seed ?? commonOptions.Seed ?? Environment.TickCount
         );
 
-        Valuer valuer = new(new ValuerOptions { Gen = gen }.WithConfig(config));
-        Faker faker = new(new FakerOptions { Gen = gen, Valuer = valuer }.WithConfig(config));
+        Valuer valuer = new(
+            new ValuerOptions { Design = commonOptions, Gen = gen }.WithConfig(config)
+        );
+        Faker faker = new(
+            new FakerOptions
+            {
+                Design = commonOptions,
+                Gen = gen,
+                Valuer = valuer,
+            }.WithConfig(config)
+        );
         Randomizer randomizer = new(
             new RandomizerOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Valuer = valuer,
                 Faker = faker,
@@ -131,6 +131,7 @@ public sealed class ToolSet(
         Extractor extractor = new(
             new ExtractorOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Randomizer = randomizer,
                 Valuer = valuer,
@@ -139,6 +140,7 @@ public sealed class ToolSet(
         Mutator mutator = new(
             new MutatorOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Randomizer = randomizer,
                 Valuer = valuer,
@@ -148,6 +150,7 @@ public sealed class ToolSet(
         Asserter asserter = new(
             new AsserterOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Extractor = extractor,
                 Valuer = valuer,
@@ -156,6 +159,7 @@ public sealed class ToolSet(
         Duplicator duplicator = new(
             new DuplicatorOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Asserter = asserter,
                 Extractor = extractor,
@@ -165,6 +169,7 @@ public sealed class ToolSet(
         Runner runner = new(
             new RunnerOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Faker = faker,
                 Randomizer = randomizer,
@@ -176,6 +181,7 @@ public sealed class ToolSet(
         Tester tester = new(
             new TesterOptions
             {
+                Design = commonOptions,
                 Gen = gen,
                 Randomizer = randomizer,
                 Mutator = mutator,

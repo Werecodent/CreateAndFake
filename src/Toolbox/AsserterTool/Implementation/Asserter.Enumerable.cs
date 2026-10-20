@@ -51,10 +51,7 @@ public partial class Asserter : IAsserterEnumerable
             int i = 0;
             foreach (object item in collection)
             {
-                ArgumentGuard.ThrowUponIterationLimit(
-                    i,
-                    localOptions.Valuer.Options.IterationLimit
-                );
+                ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
                 _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
             }
 
@@ -176,7 +173,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
@@ -220,7 +217,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
@@ -268,7 +265,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
@@ -312,7 +309,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
@@ -360,7 +357,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
             _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine();
         }
 
@@ -405,7 +402,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
 
             found |= localOptions.Valuer.Equals(content, item);
 
@@ -459,7 +456,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
 
             found |= await localOptions
                 .Valuer.EqualsAsync(content, item, canceler)
@@ -509,7 +506,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
 
             notFound &= !localOptions.Valuer.Equals(content, item);
 
@@ -559,7 +556,7 @@ public partial class Asserter : IAsserterEnumerable
         int i = 0;
         foreach (object item in collection)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Valuer.Options.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, localOptions.Design.IterationLimit);
 
             notFound &= !await localOptions
                 .Valuer.EqualsAsync(content, item, canceler)

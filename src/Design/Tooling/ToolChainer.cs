@@ -46,7 +46,7 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
     ///     should be called instead. Implementation should be private.
     /// </remarks>
     /// <exception cref="EngineException">
-    ///     Upon hitting the <see cref="IToolHintOptions{T,T}.MaxHintRecursion"/> depth.
+    ///     Upon hitting the <see cref="IToolHintOptions{T,T}.MaxRecursionDepth"/> depth.
     /// </exception>
     protected ToolChainer(TOptions options, TSelf prevChainer)
     {
@@ -56,10 +56,10 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
         Engine = prevChainer.Engine;
         _nestedDepth = prevChainer._nestedDepth + 1;
 
-        if (_nestedDepth >= options.MaxHintRecursion)
+        if (_nestedDepth >= options.MaxRecursionDepth)
         {
             throw new EngineException(
-                $"Reached max recursion depth of '{options.MaxHintRecursion}'"
+                $"Reached max recursion depth of '{options.MaxRecursionDepth}'"
             );
         }
     }

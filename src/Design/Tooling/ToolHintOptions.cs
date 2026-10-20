@@ -1,34 +1,37 @@
 using System.Collections.Immutable;
 using Werecodent.CreateAndFake.Design.Comparisons;
-using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tooling;
 
 /// <inheritdoc cref="IToolHintOptions{T,T}"/>
-public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, THint>
-    where TSelf : IToolHintOptions<TSelf, THint>
+public abstract record ToolHintOptions<TSelf, THint>
+    : ToolOptions<TSelf>,
+        IToolHintOptions<TSelf, THint>
+    where TSelf : ToolOptions<TSelf>, IToolHintOptions<TSelf, THint>
     where THint : IToolHint
 {
     /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
+    /// <value><c>30</c></value>
+    [ConfigurableOption]
+    public int MaxRecursionDepth { get; init; } = 30;
 
     /// <inheritdoc/>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeFrameworkHints { get; init; } = true;
 
     /// <inheritdoc/>
+    /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeFoundHints { get; init; } = true;
 
     /// <inheritdoc/>
-    [ConfigurableOption]
-    public int MaxHintRecursion { get; init; } = 30;
-
-    /// <inheritdoc/>
+    /// <value><c>[]</c></value>
     public ImmutableArray<THint> Hints { get; init; } = [];
 
     /// <inheritdoc/>
+    /// <value><see langword="null"/></value>
     public TSelf? NestedOptions { get; init; } = default;
 
     /// <inheritdoc/>
@@ -46,7 +49,7 @@ public abstract record ToolHintOptions<TSelf, THint> : IToolHintOptions<TSelf, T
             Gen,
             IncludeFrameworkHints,
             IncludeFoundHints,
-            MaxHintRecursion
+            MaxRecursionDepth
         );
     }
 }

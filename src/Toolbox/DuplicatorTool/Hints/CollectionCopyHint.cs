@@ -111,7 +111,7 @@ public sealed class CollectionCopyHint : CopyHint
         {
             ArgumentGuard.ThrowUponIterationLimit(
                 index++,
-                duplicator.Options.Valuer.Options.IterationLimit
+                duplicator.Options.Design.IterationLimit
             );
             copy.Add(duplicator.Copy(item));
         }

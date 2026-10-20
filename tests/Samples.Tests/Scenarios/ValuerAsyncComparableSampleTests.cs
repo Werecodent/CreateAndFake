@@ -43,7 +43,7 @@ public static class ValuerAsyncComparableSampleTests
         return AsyncSeriesHelper
             .ToListAsync(
                 data.CompareAsync(variant, Tools.Valuer, TestContext.Current.CancellationToken),
-                Tools.Valuer.Options.IterationLimit,
+                Tools.Valuer.Options.Design.IterationLimit,
                 TestContext.Current.CancellationToken
             )
             .Assert()

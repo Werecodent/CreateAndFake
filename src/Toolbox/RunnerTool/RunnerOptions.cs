@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.FakerTool;
@@ -13,13 +12,10 @@ using Werecodent.CreateAndFake.ValuerTool;
 namespace Werecodent.CreateAndFake.RunnerTool;
 
 /// <summary>Configuration for controlling run behavior.</summary>
-public sealed record RunnerOptions : IToolOptions
+public sealed record RunnerOptions : ToolOptions<RunnerOptions>
 {
     /// <summary>Identifies the configuration section containing these settings.</summary>
     internal static string ConfigSectionName { get; } = nameof(Runner);
-
-    /// <inheritdoc/>
-    public required IRandom Gen { get; init; }
 
     /// <summary>Handles randomization.</summary>
     public required IRandomizer Randomizer { get; init; }

@@ -23,7 +23,7 @@ internal static class Config
         [CallerArgumentExpression(nameof(property))] string? name = null
     )
     {
-        ArgumentGuard.ThrowIfNull(name, section, property);
+        ArgumentGuard.ThrowIfNull(name, section);
         return section.GetValue(name, property);
     }
 

@@ -62,8 +62,9 @@ internal sealed class SupportValidator(TesterOptions options)
         IConfigurationSection config = ToolSet.GetConfig(false, environmentName);
         ToolSet asConfigured = ToolSet.Create(0, config);
 
-        Dictionary<string, IToolOptions> configuredOptions = new()
+        Dictionary<string, object> configuredOptions = new()
         {
+            { ConfiguredDesignOptions.ConfigSectionName, asConfigured.Valuer.Options.Design },
             { AsserterOptions.ConfigSectionName, asConfigured.Asserter.Options },
             { DuplicatorOptions.ConfigSectionName, asConfigured.Duplicator.Options },
             { ExtractorOptions.ConfigSectionName, asConfigured.Extractor.Options },
@@ -76,18 +77,18 @@ internal sealed class SupportValidator(TesterOptions options)
         };
 
         Options.Asserter.IsEmpty(
-            config.GetChildren().Select(c => c.Key).Except(["Seed"]).Except(configuredOptions.Keys),
+            config.GetChildren().Select(c => c.Key).Except(configuredOptions.Keys),
             $"Configuration '{nameof(CreateAndFake)}' had extra settings that do not match an actual setting."
         );
 
-        foreach (KeyValuePair<string, IToolOptions> pair in configuredOptions)
+        foreach (KeyValuePair<string, object> pair in configuredOptions)
         {
             VerifyNoBadConfigValues(pair.Value, pair.Key, config);
         }
     }
 
     private void VerifyNoBadConfigValues(
-        IToolOptions options,
+        object options,
         string configSectionName,
         IConfigurationSection config
     )
