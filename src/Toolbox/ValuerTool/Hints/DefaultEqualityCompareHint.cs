@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Werecodent.CreateAndFake.Design.Comparisons;
+﻿using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Hints;
@@ -15,19 +14,7 @@ public sealed class DefaultEqualityCompareHint : CompareHint
     {
         Type expectedType = expected.GetType();
         Type actualType = actual.GetType();
-        return (
-                expectedType != actualType
-                && !(
-                    (
-                        expectedType.Inherits<IEnumerable>()
-                        || expectedType.Inherits(typeof(IAsyncEnumerable<>))
-                    )
-                    && (
-                        actualType.Inherits<IEnumerable>()
-                        || actualType.Inherits(typeof(IAsyncEnumerable<>))
-                    )
-                )
-            )
+        return expectedType != actualType
             || expectedType.IsPrimitive
             || expectedType.IsEnum
             || chainer.Options.DefaultEqualityTypes.Contains(expectedType)

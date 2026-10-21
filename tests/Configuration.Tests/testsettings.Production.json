@@ -21,7 +21,14 @@
             "IncludeFrameworkHints": false,
             "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
-            "ExtractPrivateMembers": true
+            "ExtractPrivateMembers": true,
+            "IgnoredTypesForUniques": [
+                "Werecodent.CreateAndFake.Design.Randomization.FastRandom, CreateAndFake.Design",
+                "System.Int32"
+            ],
+            "NonExtractableTypes": [
+                "System.String"
+            ]
         },
         "Faker": {
             "IncludeFrameworkHints": false,
@@ -42,17 +49,16 @@
             "MaxRecursionDepth": 9,
             "PreferLocalSubclasses": false,
             "FinalConditionAttemptLimit": "Few",
-            "ObjectCreateAttempts": "00:01:00",
-            "CollectionAttempts": 5,
+            "CreateObjectAttemptLimit": "00:01:00",
+            "CreateCollectionAttemptLimit": 5,
             "CollectionMinSize": 2,
             "CollectionMaxSize": 4,
             "StringMinSize": 2,
             "StringMaxSize": 4,
             "StringCharacterSet": "ABC1",
-            "ContentRandomizationRequired": false
+            "RequireRandomizedContents": false
         },
         "Runner": {
-            "InheritIReflectableTypeOnFakedType": true,
             "IncludeFinalize": true,
             "IncludeDispose": true,
             "IncludeStaticMethods": false,
@@ -90,7 +96,13 @@
             "DisableParameterMutationTests": true,
             "DisablePassthroughTests": true,
             "OnlyDeclaredMethods": true,
-            "ThrowsUponCancelWithEmptySeries": false
+            "ThrowsUponCancelWithEmptySeries": false,
+            "IntegrityIgnorableTypes": [
+                "System.ValueTuple"
+            ],
+            "IgnorableExceptions": [
+                "System.Exception"
+            ]
         },
         "Valuer": {
             "IncludeFrameworkHints": false,
@@ -101,7 +113,10 @@
             "IgnoreCurrentRandomSeed": false,
             "AsyncTimeout": "00:00:33",
             "SkipAsyncValues": true,
-            "IncludeValueHashInComparison": true
+            "IncludeValueHashInComparison": true,
+            "DefaultEqualityTypes": [
+                "System.Type"
+            ]
         }
     }
 }

@@ -118,7 +118,10 @@ internal static class SelfCreateHandlers
                 StringMinSize = rand.Options.Gen.Next(0, 3),
                 StringMaxSize = rand.Options.Gen.Next(2, 9),
                 FinalCondition = null,
-                CollectionAttempts = rand.Options.Gen.NextItem([Limiter.Dozen, Limiter.Score]),
+                CreateCollectionAttemptLimit = rand.Options.Gen.NextItem([
+                    Limiter.Dozen,
+                    Limiter.Score,
+                ]),
                 StringCharacterSet = FrozenSet.ToFrozenSet(
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                 ),

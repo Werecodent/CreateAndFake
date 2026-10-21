@@ -105,7 +105,7 @@ public sealed class CollectionCreateHint : CreateHint
 
         if (itemType != null && FindMatches(type, itemType).Any())
         {
-            return randomizer.Options.CollectionAttempts.Retry(
+            return randomizer.Options.CreateCollectionAttemptLimit.Retry(
                 $"Generating '{GenericConverter.ExpandName(type)}' collection.",
                 () =>
                 {

@@ -11,7 +11,8 @@ public static class ConfigTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(Config),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(TypeLoadException)] }
         );
     }
 
@@ -21,7 +22,15 @@ public static class ConfigTests
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(Config),
             TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
+            opt =>
+                opt with
+                {
+                    IgnorableExceptions =
+                    [
+                        typeof(InvalidOperationException),
+                        typeof(TypeLoadException),
+                    ],
+                }
         );
     }
 

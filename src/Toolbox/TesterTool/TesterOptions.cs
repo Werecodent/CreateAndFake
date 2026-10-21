@@ -123,6 +123,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
     /// <value><c>[]</c></value>
+    [ConfigurableOption]
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
     /// <summary>If all PreventsNullRefException tests immediately pass instead.</summary>
@@ -141,8 +142,10 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     public bool DisablePassthroughTests { get; init; } = false;
 
     /// <summary><see cref="Type"/>s to be excluded for the framework integrity test.</summary>
-    /// <value><c>[]</c></value>
-    public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
+    /// <value><c>[typeof(IConfiguration), typeof(IConfigurationSection)]</c></value>
+    [ConfigurableOption]
+    public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } =
+        FrozenSet.ToFrozenSet([typeof(IConfiguration), typeof(IConfigurationSection)]);
 
     /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
     /// <param name="config">Configuration with the potential overrides to use.</param>
@@ -162,12 +165,14 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             TestMethodNameAllowedTargets = Config.GetSet(section, TestMethodNameAllowedTargets),
             TestClassCoverageExceptions = Config.GetSet(section, TestClassCoverageExceptions),
             DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
+            IntegrityIgnorableTypes = Config.GetTypes(section, IntegrityIgnorableTypes),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
             TestClassNameSuffixes = Config.GetArray(section, TestClassNameSuffixes),
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
             IgnoreAllExceptions = Config.GetValue(section, IgnoreAllExceptions),
             IncludeConstructors = Config.GetValue(section, IncludeConstructors),
             OnlyDeclaredMethods = Config.GetValue(section, OnlyDeclaredMethods),
+            IgnorableExceptions = Config.GetTypes(section, IgnorableExceptions),
             IncludeInternals = Config.GetValue(section, IncludeInternals),
             InjectionValues = Config.GetValue(section, InjectionValues),
             MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),

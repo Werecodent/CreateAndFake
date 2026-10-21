@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool;
@@ -27,11 +26,6 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
 
     /// <inheritdoc cref="IFaker"/>
     public required IFaker Faker { get; init; }
-
-    /// <summary>Attaches <see cref="IReflectableType"/> when faking <see cref="Type"/>s.</summary>
-    /// <value><see langword="false"/></value>
-    [ConfigurableOption]
-    public bool InheritIReflectableTypeOnFakedType { get; init; } = false;
 
     /// <summary>Option for which methods to include.</summary>
     /// <value><see langword="false"/></value>
@@ -86,10 +80,6 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
             IncludeFinalize = Config.GetValue(section, IncludeFinalize),
             IncludeDispose = Config.GetValue(section, IncludeDispose),
             Timeout = Config.GetValue(section, Timeout),
-            InheritIReflectableTypeOnFakedType = Config.GetValue(
-                section,
-                InheritIReflectableTypeOnFakedType
-            ),
         };
     }
 }

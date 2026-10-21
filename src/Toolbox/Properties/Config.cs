@@ -60,10 +60,20 @@ internal static class Config
     {
         ArgumentGuard.ThrowIfNull(property);
 
-        return GetValue(section, string.Join("", property), name)
-            .ToCharArray()
-            .Distinct()
-            .ToFrozenSet();
+        return GetValue(section, string.Join("", property), name).ToCharArray().ToFrozenSet();
+    }
+
+    /// <inheritdoc cref="GetSet"/>
+    internal static FrozenSet<Type> GetTypes(
+        IConfigurationSection section,
+        FrozenSet<Type> property,
+        [CallerArgumentExpression(nameof(property))] string? name = null
+    )
+    {
+        return GetList<string>(section, name)
+                ?.Select(typeName => Type.GetType(typeName, true)!)
+                .ToFrozenSet()
+            ?? property;
     }
 
     /// <summary>Deserializes a collection from the configuration.</summary>

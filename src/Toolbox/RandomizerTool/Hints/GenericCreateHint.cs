@@ -29,7 +29,7 @@ public sealed class GenericCreateHint : CreateHint
                         randomizer.CreateSpecific(
                             defined,
                             type,
-                            opt => opt with { ContentRandomizationRequired = false }
+                            opt => opt with { RequireRandomizedContents = false }
                         )
                     );
                 }

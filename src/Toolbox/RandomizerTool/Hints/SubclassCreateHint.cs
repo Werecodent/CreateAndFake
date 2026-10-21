@@ -53,7 +53,7 @@ public sealed class SubclassCreateHint : CreateHint
                     randomizer.CreateSpecific(
                         subclass,
                         type,
-                        opt => opt with { ContentRandomizationRequired = false }
+                        opt => opt with { RequireRandomizedContents = false }
                     )
                 );
             }

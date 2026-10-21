@@ -54,11 +54,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             try
             {
                 MethodCallWrapper test = await Tools
-                    .Runner.CreateForAsync(
-                        testMethod,
-                        default,
-                        opt => opt with { InheritIReflectableTypeOnFakedType = true }
-                    )
+                    .Runner.CreateForAsync(testMethod, default)
                     .ConfigureAwait(false);
 
                 data.Add(

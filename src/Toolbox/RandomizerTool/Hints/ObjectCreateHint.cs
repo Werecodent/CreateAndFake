@@ -27,7 +27,7 @@ public sealed class ObjectCreateHint : CreateHint
         object? result =
             (type == null)
                 ? null
-                : randomizer.Options.ObjectCreateAttempts.Attempt(
+                : randomizer.Options.CreateObjectAttemptLimit.Attempt(
                     $"Create object of type '{GenericConverter.ExpandName(type)}'",
                     () => Create(type, randomizer)
                 );
@@ -47,7 +47,7 @@ public sealed class ObjectCreateHint : CreateHint
         }
 
         bool changed = Populate(data, smartData, randomizer);
-        if (changed || !randomizer.Options.ContentRandomizationRequired)
+        if (changed || !randomizer.Options.RequireRandomizedContents)
         {
             return data;
         }

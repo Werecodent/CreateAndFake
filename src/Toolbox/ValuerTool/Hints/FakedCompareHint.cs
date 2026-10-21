@@ -16,12 +16,19 @@ public sealed class FakedCompareHint : CompareHint<IFaked>
         IValuerChainer chainer
     )
     {
-        return chainer.Compare(expected.FakeMeta, actual.FakeMeta);
+        if (expected.GetType() != actual.GetType())
+        {
+            return chainer.Compare(expected.GetType(), actual.GetType());
+        }
+        else
+        {
+            return chainer.Compare(expected.FakeMeta, actual.FakeMeta);
+        }
     }
 
     /// <inheritdoc/>
     protected override int GetHashCode(IFaked item, IValuerChainer chainer)
     {
-        return chainer.GetHashCode(item.FakeMeta);
+        return chainer.GetHashCode((item.GetType(), item.FakeMeta));
     }
 }

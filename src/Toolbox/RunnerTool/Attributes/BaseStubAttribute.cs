@@ -19,13 +19,6 @@ public abstract class BaseStubAttribute : ParameterHintAttribute
     {
         ArgumentGuard.ThrowIfNull(param, localOptions);
 
-        if (localOptions.InheritIReflectableTypeOnFakedType && param.ParameterType.Inherits<Type>())
-        {
-            return localOptions.Faker.Stub(param.ParameterType, typeof(IReflectableType)).Dummy;
-        }
-        else
-        {
-            return localOptions.Faker.Stub(param.ParameterType).Dummy;
-        }
+        return localOptions.Faker.Stub(param.ParameterType).Dummy;
     }
 }

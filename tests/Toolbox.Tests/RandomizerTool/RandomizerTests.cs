@@ -138,7 +138,7 @@ public static class RandomizerTests
             .Randomizer.Create<int>(opt =>
                 opt with
                 {
-                    ObjectCreateAttempts = Limiter.Hundred,
+                    FinalConditionAttemptLimit = Limiter.Hundred,
                     FinalCondition = r => r is int v && v < 0,
                 }
             )

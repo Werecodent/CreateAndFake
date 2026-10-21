@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Reflection;
+﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.ValuerTool.Hints;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
@@ -9,7 +9,7 @@ public sealed class DefaultEqualityCompareHintTests
 {
     private static readonly Type[] _ValidTypes = [typeof(BindingFlags), typeof(Func<>)];
 
-    private static readonly Type[] _InvalidTypes = [typeof(IDictionary), typeof(IEnumerable<int>)];
+    private static readonly Type[] _InvalidTypes = [typeof(SeededRandom)];
 
     public DefaultEqualityCompareHintTests()
         : base(_ValidTypes, _InvalidTypes) { }

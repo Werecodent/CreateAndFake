@@ -29,6 +29,7 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtra
     /// <summary><see cref="Type"/>s to exclude when determining shared content among extracted content maps.</summary>
     /// <remarks>Represents <see cref="Type"/>s with too small of a range for unique randomization.</remarks>
     /// <value><c>[typeof(bool), typeof(byte), typeof(char)]</c></value>
+    [ConfigurableOption]
     public FrozenSet<Type> IgnoredTypesForUniques { get; init; } =
         FrozenSet.ToFrozenSet([typeof(bool), typeof(byte), typeof(char)]);
 
@@ -38,6 +39,7 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtra
     ///     are included when extracting these <see cref="Type"/>s.
     /// </remarks>
     /// <value><c>[]</c></value>
+    [ConfigurableOption]
     public FrozenSet<Type> NonExtractableTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
     /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
@@ -53,8 +55,10 @@ public sealed record ExtractorOptions : ToolHintOptions<ExtractorOptions, IExtra
 
         return this with
         {
+            IgnoredTypesForUniques = Config.GetTypes(section, IgnoredTypesForUniques),
             ExtractPrivateMembers = Config.GetValue(section, ExtractPrivateMembers),
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            NonExtractableTypes = Config.GetTypes(section, NonExtractableTypes),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
             MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };

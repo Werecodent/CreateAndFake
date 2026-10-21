@@ -16,7 +16,7 @@ public static class IsBadSampleTests
                     Randomizer = opt.Randomizer.WithOptions(o =>
                         o with
                         {
-                            ContentRandomizationRequired = false,
+                            RequireRandomizedContents = false,
                         }
                     ),
                 }
@@ -35,7 +35,7 @@ public static class IsBadSampleTests
                     Randomizer = opt.Randomizer.WithOptions(o =>
                         o with
                         {
-                            ContentRandomizationRequired = false,
+                            RequireRandomizedContents = false,
                         }
                     ),
                 }
