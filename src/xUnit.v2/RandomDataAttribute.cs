@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Fluent;
@@ -65,11 +66,19 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
     /// <remarks>Prevents crashes due to displaying <paramref name="arg"/> in results/windows.</remarks>
     private static object? FixArg(object? arg)
     {
-        if (arg is IFaked and Type type)
+        if (arg is IFaked faked)
         {
-            type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType, Times.Any);
-            type.FullName.SetupReturn(typeof(Type).FullName, Times.Any);
-            type.IsArray.SetupReturn(typeof(Type).IsArray, Times.Any);
+            if (arg is IReflectableType reflectable)
+            {
+                reflectable.GetTypeInfo().SetupReturn(typeof(Type), Times.Any);
+            }
+            if (arg is Type type)
+            {
+                type.UnderlyingSystemType.SetupReturn(typeof(Type).UnderlyingSystemType, Times.Any);
+                type.FullName.SetupReturn(typeof(Type).FullName, Times.Any);
+                type.IsArray.SetupReturn(typeof(Type).IsArray, Times.Any);
+            }
+            faked.ToString().SetupReturn(GenericConverter.ExpandName(faked), Times.Any);
         }
         return arg;
     }

@@ -88,4 +88,10 @@ public static class IntegrationTests
     {
         type.Assert().IsNotNull();
     }
+
+    [Theory, RandomData]
+    internal static void Issue118_FixesStubTypeRandomDataSpecific([Stub] IReflectableType type)
+    {
+        type.GetTypeInfo().Assert().Is(typeof(Type));
+    }
 }
