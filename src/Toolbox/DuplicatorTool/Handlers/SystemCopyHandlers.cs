@@ -13,9 +13,7 @@ internal static class SystemCopyHandlers
     internal static IEnumerable<ICopyHandler> Handlers { get; } =
     [
         new FactoryCopyHandler<StringBuilder>((source, _) => new StringBuilder(source.ToString())),
-        new FactoryCopyHandler<Guid>((source, _) => new Guid(source.ToByteArray())),
         new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
-        //new FactoryCopyHandler<ValueTuple>((_, __) => ValueTuple.Create()),
         new RefCopyHandler(typeof(TimeZoneInfo)),
         new RefCopyHandler(typeof(ECCurve)),
         new RefCopyHandler(typeof(UIntPtr)),

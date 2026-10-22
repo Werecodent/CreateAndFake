@@ -3,6 +3,7 @@ using System.Numerics;
 using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 #if NET5_0_OR_GREATER
@@ -132,6 +133,18 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
     {
         TestBasicSupport<char>(default);
         TestNextRange(char.MinValue, char.MaxValue, v => (char)(v + 1), v => (char)(v - 1));
+    }
+
+    [Fact]
+    public void Supports_Guid()
+    {
+        TestBasicSupport(Guid.Empty);
+        TestNextRange(
+            Guid.Empty,
+            Guid.AllBitsSet,
+            v => GuidValueHandler.ToGuid(GuidValueHandler.ToBigInteger(v) + 1),
+            v => GuidValueHandler.ToGuid(GuidValueHandler.ToBigInteger(v) - 1)
+        );
     }
 
     [Fact]

@@ -20,6 +20,7 @@ public abstract class ValueRandom(
         .Empty<IValueHandler?>()
         .Concat([
             new BoolValueHandler(),
+            new GuidValueHandler(),
             new FloatValueHandler(),
             new DoubleValueHandler(),
             new DecimalValueHandler(),
