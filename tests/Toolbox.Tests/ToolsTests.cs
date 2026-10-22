@@ -16,7 +16,7 @@ public static class ToolsTests
         Tools.Tester.ProvidesTestClassCoverage(
             Assembly.GetAssembly(typeof(ToolSet)),
             Assembly.GetExecutingAssembly(),
-            opt => opt with { TestClassCoverageExceptions = [nameof(Emitter)] }
+            opt => opt with { ClassCoverageExclusions = [nameof(Emitter)] }
         );
     }
 

@@ -7,7 +7,8 @@ using Werecodent.CreateAndFake.FakerTool.Engine;
 
 namespace Werecodent.CreateAndFake.FakerTool;
 
-/// <summary>Creates fake objects.</summary>
+/// <summary>Tool to simulate behavior via stubs/mocks.</summary>
+/// <remarks>Useful for testing in isolation from dependencies.</remarks>
 public interface IFaker : IHintTool<FakerOptions, IFakeHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

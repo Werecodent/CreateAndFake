@@ -7,7 +7,8 @@ using Werecodent.CreateAndFake.Design.Tooling;
 
 namespace Werecodent.CreateAndFake.RunnerTool;
 
-/// <summary>Creates objects and populates them with random values.</summary>
+/// <summary>Tool for generating method data and running them.</summary>
+/// <remarks>Useful for generating tests and invoking methods at runtime.</remarks>
 public interface IRunner : ITool<RunnerOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

@@ -6,22 +6,22 @@
             "IncludeInfinityAndNaNGeneration": true
         },
         "Asserter": {
-            "ComparisonModeForStringAsserts": "CurrentCulture",
+            "TriggerFailureForDebugAsserts": true,
             "DisableCatchingForThrowAsserts": true,
             "IncludeInternalExceptionForThrowAsserts": false,
-            "TriggerFailureForDebugAsserts": true
+            "ComparisonModeForStringAsserts": "CurrentCulture"
         },
         "Duplicator": {
-            "IncludeFrameworkHints": false,
-            "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
+            "IncludeFrameworkHints": false,
             "VerifyEqualityForClones": false
         },
         "Extractor": {
-            "IncludeFrameworkHints": false,
-            "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
             "ExtractPrivateMembers": true,
+            "IncludeFrameworkHints": false,
             "IgnoredTypesForUniques": [
                 "Werecodent.CreateAndFake.Design.Randomization.FastRandom, CreateAndFake.Design",
                 "System.Int32"
@@ -31,88 +31,87 @@
             ]
         },
         "Faker": {
-            "IncludeFrameworkHints": false,
+            "MaxRecursionDepth": 9,
             "IncludeFoundHints": false,
-            "MaxRecursionDepth": 9
+            "IncludeFrameworkHints": false
         },
         "Mutator": {
-            "IncludeFrameworkHints": false,
-            "IncludeFoundHints": false,
             "MaxRecursionDepth": 8,
-            "AttemptLimitForVariants": 16,
+            "IncludeFoundHints": false,
             "AttemptLimitForUniques": 18,
+            "AttemptLimitForVariants": 16,
+            "IncludeFrameworkHints": false,
             "MaxAttemptsForMutatingSets": 10
         },
         "Randomizer": {
-            "IncludeFrameworkHints": false,
-            "IncludeFoundHints": false,
-            "MaxRecursionDepth": 9,
-            "PreferLocalSubclasses": false,
-            "FinalConditionAttemptLimit": "Few",
-            "CreateObjectAttemptLimit": "00:01:00",
-            "CreateCollectionAttemptLimit": 5,
-            "CollectionMinSize": 2,
-            "CollectionMaxSize": 4,
             "StringMinSize": 2,
             "StringMaxSize": 4,
+            "CollectionMinSize": 2,
+            "CollectionMaxSize": 4,
+            "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
             "StringCharacterSet": "ABC1",
-            "RequireRandomizedContents": false
+            "IncludeFrameworkHints": false,
+            "PreferLocalSubclasses": false,
+            "CreateCollectionAttemptLimit": 5,
+            "RequireRandomizedContents": false,
+            "FinalConditionAttemptLimit": "Few",
+            "CreateObjectAttemptLimit": "00:01:00"
         },
         "Runner": {
-            "IncludeFinalize": true,
-            "IncludeDispose": true,
-            "IncludeStaticMethods": false,
-            "IncludeInstanceMethods": false,
-            "IncludeBaseObjectMethods": false,
-            "Timeout": "00:00:10"
+            "RunTimeout": "00:00:10",
+            "IncludeBaseObjectMethods": true,
+            "MethodsToIgnore": [
+                "A",
+                "B"
+            ]
         },
         "Tester": {
-            "Limiter": "Once",
-            "IncludeConstructors": false,
-            "IncludeInstanceMethods": false,
-            "IncludeStaticMethods": false,
             "IncludeInternals": false,
-            "TestClassNameSuffixes": [
-                "Test"
-            ],
-            "TestMethodNameAllowedTargets": [
-                "Start"
-            ],
+            "OnlyDeclaredMethods": true,
+            "IgnoreAllExceptions": true,
+            "IncludeConstructors": false,
+            "IncludeStaticMethods": false,
+            "IncludeInstanceMethods": false,
+            "DisablePassthroughTests": true,
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true,
+            "ThrowsUponCancelWithEmptySeries": false,
             "TestClassNameGenericSubstitutes": [
                 "",
                 "_T_",
                 "_"
             ],
-            "TestClassCoverageExceptions": [
+            "AllowedTestNamePrefixes": [
+                "Start"
+            ],
+            "ClassCoverageExclusions": [
                 "A",
                 "C"
+            ],
+            "IntegrityIgnorableTypes": [
+                "System.ValueTuple"
+            ],
+            "TestClassNameSuffixes": [
+                "Test"
+            ],
+            "IgnorableExceptions": [
+                "System.Exception"
             ],
             "MethodsToIgnore": [
                 "A",
                 "B"
-            ],
-            "IgnoreAllExceptions": true,
-            "DisableNullRefExceptionTests": true,
-            "DisableParameterMutationTests": true,
-            "DisablePassthroughTests": true,
-            "OnlyDeclaredMethods": true,
-            "ThrowsUponCancelWithEmptySeries": false,
-            "IntegrityIgnorableTypes": [
-                "System.ValueTuple"
-            ],
-            "IgnorableExceptions": [
-                "System.Exception"
             ]
         },
         "Valuer": {
-            "IncludeFrameworkHints": false,
-            "IncludeFoundHints": false,
             "MaxRecursionDepth": 9,
-            "UseEquatableComparisons": true,
-            "CheckCollectionType": true,
-            "IgnoreCurrentRandomSeed": false,
-            "AsyncTimeout": "00:00:33",
             "SkipAsyncValues": true,
+            "AsyncTimeout": "00:00:33",
+            "IncludeFoundHints": false,
+            "CheckCollectionType": true,
+            "IncludeFrameworkHints": false,
+            "UseEquatableComparisons": true,
+            "IgnoreCurrentRandomSeed": false,
             "IncludeValueHashInComparison": true,
             "DefaultEqualityTypes": [
                 "System.Type"

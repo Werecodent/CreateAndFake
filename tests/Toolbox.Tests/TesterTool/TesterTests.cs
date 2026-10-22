@@ -14,7 +14,7 @@ public static class TesterTests
             Runner = new Runner(
                 Tools.Runner.Options with
                 {
-                    Timeout = new TimeSpan(0, 0, 0, 0, 100),
+                    RunTimeout = new TimeSpan(0, 0, 0, 0, 100),
                 }
             ),
         }
@@ -23,7 +23,7 @@ public static class TesterTests
     private static readonly Tester _LongTestInstance = new(
         Tools.Tester.Options with
         {
-            Runner = new Runner(Tools.Runner.Options with { Timeout = new TimeSpan(0, 0, 10) }),
+            Runner = new Runner(Tools.Runner.Options with { RunTimeout = new TimeSpan(0, 0, 10) }),
         }
     );
 

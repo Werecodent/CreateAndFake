@@ -60,7 +60,7 @@ public static class RunnerTests
             .Runner.CallMethodsOnAsync(
                 sample,
                 TestContext.Current.CancellationToken,
-                opt => opt with { Timeout = TimeSpan.Zero }
+                opt => opt with { RunTimeout = TimeSpan.Zero, IncludeBaseObjectMethods = true }
             )
             .Assert()
             .ThrowsAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
@@ -69,7 +69,12 @@ public static class RunnerTests
             .Runner.CallMethodsOnAsync(
                 sample,
                 TestContext.Current.CancellationToken,
-                opt => opt with { Timeout = TimeSpan.FromMilliseconds(-1) }
+                opt =>
+                    opt with
+                    {
+                        RunTimeout = TimeSpan.FromMilliseconds(-1),
+                        IncludeBaseObjectMethods = true,
+                    }
             )
             .Assert()
             .ThrowsNoAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);

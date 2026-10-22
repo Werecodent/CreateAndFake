@@ -36,7 +36,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
         foreach (
             MethodInfo method in TypeDescriber
                 .For(instance.GetType())
-                .Methods.OnlyPublic.Where(m =>
+                .Methods.OnlyPublic.Where(m => !localOptions.MethodsToIgnore.Contains(m.Name))
+                .Where(m =>
                     localOptions.IncludeBaseObjectMethods || m.DeclaringType != typeof(object)
                 )
         )
@@ -85,8 +86,8 @@ public sealed class Runner(RunnerOptions options) : IRunner
         RunnerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
         TimeSpan timeout =
-            (localOptions.Timeout.TotalMilliseconds is > -1)
-                ? localOptions.Timeout
+            (localOptions.RunTimeout.TotalMilliseconds is > -1)
+                ? localOptions.RunTimeout
                 : TimeSpan.FromMilliseconds(30000);
 
         Task<object?> task;

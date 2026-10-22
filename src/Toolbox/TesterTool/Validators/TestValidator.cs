@@ -30,7 +30,7 @@ internal sealed class TestValidator(TesterOptions options)
                 .Where(t => t.Namespace != null)
                 .Where(t => ScopeChecker.IsVisible(t, testAssembly.GetName()))
                 .Where(t => FindPossibleTestClassNames(t).All(name => !testClasses.Contains(name)))
-                .Where(t => !Options.TestClassCoverageExceptions.Contains(t.Name))
+                .Where(t => !Options.ClassCoverageExclusions.Contains(t.Name))
                 .Where(t => !t.Inherits<Delegate>())
                 .Where(t =>
                     !t.Namespace!.StartsWith("Microsoft.CodeCoverage", StringComparison.Ordinal)
@@ -134,7 +134,7 @@ internal sealed class TestValidator(TesterOptions options)
 
         ImmutableHashSet<string> globalValidTargets =
         [
-            .. Options.TestMethodNameAllowedTargets,
+            .. Options.AllowedTestNamePrefixes,
             "New",
             codeAssembly.GetName()!.Name!,
             testAssembly.GetName()!.Name!,

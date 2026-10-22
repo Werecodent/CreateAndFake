@@ -9,7 +9,8 @@ using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.DuplicatorTool;
 
-/// <summary>Deep clones objects.</summary>
+/// <summary>Tool to deep clone <see cref="object"/>s.</summary>
+/// <remarks>Useful for tracking mutations by comparing against the created clones.</remarks>
 public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

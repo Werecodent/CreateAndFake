@@ -8,7 +8,8 @@ using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 namespace Werecodent.CreateAndFake.TesterTool;
 
-/// <summary>Automates common tests.</summary>
+/// <summary>Tool for testing common scenarios.</summary>
+/// <remarks>Useful for automating tests.</remarks>
 public interface ITester : ITool<TesterOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

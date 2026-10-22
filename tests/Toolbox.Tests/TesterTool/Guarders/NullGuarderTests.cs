@@ -24,7 +24,7 @@ public static class NullGuarderTests
             Runner = new Runner(
                 Tools.Runner.Options with
                 {
-                    Timeout = new TimeSpan(0, 0, 0, 2, 0),
+                    RunTimeout = new TimeSpan(0, 0, 0, 2, 0),
                 }
             ),
         }
@@ -33,7 +33,7 @@ public static class NullGuarderTests
     private static readonly NullGuarder _LongTestInstance = new(
         Tools.Tester.Options with
         {
-            Runner = new Runner(Tools.Runner.Options with { Timeout = new TimeSpan(0, 0, 15) }),
+            Runner = new Runner(Tools.Runner.Options with { RunTimeout = new TimeSpan(0, 0, 15) }),
         }
     );
 

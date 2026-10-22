@@ -17,7 +17,7 @@ public static class SamplesTests
             opt =>
                 opt with
                 {
-                    TestClassCoverageExceptions =
+                    ClassCoverageExclusions =
                     [
                         .. _SampleAssembly
                             .GetTypes()

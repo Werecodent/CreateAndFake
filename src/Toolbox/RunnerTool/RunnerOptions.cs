@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.Design.Tooling;
@@ -27,37 +28,34 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
     /// <inheritdoc cref="IFaker"/>
     public required IFaker Faker { get; init; }
 
-    /// <summary>Option for which methods to include.</summary>
-    /// <value><see langword="false"/></value>
+    /// <summary>Names of methods to skip when running all methods on an instance.</summary>
+    /// <remarks>
+    ///     Useful for preventing execution of methods that leave
+    ///     the <see cref="object"/> in a bad state for other methods.
+    /// </remarks>
+    /// <value><c>["Finalize", "Dispose", "DisposeAsync"]</c></value>
     [ConfigurableOption]
-    public bool IncludeFinalize { get; init; } = false;
+    public FrozenSet<string> MethodsToIgnore { get; init; } =
+        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync"]);
 
-    /// <summary>Option for which methods to include.</summary>
-    /// <value><see langword="false"/></value>
-    [ConfigurableOption]
-    public bool IncludeDispose { get; init; } = false;
-
-    /// <summary>Option for which methods to include.</summary>
+    /// <summary>Flag to include running methods declared on the <see cref="object"/> <see langword="class"/>.</summary>
+    /// <remarks>Useful in only running introduced methods when <see langword="false"/>.</remarks>
     /// <value><see langword="true"/></value>
     [ConfigurableOption]
-    public bool IncludeStaticMethods { get; init; } = true;
+    public bool IncludeBaseObjectMethods { get; init; } = false;
 
-    /// <summary>Option for which methods to include.</summary>
-    /// <value><see langword="true"/></value>
-    [ConfigurableOption]
-    public bool IncludeInstanceMethods { get; init; } = true;
-
-    /// <summary>Option for which methods to include.</summary>
-    /// <value><see langword="true"/></value>
-    [ConfigurableOption]
-    public bool IncludeBaseObjectMethods { get; init; } = true;
-
-    /// <summary>How long to wait for methods to complete.</summary>
+    /// <summary>How long to wait for methods to complete before timing out.</summary>
+    /// <remarks>Used to gracefully end execution instead of stalling endlessly.</remarks>
     /// <value><c>00:00:50.0000000</c></value>
     [ConfigurableOption]
-    public TimeSpan Timeout { get; init; } = new(0, 0, 50);
+    public TimeSpan RunTimeout { get; init; } = new(0, 0, 50);
 
     /// <summary>Values to inject into called methods.</summary>
+    /// <remarks>
+    ///     When generating randomized parameter data, these values will be used instead of randomized instances
+    ///     when applicable. Per method, each value will only be used once and prioritized in the order given.
+    ///     See: <seealso cref="IRandomizer.Inject"/>
+    /// </remarks>
     /// <value><c>[]</c></value>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
@@ -75,11 +73,8 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
         return this with
         {
             IncludeBaseObjectMethods = Config.GetValue(section, IncludeBaseObjectMethods),
-            IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
-            IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
-            IncludeFinalize = Config.GetValue(section, IncludeFinalize),
-            IncludeDispose = Config.GetValue(section, IncludeDispose),
-            Timeout = Config.GetValue(section, Timeout),
+            MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),
+            RunTimeout = Config.GetValue(section, RunTimeout),
         };
     }
 }

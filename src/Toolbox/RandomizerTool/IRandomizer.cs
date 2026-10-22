@@ -7,7 +7,8 @@ using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool;
 
-/// <summary>Creates objects and populates them with random values.</summary>
+/// <summary>Tool to create <see cref="object"/>s populated with random values.</summary>
+/// <remarks>Useful for generating data to test with.</remarks>
 public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>

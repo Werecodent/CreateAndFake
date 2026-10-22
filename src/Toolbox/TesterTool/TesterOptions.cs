@@ -2,7 +2,6 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ExtractorTool;
@@ -45,12 +44,12 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     /// <inheritdoc cref="IValuer"/>
     public required IValuer Valuer { get; init; }
 
-    /// <summary>Retries tests if timeout is reached.</summary>
-    /// <value><c>Limiter.Few</c></value>
-    [ConfigurableOption]
-    public Limiter Limiter { get; init; } = Limiter.Few;
-
     /// <summary>Values to inject into called methods.</summary>
+    /// <remarks>
+    ///     When generating randomized parameter data, these values will be used instead of randomized instances
+    ///     when applicable. Per method, each value will only be used once and prioritized in the order given.
+    ///     See: <seealso cref="IRandomizer.Inject"/>
+    /// </remarks>
     /// <value><c>[]</c></value>
     public ImmutableArray<object?> InjectionValues { get; init; } = [];
 
@@ -59,52 +58,60 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     [ConfigurableOption]
     public bool IncludeConstructors { get; init; } = true;
 
-    /// <summary>If class methods are included when running tests on classes.</summary>
+    /// <summary>If <see langword="class"/> methods are included when running tests on classes.</summary>
     /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeInstanceMethods { get; init; } = true;
 
-    /// <summary>If static methods are included when running tests on classes.</summary>
+    /// <summary>If <see langword="static"/> methods are included when running tests on classes.</summary>
     /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeStaticMethods { get; init; } = true;
 
-    /// <summary>If internal members are included when running tests on classes.</summary>
+    /// <summary>If <see langword="internal"/> members are included when running tests on classes.</summary>
     /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool IncludeInternals { get; init; } = true;
 
-    /// <summary>If only methods directly declared on the type (not inherited) are tested.</summary>
+    /// <summary>If only methods directly declared on the <see cref="Type"/> (not inherited) are tested.</summary>
     /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool OnlyDeclaredMethods { get; init; } = false;
 
     /// <summary>If empty series should throw when canceled before iteration.</summary>
+    /// <remarks>A preference for how <see langword="async"/> methods should be implemented.</remarks>
     /// <value><see langword="true"/></value>
     [ConfigurableOption]
     public bool ThrowsUponCancelWithEmptySeries { get; init; } = true;
 
-    /// <summary>Common suffix attached to class names to name the test classes.</summary>
+    /// <summary>Common suffixes attached to class names used to name the test classes.</summary>
+    /// <remarks>Used to correlate classes with their test classes for coverage tests.</remarks>
     /// <value><c>["Tests", "TestBase"]</c></value>
     [ConfigurableOption]
     public ImmutableArray<string> TestClassNameSuffixes { get; init; } = ["Tests", "TestBase"];
 
-    /// <summary>Possible strings replacing generics in a type name for coverage tests.</summary>
+    /// <summary>Possible <see cref="string"/>s replacing generics in a <see cref="Type"/>'s name.</summary>
+    /// <remarks>Used to help properly correlate classes with their test classes for coverage tests.</remarks>
     /// <value><c>["", "_T_"]</c></value>
     [ConfigurableOption]
     public ImmutableArray<string> TestClassNameGenericSubstitutes { get; init; } = ["", "_T_"];
 
-    /// <summary>Types to ignore for test class coverage tests.</summary>
+    /// <summary>Names of the <see cref="Type"/>s to ignore for coverage tests.</summary>
     /// <value><c>[]</c></value>
     [ConfigurableOption]
-    public FrozenSet<string> TestClassCoverageExceptions { get; init; } = [];
+    public FrozenSet<string> ClassCoverageExclusions { get; init; } = [];
 
-    /// <summary>Allowed starts for test method names.</summary>
+    /// <summary>Allowed targets for test method names.</summary>
+    /// <remarks>These prefixes are in addition to the normally allowed test names.</remarks>
     /// <value><c>[]</c></value>
     [ConfigurableOption]
-    public FrozenSet<string> TestMethodNameAllowedTargets { get; init; } = [];
+    public FrozenSet<string> AllowedTestNamePrefixes { get; init; } = [];
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
+    /// <remarks>
+    ///     Useful for preventing execution of methods that should be tested
+    ///     manually or leave an instance in a bad state for other methods.
+    /// </remarks>
     /// <value><c>["Finalize", "Dispose", "DisposeAsync", "PrintMembers", "GetObjectData"]</c></value>
     [ConfigurableOption]
     public FrozenSet<string> MethodsToIgnore { get; init; } =
@@ -116,36 +123,41 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             "GetObjectData",
         ]);
 
-    /// <summary>If all inner exceptions are ignored when running tests on classes.</summary>
+    /// <summary>If all thrown <see cref="Exception"/>s are ignored when running tests on classes.</summary>
+    /// <remarks>Alternative to specifying them individually via <see cref="IgnorableExceptions"/>.</remarks>
     /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool IgnoreAllExceptions { get; init; } = false;
 
     /// <summary>Exceptions that are safe to ignore when running tests on classes.</summary>
+    /// <remarks>Ignored when <see cref="IgnoreAllExceptions"/> is set to <see langword="true"/>.</remarks>
     /// <value><c>[]</c></value>
     [ConfigurableOption]
     public FrozenSet<Type> IgnorableExceptions { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
-    /// <summary>If all PreventsNullRefException tests immediately pass instead.</summary>
+    /// <summary>Flag for disabling PreventsNullRefException tests.</summary>
+    /// <remarks>Useful for debugging. Causes the tests to immediately pass instead of running.</remarks>
     /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool DisableNullRefExceptionTests { get; init; } = false;
 
-    /// <summary>If all PreventsParameterMutation tests immediately pass instead.</summary>
+    /// <summary>Flag for disabling PreventsParameterMutation tests.</summary>
+    /// <remarks>Useful for debugging. Causes the tests to immediately pass instead of running.</remarks>
     /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool DisableParameterMutationTests { get; init; } = false;
 
-    /// <summary>If all PassthroughWithNoExceptions tests immediately pass instead.</summary>
+    /// <summary>Flag for disabling PassthroughWithNoExceptions tests.</summary>
+    /// <remarks>Useful for debugging. Causes the tests to immediately pass instead of running.</remarks>
     /// <value><see langword="false"/></value>
     [ConfigurableOption]
     public bool DisablePassthroughTests { get; init; } = false;
 
-    /// <summary><see cref="Type"/>s to be excluded for the framework integrity test.</summary>
+    /// <summary><see cref="Type"/>s to be excluded for VerifyToolSetIntegrity tests.</summary>
+    /// <remarks>Useful for ignoring known incompatible <see cref="Type"/>s.</remarks>
     /// <value><c>[typeof(IConfiguration), typeof(IConfigurationSection)]</c></value>
     [ConfigurableOption]
-    public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } =
-        FrozenSet.ToFrozenSet([typeof(IConfiguration), typeof(IConfigurationSection)]);
+    public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 
     /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
     /// <param name="config">Configuration with the potential overrides to use.</param>
@@ -162,10 +174,10 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
         {
             DisableParameterMutationTests = Config.GetValue(section, DisableParameterMutationTests),
             DisableNullRefExceptionTests = Config.GetValue(section, DisableNullRefExceptionTests),
-            TestMethodNameAllowedTargets = Config.GetSet(section, TestMethodNameAllowedTargets),
-            TestClassCoverageExceptions = Config.GetSet(section, TestClassCoverageExceptions),
             DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
             IntegrityIgnorableTypes = Config.GetTypes(section, IntegrityIgnorableTypes),
+            AllowedTestNamePrefixes = Config.GetSet(section, AllowedTestNamePrefixes),
+            ClassCoverageExclusions = Config.GetSet(section, ClassCoverageExclusions),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
             TestClassNameSuffixes = Config.GetArray(section, TestClassNameSuffixes),
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
@@ -176,7 +188,6 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             IncludeInternals = Config.GetValue(section, IncludeInternals),
             InjectionValues = Config.GetValue(section, InjectionValues),
             MethodsToIgnore = Config.GetSet(section, MethodsToIgnore),
-            Limiter = Config.GetValue(section, Limiter),
             ThrowsUponCancelWithEmptySeries = Config.GetValue(
                 section,
                 ThrowsUponCancelWithEmptySeries

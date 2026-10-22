@@ -69,8 +69,7 @@ public sealed class AssertValueTaskTests
 
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
-            TestContext.Current.CancellationToken,
-            opt => opt with { IncludeBaseObjectMethods = false }
+            TestContext.Current.CancellationToken
         );
         results
             .RawResults.Where(r =>

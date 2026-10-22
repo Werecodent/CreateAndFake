@@ -29,7 +29,7 @@ public class MSTestTests
             [typeof(TestMethodAttribute)],
             Assembly.GetAssembly(typeof(RandomDataAttribute)),
             Assembly.GetExecutingAssembly(),
-            opt => opt with { TestMethodNameAllowedTargets = ["Issue118"] }
+            opt => opt with { AllowedTestNamePrefixes = ["Issue118"] }
         );
     }
 

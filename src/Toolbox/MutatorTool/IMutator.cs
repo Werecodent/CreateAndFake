@@ -8,7 +8,8 @@ using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.MutatorTool;
 
-/// <summary>Changes the value of <see langword="object"/>s or creates alternatives.</summary>
+/// <summary>Tool to modify the state of <see langword="object"/>s or create variants.</summary>
+/// <remarks>Useful for testing behavior under various states.</remarks>
 public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
 {
     /// <summary>
