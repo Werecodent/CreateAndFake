@@ -141,7 +141,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance)
         TestBasicSupport(Guid.Empty);
         TestNextRange(
             Guid.Empty,
-            Guid.AllBitsSet,
+            new Guid(0xFFFFFFFF, 0xFFFF, 0xFFFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF),
             v => GuidValueHandler.ToGuid(GuidValueHandler.ToBigInteger(v) + 1),
             v => GuidValueHandler.ToGuid(GuidValueHandler.ToBigInteger(v) - 1)
         );

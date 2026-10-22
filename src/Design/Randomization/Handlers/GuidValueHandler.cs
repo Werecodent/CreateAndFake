@@ -35,6 +35,6 @@ internal sealed class GuidValueHandler : ValueHandler<Guid>
     /// <returns>The converted <paramref name="value"/>.</returns>
     internal static Guid ToGuid(BigInteger value)
     {
-        return Guid.Parse(value.ToString("x33", CultureInfo.InvariantCulture).Substring(1));
+        return Guid.Parse(value.ToString("x33", CultureInfo.InvariantCulture).Remove(0, 1));
     }
 }
