@@ -9,7 +9,7 @@ using Werecodent.CreateAndFake.ValuerTool;
 namespace Werecodent.CreateAndFake.Fluent.Tooling;
 
 /// <summary>Provides fluent randomization options.</summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">Target type for the tools.</typeparam>
 /// <param name="source"><inheritdoc cref="Source" path="/summary"/></param>
 /// <param name="tools"><inheritdoc cref="Tools" path="/summary"/></param>
 public class ObjectTools<T>(T source, ToolSet? tools)
@@ -29,7 +29,7 @@ public class ObjectTools<T>(T source, ToolSet? tools)
     }
 
     /// <summary>Accesses the raw fake wrapper.</summary>
-    /// <typeparam name="TNew"></typeparam>
+    /// <typeparam name="TNew">Type to convert to.</typeparam>
     /// <returns>Fake to test with.</returns>
     /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
     public Fake<TNew> ToFake<TNew>()

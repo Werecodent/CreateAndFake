@@ -24,14 +24,14 @@ public interface IValuer
         IEqualityComparer
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IValuer WithOptions(ValuerMod optionConfiguration);
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
     /// <param name="expected">Object to compare with <paramref name="actual"/>.</param>
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
     /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
     IEnumerable<Difference> Compare(
@@ -54,7 +54,7 @@ public interface IValuer
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
     /// <param name="x">Object to compare with <paramref name="y"/>.</param>
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value, <see langword="false"/> otherwise.
     /// </returns>
@@ -76,7 +76,7 @@ public interface IValuer
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
     /// <param name="item">Object to generate a hash code for.</param>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <exception cref="UnsupportedException">If no hint supports hashing the object.</exception>
     int GetHashCode(object? item, ValuerMod? optionConfiguration);
 
@@ -88,14 +88,14 @@ public interface IValuer
         ValuerMod? optionConfiguration
     );
 
-    /// <summary>...</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <summary>Provides a comparer that uses this tool as the source for the comparisons.</summary>
+    /// <typeparam name="T"><see cref="Type"/> to compare.</typeparam>
+    /// <returns>The comparer to use.</returns>
     IEqualityComparer<T> ToComparer<T>();
 
-    /// <summary>...</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <summary>Provides a comparer that uses this tool as the source for the comparisons.</summary>
+    /// <typeparam name="T"><see cref="Type"/> to compare.</typeparam>
+    /// <returns>The comparer to use.</returns>
     IAsyncEqualityComparer<T> ToAsyncComparer<T>();
 }
 

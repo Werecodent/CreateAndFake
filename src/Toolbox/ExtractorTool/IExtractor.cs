@@ -12,7 +12,7 @@ namespace Werecodent.CreateAndFake.ExtractorTool;
 public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IExtractor WithOptions(ExtractorMod optionConfiguration);
 
@@ -22,7 +22,7 @@ public interface IExtractor : IHintTool<ExtractorOptions, IExtractHint>
     /// <summary>Finds data associated with <paramref name="source"/>.</summary>
     /// <param name="source">Instance being deconstructed.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Extracted content of <paramref name="source"/>.</returns>
     Task<IAsyncContentMap> ExtractAsync(
         object? source,

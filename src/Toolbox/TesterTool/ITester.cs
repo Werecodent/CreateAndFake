@@ -13,7 +13,7 @@ namespace Werecodent.CreateAndFake.TesterTool;
 public interface ITester : ITool<TesterOptions>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     ITester WithOptions(TesterMod optionConfiguration);
 
@@ -26,7 +26,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> to test.</typeparam>
     /// <param name="instance">The data to test.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyJsonSerialization<T>(T instance, TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies <typeparamref name="T"/> can XML serialize and deserialize.</summary>
@@ -38,47 +38,42 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> to test.</typeparam>
     /// <param name="instance">The data to test.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyXmlSerialization<T>(T instance, TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies <typeparamref name="T"/> has proper value equality rules for hashes.</summary>
     /// <typeparam name="T">Type to verify.</typeparam>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyEqualsMatchesHashCodes<T>(TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies the <paramref name="type"/> has proper value equality rules for hashes.</summary>
     /// <param name="type">Type to verify.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyEqualsMatchesHashCodes(Type type, TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies <typeparamref name="T"/> uses all values for value equality and equality works.</summary>
     /// <typeparam name="T">Type to verify.</typeparam>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyValueEquality<T>(TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies the <paramref name="type"/> uses all values for value equality and equality works.</summary>
     /// <param name="type">Type to verify.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyValueEquality(Type type, TesterMod? optionConfiguration = null);
 
     /// <summary>Verifies cancellation behavior.</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="factory"></param>
-    /// <param name="canceler"></param>
-    /// <param name="optionConfiguration"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">Type to verify.</typeparam>
+    /// <param name="factory">Behavior to test.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task VerifySupportsCancellationAsync<T>(
         Func<int, IAsyncEnumerable<T>> factory,
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
 
-    /// <summary>Verifies cancellation behavior.</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="factory"></param>
-    /// <param name="canceler"></param>
-    /// <param name="optionConfiguration"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="VerifySupportsCancellationAsync{T}(Func{int,IAsyncEnumerable{T}},CancellationToken,TesterMod?)"/>
     Task VerifySupportsCancellationAsync<T>(
         Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
         CancellationToken canceler,
@@ -115,7 +110,7 @@ public interface ITester : ITool<TesterOptions>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     Task PreventsNullRefExceptionAsync<T>(
         T instance,
         CancellationToken canceler,
@@ -145,7 +140,7 @@ public interface ITester : ITool<TesterOptions>
     /// <typeparam name="T">Type to verify.</typeparam>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     Task PreventsParameterMutationAsync<T>(
         T instance,
         CancellationToken canceler,
@@ -162,7 +157,7 @@ public interface ITester : ITool<TesterOptions>
     /// <summary>Verifies no exceptions are thrown on any method when using injection and random data.</summary>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     Task PassthroughWithNoExceptionsAsync(
         object instance,
         CancellationToken canceler,
@@ -174,7 +169,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
     /// <param name="testAssembly">Assembly with the tests.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void ProvidesTestClassCoverage(
         Assembly codeAssembly,
         Assembly testAssembly,
@@ -197,7 +192,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="testAssembly">Assembly with the tests.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler,
@@ -207,7 +202,7 @@ public interface ITester : ITool<TesterOptions>
     /// <summary>Validates a configuration.</summary>
     /// <param name="environmentName">Name of the environment to test.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task ValidateTestSettingsConfigAsync(
         string? environmentName,
@@ -228,7 +223,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <typeparam name="T"><see cref="Type"/> to verify support for.</typeparam>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task VerifyToolSetSupportAsync<T>(
         CancellationToken canceler,
@@ -241,7 +236,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="type"><see cref="Type"/> to verify support for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task VerifyToolSetSupportAsync(
         Type type,
@@ -255,7 +250,7 @@ public interface ITester : ITool<TesterOptions>
     /// </summary>
     /// <param name="types"><see cref="Type"/>s to verify support for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task VerifyToolSetSupportAsync(
         IEnumerable<Type> types,
@@ -265,6 +260,6 @@ public interface ITester : ITool<TesterOptions>
 
     /// <summary>Triggers a debug assertion of all classes in the <paramref name="codeAssembly"/>.</summary>
     /// <param name="codeAssembly">Assembly being tested.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void VerifyAllToStrings(Assembly codeAssembly, TesterMod? optionConfiguration = null);
 }

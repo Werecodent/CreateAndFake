@@ -94,7 +94,7 @@ public class FrozenCollectionCopyHint : CopyHint
     }
 
     /// <summary>Copies the contents of <paramref name="source"/>.</summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Content type being copied.</typeparam>
     /// <param name="source">Collection with contents to copy.</param>
     /// <param name="duplicator">Handles callback behavior for child values.</param>
     /// <returns>The duplicate object.</returns>

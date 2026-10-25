@@ -9,7 +9,7 @@ internal static class Unwrapper
 {
     /// <summary>Ensures the result is completed.</summary>
     /// <param name="result">Potentially wrapped data.</param>
-    /// <param name="methodReturnType"></param>
+    /// <param name="methodReturnType">Data type being returned.</param>
     /// <param name="options">Configured options to apply to this call.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>The unwrapped result.</returns>

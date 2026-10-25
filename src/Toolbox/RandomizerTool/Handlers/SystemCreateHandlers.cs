@@ -76,6 +76,25 @@ internal static class SystemCreateHandlers
             rand.Create<string>().ToLowerInvariant(),
             rand.Options.Gen.Next(-1, 65535)
         )),
+        new FactoryCreateHandler<MemoryStream>(rand =>
+        {
+            MemoryStream stream = new();
+
+            using StreamWriter writer = new(stream, null, -1, true);
+            foreach (string line in rand.Create<IEnumerable<string>>())
+            {
+                writer.WriteLine(line);
+            }
+            writer.Flush();
+
+            return stream;
+        }),
+        new FactoryCreateHandler<StreamWriter>(rand => new StreamWriter(
+            rand.Create<MemoryStream>()
+        )),
+        new FactoryCreateHandler<StreamReader>(rand => new StreamReader(
+            rand.Create<MemoryStream>()
+        )),
     ];
 }
 

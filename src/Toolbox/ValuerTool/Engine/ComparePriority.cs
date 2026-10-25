@@ -44,34 +44,37 @@ public enum ComparePriority
     /// <summary>Priority for <see cref="DefaultEqualityCompareHint"/>.</summary>
     DefaultEqualityHint = 10,
 
+    /// <summary>Priority for <see cref="StreamCompareHint"/>.</summary>
+    StreamHint = 11,
+
     /// <summary>Priority for <see cref="EnumerableCompareHint"/>.</summary>
-    EnumerableHint = 11,
+    EnumerableHint = 12,
 
     /// <summary>Priority for <see cref="SetCompareHint"/>.</summary>
-    SetHint = 12,
+    SetHint = 13,
 
     /// <summary>Priority for <see cref="DictionaryCompareHint"/>.</summary>
-    DictionaryHint = 13,
+    DictionaryHint = 14,
 
     /// <summary>Priority for <see cref="AsyncEnumerableCompareHint"/>.</summary>
-    AsyncEnumerableHint = 14,
+    AsyncEnumerableHint = 15,
 
     /// <summary>Priority for <see cref="AsyncSetCompareHint"/>.</summary>
-    AsyncSetHint = 15,
+    AsyncSetHint = 16,
 
     /// <summary>Priority for <see cref="FakedCompareHint"/>.</summary>
-    FakedHint = 16,
+    FakedHint = 17,
 
     /// <summary>Priority for <see cref="ValueTaskCompareHint"/>.</summary>
-    ValueTaskHint = 17,
+    ValueTaskHint = 18,
 
     /// <summary>Priority for <see cref="TaskCompareHint"/>.</summary>
-    TaskHint = 18,
+    TaskHint = 19,
 
     /// <summary>Priority for <see cref="HandlerCompareHint"/>.</summary>
-    HandlerHint = 19,
+    HandlerHint = 20,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 20,
+    Highest = 21,
 }

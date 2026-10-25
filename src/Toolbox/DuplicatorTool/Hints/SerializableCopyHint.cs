@@ -27,7 +27,7 @@ public sealed class SerializableCopyHint : CopyHint
     {
         ArgumentGuard.ThrowIfNull(duplicator);
 
-        if (source is ISerializable) // && source.GetType().IsSerializable) // && HasSerializationConstructor(source))
+        if (source is ISerializable)
         {
             IContentMap contents = duplicator.Options.Extractor.Extract(source);
 
@@ -56,18 +56,6 @@ public sealed class SerializableCopyHint : CopyHint
             return CopyHintResult.None;
         }
     }
-
-    /*private static bool HasSerializationConstructor(object source)
-    {
-        return source
-                .GetType()
-                .GetConstructor(
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                    null,
-                    [typeof(SerializationInfo), typeof(StreamingContext)],
-                    null
-                ) != null;
-    }*/
 
     /// <summary>Finds known types needed for specific types.</summary>
     /// <param name="source">Object being serialized.</param>

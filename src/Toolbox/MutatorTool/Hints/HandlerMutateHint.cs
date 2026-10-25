@@ -26,6 +26,16 @@ public sealed class HandlerMutateHint : IMutateHint
         new FactoryMutateHandler<StringBuilder>(
             (instance, mutator) => instance.Append(mutator.Options.Randomizer.Create<string>())
         ),
+        new FactoryMutateHandler<StreamWriter>(
+            (instance, mutator) =>
+            {
+                instance.WriteLine(mutator.Options.Randomizer.Create<string>());
+                instance.Flush();
+            }
+        ),
+        new FactoryMutateHandler<StreamReader>(
+            (instance, mutator) => mutator.Modify(instance.BaseStream)
+        ),
     ];
 
     /// <summary>All handlers by their supported type.</summary>

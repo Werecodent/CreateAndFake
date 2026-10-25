@@ -11,7 +11,7 @@ namespace Werecodent.CreateAndFake.Fluent;
 public static class FakeExtensions
 {
     /// <summary>Ties a method call to fake behavior.</summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type to return.</typeparam>
     /// <param name="fakeCallResult">Result from the fake method to setup.</param>
     /// <param name="returnValue">Value to set the call behavior with.</param>
     /// <param name="times">Expected number of calls for the behavior.</param>
@@ -28,7 +28,7 @@ public static class FakeExtensions
     }
 
     /// <summary>Ties a method call to <paramref name="behavior"/>.</summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type to return.</typeparam>
     /// <param name="fakeCallResult">Result from the fake method to setup.</param>
     /// <param name="behavior">Behavior to set the call behavior with.</param>
     /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
@@ -38,9 +38,9 @@ public static class FakeExtensions
     }
 
     /// <summary>Ties a method call to <paramref name="behavior"/>.</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="fake"></param>
-    /// <param name="call"></param>
+    /// <typeparam name="T">Type to return.</typeparam>
+    /// <param name="fake">Fake being configured.</param>
+    /// <param name="call">Method to configure.</param>
     /// <param name="behavior">Behavior to set the call behavior with.</param>
     /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
     public static void SetupReturn<T>(this T fake, Action<T> call, Behavior<VoidType> behavior)

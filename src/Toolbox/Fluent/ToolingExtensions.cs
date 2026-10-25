@@ -3,14 +3,14 @@ using Werecodent.CreateAndFake.Fluent.Tooling;
 
 namespace Werecodent.CreateAndFake.Fluent;
 
-/// <summary>Provides fluent randomization options.</summary>
+/// <summary>Provides fluent tool actions.</summary>
 public static class ToolingExtensions
 {
-    /// <summary>Add.</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="instance"></param>
-    /// <param name="tools"></param>
-    /// <returns></returns>
+    /// <summary>Accesses available tool behavior for the instance.</summary>
+    /// <typeparam name="T">Type being used.</typeparam>
+    /// <param name="instance">Instance to act upon.</param>
+    /// <param name="tools">Custom tools to potentially use.</param>
+    /// <returns>Tool functions to run.</returns>
     public static AsyncObjectTools<T> Tools<T>(this T instance, ToolSet? tools = null)
     {
         return new AsyncObjectTools<T>(instance, tools);

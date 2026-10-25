@@ -29,6 +29,14 @@ internal static class Subclasser
             typeof(ValueTask<>),
             $"{typeof(ValueTask<>)} not supported without a provided constructor."
         },
+        {
+            typeof(StreamReader),
+            $"{typeof(StreamReader)} not supported without a provided constructor."
+        },
+        {
+            typeof(StreamWriter),
+            $"{typeof(StreamWriter)} not supported without a provided constructor."
+        },
 #if LEGACY // Required feature shipped with C# 14 / .NET 10.0
         { typeof(TypeInfo), $"{typeof(TypeInfo)} itself has specific issues being faked." },
 #endif

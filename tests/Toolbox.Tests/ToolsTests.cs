@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
@@ -60,15 +59,6 @@ public static class ToolsTests
         return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.Current.CancellationToken);
     }
 
-    /* [Fact]
-    internal static Task Tools_SupportsAll()
-    {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            TypeDescriber.For<object>().FindLoadedSubclasses(),
-            TestContext.Current.CancellationToken
-        );
-    }*/
-
     [Theory, RandomData]
     internal static void Tools_IntegrationWorks(
         DataHolderSample original,
@@ -95,46 +85,11 @@ public static class ToolsTests
         Tools.Valuer.GetHashCode(dupe).Assert().Is(Tools.Valuer.GetHashCode(sample));
     }
 
-    /* [Fact]
-    internal static Task Tools_AllCreateAndFakeTypesWork()
-    {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            typeof(Tools)
-                .Assembly.GetTypes()
-                .Where(t => !(t.IsAbstract && t.IsSealed))
-                .Where(t => !TypeDescriber.For(t).Inherits<Attribute>())
-                .Where(t => !t.IsNestedPrivate)
-                .Where(t => !Attribute.IsDefined(t, typeof(CompilerGeneratedAttribute))),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IntegrityIgnorableTypes =
-                    [
-                        typeof(Arg),
-                        typeof(Fake<>),
-                        typeof(VoidType),
-                        typeof(VoidReturn),
-                        typeof(AnyGeneric),
-                        typeof(Injected<>),
-                        typeof(Behavior<>),
-                        typeof(FactoryCreateHandler<>),
-                        typeof(FactoryCopyHandler<>),
-                        typeof(ToolSet),
-                        typeof(Tools),
-                        typeof(BaseGuarder),
-                        typeof(IValuerAsyncComparable),
-                        typeof(DifferenceHintAsyncResult),
-                    ],
-                }
-        );
-    }*/
-
     [Fact]
     internal static Task Tools_TestIndividual()
     {
         return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(ContentMap)],
+            [typeof(StreamWriter)],
             TestContext.Current.CancellationToken
         );
     }

@@ -21,6 +21,14 @@ public sealed class HandlerCompareHint : CompareHint
         new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
         new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
         new ConvertCompareHandler<CancellationToken>((token, _) => token.IsCancellationRequested),
+        new ConvertCompareHandler<StreamReader>((reader, _) => reader.BaseStream),
+        new ConvertCompareHandler<StreamWriter>(
+            (writer, _) =>
+            {
+                writer.Flush();
+                return writer.BaseStream;
+            }
+        ),
         new ConvertCompareHandler<StringDictionary>(
             (dict, _) =>
                 dict.Cast<DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string?)e.Value)

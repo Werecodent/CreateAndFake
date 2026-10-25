@@ -8,7 +8,7 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see langword="object"/> assertion calls.</summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">Type to verify.</typeparam>
 /// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
 /// <param name="actual"><inheritdoc cref="Actual" path="/summary"/></param>
 public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)

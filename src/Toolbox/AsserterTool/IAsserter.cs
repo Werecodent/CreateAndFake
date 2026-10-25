@@ -27,7 +27,7 @@ public interface IAsserter
         IAsserterString
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IAsserter WithOptions(AsserterMod optionConfiguration);
 
@@ -35,7 +35,7 @@ public interface IAsserter
     void Pass();
 
     /// <summary>Specifies the test is successful if it reaches this point.</summary>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     void Pass(AsserterMod? optionConfiguration);
 
     /// <inheritdoc cref="Fail(AsserterMod,string)"/>

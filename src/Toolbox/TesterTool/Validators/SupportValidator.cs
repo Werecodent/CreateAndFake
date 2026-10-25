@@ -163,7 +163,8 @@ internal sealed class SupportValidator(TesterOptions options)
                 .Concat(Tools.Duplicator.SupportedTypes)
                 .Concat(Tools.Extractor.SupportedTypes)
                 .Concat(Tools.Mutator.SupportedTypes)
-                .Concat(Tools.Valuer.SupportedTypes),
+                .Concat(Tools.Valuer.SupportedTypes)
+                .Concat(Tools.Faker.SupportedTypes),
             canceler
         );
     }

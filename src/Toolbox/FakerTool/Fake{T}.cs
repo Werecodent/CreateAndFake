@@ -81,7 +81,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to the setter.</summary>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TResult">Type to verify.</typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Setter to verify.</param>
     /// <param name="value">Set value to match from the call.</param>
@@ -92,7 +92,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to the setter.</summary>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TResult">Type to verify.</typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Setter to verify.</param>
     /// <param name="value">Arg expression to match from the call.</param>
@@ -112,7 +112,7 @@ public sealed class Fake<T> : Fake
     }
 
     /// <summary>Verifies the number of calls made to <paramref name="method"/>.</summary>
-    /// <typeparam name="TResult"></typeparam>
+    /// <typeparam name="TResult">Type to verify.</typeparam>
     /// <param name="times">Expected number of calls.</param>
     /// <param name="method">Method to verify.</param>
     public void Verify<TResult>(Times times, Expression<Func<T, TResult>> method)

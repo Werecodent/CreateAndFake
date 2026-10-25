@@ -143,9 +143,3 @@ dotnet_diagnostic.S8969.severity = None
 
 # Specifically for Visual Studio extensions and don't apply to this library.
 dotnet_diagnostic.VSTHRD003.severity = None
-
-# TODO: Documentation work.
-dotnet_diagnostic.RCS1228.severity = None
-
-# TODO: Remove commented out code.
-dotnet_diagnostic.S125.severity = None

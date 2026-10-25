@@ -10,7 +10,7 @@ internal static class GenericFixer
 {
     /// <summary>Defines any generics in a type.</summary>
     /// <param name="type">Type to fix.</param>
-    /// <param name="options"></param>
+    /// <param name="options">Options to use.</param>
     /// <returns>Type with all generics defined.</returns>
     internal static Type FixType(Type type, TesterOptions options)
     {
@@ -24,7 +24,7 @@ internal static class GenericFixer
 
     /// <summary>Defines any generics in a method.</summary>
     /// <param name="method">Method to fix.</param>
-    /// <param name="options"></param>
+    /// <param name="options">Options to use.</param>
     /// <returns>Method with all generics defined.</returns>
     internal static MethodInfo FixMethod(MethodInfo method, TesterOptions options)
     {

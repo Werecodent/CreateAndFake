@@ -212,8 +212,8 @@ public partial class Asserter : IAsserterComparable
     /// <param name="math">Math used to check the <c>value</c>.</param>
     /// <param name="description">Math description to use for error message.</param>
     /// <param name="target">Value to compare with.</param>
-    /// <param name="value"></param>
-    /// <param name="optionConfiguration"></param>
+    /// <param name="value">Value to compare with.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <param name="details">Optional failure details to include.</param>
     /// <returns>Chainer to make additional assertions with.</returns>
     /// <exception cref="AssertException">If <c>value</c> does not match <paramref name="math"/>.</exception>

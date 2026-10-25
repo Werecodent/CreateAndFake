@@ -1,5 +1,7 @@
 namespace Werecodent.CreateAndFake.Design.Reiteration;
 
+#pragma warning disable RCS1228 // Empty to override the inherited tag.
+
 /// <summary>Provides the core functionality for synchronous repetition.</summary>
 public interface ILimiterSync
 {
@@ -183,3 +185,5 @@ public interface ILimiterSync
     )
         where TError : Exception;
 }
+
+#pragma warning restore

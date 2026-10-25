@@ -12,7 +12,7 @@ namespace Werecodent.CreateAndFake.RandomizerTool;
 public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
 {
     /// <summary>Creates a new tool with the given configuration changes.</summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IRandomizer WithOptions(RandomizerMod optionConfiguration);
 
@@ -24,7 +24,7 @@ public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
 
     /// <summary>Creates a randomized instance.</summary>
     /// <param name="type">Type to create.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>The created instance.</returns>
     object Create(Type type, RandomizerMod? optionConfiguration = null);
 
@@ -39,14 +39,14 @@ public interface IRandomizer : IHintTool<RandomizerOptions, ICreateHint>
     /// </summary>
     /// <typeparam name="T">Type to create.</typeparam>
     /// <param name="values">Values to inject into the <typeparamref name="T"/> instance.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>The created <typeparamref name="T"/> instance.</returns>
     T Inject<T>(IEnumerable<object?>? values, RandomizerMod? optionConfiguration = null);
 
     /// <summary>Creates an instance using <paramref name="values"/> or random data as needed.</summary>
     /// <param name="type">Type to create.</param>
     /// <param name="values">Values to inject into the instance.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>The created instance.</returns>
     object Inject(
         Type type,

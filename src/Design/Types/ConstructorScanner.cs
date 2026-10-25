@@ -3,6 +3,8 @@ using System.Reflection;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
+#pragma warning disable RCS1228 // Empty to override the inherited tag.
+
 /// <inheritdoc/>
 public sealed class ConstructorScanner(Type? type) : MemberScanner<ConstructorInfo>(type)
 {
@@ -30,3 +32,5 @@ public sealed class ConstructorScanner(Type? type) : MemberScanner<ConstructorIn
             ) ?? [];
     }
 }
+
+#pragma warning restore

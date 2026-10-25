@@ -32,6 +32,16 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<CultureInfo>(
             (source, _) => source.IsReadOnly ? source : (CultureInfo)source.Clone()
         ),
+        new FactoryCopyHandler<StreamReader>(
+            (source, duplicator) => new StreamReader(duplicator.Copy(source.BaseStream))
+        ),
+        new FactoryCopyHandler<StreamWriter>(
+            (source, duplicator) =>
+            {
+                source.Flush();
+                return new StreamWriter(duplicator.Copy(source.BaseStream));
+            }
+        ),
         new FactoryCopyHandler<CancellationTokenSource>(
             (source, _) =>
             {

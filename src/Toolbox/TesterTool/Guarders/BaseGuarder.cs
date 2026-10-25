@@ -142,7 +142,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <summary>Runs the check.</summary>
     /// <param name="testOrigin">Method under test.</param>
     /// <param name="testParam">Parameter being set to null.</param>
-    /// <param name="instance"></param>
+    /// <param name="instance">Instance to run the check on.</param>
     /// <param name="data">Call to invoke and test.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <returns>Returned result from the call.</returns>

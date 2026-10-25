@@ -15,7 +15,7 @@ public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
     /// <summary>
     ///     Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.
     /// </summary>
-    /// <param name="optionConfiguration">Modifications of Options for the new tool.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IMutator WithOptions(MutatorMod optionConfiguration);
 
@@ -63,7 +63,7 @@ public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
     /// </summary>
     /// <param name="type">The <see cref="Type"/> of <see langword="object"/> to create.</param>
     /// <param name="instances">The <see langword="object"/>s to differ from.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>The created <see langword="object"/>.</returns>
     object VariantOf(
         Type type,
@@ -165,7 +165,7 @@ public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
 
     /// <summary>Attempts to mutate the <paramref name="instance"/>.</summary>
     /// <param name="instance">The <see langword="object"/> to try modifying.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>
     ///     <see langword="true"/> if the <paramref name="instance"/>
     ///     has been modified, <see langword="false"/> otherwise.

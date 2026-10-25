@@ -11,7 +11,7 @@ public interface IExtractorChainer : IExtractor, IToolChainer<ExtractorOptions, 
     /// <summary>Adds the <paramref name="value"/> as an extracted instance.</summary>
     /// <param name="value">Instance to add.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>
     ///     <see langword="true"/> if the <paramref name="value"/> was added, <see langword="false"/> otherwise.
     /// </returns>
@@ -27,7 +27,7 @@ public interface IExtractorChainer : IExtractor, IToolChainer<ExtractorOptions, 
     /// <summary>Extracts the members of the given <paramref name="value"/>.</summary>
     /// <param name="value">Instance to extract members from.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of Options to apply for this call.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns><see langword="true"/> if data was extracted, <see langword="false"/> otherwise.</returns>
     Task<bool> InnerExtractAsync(
         object? value,

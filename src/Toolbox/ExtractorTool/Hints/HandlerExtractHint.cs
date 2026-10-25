@@ -22,6 +22,16 @@ public sealed class HandlerExtractHint : IExtractHint
         new SelfExtractHandler(typeof(CancellationToken)),
         new SelfExtractHandler(typeof(RuntimeMethodHandle)),
         new ConvertExtractHandler(typeof(TypeDescriber), x => [((TypeDescriber)x).SupportedType]),
+        new ConvertExtractHandler(typeof(StreamReader), x => [((StreamReader)x).BaseStream]),
+        new ConvertExtractHandler(
+            typeof(StreamWriter),
+            x =>
+            {
+                StreamWriter writer = (StreamWriter)x;
+                writer.Flush();
+                return [writer.BaseStream];
+            }
+        ),
     ];
 
     /// <summary>All handlers by their supported type.</summary>
