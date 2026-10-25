@@ -33,10 +33,10 @@ public sealed record RunnerOptions : ToolOptions<RunnerOptions>
     ///     Useful for preventing execution of methods that leave
     ///     the <see cref="object"/> in a bad state for other methods.
     /// </remarks>
-    /// <value><c>["Finalize", "Dispose", "DisposeAsync"]</c></value>
+    /// <value><c>["Finalize", "Dispose", "DisposeAsync", "Close"]</c></value>
     [ConfigurableOption]
     public FrozenSet<string> MethodsToIgnore { get; init; } =
-        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync"]);
+        FrozenSet.ToFrozenSet(["Finalize", "Dispose", "DisposeAsync", "Close"]);
 
     /// <summary>Flag to include running methods declared on the <see cref="object"/> <see langword="class"/>.</summary>
     /// <remarks>Useful in only running introduced methods when <see langword="false"/>.</remarks>

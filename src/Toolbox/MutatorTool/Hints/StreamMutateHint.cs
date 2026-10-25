@@ -17,7 +17,7 @@ public class StreamMutateHint : MutateHint<Stream>
 
         instance.Flush();
 
-        using StreamWriter writer = new(instance, Encoding.UTF8, -1, true);
+        using StreamWriter writer = new(instance, Encoding.UTF8, leaveOpen: true);
         writer.WriteLine(chainer.Options.Randomizer.Create<string>());
         writer.Flush();
 

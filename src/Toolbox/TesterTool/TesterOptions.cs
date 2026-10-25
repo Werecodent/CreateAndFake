@@ -112,7 +112,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     ///     Useful for preventing execution of methods that should be tested
     ///     manually or leave an instance in a bad state for other methods.
     /// </remarks>
-    /// <value><c>["Finalize", "Dispose", "DisposeAsync", "PrintMembers", "GetObjectData"]</c></value>
+    /// <value><c>["Finalize", "Dispose", "DisposeAsync", "PrintMembers", "GetObjectData", "Close"]</c></value>
     [ConfigurableOption]
     public FrozenSet<string> MethodsToIgnore { get; init; } =
         FrozenSet.ToFrozenSet([
@@ -121,6 +121,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             "DisposeAsync",
             "PrintMembers",
             "GetObjectData",
+            "Close",
         ]);
 
     /// <summary>If all thrown <see cref="Exception"/>s are ignored when running tests on classes.</summary>

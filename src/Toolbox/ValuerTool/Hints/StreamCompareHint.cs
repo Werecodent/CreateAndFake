@@ -26,25 +26,21 @@ public sealed class StreamCompareHint : CompareHint<Stream>
         return chainer.GetHashCode(ReadContents(item, chainer));
     }
 
-    private static List<string?> ReadContents(Stream stream, IValuerChainer chainer)
+    private static IEnumerable<string?> ReadContents(Stream stream, IValuerChainer chainer)
     {
         stream.Flush();
 
         long startingPosition = stream.Position;
         stream.Position = 0;
 
-        List<string?> results = [];
-
-        using StreamReader reader = new(stream, Encoding.UTF8, true, -1, true);
+        using StreamReader reader = new(stream, Encoding.UTF8, true, leaveOpen: true);
         for (int i = 0; !reader.EndOfStream; i++)
         {
             ArgumentGuard.ThrowUponIterationLimit(i, chainer.Options.Design.IterationLimit);
 
-            results.Add(reader.ReadLine());
+            yield return reader.ReadLine();
         }
 
         stream.Position = startingPosition;
-
-        return results;
     }
 }
