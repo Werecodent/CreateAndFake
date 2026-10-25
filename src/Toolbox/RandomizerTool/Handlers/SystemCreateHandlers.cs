@@ -80,7 +80,7 @@ internal static class SystemCreateHandlers
         {
             MemoryStream stream = new();
 
-            using StreamWriter writer = new(stream, Encoding.UTF8, leaveOpen: true);
+            using StreamWriter writer = new(stream, Encoding.UTF8, 1024, true);
             foreach (string line in rand.Create<IEnumerable<string>>())
             {
                 writer.WriteLine(line);

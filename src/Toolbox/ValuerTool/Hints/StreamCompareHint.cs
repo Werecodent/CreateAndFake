@@ -33,7 +33,7 @@ public sealed class StreamCompareHint : CompareHint<Stream>
         long startingPosition = stream.Position;
         stream.Position = 0;
 
-        using StreamReader reader = new(stream, Encoding.UTF8, true, leaveOpen: true);
+        using StreamReader reader = new(stream, Encoding.UTF8, true, 1024, true);
         for (int i = 0; !reader.EndOfStream; i++)
         {
             ArgumentGuard.ThrowUponIterationLimit(i, chainer.Options.Design.IterationLimit);
