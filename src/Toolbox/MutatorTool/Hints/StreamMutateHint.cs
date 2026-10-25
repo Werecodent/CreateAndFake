@@ -1,3 +1,4 @@
+using System.Text;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 
@@ -16,7 +17,7 @@ public class StreamMutateHint : MutateHint<Stream>
 
         instance.Flush();
 
-        using StreamWriter writer = new(instance, null, -1, true);
+        using StreamWriter writer = new(instance, Encoding.UTF8, -1, true);
         writer.WriteLine(chainer.Options.Randomizer.Create<string>());
         writer.Flush();
 

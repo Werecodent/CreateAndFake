@@ -1,3 +1,4 @@
+using System.Text;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
@@ -25,21 +26,25 @@ public sealed class StreamCompareHint : CompareHint<Stream>
         return chainer.GetHashCode(ReadContents(item, chainer));
     }
 
-    private static IEnumerable<string?> ReadContents(Stream stream, IValuerChainer chainer)
+    private static List<string?> ReadContents(Stream stream, IValuerChainer chainer)
     {
         stream.Flush();
 
         long startingPosition = stream.Position;
         stream.Position = 0;
 
-        using StreamReader reader = new(stream, null, true, -1, true);
+        List<string?> results = [];
+
+        using StreamReader reader = new(stream, Encoding.UTF8, true, -1, true);
         for (int i = 0; !reader.EndOfStream; i++)
         {
             ArgumentGuard.ThrowUponIterationLimit(i, chainer.Options.Design.IterationLimit);
 
-            yield return reader.ReadLine();
+            results.Add(reader.ReadLine());
         }
 
         stream.Position = startingPosition;
+
+        return results;
     }
 }
