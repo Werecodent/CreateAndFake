@@ -2,6 +2,7 @@
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -91,7 +92,7 @@ public static class ToolsTests
         for (int i = 0; i < 100; i++)
         {
             await Tools.Tester.VerifyToolSetSupportAsync(
-                [typeof(ValueTask<DataSample>?)],
+                [typeof(Injected<AssertGenericValueTask<DataSample>>)],
                 TestContext.Current.CancellationToken
             );
         }

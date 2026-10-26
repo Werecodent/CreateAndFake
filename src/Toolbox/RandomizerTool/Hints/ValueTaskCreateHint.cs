@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Threading.Tasks.Sources;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
@@ -9,6 +10,20 @@ namespace Werecodent.CreateAndFake.RandomizerTool.Hints;
 /// <summary>Handles randomizing <see cref="ValueTask{T}"/> instances for <see cref="IRandomizer"/>.</summary>
 public sealed class ValueTaskCreateHint : CreateHint
 {
+    /// <summary>Method used to create a completed <see cref="IValueTaskSource"/>.</summary>
+    /// <remarks>Dynamic can't be used due to creating the wrong type with subclasses.</remarks>
+    private static readonly MethodInfo _ValueSourceMaker = typeof(ValueTaskCreateHint).GetMethod(
+        nameof(CreateSource),
+        BindingFlags.NonPublic | BindingFlags.Static
+    )!;
+
+    /// <summary>Method used to create a completed <see cref="ValueTask"/>.</summary>
+    /// <remarks>Dynamic can't be used due to creating the wrong type with subclasses.</remarks>
+    private static readonly MethodInfo _ValueTaskMaker = typeof(ValueTaskCreateHint).GetMethod(
+        nameof(CreateValueTaskAsync),
+        BindingFlags.NonPublic | BindingFlags.Static
+    )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.TaskHint;
 
@@ -28,13 +43,18 @@ public sealed class ValueTaskCreateHint : CreateHint
             || asGeneric == typeof(IValueTaskSource<>)
         )
         {
-            object content = randomizer.Create(type.GetGenericArguments().Single());
-            return new(CreateSource((dynamic)content));
+            Type contentType = type.GetGenericArguments().Single();
+            object content = randomizer.Create(contentType);
+            return new(_ValueSourceMaker.MakeGenericMethod(contentType).Invoke(null, [content]));
         }
         else if (asGeneric == typeof(ValueTask<>))
         {
-            object content = randomizer.Create(type.GetGenericArguments().Single());
-            return new(CreateValueTaskAsync((dynamic)content, randomizer));
+            Type contentType = type.GetGenericArguments().Single();
+            return new(
+                _ValueTaskMaker
+                    .MakeGenericMethod(contentType)
+                    .Invoke(null, [randomizer.Create(contentType), randomizer])
+            );
         }
         else
         {

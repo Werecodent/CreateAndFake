@@ -17,46 +17,49 @@ public enum CreatePriority
     /// <summary>Priority for <see cref="ObjectCreateHint"/>.</summary>
     ObjectHint = 1,
 
+    /// <summary>Priority for <see cref="NullableCreateHint"/>.</summary>
+    NullableHint = 2,
+
     /// <summary>Priority for <see cref="SubclassCreateHint"/>.</summary>
-    SubclassHint = 2,
+    SubclassHint = 3,
 
     /// <summary>Priority for <see cref="FakeCreateHint"/>.</summary>
-    FakeHint = 3,
+    FakeHint = 4,
 
     /// <summary>Priority for <see cref="InjectedCreateHint"/>.</summary>
-    InjectedHint = 4,
+    InjectedHint = 5,
 
     /// <summary>Priority for <see cref="ComparerCreateHint"/>.</summary>
-    ComparerHint = 5,
+    ComparerHint = 6,
 
     /// <summary>Priority for <see cref="AsyncCollectionCreateHint"/>.</summary>
-    AsyncCollectionHint = 6,
+    AsyncCollectionHint = 7,
 
     /// <summary>Priority for <see cref="TaskCreateHint"/>.</summary>
-    TaskHint = 7,
+    TaskHint = 8,
 
     /// <summary>Priority for <see cref="DelegateCreateHint"/>.</summary>
-    DelegateHint = 8,
+    DelegateHint = 9,
 
     /// <summary>Priority for <see cref="SpanCreateHint"/>.</summary>
-    SpanHint = 9,
+    SpanHint = 10,
 
     /// <summary>Priority for <see cref="LegacyCollectionCreateHint"/>.</summary>
-    LegacyCollectionHint = 10,
+    LegacyCollectionHint = 11,
 
     /// <summary>Priority for <see cref="CollectionCreateHint"/>.</summary>
-    CollectionHint = 11,
+    CollectionHint = 12,
 
     /// <summary>Priority for <see cref="GenericCreateHint"/>.</summary>
-    GenericHint = 12,
+    GenericHint = 13,
 
     /// <summary>Priority for <see cref="EnumCreateHint"/>.</summary>
-    EnumHint = 13,
+    EnumHint = 14,
 
     /// <summary>Priority for <see cref="HandlerCreateHint"/>.</summary>
-    HandlerHint = 14,
+    HandlerHint = 15,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 15,
+    Highest = 16,
 }
