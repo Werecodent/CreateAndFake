@@ -12,12 +12,14 @@ namespace Werecodent.CreateAndFake.Design.Types;
 public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
 {
     /// <summary>Every possible specific type.</summary>
-    private static readonly FrozenSet<Type> _AllTypesFromAllAssemblies = FindAllAssemblies()
-        .Where(a => !a.ReflectionOnly)
-        .Where(a => !a.IsDynamic)
-        .SelectMany(ScopeChecker.FindLoadedTypes)
-        .Where(t => !Attribute.IsDefined(t, typeof(ExcludeFromCreateAndFakeAttribute)))
-        .ToFrozenSet();
+    private static readonly Lazy<FrozenSet<Type>> _AllTypesFromAllAssemblies = new(() =>
+        FindAllAssemblies()
+            .Where(a => !a.ReflectionOnly)
+            .Where(a => !a.IsDynamic)
+            .SelectMany(ScopeChecker.FindLoadedTypes)
+            .Where(t => !Attribute.IsDefined(t, typeof(ExcludeFromCreateAndFakeAttribute)))
+            .ToFrozenSet()
+    );
 
     /// <summary>Prevents concurrency issues for <see cref="_InheritCache"/>.</summary>
     private static readonly Lock _Lock = new();
@@ -244,7 +246,7 @@ public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
     /// <returns>The found subclasses.</returns>
     private static IEnumerable<Type> FindLoadedChildren(Type? type)
     {
-        return (type == null) ? [] : _AllTypesFromAllAssemblies.Where(t => t.Inherits(type));
+        return (type == null) ? [] : _AllTypesFromAllAssemblies.Value.Where(t => t.Inherits(type));
     }
 
     /// <summary>Finds every <see cref="Type"/> that the <paramref name="type"/> inherits.</summary>

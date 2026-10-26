@@ -154,6 +154,9 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<RunnerMod>(rand => _ => rand.Create<RunnerOptions>()),
         new FactoryCreateHandler<TesterMod>(rand => _ => rand.Create<TesterOptions>()),
         new FactoryCreateHandler<ValuerMod>(rand => _ => rand.Create<ValuerOptions>()),
+        new FactoryCreateHandler<PlainAsyncDisposable>(rand => new PlainAsyncDisposable(
+            rand.Create<string>()
+        )),
     ];
 
     private static T CreateRandomOptionsBase<T>(IRandomizerChainer randomizer)
