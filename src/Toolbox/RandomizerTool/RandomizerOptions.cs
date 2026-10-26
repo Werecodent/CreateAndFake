@@ -38,7 +38,7 @@ public sealed record RandomizerOptions : ToolHintOptions<RandomizerOptions, ICre
     /// </remarks>
     /// <value><c>Limiter.Few</c></value>
     [ConfigurableOption]
-    public Limiter CreateObjectAttemptLimit { get; init; } = Limiter.Few;
+    public Limiter CreateObjectAttemptLimit { get; init; } = Limiter.Dozen;
 
     /// <summary>Limits attempts at creating collections.</summary>
     /// <remarks>Attempts fail generally from failing size requirements due to hash collisions.</remarks>

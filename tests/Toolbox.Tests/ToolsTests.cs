@@ -86,11 +86,14 @@ public static class ToolsTests
     }
 
     [Fact]
-    internal static Task Tools_TestIndividual()
+    internal static async Task Tools_TestIndividual()
     {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(StreamWriter)],
-            TestContext.Current.CancellationToken
-        );
+        for (int i = 0; i < 100; i++)
+        {
+            await Tools.Tester.VerifyToolSetSupportAsync(
+                [typeof(ValueTask<DataSample>?)],
+                TestContext.Current.CancellationToken
+            );
+        }
     }
 }

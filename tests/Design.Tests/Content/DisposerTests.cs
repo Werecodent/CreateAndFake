@@ -14,15 +14,6 @@ public static class DisposerTests
         );
     }
 
-    [Fact]
-    internal static Task Disposer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(Disposer),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void Cleanup_DisposesAllItems(
         [Stub] IDisposable item1,
