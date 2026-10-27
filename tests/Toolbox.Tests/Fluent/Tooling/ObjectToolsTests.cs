@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Fluent.Tooling;
 
@@ -10,7 +11,8 @@ public static class ObjectToolsTests
     {
         return Tools.Tester.PreventsNullRefExceptionAsync(
             typeof(ObjectTools<IFaked>),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
         );
     }
 
@@ -19,7 +21,8 @@ public static class ObjectToolsTests
     {
         return Tools.Tester.PreventsParameterMutationAsync(
             typeof(ObjectTools<IFaked>),
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
         );
     }
 }

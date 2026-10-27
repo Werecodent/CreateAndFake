@@ -7,7 +7,7 @@ public static class AssertChainerTests
     [Fact]
     internal static Task AssertChainer_GuardsNulls()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertChainer<object>>(
+        return Tools.Tester.PreventsNullRefExceptionAsync<AssertChainer<StreamReader>>(
             TestContext.Current.CancellationToken
         );
     }
@@ -15,7 +15,7 @@ public static class AssertChainerTests
     [Fact]
     internal static Task AssertChainer_NoParameterMutation()
     {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertChainer<object>>(
+        return Tools.Tester.PreventsParameterMutationAsync<AssertChainer<StreamWriter>>(
             TestContext.Current.CancellationToken
         );
     }

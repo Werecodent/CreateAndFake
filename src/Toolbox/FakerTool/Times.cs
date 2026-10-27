@@ -3,7 +3,7 @@
 namespace Werecodent.CreateAndFake.FakerTool;
 
 /// <summary>Tracks number of calls.</summary>
-public sealed class Times : IEquatable<Times>, IDeepCloneable<Times>
+public sealed class Times : IEquatable<Times>, IDeepCloneable<Times>, IValueEquatable
 {
     /// <summary>Expected bounds.</summary>
     private readonly int _min,
@@ -62,6 +62,18 @@ public sealed class Times : IEquatable<Times>, IDeepCloneable<Times>
     public override int GetHashCode()
     {
         return ValueComparer.Use.GetHashCode(_min, _max);
+    }
+
+    /// <inheritdoc/>
+    public bool ValuesEqual(object? other)
+    {
+        return Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public int GetValueHash()
+    {
+        return GetHashCode();
     }
 
     /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>

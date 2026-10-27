@@ -164,7 +164,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
 
     /// <summary><see cref="Type"/>s to be excluded for VerifyToolSetIntegrity tests.</summary>
     /// <remarks>Useful for ignoring known incompatible <see cref="Type"/>s.</remarks>
-    /// <value><c>[typeof(IConfiguration), typeof(IConfigurationSection)]</c></value>
+    /// <value><c>[]</c></value>
     [ConfigurableOption]
     public FrozenSet<Type> IntegrityIgnorableTypes { get; init; } = FrozenSet.ToFrozenSet<Type>([]);
 

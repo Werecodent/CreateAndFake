@@ -100,7 +100,7 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <param name="instance">Instance whose methods to test.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     protected async Task CallAllMethodsAsync(
-        MethodBase? testOrigin,
+        MethodCallWrapper? testOrigin,
         ParameterInfo? testParam,
         object instance,
         CancellationToken canceler
@@ -123,7 +123,7 @@ internal abstract class BaseGuarder(TesterOptions options)
             try
             {
                 object? result = await RunCheckAsync(
-                        testOrigin ?? method,
+                        testOrigin?.Method ?? method,
                         testParam,
                         instance,
                         data,
@@ -131,7 +131,11 @@ internal abstract class BaseGuarder(TesterOptions options)
                     )
                     .ConfigureAwait(false);
 
-                if (!data.Method.IsSpecialName && result != instance)
+                if (
+                    !data.Method.IsSpecialName
+                    && result != instance
+                    && !(testOrigin?.Args.Contains(result) ?? false)
+                )
                 {
                     await Disposer.CleanupAsync(result).ConfigureAwait(false);
                 }

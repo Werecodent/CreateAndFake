@@ -9,7 +9,8 @@ using Werecodent.CreateAndFake.Design.Extensions;
 namespace Werecodent.CreateAndFake.Design.Types;
 
 /// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
-public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
+[ExcludeFromCreateAndFake]
+public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, ITypeSupporter
 {
     /// <summary>Every possible specific type.</summary>
     private static readonly Lazy<FrozenSet<Type>> _AllTypesFromAllAssemblies = new(() =>
@@ -337,5 +338,17 @@ public sealed class TypeDescriber : IEquatable<TypeDescriber>, ITypeSupporter
     public override int GetHashCode()
     {
         return SupportedType?.GetHashCode() ?? ValueComparer.NullHash;
+    }
+
+    /// <inheritdoc/>
+    public bool ValuesEqual(object? other)
+    {
+        return Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public int GetValueHash()
+    {
+        return GetHashCode();
     }
 }

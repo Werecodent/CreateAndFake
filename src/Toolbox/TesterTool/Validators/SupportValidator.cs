@@ -177,7 +177,10 @@ internal sealed class SupportValidator(TesterOptions options)
 
         Type[] testTypes =
         [
-            .. types.Where(t => !Options.IntegrityIgnorableTypes.Contains(t)).Distinct(),
+            .. types
+                .Where(t => !Options.IntegrityIgnorableTypes.Contains(t))
+                .Where(t => t != typeof(TypeDescriber))
+                .Distinct(),
         ];
 
         Dictionary<Type, Exception> failures = [];

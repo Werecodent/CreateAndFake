@@ -201,7 +201,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
 
                     if (result != null && callAllMethods)
                     {
-                        await CallAllMethodsAsync(method, param, result, cleanupCanceler.Token)
+                        await CallAllMethodsAsync(data, param, result, cleanupCanceler.Token)
                             .ConfigureAwait(false);
                     }
                 }
@@ -222,7 +222,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
                     )
                     .ConfigureAwait(false);
 
-                if (!data.Method.IsSpecialName && result != instance)
+                if (!data.Method.IsSpecialName && result != instance && !data.Args.Contains(result))
                 {
                     await Disposer.CleanupAsync(result).ConfigureAwait(false);
                 }

@@ -162,6 +162,18 @@ public sealed partial class Limiter(TimeSpan timeout, int tries, TimeSpan? delay
         return ValueComparer.Use.GetHashCode(_tries, _timeout, _delay);
     }
 
+    /// <inheritdoc/>
+    public bool ValuesEqual(object? other)
+    {
+        return Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public int GetValueHash()
+    {
+        return GetHashCode();
+    }
+
     /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>
     /// <returns><see langword="string"/> representation of <see langword="this"/>.</returns>
     public override string ToString()

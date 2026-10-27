@@ -180,7 +180,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
 
             if (result != null && callAllMethods)
             {
-                await CallAllMethodsAsync(method, null, result, cleanupCanceler.Token)
+                await CallAllMethodsAsync(data, null, result, cleanupCanceler.Token)
                     .ConfigureAwait(false);
             }
 

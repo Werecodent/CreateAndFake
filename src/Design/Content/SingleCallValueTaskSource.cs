@@ -10,7 +10,8 @@ namespace Werecodent.CreateAndFake.Design.Content;
 public sealed class SingleCallValueTaskSource(Guid? id = null)
     : IDeepCloneable<SingleCallValueTaskSource>,
         IEquatable<SingleCallValueTaskSource>,
-        IValueTaskSource
+        IValueTaskSource,
+        IValueEquatable
 {
     /// <summary>How to access the source via the containing <see cref="ValueTask"/>.</summary>
     private static readonly FieldInfo _TaskSourceGrabber = typeof(ValueTask).GetField(
@@ -76,6 +77,18 @@ public sealed class SingleCallValueTaskSource(Guid? id = null)
     public override int GetHashCode()
     {
         return Id.GetHashCode();
+    }
+
+    /// <inheritdoc/>
+    public bool ValuesEqual(object? other)
+    {
+        return Equals(other);
+    }
+
+    /// <inheritdoc/>
+    public int GetValueHash()
+    {
+        return GetHashCode();
     }
 
     /// <inheritdoc/>

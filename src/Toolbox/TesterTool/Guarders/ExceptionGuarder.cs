@@ -2,6 +2,7 @@
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.TesterTool.Guarders;
 
@@ -32,7 +33,7 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         return CallAllMethodsAsync(instance, canceler);
     }
 
-    /// <inheritdoc cref="BaseGuarder.CallAllMethodsAsync(MethodBase,ParameterInfo,object,CancellationToken)"/>
+    /// <inheritdoc cref="BaseGuarder.CallAllMethodsAsync(MethodCallWrapper,ParameterInfo,object,CancellationToken)"/>
     internal async Task CallAllMethodsAsync(object instance, CancellationToken canceler)
     {
         using CancellationTokenSource cleanupCanceler =

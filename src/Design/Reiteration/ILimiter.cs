@@ -1,3 +1,5 @@
+using Werecodent.CreateAndFake.Design.Comparisons;
+
 namespace Werecodent.CreateAndFake.Design.Reiteration;
 
 /// <summary>Provides the core functionality for repetition.</summary>
@@ -5,6 +7,7 @@ public interface ILimiter
     : ILimiterAsync,
         ILimiterSync,
         ILimiterTask,
+        IValueEquatable,
         IEquatable<ILimiter>,
         IComparable<ILimiter>
 {
