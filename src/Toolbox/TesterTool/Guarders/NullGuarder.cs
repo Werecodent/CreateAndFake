@@ -213,11 +213,19 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
             }
             if (!called)
             {
-                await DisposeAllButInjectedAsync(
-                        await RunCheckAsync(method, null, instance, data, cleanupCanceler.Token)
-                            .ConfigureAwait(false)
+                object? result = await RunCheckAsync(
+                        method,
+                        null,
+                        instance,
+                        data,
+                        cleanupCanceler.Token
                     )
                     .ConfigureAwait(false);
+
+                if (!data.Method.IsSpecialName && result != instance)
+                {
+                    await Disposer.CleanupAsync(result).ConfigureAwait(false);
+                }
             }
         }
         finally

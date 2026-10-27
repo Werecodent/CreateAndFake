@@ -72,6 +72,7 @@
             "IgnoreAllExceptions": true,
             "IncludeConstructors": false,
             "IncludeStaticMethods": false,
+            "IgnoreObsoleteMethods": false,
             "IncludeInstanceMethods": false,
             "DisablePassthroughTests": true,
             "DisableNullRefExceptionTests": true,

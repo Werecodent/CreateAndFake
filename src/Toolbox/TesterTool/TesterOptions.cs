@@ -112,17 +112,25 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     ///     Useful for preventing execution of methods that should be tested
     ///     manually or leave an instance in a bad state for other methods.
     /// </remarks>
-    /// <value><c>["Finalize", "Dispose", "DisposeAsync", "PrintMembers", "GetObjectData", "Close"]</c></value>
+    /// <value><c>["Close", "Dispose", "Finalize", "DisposeAsync", "PrintMembers", "GetObjectData"]</c></value>
     [ConfigurableOption]
     public FrozenSet<string> MethodsToIgnore { get; init; } =
         FrozenSet.ToFrozenSet([
-            "Finalize",
+            "Close",
             "Dispose",
+            "Finalize",
             "DisposeAsync",
             "PrintMembers",
             "GetObjectData",
-            "Close",
         ]);
+
+    /// <summary>
+    ///     If methods marked with <see cref="ObsoleteAttribute"/> are skipped when running tests on classes.
+    /// </summary>
+    /// <remarks>Alternative to specifying them individually via <see cref="MethodsToIgnore"/>.</remarks>
+    /// <value><see langword="true"/></value>
+    [ConfigurableOption]
+    public bool IgnoreObsoleteMethods { get; init; } = true;
 
     /// <summary>If all thrown <see cref="Exception"/>s are ignored when running tests on classes.</summary>
     /// <remarks>Alternative to specifying them individually via <see cref="IgnorableExceptions"/>.</remarks>
@@ -180,6 +188,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             AllowedTestNamePrefixes = Config.GetSet(section, AllowedTestNamePrefixes),
             ClassCoverageExclusions = Config.GetSet(section, ClassCoverageExclusions),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),
+            IgnoreObsoleteMethods = Config.GetValue(section, IgnoreObsoleteMethods),
             TestClassNameSuffixes = Config.GetArray(section, TestClassNameSuffixes),
             IncludeStaticMethods = Config.GetValue(section, IncludeStaticMethods),
             IgnoreAllExceptions = Config.GetValue(section, IgnoreAllExceptions),

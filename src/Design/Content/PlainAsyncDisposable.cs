@@ -15,7 +15,7 @@ public sealed class PlainAsyncDisposable(string data) : IAsyncDisposable
     {
         return !_isDisposed
             ? data
-            : throw new ObjectDisposedException("Instance was disposed before accessing its data");
+            : throw new ObjectDisposedException("Instance was disposed before accessing its data.");
     }
 
     /// <inheritdoc/>

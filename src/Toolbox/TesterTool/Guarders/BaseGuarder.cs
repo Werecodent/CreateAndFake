@@ -61,7 +61,10 @@ internal abstract class BaseGuarder(TesterOptions options)
 
         return methods
             .Where(m => !Options.MethodsToIgnore.Contains(m.Name))
-            .Where(m => !Options.OnlyDeclaredMethods || m.DeclaringType == type);
+            .Where(m => !Options.OnlyDeclaredMethods || m.DeclaringType == type)
+            .Where(m =>
+                !Options.IgnoreObsoleteMethods || !Attribute.IsDefined(m, typeof(ObsoleteAttribute))
+            );
     }
 
     /// <summary>Attempts to test all methods.</summary>
@@ -119,18 +122,19 @@ internal abstract class BaseGuarder(TesterOptions options)
                 .ConfigureAwait(false);
             try
             {
-                await Disposer
-                    .CleanupAsync(
-                        await RunCheckAsync(
-                                testOrigin ?? method,
-                                testParam,
-                                instance,
-                                data,
-                                canceler
-                            )
-                            .ConfigureAwait(false)
+                object? result = await RunCheckAsync(
+                        testOrigin ?? method,
+                        testParam,
+                        instance,
+                        data,
+                        canceler
                     )
                     .ConfigureAwait(false);
+
+                if (!data.Method.IsSpecialName && result != instance)
+                {
+                    await Disposer.CleanupAsync(result).ConfigureAwait(false);
+                }
             }
             finally
             {
