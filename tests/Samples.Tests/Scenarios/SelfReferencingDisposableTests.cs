@@ -19,4 +19,18 @@ public static class SelfReferencingDisposableTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Theory, RandomData]
+    internal static void GrabData_ThrowsWhenDisposed(SelfReferencingDisposable sample)
+    {
+        sample.Dispose();
+        sample.Assert(x => x.GrabData()).Throws<ObjectDisposedException>();
+    }
+
+    [Theory, RandomData]
+    internal static async Task GetSelf_ThrowsWhenDisposed(SelfReferencingDisposable sample)
+    {
+        await sample.DisposeAsync();
+        sample.Assert(x => x.GetSelf()).Throws<ObjectDisposedException>();
+    }
 }

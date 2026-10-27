@@ -19,4 +19,11 @@ public static class PlainAsyncDisposableTests
             TestContext.Current.CancellationToken
         );
     }
+
+    [Theory, RandomData]
+    internal static async Task GrabData_ThrowsWhenDisposed(PlainAsyncDisposable sample)
+    {
+        await sample.DisposeAsync();
+        sample.Assert(x => x.GrabData()).Throws<ObjectDisposedException>();
+    }
 }
