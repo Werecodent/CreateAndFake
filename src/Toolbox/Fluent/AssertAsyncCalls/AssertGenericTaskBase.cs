@@ -15,7 +15,7 @@ public abstract class AssertGenericTaskBase<TItem, TSelf>(IAsserter asserter, Ta
     where TSelf : AssertGenericTaskBase<TItem, TSelf>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Task<TItem>? Behavior { get; } = behavior;
+    protected new Task<TItem>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>

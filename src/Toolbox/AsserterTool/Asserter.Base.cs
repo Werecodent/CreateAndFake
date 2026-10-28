@@ -113,7 +113,7 @@ public partial class Asserter(AsserterOptions options) : IAsserter
 
     /// <summary>Finds a suitable <see cref="Type"/> name to use for assertion messages.</summary>
     /// <param name="expected">Instance being compared to <paramref name="actual"/>.</param>
-    /// <param name="actual">Instance to run assertion checks with.</param>
+    /// <param name="actual">Instance to test.</param>
     /// <returns>The <see cref="Type"/> name to use if found, <see langword="null"/> otherwise.</returns>
     private static string? GetTypeName(object? expected, object? actual)
     {

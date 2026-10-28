@@ -8,14 +8,14 @@ namespace Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 #pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles assertion calls for delegates.</summary>
-/// <param name="operation">Delegate to check.</param>
+/// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
-    : AssertAsyncObjectBase<T>(asserter, operation)
+public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
+    : AssertAsyncObjectBase<T>(asserter, behavior)
     where T : AssertTaskBase<T>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Task? Operation { get; } = operation;
+    protected Task? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task?,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
@@ -27,7 +27,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     {
         return new ExceptionChainer<TException>(
             await Asserter
-                .ThrowsAsync<TException>(Operation, canceler, details)
+                .ThrowsAsync<TException>(Behavior, canceler, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -44,7 +44,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     {
         return new ExceptionChainer<TException>(
             await Asserter
-                .ThrowsAsync<TException>(Operation, canceler, optionConfiguration, details)
+                .ThrowsAsync<TException>(Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -58,7 +58,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     )
     {
         return new ExceptionChainer<Exception>(
-            await Asserter.ThrowsExceptionAsync(Operation, canceler, details).ConfigureAwait(false),
+            await Asserter.ThrowsExceptionAsync(Behavior, canceler, details).ConfigureAwait(false),
             Asserter
         );
     }
@@ -73,7 +73,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     {
         return new ExceptionChainer<Exception>(
             await Asserter
-                .ThrowsExceptionAsync(Operation, canceler, optionConfiguration, details)
+                .ThrowsExceptionAsync(Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -87,9 +87,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     )
         where TException : Exception
     {
-        await Asserter
-            .ThrowsNoAsync<TException>(Operation, canceler, details)
-            .ConfigureAwait(false);
+        await Asserter.ThrowsNoAsync<TException>(Behavior, canceler, details).ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
 
@@ -103,7 +101,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
         where TException : Exception
     {
         await Asserter
-            .ThrowsNoAsync<TException>(Operation, canceler, optionConfiguration, details)
+            .ThrowsNoAsync<TException>(Behavior, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
@@ -115,7 +113,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
         string? details = null
     )
     {
-        await Asserter.ThrowsNoExceptionAsync(Operation, canceler, details).ConfigureAwait(false);
+        await Asserter.ThrowsNoExceptionAsync(Behavior, canceler, details).ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
 
@@ -128,7 +126,7 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? operation)
     )
     {
         await Asserter
-            .ThrowsNoExceptionAsync(Operation, canceler, optionConfiguration, details)
+            .ThrowsNoExceptionAsync(Behavior, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }

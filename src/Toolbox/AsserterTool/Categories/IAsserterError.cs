@@ -9,7 +9,7 @@ public interface IAsserterError
     [DoesNotReturn]
     void Fail(Exception? exception, string? details = null);
 
-    /// <param name="exception">Exception responsible for the failure.</param>
+    /// <param name="exception"><see cref="Exception"/> responsible for the failure.</param>
     /// <inheritdoc cref="IAsserter.Fail(AsserterMod,string)"/>
     [DoesNotReturn]
     void Fail(Exception? exception, AsserterMod? optionConfiguration, string? details = null);
@@ -17,7 +17,7 @@ public interface IAsserterError
     /// <inheritdoc cref="Debug(Exception,AsserterMod,string)"/>
     void Debug(Exception? exception, string? details = null);
 
-    /// <param name="exception">Exception responsible for the failure.</param>
+    /// <param name="exception"><see cref="Exception"/> to display information for.</param>
     /// <inheritdoc cref="IAsserter.Debug(AsserterMod,string)"/>
     void Debug(Exception? exception, AsserterMod? optionConfiguration, string? details = null);
 }

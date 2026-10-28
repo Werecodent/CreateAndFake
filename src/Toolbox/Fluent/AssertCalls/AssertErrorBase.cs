@@ -6,14 +6,14 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles common <see cref="Exception"/> assertion calls.</summary>
-/// <param name="error"><inheritdoc cref="Error" path="/summary"/></param>
+/// <param name="exception"><inheritdoc cref="Error" path="/summary"/></param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? error)
-    : AssertObjectBase<T>(asserter, error)
+public abstract class AssertErrorBase<T>(IAsserter asserter, Exception? exception)
+    : AssertObjectBase<T>(asserter, exception)
     where T : AssertErrorBase<T>
 {
     /// <summary>Exception to run assertion checks with.</summary>
-    protected Exception? Error { get; } = error;
+    protected Exception? Error { get; } = exception;
 
     /// <inheritdoc cref="IAsserterError.Fail(Exception,string)"/>
     [DoesNotReturn]

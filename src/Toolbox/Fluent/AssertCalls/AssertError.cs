@@ -6,6 +6,6 @@ namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 public sealed class AssertError : AssertErrorBase<AssertError>
 {
     /// <inheritdoc/>
-    internal AssertError(IAsserter asserter, Exception? error)
-        : base(asserter, error) { }
+    internal AssertError(IAsserter asserter, Exception? exception)
+        : base(asserter, exception) { }
 }

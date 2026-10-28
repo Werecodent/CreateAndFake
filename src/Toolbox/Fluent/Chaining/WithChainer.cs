@@ -3,13 +3,8 @@ using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
-using Werecodent.CreateAndFake.Fluent.Chaining;
 
-#pragma warning disable IDE0130 // Cleaner project organization.
-
-namespace Werecodent.CreateAndFake.Fluent;
-
-#pragma warning restore
+namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 /// <inheritdoc/>
 /// <param name="result"><inheritdoc cref="Result" path="/summary"/></param>

@@ -3,7 +3,7 @@ namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 /// <summary>Handles common delegate test scenarios.</summary>
 public interface IAsserterAction
 {
-    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
+    /// <inheritdoc cref="Throws{T}(Action,AsserterMod,string)"/>
     T Throws<T>(Action? behavior, string? details = null)
         where T : Exception;
 
@@ -11,7 +11,7 @@ public interface IAsserterAction
     T Throws<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,string)"/>
+    /// <inheritdoc cref="ThrowsException(Action,AsserterMod,string)"/>
     Exception ThrowsException(Action? behavior, string? details = null);
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,AsserterMod,string)"/>
@@ -21,7 +21,7 @@ public interface IAsserterAction
         string? details = null
     );
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
+    /// <inheritdoc cref="ThrowsNo{T}(Action,AsserterMod,string)"/>
     void ThrowsNo<T>(Action? behavior, string? details = null)
         where T : Exception;
 
@@ -29,7 +29,7 @@ public interface IAsserterAction
     void ThrowsNo<T>(Action? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,string)"/>
+    /// <inheritdoc cref="ThrowsNoException(Action,AsserterMod,string)"/>
     void ThrowsNoException(Action? behavior, string? details = null);
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,AsserterMod,string)"/>

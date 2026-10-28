@@ -8,16 +8,16 @@ namespace Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 #pragma warning disable CA1068 // Cleaner calls.
 
 /// <summary>Handles assertion calls for delegates.</summary>
-/// <param name="operation">Delegate to check.</param>
+/// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
 public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     IAsserter asserter,
-    ValueTask<TItem>? operation
-) : AssertAsyncObjectBase<TSelf>(asserter, operation)
+    ValueTask<TItem>? behavior
+) : AssertAsyncObjectBase<TSelf>(asserter, behavior)
     where TSelf : AssertGenericValueTaskBase<TItem, TSelf>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected ValueTask<TItem>? Operation { get; } = operation;
+    protected ValueTask<TItem>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
     /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
@@ -27,7 +27,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     )
     {
         return new ResultChainer<TItem>(
-            await Asserter.HasResultAsync(Operation, canceler, details).ConfigureAwait(false),
+            await Asserter.HasResultAsync(Behavior, canceler, details).ConfigureAwait(false),
             Asserter
         );
     }
@@ -42,7 +42,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ResultChainer<TItem>(
             await Asserter
-                .HasResultAsync(Operation, canceler, optionConfiguration, details)
+                .HasResultAsync(Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -58,7 +58,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ResultChainer<TItem>(
             await Asserter
-                .HasResultAsync(expected, Operation, canceler, details)
+                .HasResultAsync(expected, Behavior, canceler, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -75,7 +75,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ResultChainer<TItem>(
             await Asserter
-                .HasResultAsync(expected, Operation, canceler, optionConfiguration, details)
+                .HasResultAsync(expected, Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -91,7 +91,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ExceptionChainer<TException>(
             await Asserter
-                .ThrowsAsync<TException, TItem>(Operation, canceler, details)
+                .ThrowsAsync<TException, TItem>(Behavior, canceler, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -108,7 +108,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ExceptionChainer<TException>(
             await Asserter
-                .ThrowsAsync<TException, TItem>(Operation, canceler, optionConfiguration, details)
+                .ThrowsAsync<TException, TItem>(Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -122,7 +122,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     )
     {
         return new ExceptionChainer<Exception>(
-            await Asserter.ThrowsExceptionAsync(Operation, canceler, details).ConfigureAwait(false),
+            await Asserter.ThrowsExceptionAsync(Behavior, canceler, details).ConfigureAwait(false),
             Asserter
         );
     }
@@ -137,7 +137,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     {
         return new ExceptionChainer<Exception>(
             await Asserter
-                .ThrowsExceptionAsync(Operation, canceler, optionConfiguration, details)
+                .ThrowsExceptionAsync(Behavior, canceler, optionConfiguration, details)
                 .ConfigureAwait(false),
             Asserter
         );
@@ -152,7 +152,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         where TException : Exception
     {
         await Asserter
-            .ThrowsNoAsync<TException, TItem>(Operation, canceler, details)
+            .ThrowsNoAsync<TException, TItem>(Behavior, canceler, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
@@ -167,7 +167,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         where TException : Exception
     {
         await Asserter
-            .ThrowsNoAsync<TException, TItem>(Operation, canceler, optionConfiguration, details)
+            .ThrowsNoAsync<TException, TItem>(Behavior, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
@@ -179,7 +179,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         string? details = null
     )
     {
-        await Asserter.ThrowsNoExceptionAsync(Operation, canceler, details).ConfigureAwait(false);
+        await Asserter.ThrowsNoExceptionAsync(Behavior, canceler, details).ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }
 
@@ -192,7 +192,7 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     )
     {
         await Asserter
-            .ThrowsNoExceptionAsync(Operation, canceler, optionConfiguration, details)
+            .ThrowsNoExceptionAsync(Behavior, canceler, optionConfiguration, details)
             .ConfigureAwait(false);
         return new AlsoChainer(Asserter);
     }

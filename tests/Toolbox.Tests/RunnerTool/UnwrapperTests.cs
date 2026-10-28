@@ -49,7 +49,7 @@ public static class UnwrapperTests
     {
         bool iterated = false;
 
-        async IAsyncEnumerable<T> iterate()
+        async IAsyncEnumerable<T> iterateAsync()
         {
             await foreach (T item in data.WithCancellation(TestContext.Current.CancellationToken))
             {
@@ -58,7 +58,7 @@ public static class UnwrapperTests
             iterated = true;
         }
 
-        IAsyncEnumerable<T> series = iterate();
+        IAsyncEnumerable<T> series = iterateAsync();
         iterated.Assert().Is(false);
 
         object result = await Unwrapper.UnwrapResultAsync(
@@ -120,111 +120,111 @@ public static class UnwrapperTests
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsIntTask(Task<int> data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsStringTask(Task<string> data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNullTask()
     {
         Task<object> run = Task.Run(() => (object)null, TestContext.Current.CancellationToken);
-        return TestUnwrap(() => run, run);
+        return TestUnwrapAsync(() => run, run);
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsTask()
     {
-        return TestUnwrap(() => Task.CompletedTask, Task.CompletedTask);
+        return TestUnwrapAsync(() => Task.CompletedTask, Task.CompletedTask);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsIntValueTask(int data)
     {
         ValueTask<int> run = new(data);
-        return TestUnwrap(() => run, Task.FromResult(data));
+        return TestUnwrapAsync(() => run, Task.FromResult(data));
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsStringValueTask(string data)
     {
         ValueTask<string> run = new(Task.FromResult(data));
-        return TestUnwrap(() => run, Task.FromResult(data));
+        return TestUnwrapAsync(() => run, Task.FromResult(data));
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNullValueTask()
     {
         ValueTask<object> run = new(Task.FromResult<object>(null));
-        return TestUnwrap(() => run, Task.FromResult((object)null));
+        return TestUnwrapAsync(() => run, Task.FromResult((object)null));
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNullValueTaskWithType()
     {
         ValueTask<string> run = new(Task.FromResult<string>(null));
-        return TestUnwrap(() => run, Task.FromResult((string)null));
+        return TestUnwrapAsync(() => run, Task.FromResult((string)null));
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsValueTask()
     {
-        return TestUnwrap(() => new ValueTask(Task.CompletedTask), Task.CompletedTask);
+        return TestUnwrapAsync(() => new ValueTask(Task.CompletedTask), Task.CompletedTask);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsString(string data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsInt(int data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Fact]
     internal static Task UnwrapResultAsync_UnwrapsNull()
     {
-        return TestUnwrap<object>(() => null, null);
+        return TestUnwrapAsync<object>(() => null, null);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsListInt(List<int> data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsListString(List<string> data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsArrayInt(int[] data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsArrayString(string[] data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsCollection(ICollection data)
     {
-        return TestUnwrap(() => data, data);
+        return TestUnwrapAsync(() => data, data);
     }
 
-    private static Task<AssertChainer<AssertAsyncObject>> TestUnwrap<T>(
+    private static Task<AssertChainer<AssertAsyncObject>> TestUnwrapAsync<T>(
         Func<T> call,
         object expectedResult
     )

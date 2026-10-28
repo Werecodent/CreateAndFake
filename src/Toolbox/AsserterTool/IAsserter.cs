@@ -58,7 +58,11 @@ public interface IAsserter
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     void Debug(AsserterMod? optionConfiguration, string? details = null);
 
-    /// <summary>Runs each case and aggregates exceptions.</summary>
-    /// <param name="cases">Assert cases.</param>
+    /// <summary>Verifies all given <paramref name="cases"/> throw no <see cref="Exception"/>s.</summary>
+    /// <param name="cases">Assertion cases to run.</param>
+    /// <remarks>Aggregates all caught <see cref="Exception"/>s.</remarks>
+    /// <exception cref="AggregateException">
+    ///     All <see cref="Exception"/>s thrown by the given <paramref name="cases"/>.
+    /// </exception>
     void CheckAll(params IEnumerable<Action> cases);
 }

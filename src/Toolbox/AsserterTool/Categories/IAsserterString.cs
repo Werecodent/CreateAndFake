@@ -6,9 +6,9 @@ public interface IAsserterString
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void Contains(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> contains <paramref name="content"/>.</summary>
-    /// <param name="content">Expected internal text.</param>
-    /// <param name="text">Text to run assertion checks with.</param>
+    /// <summary>Verifies the <c>text</c> contains the given <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to be present.</param>
+    /// <param name="text">Instance to test.</param>
     /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void Contains(
         string content,
@@ -20,8 +20,8 @@ public interface IAsserterString
     /// <inheritdoc cref="ContainsNot(string,string,AsserterMod,string)"/>
     void ContainsNot(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> does not contain <paramref name="content"/>.</summary>
-    /// <param name="content">Expected missing internal text.</param>
+    /// <summary>Verifies the <c>text</c> does not contain the given <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to be missing.</param>
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void ContainsNot(
         string content,
@@ -44,8 +44,8 @@ public interface IAsserterString
     /// <inheritdoc cref="StartsWith(string,string,AsserterMod,string)"/>
     void StartsWith(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> starts with <paramref name="content"/>.</summary>
-    /// <param name="content">Expected beginning text.</param>
+    /// <summary>Verifies the <c>text</c> starts with the given <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to be at the start.</param>
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void StartsWith(
         string content,
@@ -68,8 +68,8 @@ public interface IAsserterString
     /// <inheritdoc cref="StartsNotWith(string,string,AsserterMod,string)"/>
     void StartsNotWith(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> does not start with <paramref name="content"/>.</summary>
-    /// <param name="content">Expected missing beginning text.</param>
+    /// <summary>Verifies the <c>text</c> does not start with the given <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to not be at the start.</param>
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void StartsNotWith(
         string content,
@@ -92,8 +92,8 @@ public interface IAsserterString
     /// <inheritdoc cref="EndsWith(string,string,AsserterMod,string)"/>
     void EndsWith(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> ends with <paramref name="content"/>.</summary>
-    /// <param name="content">Expected ending text.</param>
+    /// <summary>Verifies the <c>text</c> ends with the given <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to be at the end.</param>
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void EndsWith(
         string content,
@@ -116,8 +116,8 @@ public interface IAsserterString
     /// <inheritdoc cref="EndsNotWith(string,string,AsserterMod,string)"/>
     void EndsNotWith(string content, string? text, string? details = null);
 
-    /// <summary>Verifies <c>text</c> does not end with <paramref name="content"/>.</summary>
-    /// <param name="content">Expected missing ending text.</param>
+    /// <summary>Verifies the <c>text</c> does not end with <paramref name="content"/>.</summary>
+    /// <param name="content">Expected text to not be at the end.</param>
     /// <inheritdoc cref="Contains(string,string,AsserterMod,string)"/>
     void EndsNotWith(
         string content,

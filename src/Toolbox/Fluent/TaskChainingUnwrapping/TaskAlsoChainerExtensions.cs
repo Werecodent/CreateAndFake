@@ -10,19 +10,19 @@ namespace Werecodent.CreateAndFake.Fluent;
 public static class TaskAlsoChainerExtensions
 {
     /// <inheritdoc cref="AssertAsyncEnumerable{T}"/>
-    /// <param name="actual"><inheritdoc cref="AssertAsyncEnumerableBase{T,T}.Collection" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="collection"><inheritdoc cref="AssertAsyncEnumerableBase{T,T}.Collection" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
     public static async Task<AssertAsyncEnumerable<TItem>> Also<TSelf, TItem>(
         this Task<TSelf> origin,
-        Func<IAsyncEnumerable<TItem>> actual
+        Func<IAsyncEnumerable<TItem>> collection
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, collection);
+        return (await origin.ConfigureAwait(false)).Also(collection.Invoke());
     }
 
-    /// <inheritdoc cref="AssertObject"/>
+    /// <inheritdoc cref="AssertAsyncObject"/>
     /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
     public static async Task<AssertAsyncObject> Also<T>(this Task<T> origin, Func<object?> actual)
@@ -33,156 +33,159 @@ public static class TaskAlsoChainerExtensions
     }
 
     /// <inheritdoc cref="AssertGenericTask{T}"/>
-    /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="behavior"><inheritdoc cref="AssertGenericTaskBase{T,T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static async Task<AssertGenericTask<TItem>> Also<TSelf, TItem>(
         this Task<TSelf> origin,
-        Func<Task<TItem>?> actual
+        Func<Task<TItem>?> behavior
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertGenericValueTask{T}"/>
-    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="behavior"><inheritdoc cref="AssertGenericValueTaskBase{T,T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static async Task<AssertGenericValueTask<TItem>> Also<TSelf, TItem>(
         this Task<TSelf> origin,
-        Func<ValueTask<TItem>?> actual
+        Func<ValueTask<TItem>?> behavior
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertGenericValueTask{T}"/>
-    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="behavior"><inheritdoc cref="AssertGenericValueTaskBase{T,T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static async Task<AssertGenericValueTask<TItem>> Also<TSelf, TItem>(
         this Task<TSelf> origin,
-        Func<ValueTask<TItem>> actual
+        Func<ValueTask<TItem>> behavior
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertTask"/>
-    /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertTask> Also<T>(this Task<T> origin, Func<Task?> actual)
+    /// <param name="behavior"><inheritdoc cref="AssertTaskBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static async Task<AssertTask> Also<T>(this Task<T> origin, Func<Task?> behavior)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertValueTask"/>
-    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertValueTask> Also<T>(this Task<T> origin, Func<ValueTask> actual)
+    /// <param name="behavior"><inheritdoc cref="AssertValueTaskBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static async Task<AssertValueTask> Also<T>(this Task<T> origin, Func<ValueTask> behavior)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertValueTask"/>
-    /// <param name="actual"><inheritdoc cref="AssertObjectBase{T}.Actual" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertValueTask> Also<T>(this Task<T> origin, Func<ValueTask?> actual)
+    /// <param name="behavior"><inheritdoc cref="AssertValueTaskBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static async Task<AssertValueTask> Also<T>(
+        this Task<T> origin,
+        Func<ValueTask?> behavior
+    )
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
-    /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertAction> Also<T>(this Task<T> origin, Func<Action?> actual)
+    /// <inheritdoc cref="AssertAction"/>
+    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static async Task<AssertAction> Also<T>(this Task<T> origin, Func<Action?> behavior)
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
-    /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
-    public static async Task<AssertAction> Also<T>(this Task<T> origin, Action? actual)
+    /// <inheritdoc cref="AssertAction"/>
+    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
+    public static async Task<AssertAction> Also<T>(this Task<T> origin, Action? behavior)
         where T : AlsoChainer
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).Also(actual);
+        return (await origin.ConfigureAwait(false)).Also(behavior);
     }
 
     /// <inheritdoc cref="AssertComparable"/>
-    /// <param name="actual"><inheritdoc cref="AssertComparableBase{T}.Value" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="value"><inheritdoc cref="AssertComparableBase{T}.Value" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="value"/> with.</returns>
     public static async Task<AssertComparable> Also<T>(
         this Task<T> origin,
-        Func<IComparable?> actual
+        Func<IComparable?> value
     )
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, value);
+        return (await origin.ConfigureAwait(false)).Also(value.Invoke());
     }
 
     /// <inheritdoc cref="AssertEnumerable"/>
-    /// <param name="actual"><inheritdoc cref="AssertEnumerableBase{T}.Collection" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="collection"><inheritdoc cref="AssertEnumerableBase{T}.Collection" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="collection"/> with.</returns>
     public static async Task<AssertEnumerable> Also<T>(
         this Task<T> origin,
-        Func<IEnumerable?> actual
+        Func<IEnumerable?> collection
     )
         where T : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, collection);
+        return (await origin.ConfigureAwait(false)).Also(collection.Invoke());
     }
 
     /// <inheritdoc cref="AssertError"/>
-    /// <param name="actual"><inheritdoc cref="AssertErrorBase{T}.Error" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="exception"><inheritdoc cref="AssertErrorBase{T}.Error" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="exception"/> with.</returns>
     public static async Task<AssertError> Also<TOrigin>(
         this Task<TOrigin> origin,
-        Func<Exception?> actual
+        Func<Exception?> exception
     )
         where TOrigin : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, exception);
+        return (await origin.ConfigureAwait(false)).Also(exception.Invoke());
     }
 
-    /// <inheritdoc cref="AssertDelegate"/>
-    /// <param name="actual"><inheritdoc cref="AssertDelegateBase{T}.Behavior" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <inheritdoc cref="AssertFunc{T}"/>
+    /// <param name="behavior"><inheritdoc cref="AssertFuncBase{T,T}.Behavior" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public static async Task<AssertFunc<TItem>> Also<TSelf, TItem>(
         this Task<TSelf> origin,
-        Func<Func<TItem>>? actual
+        Func<Func<TItem>>? behavior
     )
         where TSelf : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, behavior);
+        return (await origin.ConfigureAwait(false)).Also(behavior.Invoke());
     }
 
     /// <inheritdoc cref="AssertString"/>
-    /// <param name="actual"><inheritdoc cref="AssertStringBase{T}.Text" path="/summary"/></param>
-    /// <returns>Asserter to test <paramref name="actual"/> with.</returns>
+    /// <param name="text"><inheritdoc cref="AssertStringBase{T}.Text" path="/summary"/></param>
+    /// <returns>Asserter to test <paramref name="text"/> with.</returns>
     public static async Task<AssertString> Also<TOrigin>(
         this Task<TOrigin> origin,
-        Func<string?> actual
+        Func<string?> text
     )
         where TOrigin : AlsoChainer
     {
-        ArgumentGuard.ThrowIfNull(origin, actual);
-        return (await origin.ConfigureAwait(false)).Also(actual.Invoke());
+        ArgumentGuard.ThrowIfNull(origin, text);
+        return (await origin.ConfigureAwait(false)).Also(text.Invoke());
     }
 }

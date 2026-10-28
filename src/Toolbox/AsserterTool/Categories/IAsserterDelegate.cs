@@ -9,16 +9,17 @@ public interface IAsserterDelegate
     T Throws<T>(Delegate? behavior, string? details = null)
         where T : Exception;
 
-    /// <summary>Verifies <paramref name="behavior"/> throws a <typeparamref name="T"/> exception.</summary>
-    /// <typeparam name="T">Expected exception type.</typeparam>
-    /// <param name="behavior">Delegate to run assertion checks with.</param>
-    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
+    /// <summary>Verifies the <c>behavior</c> throws a <typeparamref name="T"/> <see cref="Exception"/>.</summary>
+    /// <typeparam name="T"><see cref="Exception"/> <see cref="Type"/> expected to be thrown.</typeparam>
+    /// <returns>The thrown <see cref="Exception"/>.</returns>
+    /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
     /// <inheritdoc cref="ThrowsException(Delegate,AsserterMod,string)"/>
     Exception ThrowsException(Delegate? behavior, string? details = null);
 
+    /// <summary>Verifies the <c>behavior</c> throws an <see cref="Exception"/>.</summary>
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     Exception ThrowsException(
         Delegate? behavior,
@@ -30,15 +31,19 @@ public interface IAsserterDelegate
     void ThrowsNo<T>(Delegate? behavior, string? details = null)
         where T : Exception;
 
-    /// <summary>Verifies <c>behavior</c> does not throw a <typeparamref name="T"/> exception.</summary>
-    /// <typeparam name="T">Expected missing exception type.</typeparam>
-    /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
+    /// <summary>
+    ///     Verifies the <c>behavior</c> does not throw a <typeparamref name="T"/> <see cref="Exception"/>.
+    /// </summary>
+    /// <typeparam name="T"><see cref="Exception"/> <see cref="Type"/> expected to not be thrown.</typeparam>
+    /// <param name="behavior">Instance to test.</param>
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void ThrowsNo<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;
 
     /// <inheritdoc cref="ThrowsNoException(Delegate,AsserterMod,string)"/>
     void ThrowsNoException(Delegate? behavior, string? details = null);
 
+    /// <summary>Verifies the <c>behavior</c> does not throw an <see cref="Exception"/>.</summary>
     /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     void ThrowsNoException(
         Delegate? behavior,
@@ -49,6 +54,9 @@ public interface IAsserterDelegate
     /// <inheritdoc cref="HasResult{T}(Delegate,AsserterMod,string)"/>
     T HasResult<T>(Delegate? behavior, string? details = null);
 
+    /// <summary>
+    ///     Verifies the <c>behavior</c> successfully executes resulting with a <typeparamref name="T"/> value.
+    /// </summary>
     /// <inheritdoc cref="HasResult{T}(T,Delegate,AsserterMod,string)"/>
     T HasResult<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null);
 
@@ -72,13 +80,12 @@ public interface IAsserterDelegate
     );
 
     /// <summary>
-    ///     Verifies the <paramref name="behavior"/> successfully
-    ///     executes with a resulting <typeparamref name="T"/> value.
+    ///     Verifies the <c>behavior</c> successfully executes resulting with the given <paramref name="content"/>.
     /// </summary>
-    /// <typeparam name="T">Expected return <see cref="Type"/> of the <paramref name="behavior"/>.</typeparam>
-    /// <param name="content">Expected present element.</param>
+    /// <typeparam name="T">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <param name="content">Expected result for the <c>behavior</c>.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <returns>Result from invoking the <paramref name="behavior"/>.</returns>
+    /// <returns>Result from invoking the <c>behavior</c>.</returns>
     /// <inheritdoc cref="Throws{T}(Delegate,AsserterMod,string)"/>
     Task<T> HasResultAsync<T>(
         T content,

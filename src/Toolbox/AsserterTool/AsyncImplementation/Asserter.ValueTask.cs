@@ -9,41 +9,41 @@ public partial class Asserter : IAsserterValueTask
 {
     /// <inheritdoc/>
     public virtual Task<T> HasResultAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return HasResultAsync(operation, canceler, Unconfigured, details);
+        return HasResultAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> HasResultAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        IsNotNull(operation, optionConfiguration, details);
-        return await operation.Value.ConfigureAwait(false);
+        IsNotNull(behavior, optionConfiguration, details);
+        return await behavior.Value.ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
     public virtual Task<T> HasResultAsync<T>(
         T content,
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return HasResultAsync(content, operation, canceler, Unconfigured, details);
+        return HasResultAsync(content, behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> HasResultAsync<T>(
         T content,
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -51,7 +51,7 @@ public partial class Asserter : IAsserterValueTask
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        T result = await HasResultAsync(operation, canceler, _ => localOptions, details)
+        T result = await HasResultAsync(behavior, canceler, _ => localOptions, details)
             .ConfigureAwait(false);
 
         await IsAsync(content, result, canceler, _ => localOptions, details).ConfigureAwait(false);
@@ -60,18 +60,18 @@ public partial class Asserter : IAsserterValueTask
 
     /// <inheritdoc/>
     public virtual Task<T> ThrowsAsync<T>(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         string? details = null
     )
         where T : Exception
     {
-        return ThrowsAsync<T>(operation, canceler, Unconfigured, details);
+        return ThrowsAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> ThrowsAsync<T>(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -82,11 +82,11 @@ public partial class Asserter : IAsserterValueTask
 
         string errorMessage =
             $"Expected exception of type '{GenericConverter.ExpandName<T>()}' but received: ";
-        if (operation != null)
+        if (behavior != null)
         {
             try
             {
-                await operation.Value.ConfigureAwait(false);
+                await behavior.Value.ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -99,18 +99,18 @@ public partial class Asserter : IAsserterValueTask
 
     /// <inheritdoc/>
     public virtual Task<TException> ThrowsAsync<TException, TContent>(
-        ValueTask<TContent>? operation,
+        ValueTask<TContent>? behavior,
         CancellationToken canceler,
         string? details = null
     )
         where TException : Exception
     {
-        return ThrowsAsync<TException, TContent>(operation, canceler, Unconfigured, details);
+        return ThrowsAsync<TException, TContent>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task<TException> ThrowsAsync<TException, TContent>(
-        ValueTask<TContent>? operation,
+        ValueTask<TContent>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -121,12 +121,12 @@ public partial class Asserter : IAsserterValueTask
 
         string errorMessage =
             $"Expected exception of type '{GenericConverter.ExpandName<TException>()}' but received: ";
-        if (operation != null)
+        if (behavior != null)
         {
             try
             {
                 await Disposer
-                    .CleanupAsync(await operation.Value.ConfigureAwait(false))
+                    .CleanupAsync(await behavior.Value.ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -140,60 +140,60 @@ public partial class Asserter : IAsserterValueTask
 
     /// <inheritdoc/>
     public virtual Task<Exception> ThrowsExceptionAsync(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return ThrowsExceptionAsync(operation, canceler, Unconfigured, details);
+        return ThrowsExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<Exception> ThrowsExceptionAsync(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ThrowsAsync<Exception>(operation, canceler, optionConfiguration, details);
+        return ThrowsAsync<Exception>(behavior, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<Exception> ThrowsExceptionAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return ThrowsExceptionAsync(operation, canceler, Unconfigured, details);
+        return ThrowsExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task<Exception> ThrowsExceptionAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ThrowsAsync<Exception, T>(operation, canceler, optionConfiguration, details);
+        return ThrowsAsync<Exception, T>(behavior, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<T>(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         string? details = null
     )
         where T : Exception
     {
-        return ThrowsNoAsync<T>(operation, canceler, Unconfigured, details);
+        return ThrowsNoAsync<T>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<T>(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -203,11 +203,11 @@ public partial class Asserter : IAsserterValueTask
         canceler.ThrowIfCancellationRequested();
 
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (operation != null)
+        if (behavior != null)
         {
             try
             {
-                await operation.Value.ConfigureAwait(false);
+                await behavior.Value.ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -226,18 +226,18 @@ public partial class Asserter : IAsserterValueTask
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoAsync<TException, TContent>(
-        ValueTask<TContent>? operation,
+        ValueTask<TContent>? behavior,
         CancellationToken canceler,
         string? details = null
     )
         where TException : Exception
     {
-        return ThrowsNoAsync<TException, TContent>(operation, canceler, Unconfigured, details);
+        return ThrowsNoAsync<TException, TContent>(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual async Task ThrowsNoAsync<TException, TContent>(
-        ValueTask<TContent>? operation,
+        ValueTask<TContent>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
@@ -247,12 +247,12 @@ public partial class Asserter : IAsserterValueTask
         canceler.ThrowIfCancellationRequested();
 
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
-        if (operation != null)
+        if (behavior != null)
         {
             try
             {
                 await Disposer
-                    .CleanupAsync(await operation.Value.ConfigureAwait(false))
+                    .CleanupAsync(await behavior.Value.ConfigureAwait(false))
                     .ConfigureAwait(false);
             }
             catch (Exception e)
@@ -272,43 +272,43 @@ public partial class Asserter : IAsserterValueTask
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoExceptionAsync(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return ThrowsNoExceptionAsync(operation, canceler, Unconfigured, details);
+        return ThrowsNoExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoExceptionAsync(
-        ValueTask? operation,
+        ValueTask? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ThrowsNoAsync<Exception>(operation, canceler, optionConfiguration, details);
+        return ThrowsNoAsync<Exception>(behavior, canceler, optionConfiguration, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoExceptionAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         string? details = null
     )
     {
-        return ThrowsNoExceptionAsync(operation, canceler, Unconfigured, details);
+        return ThrowsNoExceptionAsync(behavior, canceler, Unconfigured, details);
     }
 
     /// <inheritdoc/>
     public virtual Task ThrowsNoExceptionAsync<T>(
-        ValueTask<T>? operation,
+        ValueTask<T>? behavior,
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        return ThrowsNoAsync<Exception, T>(operation, canceler, optionConfiguration, details);
+        return ThrowsNoAsync<Exception, T>(behavior, canceler, optionConfiguration, details);
     }
 }

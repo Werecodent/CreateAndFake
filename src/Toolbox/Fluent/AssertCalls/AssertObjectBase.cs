@@ -18,7 +18,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
     protected IAsserter Asserter { get; } =
         asserter ?? throw new ArgumentNullException(nameof(asserter));
 
-    /// <summary>Instance to run assertion checks with.</summary>
+    /// <summary>Instance to test.</summary>
     protected object? Actual { get; } = actual;
 
     /// <inheritdoc cref="IAsserterObject.Is(object,object,string)"/>
@@ -197,40 +197,40 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
 
     /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> Inherits<TChild>(string? details = null)
+    public virtual AssertChainer<T> Inherits<TParent>(string? details = null)
     {
-        Asserter.Inherits<TChild>(Actual, details);
+        Asserter.Inherits<TParent>(Actual, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> Inherits<TChild>(
+    public virtual AssertChainer<T> Inherits<TParent>(
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        Asserter.Inherits<TChild>(Actual, optionConfiguration, details);
+        Asserter.Inherits<TParent>(Actual, optionConfiguration, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.Inherits(Type,object,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> Inherits(Type? child, string? details = null)
+    public virtual AssertChainer<T> Inherits(Type? parent, string? details = null)
     {
-        Asserter.Inherits(child, Actual, details);
+        Asserter.Inherits(parent, Actual, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.Inherits(Type,object,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Inherits(
-        Type? child,
+        Type? parent,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        Asserter.Inherits(child, Actual, optionConfiguration, details);
+        Asserter.Inherits(parent, Actual, optionConfiguration, details);
         return ToChainer();
     }
 
@@ -238,40 +238,40 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
 
     /// <inheritdoc cref="IAsserterObject.InheritedBy{T}(object,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> InheritedBy<TParent>(string? details = null)
+    public virtual AssertChainer<T> InheritedBy<TChild>(string? details = null)
     {
-        Asserter.InheritedBy<TParent>(Actual, details);
+        Asserter.InheritedBy<TChild>(Actual, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.InheritedBy{T}(object,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> InheritedBy<TParent>(
+    public virtual AssertChainer<T> InheritedBy<TChild>(
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        Asserter.InheritedBy<TParent>(Actual, optionConfiguration, details);
+        Asserter.InheritedBy<TChild>(Actual, optionConfiguration, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.InheritedBy(Type,object,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
-    public virtual AssertChainer<T> InheritedBy(Type? parent, string? details = null)
+    public virtual AssertChainer<T> InheritedBy(Type? child, string? details = null)
     {
-        Asserter.InheritedBy(parent, Actual, details);
+        Asserter.InheritedBy(child, Actual, details);
         return ToChainer();
     }
 
     /// <inheritdoc cref="IAsserterObject.InheritedBy(Type,object,AsserterMod,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> InheritedBy(
-        Type? parent,
+        Type? child,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
-        Asserter.InheritedBy(parent, Actual, optionConfiguration, details);
+        Asserter.InheritedBy(child, Actual, optionConfiguration, details);
         return ToChainer();
     }
 

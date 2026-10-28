@@ -76,7 +76,7 @@ public class AlsoChainer(IAsserter asserter)
     }
 
     /// <inheritdoc cref="AssertAction"/>
-    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Action" path="/summary"/></param>
+    /// <param name="behavior"><inheritdoc cref="AssertActionBase{T}.Behavior" path="/summary"/></param>
     /// <returns>Asserter to test <paramref name="behavior"/> with.</returns>
     public AssertAction Also(Action? behavior)
     {

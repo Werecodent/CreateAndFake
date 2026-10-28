@@ -14,7 +14,7 @@ public static class ConvertExtractHandlerTests
     [Fact]
     internal static void ExtractSupported_IgnoresDuplicates()
     {
-        TypeDescriber describer = TypeDescriber.For(typeof(string));
+        TypeDescriber describer = TypeDescriber.For<string>();
         object[] content = [describer, describer];
 
         Tools.Extractor.Extract(content).FindAll<TypeDescriber>().Assert().HasCount(1);
@@ -23,7 +23,7 @@ public static class ConvertExtractHandlerTests
     [Fact]
     internal static async Task ExtractSupportedAsync_IgnoresDuplicates()
     {
-        TypeDescriber describer = TypeDescriber.For(typeof(string));
+        TypeDescriber describer = TypeDescriber.For<string>();
         object[] content = [describer, describer];
 
         await (await Tools.Extractor.ExtractAsync(content, TestContext.Current.CancellationToken))

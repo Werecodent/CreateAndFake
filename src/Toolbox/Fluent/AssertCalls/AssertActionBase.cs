@@ -5,14 +5,14 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 /// <summary>Handles assertion calls for delegates.</summary>
-/// <param name="action">Delegate to check.</param>
+/// <param name="behavior">Delegate to check.</param>
 /// <inheritdoc cref="AssertObjectBase{T}"/>
-public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
-    : AssertObjectBase<T>(asserter, action)
+public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
+    : AssertObjectBase<T>(asserter, behavior)
     where T : AssertActionBase<T>
 {
     /// <summary>Delegate to run assertion checks with.</summary>
-    protected Action? Action { get; } = action;
+    protected Action? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterAction.Throws{T}(Action,string)"/>
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
@@ -20,7 +20,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
         where TException : Exception
     {
         return new ExceptionChainer<TException>(
-            Asserter.Throws<TException>(Action, details),
+            Asserter.Throws<TException>(Behavior, details),
             Asserter
         );
     }
@@ -34,7 +34,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
         where TException : Exception
     {
         return new ExceptionChainer<TException>(
-            Asserter.Throws<TException>(Action, optionConfiguration, details),
+            Asserter.Throws<TException>(Behavior, optionConfiguration, details),
             Asserter
         );
     }
@@ -43,7 +43,10 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
     {
-        return new ExceptionChainer<Exception>(Asserter.ThrowsException(Action, details), Asserter);
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Behavior, details),
+            Asserter
+        );
     }
 
     /// <inheritdoc cref="IAsserterAction.ThrowsException(Action,AsserterMod,string)"/>
@@ -54,7 +57,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
     )
     {
         return new ExceptionChainer<Exception>(
-            Asserter.ThrowsException(Action, optionConfiguration, details),
+            Asserter.ThrowsException(Behavior, optionConfiguration, details),
             Asserter
         );
     }
@@ -64,7 +67,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
     public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
         where TException : Exception
     {
-        Asserter.ThrowsNo<TException>(Action, details);
+        Asserter.ThrowsNo<TException>(Behavior, details);
         return new AlsoChainer(Asserter);
     }
 
@@ -76,7 +79,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
     )
         where TException : Exception
     {
-        Asserter.ThrowsNo<TException>(Action, optionConfiguration, details);
+        Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
         return new AlsoChainer(Asserter);
     }
 
@@ -84,7 +87,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
     /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNoException(string? details = null)
     {
-        Asserter.ThrowsNoException(Action, details);
+        Asserter.ThrowsNoException(Behavior, details);
         return new AlsoChainer(Asserter);
     }
 
@@ -95,7 +98,7 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? action)
         string? details = null
     )
     {
-        Asserter.ThrowsNoException(Action, optionConfiguration, details);
+        Asserter.ThrowsNoException(Behavior, optionConfiguration, details);
         return new AlsoChainer(Asserter);
     }
 }
