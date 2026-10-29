@@ -7,7 +7,7 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 /// <summary>Chainer enabling additional assertion calls.</summary>
-/// <param name="asserter">Configured options for <see langword="this"/>.</param>
+/// <param name="asserter">Handles the actual assert behavior.</param>
 public class AlsoChainer(IAsserter asserter)
 {
     /// <inheritdoc cref="AssertAsyncEnumerable{T}"/>

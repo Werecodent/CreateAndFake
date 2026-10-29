@@ -22,7 +22,6 @@ public abstract class AssertFuncBase<TItem, TSelf>(IAsserter asserter, Func<TIte
     }
 
     /// <inheritdoc cref="IAsserterFunc.HasResult{T}(Func{T},AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ResultChainer<TItem> HasResult(
         AsserterMod? optionConfiguration,
         string? details = null

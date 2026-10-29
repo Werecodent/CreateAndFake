@@ -6,12 +6,12 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
-/// <inheritdoc/>
 /// <param name="result"><inheritdoc cref="Result" path="/summary"/></param>
 /// <typeparam name="T">Result <see cref="Type"/> to chain.</typeparam>
+/// <inheritdoc cref="AlsoChainer"/>
 public abstract class WithChainer<T>(T result, IAsserter asserter) : AlsoChainer(asserter)
 {
-    /// <summary>Base instance to chain.</summary>
+    /// <summary>Base instance to chain with more assertions.</summary>
     protected T Result { get; } = result;
 
     /// <inheritdoc cref="With{TContent}(Func{T,Func{TContent}})"/>

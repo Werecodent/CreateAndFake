@@ -10,7 +10,7 @@ public interface IValuerEngine : IToolEngine<ICompareHint>
     IEnumerable<Difference> Compare(object? expected, object? actual, IValuerChainer chainer);
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="IValuer.GetHashCodeAsync"/>
+    /// <inheritdoc cref="IValuer.CompareAsync(object,object,CancellationToken,ValuerMod)"/>
     IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
         object? actual,
@@ -23,7 +23,7 @@ public interface IValuerEngine : IToolEngine<ICompareHint>
     int GetHashCode(object? item, IValuerChainer chainer);
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <inheritdoc cref="IValuer.GetHashCodeAsync"/>
     /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <inheritdoc cref="IValuer.GetHashCodeAsync(object,CancellationToken,ValuerMod)"/>
     Task<int> GetHashCodeAsync(object? item, IValuerChainer chainer, CancellationToken canceler);
 }

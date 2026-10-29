@@ -19,7 +19,7 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     /// <summary>Collection to run assertion checks with.</summary>
     protected IAsyncEnumerable<TItem>? Collection { get; } = collection;
 
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
     public virtual async Task<AssertChainer<TSelf>> IsEmptyAsync(
         CancellationToken canceler,
@@ -30,8 +30,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.IsEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsEmptyAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -44,8 +44,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
         CancellationToken canceler,
         string? details = null
@@ -55,8 +55,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.IsNotEmptyAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> IsNotEmptyAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -69,8 +69,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountAsync{T}(int,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountAsync(
         int count,
         CancellationToken canceler,
@@ -81,8 +81,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountAsync{T}(int,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountAsync(
         int count,
         CancellationToken canceler,
@@ -96,8 +96,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountLessThanAsync{T}(int,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountLessThanAsync(
         int count,
         CancellationToken canceler,
@@ -110,8 +110,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountLessThanAsync{T}(int,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountLessThanAsync(
         int count,
         CancellationToken canceler,
@@ -125,8 +125,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountLessOrExactlyAsync{T}(int,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountLessOrExactlyAsync(
         int count,
         CancellationToken canceler,
@@ -139,8 +139,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountLessOrExactlyAsync{T}(int,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountLessOrExactlyAsync(
         int count,
         CancellationToken canceler,
@@ -154,8 +154,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountMoreThanAsync{T}(int,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountMoreThanAsync(
         int count,
         CancellationToken canceler,
@@ -168,8 +168,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountMoreThanAsync{T}(int,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountMoreThanAsync(
         int count,
         CancellationToken canceler,
@@ -183,8 +183,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountMoreOrExactlyAsync{T}(int,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountMoreOrExactlyAsync(
         int count,
         CancellationToken canceler,
@@ -197,8 +197,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.HasCountMoreOrExactlyAsync{T}(int,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> HasCountMoreOrExactlyAsync(
         int count,
         CancellationToken canceler,
@@ -212,8 +212,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.ContainsAsync{T}(T,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> ContainsAsync(
         TItem? content,
         CancellationToken canceler,
@@ -224,8 +224,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.ContainsAsync{T}(T,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> ContainsAsync(
         TItem? content,
         CancellationToken canceler,
@@ -239,8 +239,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.ContainsNotAsync{T}(T,IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> ContainsNotAsync(
         TItem? content,
         CancellationToken canceler,
@@ -253,8 +253,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.ContainsNotAsync{T}(T,IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> ContainsNotAsync(
         TItem? content,
         CancellationToken canceler,
@@ -268,8 +268,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.FailAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> FailAsync(
         CancellationToken canceler,
         string? details = null
@@ -279,8 +279,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.FailAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> FailAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -293,8 +293,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.DebugAsync{T}(IAsyncEnumerable{T},CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> DebugAsync(
         CancellationToken canceler,
         string? details = null
@@ -304,8 +304,8 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAsyncEnumerable.DebugAsync{T}(IAsyncEnumerable{T},CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<TSelf>> DebugAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -319,7 +319,6 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -335,7 +334,6 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -352,7 +350,6 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -367,7 +364,6 @@ public abstract class AssertAsyncEnumerableBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

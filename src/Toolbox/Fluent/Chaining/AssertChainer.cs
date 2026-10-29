@@ -8,7 +8,7 @@ namespace Werecodent.CreateAndFake.Fluent.Chaining;
 /// <inheritdoc cref="AlsoChainer(IAsserter)"/>
 public sealed class AssertChainer<T>(T chain, IAsserter asserter) : AlsoChainer(asserter)
 {
-    /// <summary>Includes another assertion on the instance to test.</summary>
+    /// <summary>Provides additional assertions to test the instance.</summary>
     public T And()
     {
         return chain;

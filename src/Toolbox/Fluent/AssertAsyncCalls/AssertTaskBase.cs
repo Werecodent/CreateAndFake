@@ -18,7 +18,6 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
     protected Task? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -34,7 +33,6 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
     }
 
     /// <inheritdoc cref="IAsserterTask.ThrowsAsync{T}(Task?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -51,7 +49,6 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
     }
 
     /// <inheritdoc cref="IAsserterTask.ThrowsExceptionAsync(Task?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -64,7 +61,6 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
     }
 
     /// <inheritdoc cref="IAsserterTask.ThrowsExceptionAsync(Task?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -79,8 +75,8 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
         );
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -91,8 +87,8 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync{T}(Task?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -106,8 +102,8 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterTask.ThrowsNoAsync(Task?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -117,8 +113,8 @@ public abstract class AssertTaskBase<T>(IAsserter asserter, Task? behavior)
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterTask.ThrowsNoExceptionAsync(Task?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

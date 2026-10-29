@@ -15,13 +15,13 @@ public static class FakeExtensions
     /// <param name="fakeCallResult">Result from the fake method to setup.</param>
     /// <param name="returnValue">Value to set the call behavior with.</param>
     /// <param name="times">Expected number of calls for the behavior.</param>
-    /// <remarks>For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.</remarks>
-    /// <example>
-    ///     <code>
+    /// <remarks>
+    ///     For use on <see cref="IFaked"/> stubs from the <see cref="Faker"/> tool only.
+    ///     <example><code>
     ///         T db = Tools.Faker.Stub{T}().Dummy;
     ///         db.Find(id).SetupReturn(data);
-    ///     </code>
-    /// </example>
+    ///     </code></example>
+    /// </remarks>
     public static void SetupReturn<T>(this T fakeCallResult, T returnValue, Times? times = null)
     {
         SetupReturn(fakeCallResult, Behavior.Returns(returnValue, times));

@@ -65,7 +65,7 @@ internal sealed class SerializationValidator(TesterOptions options)
         try
         {
             serializer.WriteObject(stream, instance);
-            _ = stream.Seek(0, SeekOrigin.Begin);
+            stream.Position = 0;
             result = serializer.ReadObject(stream);
         }
         catch (Exception e) when (e is SerializationException or InvalidDataContractException)

@@ -3,7 +3,6 @@
     Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions
 >;
 using System.Diagnostics.CodeAnalysis;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
@@ -13,7 +12,7 @@ namespace Werecodent.CreateAndFake.DuplicatorTool;
 /// <remarks>Useful for tracking mutations by comparing against the created clones.</remarks>
 public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
     /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IDuplicator WithOptions(DuplicatorMod optionConfiguration);
@@ -24,12 +23,11 @@ public interface IDuplicator : IHintTool<DuplicatorOptions, ICopyHint>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Clone of <paramref name="source"/>.</returns>
     /// <remarks>
-    ///     Depending upon the <see cref="Type"/>, this may just
-    ///     return <paramref name="source"/> if not cloneable.
+    ///     Depending upon the <see cref="Type"/>, this may just return <paramref name="source"/> if not cloneable.
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="DuplicatorOptions.VerifyEqualityForClones"/></item>
+    ///     </list>
     /// </remarks>
-    /// <exception cref="UnsupportedException">
-    ///     If no hint supports cloning <paramref name="source"/>.
-    /// </exception>
     [return: NotNullIfNotNull(nameof(source))]
     T Copy<T>(T source, DuplicatorMod? optionConfiguration = null);
 }

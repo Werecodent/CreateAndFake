@@ -19,16 +19,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
     /// <summary>Collection to run assertion checks with.</summary>
     protected IEnumerable? Collection { get; } = collection;
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsEmpty(string? details = null)
     {
         Asserter.IsEmpty(Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.IsEmpty(IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsEmpty(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -38,16 +38,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsNotEmpty(string? details = null)
     {
         Asserter.IsNotEmpty(Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.IsNotEmpty(IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> IsNotEmpty(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -57,16 +57,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCount(int count, string? details = null)
     {
         Asserter.HasCount(count, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCount(int,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCount(
         int count,
         AsserterMod? optionConfiguration,
@@ -77,16 +77,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountLessThan(int count, string? details = null)
     {
         Asserter.HasCountLessThan(count, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountLessThan(int,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountLessThan(
         int count,
         AsserterMod? optionConfiguration,
@@ -97,16 +97,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountLessOrExactly(int count, string? details = null)
     {
         Asserter.HasCountLessOrExactly(count, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountLessOrExactly(int,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountLessOrExactly(
         int count,
         AsserterMod? optionConfiguration,
@@ -117,16 +117,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountMoreThan(int count, string? details = null)
     {
         Asserter.HasCountMoreThan(count, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreThan(int,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountMoreThan(
         int count,
         AsserterMod? optionConfiguration,
@@ -137,16 +137,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountMoreOrExactly(int count, string? details = null)
     {
         Asserter.HasCountMoreOrExactly(count, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.HasCountMoreOrExactly(int,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> HasCountMoreOrExactly(
         int count,
         AsserterMod? optionConfiguration,
@@ -157,16 +157,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(object? content, string? details = null)
     {
         Asserter.Contains(content, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.Contains(object,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> Contains(
         object? content,
         AsserterMod? optionConfiguration,
@@ -177,8 +177,8 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsAsync(object,IEnumerable,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
         CancellationToken canceler,
@@ -189,8 +189,8 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsAsync(
         object? content,
         CancellationToken canceler,
@@ -204,16 +204,16 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(object? content, string? details = null)
     {
         Asserter.ContainsNot(content, Collection, details);
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNot(object,IEnumerable,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AssertChainer<T> ContainsNot(
         object? content,
         AsserterMod? optionConfiguration,
@@ -224,8 +224,8 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNotAsync(object,IEnumerable,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,
         CancellationToken canceler,
@@ -238,8 +238,8 @@ public abstract class AssertEnumerableBase<T>(IAsserter asserter, IEnumerable? c
         return ToChainer();
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterEnumerable.ContainsNotAsync(object,IEnumerable,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AssertChainer<T>> ContainsNotAsync(
         object? content,
         CancellationToken canceler,

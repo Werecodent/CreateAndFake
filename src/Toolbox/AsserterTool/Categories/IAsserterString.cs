@@ -9,6 +9,9 @@ public interface IAsserterString
     /// <summary>Verifies the <c>text</c> contains the given <paramref name="content"/>.</summary>
     /// <param name="content">Expected text to be present.</param>
     /// <param name="text">Instance to test.</param>
+    /// <remarks>Important relevant options: <list type="bullet">
+    ///     <item><see cref="AsserterOptions.ComparisonModeForStringAsserts"/></item>
+    /// </list></remarks>
     /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
     void Contains(
         string content,

@@ -18,7 +18,6 @@ public abstract class AssertGenericTaskBase<TItem, TSelf>(IAsserter asserter, Ta
     protected new Task<TItem>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         CancellationToken canceler,
         string? details = null
@@ -31,7 +30,6 @@ public abstract class AssertGenericTaskBase<TItem, TSelf>(IAsserter asserter, Ta
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -47,7 +45,6 @@ public abstract class AssertGenericTaskBase<TItem, TSelf>(IAsserter asserter, Ta
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         TItem expected,
         CancellationToken canceler,
@@ -63,7 +60,6 @@ public abstract class AssertGenericTaskBase<TItem, TSelf>(IAsserter asserter, Ta
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         TItem expected,
         CancellationToken canceler,

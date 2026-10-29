@@ -4,6 +4,7 @@ global using RunnerMod = System.Func<
 >;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Tooling;
+using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 namespace Werecodent.CreateAndFake.RunnerTool;
 
@@ -11,16 +12,23 @@ namespace Werecodent.CreateAndFake.RunnerTool;
 /// <remarks>Useful for generating tests and invoking methods at runtime.</remarks>
 public interface IRunner : ITool<RunnerOptions>
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
     /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IRunner WithOptions(RunnerMod optionConfiguration);
 
-    /// <summary>Calls all methods of <paramref name="instance"/>.</summary>
+    /// <summary>Calls all methods on the <paramref name="instance"/>.</summary>
     /// <param name="instance">Instance whose methods to call.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Results of the method calls.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="RunnerOptions.RunTimeout"/></item>
+    ///         <item><see cref="RunnerOptions.MethodsToIgnore"/></item>
+    ///         <item><see cref="RunnerOptions.IncludeBaseObjectMethods"/></item>
+    ///     </list>
+    /// </remarks>
     Task<RunResults> CallMethodsOnAsync(
         object instance,
         CancellationToken canceler,
@@ -35,26 +43,35 @@ public interface IRunner : ITool<RunnerOptions>
     );
 
     /// <summary>
-    ///     Constructs the parameters for <paramref name="method"/>.
-    ///     Randomizes types by default.
-    ///     Earlier types will be used to construct later types if possible.
+    ///     Constructs parameter data for the <paramref name="method"/> utilizing
+    ///     attached <see cref="ParameterHintAttribute"/>s as instructions.
     /// </summary>
     /// <param name="method">Method to create parameters for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Parameter arguments for <paramref name="method"/> in order.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="RunnerOptions.InjectionValues"/></item>
+    ///     </list>
+    /// </remarks>
     Task<MethodCallWrapper> CreateForAsync(
         MethodBase method,
         CancellationToken canceler,
         RunnerMod? optionConfiguration = null
     );
 
-    /// <summary>Runs the given method on the instance.</summary>
-    /// <param name="instance">Instance to run on.</param>
-    /// <param name="method">Method to run.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns>Results of the run.</returns>
+    /// <summary>
+    ///     Constructs parameter data for the <paramref name="method"/> and runs it on the <paramref name="instance"/>.
+    /// </summary>
+    /// <param name="method">Method to create parameter data for and run.</param>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="RunnerOptions.RunTimeout"/></item>
+    ///         <item><see cref="RunnerOptions.InjectionValues"/></item>
+    ///     </list>
+    /// </remarks>
+    /// <inheritdoc cref="RunAsync(object,MethodCallWrapper,CancellationToken,RunnerMod)"/>
     Task<RunResult> RunAsync(
         object? instance,
         MethodInfo method,
@@ -62,12 +79,17 @@ public interface IRunner : ITool<RunnerOptions>
         RunnerMod? optionConfiguration = null
     );
 
-    /// <summary>Runs the given method on the instance.</summary>
+    /// <summary>Runs the method with constructed parameter data on the instance.</summary>
     /// <param name="instance">Instance to run on.</param>
-    /// <param name="data">Method to run.</param>
+    /// <param name="data">Method with parameter data to run.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>Results of the run.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="RunnerOptions.RunTimeout"/></item>
+    ///     </list>
+    /// </remarks>
     Task<RunResult> RunAsync(
         object? instance,
         MethodCallWrapper data,

@@ -26,7 +26,7 @@ public interface IAsserter
         IAsserterObject,
         IAsserterString
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
     /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IAsserter WithOptions(AsserterMod optionConfiguration);
@@ -54,6 +54,9 @@ public interface IAsserter
 
     /// <summary>Fails the test only if the option is set.</summary>
     /// <param name="details">Description to include in assertion failure messages.</param>
+    /// <remarks>Important relevant options: <list type="bullet">
+    ///     <item><see cref="AsserterOptions.TriggerFailureForDebugAsserts"/></item>
+    /// </list></remarks>
     /// <exception cref="AssertException">Always.</exception>
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     void Debug(AsserterMod? optionConfiguration, string? details = null);

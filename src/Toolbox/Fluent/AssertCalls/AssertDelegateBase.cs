@@ -1,5 +1,4 @@
 using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 
@@ -18,7 +17,6 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     protected Delegate? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
         where TException : Exception
     {
@@ -29,7 +27,6 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     }
 
     /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<TException> Throws<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -43,7 +40,6 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     }
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
     {
         return new ExceptionChainer<Exception>(
@@ -53,7 +49,6 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
     }
 
     /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<Exception> ThrowsException(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -65,8 +60,8 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         );
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
         where TException : Exception
     {
@@ -74,8 +69,8 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -86,16 +81,16 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNoException(string? details = null)
     {
         Asserter.ThrowsNoException(Behavior, details);
         return new AlsoChainer(Asserter);
     }
 
-    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,AsserterMod,string)"/>
     public virtual AlsoChainer ThrowsNoException(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -111,9 +106,8 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details), Asserter);
     }
 
+    /// <typeparam name="TResult">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
     /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(Delegate,AsserterMod,string)"/>
-    /// <typeparam name="TResult">Expected return <see cref="Type"/> of the <see cref="Behavior"/>.</typeparam>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ResultChainer<TResult> HasResult<TResult>(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -125,15 +119,14 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         );
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    /// <inheritdoc cref="HasResult{T}(T,AsserterMod,string)"/>
     public virtual ResultChainer<TItem> HasResult<TItem>(TItem expected, string? details = null)
     {
         return new ResultChainer<TItem>(Asserter.HasResult(expected, Behavior, details), Asserter);
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    /// <typeparam name="TItem">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(T,Delegate,AsserterMod,string)"/>
     public virtual ResultChainer<TItem> HasResult<TItem>(
         TItem expected,
         AsserterMod? optionConfiguration,
@@ -146,8 +139,7 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         );
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    /// <inheritdoc cref="HasResultAsync{T}(T,CancellationToken,AsserterMod,string)"/>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
         TItem expected,
         CancellationToken canceler,
@@ -162,8 +154,8 @@ public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavi
         );
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
+    /// <typeparam name="TItem">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <inheritdoc cref="IAsserterDelegate.HasResultAsync{T}(T,Delegate,CancellationToken,AsserterMod,string)"/>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
         TItem expected,
         CancellationToken canceler,

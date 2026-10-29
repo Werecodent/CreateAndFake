@@ -15,7 +15,6 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
     protected Action? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterAction.Throws{T}(Action,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
         where TException : Exception
     {
@@ -26,7 +25,6 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
     }
 
     /// <inheritdoc cref="IAsserterAction.Throws{T}(Action,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<TException> Throws<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -40,7 +38,6 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
     }
 
     /// <inheritdoc cref="IAsserterAction.ThrowsException(Action,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
     {
         return new ExceptionChainer<Exception>(
@@ -50,7 +47,6 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
     }
 
     /// <inheritdoc cref="IAsserterAction.ThrowsException(Action,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual ExceptionChainer<Exception> ThrowsException(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -62,8 +58,8 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
         );
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAction.ThrowsNo{T}(Action,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
         where TException : Exception
     {
@@ -71,8 +67,8 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAction.ThrowsNo{T}(Action,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNo<TException>(
         AsserterMod? optionConfiguration,
         string? details = null
@@ -83,16 +79,16 @@ public abstract class AssertActionBase<T>(IAsserter asserter, Action? behavior)
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAction.ThrowsNoException(Action,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNoException(string? details = null)
     {
         Asserter.ThrowsNoException(Behavior, details);
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterAction.ThrowsNoException(Action,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual AlsoChainer ThrowsNoException(
         AsserterMod? optionConfiguration,
         string? details = null

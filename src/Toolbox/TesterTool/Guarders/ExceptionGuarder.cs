@@ -19,7 +19,7 @@ internal sealed class ExceptionGuarder(TesterOptions options) : BaseGuarder(opti
         }
 
         object instance = Options.Randomizer.Create<Injected<T>>().Dummy!;
-        return new ExceptionGuarder(Options).CallAllMethodsAsync(instance, canceler);
+        return CallAllMethodsAsync(instance, canceler);
     }
 
     /// <inheritdoc cref="ITester.PassthroughWithNoExceptionsAsync"/>

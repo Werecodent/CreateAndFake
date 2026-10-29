@@ -18,7 +18,6 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
     protected ValueTask? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -34,7 +33,6 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -51,7 +49,6 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -64,7 +61,6 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -79,8 +75,8 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
         );
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync{T}(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -91,8 +87,8 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync{T}(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -106,8 +102,8 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoExceptionAsync(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -117,8 +113,8 @@ public abstract class AssertValueTaskBase<T>(IAsserter asserter, ValueTask? beha
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

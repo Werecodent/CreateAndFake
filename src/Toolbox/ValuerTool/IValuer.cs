@@ -4,7 +4,6 @@
 >;
 using System.Collections;
 using Werecodent.CreateAndFake.Design.Comparisons;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
@@ -23,23 +22,44 @@ public interface IValuer
         IEqualityComparer<object>,
         IEqualityComparer
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
     /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IValuer WithOptions(ValuerMod optionConfiguration);
 
-    /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
-    /// <param name="expected">Object to compare with <paramref name="actual"/>.</param>
-    /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
-    /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="ValuerOptions.SkipAsyncValues"/></item>
+    ///         <item><see cref="ValuerOptions.CheckCollectionType"/></item>
+    ///         <item><see cref="ValuerOptions.DefaultEqualityTypes"/></item>
+    ///         <item><see cref="ValuerOptions.UseEquatableComparisons"/></item>
+    ///         <item><see cref="ValuerOptions.IgnoreCurrentRandomSeed"/></item>
+    ///         <item><see cref="ValuerOptions.IncludeValueHashInComparison"/></item>
+    ///     </list>
+    /// </remarks>
+    /// <inheritdoc cref="CompareAsync"/>
     IEnumerable<Difference> Compare(
         object? expected,
         object? actual,
         ValuerMod? optionConfiguration = null
     );
 
+    /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
+    /// <param name="expected">Object to compare with <paramref name="actual"/>.</param>
+    /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>Found differences between <paramref name="expected"/> and <paramref name="actual"/>.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="ValuerOptions.AsyncTimeout"/></item>
+    ///         <item><see cref="ValuerOptions.CheckCollectionType"/></item>
+    ///         <item><see cref="ValuerOptions.DefaultEqualityTypes"/></item>
+    ///         <item><see cref="ValuerOptions.UseEquatableComparisons"/></item>
+    ///         <item><see cref="ValuerOptions.IgnoreCurrentRandomSeed"/></item>
+    ///         <item><see cref="ValuerOptions.IncludeValueHashInComparison"/></item>
+    ///     </list>
+    /// </remarks>
     /// <inheritdoc cref="Compare"/>
     IAsyncEnumerable<Difference> CompareAsync(
         object? expected,
@@ -51,18 +71,20 @@ public interface IValuer
     /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
     new bool Equals(object? x, object? y);
 
+    /// <inheritdoc cref="EqualsAsync(object,object,CancellationToken,ValuerMod)"/>
+    bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
+
+    /// <inheritdoc cref="EqualsAsync(object,object,CancellationToken,ValuerMod)"/>
+    new Task<bool> EqualsAsync(object? x, object? y, CancellationToken canceler);
+
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
     /// <param name="x">Object to compare with <paramref name="y"/>.</param>
     /// <param name="y">Object to compare with <paramref name="x"/>.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>
-    ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value, <see langword="false"/> otherwise.
+    ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value,
+    ///     <see langword="false"/> otherwise.
     /// </returns>
-    /// <exception cref="UnsupportedException">If no hint supports comparing the objects.</exception>
-    bool Equals(object? x, object? y, ValuerMod? optionConfiguration);
-
-    /// <inheritdoc cref="Equals(object,object,ValuerMod)"/>
-    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <inheritdoc cref="CompareAsync"/>
     Task<bool> EqualsAsync(
         object? x,
         object? y,
@@ -73,15 +95,33 @@ public interface IValuer
     /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
     new int GetHashCode(object? item);
 
-    /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
-    /// <param name="item">Object to generate a hash code for.</param>
-    /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <exception cref="UnsupportedException">If no hint supports hashing the object.</exception>
+    /// <inheritdoc cref="GetHashCodeAsync(object,CancellationToken,ValuerMod)"/>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="ValuerOptions.SkipAsyncValues"/></item>
+    ///         <item><see cref="ValuerOptions.DefaultEqualityTypes"/></item>
+    ///         <item><see cref="ValuerOptions.UseEquatableComparisons"/></item>
+    ///         <item><see cref="ValuerOptions.IgnoreCurrentRandomSeed"/></item>
+    ///     </list>
+    /// </remarks>
     int GetHashCode(object? item, ValuerMod? optionConfiguration);
 
-    /// <inheritdoc cref="GetHashCode(object,ValuerMod)"/>
+    /// <inheritdoc cref="GetHashCodeAsync(object,CancellationToken,ValuerMod)"/>
+    new Task<int> GetHashCodeAsync(object? item, CancellationToken canceler);
+
+    /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
+    /// <param name="item">Object to generate a hash code for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>The value computed hash code for <paramref name="item"/>.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="ValuerOptions.AsyncTimeout"/></item>
+    ///         <item><see cref="ValuerOptions.DefaultEqualityTypes"/></item>
+    ///         <item><see cref="ValuerOptions.UseEquatableComparisons"/></item>
+    ///         <item><see cref="ValuerOptions.IgnoreCurrentRandomSeed"/></item>
+    ///     </list>
+    /// </remarks>
     Task<int> GetHashCodeAsync(
         object? item,
         CancellationToken canceler,

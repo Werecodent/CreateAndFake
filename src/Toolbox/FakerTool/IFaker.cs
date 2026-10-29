@@ -11,18 +11,17 @@ namespace Werecodent.CreateAndFake.FakerTool;
 /// <remarks>Useful for testing in isolation from dependencies.</remarks>
 public interface IFaker : IHintTool<FakerOptions, IFakeHint>
 {
-    /// <summary>Creates a new tool with the given configuration changes.</summary>
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
     /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
     /// <returns>The created tool.</returns>
     IFaker WithOptions(FakerMod optionConfiguration);
 
-    /// <summary>Determines if type <typeparamref name="T"/> can be faked.</summary>
+    /// <summary>Determines if <typeparamref name="T"/> can be faked.</summary>
     /// <typeparam name="T"><see cref="Type"/> to check.</typeparam>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
+    /// <inheritdoc cref="Supports"/>
     bool Supports<T>(FakerMod? optionConfiguration = null);
 
-    /// <summary>Determines if <paramref name="type"/> can be faked.</summary>
+    /// <summary>Determines if the <paramref name="type"/> can be faked.</summary>
     /// <param name="type"><see cref="Type"/> to check.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
@@ -39,10 +38,7 @@ public interface IFaker : IHintTool<FakerOptions, IFakeHint>
     Fake Mock(Type parent, params IEnumerable<Type> interfaces);
 
     /// <summary>Creates a strict fake where calls fail unless set up.</summary>
-    /// <param name="parent">Type being faked.</param>
-    /// <param name="interfaces">Extra interfaces to implement.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns>Handler for fake behavior.</returns>
+    /// <inheritdoc cref="Stub(Type,IEnumerable{Type},FakerMod)"/>
     Fake Mock(Type parent, IEnumerable<Type> interfaces, FakerMod? optionConfiguration);
 
     /// /// <inheritdoc cref="Stub{T}(IEnumerable{Type},FakerMod)"/>

@@ -20,7 +20,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     protected ValueTask<TItem>? Behavior { get; } = behavior;
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         CancellationToken canceler,
         string? details = null
@@ -33,7 +32,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(ValueTask{T}?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -49,7 +47,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(T,ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         TItem expected,
         CancellationToken canceler,
@@ -65,7 +62,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.HasResultAsync{T}(T,ValueTask{T}?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ResultChainer{T}" path="/summary"/></returns>
     public virtual async Task<ResultChainer<TItem>> HasResultAsync(
         TItem expected,
         CancellationToken canceler,
@@ -82,7 +78,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -98,7 +93,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsAsync{T}(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<TException>> ThrowsAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -115,7 +109,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -128,7 +121,6 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
     }
 
     /// <inheritdoc cref="IAsserterValueTask.ThrowsExceptionAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="ExceptionChainer{T}" path="/summary"/></returns>
     public virtual async Task<ExceptionChainer<Exception>> ThrowsExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -143,8 +135,8 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         );
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync{T}(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         string? details = null
@@ -157,8 +149,8 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         return new AlsoChainer(Asserter);
     }
 
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
     /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync{T}(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
     public virtual async Task<AlsoChainer> ThrowsNoAsync<TException>(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,
@@ -172,8 +164,8 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         return new AlsoChainer(Asserter);
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync(ValueTask?,CancellationToken,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterValueTask.ThrowsNoExceptionAsync(ValueTask?,CancellationToken,string)"/>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         string? details = null
@@ -183,8 +175,8 @@ public abstract class AssertGenericValueTaskBase<TItem, TSelf>(
         return new AlsoChainer(Asserter);
     }
 
-    /// <inheritdoc cref="IAsserterValueTask.ThrowsNoAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
-    /// <returns><inheritdoc cref="AssertChainer{T}" path="/summary"/></returns>
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterValueTask.ThrowsNoExceptionAsync(ValueTask?,CancellationToken,AsserterMod,string)"/>
     public virtual async Task<AlsoChainer> ThrowsNoExceptionAsync(
         CancellationToken canceler,
         AsserterMod? optionConfiguration,

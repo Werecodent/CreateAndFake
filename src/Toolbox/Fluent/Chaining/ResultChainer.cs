@@ -4,14 +4,12 @@ namespace Werecodent.CreateAndFake.Fluent.Chaining;
 
 #pragma warning disable CA1024 // Hurts readability.
 
-/// <summary>Chainer enabling additional assertion calls for resulting data.</summary>
-/// <typeparam name="T">Result <see cref="Type"/> to chain.</typeparam>
-/// <param name="result">Assertion base instance to chain.</param>
-/// <inheritdoc cref="AlsoChainer(IAsserter)"/>
+/// <summary>Chainer enabling additional assertion calls on the result.</summary>
+/// <inheritdoc/>
 public sealed class ResultChainer<T>(T result, IAsserter asserter)
     : WithChainer<T>(result, asserter)
 {
-    /// <summary>Result returned.</summary>
+    /// <summary>Result instance to chain with more assertions.</summary>
     public T GetResultValue()
     {
         return Result;
