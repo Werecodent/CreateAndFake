@@ -5,7 +5,7 @@ namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable CS0628, IDE0051, CA1822, RCS1213, S1144, S1186 // For testing.
 
-public static class StaticMethodScannerTests
+public sealed class StaticMethodScannerTests : AutoTester<StaticMethodScanner>
 {
     private const BindingFlags _AllScope =
         BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
@@ -30,22 +30,6 @@ public static class StaticMethodScannerTests
         internal static void InternalStaticMethod() { }
 
         private static void PrivateStaticMethod() { }
-    }
-
-    [Fact]
-    internal static Task StaticMethodScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<StaticMethodScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task StaticMethodScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<StaticMethodScanner>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

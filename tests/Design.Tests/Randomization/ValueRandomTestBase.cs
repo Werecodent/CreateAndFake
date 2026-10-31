@@ -1,57 +1,35 @@
-﻿using System.Collections.Frozen;
-using System.Numerics;
+﻿using System.Numerics;
 using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 #if NET5_0_OR_GREATER
 using System.Text;
 #endif
 
 namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
-public abstract class ValueRandomTestBase<T>(T testInstance)
+public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
     where T : ValueRandom
 {
-    private static readonly FrozenSet<Type> _IgnorableExceptions =
-    [
-        typeof(ArgumentException),
-        typeof(ArgumentOutOfRangeException),
-        typeof(IterationLimitException),
-        typeof(UnsupportedException),
-        typeof(InvalidCastException),
-        typeof(RuntimeBinderException),
-    ];
-
-    [Theory, RandomData]
-    public Task ValueRandom_GuardsNulls([Cap(20, 30)] int length)
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<T>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [(short)length],
-                    IgnorableExceptions = _IgnorableExceptions,
-                }
-        );
-    }
-
-    [Theory, RandomData]
-    public Task ValueRandom_NoParameterMutation([Cap(20, 30)] int length)
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<T>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [(short)length],
-                    IgnorableExceptions = _IgnorableExceptions,
-                }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [(short)Tools.Gen.Next(20, 30)],
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(IterationLimitException),
+                    typeof(UnsupportedException),
+                    typeof(InvalidCastException),
+                    typeof(RuntimeBinderException),
+                ],
+            };
 
     [Fact]
     public void NextBytes_PreventsNegatives()

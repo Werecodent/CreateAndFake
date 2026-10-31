@@ -1,31 +1,20 @@
-using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
-public class StubAttributeTests
+public sealed class StubAttributeTests : AutoTester<StubAttribute>
 {
-    private static readonly ParameterInfo _StubParam = IntegrationTests
-        .AttributeMethod.GetParameters()
-        .First(p => Attribute.IsDefined(p, typeof(StubAttribute)));
-
-    public TestContext TestContext { get; set; }
-
-    [TestMethod]
-    public Task StubAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<StubAttribute>(
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [_StubParam, IntegrationTests.AttributeMethod] }
-        );
-    }
-
-    [TestMethod]
-    public Task StubAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<StubAttribute>(
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [_StubParam, IntegrationTests.AttributeMethod] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues =
+                [
+                    IntegrationTests.AttributeMethod,
+                    IntegrationTests
+                        .AttributeMethod.GetParameters()
+                        .First(p => Attribute.IsDefined(p, typeof(StubAttribute))),
+                ],
+            };
 }

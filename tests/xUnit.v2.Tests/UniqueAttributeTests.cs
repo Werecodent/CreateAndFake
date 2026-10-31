@@ -1,28 +1,19 @@
-using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
-public static class UniqueAttributeTests
+public sealed class UniqueAttributeTests : AutoTester<UniqueAttribute>
 {
-    private static readonly ParameterInfo _UniqueParam = IntegrationTests
-        .AttributeMethod.GetParameters()
-        .First(p => Attribute.IsDefined(p, typeof(UniqueAttribute)));
-
-    [Fact]
-    internal static Task UniqueAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<UniqueAttribute>(
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [_UniqueParam, IntegrationTests.AttributeMethod] }
-        );
-    }
-
-    [Fact]
-    internal static Task UniqueAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<UniqueAttribute>(
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [_UniqueParam, IntegrationTests.AttributeMethod] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues =
+                [
+                    IntegrationTests.AttributeMethod,
+                    IntegrationTests
+                        .AttributeMethod.GetParameters()
+                        .First(p => Attribute.IsDefined(p, typeof(UniqueAttribute))),
+                ],
+            };
 }

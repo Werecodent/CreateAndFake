@@ -4,24 +4,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class VoidTypeTests
+public sealed class VoidTypeTests : AutoTester<VoidType>
 {
-    [Fact]
-    internal static Task VoidType_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<VoidType>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task VoidType_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<VoidType>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void VoidType_PrivateConstructor()
     {

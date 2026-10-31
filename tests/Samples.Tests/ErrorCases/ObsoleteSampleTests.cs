@@ -2,24 +2,8 @@ using Werecodent.CreateAndFake.Samples.ErrorCases;
 
 namespace Werecodent.CreateAndFake.Samples.Tests.ErrorCases;
 
-public static class ObsoleteSampleTests
+public sealed class ObsoleteSampleTests : AutoTester<ObsoleteSample>
 {
-    [Fact]
-    public static Task ObsoleteSample_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ObsoleteSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    public static Task ObsoleteSample_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ObsoleteSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     public static Task ObsoleteSample_NoParameterMutationCanIncludeObsolete()
     {

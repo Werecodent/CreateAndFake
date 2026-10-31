@@ -1,29 +1,20 @@
-using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.NUnit.v3.Tests;
 
 [TestFixture]
-public static class CopyAttributeTests
+public sealed class CopyAttributeTests : AutoTester<CopyAttribute>
 {
-    private static readonly ParameterInfo _CopyParam = IntegrationTests
-        .AttributeMethod.GetParameters()
-        .First(p => Attribute.IsDefined(p, typeof(CopyAttribute)));
-
-    [Test]
-    public static Task CopyAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CopyAttribute>(
-            TestContext.CurrentContext.CancellationToken,
-            opt => opt with { InjectionValues = [_CopyParam, IntegrationTests.AttributeMethod] }
-        );
-    }
-
-    [Test]
-    public static Task CopyAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<CopyAttribute>(
-            TestContext.CurrentContext.CancellationToken,
-            opt => opt with { InjectionValues = [_CopyParam, IntegrationTests.AttributeMethod] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues =
+                [
+                    IntegrationTests.AttributeMethod,
+                    IntegrationTests
+                        .AttributeMethod.GetParameters()
+                        .First(p => Attribute.IsDefined(p, typeof(CopyAttribute))),
+                ],
+            };
 }

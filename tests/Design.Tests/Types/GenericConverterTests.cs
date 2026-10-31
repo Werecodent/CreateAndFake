@@ -1,15 +1,19 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class GenericConverterTests
+public sealed class GenericConverterTests() : AutoTester(typeof(GenericConverter))
 {
     private static readonly MethodInfo _TestMethod = typeof(GenericConverterTests).GetMethod(
         nameof(HiddenTestName),
         BindingFlags.Static | BindingFlags.NonPublic
     );
+
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] };
 
     [Fact]
     internal static void Debug_GenericConverter_BuildTestName()
@@ -21,26 +25,6 @@ public static class GenericConverterTests
     internal static void Debug_GenericConverter_ExpandName()
     {
         GenericConverter.ExpandName<Dictionary<int, string>>().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task GenericConverter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(GenericConverter),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task GenericConverter_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(GenericConverter),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
-        );
     }
 
     [Fact]

@@ -2,24 +2,8 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
-public static class SelfReferencingDisposableTests
+public sealed class SelfReferencingDisposableTests : AutoTester<SelfReferencingDisposable>
 {
-    [Fact]
-    public static Task SelfReferencingDisposable_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<SelfReferencingDisposable>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    public static Task SelfReferencingDisposable_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<SelfReferencingDisposable>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void GrabData_ThrowsWhenDisposed(SelfReferencingDisposable sample)
     {

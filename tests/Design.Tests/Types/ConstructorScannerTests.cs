@@ -4,7 +4,7 @@ namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable IDE0051, MA0017, RCS1160, S3442 // For testing.
 
-public static class ConstructorScannerTests
+public sealed class ConstructorScannerTests : AutoTester<ConstructorScanner>
 {
     internal abstract class BaseMembers
     {
@@ -26,22 +26,6 @@ public static class ConstructorScannerTests
 
         private Members(short _)
             : base() { }
-    }
-
-    [Fact]
-    internal static Task ConstructorScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ConstructorScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ConstructorScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ConstructorScanner>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

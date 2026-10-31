@@ -5,7 +5,7 @@ namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable IDE0032, IDE0051, RCS1170, RCS1213, S2376 // For testing.
 
-public static class PropertyScannerTests
+public sealed class PropertyScannerTests : AutoTester<PropertyScanner>
 {
     private const BindingFlags _AllScope =
         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -39,22 +39,6 @@ public static class PropertyScannerTests
         public double InternalSetterWithGet { get; internal set; }
         internal int PrivateGetterWithInternalSet { private get; set; }
         internal int PrivateSetterWithInternalGet { get; private set; }
-    }
-
-    [Fact]
-    internal static Task PropertyScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<PropertyScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task PropertyScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<PropertyScanner>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

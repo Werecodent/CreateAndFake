@@ -1,4 +1,5 @@
 using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -6,37 +7,9 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class TypeDescriberTests
+public sealed class TypeDescriberTests : AutoTester<TypeDescriber>
 {
-    [Theory, RandomData]
-    internal static void Debug_TypeDescriber_ToString(TypeDescriber describer)
-    {
-        describer.ToString().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task TypeDescriber_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            TypeDescriber.For(null),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task TypeDescriber_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            TypeDescriber.For(null),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static void TypeDescriber_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<TypeDescriber>();
-    }
+    protected override TypeDescriber TestInstance { get; } = TypeDescriber.For(null);
 
     [Fact]
     internal static void For_Cached()
@@ -125,5 +98,15 @@ public static class TypeDescriberTests
             .FindLoadedSubclasses()
             .Assert()
             .ContainsNot(typeof(RuneValueHandler));
+    }
+
+    [Fact]
+    internal static void IsStatic_IdentifiesStaticClasses()
+    {
+        TypeDescriber.For(typeof(ArgumentGuard)).IsStatic().Assert().Is(true);
+        TypeDescriber.For<TypeDescriber>().IsStatic().Assert().Is(false);
+        TypeDescriber.For<object>().IsStatic().Assert().Is(false);
+        TypeDescriber.For<IRandom>().IsStatic().Assert().Is(false);
+        TypeDescriber.For<ValueRandom>().IsStatic().Assert().Is(false);
     }
 }

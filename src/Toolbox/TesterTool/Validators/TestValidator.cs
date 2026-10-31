@@ -136,6 +136,7 @@ internal sealed class TestValidator(TesterOptions options)
         [
             .. Options.AllowedTestNamePrefixes,
             "New",
+            "Tester",
             codeAssembly.GetName()!.Name!,
             testAssembly.GetName()!.Name!,
         ];

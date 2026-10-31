@@ -1,29 +1,15 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
-public static class RandomDataAttributeTests
+public sealed class RandomDataAttributeTests : AutoTester<RandomDataAttribute>
 {
-    [Fact]
-    internal static Task RandomDataAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            new RandomDataAttribute() { Trials = 3 },
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
-        );
-    }
+    protected override RandomDataAttribute TestInstance { get; } = new() { Trials = 3 };
 
-    [Fact]
-    internal static Task RandomDataAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            new RandomDataAttribute() { Trials = 3 },
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { InjectionValues = [3, GetGeneratableMethod()] };
 
     [Fact]
     internal static void GetData_UsesTrials()

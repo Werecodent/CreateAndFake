@@ -1,18 +1,13 @@
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class DisposerTests
+public sealed class DisposerTests() : AutoTester(typeof(Disposer))
 {
-    [Fact]
-    internal static Task Disposer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(Disposer),
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
 
     [Theory, RandomData]
     internal static void Cleanup_DisposesAllItems(

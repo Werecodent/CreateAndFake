@@ -26,6 +26,3 @@ dotnet_diagnostic.VSTHRD111.severity = None
 # Conflict for test name matching.
 dotnet_diagnostic.CA1707.severity = None
 dotnet_diagnostic.MA0048.severity = None
-
-# False positive when calling tester methods.
-dotnet_diagnostic.S2699.severity = None

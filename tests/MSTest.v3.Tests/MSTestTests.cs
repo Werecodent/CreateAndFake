@@ -3,7 +3,7 @@ using System.Reflection;
 namespace Werecodent.CreateAndFake.MSTest.v3.Tests;
 
 [TestClass]
-public class MSTestTests
+public sealed class MSTestTests
 {
     public TestContext TestContext { get; set; }
 

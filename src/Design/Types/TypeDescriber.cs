@@ -208,6 +208,13 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
             .Where(t => ScopeChecker.IsVisible(t, assembly));
     }
 
+    /// <summary>Determines if the <see cref="SupportedType"/> is a <see langword="static"/>.</summary>
+    /// <returns><see langword="true"/> if <see langword="static"/>, <see langword="false"/> otherwise.</returns>
+    public bool IsStatic()
+    {
+        return SupportedType?.IsAbstract == true && SupportedType.IsSealed;
+    }
+
     /// <inheritdoc cref="IsMutable(AssemblyName)"/>
     public bool IsMutable()
     {

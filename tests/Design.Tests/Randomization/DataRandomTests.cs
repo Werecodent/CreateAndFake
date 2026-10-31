@@ -4,24 +4,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Randomization;
 
-public static class DataRandomTests
+public sealed class DataRandomTests : AutoTester<DataRandom>
 {
-    [Fact]
-    internal static Task DataRandom_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<DataRandom>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task DataRandom_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<DataRandom>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void DataRandom_MaintainsValues(DataRandom testInstance)
     {

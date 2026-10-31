@@ -3,26 +3,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Properties;
 
-public static class DesignDefaultsTests
+public sealed class DesignDefaultsTests() : AutoTester(typeof(DesignDefaults))
 {
-    [Fact]
-    internal static Task DesignDefaults_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(DesignDefaults),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task DesignDefaults_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(DesignDefaults),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void IterationLimit_DoubleObjectSubclassMinimum()
     {

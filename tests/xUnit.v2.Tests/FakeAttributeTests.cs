@@ -1,28 +1,19 @@
-using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
-public static class FakeAttributeTests
+public sealed class FakeAttributeTests : AutoTester<FakeAttribute>
 {
-    private static readonly ParameterInfo _FakeParam = IntegrationTests
-        .AttributeMethod.GetParameters()
-        .First(p => Attribute.IsDefined(p, typeof(FakeAttribute)));
-
-    [Fact]
-    internal static Task FakeAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FakeAttribute>(
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [_FakeParam, IntegrationTests.AttributeMethod] }
-        );
-    }
-
-    [Fact]
-    internal static Task FakeAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FakeAttribute>(
-            CancellationToken.None,
-            opt => opt with { InjectionValues = [_FakeParam, IntegrationTests.AttributeMethod] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues =
+                [
+                    IntegrationTests.AttributeMethod,
+                    IntegrationTests
+                        .AttributeMethod.GetParameters()
+                        .First(p => Attribute.IsDefined(p, typeof(FakeAttribute))),
+                ],
+            };
 }

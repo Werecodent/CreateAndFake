@@ -3,45 +3,26 @@ using System.Drawing;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
 #pragma warning disable CA1859 // False positive; needed for generic resolution.
 
-public static class ValueComparerTests
+public sealed class ValueComparerTests : AutoTester<ValueComparer>
 {
-    [Fact]
-    internal static Task ValueComparer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            ValueComparer.Use,
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override ValueComparer TestInstance { get; } = ValueComparer.Use;
 
-    [Fact]
-    internal static Task ValueComparer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            ValueComparer.Use,
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentOutOfRangeException),
-                        typeof(IterationLimitException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static void ValueComparer_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<ValueComparer>();
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(IterationLimitException),
+                ],
+            };
 
     [Fact]
     internal static Task ValueComparer_VerifyToolSupport()

@@ -9,9 +9,10 @@ namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached value within a range.</summary>
 [ExcludeFromCreateAndFake]
-public abstract class BaseCapAttribute : ParameterHintAttribute
+public abstract class BaseCapAttribute : ParameterHintAttribute, ICloneable
 {
-    private readonly bool _minSet;
+    /// <summary>Test.</summary>
+    protected bool IsMinSet { get; }
 
     /// <summary>Lower boundary for the generated value.</summary>
     public object Min { get; }
@@ -27,7 +28,7 @@ public abstract class BaseCapAttribute : ParameterHintAttribute
     /// <seealso cref="IRandom.Next{T}(T,T)"/>
     protected BaseCapAttribute(object min, object max)
     {
-        _minSet = true;
+        IsMinSet = true;
         Min = min;
         Max = max;
     }
@@ -37,7 +38,7 @@ public abstract class BaseCapAttribute : ParameterHintAttribute
     /// <seealso cref="IRandom.Next{T}(T)"/>
     protected BaseCapAttribute(object max)
     {
-        _minSet = false;
+        IsMinSet = false;
         Min = 0;
         Max = max;
     }
@@ -57,7 +58,7 @@ public abstract class BaseCapAttribute : ParameterHintAttribute
             Type minType = Min.GetType();
             Type maxType = Max.GetType();
 
-            if (_minSet)
+            if (IsMinSet)
             {
                 if (minType == maxType && maxType == param.ParameterType)
                 {
@@ -85,4 +86,7 @@ public abstract class BaseCapAttribute : ParameterHintAttribute
             throw new ToolException($"'{param}' not a support value type for the value generator.");
         }
     }
+
+    /// <inheritdoc/>
+    public abstract object Clone();
 }

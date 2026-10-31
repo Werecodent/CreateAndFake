@@ -4,24 +4,8 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
-public static class ValuerAsyncComparableSampleTests
+public sealed class ValuerAsyncComparableSampleTests : AutoTester<ValuerAsyncComparableSample>
 {
-    [Fact]
-    public static Task ValuerAsyncComparableSample_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ValuerAsyncComparableSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    public static Task ValuerAsyncComparableSample_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ValuerAsyncComparableSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     public static Task CompareAsync_CloneHasNoDifferences(ValuerAsyncComparableSample data)
     {

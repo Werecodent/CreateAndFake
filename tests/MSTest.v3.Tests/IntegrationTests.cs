@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.FakerTool;
 namespace Werecodent.CreateAndFake.MSTest.v3.Tests;
 
 [TestClass]
-public class IntegrationTests
+public sealed class IntegrationTests
 {
     internal static MethodInfo AttributeMethod { get; } =
         typeof(IntegrationTests).GetMethod(

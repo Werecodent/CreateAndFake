@@ -2,30 +2,14 @@ using System.Reflection;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class ScopeCheckerTests
+public sealed class ScopeCheckerTests() : AutoTester(typeof(ScopeChecker))
 {
-    [Fact]
-    internal static Task ScopeChecker_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ScopeChecker),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task ScopeChecker_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(ScopeChecker),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(InvalidOperationException)] };
 
     [Fact]
     internal static void FindLoadedSpecificTypes_IncludesOnlyClasses()

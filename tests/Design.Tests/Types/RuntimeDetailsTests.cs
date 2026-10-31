@@ -2,26 +2,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class RuntimeDetailsTests
+public sealed class RuntimeDetailsTests() : AutoTester(typeof(RuntimeDetails))
 {
-    [Fact]
-    internal static Task RuntimeDetails_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(RuntimeDetails),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task RuntimeDetails_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(RuntimeDetails),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void RuntimeType_CorrectType()
     {

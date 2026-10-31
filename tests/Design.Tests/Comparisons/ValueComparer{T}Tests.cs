@@ -1,41 +1,13 @@
 ﻿using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
-public static class ValueComparer_T_Tests
+public sealed class ValueComparer_T_Tests() : AutoTester(typeof(ValueComparer<>))
 {
-    [Fact]
-    internal static void Debug_ValueComparer_ToString()
-    {
-        typeof(ValueComparer<>).Tools().CreateRandomInstance().ToString().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task ValueComparer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ValueComparer<>),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task ValueComparer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(ValueComparer<>),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
-        );
-    }
-
-    [Fact]
-    internal static void ValueComparer_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality(typeof(ValueComparer<>));
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] };
 
     [Fact]
     internal static Task ValueComparer_VerifyToolSupport()

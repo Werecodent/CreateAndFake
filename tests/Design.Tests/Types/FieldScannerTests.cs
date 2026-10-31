@@ -5,7 +5,7 @@ namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 #pragma warning disable CA1823, CS0169, CS0414, IDE0044, IDE0051, RCS1169, RCS1213, S1144, S2933 // For testing.
 
-public static class FieldScannerTests
+public sealed class FieldScannerTests : AutoTester<FieldScanner>
 {
     private const BindingFlags _AllScope =
         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -42,22 +42,6 @@ public static class FieldScannerTests
         public int _publicMutateField = 0;
 
         public readonly int _publicField = 0;
-    }
-
-    [Fact]
-    internal static Task FieldScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FieldScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task FieldScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FieldScanner>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

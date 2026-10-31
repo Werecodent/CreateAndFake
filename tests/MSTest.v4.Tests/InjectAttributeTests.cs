@@ -1,31 +1,20 @@
-using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
-public class InjectAttributeTests
+public sealed class InjectAttributeTests : AutoTester<InjectAttribute>
 {
-    private static readonly ParameterInfo _InjectParam = IntegrationTests
-        .AttributeMethod.GetParameters()
-        .First(p => Attribute.IsDefined(p, typeof(InjectAttribute)));
-
-    public TestContext TestContext { get; set; }
-
-    [TestMethod]
-    public Task InjectAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<InjectAttribute>(
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [_InjectParam, IntegrationTests.AttributeMethod] }
-        );
-    }
-
-    [TestMethod]
-    public Task InjectAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<InjectAttribute>(
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [_InjectParam, IntegrationTests.AttributeMethod] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues =
+                [
+                    IntegrationTests.AttributeMethod,
+                    IntegrationTests
+                        .AttributeMethod.GetParameters()
+                        .First(p => Attribute.IsDefined(p, typeof(InjectAttribute))),
+                ],
+            };
 }

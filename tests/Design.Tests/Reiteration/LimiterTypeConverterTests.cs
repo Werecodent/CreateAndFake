@@ -1,43 +1,26 @@
-using System.Collections.Frozen;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
-public class LimiterTypeConverterTests
+public sealed class LimiterTypeConverterTests : AutoTester<LimiterTypeConverter>
 {
-    private static readonly FrozenSet<Type> _IgnorableExceptions =
-    [
-        typeof(FormatException),
-        typeof(ArgumentException),
-        typeof(InvalidCastException),
-        typeof(ArgumentOutOfRangeException),
-    ];
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                OnlyDeclaredMethods = true,
+                IgnorableExceptions =
+                [
+                    typeof(FormatException),
+                    typeof(ArgumentException),
+                    typeof(InvalidCastException),
+                    typeof(ArgumentOutOfRangeException),
+                ],
+            };
 
     private static readonly LimiterTypeConverter _TestInstance = new();
-
-    [Fact]
-    public Task LimiterTypeConverter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<LimiterTypeConverter>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
-        );
-    }
-
-    [Fact]
-    public Task LimiterTypeConverter_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<LimiterTypeConverter>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = _IgnorableExceptions,
-                    OnlyDeclaredMethods = true,
-                }
-        );
-    }
 
     [Theory, RandomData]
     public void ConvertFrom_Tries(int tries)

@@ -3,7 +3,7 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class FactoryScannerTests
+public sealed class FactoryScannerTests : AutoTester<FactoryScanner>
 {
     private const BindingFlags _AllScope =
         BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
@@ -39,22 +39,6 @@ public static class FactoryScannerTests
         {
             return new();
         }
-    }
-
-    [Fact]
-    internal static Task FactoryScanner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FactoryScanner>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task FactoryScanner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FactoryScanner>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

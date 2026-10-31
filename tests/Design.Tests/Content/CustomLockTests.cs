@@ -2,24 +2,8 @@ using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class CustomLockTests
+public sealed class CustomLockTests : AutoTester<CustomLock>
 {
-    [Fact]
-    internal static Task CustomLock_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CustomLock>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task CustomLock_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<CustomLock>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static Task CustomLock_VerifyToolSupport()
     {
@@ -27,12 +11,6 @@ public static class CustomLockTests
             typeof(CustomLock),
             TestContext.Current.CancellationToken
         );
-    }
-
-    [Fact]
-    internal static void CustomLock_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<CustomLock>();
     }
 
     [Fact]

@@ -1,34 +1,13 @@
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class AsyncListTests
+public sealed class AsyncListTests() : AutoTester(typeof(AsyncList<>))
 {
-    [Fact]
-    internal static void Debug_AsyncList_ToString()
-    {
-        typeof(AsyncList<>).Tools().CreateRandomInstance().ToString().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task AsyncList_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AsyncList<>),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Theory, RandomData]
-    internal static Task AsyncList_NoParameterMutation([Cap(6, 9)] int iterationLimit)
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AsyncList<>),
-            TestContext.Current.CancellationToken,
-            opt => opt with { InjectionValues = [iterationLimit] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { InjectionValues = [Tools.Gen.Next(6, 9)] };
 
     [Fact]
     internal static Task AsyncList_FrameworkSupport()

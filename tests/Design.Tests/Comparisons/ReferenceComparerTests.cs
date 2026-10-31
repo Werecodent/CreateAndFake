@@ -4,24 +4,8 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Comparisons;
 
-public static class ReferenceComparerTests
+public sealed class ReferenceComparerTests : AutoTester<ReferenceComparer>
 {
-    [Fact]
-    internal static Task ReferenceComparer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ReferenceComparer>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ReferenceComparer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ReferenceComparer>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void Equals_UsesReferenceComparison(DataSample data, [Copy] DataSample dupe)
     {

@@ -1,35 +1,13 @@
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class SingleCallValueTaskSourceTests
+public sealed class SingleCallValueTaskSourceTests : AutoTester<SingleCallValueTaskSource>
 {
-    [Fact]
-    internal static Task SingleCallValueTaskSource_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(SingleCallValueTaskSource),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task SingleCallValueTaskSource_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(SingleCallValueTaskSource),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] }
-        );
-    }
-
-    [Fact]
-    internal static void SingleCallValueTaskSource_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<SingleCallValueTaskSource>();
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(NotSupportedException)] };
 
     [Theory, RandomData]
     internal static async Task GetResult_Prevents2ndAwait(

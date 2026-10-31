@@ -12,4 +12,10 @@ public sealed class CapAttribute : BaseCapAttribute
     /// <inheritdoc/>
     public CapAttribute(object max)
         : base(max) { }
+
+    /// <inheritdoc/>
+    public override object Clone()
+    {
+        return IsMinSet ? new CapAttribute(Min, Max) : new CapAttribute(Max);
+    }
 }

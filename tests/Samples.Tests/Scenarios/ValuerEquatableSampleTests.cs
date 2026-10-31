@@ -2,27 +2,4 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
-public static class ValuerEquatableSampleTests
-{
-    [Fact]
-    public static Task ValuerEquatableSample_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ValuerEquatableSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    public static Task ValuerEquatableSample_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ValuerEquatableSample>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static void ValuerEquatableSample_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<ValuerEquatableSample>();
-    }
-}
+public sealed class ValuerEquatableSampleTests : AutoTester<ValuerEquatableSample>;

@@ -143,3 +143,6 @@ dotnet_diagnostic.S8969.severity = None
 
 # Specifically for Visual Studio extensions and don't apply to this library.
 dotnet_diagnostic.VSTHRD003.severity = None
+
+# False positive when calling tester methods.
+dotnet_diagnostic.S2699.severity = None

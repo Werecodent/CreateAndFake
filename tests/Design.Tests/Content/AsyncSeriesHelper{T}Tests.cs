@@ -2,26 +2,8 @@ using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;
 
-public static class AsyncSeriesHelper_T_Tests
+public sealed class AsyncSeriesHelper_T_Tests() : AutoTester(typeof(AsyncSeriesHelper<>))
 {
-    [Fact]
-    internal static Task AsyncSeriesHelper_T_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AsyncSeriesHelper<>),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task AsyncSeriesHelper_T_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AsyncSeriesHelper<>),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void Empty_Cached()
     {

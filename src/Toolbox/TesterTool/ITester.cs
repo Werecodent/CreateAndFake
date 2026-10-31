@@ -114,6 +114,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>
     ///     Important relevant options: <list type="bullet">
     ///         <item><see cref="TesterOptions.InjectionValues"/></item>
@@ -162,6 +163,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>
     ///     Important relevant options: <list type="bullet">
     ///         <item><see cref="TesterOptions.InjectionValues"/></item>
@@ -194,6 +196,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     /// <remarks>
     ///     Important relevant options: <list type="bullet">
     ///         <item><see cref="TesterOptions.MethodsToIgnore"/></item>
@@ -256,6 +259,7 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="testAssembly">Assembly with the tests.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     Task ValidateRandomDataParametersAsync(
         Assembly testAssembly,
         CancellationToken canceler,

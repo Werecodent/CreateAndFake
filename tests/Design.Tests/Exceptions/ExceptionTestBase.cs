@@ -2,27 +2,13 @@
 
 namespace Werecodent.CreateAndFake.Design.Tests.Exceptions;
 
-public abstract class ExceptionTestBase<T>
+public abstract class ExceptionTestBase<T> : AutoTester<T>
     where T : Exception
 {
     [Theory, RandomData]
     public void Debug_Exception_ToString(T error)
     {
         error.Assert().Debug();
-    }
-
-    [Fact]
-    public Task Exception_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<T>(TestContext.Current.CancellationToken);
-    }
-
-    [Fact]
-    public Task Exception_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<T>(
-            TestContext.Current.CancellationToken
-        );
     }
 
     [Fact]

@@ -4,23 +4,9 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Context;
 
-public abstract class BaseDataContextTestBase<T>
+public abstract class BaseDataContextTestBase<T> : AutoTester<T>
     where T : BaseDataContext
 {
-    [Fact]
-    public Task BaseDataContext_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<T>(TestContext.Current.CancellationToken);
-    }
-
-    [Fact]
-    public Task BaseDataContext_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<T>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     public void BaseDataContext_MaintainsValues(T testInstance)
     {

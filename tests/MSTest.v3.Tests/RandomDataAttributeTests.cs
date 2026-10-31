@@ -1,32 +1,16 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.MSTest.v3.Tests;
 
 [TestClass]
-public class RandomDataAttributeTests
+public sealed class RandomDataAttributeTests : AutoTester<RandomDataAttribute>
 {
-    public TestContext TestContext { get; set; }
+    protected override RandomDataAttribute TestInstance { get; } = new() { Trials = 3 };
 
-    [TestMethod]
-    public Task RandomDataAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            new RandomDataAttribute() { Trials = 3 },
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
-        );
-    }
-
-    [TestMethod]
-    public Task RandomDataAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            new RandomDataAttribute() { Trials = 3 },
-            TestContext.CancellationToken,
-            opt => opt with { InjectionValues = [3, GetGeneratableMethod()] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { InjectionValues = [3, GetGeneratableMethod()] };
 
     [TestMethod]
     public void GetData_UsesTrials()

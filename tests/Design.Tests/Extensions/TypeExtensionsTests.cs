@@ -2,26 +2,8 @@
 
 namespace Werecodent.CreateAndFake.Design.Tests.Extensions;
 
-public static class TypeExtensionsTests
+public sealed class TypeExtensionsTests() : AutoTester(typeof(TypeExtensions))
 {
-    [Fact]
-    internal static Task TypeExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TypeExtensions),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task TypeExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TypeExtensions),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void Inherits_StandardInheritanceWorks()
     {

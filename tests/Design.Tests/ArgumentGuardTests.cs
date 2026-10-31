@@ -1,30 +1,14 @@
 ﻿using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests;
 
-public static class ArgumentGuardTests
+public sealed class ArgumentGuardTests() : AutoTester(typeof(ArgumentGuard))
 {
-    [Fact]
-    public static Task ArgumentGuard_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ArgumentGuard),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
-        );
-    }
-
-    [Fact]
-    public static Task ArgumentGuard_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(ArgumentGuard),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(IterationLimitException)] };
 
     [Fact]
     public static Task IsAsynchronous_TrueWithUncompletedTask()

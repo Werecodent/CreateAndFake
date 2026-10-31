@@ -1,18 +1,25 @@
-using System.Collections.Frozen;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Reiteration;
 
-public static class LimiterTests
+public sealed class LimiterTests : AutoTester<Limiter>
 {
-    private static readonly FrozenSet<Type> _IgnorableExceptions =
-    [
-        typeof(ArgumentOutOfRangeException),
-        typeof(TimeoutException),
-        typeof(FormatException),
-    ];
+    protected override Limiter TestInstance { get; } = Limiter.Few;
+
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(TimeoutException),
+                    typeof(FormatException),
+                ],
+            };
 
     [Fact]
     internal static void Debug_Limiter_NamesWithDurationEstimates()
@@ -34,32 +41,6 @@ public static class LimiterTests
         }
             .Assert()
             .Debug();
-    }
-
-    [Fact]
-    internal static Task Limiter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            Limiter.Few,
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
-        );
-    }
-
-    [Fact]
-    internal static Task Limiter_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            Limiter.Few,
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = _IgnorableExceptions }
-        );
-    }
-
-    [Fact]
-    internal static void Limiter_UsesValueEquality()
-    {
-        Tools.Tester.VerifyValueEquality<Limiter>();
     }
 
     [Fact]

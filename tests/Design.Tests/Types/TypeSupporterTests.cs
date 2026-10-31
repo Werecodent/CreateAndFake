@@ -1,28 +1,12 @@
 using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
-public static class TypeSupporterTests
+public sealed class TypeSupporterTests() : AutoTester(typeof(TypeSupporter))
 {
-    [Fact]
-    internal static Task TypeSupporter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TypeSupporter),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task TypeSupporter_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TypeSupporter),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 
     [Theory, RandomData]
     internal static void GroupBySupportedType_GroupsSuccessfully(ITypeSupporter item)
