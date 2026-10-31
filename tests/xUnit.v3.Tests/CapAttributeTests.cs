@@ -19,4 +19,11 @@ public sealed class CapAttributeTests : AutoTester<CapAttribute>
                         .First(p => Attribute.IsDefined(p, typeof(CapAttribute))),
                 ],
             };
+
+    [Fact]
+    internal static void Clone_BranchesOnMinSet()
+    {
+        new CapAttribute(1).Clone().Assert().Is(new CapAttribute(1));
+        new CapAttribute(1, 2).Clone().Assert().Is(new CapAttribute(1, 2));
+    }
 }

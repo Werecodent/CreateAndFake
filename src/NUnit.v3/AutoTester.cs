@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 using Werecodent.CreateAndFake.TesterTool;
 
@@ -10,20 +11,20 @@ public abstract class AutoTester(Type testType) : BaseAutoTester(testType)
 {
     /// <summary>Property used to access the current test's <see cref="CancellationToken"/>.</summary>
     /// <remarks>NUnit v4.1.0 required. Cannot use as a dependency due to not supporting .NET Standard 2.0.</remarks>
-    private static readonly Func<TestContext, CancellationToken>? _CancellationTokenGrabber = (Func<
-        TestContext,
-        CancellationToken
-    >?)
-        typeof(TestContext)
-            .GetProperty("CancellationToken")
-            ?.GetGetMethod()!
-            .CreateDelegate(typeof(Func<TestContext, CancellationToken>));
+    [ExcludeFromCodeCoverage] // Missing case cannot be covered by updated test frameworks.
+    private static Func<TestContext, CancellationToken>? CancellationTokenGrabber { get; } =
+        (Func<TestContext, CancellationToken>?)
+            typeof(TestContext)
+                .GetProperty("CancellationToken")
+                ?.GetGetMethod()!
+                .CreateDelegate(typeof(Func<TestContext, CancellationToken>));
 
     /// <summary>Retrieves the current test's <see cref="CancellationToken"/>.</summary>
     /// <returns>Valid token if available, default token if not.</returns>
+    [ExcludeFromCodeCoverage] // Null case cannot be covered by updated test frameworks.
     internal static CancellationToken GetCancellationToken()
     {
-        return _CancellationTokenGrabber?.Invoke(TestContext.CurrentContext)
+        return CancellationTokenGrabber?.Invoke(TestContext.CurrentContext)
             ?? CancellationToken.None;
     }
 
