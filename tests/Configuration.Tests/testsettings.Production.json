@@ -1,0 +1,122 @@
+{
+    "CreateAndFake": {
+        "Design": {
+            "Seed": 2,
+            "IterationLimit": 876,
+            "IncludeInfinityAndNaNGeneration": true
+        },
+        "Asserter": {
+            "TriggerFailureForDebugAsserts": true,
+            "DisableCatchingForThrowAsserts": true,
+            "IncludeInternalExceptionForThrowAsserts": false,
+            "ComparisonModeForStringAsserts": "CurrentCulture"
+        },
+        "Duplicator": {
+            "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
+            "IncludeFrameworkHints": false,
+            "VerifyEqualityForClones": false
+        },
+        "Extractor": {
+            "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
+            "ExtractPrivateMembers": true,
+            "IncludeFrameworkHints": false,
+            "IgnoredTypesForUniques": [
+                "Werecodent.CreateAndFake.Design.Randomization.FastRandom, CreateAndFake.Design",
+                "System.Int32"
+            ],
+            "NonExtractableTypes": [
+                "System.String"
+            ]
+        },
+        "Faker": {
+            "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
+            "IncludeFrameworkHints": false
+        },
+        "Mutator": {
+            "MaxRecursionDepth": 8,
+            "IncludeFoundHints": false,
+            "AttemptLimitForUniques": 18,
+            "AttemptLimitForVariants": 16,
+            "IncludeFrameworkHints": false,
+            "MaxAttemptsForMutatingSets": 10
+        },
+        "Randomizer": {
+            "StringMinSize": 2,
+            "StringMaxSize": 4,
+            "CollectionMinSize": 2,
+            "CollectionMaxSize": 4,
+            "MaxRecursionDepth": 9,
+            "IncludeFoundHints": false,
+            "StringCharacterSet": "ABC1",
+            "IncludeFrameworkHints": false,
+            "PreferLocalSubclasses": false,
+            "CreateCollectionAttemptLimit": 5,
+            "RequireRandomizedContents": false,
+            "FinalConditionAttemptLimit": "Few",
+            "CreateObjectAttemptLimit": "00:01:00"
+        },
+        "Runner": {
+            "RunTimeout": "00:00:10",
+            "IncludeBaseObjectMethods": true,
+            "MethodsToIgnore": [
+                "A",
+                "B"
+            ]
+        },
+        "Tester": {
+            "IncludeInternals": false,
+            "OnlyDeclaredMethods": true,
+            "IgnoreAllExceptions": true,
+            "IncludeConstructors": false,
+            "IncludeStaticMethods": false,
+            "IgnoreObsoleteMethods": false,
+            "IncludeInstanceMethods": false,
+            "DisablePassthroughTests": true,
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true,
+            "ThrowsUponCancelWithEmptySeries": false,
+            "TestClassNameGenericSubstitutes": [
+                "",
+                "_T_",
+                "_"
+            ],
+            "AllowedTestNamePrefixes": [
+                "Start"
+            ],
+            "ClassCoverageExclusions": [
+                "A",
+                "C"
+            ],
+            "IntegrityIgnorableTypes": [
+                "System.ValueTuple"
+            ],
+            "TestClassNameSuffixes": [
+                "Test"
+            ],
+            "IgnorableExceptions": [
+                "System.Exception"
+            ],
+            "MethodsToIgnore": [
+                "A",
+                "B"
+            ]
+        },
+        "Valuer": {
+            "MaxRecursionDepth": 9,
+            "SkipAsyncValues": true,
+            "AsyncTimeout": "00:00:33",
+            "IncludeFoundHints": false,
+            "CheckCollectionType": true,
+            "IncludeFrameworkHints": false,
+            "UseEquatableComparisons": true,
+            "IgnoreCurrentRandomSeed": false,
+            "IncludeValueHashInComparison": true,
+            "DefaultEqualityTypes": [
+                "System.Type"
+            ]
+        }
+    }
+}
