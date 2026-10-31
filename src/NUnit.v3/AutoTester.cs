@@ -16,7 +16,7 @@ public abstract class AutoTester(Type testType) : BaseAutoTester(testType)
     >?)
         typeof(TestContext)
             .GetProperty("CancellationToken")
-            ?.GetGetMethod()
+            ?.GetGetMethod()!
             .CreateDelegate(typeof(Func<TestContext, CancellationToken>));
 
     /// <summary>Retrieves the current test's <see cref="CancellationToken"/>.</summary>
