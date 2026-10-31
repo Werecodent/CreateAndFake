@@ -11,6 +11,8 @@ public sealed class RandomDataAttributeTests : AutoTester<RandomDataAttribute>
     protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
         opt => opt with { InjectionValues = [3, GetGeneratableMethod()] };
 
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
+
     [Fact]
     internal static void GetData_UsesTrials()
     {

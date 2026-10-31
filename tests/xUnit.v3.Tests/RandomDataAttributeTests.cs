@@ -33,6 +33,7 @@ public static class RandomDataAttributeTests
                 opt with
                 {
                     InjectionValues = [3, GetGeneratableMethod(), tracker],
+                    MethodsToIgnore = [nameof(RandomDataAttribute.GetData)],
                     OnlyDeclaredMethods = true,
                 }
         );
