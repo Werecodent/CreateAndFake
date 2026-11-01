@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
@@ -12,6 +13,8 @@ internal sealed class StringDictionaryMutateHandler : IMutateHandler
     /// <inheritdoc/>
     public bool ModifySupported(object instance, IMutatorChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(instance, chainer);
+
         StringDictionary dict = (StringDictionary)instance;
 
         IEnumerable<string> keys = dict.Keys.Cast<string>();

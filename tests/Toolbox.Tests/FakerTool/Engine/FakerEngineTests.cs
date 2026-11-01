@@ -7,55 +7,23 @@ using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
 
-public static class FakerEngineTests
+public sealed class FakerEngineTests : AutoTester<FakerEngine>
 {
-    private static readonly FakerEngine _TestInstance = new();
-
-    [Fact]
-    internal static Task FakerEngine_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            new FakerEngine(),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    MethodsToIgnore =
-                    [
-                        nameof(FakerEngine.InjectStubs),
-                        nameof(FakerEngine.InjectMocks),
-                    ],
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(InvalidOperationException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task FakerEngine_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            new FakerEngine(),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    MethodsToIgnore =
-                    [
-                        nameof(FakerEngine.InjectStubs),
-                        nameof(FakerEngine.InjectMocks),
-                    ],
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(InvalidOperationException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                MethodsToIgnore =
+                [
+                    nameof(FakerEngine.InjectStubs),
+                    nameof(FakerEngine.InjectMocks),
+                ],
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(InvalidOperationException),
+                ],
+            };
 
     [Fact]
     internal static void Inject_HandlesValues()
@@ -90,27 +58,27 @@ public static class FakerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void Mock_NoHintsUnsupported(Type type)
+    internal void Mock_NoHintsUnsupported(Type type)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Mock(type, [], CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Mock_NullFakeResultSafe([Stub] IFakeHint hint, Type type)
+    internal void Mock_NullFakeResultSafe([Stub] IFakeHint hint, Type type)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Mock(type, [], CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Mock_NullSetupResultSafe([Stub] IFakeHint hint, Type type, IFaked data)
+    internal void Mock_NullSetupResultSafe([Stub] IFakeHint hint, Type type, IFaked data)
     {
         hint.TryToFake(type, [], Arg.Any<IFakerChainer>()).SetupReturn(new FakeHintResult(data));
 
-        _TestInstance.Mock(type, [], CreateHintChainer(hint)).Dummy.Assert().Is(data);
+        TestInstance.Mock(type, [], CreateHintChainer(hint)).Dummy.Assert().Is(data);
     }
 
     private static FakerChainer CreateHintChainer(IFakeHint hint)

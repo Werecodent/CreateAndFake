@@ -6,33 +6,10 @@ using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
-public static class SubclasserTests
+public sealed class SubclasserTests() : AutoTester(typeof(Subclasser))
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions = [typeof(ArgumentException)],
-        };
-
-    [Fact]
-    internal static Task Subclasser_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(Subclasser),
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Subclasser_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(Subclasser),
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 
     [Fact]
     internal static void Create_InterfacesWork()

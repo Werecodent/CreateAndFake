@@ -4,37 +4,20 @@ using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Engine;
 
-public static class ExtractorChainerTests
+public sealed class ExtractorChainerTests : AutoTester<ExtractorChainer>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(UnsupportedException),
-                typeof(ToolException),
-                typeof(TargetParameterCountException),
-                typeof(MismatchedAccessException),
-            ],
-        };
-
-    [Fact]
-    internal static Task ExtractorChainer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ExtractorChainer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task ExtractorChainer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ExtractorChainer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(UnsupportedException),
+                    typeof(ToolException),
+                    typeof(TargetParameterCountException),
+                    typeof(MismatchedAccessException),
+                ],
+            };
 
     [Theory, RandomData]
     internal static async Task AddFoundValue_CannotUseAfterAsyncCall(

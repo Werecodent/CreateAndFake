@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class FakerOptionsTests
+public sealed class FakerOptionsTests : AutoTester<FakerOptions>
 {
-    [Fact]
-    internal static Task FakerOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FakerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task FakerOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FakerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void FakerOptions_ModFormRandomizable()

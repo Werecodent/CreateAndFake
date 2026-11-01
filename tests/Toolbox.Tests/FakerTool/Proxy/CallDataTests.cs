@@ -4,14 +4,11 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
-public static class CallDataTests
+public sealed class CallDataTests() : AutoTester(typeof(CallData))
 {
-    [Fact]
-    internal static Task CallData_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CallData>(
-            TestContext.Current.CancellationToken
-        );
+        return Task.CompletedTask;
     }
 
     [Theory, RandomData]

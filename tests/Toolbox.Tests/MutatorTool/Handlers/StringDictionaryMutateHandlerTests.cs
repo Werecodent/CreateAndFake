@@ -4,8 +4,17 @@ using Werecodent.CreateAndFake.MutatorTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool.Handlers;
 
-public static class StringDictionaryMutateHandlerTests
+public sealed class StringDictionaryMutateHandlerTests()
+    : AutoTester(typeof(StringDictionaryMutateHandler))
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] };
+
+    public override Task Tester_NoParameterMutation()
+    {
+        return Task.CompletedTask;
+    }
+
     [Fact]
     internal static void StringDictionaryMutateHandler_InternalOnly()
     {

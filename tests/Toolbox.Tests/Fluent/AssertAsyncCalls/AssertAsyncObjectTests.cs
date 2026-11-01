@@ -9,8 +9,11 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public sealed class AssertAsyncObjectTests
+public sealed class AssertAsyncObjectTests : AutoTester<AssertAsyncObject>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+
     private int _modCount;
 
     private readonly AsserterMod _mod;
@@ -23,32 +26,6 @@ public sealed class AssertAsyncObjectTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertAsyncObject_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertAsyncObject>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task AssertAsyncObject_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertAsyncObject>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
     }
 
     [Theory, RandomData]

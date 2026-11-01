@@ -3,43 +3,18 @@ using Werecodent.CreateAndFake.FakerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
 
-public static class FakerChainerTests
+public sealed class FakerChainerTests : AutoTester<FakerChainer>
 {
-    [Fact]
-    internal static Task FakerChainer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FakerChainer>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(InvalidOperationException),
-                        typeof(ArgumentOutOfRangeException),
-                        typeof(TargetInvocationException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task FakerChainer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FakerChainer>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(InvalidOperationException),
-                        typeof(ArgumentOutOfRangeException),
-                        typeof(TargetInvocationException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(InvalidOperationException),
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(TargetInvocationException),
+                ],
+            };
 }

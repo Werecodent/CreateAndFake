@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.DuplicatorTool;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
-public static class DuplicatorOptionsTests
+public sealed class DuplicatorOptionsTests : AutoTester<DuplicatorOptions>
 {
-    [Fact]
-    internal static Task DuplicatorOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<DuplicatorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task DuplicatorOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<DuplicatorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void DuplicatorOptions_ModFormRandomizable()

@@ -2,14 +2,8 @@
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Handlers;
 
-public static class FactoryCopyHandlerTests
+public sealed class FactoryCopyHandlerTests() : AutoTester(typeof(FactoryCopyHandler<>))
 {
-    [Fact]
-    internal static Task FactoryCopyHandler_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(FactoryCopyHandler<object>),
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] };
 }

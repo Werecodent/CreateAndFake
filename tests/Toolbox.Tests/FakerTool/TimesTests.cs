@@ -2,30 +2,8 @@
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class TimesTests
+public sealed class TimesTests : AutoTester<Times>
 {
-    [Fact]
-    internal static Task Times_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Times>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task Times_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Times>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task Times_UsesValueEquality()
-    {
-        return Tools.Tester.VerifyValueEqualityAsync<Times>(TestContext.Current.CancellationToken);
-    }
-
     [Fact]
     internal static void Never_Works()
     {

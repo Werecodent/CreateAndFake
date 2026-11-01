@@ -6,40 +6,21 @@ using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class BehaviorTests
+public sealed class BehaviorTests() : AutoTester(typeof(Behavior))
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]),
-            IgnorableExceptions =
-            [
-                typeof(ArgumentException),
-                typeof(ArgumentNullException),
-                typeof(NotImplementedException),
-                typeof(TargetParameterCountException),
-            ],
-        };
-
-    [Fact]
-    internal static Task Behavior_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(Behavior),
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Behavior_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(Behavior),
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                MethodsToIgnore = FrozenSet.ToFrozenSet(["Throw"]),
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(ArgumentNullException),
+                    typeof(NotImplementedException),
+                    typeof(TargetParameterCountException),
+                ],
+            };
 
     [Fact]
     internal static void Call_BehaviorWorks()

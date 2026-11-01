@@ -6,13 +6,25 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 
-public sealed class TaskAssertGenericValueTaskExtensionsTests
+public sealed class TaskAssertGenericValueTaskExtensionsTests : AutoTester
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ValueTaskRepeatedAccessException),
+                ],
+            };
+
     private int _modCount;
 
     private readonly AsserterMod _mod;
 
     public TaskAssertGenericValueTaskExtensionsTests()
+        : base(typeof(TaskAssertGenericValueTaskExtensions))
     {
         _modCount = 0;
         _mod = opt =>
@@ -20,42 +32,6 @@ public sealed class TaskAssertGenericValueTaskExtensionsTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task TaskAssertGenericValueTaskExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertGenericValueTaskExtensions),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(AssertException),
-                        typeof(ValueTaskRepeatedAccessException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task TaskAssertGenericValueTaskExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskAssertGenericValueTaskExtensions),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(AssertException),
-                        typeof(ValueTaskRepeatedAccessException),
-                    ],
-                }
-        );
     }
 
     [Fact]

@@ -2,39 +2,12 @@ using Werecodent.CreateAndFake.FakerTool.Hints;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Hints;
 
-public static class AsyncDisposableFakeHintTests
+public sealed class AsyncDisposableFakeHintTests : AutoTester<AsyncDisposableFakeHint>
 {
-    [Fact]
-    internal static Task AsyncDisposableFakeHint_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AsyncDisposableFakeHint>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(NotSupportedException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task AsyncDisposableFakeHint_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AsyncDisposableFakeHint>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(NotSupportedException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(NotSupportedException)],
+            };
 }

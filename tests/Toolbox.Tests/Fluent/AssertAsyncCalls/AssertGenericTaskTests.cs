@@ -9,20 +9,21 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public sealed class AssertGenericTaskTests
+public sealed class AssertGenericTaskTests : AutoTester<AssertGenericTask<string>>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(InvalidCastException),
-                typeof(ArgumentException),
-                typeof(ValueTaskRepeatedAccessException),
-            ],
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(InvalidCastException),
+                    typeof(ArgumentException),
+                    typeof(ValueTaskRepeatedAccessException),
+                ],
+            };
 
     private int _modCount;
 
@@ -36,24 +37,6 @@ public sealed class AssertGenericTaskTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertGenericTask_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertGenericTask<string>>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task AssertGenericTask_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertGenericTask<string>>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
     }
 
     [Theory, RandomData]

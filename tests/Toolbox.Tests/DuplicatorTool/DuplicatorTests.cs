@@ -6,31 +6,10 @@ using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
-public static class DuplicatorTests
+public sealed class DuplicatorTests : AutoTester<Duplicator>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions = [typeof(ToolException)],
-        };
-
-    [Fact]
-    internal static Task Duplicator_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Duplicator>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Duplicator_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Duplicator>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
 
     [Fact]
     internal static void Copy_MissingMatchThrows()

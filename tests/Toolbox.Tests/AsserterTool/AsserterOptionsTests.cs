@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.AsserterTool;
 
 namespace Werecodent.CreateAndFake.Tests.AsserterTool;
 
-public static class AsserterOptionsTests
+public sealed class AsserterOptionsTests : AutoTester<AsserterOptions>
 {
-    [Fact]
-    internal static Task AsserterOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AsserterOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task AsserterOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AsserterOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void AsserterOptions_ModFormRandomizable()

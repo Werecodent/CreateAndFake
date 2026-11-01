@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
@@ -14,6 +15,8 @@ internal sealed class ConvertExtractHandler(Type type, Func<object, ICollection<
     /// <inheritdoc/>
     public bool ExtractSupported(object source, IExtractorChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(factory, chainer);
+
         if (chainer.AddFoundValue(source))
         {
             foreach (object? item in factory.Invoke(source))
@@ -38,6 +41,8 @@ internal sealed class ConvertExtractHandler(Type type, Func<object, ICollection<
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(factory, chainer);
+
         if (await chainer.AddFoundValueAsync(source, canceler).ConfigureAwait(false))
         {
             foreach (object? item in factory.Invoke(source))

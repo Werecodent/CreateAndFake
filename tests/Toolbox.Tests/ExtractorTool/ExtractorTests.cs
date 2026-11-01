@@ -7,31 +7,10 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
-public static class ExtractorTests
+public sealed class ExtractorTests : AutoTester<Extractor>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions = [typeof(ToolException)],
-        };
-
-    [Fact]
-    internal static Task Extractor_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Extractor>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Extractor_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Extractor>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
 
     [Fact]
     internal static void Extract_CollectionsWork()

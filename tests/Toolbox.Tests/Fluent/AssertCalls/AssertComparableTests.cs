@@ -8,19 +8,20 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public sealed class AssertComparableTests
+public sealed class AssertComparableTests : AutoTester<AssertComparable>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(InvalidCastException),
-                typeof(ArgumentException),
-            ],
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(InvalidCastException),
+                    typeof(ArgumentException),
+                ],
+            };
 
     private int _modCount;
 
@@ -34,24 +35,6 @@ public sealed class AssertComparableTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertComparable_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertComparable>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task AssertComparable_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertComparable>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
     }
 
     [Theory, RandomData]

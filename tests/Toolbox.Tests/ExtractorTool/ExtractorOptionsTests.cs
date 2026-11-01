@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.ExtractorTool;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
-public static class ExtractorOptionsTests
+public sealed class ExtractorOptionsTests : AutoTester<ExtractorOptions>
 {
-    [Fact]
-    internal static Task ExtractorOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ExtractorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ExtractorOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ExtractorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void ExtractorOptions_ModFormRandomizable()

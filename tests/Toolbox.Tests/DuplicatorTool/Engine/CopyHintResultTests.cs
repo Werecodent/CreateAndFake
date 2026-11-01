@@ -2,24 +2,8 @@ using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Engine;
 
-public static class CopyHintResultTests
+public sealed class CopyHintResultTests : AutoTester<CopyHintResult>
 {
-    [Fact]
-    internal static Task CopyHintResult_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CopyHintResult>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task CopyHintResult_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<CopyHintResult>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void None_HasNoData()
     {

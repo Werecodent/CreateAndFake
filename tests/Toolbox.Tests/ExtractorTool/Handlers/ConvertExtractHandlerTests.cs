@@ -3,7 +3,7 @@ using Werecodent.CreateAndFake.ExtractorTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Handlers;
 
-public static class ConvertExtractHandlerTests
+public sealed class ConvertExtractHandlerTests() : AutoTester(typeof(ConvertExtractHandler))
 {
     [Fact]
     internal static void ConvertExtractHandler_InternalOnly()

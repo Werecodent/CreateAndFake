@@ -3,24 +3,8 @@ using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class ArgTests
+public sealed class ArgTests : AutoTester<Arg>
 {
-    [Fact]
-    internal static Task Arg_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Arg>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task Arg_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Arg>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void Arg_PairsWithLambda()
     {

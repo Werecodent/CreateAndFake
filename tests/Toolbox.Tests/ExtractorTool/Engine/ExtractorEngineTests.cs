@@ -5,75 +5,48 @@ using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Engine;
 
-public static class ExtractorEngineTests
+public sealed class ExtractorEngineTests : AutoTester<ExtractorEngine>
 {
-    private static readonly ExtractorEngine _TestInstance = new();
-
-    [Fact]
-    internal static Task ExtractorEngine_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ExtractorEngine>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ToolException),
-                        typeof(UnsupportedException),
-                        typeof(TargetParameterCountException),
-                        typeof(InvalidOperationException),
-                    ],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task ExtractorEngine_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ExtractorEngine>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ToolException),
-                        typeof(UnsupportedException),
-                        typeof(TargetParameterCountException),
-                        typeof(InvalidOperationException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ToolException),
+                    typeof(UnsupportedException),
+                    typeof(TargetParameterCountException),
+                    typeof(InvalidOperationException),
+                ],
+            };
 
     [Theory, RandomData]
-    internal static void Extract_NoHintsUnsupported(object data)
+    internal void Extract_NoHintsUnsupported(object data)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Extract(data, CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Extract_NullResultSafe([Stub] IExtractHint hint, object data)
+    internal void Extract_NullResultSafe([Stub] IExtractHint hint, object data)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Extract(data, CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static Task ExtractAsync_NoHintsUnsupported(object data)
+    internal Task ExtractAsync_NoHintsUnsupported(object data)
     {
-        return _TestInstance
+        return TestInstance
             .ExtractAsync(data, CreateHintChainer(null), TestContext.Current.CancellationToken)
             .Assert()
             .ThrowsAsync<UnsupportedException>(TestContext.Current.CancellationToken);
     }
 
     [Theory, RandomData]
-    internal static Task ExtractAsync_NullResultSafe([Stub] IExtractHint hint, object data)
+    internal Task ExtractAsync_NullResultSafe([Stub] IExtractHint hint, object data)
     {
         hint.TryToExtractAsync(
                 Arg.Any<object>(),
@@ -82,7 +55,7 @@ public static class ExtractorEngineTests
             )
             .SetupReturn(Task.FromResult<ExtractHintResult>(null));
 
-        return _TestInstance
+        return TestInstance
             .ExtractAsync(data, CreateHintChainer(hint), TestContext.Current.CancellationToken)
             .Assert()
             .ThrowsAsync<UnsupportedException>(TestContext.Current.CancellationToken);

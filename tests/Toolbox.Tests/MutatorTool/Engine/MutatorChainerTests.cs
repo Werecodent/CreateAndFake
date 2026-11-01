@@ -4,28 +4,18 @@ using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
-public static class MutatorChainerTests
+public sealed class MutatorChainerTests : AutoTester<MutatorChainer>
 {
-    [Fact]
-    internal static Task MutatorChainer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<MutatorChainer>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(InvalidCastException), typeof(ToolException)],
+            };
 
-    [Fact]
-    internal static Task MutatorChainer_PassthroughWithNoExceptions()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PassthroughWithNoExceptionsAsync<MutatorChainer>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(InvalidCastException), typeof(ToolException)],
-                }
-        );
+        return Task.CompletedTask;
     }
 
     [Theory, RandomData]

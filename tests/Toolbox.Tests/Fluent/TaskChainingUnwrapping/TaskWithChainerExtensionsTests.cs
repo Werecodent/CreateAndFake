@@ -8,27 +8,10 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskChainingUnwrapping;
 
-public static class TaskWithChainerExtensionsTests
+public sealed class TaskWithChainerExtensionsTests() : AutoTester(typeof(TaskWithChainerExtensions))
 {
-    [Fact]
-    internal static Task TaskWithChainerExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskWithChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task TaskWithChainerExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskWithChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException)] };
 
     [Theory, RandomData]
     internal static void With_HandlesCompiledAction(

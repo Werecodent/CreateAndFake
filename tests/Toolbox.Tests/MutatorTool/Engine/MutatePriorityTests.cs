@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
-public static class MutatePriorityTests
+public sealed class MutatePriorityTests : AutoTester<MutatePriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.MutatorTool;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
-public static class MutatorOptionsTests
+public sealed class MutatorOptionsTests : AutoTester<MutatorOptions>
 {
-    [Fact]
-    internal static Task MutatorOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<MutatorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task MutatorOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<MutatorOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void MutatorOptions_ModFormRandomizable()

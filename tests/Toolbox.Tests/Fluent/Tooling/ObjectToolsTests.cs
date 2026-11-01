@@ -4,25 +4,13 @@ using Werecodent.CreateAndFake.Fluent.Tooling;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.Tooling;
 
-public static class ObjectToolsTests
+public sealed class ObjectToolsTests : AutoTester<ObjectTools<IFaked>>
 {
-    [Fact]
-    internal static Task ObjectTools_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ObjectTools<IFaked>),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
 
-    [Fact]
-    internal static Task ObjectTools_NoParameterMutation()
+    public override Task Tester_ValueEqualityOverrideCheck()
     {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(ObjectTools<IFaked>),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
+        return Task.CompletedTask;
     }
 }

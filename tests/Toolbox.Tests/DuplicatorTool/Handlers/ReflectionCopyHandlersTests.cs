@@ -2,7 +2,7 @@ using Werecodent.CreateAndFake.DuplicatorTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Handlers;
 
-public static class ReflectionCopyHandlersTests
+public sealed class ReflectionCopyHandlersTests() : AutoTester(typeof(ReflectionCopyHandlers))
 {
     [Fact]
     internal static void ReflectionCopyHandlers_InternalOnly()

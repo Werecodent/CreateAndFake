@@ -9,8 +9,11 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public sealed class AssertDelegateTests
+public sealed class AssertDelegateTests : AutoTester<AssertDelegate>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+
     private int _modCount;
 
     private readonly AsserterMod _mod;
@@ -23,32 +26,6 @@ public sealed class AssertDelegateTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertDelegate_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertDelegate>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task AssertDelegate_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertDelegate>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
     }
 
     [Theory, RandomData]

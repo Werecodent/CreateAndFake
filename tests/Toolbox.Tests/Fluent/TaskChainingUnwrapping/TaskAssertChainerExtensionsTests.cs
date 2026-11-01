@@ -4,27 +4,11 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskChainingUnwrapping;
 
-public static class TaskAssertChainerExtensionsTests
+public sealed class TaskAssertChainerExtensionsTests()
+    : AutoTester(typeof(TaskAssertChainerExtensions))
 {
-    [Fact]
-    internal static Task TaskAssertChainerExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task TaskAssertChainerExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskAssertChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException)] };
 
     [Theory, RandomData]
     internal static Task And_Chains(Task<AssertChainer<AssertAction>> chainer)

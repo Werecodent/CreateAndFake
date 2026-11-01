@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.FakerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
 
-public static class FakePriorityTests
+public sealed class FakePriorityTests : AutoTester<FakePriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

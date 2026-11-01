@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool.Engine;
 
-public static class CopyPriorityTests
+public sealed class CopyPriorityTests : AutoTester<CopyPriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

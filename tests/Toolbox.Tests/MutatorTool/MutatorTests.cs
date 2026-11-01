@@ -4,15 +4,14 @@ using Werecodent.CreateAndFake.MutatorTool;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
-public static class MutatorTests
+public sealed class MutatorTests : AutoTester<Mutator>
 {
-    [Fact]
-    internal static Task Mutator_GuardsNulls()
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
+
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Mutator>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
+        return Task.CompletedTask;
     }
 
     [Fact]

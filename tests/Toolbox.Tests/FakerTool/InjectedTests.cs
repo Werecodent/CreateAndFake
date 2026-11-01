@@ -4,37 +4,18 @@ using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class InjectedTests
+public sealed class InjectedTests : AutoTester<Injected<InjectSample>>
 {
-    [Theory, RandomData]
-    internal static Task Injected_GuardsNulls(Injected<InjectSample> sample)
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            sample,
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [sample.Fakes],
-                    IgnorableExceptions = [typeof(InvalidOperationException)],
-                }
-        );
-    }
+    protected override Injected<InjectSample> TestInstance =>
+        Tools.Randomizer.Create<Injected<InjectSample>>();
 
-    [Theory, RandomData]
-    internal static Task Injected_NoParameterMutation(Injected<InjectSample> sample)
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            sample,
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [sample.Fakes],
-                    IgnorableExceptions = [typeof(InvalidOperationException)],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration =>
+        opt =>
+            opt with
+            {
+                InjectionValues = [TestInstance.Fakes],
+                IgnorableExceptions = [typeof(InvalidOperationException)],
+            };
 
     [Theory, RandomData]
     internal static void Fake_CanFindByDummy(Injected<FakeHolderSample> sample)

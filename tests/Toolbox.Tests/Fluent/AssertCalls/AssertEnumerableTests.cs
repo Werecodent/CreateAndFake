@@ -10,21 +10,22 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public sealed class AssertEnumerableTests
+public sealed class AssertEnumerableTests : AutoTester<AssertEnumerable>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(InvalidCastException),
-                typeof(UnsupportedException),
-                typeof(ArgumentException),
-                typeof(TargetException),
-            ],
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(InvalidCastException),
+                    typeof(UnsupportedException),
+                    typeof(ArgumentException),
+                    typeof(TargetException),
+                ],
+            };
 
     private int _modCount;
 
@@ -38,24 +39,6 @@ public sealed class AssertEnumerableTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertEnumerable_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertEnumerable>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task AssertEnumerable_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertEnumerable>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
     }
 
     [Theory, RandomData]

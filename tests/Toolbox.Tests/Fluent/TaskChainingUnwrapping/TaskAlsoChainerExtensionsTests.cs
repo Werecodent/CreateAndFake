@@ -1,5 +1,4 @@
 using System.Collections;
-using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
@@ -8,28 +7,8 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskChainingUnwrapping;
 
-public static class TaskAlsoChainerExtensionsTests
+public sealed class TaskAlsoChainerExtensionsTests() : AutoTester(typeof(TaskAlsoChainerExtensions))
 {
-    [Fact]
-    internal static Task TaskAlsoChainerExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAlsoChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task TaskAlsoChainerExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskAlsoChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
     [Theory, RandomData]
     internal static void Also_HandlesCompiledAction(Task<AlsoChainer> chainer, string data)
     {

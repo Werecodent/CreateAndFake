@@ -8,9 +8,23 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public sealed class AssertStringTests
+public sealed class AssertStringTests : AutoTester<AssertString>
 {
     private static readonly char[] _Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(InvalidCastException),
+                    typeof(UnsupportedException),
+                    typeof(TargetException),
+                ],
+            };
 
     private int _modCount;
 
@@ -24,37 +38,6 @@ public sealed class AssertStringTests
             _modCount++;
             return opt;
         };
-    }
-
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(InvalidCastException),
-                typeof(UnsupportedException),
-                typeof(TargetException),
-            ],
-        };
-
-    [Fact]
-    internal static Task AssertString_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertString>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task AssertString_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertString>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
     }
 
     [Theory, RandomData]

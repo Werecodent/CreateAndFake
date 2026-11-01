@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
@@ -12,6 +13,8 @@ internal sealed class SelfExtractHandler(Type supportedType) : IExtractHandler
     /// <inheritdoc/>
     public bool ExtractSupported(object source, IExtractorChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(chainer);
+
         return chainer.AddFoundValue(source);
     }
 
@@ -22,6 +25,8 @@ internal sealed class SelfExtractHandler(Type supportedType) : IExtractHandler
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(chainer);
+
         return chainer.AddFoundValueAsync(source, canceler);
     }
 }

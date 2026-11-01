@@ -8,18 +8,19 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 
-public sealed class AssertErrorTests
+public sealed class AssertErrorTests : AutoTester<AssertError>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(InvalidCastException),
-            ],
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(InvalidCastException),
+                ],
+            };
 
     private int _modCount;
 
@@ -33,24 +34,6 @@ public sealed class AssertErrorTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertError_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AssertError>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task AssertError_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AssertError>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
     }
 
     [Theory, RandomData]

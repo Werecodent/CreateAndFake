@@ -2,7 +2,6 @@ using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.MutatorTool;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 using Werecodent.CreateAndFake.Samples.Scenarios;
-using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 
@@ -13,23 +12,19 @@ namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 public abstract class MutateHintTestBase<T>(
     IEnumerable<Type> validTypes = null,
     IEnumerable<Type> invalidTypes = null
-)
+) : AutoTester<T>
     where T : IMutateHint, new()
 {
-    /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = new T();
-
     /// <summary>Types that are supported by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that aren't supported by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? [typeof(DataHolderSample)];
 
-    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
-    [Fact]
-    public Task MutateHint_GuardsNulls()
+    /// <inheritdoc/>
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<T>(TestContext.Current.CancellationToken);
+        return Task.CompletedTask;
     }
 
     /// <summary>Ensure the hint supports all provided valid types.</summary>

@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.DuplicatorTool.Handlers;
@@ -15,6 +16,8 @@ internal sealed class FactoryCopyHandler<T>(Func<T, IDuplicatorChainer, T> facto
     /// <inheritdoc/>
     public object? CopySupported(object source, IDuplicatorChainer duplicator)
     {
+        ArgumentGuard.ThrowIfNull(factory, source);
+
         return factory.Invoke((T)source, duplicator);
     }
 }

@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.ExtractorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Engine;
 
-public static class ExtractPriorityTests
+public sealed class ExtractPriorityTests : AutoTester<ExtractPriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

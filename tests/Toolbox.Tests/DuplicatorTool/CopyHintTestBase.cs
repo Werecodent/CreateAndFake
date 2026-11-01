@@ -5,7 +5,6 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 using Werecodent.CreateAndFake.Samples.Scenarios;
-using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 
@@ -16,54 +15,32 @@ namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 public abstract class CopyHintTestBase<T>(
     IEnumerable<Type> validTypes = null,
     IEnumerable<Type> invalidTypes = null
-)
+) : AutoTester<T>
     where T : CopyHint, new()
 {
-    /// <summary>Configuration to use for automatic tests.</summary>
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(ToolException),
-                typeof(ArgumentException),
-                typeof(UnsupportedException),
-                typeof(NotSupportedException),
-                typeof(ArgumentNullException),
-                typeof(SerializationException),
-                typeof(PlatformNotSupportedException),
-                typeof(TargetParameterCountException),
-            ],
-        };
-
-    /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = new T();
+    /// <inheritdoc/>
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ToolException),
+                    typeof(ArgumentException),
+                    typeof(UnsupportedException),
+                    typeof(NotSupportedException),
+                    typeof(ArgumentNullException),
+                    typeof(SerializationException),
+                    typeof(PlatformNotSupportedException),
+                    typeof(TargetParameterCountException),
+                ],
+            };
 
     /// <summary>Types that can be copied by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that can't be copied by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes = invalidTypes ?? [typeof(DataHolderSample)];
-
-    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
-    [Fact]
-    public Task CopyHint_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<T>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
-    [Fact]
-    public virtual Task CopyHint_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<T>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]

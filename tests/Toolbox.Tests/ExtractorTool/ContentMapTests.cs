@@ -4,38 +4,10 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
-public static class ContentMapTests
+public sealed class ContentMapTests : AutoTester<ContentMap>
 {
-    [Theory, RandomData]
-    internal static void Debug_ContentMap_ToString(DataSample sample)
-    {
-        sample.Tools().Extract().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task ContentMap_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ContentMap>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ContentMap_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ContentMap>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task ContentMap_UsesValueEquality()
-    {
-        return Tools.Tester.VerifyValueEqualityAsync<ContentMap>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 
     [Theory, RandomData]
     internal static void HasContent_UsesObjectByValue(DataHolderSample sample)

@@ -4,14 +4,11 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class FakeTests
+public sealed class FakeTests : AutoTester<Fake>
 {
-    [Fact]
-    internal static Task Fake_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Fake>(
-            TestContext.Current.CancellationToken
-        );
+        return Task.CompletedTask;
     }
 
     [Fact]

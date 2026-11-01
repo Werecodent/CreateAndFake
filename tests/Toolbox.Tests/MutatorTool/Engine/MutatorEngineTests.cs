@@ -9,16 +9,11 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
-public static class MutatorEngineTests
+public sealed class MutatorEngineTests : AutoTester<MutatorEngine>
 {
-    private static readonly MutatorEngine _TestInstance = new();
-
-    [Fact]
-    internal static Task MutatorEngine_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<MutatorEngine>(
-            TestContext.Current.CancellationToken
-        );
+        return Task.CompletedTask;
     }
 
     [Theory, RandomData]
@@ -463,28 +458,28 @@ public static class MutatorEngineTests
     }
 
     [Theory, RandomData]
-    internal static void Modify_NoHintsUnsupported(object data)
+    internal void Modify_NoHintsUnsupported(object data)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Modify(data, CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Modify_NullResultSafe([Stub] IMutateHint hint, object data)
+    internal void Modify_NullResultSafe([Stub] IMutateHint hint, object data)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Modify(data, CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Modify_WrapsError([Stub] IMutateHint hint, object data)
+    internal void Modify_WrapsError([Stub] IMutateHint hint, object data)
     {
         hint.TryToModify(data, Arg.Any<IMutatorChainer>())
             .SetupReturn(Behavior<MutateHintResult>.Throw<InvalidOperationException>());
 
-        _TestInstance.Assert(x => x.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();
+        TestInstance.Assert(x => x.Modify(data, CreateHintChainer(hint))).Throws<ToolException>();
     }
 
     private static MutatorChainer CreateHintChainer(IMutateHint hint)

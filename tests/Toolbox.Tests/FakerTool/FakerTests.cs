@@ -6,37 +6,20 @@ using Werecodent.CreateAndFake.Tests.FakerTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
-public static class FakerTests
+public sealed class FakerTests : AutoTester<Faker>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(ArgumentException),
-                typeof(InvalidOperationException),
-                typeof(ArgumentOutOfRangeException),
-                typeof(TargetInvocationException),
-            ],
-        };
-
-    [Fact]
-    internal static Task Faker_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Faker>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Faker_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Faker>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(InvalidOperationException),
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(TargetInvocationException),
+                ],
+            };
 
     [Fact]
     internal static void New_NullValuerValid()

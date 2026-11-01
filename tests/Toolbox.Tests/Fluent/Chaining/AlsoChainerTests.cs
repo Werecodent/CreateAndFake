@@ -7,24 +7,8 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
 
-public static class AlsoChainerTests
+public sealed class AlsoChainerTests : AutoTester<AlsoChainer>
 {
-    [Fact]
-    internal static Task AlsoChainer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AlsoChainer>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task AlsoChainer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AlsoChainer>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void Also_HandlesCompiledAction(AlsoChainer chainer, string data)
     {

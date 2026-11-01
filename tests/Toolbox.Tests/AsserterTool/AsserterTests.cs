@@ -7,24 +7,25 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.AsserterTool;
 
-public class AsserterTests
+public sealed class AsserterTests : AutoTester<Asserter>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(ArgumentException),
-                typeof(AssertException),
-                typeof(ToolException),
-                typeof(FakeVerifyException),
-                typeof(TimeoutException),
-                typeof(UnsupportedException),
-                typeof(TargetException),
-                typeof(InvalidCastException),
-                typeof(ValueTaskRepeatedAccessException),
-            ],
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(AssertException),
+                    typeof(ToolException),
+                    typeof(FakeVerifyException),
+                    typeof(TimeoutException),
+                    typeof(UnsupportedException),
+                    typeof(TargetException),
+                    typeof(InvalidCastException),
+                    typeof(ValueTaskRepeatedAccessException),
+                ],
+            };
 
     private readonly AsserterMod _config;
 
@@ -41,24 +42,6 @@ public class AsserterTests
     }
 
     private readonly Asserter _testInstance = new(Tools.Asserter.Options);
-
-    [Fact]
-    internal static Task Asserter_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Asserter>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Asserter_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Asserter>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
 
     [Fact]
     internal static void Asserter_AllMethodsVirtual()

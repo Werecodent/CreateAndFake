@@ -6,35 +6,15 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
-public static class AsyncContentMapTests
+public sealed class AsyncContentMapTests : AutoTester<AsyncContentMap>
 {
-    [Theory, RandomData]
-    internal static void Debug_AsyncContentMap_ToString(AsyncContentMap map)
-    {
-        map.ToString().Assert().Debug();
-    }
-
-    [Fact]
-    internal static Task AsyncContentMap_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<AsyncContentMap>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task AsyncContentMap_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<AsyncContentMap>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [Tools.Extractor.Options],
-                    IgnorableExceptions = [typeof(ToolException)],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [Tools.Extractor.Options],
+                IgnorableExceptions = [typeof(ToolException)],
+            };
 
     [Fact]
     internal static Task GetAsyncEnumerator_CanCancel()

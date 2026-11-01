@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.MutatorTool.Handlers;
@@ -15,6 +16,8 @@ internal sealed class FactoryMutateHandler<T>(Action<T, IMutatorChainer> factory
     /// <inheritdoc/>
     public bool ModifySupported(object instance, IMutatorChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(factory, instance);
+
         factory.Invoke((T)instance, chainer);
         return true;
     }

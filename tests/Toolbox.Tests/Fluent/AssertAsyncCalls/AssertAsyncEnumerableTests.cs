@@ -8,13 +8,17 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public sealed class AssertAsyncEnumerableTests
+public sealed class AssertAsyncEnumerableTests : AutoTester
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+
     private int _modCount;
 
     private readonly AsserterMod _mod;
 
     public AssertAsyncEnumerableTests()
+        : base(typeof(AssertAsyncEnumerable<>))
     {
         _modCount = 0;
         _mod = opt =>
@@ -22,34 +26,6 @@ public sealed class AssertAsyncEnumerableTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task AssertAsyncEnumerable_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AssertAsyncEnumerable<>),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task AssertAsyncEnumerable_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AssertAsyncEnumerable<>),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
-                }
-        );
     }
 
     [Theory, RandomData]

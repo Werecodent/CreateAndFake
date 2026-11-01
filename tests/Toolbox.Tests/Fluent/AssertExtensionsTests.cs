@@ -1,25 +1,7 @@
 ﻿namespace Werecodent.CreateAndFake.Tests.Fluent;
 
-public static class AssertExtensionsTests
+public sealed class AssertExtensionsTests() : AutoTester(typeof(AssertExtensions))
 {
-    [Fact]
-    internal static Task AssertExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(AssertExtensions),
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task AssertExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(AssertExtensions),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void Assert_ObjectIsFluent(int data)
     {

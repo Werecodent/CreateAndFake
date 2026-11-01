@@ -13,27 +13,10 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.Chaining;
 
-public static class ResultChainerExtensionsTests
+public sealed class ResultChainerExtensionsTests() : AutoTester(typeof(ResultChainerExtensions))
 {
-    [Fact]
-    internal static Task ResultChainerExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(ResultChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task ResultChainerExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(ResultChainerExtensions),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException)] };
 
     [Theory, RandomData]
     internal static void That_SupportsIAsyncEnumerable(ResultChainer<IAsyncEnumerable<int>> chainer)

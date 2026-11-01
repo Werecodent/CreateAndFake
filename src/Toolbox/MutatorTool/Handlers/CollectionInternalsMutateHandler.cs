@@ -1,4 +1,5 @@
 using System.Collections;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 using Werecodent.CreateAndFake.MutatorTool.Hints;
 
@@ -14,6 +15,8 @@ internal sealed class CollectionInternalsMutateHandler : IMutateHandler
     /// <inheritdoc/>
     public bool ModifySupported(object instance, IMutatorChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(chainer);
+
         bool modified = false;
 
         foreach (

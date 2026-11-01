@@ -5,37 +5,20 @@ using Werecodent.CreateAndFake.FakerTool.Proxy;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
-public static class FakeMetaProviderTests
+public sealed class FakeMetaProviderTests : AutoTester<FakeMetaProvider>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(FakeCallException),
-                typeof(ToolException),
-                typeof(FakeVerifyException),
-                typeof(InvalidOperationException),
-            ],
-        };
-
-    [Fact]
-    internal static Task FakeMetaProvider_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<FakeMetaProvider>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task FakeMetaProvider_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<FakeMetaProvider>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(FakeCallException),
+                    typeof(ToolException),
+                    typeof(FakeVerifyException),
+                    typeof(InvalidOperationException),
+                ],
+            };
 
     [Theory, RandomData]
     internal static void Verify_PresetOutOfRangeThrows(

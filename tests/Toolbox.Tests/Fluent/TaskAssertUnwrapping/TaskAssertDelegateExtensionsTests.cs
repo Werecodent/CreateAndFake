@@ -4,13 +4,21 @@ using Werecodent.CreateAndFake.Fluent.AssertCalls;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertUnwrapping;
 
-public sealed class TaskAssertDelegateExtensionsTests
+public sealed class TaskAssertDelegateExtensionsTests : AutoTester
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(AssertException), typeof(ArgumentException)],
+            };
+
     private int _modCount;
 
     private readonly AsserterMod _mod;
 
     public TaskAssertDelegateExtensionsTests()
+        : base(typeof(TaskAssertDelegateExtensions))
     {
         _modCount = 0;
         _mod = opt =>
@@ -18,34 +26,6 @@ public sealed class TaskAssertDelegateExtensionsTests
             _modCount++;
             return opt;
         };
-    }
-
-    [Fact]
-    internal static Task TaskAssertDelegateExtensions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(TaskAssertDelegateExtensions),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ArgumentException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task TaskAssertDelegateExtensions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(TaskAssertDelegateExtensions),
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(AssertException), typeof(ArgumentException)],
-                }
-        );
     }
 
     [Fact]
