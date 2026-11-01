@@ -56,6 +56,33 @@ public static class AsyncSeriesHelper
         return false;
     }
 
+    /// <summary>Determines if the <paramref name="collection"/> has no items.</summary>
+    /// <typeparam name="T">The <paramref name="collection"/>'s item <see cref="Type"/>.</typeparam>
+    /// <param name="collection">Series to check for an item via iteration.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns>
+    ///     <see langword="true"/> if the <paramref name="collection"/> has no
+    ///     items or is <see langword="null"/>, <see langword="false"/> otherwise.
+    /// </returns>
+    public static async Task<bool> HasNoneAsync<T>(
+        [NotNullWhen(true)] IAsyncEnumerable<T>? collection,
+        CancellationToken canceler
+    )
+    {
+        canceler.ThrowIfCancellationRequested();
+        if (collection == null)
+        {
+            return true;
+        }
+        await foreach (T _ in collection.WithCancellation(canceler).ConfigureAwait(false))
+        {
+            return false;
+        }
+
+        canceler.ThrowIfCancellationRequested();
+        return true;
+    }
+
 #pragma warning disable CA1068 // Token is relevant to the core functionality for the method.
 
     /// <summary>

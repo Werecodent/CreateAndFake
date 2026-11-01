@@ -12,13 +12,13 @@ namespace Werecodent.CreateAndFake.Fluent.Tooling;
 /// <typeparam name="T">Target type for the tools.</typeparam>
 /// <param name="source"><inheritdoc cref="Source" path="/summary"/></param>
 /// <param name="tools"><inheritdoc cref="Tools" path="/summary"/></param>
-public class ObjectTools<T>(T source, ToolSet? tools)
+public class ObjectTools<T>(T source, IToolSet? tools)
 {
     /// <summary>Origin.</summary>
     protected T Source { get; } = source;
 
     /// <summary>Tools to use.</summary>
-    protected ToolSet Tools { get; } = tools ?? CreateAndFake.Tools.Source;
+    protected IToolSet Tools { get; } = tools ?? CreateAndFake.Tools.Source;
 
     /// <summary>Accesses the raw fake wrapper.</summary>
     /// <returns>Fake to test with.</returns>

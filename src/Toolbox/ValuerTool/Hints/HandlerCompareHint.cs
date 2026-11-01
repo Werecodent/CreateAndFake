@@ -20,7 +20,6 @@ public sealed class HandlerCompareHint : CompareHint
         new DefaultEqualityCompareHandler(typeof(RuntimeMethodHandle)),
         new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
         new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
-        new ConvertCompareHandler<CancellationToken>((token, _) => token.IsCancellationRequested),
         new ConvertCompareHandler<StreamReader>((reader, _) => reader.BaseStream),
         new ConvertCompareHandler<StreamWriter>(
             (writer, _) =>
@@ -28,6 +27,9 @@ public sealed class HandlerCompareHint : CompareHint
                 writer.Flush();
                 return writer.BaseStream;
             }
+        ),
+        new ConvertCompareHandler<CancellationToken>(
+            (token, _) => new { token.CanBeCanceled, token.IsCancellationRequested }
         ),
         new ConvertCompareHandler<StringDictionary>(
             (dict, _) =>

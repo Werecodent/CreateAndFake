@@ -52,30 +52,46 @@ public class Tester(TesterOptions options) : ITester
     }
 
     /// <inheritdoc/>
-    public virtual void VerifyEqualsMatchesHashCodes<T>(TesterMod? optionConfiguration = null)
-    {
-        VerifyEqualsMatchesHashCodes(typeof(T), optionConfiguration);
-    }
-
-    /// <inheritdoc/>
-    public virtual void VerifyEqualsMatchesHashCodes(
-        Type type,
+    public virtual Task VerifyEqualsMatchesHashCodesAsync<T>(
+        CancellationToken canceler,
         TesterMod? optionConfiguration = null
     )
     {
-        new EqualityValidator(Configure(optionConfiguration)).VerifyEqualsMatchesHashCodes(type);
+        return VerifyEqualsMatchesHashCodesAsync(typeof(T), canceler, optionConfiguration);
     }
 
     /// <inheritdoc/>
-    public virtual void VerifyValueEquality<T>(TesterMod? optionConfiguration = null)
+    public virtual Task VerifyEqualsMatchesHashCodesAsync(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
     {
-        VerifyValueEquality(typeof(T), optionConfiguration);
+        return new EqualityValidator(
+            Configure(optionConfiguration)
+        ).VerifyEqualsMatchesHashCodesAsync(type, canceler);
     }
 
     /// <inheritdoc/>
-    public virtual void VerifyValueEquality(Type type, TesterMod? optionConfiguration = null)
+    public virtual Task VerifyValueEqualityAsync<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
     {
-        new EqualityValidator(Configure(optionConfiguration)).VerifyValueEquality(type);
+        return VerifyValueEqualityAsync(typeof(T), canceler, optionConfiguration);
+    }
+
+    /// <inheritdoc/>
+    public virtual Task VerifyValueEqualityAsync(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        return new EqualityValidator(Configure(optionConfiguration)).VerifyValueEqualityAsync(
+            type,
+            canceler
+        );
     }
 
     /// <inheritdoc/>

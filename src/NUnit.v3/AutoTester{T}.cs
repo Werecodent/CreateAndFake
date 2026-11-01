@@ -3,8 +3,6 @@ using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.NUnit.v3;
 
-#pragma warning disable CA1822, S2325 // Property set for the instance.
-
 /// <inheritdoc/>
 public abstract class AutoTester<T> : BaseAutoTester<T>
 {
@@ -12,21 +10,21 @@ public abstract class AutoTester<T> : BaseAutoTester<T>
     [Test]
     public override Task Tester_GuardsNulls()
     {
-        return GuardsNullsImplementation(AutoTester.GetCancellationToken());
+        return GuardsNullsImplementation(CancellationTokenProvider.Get());
     }
 
     /// <inheritdoc/>
     [Test]
     public override Task Tester_NoParameterMutation()
     {
-        return NoParameterMutationImplementation(AutoTester.GetCancellationToken());
+        return NoParameterMutationImplementation(CancellationTokenProvider.Get());
     }
 
     /// <inheritdoc/>
     [Test]
-    public override void Tester_ValueEqualityOverrideCheck()
+    public override Task Tester_ValueEqualityOverrideCheck()
     {
-        ValueEqualityOverrideCheckImplementation();
+        return ValueEqualityOverrideCheckImplementation(CancellationTokenProvider.Get());
     }
 
     /// <inheritdoc/>
@@ -36,5 +34,3 @@ public abstract class AutoTester<T> : BaseAutoTester<T>
         DebugToStringImplementation();
     }
 }
-
-#pragma warning restore

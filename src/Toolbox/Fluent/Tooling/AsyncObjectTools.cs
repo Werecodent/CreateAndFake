@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.ValuerTool;
 namespace Werecodent.CreateAndFake.Fluent.Tooling;
 
 /// <inheritdoc/>
-public class AsyncObjectTools<T>(T source, ToolSet? tools) : ObjectTools<T>(source, tools)
+public class AsyncObjectTools<T>(T source, IToolSet? tools) : ObjectTools<T>(source, tools)
 {
     /// <inheritdoc cref="IExtractor.Extract(object,ExtractorMod)"/>
     public Task<IAsyncContentMap> ExtractAsync(

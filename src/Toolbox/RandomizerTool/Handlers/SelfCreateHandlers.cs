@@ -42,14 +42,14 @@ internal static class SelfCreateHandlers
         new FactoryCreateHandler<Limiter>(rand =>
             rand.Options.Gen.NextItem([Limiter.Few, Limiter.Dozen, Limiter.Score])
         ),
-        new FactoryCreateHandler<IAsserter>(rand => rand.Create<ToolSet>().Asserter),
-        new FactoryCreateHandler<IDuplicator>(rand => rand.Create<ToolSet>().Duplicator),
-        new FactoryCreateHandler<IExtractor>(rand => rand.Create<ToolSet>().Extractor),
-        new FactoryCreateHandler<IMutator>(rand => rand.Create<ToolSet>().Mutator),
-        new FactoryCreateHandler<IRandomizer>(rand => rand.Create<ToolSet>().Randomizer),
-        new FactoryCreateHandler<IRunner>(rand => rand.Create<ToolSet>().Runner),
-        new FactoryCreateHandler<ITester>(rand => rand.Create<ToolSet>().Tester),
-        new FactoryCreateHandler<IValuer>(rand => rand.Create<ToolSet>().Valuer),
+        new FactoryCreateHandler<IAsserter>(rand => rand.Create<IToolSet>().Asserter),
+        new FactoryCreateHandler<IDuplicator>(rand => rand.Create<IToolSet>().Duplicator),
+        new FactoryCreateHandler<IExtractor>(rand => rand.Create<IToolSet>().Extractor),
+        new FactoryCreateHandler<IMutator>(rand => rand.Create<IToolSet>().Mutator),
+        new FactoryCreateHandler<IRandomizer>(rand => rand.Create<IToolSet>().Randomizer),
+        new FactoryCreateHandler<IRunner>(rand => rand.Create<IToolSet>().Runner),
+        new FactoryCreateHandler<ITester>(rand => rand.Create<IToolSet>().Tester),
+        new FactoryCreateHandler<IValuer>(rand => rand.Create<IToolSet>().Valuer),
         new FactoryCreateHandler<ConfiguredDesignOptions>(rand =>
             CreateRandomOptionsBase<ConfiguredDesignOptions>(rand) with
             {

@@ -43,23 +43,45 @@ public interface ITester : ITool<TesterOptions>
 
     /// <summary>Verifies <typeparamref name="T"/> has proper value equality rules for hashes.</summary>
     /// <typeparam name="T"><see cref="Type"/> to verify.</typeparam>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    void VerifyEqualsMatchesHashCodes<T>(TesterMod? optionConfiguration = null);
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    Task VerifyEqualsMatchesHashCodesAsync<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>Verifies the <paramref name="type"/> has proper value equality rules for hashes.</summary>
     /// <param name="type"><see cref="Type"/> to verify.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    void VerifyEqualsMatchesHashCodes(Type type, TesterMod? optionConfiguration = null);
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    Task VerifyEqualsMatchesHashCodesAsync(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>Verifies <typeparamref name="T"/> uses all values for value equality and equality works.</summary>
     /// <typeparam name="T"><see cref="Type"/> to verify.</typeparam>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    void VerifyValueEquality<T>(TesterMod? optionConfiguration = null);
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    Task VerifyValueEqualityAsync<T>(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>Verifies the <paramref name="type"/> uses all values for value equality and equality works.</summary>
     /// <param name="type"><see cref="Type"/> to verify.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    void VerifyValueEquality(Type type, TesterMod? optionConfiguration = null);
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    Task VerifyValueEqualityAsync(
+        Type type,
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    );
 
     /// <summary>Verifies cancellation behavior.</summary>
     /// <typeparam name="T"><see cref="Type"/> to verify.</typeparam>

@@ -1,6 +1,7 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ValuerTool;
 
@@ -15,92 +16,126 @@ internal sealed class EqualityValidator(TesterOptions options)
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
-    public void VerifyEqualsMatchesHashCodes(Type type)
+    /// <inheritdoc cref="ITester.VerifyEqualsMatchesHashCodesAsync(Type,CancellationToken,TesterMod)"/>
+    public Task VerifyEqualsMatchesHashCodesAsync(Type type, CancellationToken canceler)
     {
-        VerifyValueEquality(type, false);
+        return VerifyValueEqualityAsync(type, false, canceler);
     }
 
-    public void VerifyValueEquality(Type type)
+    /// <inheritdoc cref="ITester.VerifyValueEqualityAsync(Type,CancellationToken,TesterMod)"/>
+    public Task VerifyValueEqualityAsync(Type type, CancellationToken canceler)
     {
-        VerifyValueEquality(type, true);
+        return VerifyValueEqualityAsync(type, true, canceler);
     }
 
-    private void VerifyValueEquality(Type type, bool mustIncludeAllValues)
+    private Task VerifyValueEqualityAsync(
+        Type type,
+        bool mustIncludeAllValues,
+        CancellationToken canceler
+    )
     {
         ArgumentGuard.ThrowIfNull(type);
 
         TypeDescriber describer = TypeDescriber.For(type);
 
-        if (describer.Inherits<IValuerEquatable>())
+        if (describer.Inherits<IValuerAsyncComparable>())
         {
-            IValuerEquatable x = (IValuerEquatable)Options.Randomizer.Create(type);
-            IValuerEquatable y = Options.Duplicator.Copy(x);
-            VerifyValueEquality(
+            IValuerAsyncComparable x = (IValuerAsyncComparable)Options.Randomizer.Create(type);
+            IValuerAsyncComparable y = Options.Duplicator.Copy(x);
+            return VerifyValueEqualityAsync(
                 describer,
                 x,
                 y,
-                y => x.ValuesEqual(y, Options.Valuer),
-                x => y.ValuesEqual(x, Options.Valuer),
-                () => x.GetValueHash(Options.Valuer),
-                () => y.GetValueHash(Options.Valuer),
-                mustIncludeAllValues
+                z =>
+                    AsyncSeriesHelper.HasNoneAsync(
+                        x.CompareAsync(z, Options.Valuer, canceler),
+                        canceler
+                    ),
+                z =>
+                    AsyncSeriesHelper.HasNoneAsync(
+                        y.CompareAsync(z, Options.Valuer, canceler),
+                        canceler
+                    ),
+                () => x.GetValueHashAsync(Options.Valuer, canceler),
+                () => y.GetValueHashAsync(Options.Valuer, canceler),
+                mustIncludeAllValues,
+                canceler
+            );
+        }
+        else if (describer.Inherits<IValuerEquatable>())
+        {
+            IValuerEquatable x = (IValuerEquatable)Options.Randomizer.Create(type);
+            IValuerEquatable y = Options.Duplicator.Copy(x);
+            return VerifyValueEqualityAsync(
+                describer,
+                x,
+                y,
+                z => Task.FromResult(x.ValuesEqual(z, Options.Valuer)),
+                z => Task.FromResult(y.ValuesEqual(z, Options.Valuer)),
+                () => Task.FromResult(x.GetValueHash(Options.Valuer)),
+                () => Task.FromResult(y.GetValueHash(Options.Valuer)),
+                mustIncludeAllValues,
+                canceler
             );
         }
         else if (describer.Inherits<IValueEquatable>())
         {
             IValueEquatable x = (IValueEquatable)Options.Randomizer.Create(type);
             IValueEquatable y = Options.Duplicator.Copy(x);
-            VerifyValueEquality(
+            return VerifyValueEqualityAsync(
                 describer,
                 x,
                 y,
-                x.ValuesEqual,
-                y.ValuesEqual,
-                x.GetValueHash,
-                y.GetValueHash,
-                mustIncludeAllValues
+                z => Task.FromResult(x.ValuesEqual(z)),
+                z => Task.FromResult(y.ValuesEqual(z)),
+                () => Task.FromResult(x.GetValueHash()),
+                () => Task.FromResult(y.GetValueHash()),
+                mustIncludeAllValues,
+                canceler
             );
         }
         else
         {
             object x = Options.Randomizer.Create(type);
             object y = Options.Duplicator.Copy(x);
-            VerifyValueEquality(
+            return VerifyValueEqualityAsync(
                 describer,
                 x,
                 y,
-                x.Equals,
-                y.Equals,
-                x.GetHashCode,
-                y.GetHashCode,
-                mustIncludeAllValues
+                z => Task.FromResult(x.Equals(z)),
+                z => Task.FromResult(y.Equals(z)),
+                () => Task.FromResult(x.GetHashCode()),
+                () => Task.FromResult(y.GetHashCode()),
+                mustIncludeAllValues,
+                canceler
             );
         }
     }
 
-    private void VerifyValueEquality(
+    private async Task VerifyValueEqualityAsync(
         TypeDescriber describer,
         object x,
         object y,
-        Func<object, bool> xEquals,
-        Func<object, bool> yEquals,
-        Func<int> xGetHash,
-        Func<int> yGetHash,
-        bool mustIncludeAllValues
+        Func<object, Task<bool>> xEquals,
+        Func<object, Task<bool>> yEquals,
+        Func<Task<int>> xGetHash,
+        Func<Task<int>> yGetHash,
+        bool mustIncludeAllValues,
+        CancellationToken canceler
     )
     {
         Options.Asserter.Is(
             true,
-            xEquals(y) && yEquals(x),
+            await xEquals(y).ConfigureAwait(false) && await yEquals(x).ConfigureAwait(false),
             $"Equality for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed with clone."
         );
         Options.Asserter.Is(
-            xGetHash(),
-            yGetHash(),
+            await xGetHash().ConfigureAwait(false),
+            await yGetHash().ConfigureAwait(false),
             $"Hash codes for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed with clone."
         );
 
-        void switchValue(PropertyInfo prop, object? originalValue, object? newValue)
+        async Task switchValueAsync(PropertyInfo prop, object? originalValue, object? newValue)
         {
             string originalAsText = $"{originalValue ?? "default"}";
             string newAsText = $"{newValue ?? "default"}";
@@ -110,7 +145,8 @@ internal sealed class EqualityValidator(TesterOptions options)
             {
                 Options.Asserter.Is(
                     false,
-                    xEquals(y) || yEquals(x),
+                    await xEquals(y).ConfigureAwait(false)
+                        || await yEquals(x).ConfigureAwait(false),
                     $"Equality for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed to"
                         + $" differ when modifying '{prop.Name}' from '{originalAsText}' -> '{newAsText}'."
                 );
@@ -118,8 +154,8 @@ internal sealed class EqualityValidator(TesterOptions options)
             else
             {
                 Options.Asserter.Is(
-                    xEquals(y),
-                    yEquals(x),
+                    await xEquals(y).ConfigureAwait(false),
+                    await yEquals(x).ConfigureAwait(false),
                     $"Equality result for type '{GenericConverter.ExpandName(describer.SupportedType)}'"
                         + $" mismatched when modifying '{prop.Name}' from '{originalAsText}' -> '{newAsText}'."
                 );
@@ -128,14 +164,14 @@ internal sealed class EqualityValidator(TesterOptions options)
             prop.SetValue(y, newValue);
             Options.Asserter.Is(
                 true,
-                xEquals(y) && yEquals(x),
+                await xEquals(y).ConfigureAwait(false) && await yEquals(x).ConfigureAwait(false),
                 $"Equality for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed to"
                     + $" equal when modifying '{prop.Name}' from '{originalAsText}' -> '{newAsText}'."
             );
 
             Options.Asserter.Is(
-                xGetHash(),
-                yGetHash(),
+                await xGetHash().ConfigureAwait(false),
+                await yGetHash().ConfigureAwait(false),
                 $"Hash codes for type '{GenericConverter.ExpandName(describer.SupportedType)}' failed to"
                     + $" equal when modifying '{prop.Name}' from '{originalAsText}' -> '{newAsText}'."
             );
@@ -144,10 +180,12 @@ internal sealed class EqualityValidator(TesterOptions options)
         foreach (PropertyInfo prop in describer.Properties.SetAndGetable)
         {
             object? originalValue = prop.GetValue(x);
-            object newValue = Options.Mutator.Variant(prop.PropertyType, originalValue);
+            object newValue = await Options
+                .Mutator.VariantAsync(prop.PropertyType, originalValue, canceler)
+                .ConfigureAwait(false);
 
-            switchValue(prop, originalValue, null);
-            switchValue(prop, null, newValue);
+            await switchValueAsync(prop, originalValue, null).ConfigureAwait(false);
+            await switchValueAsync(prop, null, newValue).ConfigureAwait(false);
         }
     }
 }

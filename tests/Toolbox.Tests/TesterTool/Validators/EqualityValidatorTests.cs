@@ -26,24 +26,32 @@ public static class EqualityValidatorTests
     }
 
     [Theory, RandomData]
-    internal static void VerifyEqualsMatchesHashCodes_ValidatesIValuerEquatable(
+    internal static Task VerifyEqualsMatchesHashCodesAsync_ValidatesIValuerEquatable(
         IValuerEquatable sample
     )
     {
-        Tools.Tester.VerifyEqualsMatchesHashCodes(sample.GetType());
+        return Tools.Tester.VerifyEqualsMatchesHashCodesAsync(
+            sample.GetType(),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]
-    internal static void VerifyEqualsMatchesHashCodes_ValidatesIValueEquatable(
+    internal static Task VerifyEqualsMatchesHashCodesAsync_ValidatesIValueEquatable(
         IValueEquatable sample
     )
     {
-        Tools.Tester.VerifyEqualsMatchesHashCodes(sample.GetType());
+        return Tools.Tester.VerifyEqualsMatchesHashCodesAsync(
+            sample.GetType(),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]
-    internal static void VerifyEqualsMatchesHashCodes_ValidatesObjects()
+    internal static Task VerifyEqualsMatchesHashCodesAsync_ValidatesObjects()
     {
-        Tools.Tester.VerifyEqualsMatchesHashCodes<StructSample>();
+        return Tools.Tester.VerifyEqualsMatchesHashCodesAsync<StructSample>(
+            TestContext.Current.CancellationToken
+        );
     }
 }

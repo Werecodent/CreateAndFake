@@ -21,9 +21,9 @@ public static class TimesTests
     }
 
     [Fact]
-    internal static void Times_UsesValueEquality()
+    internal static Task Times_UsesValueEquality()
     {
-        Tools.Tester.VerifyValueEquality<Times>();
+        return Tools.Tester.VerifyValueEqualityAsync<Times>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

@@ -22,9 +22,9 @@ public abstract class AutoTester<T> : BaseAutoTester<T>
 
     /// <inheritdoc/>
     [Fact]
-    public override void Tester_ValueEqualityOverrideCheck()
+    public override Task Tester_ValueEqualityOverrideCheck()
     {
-        ValueEqualityOverrideCheckImplementation();
+        return ValueEqualityOverrideCheckImplementation(TestContext.Current.CancellationToken);
     }
 
     /// <inheritdoc/>

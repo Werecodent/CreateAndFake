@@ -123,6 +123,58 @@ public static class AsyncSeriesHelperTests
             .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
     }
 
+    [Fact]
+    internal static Task HasNoneAsync_TrueWhenGivenNull()
+    {
+        return AsyncSeriesHelper
+            .HasNoneAsync<string>(null, TestContext.Current.CancellationToken)
+            .Assert()
+            .IsAsync(Task.FromResult(true), TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task HasNoneAsync_TrueWithNoValues([Size(0)] IAsyncEnumerable<string> data)
+    {
+        return AsyncSeriesHelper
+            .HasNoneAsync(data, TestContext.Current.CancellationToken)
+            .Assert()
+            .IsAsync(Task.FromResult(true), TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task HasNoneAsync_FalseWithValues(IAsyncEnumerable<string> data)
+    {
+        return AsyncSeriesHelper
+            .HasNoneAsync(data, TestContext.Current.CancellationToken)
+            .Assert()
+            .IsAsync(Task.FromResult(false), TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static Task HasNoneAsync_CanBeCanceledInitially(
+        [Size(0)] IAsyncEnumerable<string> data
+    )
+    {
+        return AsyncSeriesHelper
+            .HasNoneAsync(data, new CancellationToken(true))
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
+    [Fact]
+    internal static async Task HasNoneAsync_CanBeCanceledAtIteration()
+    {
+        using CancellationTokenSource source = new();
+
+        await AsyncSeriesHelper
+            .HasNoneAsync(
+                AsyncSeriesHelper.CreateCancelingIterationAsync<string>(source),
+                source.Token
+            )
+            .Assert()
+            .ThrowsAsync<OperationCanceledException>(TestContext.Current.CancellationToken);
+    }
+
     [Theory, RandomData]
     internal static async Task ForEachAsync_IteratesSuccessfully(
         [Size(2)] IAsyncEnumerable<string> data

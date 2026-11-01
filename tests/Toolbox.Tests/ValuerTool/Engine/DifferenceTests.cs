@@ -21,8 +21,10 @@ public static class DifferenceTests
     }
 
     [Fact]
-    internal static void Difference_UsesValueEquality()
+    internal static Task Difference_UsesValueEquality()
     {
-        Tools.Tester.VerifyValueEquality<Difference>();
+        return Tools.Tester.VerifyValueEqualityAsync<Difference>(
+            TestContext.Current.CancellationToken
+        );
     }
 }

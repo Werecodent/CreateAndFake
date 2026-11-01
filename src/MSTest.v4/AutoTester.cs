@@ -24,9 +24,9 @@ public abstract class AutoTester(Type testType) : BaseAutoTester(testType)
 
     /// <inheritdoc/>
     [TestMethod]
-    public override void Tester_ValueEqualityOverrideCheck()
+    public override Task Tester_ValueEqualityOverrideCheck()
     {
-        ValueEqualityOverrideCheckImplementation();
+        return ValueEqualityOverrideCheckImplementation(TestContext!.CancellationToken);
     }
 
     /// <inheritdoc/>

@@ -17,15 +17,15 @@ public abstract class BaseAutoTester(Type testType)
 
     /// <summary>Determines the behavior for <see cref="Tester_ValueEqualityOverrideCheck"/>.</summary>
     /// <remarks><list type="bullet">
-    ///     <item><see langword="true"/> = <see cref="ITester.VerifyValueEquality"/></item>
-    ///     <item><see langword="false"/> = <see cref="ITester.VerifyEqualsMatchesHashCodes"/></item>
+    ///     <item><see langword="true"/> = <see cref="ITester.VerifyValueEqualityAsync"/></item>
+    ///     <item><see langword="false"/> = <see cref="ITester.VerifyEqualsMatchesHashCodesAsync"/></item>
     /// </list></remarks>
     /// <value><see langword="true"/></value>
     protected virtual bool EqualsOverrideUsesFullValueEquality { get; } = true;
 
     /// <summary>Reflection tools used to run the tests.</summary>
     /// <value><c>Tools.Source</c></value>
-    protected virtual ToolSet AutoTools => Tools.Source;
+    protected virtual IToolSet AutoTools => Tools.Source;
 
     /// <inheritdoc cref="TypeDescriber"/>
     protected TypeDescriber TestTypeDescriber { get; } = TypeDescriber.For(testType);
@@ -72,13 +72,16 @@ public abstract class BaseAutoTester(Type testType)
 
     /// <summary>Verifies proper value equality rules.</summary>
     /// <remarks>Control via: <see cref="EqualsOverrideUsesFullValueEquality"/></remarks>
-    public abstract void Tester_ValueEqualityOverrideCheck();
+    public abstract Task Tester_ValueEqualityOverrideCheck();
 
     /// <inheritdoc cref="Tester_ValueEqualityOverrideCheck"/>
-    protected virtual void ValueEqualityOverrideCheckImplementation()
+    protected virtual async Task ValueEqualityOverrideCheckImplementation(
+        CancellationToken canceler
+    )
     {
         if (
             testType.GetMethod(nameof(Equals), [typeof(object)])!.DeclaringType != typeof(object)
+            || TestTypeDescriber.Inherits<IValuerAsyncComparable>()
             || TestTypeDescriber.Inherits<IValuerEquatable>()
             || TestTypeDescriber.Inherits<IValueEquatable>()
         )
@@ -87,11 +90,15 @@ public abstract class BaseAutoTester(Type testType)
             {
                 if (EqualsOverrideUsesFullValueEquality)
                 {
-                    AutoTools.Tester.VerifyValueEquality(testType);
+                    await AutoTools
+                        .Tester.VerifyValueEqualityAsync(testType, canceler)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
-                    AutoTools.Tester.VerifyEqualsMatchesHashCodes(testType);
+                    await AutoTools
+                        .Tester.VerifyEqualsMatchesHashCodesAsync(testType, canceler)
+                        .ConfigureAwait(false);
                 }
             }
             catch (Exception e)

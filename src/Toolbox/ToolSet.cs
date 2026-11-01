@@ -12,7 +12,6 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake;
 
-/// <summary>Holds implementations of all reflection tools.</summary>
 /// <param name="gen"><inheritdoc cref="Gen" path="/summary"/></param>
 /// <param name="valuer"><inheritdoc cref="Valuer" path="/summary"/></param>
 /// <param name="faker"><inheritdoc cref="Faker" path="/summary"/></param>
@@ -23,6 +22,7 @@ namespace Werecodent.CreateAndFake;
 /// <param name="duplicator"><inheritdoc cref="Duplicator" path="/summary"/></param>
 /// <param name="runner"><inheritdoc cref="Runner" path="/summary"/></param>
 /// <param name="tester"><inheritdoc cref="Tester" path="/summary"/></param>
+/// <inheritdoc cref="IToolSet"/>
 public sealed class ToolSet(
     IRandom gen,
     IValuer valuer,
@@ -34,7 +34,7 @@ public sealed class ToolSet(
     IDuplicator duplicator,
     IRunner runner,
     ITester tester
-)
+) : IToolSet
 {
     /// <summary>For loading environment specific settings.</summary>
     private static readonly string _EnvironmentName = FindEnvironmentName();
@@ -205,37 +205,37 @@ public sealed class ToolSet(
         );
     }
 
-    /// <inheritdoc cref="IRandom"/>
+    /// <inheritdoc/>
     public IRandom Gen { get; } = gen ?? throw new ArgumentNullException(nameof(gen));
 
-    /// <inheritdoc cref="IValuer"/>
+    /// <inheritdoc/>
     public IValuer Valuer { get; } = valuer ?? throw new ArgumentNullException(nameof(valuer));
 
-    /// <inheritdoc cref="IFaker"/>
+    /// <inheritdoc/>
     public IFaker Faker { get; } = faker ?? throw new ArgumentNullException(nameof(faker));
 
-    /// <inheritdoc cref="IRandomizer"/>
+    /// <inheritdoc/>
     public IRandomizer Randomizer { get; } =
         randomizer ?? throw new ArgumentNullException(nameof(randomizer));
 
-    /// <inheritdoc cref="IExtractor"/>
+    /// <inheritdoc/>
     public IExtractor Extractor { get; } =
         extractor ?? throw new ArgumentNullException(nameof(extractor));
 
-    /// <inheritdoc cref="IMutator"/>
+    /// <inheritdoc/>
     public IMutator Mutator { get; } = mutator ?? throw new ArgumentNullException(nameof(mutator));
 
-    /// <inheritdoc cref="IAsserter"/>
+    /// <inheritdoc/>
     public IAsserter Asserter { get; } =
         asserter ?? throw new ArgumentNullException(nameof(asserter));
 
-    /// <inheritdoc cref="IDuplicator"/>
+    /// <inheritdoc/>
     public IDuplicator Duplicator { get; } =
         duplicator ?? throw new ArgumentNullException(nameof(duplicator));
 
-    /// <inheritdoc cref="IRunner"/>
+    /// <inheritdoc/>
     public IRunner Runner { get; } = runner ?? throw new ArgumentNullException(nameof(runner));
 
-    /// <inheritdoc cref="ITester"/>
+    /// <inheritdoc/>
     public ITester Tester { get; } = tester ?? throw new ArgumentNullException(nameof(tester));
 }

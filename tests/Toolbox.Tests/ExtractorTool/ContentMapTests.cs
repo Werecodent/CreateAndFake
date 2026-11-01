@@ -30,9 +30,11 @@ public static class ContentMapTests
     }
 
     [Fact]
-    internal static void ContentMap_UsesValueEquality()
+    internal static Task ContentMap_UsesValueEquality()
     {
-        Tools.Tester.VerifyValueEquality<ContentMap>();
+        return Tools.Tester.VerifyValueEqualityAsync<ContentMap>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

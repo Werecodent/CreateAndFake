@@ -53,9 +53,26 @@ internal static class SystemCopyHandlers
                 return result;
             }
         ),
+#pragma warning disable S2930
         new FactoryCopyHandler<CancellationToken>(
-            (source, _) => new CancellationToken(source.IsCancellationRequested)
+            (source, _) =>
+            {
+                if (source.CanBeCanceled)
+                {
+                    CancellationTokenSource tokenSource = new();
+                    if (source.IsCancellationRequested)
+                    {
+                        tokenSource.Cancel();
+                    }
+                    return tokenSource.Token;
+                }
+                else
+                {
+                    return new CancellationToken(source.IsCancellationRequested);
+                }
+            }
         ),
+#pragma warning restore
 #if NET9_0_OR_GREATER
         new RefCopyHandler(typeof(Lock)),
 #endif
