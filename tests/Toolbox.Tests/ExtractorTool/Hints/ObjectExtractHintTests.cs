@@ -23,6 +23,11 @@ public sealed class ObjectExtractHintTests : ExtractHintTestBase<ObjectExtractHi
     public ObjectExtractHintTests()
         : base(_ValidTypes, []) { }
 
+    public override Task Tester_NoParameterMutation()
+    {
+        return Task.CompletedTask;
+    }
+
     [Fact]
     internal void Extract_UtilizesExtractPrivateMembersFlag()
     {
