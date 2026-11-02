@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
-public static class RunnerOptionsTests
+public sealed class RunnerOptionsTests : AutoTester<RunnerOptions>
 {
-    [Fact]
-    internal static Task RunnerOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<RunnerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task RunnerOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<RunnerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void RunnerOptions_ModFormRandomizable()

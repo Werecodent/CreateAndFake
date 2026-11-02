@@ -3,23 +3,8 @@ using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 
-public static class BaseInjectAttributeTests
+public sealed class BaseInjectAttributeTests : AutoTester<BaseInjectAttribute>
 {
-    [Fact]
-    internal static Task BaseInjectAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<BaseInjectAttribute>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task BaseInjectAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<BaseInjectAttribute>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
 }

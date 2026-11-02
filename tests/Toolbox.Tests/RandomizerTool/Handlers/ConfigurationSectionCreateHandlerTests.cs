@@ -2,7 +2,8 @@ using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
-public static class ConfigurationSectionCreateHandlerTests
+public sealed class ConfigurationSectionCreateHandlerTests()
+    : AutoTester(typeof(ConfigurationSectionCreateHandler))
 {
     [Fact]
     internal static void ConfigurationSectionCreateHandler_InternalOnly()

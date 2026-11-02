@@ -5,24 +5,10 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 
-public static class BaseCopyAttributeTests
+public sealed class BaseCopyAttributeTests : AutoTester<BaseCopyAttribute>
 {
-    [Fact]
-    internal static Task BaseCopyAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<BaseCopyAttribute>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task BaseCopyAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<BaseCopyAttribute>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ToolException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
 
     [Fact]
     internal static Task CreateParameterValue_PreventsNonValue()

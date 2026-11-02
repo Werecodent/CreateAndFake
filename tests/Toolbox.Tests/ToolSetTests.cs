@@ -1,24 +1,9 @@
 ﻿namespace Werecodent.CreateAndFake.Tests;
 
-public static class ToolSetTests
+public sealed class ToolSetTests : AutoTester<ToolSet>
 {
-    [Fact]
-    internal static Task ToolSet_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ToolSet>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(FileNotFoundException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task ToolSet_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ToolSet>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(FileNotFoundException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(FileNotFoundException)] };
 
     [Fact]
     internal static void ToolSet_Creatable()

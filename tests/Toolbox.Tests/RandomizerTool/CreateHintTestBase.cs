@@ -3,7 +3,6 @@ using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using Werecodent.CreateAndFake.Samples.Scenarios;
-using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
@@ -14,18 +13,17 @@ namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 public abstract class CreateHintTestBase<T>(
     IEnumerable<Type> validTypes = null,
     IEnumerable<Type> invalidTypes = null
-)
+) : AutoTester<T>
     where T : CreateHint, new()
 {
-    /// <summary>Configuration to use for automatic tests.</summary>
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions = [typeof(InvalidOperationException)],
-        };
-
-    /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = new T();
+    /// <inheritdoc/>
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [CreateChainer()],
+                IgnorableExceptions = [typeof(InvalidOperationException)],
+            };
 
     /// <summary>Types that can be created by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
@@ -33,28 +31,6 @@ public abstract class CreateHintTestBase<T>(
     /// <summary>Types that can't be created by the hint.</summary>
     private readonly IEnumerable<Type> _invalidTypes =
         invalidTypes ?? [typeof(DataHolderSample), typeof(IEnumerable), typeof(IEnumerable<>)];
-
-    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
-    [Fact]
-    public Task CreateHint_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            TestInstance,
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
-    [Fact]
-    public Task CreateHint_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            TestInstance,
-            TestContext.Current.CancellationToken,
-            opt => _Config(opt) with { InjectionValues = [CreateChainer()] }
-        );
-    }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]

@@ -2,25 +2,8 @@ using Werecodent.CreateAndFake.RandomizerTool;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
-public static class GenericResolverTests
+public sealed class GenericResolverTests() : AutoTester(typeof(GenericResolver))
 {
-    [Fact]
-    internal static Task GenericResolver_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(GenericResolver),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task GenericResolver_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(GenericResolver),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 }

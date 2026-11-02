@@ -7,7 +7,7 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
-public static class ReflectionCreateHandlersTests
+public sealed class ReflectionCreateHandlersTests() : AutoTester(typeof(ReflectionCreateHandlers))
 {
     private const int _HealthyMin = 6;
 

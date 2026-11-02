@@ -5,49 +5,24 @@ using Werecodent.CreateAndFake.Samples.ErrorCases;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
-public static class RandomizerChainerTests
+public sealed class RandomizerChainerTests : AutoTester<RandomizerChainer>
 {
-    [Fact]
-    internal static Task RandomizerChainer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerChainer>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [Tools.Gen.Next(3, 5)],
-                    MethodsToIgnore =
-                    [
-                        nameof(RandomizerChainer.CreateInternal),
-                        nameof(RandomizerChainer.Inject),
-                    ],
-                    IgnorableExceptions = [typeof(ArgumentOutOfRangeException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task RandomizerChainer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<RandomizerChainer>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [Tools.Gen.Next(3, 5)],
-                    MethodsToIgnore =
-                    [
-                        nameof(RandomizerChainer.CreateInternal),
-                        nameof(RandomizerChainer.Inject),
-                    ],
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentOutOfRangeException),
-                        typeof(ArgumentException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [Tools.Gen.Next(3, 5)],
+                MethodsToIgnore =
+                [
+                    nameof(RandomizerChainer.CreateInternal),
+                    nameof(RandomizerChainer.Inject),
+                ],
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(ArgumentException),
+                ],
+            };
 
     [Fact]
     internal static Task RandomizerChainer_PassthroughWithNoExceptions()

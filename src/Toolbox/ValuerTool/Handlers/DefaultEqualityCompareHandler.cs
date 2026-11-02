@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
@@ -15,6 +16,8 @@ internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompa
         IValuerChainer chainer
     )
     {
+        ArgumentGuard.ThrowIfNull(expected);
+
         if (!expected.Equals(actual))
         {
             yield return new Difference(".equals", new Difference(expected, actual));
@@ -24,6 +27,8 @@ internal sealed class DefaultEqualityCompareHandler(Type supportedType) : ICompa
     /// <inheritdoc/>
     public int HashSupported(object item, IValuerChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(item);
+
         return item.GetHashCode();
     }
 }

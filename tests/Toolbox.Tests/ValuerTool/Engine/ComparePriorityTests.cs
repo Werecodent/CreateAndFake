@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Engine;
 
-public static class ComparePriorityTests
+public sealed class ComparePriorityTests : AutoTester<ComparePriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

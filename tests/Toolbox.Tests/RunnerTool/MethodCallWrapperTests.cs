@@ -7,32 +7,25 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
-public static class MethodCallWrapperTests
+public sealed class MethodCallWrapperTests : AutoTester<MethodCallWrapper>
 {
-    [Theory, RandomData]
-    internal static void Debug_MethodCallWrapper_ToString(MethodCallWrapper sample)
-    {
-        sample.ToString().Assert().Debug();
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(KeyNotFoundException),
+                    typeof(ArgumentOutOfRangeException),
+                ],
+                MethodsToIgnore = opt
+                    .MethodsToIgnore.Concat([nameof(MethodCallWrapper.InvokeOn)])
+                    .ToFrozenSet(),
+            };
 
-    [Fact]
-    internal static Task MethodCallWrapper_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<MethodCallWrapper>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(KeyNotFoundException),
-                        typeof(ArgumentOutOfRangeException),
-                    ],
-                    MethodsToIgnore = opt
-                        .MethodsToIgnore.Concat([nameof(MethodCallWrapper.InvokeOn)])
-                        .ToFrozenSet(),
-                }
-        );
+        return Task.CompletedTask;
     }
 
     [Fact]

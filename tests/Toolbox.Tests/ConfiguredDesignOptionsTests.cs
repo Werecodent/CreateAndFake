@@ -1,20 +1,6 @@
 namespace Werecodent.CreateAndFake.Tests;
 
-public static class ConfiguredDesignOptionsTests
+public sealed class ConfiguredDesignOptionsTests : AutoTester<ConfiguredDesignOptions>
 {
-    [Fact]
-    internal static Task ConfiguredDesignOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ConfiguredDesignOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ConfiguredDesignOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ConfiguredDesignOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 }

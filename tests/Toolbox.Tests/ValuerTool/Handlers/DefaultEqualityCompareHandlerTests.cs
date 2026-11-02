@@ -2,7 +2,8 @@ using Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Handlers;
 
-public static class DefaultEqualityCompareHandlerTests
+public sealed class DefaultEqualityCompareHandlerTests()
+    : AutoTester(typeof(DefaultEqualityCompareHandler))
 {
     [Fact]
     internal static void DefaultEqualityCompareHandler_InternalOnly()

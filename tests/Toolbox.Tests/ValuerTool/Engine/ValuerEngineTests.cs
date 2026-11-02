@@ -6,64 +6,39 @@ using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Engine;
 
-public static class ValuerEngineTests
+public sealed class ValuerEngineTests : AutoTester<ValuerEngine>
 {
-    private static readonly ValuerEngine _TestInstance = new();
-
-    [Fact]
-    internal static Task ValuerEngine_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ValuerEngine>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(UnsupportedException), typeof(ToolException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task ValuerEngine_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ValuerEngine>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    InjectionValues = [Tools.Valuer.Options],
-                    IgnorableExceptions =
-                    [
-                        typeof(UnsupportedException),
-                        typeof(TargetException),
-                        typeof(ToolException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [Tools.Valuer.Options],
+                IgnorableExceptions =
+                [
+                    typeof(UnsupportedException),
+                    typeof(TargetException),
+                    typeof(ToolException),
+                ],
+            };
 
     [Theory, RandomData]
-    internal static void Compare_NoHintsUnsupported(object expected, object actual)
+    internal void Compare_NoHintsUnsupported(object expected, object actual)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Compare(expected, actual, CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Compare_NullResultSafe(
-        [Stub] ICompareHint hint,
-        object expected,
-        object actual
-    )
+    internal void Compare_NullResultSafe([Stub] ICompareHint hint, object expected, object actual)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.Compare(expected, actual, CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void Compare_WithErrorHandling(
+    internal void Compare_WithErrorHandling(
         [Stub] ICompareHint hint,
         object expected,
         object actual,
@@ -79,15 +54,15 @@ public static class ValuerEngineTests
         hint.TryToCompare(expected, actual, Arg.Any<IValuerChainer>())
             .SetupReturn(new DifferenceHintResult(thrower()));
 
-        _TestInstance
+        TestInstance
             .Assert(x => x.Compare(expected, actual, CreateHintChainer(hint)).ToList())
             .Throws<ToolException>();
     }
 
     [Theory, RandomData]
-    internal static void CompareAsync_NoHintsUnsupported(object expected, object actual)
+    internal void CompareAsync_NoHintsUnsupported(object expected, object actual)
     {
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.CompareAsync(
                     expected,
@@ -100,13 +75,13 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void CompareAsync_NullResultSafe(
+    internal void CompareAsync_NullResultSafe(
         [Stub] ICompareHint hint,
         object expected,
         object actual
     )
     {
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.CompareAsync(
                     expected,
@@ -119,7 +94,7 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void CompareAsync_WithErrorHandling(
+    internal void CompareAsync_WithErrorHandling(
         [Stub] ICompareHint hint,
         object expected,
         object actual,
@@ -134,7 +109,7 @@ public static class ValuerEngineTests
             )
             .SetupReturn(Behavior<DifferenceHintAsyncResult>.Throw(error));
 
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.CompareAsync(
                     expected,
@@ -147,7 +122,7 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static Task CompareAsync_WithErrorHandlingDuringYield(
+    internal Task CompareAsync_WithErrorHandlingDuringYield(
         [Stub] ICompareHint hint,
         object expected,
         object actual,
@@ -169,7 +144,7 @@ public static class ValuerEngineTests
             )
             .SetupReturn(new DifferenceHintAsyncResult(thrower()));
 
-        return _TestInstance
+        return TestInstance
             .CompareAsync(
                 expected,
                 actual,
@@ -181,25 +156,25 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void GetHashCode_NoHintsUnsupported(object item)
+    internal void GetHashCode_NoHintsUnsupported(object item)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.GetHashCode(item, CreateHintChainer(null)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void GetHashCode_NullResultSafe([Stub] ICompareHint hint, object item)
+    internal void GetHashCode_NullResultSafe([Stub] ICompareHint hint, object item)
     {
-        _TestInstance
+        TestInstance
             .Assert(x => x.GetHashCode(item, CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
     }
 
     [Theory, RandomData]
-    internal static void GetHashCodeAsync_NoHintsUnsupported(object item)
+    internal void GetHashCodeAsync_NoHintsUnsupported(object item)
     {
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.GetHashCodeAsync(
                     item,
@@ -211,9 +186,9 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void GetHashCodeAsync_NullResultSafe([Stub] ICompareHint hint, object item)
+    internal void GetHashCodeAsync_NullResultSafe([Stub] ICompareHint hint, object item)
     {
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.GetHashCodeAsync(
                     item,
@@ -225,7 +200,7 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static void GetHashCodeAsync_WithErrorHandling(
+    internal void GetHashCodeAsync_WithErrorHandling(
         [Stub] ICompareHint hint,
         object item,
         ArgumentException error
@@ -234,7 +209,7 @@ public static class ValuerEngineTests
         hint.TryToAsyncGetHashCode(item, Arg.Any<IValuerChainer>(), Arg.Any<CancellationToken>())
             .SetupReturn(Behavior<HashCodeHintAsyncResult>.Throw(error));
 
-        _TestInstance
+        TestInstance
             .Assert(x =>
                 x.GetHashCodeAsync(
                     item,
@@ -246,7 +221,7 @@ public static class ValuerEngineTests
     }
 
     [Theory, RandomData]
-    internal static Task GetHashCodeAsync_WithErrorHandlingDuringAwait(
+    internal Task GetHashCodeAsync_WithErrorHandlingDuringAwait(
         [Stub] ICompareHint hint,
         object item,
         ArgumentException error
@@ -255,7 +230,7 @@ public static class ValuerEngineTests
         hint.TryToAsyncGetHashCode(item, Arg.Any<IValuerChainer>(), Arg.Any<CancellationToken>())
             .SetupReturn(new HashCodeHintAsyncResult(Task.FromException<int>(error)));
 
-        return _TestInstance
+        return TestInstance
             .GetHashCodeAsync(item, CreateHintChainer(hint), TestContext.Current.CancellationToken)
             .Assert()
             .ThrowsAsync<ToolException>(TestContext.Current.CancellationToken);

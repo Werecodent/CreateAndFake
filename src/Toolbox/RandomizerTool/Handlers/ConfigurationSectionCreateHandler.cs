@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
@@ -17,6 +18,8 @@ internal sealed class ConfigurationSectionCreateHandler : ICreateHandler
 
     public object? CreateSupported(IRandomizerChainer randomizer)
     {
+        ArgumentGuard.ThrowIfNull(randomizer);
+
         Fake<IConfigurationSection> config = randomizer.Create<Fake<IConfigurationSection>>();
         Behavior<IConfigurationSection> nullSection = Behavior.Returns<IConfigurationSection>(null);
 

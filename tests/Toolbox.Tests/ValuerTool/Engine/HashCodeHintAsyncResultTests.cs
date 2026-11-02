@@ -2,24 +2,8 @@ using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Engine;
 
-public static class HashCodeHintAsyncResultTests
+public sealed class HashCodeHintAsyncResultTests : AutoTester<HashCodeHintAsyncResult>
 {
-    [Fact]
-    internal static Task HashCodeHintAsyncResult_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<HashCodeHintAsyncResult>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task HashCodeHintAsyncResult_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<HashCodeHintAsyncResult>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Fact]
     internal static void None_HasNoData()
     {

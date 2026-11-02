@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
@@ -14,6 +15,7 @@ internal sealed class FactoryCreateHandler<T>(Func<IRandomizerChainer, T> factor
     /// <inheritdoc/>
     public object? CreateSupported(IRandomizerChainer randomizer)
     {
+        ArgumentGuard.ThrowIfNull(factory);
         return factory.Invoke(randomizer);
     }
 

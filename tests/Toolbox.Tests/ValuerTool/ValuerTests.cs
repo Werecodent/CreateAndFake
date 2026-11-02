@@ -6,36 +6,19 @@ using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 
-public static class ValuerTests
+public sealed class ValuerTests : AutoTester<Valuer>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(ToolException),
-                typeof(TimeoutException),
-                typeof(UnsupportedException),
-            ],
-        };
-
-    [Fact]
-    internal static Task Valuer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Valuer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Valuer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Valuer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ToolException),
+                    typeof(TimeoutException),
+                    typeof(UnsupportedException),
+                ],
+            };
 
     [Fact]
     internal static void GetHashCode_MissingMatchThrows()

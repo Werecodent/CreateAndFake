@@ -2,7 +2,7 @@ using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
-public static class ValueCreateHandlersTests
+public sealed class ValueCreateHandlersTests() : AutoTester(typeof(ValueCreateHandlers))
 {
     [Fact]
     internal static void ValueCreateHandlers_InternalOnly()

@@ -3,31 +3,12 @@ using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 
-public static class BaseFakeAttributeTests
+public sealed class BaseFakeAttributeTests : AutoTester<BaseFakeAttribute>
 {
-    [Fact]
-    internal static Task BaseFakeAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<BaseFakeAttribute>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(ToolException), typeof(ArgumentException)],
-                }
-        );
-    }
-
-    [Fact]
-    internal static Task BaseFakeAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<BaseFakeAttribute>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions = [typeof(ToolException), typeof(ArgumentException)],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ToolException), typeof(ArgumentException)],
+            };
 }

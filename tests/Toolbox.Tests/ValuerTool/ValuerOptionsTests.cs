@@ -6,23 +6,9 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 
-public static class ValuerOptionsTests
+public sealed class ValuerOptionsTests : AutoTester<ValuerOptions>
 {
-    [Fact]
-    internal static Task ValuerOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ValuerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task ValuerOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<ValuerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void ValuerOptions_ModFormRandomizable()

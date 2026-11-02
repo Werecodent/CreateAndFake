@@ -2,7 +2,7 @@ using Werecodent.CreateAndFake.ValuerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.ValuerTool.Handlers;
 
-public static class ValueCompareHandlersTests
+public sealed class ValueCompareHandlersTests() : AutoTester(typeof(ValueCompareHandlers))
 {
     [Fact]
     internal static void ValueCompareHandlers_InternalOnly()

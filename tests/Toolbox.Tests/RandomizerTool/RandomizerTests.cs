@@ -10,33 +10,20 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
-public static class RandomizerTests
+public sealed class RandomizerTests : AutoTester<Randomizer>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions = [typeof(ArgumentException), typeof(ArgumentOutOfRangeException)],
-            InjectionValues = [GetGeneratableMethod(), Tools.Gen.Next(5, 8)],
-            MethodsToIgnore = [nameof(Randomizer.Inject)],
-        };
-
-    [Fact]
-    internal static Task Randomizer_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Randomizer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Randomizer_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Randomizer>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(ArgumentOutOfRangeException),
+                ],
+                InjectionValues = [GetGeneratableMethod(), Tools.Gen.Next(5, 8)],
+                MethodsToIgnore = [nameof(Randomizer.Inject)],
+            };
 
     private static MethodInfo GetGeneratableMethod()
     {

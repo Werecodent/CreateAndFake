@@ -6,24 +6,12 @@ using Werecodent.CreateAndFake.RandomizerTool;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool;
 
-public static class RandomizerOptionsTests
+public sealed class RandomizerOptionsTests : AutoTester<RandomizerOptions>
 {
-    [Fact]
-    internal static Task RandomizerOptions_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<RandomizerOptions>(
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentNullException)] };
 
-    [Fact]
-    internal static Task RandomizerOptions_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<RandomizerOptions>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentNullException)] }
-        );
-    }
+    protected override bool EqualsOverrideUsesFullValueEquality { get; } = false;
 
     [Fact]
     internal static void RandomizerOptions_ModFormRandomizable()

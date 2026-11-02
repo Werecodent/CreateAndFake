@@ -5,35 +5,21 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 
-public static class BaseCapAttributeTests
+public sealed class BaseCapAttributeTests : AutoTester<BaseCapAttribute>
 {
-    [Fact]
-    internal static Task BaseCapAttribute_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<BaseCapAttribute>(
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static Task BaseCapAttribute_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<BaseCapAttribute>(
-            TestContext.Current.CancellationToken,
-            opt =>
-                opt with
-                {
-                    IgnorableExceptions =
-                    [
-                        typeof(ArgumentException),
-                        typeof(InvalidCastException),
-                        typeof(ToolException),
-                        typeof(TesterFailureException),
-                        typeof(ArgumentOutOfRangeException),
-                    ],
-                }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(InvalidCastException),
+                    typeof(ToolException),
+                    typeof(TesterFailureException),
+                    typeof(ArgumentOutOfRangeException),
+                ],
+            };
 
     [Fact]
     internal static Task CreateParameterValue_PreventsMismatchedMinValue()

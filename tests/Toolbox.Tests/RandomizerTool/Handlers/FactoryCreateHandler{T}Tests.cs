@@ -2,14 +2,4 @@ using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
-public static class FactoryCreateHandler_T_Tests
-{
-    [Fact]
-    internal static Task FactoryCreateHandler_T_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(FactoryCreateHandler<>),
-            TestContext.Current.CancellationToken
-        );
-    }
-}
+public sealed class FactoryCreateHandler_T_Tests() : AutoTester(typeof(FactoryCreateHandler<>));

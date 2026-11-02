@@ -13,8 +13,7 @@ public sealed class PublicObjectCompareHintTests : CompareHintTestBase<PublicObj
     public PublicObjectCompareHintTests()
         : base(_ValidTypes, _InvalidTypes) { }
 
-    [Fact]
-    public override Task CompareHint_NoParameterMutation()
+    public override Task Tester_NoParameterMutation()
     {
         return Tools.Tester.PreventsNullRefExceptionAsync<PublicObjectCompareHint>(
             TestContext.Current.CancellationToken,

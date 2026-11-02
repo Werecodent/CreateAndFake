@@ -1,3 +1,4 @@
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
@@ -17,12 +18,16 @@ internal sealed class ConvertCompareHandler<T>(Func<T, IValuerChainer, object?> 
         IValuerChainer chainer
     )
     {
+        ArgumentGuard.ThrowIfNull(converter, expected, actual, chainer);
+
         return chainer.Compare(converter((T)expected, chainer), converter((T)actual, chainer));
     }
 
     /// <inheritdoc/>
     public int HashSupported(object item, IValuerChainer chainer)
     {
+        ArgumentGuard.ThrowIfNull(converter, item, chainer);
+
         return chainer.GetHashCode(converter((T)item, chainer));
     }
 }

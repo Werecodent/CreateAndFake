@@ -2,8 +2,15 @@ using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
-public static class CreatePriorityTests
+public sealed class CreatePriorityTests : AutoTester<CreatePriority>
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ArgumentException), typeof(FormatException)],
+            };
+
     [Fact]
     internal static void Disabled_SetToMin()
     {

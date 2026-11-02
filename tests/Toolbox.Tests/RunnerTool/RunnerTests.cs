@@ -8,37 +8,20 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
-public static class RunnerTests
+public sealed class RunnerTests : AutoTester<Runner>
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            InjectionValues = [GetGeneratableMethod()],
-            IgnorableExceptions =
-            [
-                typeof(ArgumentOutOfRangeException),
-                typeof(ToolException),
-                typeof(UnsupportedException),
-            ],
-        };
-
-    [Fact]
-    internal static Task Runner_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<Runner>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    [Fact]
-    internal static Task Runner_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<Runner>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                InjectionValues = [GetGeneratableMethod()],
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentOutOfRangeException),
+                    typeof(ToolException),
+                    typeof(UnsupportedException),
+                ],
+            };
 
     private static MethodInfo GetGeneratableMethod()
     {

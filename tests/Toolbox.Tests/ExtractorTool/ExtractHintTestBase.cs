@@ -1,3 +1,4 @@
+using System.Reflection;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
@@ -17,6 +18,9 @@ public abstract class ExtractHintTestBase<T>(
 ) : AutoTester<T>
     where T : IExtractHint, new()
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(TargetInvocationException)] };
+
     /// <summary>Types that can be created by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 

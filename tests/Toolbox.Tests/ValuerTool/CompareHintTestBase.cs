@@ -5,7 +5,6 @@ using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.Scenarios;
-using Werecodent.CreateAndFake.TesterTool;
 using Werecodent.CreateAndFake.ValuerTool;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
@@ -18,31 +17,29 @@ namespace Werecodent.CreateAndFake.Tests.ValuerTool;
 public abstract class CompareHintTestBase<T>(
     IEnumerable<Type> validTypes = null,
     IEnumerable<Type> invalidTypes = null
-)
+) : AutoTester<T>
     where T : CompareHint, new()
 {
-    /// <summary>Configuration to use for automatic tests.</summary>
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IgnorableExceptions =
-            [
-                typeof(InvalidCastException),
-                typeof(UnsupportedException),
-                typeof(ToolException),
-                typeof(EngineException),
-                typeof(TargetException),
-                typeof(InvalidOperationException),
-                typeof(TargetParameterCountException),
-                typeof(ArgumentException),
-                typeof(FakeCallException),
-                typeof(TimeoutException),
-                typeof(KeyNotFoundException),
-            ],
-        };
-
-    /// <summary>Instance to test with.</summary>
-    protected T TestInstance { get; } = new T();
+    /// <inheritdoc/>
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                IgnorableExceptions =
+                [
+                    typeof(InvalidCastException),
+                    typeof(UnsupportedException),
+                    typeof(ToolException),
+                    typeof(EngineException),
+                    typeof(TargetException),
+                    typeof(InvalidOperationException),
+                    typeof(TargetParameterCountException),
+                    typeof(ArgumentException),
+                    typeof(FakeCallException),
+                    typeof(TimeoutException),
+                    typeof(KeyNotFoundException),
+                ],
+            };
 
     /// <summary>Types that can be compared by the hint.</summary>
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
@@ -52,28 +49,6 @@ public abstract class CompareHintTestBase<T>(
 
     /// <summary>If sync calls are not supported for the hint.</summary>
     protected virtual bool RequiresAsync { get; } = false;
-
-    /// <inheritdoc cref="ITester.PreventsNullRefExceptionAsync"/>
-    [Fact]
-    public Task CompareHint_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            TestInstance,
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
-
-    /// <inheritdoc cref="ITester.PreventsParameterMutationAsync"/>
-    [Fact]
-    public virtual Task CompareHint_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            TestInstance,
-            TestContext.Current.CancellationToken,
-            _Config
-        );
-    }
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]

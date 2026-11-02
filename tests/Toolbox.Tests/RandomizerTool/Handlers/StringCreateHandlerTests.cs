@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Handlers;
 
-public static class StringCreateHandlerTests
+public sealed class StringCreateHandlerTests() : AutoTester(typeof(StringCreateHandler))
 {
     [Fact]
     internal static void StringCreateHandler_InternalOnly()

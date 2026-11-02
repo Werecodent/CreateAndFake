@@ -6,25 +6,10 @@ namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
 #pragma warning disable MA0079 // For testing.
 
-public static class CancelValidatorTests
+public sealed class CancelValidatorTests() : AutoTester(typeof(CancelValidator))
 {
-    [Fact]
-    internal static Task CancelValidator_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync<CancelValidator>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task CancelValidator_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync<CancelValidator>(
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(AssertException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(AssertException)] };
 
     [Fact]
     internal static Task VerifySupportsCancellationAsync_CanIgnoreCancelWithEmptySeries()

@@ -46,16 +46,26 @@ internal sealed class EqualityValidator(TesterOptions options)
                 describer,
                 x,
                 y,
-                z =>
-                    AsyncSeriesHelper.HasNoneAsync(
-                        x.CompareAsync(z, Options.Valuer, canceler),
-                        canceler
-                    ),
-                z =>
-                    AsyncSeriesHelper.HasNoneAsync(
-                        y.CompareAsync(z, Options.Valuer, canceler),
-                        canceler
-                    ),
+                async z =>
+                    (
+                        await AsyncSeriesHelper
+                            .ToListAsync(
+                                x.CompareAsync(z, Options.Valuer, canceler),
+                                Options.Design.IterationLimit,
+                                canceler
+                            )
+                            .ConfigureAwait(false)
+                    ).Count == 0,
+                async z =>
+                    (
+                        await AsyncSeriesHelper
+                            .ToListAsync(
+                                y.CompareAsync(z, Options.Valuer, canceler),
+                                Options.Design.IterationLimit,
+                                canceler
+                            )
+                            .ConfigureAwait(false)
+                    ).Count == 0,
                 () => x.GetValueHashAsync(Options.Valuer, canceler),
                 () => y.GetValueHashAsync(Options.Valuer, canceler),
                 mustIncludeAllValues,

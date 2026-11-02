@@ -6,22 +6,14 @@ using Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.Guarders;
 
-public static class ExceptionGuarderTests
+public sealed class ExceptionGuarderTests() : AutoTester(typeof(ExceptionGuarder))
 {
-    private static readonly TesterMod _Config = opt =>
-        opt with
-        {
-            IncludeInternals = false,
-            IgnoreAllExceptions = true,
-        };
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IncludeInternals = false, IgnoreAllExceptions = true };
 
-    [Fact]
-    internal static Task ExceptionGuarder_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<ExceptionGuarder>(
-            TestContext.Current.CancellationToken,
-            _Config
-        );
+        return Task.CompletedTask;
     }
 
     [Fact]

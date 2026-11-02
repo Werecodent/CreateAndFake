@@ -4,14 +4,11 @@ using Werecodent.CreateAndFake.TesterTool.Validators;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
-public static class SupportValidatorTests
+public sealed class SupportValidatorTests() : AutoTester(typeof(SupportValidator))
 {
-    [Fact]
-    internal static Task SupportValidator_GuardsNulls()
+    public override Task Tester_NoParameterMutation()
     {
-        return Tools.Tester.PreventsNullRefExceptionAsync<SupportValidator>(
-            TestContext.Current.CancellationToken
-        );
+        return Task.CompletedTask;
     }
 
     [Fact]

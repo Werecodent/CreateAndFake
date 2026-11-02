@@ -7,27 +7,10 @@ namespace Werecodent.CreateAndFake.Tests.RunnerTool;
 
 #pragma warning disable IDE0059
 
-public static class UnwrapperTests
+public sealed class UnwrapperTests() : AutoTester(typeof(Unwrapper))
 {
-    [Fact]
-    internal static Task Unwrapper_GuardsNulls()
-    {
-        return Tools.Tester.PreventsNullRefExceptionAsync(
-            typeof(Unwrapper),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
-
-    [Fact]
-    internal static Task Unwrapper_NoParameterMutation()
-    {
-        return Tools.Tester.PreventsParameterMutationAsync(
-            typeof(Unwrapper),
-            TestContext.Current.CancellationToken,
-            opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] }
-        );
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 
     [Theory, RandomData]
     internal static Task UnwrapResultAsync_UnwrapsTaskAndIntAsyncEnumerable(
