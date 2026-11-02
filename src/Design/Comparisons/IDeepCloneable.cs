@@ -8,7 +8,7 @@ public interface IDeepCloneable<T>
 {
     /// <summary>
     ///     Creates a clone where any mutation to <see langword="this"/>
-    ///     or the returned copy only alters that object and not the other.
+    ///     or the returned copy only alters that instance and not the other.
     /// </summary>
     /// <returns>The created clone that is equal by value to <see langword="this"/>.</returns>
     T DeepClone();

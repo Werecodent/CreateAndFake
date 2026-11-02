@@ -6,7 +6,7 @@ namespace Werecodent.CreateAndFake.Design.Content;
 public static class AsyncHashSet
 {
     /// <summary>Creates a set with initial <paramref name="contents"/>.</summary>
-    /// <typeparam name="T">Item content type.</typeparam>
+    /// <typeparam name="T">Item content <see cref="Type"/>.</typeparam>
     /// <param name="contents">Initial contents for the set.</param>
     /// <param name="comparer"><inheritdoc cref="AsyncHashSet{T}.Comparer" path="/summary"/></param>
     /// <param name="iterationLimit">Max number of items to iterate before throwing.</param>

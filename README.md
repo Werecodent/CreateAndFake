@@ -2,13 +2,13 @@
 
 [![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main)
 
-A C# class library that handles mocking, test data generation, and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
+A test support library that makes robust testing easy by handling all manners of test data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
 
 ```c#
 // xUnit attributes used to automatically create the parameters.
 [Theory, RandomData]
-internal static void TestGetMovieDirectors(
-    [Fake] IStorage db, Endpoint api, [Size(2)] Details[] movies)
+internal static void GetDirectors_UtilizesYearToPruneDirectors(
+    [Fake] IStorage db, [Injected] Endpoint api, [Size(2)] Details[] movies)
 {
     // Setup fake behavior using randomized movie data (times optional).
     db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
@@ -17,15 +17,15 @@ internal static void TestGetMovieDirectors(
     api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
 
     // Optionally check all behavior called as expected.
-    db.Verify();
+    db.Assert().Called();
 }
 ```
 
-By default, all behavior works not by reference but by value even for complex objects. Using the extension methods and attributes are optional as all functionality are present in customizable tools:
+By default, all behavior works not by reference but by value even for complex objects. Using the fluent extension methods and attributes are optional as all functionality are present in customizable tools:
 
 ```C#
 [Fact]
-internal static void TestChangingZipCodeUpdatesAddress()
+internal static void MailingAddress_VerifyChangingZipCodeUpdatesAddress()
 {
     // Randomizer uses readable values for some properties like 'FirstName'.
     User details = Tools.Randomizer.Create<User>();
@@ -37,35 +37,60 @@ internal static void TestChangingZipCodeUpdatesAddress()
     details.ZipCode = Tools.Mutator.Variant(details.ZipCode);
 
     // Asserter performs checks based upon value.
-    Tools.Asserter.IsNot(copy.MailingAddress, details.MailingAddress);
+    Tools.Asserter.IsNot(details.MailingAddress, copy.MailingAddress);
 }
 ```
 
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
 
-* `Asserter` - Handles common test scenarios.
-* `Faker` - Creates mocks and stubs.
-* `Randomizer` - Creates random instances of any type.
-* `Duplicator` - Creates deep clones of objects.
-* `Mutator` - Mutates objects or creates variants.
-* `Valuer` - Compares objects by value.
-* `Tester` - Automates common tests.
+* `Asserter` - Verify object states and behavior.
+* `Duplicator` - Deep clone objects.
+* `Extractor` - Flatten the contents of objects.
+* `Faker` - Simulate behavior via stubs/mocks.
+* `Mutator` - Modify the state of objects or create variants.
+* `Randomizer` - Create objects populated with random values.
+* `Runner` - Generate method data and run them.
+* `Tester` - Test common scenarios.
+* `Valuer` - Compare objects by value via reflection if needed.
 
 Visit the [documentation site](https://werecodent.github.io/CreateAndFake/) for more information and how to get started.
 
 ## Installation
 
-* Install using:
+There are three levels of packages that can be utilized for different purposes.
+1) `Werecodent.CreateAndFake.Design` - Optional support library for non-test projects.
+2) `Werecodent.CreateAndFake` - Provides the tools to use in test projects.
+3) `Werecodent.CreateAndFake.[UnitTestFramework]` - Provides attribute support for a unit test framework.
 
-```
-dotnet add package CreateAndFake
+Versions for the packages are synchronized and released alongside each other. Reference the wanted package using NuGet by following these instructions:
+
+1) For attribute support, identify the `[UnitTestFramework]` you're using from the available options below:
+* MSTest.v3 (2.2.1 -> 4.0.0)
+* MSTest.v4 (4.0.0+)
+* NUnit.v3 (3.10.0+)
+* xUnit.v2 (2.2.0 -> 3.0.0)
+* xUnit.v3 (3.0.0+)
+
+2) For attribute support, install using one of the following command (replace `[UnitTestFramework]` with your chosen version):
+
+```sh
+dotnet add package Werecodent.CreateAndFake.[UnitTestFramework]
 ```
 
-* Use in a class by adding:
+3) Alternatively, install using the following command for just tool support (already included in the attribute support version):
 
+```sh
+dotnet add package Werecodent.CreateAndFake
 ```
-using Werecodent.CreateAndFake;
-using Werecodent.CreateAndFake.Fluent;
+
+4) It's recommended to add the following lines to your tests.csproj file for ease of use:
+
+```xml
+<ItemGroup>
+    <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Fluent" />
+    <Using Include="Werecodent.CreateAndFake.[UnitTestFramework]" />
+</ItemGroup>
 ```
 
 ## Documentation

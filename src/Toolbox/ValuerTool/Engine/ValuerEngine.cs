@@ -48,8 +48,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericConverter.ExpandName(expected)}' not supported by the valuer. "
-                    + "Create a hint to generate the type."
+                $"Type '{GenericConverter.ExpandName(expected)}' & '{GenericConverter.ExpandName(actual)}' not "
+                    + "supported by the valuer. Create a hint to generate the type and pass it to the valuer."
             );
         }
     }
@@ -98,8 +98,8 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         else
         {
             throw new UnsupportedException(
-                $"Type '{GenericConverter.ExpandName(expected)}' not supported by the valuer. "
-                    + "Create a hint to generate the type and pass it to the valuer."
+                $"Type '{GenericConverter.ExpandName(expected)}' & '{GenericConverter.ExpandName(actual)}' not "
+                    + "supported by the valuer. Create a hint to generate the type and pass it to the valuer."
             );
         }
     }

@@ -105,7 +105,7 @@ public sealed class ValuerEngineTests : AutoTester<ValuerEngine>
                 expected,
                 actual,
                 Arg.Any<IValuerChainer>(),
-                Arg.Any<CancellationToken>()
+                TestContext.Current.CancellationToken
             )
             .SetupReturn(Behavior<DifferenceHintAsyncResult>.Throw(error));
 
@@ -140,7 +140,7 @@ public sealed class ValuerEngineTests : AutoTester<ValuerEngine>
                 expected,
                 actual,
                 Arg.Any<IValuerChainer>(),
-                Arg.Any<CancellationToken>()
+                TestContext.Current.CancellationToken
             )
             .SetupReturn(new DifferenceHintAsyncResult(thrower()));
 
@@ -206,7 +206,11 @@ public sealed class ValuerEngineTests : AutoTester<ValuerEngine>
         ArgumentException error
     )
     {
-        hint.TryToAsyncGetHashCode(item, Arg.Any<IValuerChainer>(), Arg.Any<CancellationToken>())
+        hint.TryToAsyncGetHashCode(
+                item,
+                Arg.Any<IValuerChainer>(),
+                TestContext.Current.CancellationToken
+            )
             .SetupReturn(Behavior<HashCodeHintAsyncResult>.Throw(error));
 
         TestInstance
@@ -227,7 +231,11 @@ public sealed class ValuerEngineTests : AutoTester<ValuerEngine>
         ArgumentException error
     )
     {
-        hint.TryToAsyncGetHashCode(item, Arg.Any<IValuerChainer>(), Arg.Any<CancellationToken>())
+        hint.TryToAsyncGetHashCode(
+                item,
+                Arg.Any<IValuerChainer>(),
+                TestContext.Current.CancellationToken
+            )
             .SetupReturn(new HashCodeHintAsyncResult(Task.FromException<int>(error)));
 
         return TestInstance

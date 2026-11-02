@@ -115,7 +115,7 @@ public abstract class WithChainer<T>(T result, IAsserter asserter) : AlsoChainer
     }
 
     /// <summary>Begins assertions on an associated value.</summary>
-    /// <typeparam name="TContent">Associated content type.</typeparam>
+    /// <typeparam name="TContent">Associated content <see cref="Type"/>.</typeparam>
     /// <param name="selector">How to retrieve the value to test on.</param>
     /// <returns>Asserter to test the selected value.</returns>
     public AssertFunc<TContent> With<TContent>(Func<T, Func<TContent>?> selector)

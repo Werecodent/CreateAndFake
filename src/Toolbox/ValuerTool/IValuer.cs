@@ -45,7 +45,7 @@ public interface IValuer
     );
 
     /// <summary>Finds the differences between <paramref name="expected"/> and <paramref name="actual"/>.</summary>
-    /// <param name="expected">Object to compare with <paramref name="actual"/>.</param>
+    /// <param name="expected">Instance to compare with <paramref name="actual"/>.</param>
     /// <param name="actual">Potentially different object to compare against <paramref name="expected"/>.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
@@ -78,8 +78,8 @@ public interface IValuer
     new Task<bool> EqualsAsync(object? x, object? y, CancellationToken canceler);
 
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>
-    /// <param name="x">Object to compare with <paramref name="y"/>.</param>
-    /// <param name="y">Object to compare with <paramref name="x"/>.</param>
+    /// <param name="x">Instance to compare with <paramref name="y"/>.</param>
+    /// <param name="y">Instance to compare with <paramref name="x"/>.</param>
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals <paramref name="y"/> by value,
     ///     <see langword="false"/> otherwise.
@@ -110,7 +110,7 @@ public interface IValuer
     new Task<int> GetHashCodeAsync(object? item, CancellationToken canceler);
 
     /// <summary>Computes an identifying hash code for <paramref name="item"/> based upon value.</summary>
-    /// <param name="item">Object to generate a hash code for.</param>
+    /// <param name="item">Instance to generate a hash code for.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>The value computed hash code for <paramref name="item"/>.</returns>

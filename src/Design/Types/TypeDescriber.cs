@@ -8,7 +8,8 @@ using Werecodent.CreateAndFake.Design.Extensions;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
-/// <summary>Finds all parents (base classes/interfaces) for <see cref="Type"/>s.</summary>
+/// <summary>Identifies and caches a <see cref="Type"/>'s inheritance tree and members.</summary>
+/// <remarks>WARNING: Loads all assemblies upon first use.</remarks>
 [ExcludeFromCreateAndFake]
 public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, ITypeSupporter
 {
@@ -31,15 +32,16 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
     /// <summary>Associates no parents for <see langword="null"/>.</summary>
     private static readonly TypeDescriber _NullDescriber = new(null);
 
-    /// <summary>Finds or loads inheritance data for <typeparamref name="T"/>.</summary>
+    /// <summary>Finds or loads inheritance/member data for <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The <see cref="Type"/> to find inheritance for.</typeparam>
     /// <returns>The found/loaded inheritance data.</returns>
+    /// <remarks>WARNING: Loads all assemblies upon first use.</remarks>
     public static TypeDescriber For<T>()
     {
         return For(typeof(T));
     }
 
-    /// <param name="instance">The instance whose <see cref="Type"/> to find inheritance for.</param>
+    /// <param name="instance">The instance whose <see cref="Type"/> to find inheritance/member for.</param>
     /// <inheritdoc cref="For(Type)"/>
     public static TypeDescriber For(object? instance)
     {
@@ -53,9 +55,10 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
         }
     }
 
-    /// <summary>Finds or loads inheritance data for the <paramref name="type"/>.</summary>
+    /// <summary>Finds or loads inheritance/member data for the <paramref name="type"/>.</summary>
     /// <param name="type">The <see cref="Type"/> to find inheritance for.</param>
     /// <returns>The found/loaded inheritance data.</returns>
+    /// <remarks>WARNING: Loads all assemblies upon first use.</remarks>
     public static TypeDescriber For(Type? type)
     {
         if (type == null)
@@ -314,9 +317,12 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
                         sourceAssemblies.Push(loaded);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     // Ignore assemblies that can't be loaded.
+                    Console.Error.WriteLine(
+                        $"Could not load assembly '{assembly.FullName}' due to error: {e}"
+                    );
                 }
             }
         }

@@ -15,8 +15,8 @@ public sealed class ReferenceComparer
     public static ReferenceComparer Use { get; } = new();
 
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by reference.</summary>
-    /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
-    /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
+    /// <param name="x">Instance to compare with <paramref name="y"/>.</param>
+    /// <param name="y">Instance to compare with <paramref name="x"/>.</param>
     /// <returns>
     ///     <see langword="true"/> if <paramref name="x"/> equals
     ///     <paramref name="y"/> by reference, <see langword="false"/> otherwise.
@@ -27,7 +27,7 @@ public sealed class ReferenceComparer
     }
 
     /// <summary>Computes an identifying hash code for <paramref name="obj"/> based upon reference.</summary>
-    /// <param name="obj">The <see langword="object"/> to generate a hash code for.</param>
+    /// <param name="obj">Instance to generate a hash code for.</param>
     /// <returns>The reference computed hash code for <paramref name="obj"/>.</returns>
     public int GetHashCode(object? obj)
     {
@@ -35,8 +35,8 @@ public sealed class ReferenceComparer
     }
 
     /// <summary>Compares <paramref name="x"/> and <paramref name="y"/> by their reference hash for sorting.</summary>
-    /// <param name="x">The <see langword="object"/> to compare with <paramref name="y"/>.</param>
-    /// <param name="y">The <see langword="object"/> to compare with <paramref name="x"/>.</param>
+    /// <param name="x">Instance to compare with <paramref name="y"/>.</param>
+    /// <param name="y">Instance to compare with <paramref name="x"/>.</param>
     /// <returns><list type="bullet">
     ///     <item>Positive value if <paramref name="x"/> &gt; <paramref name="y"/>.</item>
     ///     <item>Zero if <paramref name="x"/> = <paramref name="y"/>.</item>
