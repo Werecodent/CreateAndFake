@@ -3,6 +3,7 @@ using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.Samples.SingleValue;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
 
@@ -32,11 +33,16 @@ public sealed class AsyncContentMapTests : AutoTester<AsyncContentMap>
     internal static Task FindAllAsync_CanCancel()
     {
         return Tools.Tester.VerifySupportsCancellationAsync(
-            (size, canceler) =>
+            static (size, canceler) =>
                 new AsyncContentMap(
-                    Tools.Randomizer.CreateSized<IAsyncSet<object>>(size),
+                    AsyncHashSet.CreateFromAsync(
+                        Tools.Randomizer.CreateSized<IAsyncSet<DataSample>>(size),
+                        Tools.Valuer,
+                        Tools.Valuer.Options.Design.IterationLimit,
+                        TestContext.Current.CancellationToken
+                    ),
                     Tools.Extractor.Options
-                ).FindAllAsync(typeof(object), canceler),
+                ).FindAllAsync(typeof(DataSample), canceler),
             TestContext.Current.CancellationToken
         );
     }
@@ -152,6 +158,22 @@ public sealed class AsyncContentMapTests : AutoTester<AsyncContentMap>
         await map.FindAllAsync(typeof(int), TestContext.Current.CancellationToken)
             .Assert()
             .ContainsAsync(sample.NestedValue.NumberValue, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal static async Task GetAllAsync_TypeSafe(Holder<double> doubleHolder)
+    {
+        CancellationToken ct = TestContext.Current.CancellationToken;
+
+        IAsyncContentMap doubleMap = await Tools.Extractor.ExtractAsync(doubleHolder, ct);
+        await doubleMap.FindAllAsync(typeof(double), ct).Assert().IsNotEmptyAsync(ct);
+        await doubleMap.FindAllAsync(typeof(Type), ct).Assert().IsEmptyAsync(ct);
+
+        Holder<Type> typeHolder = new(typeof(string));
+
+        IAsyncContentMap typeMap = await Tools.Extractor.ExtractAsync(typeHolder, ct);
+        await typeMap.FindAllAsync(typeof(double), ct).Assert().IsEmptyAsync(ct);
+        await typeMap.FindAllAsync(typeof(Type), ct).Assert().IsNotEmptyAsync(ct);
     }
 
     [Theory, RandomData]

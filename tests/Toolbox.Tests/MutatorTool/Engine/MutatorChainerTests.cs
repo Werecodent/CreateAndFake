@@ -56,4 +56,13 @@ public sealed class MutatorChainerTests : AutoTester<MutatorChainer>
 
         new MutatorChainer(Tools.Mutator.Options, engine).Modify(data).Assert().Is(false);
     }
+
+    [Theory, RandomData]
+    internal static void WithOptions_CreatesVariant(
+        MutatorChainer chainer,
+        MutatorMod optionConfiguration
+    )
+    {
+        chainer.WithOptions(optionConfiguration).Assert().IsNot(chainer);
+    }
 }

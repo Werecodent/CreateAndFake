@@ -157,9 +157,9 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
     {
         await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
         {
-            if (TypeDescriber.For(item).Inherits<T>())
+            if (item is T valid)
             {
-                yield return (T)item;
+                yield return valid;
             }
         }
     }
@@ -170,11 +170,24 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
-        await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
+        if (type == typeof(Type))
         {
-            if (TypeDescriber.For(item).Inherits(type))
+            await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
             {
-                yield return item;
+                if (item is Type valid)
+                {
+                    yield return valid;
+                }
+            }
+        }
+        else
+        {
+            await foreach (object item in _content.WithCancellation(canceler).ConfigureAwait(false))
+            {
+                if (TypeDescriber.For(item).Inherits(type))
+                {
+                    yield return item;
+                }
             }
         }
     }
