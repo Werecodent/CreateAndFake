@@ -80,10 +80,14 @@ public abstract class BaseAutoTester(Type testType)
     )
     {
         if (
-            testType.GetMethod(nameof(Equals), [typeof(object)])!.DeclaringType != typeof(object)
-            || TestTypeDescriber.Inherits<IValuerAsyncComparable>()
-            || TestTypeDescriber.Inherits<IValuerEquatable>()
-            || TestTypeDescriber.Inherits<IValueEquatable>()
+            !testType.IsEnum
+            && (
+                testType.GetMethod(nameof(Equals), [typeof(object)])!.DeclaringType
+                    != typeof(object)
+                || TestTypeDescriber.Inherits<IValuerAsyncComparable>()
+                || TestTypeDescriber.Inherits<IValuerEquatable>()
+                || TestTypeDescriber.Inherits<IValueEquatable>()
+            )
         )
         {
             try

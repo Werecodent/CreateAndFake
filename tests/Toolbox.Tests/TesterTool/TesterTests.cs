@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 using Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
@@ -113,6 +114,14 @@ public static class TesterTests
         {
             MockDisposableSample._Lock.Release();
         }
+    }
+
+    [Fact]
+    internal static Task VerifyValueEqualityAsync_GenericWorks()
+    {
+        return Tools.Tester.VerifyValueEqualityAsync<ValuerAsyncComparableSample>(
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Theory, RandomData]

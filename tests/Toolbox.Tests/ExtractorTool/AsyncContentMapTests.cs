@@ -166,14 +166,14 @@ public sealed class AsyncContentMapTests : AutoTester<AsyncContentMap>
         CancellationToken ct = TestContext.Current.CancellationToken;
 
         IAsyncContentMap doubleMap = await Tools.Extractor.ExtractAsync(doubleHolder, ct);
-        await doubleMap.FindAllAsync(typeof(double), ct).Assert().IsNotEmptyAsync(ct);
+        await doubleMap.FindAllAsync(typeof(double), ct).Assert().HasCountAsync(1, ct);
         await doubleMap.FindAllAsync(typeof(Type), ct).Assert().IsEmptyAsync(ct);
 
         Holder<Type> typeHolder = new(typeof(string));
 
         IAsyncContentMap typeMap = await Tools.Extractor.ExtractAsync(typeHolder, ct);
         await typeMap.FindAllAsync(typeof(double), ct).Assert().IsEmptyAsync(ct);
-        await typeMap.FindAllAsync(typeof(Type), ct).Assert().IsNotEmptyAsync(ct);
+        await typeMap.FindAllAsync(typeof(Type), ct).Assert().HasCountAsync(1, ct);
     }
 
     [Theory, RandomData]

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Werecodent.CreateAndFake.Design.Exceptions;
@@ -11,6 +12,11 @@ namespace Werecodent.CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class SerializationValidator(TesterOptions options)
 {
+    /// <summary>Internal type needed for AggregateException serialization.</summary>
+    private static readonly Type _ListDictionaryInternalType = typeof(IDictionary).Assembly.GetType(
+        "System.Collections.ListDictionaryInternal"
+    )!;
+
     /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
@@ -51,9 +57,24 @@ internal sealed class SerializationValidator(TesterOptions options)
     private void VerifyXmlSerialization(Type type, object? instance)
     {
         IContentMap contents = Options.Extractor.Extract(instance);
-        DataContractSerializer serializer = new(type, contents.Select(d => d.GetType()).Distinct());
+        DataContractSerializer serializer = new(
+            type,
+            contents.Select(d => d.GetType()).Concat(FindExtraKnownTypes(instance)).Distinct()
+        );
 
         VerifySerialization(type, instance, serializer);
+    }
+
+    /// <summary>Finds known types needed for specific types.</summary>
+    /// <param name="source">Object being serialized.</param>
+    /// <returns>Known types to add.</returns>
+    private static IEnumerable<Type> FindExtraKnownTypes(object? source)
+    {
+        if (source is Exception)
+        {
+            yield return typeof(Exception[]);
+            yield return _ListDictionaryInternalType;
+        }
     }
 
     /// <param name="type">The <paramref name="instance"/> <see cref="Type"/> for testing.</param>
