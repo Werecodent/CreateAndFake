@@ -32,15 +32,13 @@ jobs:
           bundler-cache: true
 
       - name: Build site
-        run: |
-          cd docs
-          bundle exec jekyll build -d "_site"
+        run: bundle exec jekyll build -s "./docs" -d "./artifacts/site"
         env:
           JEKYLL_ENV: "production"
 
       - name: Test site
         run: |
-          bundle exec htmlproofer "./docs/_site" \
+          bundle exec htmlproofer "./artifacts/site" \
             \-\-disable-external \
             \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
       
@@ -53,7 +51,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ./docs/_site
+          path: ./artifacts/site
 
   deploy:
     environment:
