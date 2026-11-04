@@ -1,3 +1,11 @@
+---
+title: Starting page
+date: 2026-11-04 12:00:00 +0000
+categories: [Help, Instructions]
+tags: [getting started]
+pin: true
+---
+
 # Getting Started
 
 Welcome to the documentation source for developers. 

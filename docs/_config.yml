@@ -1,6 +1,26 @@
-theme: jekyll-theme-hacker
-markdown: kramdown
-highlighter: rouge
+# Site configuration, see: https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/_config.yml
+remote_theme: cotes2020/jekyll-theme-chirpy
+
+theme: jekyll-theme-chirpy
+lang: en
+timezone: Z
 
 title: Create & Fake
-description: Developer support documentation
+tagline: Developer support documentation
+
+description: >-
+  A test support library that makes robust testing easy by handling 
+  all manners of test data generation, mocking, comparisons and validation.
+
+url: "https://werecodent.github.io"
+
+github:
+  username: Werecodent
+
+social:
+  name: Werecodent LLC
+  email: contact@werecodent.com
+  links:
+    - https://github.com/Werecodent
+
+baseurl: "https://www.werecodent.com"
