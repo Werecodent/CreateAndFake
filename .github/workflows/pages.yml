@@ -19,6 +19,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -33,13 +36,12 @@ jobs:
 
       - name: Build site
         run: bundle exec jekyll build -d "_site"
-        working-directory: ./docs
         env:
           JEKYLL_ENV: "production"
 
       - name: Test site
         run: |
-          bundle exec htmlproofer "./docs/_site" \
+          bundle exec htmlproofer _site \
             \-\-disable-external \
             \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
       
@@ -52,7 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ./docs/_site
+          path: _site
 
   deploy:
     environment:
