@@ -57,3 +57,42 @@ internal static void ModifyTools()
 ```
 
 This way, any customization changes are picked up throughout your code.
+
+<h2>General:</h2>
+<ul>
+    {% for page in site.html_pages %}
+    {% unless page.url contains 'Design' %}
+    {% unless page.url contains 'Tools' %}
+    <li>
+        <h3>
+            <a href="{{ site.baseurl}}{{ page.url }}">{{page.title}}</a>
+        </h3>
+    </li>
+    {% endunless %}
+    {% endunless %}
+    {% endfor %}
+</ul>
+<h2>Design:</h2>
+<ul>
+    {% for page in site.html_pages %}
+    {% if page.url contains 'Design' %}
+    <li>
+        <h3>
+            <a href="{{ site.baseurl}}{{ page.url }}">{{page.title}}</a>
+        </h3>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+<h2>Tools:</h2>
+<ul>
+    {% for page in site.html_pages %}
+    {% if page.url contains 'Tools' %}
+    <li>
+        <h3>
+            <a href="{{ site.baseurl}}{{ page.url }}">{{page.title}}</a>
+        </h3>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
