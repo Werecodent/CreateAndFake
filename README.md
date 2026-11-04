@@ -94,7 +94,7 @@ Versions for the packages are synchronized and released alongside each other. Re
 
 The documentation site is located here: https://werecodent.github.io/CreateAndFake/
 
-The raw files can be viewed from the doc folder or built into a local site using Jekyll.
+The raw files can be viewed from the doc folder or built into a local site using [Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll).
 
 ## Contributing
 
