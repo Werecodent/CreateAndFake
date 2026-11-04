@@ -1,5 +1,5 @@
 # Site configuration, see: https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/_config.yml
-remote_theme: cotes2020/jekyll-theme-chirpy@388c151 #@1520938
+remote_theme: cotes2020/jekyll-theme-chirpy@1520938
 
 lang: en
 timezone: Z
