@@ -28,10 +28,12 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
-          destination: ./_site
+          source: ./docs
+          destination: ./artifacts/site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./artifacts/site
 
   deploy:
     environment:
