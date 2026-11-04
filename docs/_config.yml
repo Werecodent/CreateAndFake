@@ -1,7 +1,6 @@
 # Site configuration, see: https://github.com/cotes2020/jekyll-theme-chirpy/blob/master/_config.yml
 remote_theme: cotes2020/jekyll-theme-chirpy
 
-theme: jekyll-theme-chirpy
 lang: en
 timezone: Z
 
