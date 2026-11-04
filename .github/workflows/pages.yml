@@ -19,19 +19,37 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: github-pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+        uses: actions/configure-pages@v6
+      
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          source: ./docs
-          destination: ./artifacts/site
+          ruby-version: 3.4
+          bundler-cache: true
+
+      - name: Build site
+        run: bundle exec jekyll build -s "./docs" -d "./artifacts/site"
+        env:
+          JEKYLL_ENV: "production"
+
+      - name: Test site
+        run: |
+          bundle exec htmlproofer "./artifacts/site" \
+            \-\-disable-external \
+            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+      
+      #- name: Build with Jekyll
+      #  uses: actions/jekyll-build-pages@v1
+      #  with:
+      #    source: ./docs
+      #    destination: ./artifacts/site
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./artifacts/site
 
