@@ -11,7 +11,7 @@ description: >-
   A test support library that makes robust testing easy by handling 
   all manners of test data generation, mocking, comparisons and validation.
 
-url: "https://werecodent.github.io"
+url: "https://werecodent.github.io/CreateAndFake"
 
 github:
   username: Werecodent
@@ -21,5 +21,3 @@ social:
   email: contact@werecodent.com
   links:
     - https://github.com/Werecodent
-
-baseurl: "https://www.werecodent.com"
