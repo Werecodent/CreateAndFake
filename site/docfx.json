@@ -47,7 +47,8 @@
         "output": "../artifacts/site",
         "template": [
             "default",
-            "modern"
+            "modern",
+            "template"
         ],
         "globalMetadata": {
             "_appName": "Create & Fake",

@@ -28,8 +28,8 @@ internal static class Program
         Target("coverage", dependsOn: ["compile"], CoverageAsync);
         Target("pack", dependsOn: ["compile"], PackAsync);
         Target("debugCrash", dependsOn: ["compile"], DebugCrashAsync);
-        Target("buildSite", dependsOn: ["restore"], () => BuildSiteAsync(false));
-        Target("serveSite", dependsOn: ["restore"], () => BuildSiteAsync(true));
+        Target("buildSite", dependsOn: ["restore"], BuildSiteAsync);
+        Target("serveSite", dependsOn: ["buildSite"], ServeSiteAsync);
         return RunTargetsAndExitAsync(args);
     }
 
@@ -72,9 +72,8 @@ internal static class Program
     }
 
     /// <summary>Builds the documentation and site.</summary>
-    /// <param name="serve">If the site should also be served.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-    private static async Task BuildSiteAsync(bool serve)
+    private static async Task BuildSiteAsync()
     {
         string siteDir = Path.Combine(_ArtifactDir, "site");
         string apiDir = Path.Combine(_ArtifactDir, "api");
@@ -90,8 +89,16 @@ internal static class Program
             )
             .ConfigureAwait(false);
 
-        await RunAsync($"{_ToolsDir}/docfx", $"build site/docfx.json {(serve ? "--serve" : "")}")
-            .ConfigureAwait(false);
+        await RunAsync($"{_ToolsDir}/docfx", "build site/docfx.json").ConfigureAwait(false);
+    }
+
+    /// <summary>Builds the documentation and site.</summary>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    private static Task ServeSiteAsync()
+    {
+        string siteDir = Path.Combine(_ArtifactDir, "site");
+
+        return RunAsync($"{_ToolsDir}/docfx", $"serve {siteDir}");
     }
 
     /// <summary>Tests and analyzes test code coverage.</summary>
