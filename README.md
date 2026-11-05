@@ -94,7 +94,7 @@ Versions for the packages are synchronized and released alongside each other. Re
 
 The documentation site is located here: https://werecodent.github.io/CreateAndFake/
 
-The raw files can be viewed from the doc folder or built into a local site using [Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll).
+The raw files can be viewed from the doc folder or built into a local site using "./build/run.sh serveSite".
 
 ## Contributing
 
@@ -112,6 +112,7 @@ View the [license](LICENSE.txt) file for more details.
 * [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator) + [CodeCov](https://codecov.io): For test coverage.
 * [Bullseye](https://github.com/adamralph/bullseye) + [SimpleExec](https://github.com/adamralph/simple-exec) + [MinVer](https://github.com/adamralph/minver): For project building.
 * [AsyncFixer](https://github.com/semihokur/AsyncFixer) + [MissingAwaitWarning](https://github.com/ykoksen/unused-task-warning) + [Meziantou.Analyzer](https://github.com/meziantou/Meziantou.Analyzer) + [Sonar](https://github.com/SonarSource/sonar-dotnet): For code analyzers.
+* [DocFX](https://github.com/dotnet/docfx): For building the documentation site.
 * [CSharpier](https://github.com/belav/csharpier): For formatting code.
 * [GitHub](https://github.com): For hosting code.
 * [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development): For C# and editors.

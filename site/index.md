@@ -1,14 +1,4 @@
----
-title: Starting page 2
-date: 2026-11-04 12:00:01 +0000
-categories: [Help, Instructions]
-tags: [getting started]
-pin: true
----
-
 # Getting Started
-
-Work?
 
 Welcome to the documentation source for developers. 
 

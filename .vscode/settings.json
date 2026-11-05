@@ -19,6 +19,9 @@
     "[xml]": {
         "editor.defaultFormatter": "csharpier.csharpier-vscode"
     },
+    "json.schemaDownload.trustedDomains": {
+        "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json": true
+    },
     "cSpell.words": [
         "Analyser",
         "ASPNETCORE",
@@ -36,6 +39,8 @@
         "cref",
         "datacollector",
         "Delegators",
+        "docfolder",
+        "docfx",
         "Duplicatable",
         "enumerables",
         "equatables",

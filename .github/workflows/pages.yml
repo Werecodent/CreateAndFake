@@ -22,37 +22,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: | 
+            10.0.x
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
       
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.4
-          bundler-cache: true
-
-      - name: Build site
-        working-directory: docs
-        run: bundle exec jekyll build -s -d "_site"
-        env:
-          JEKYLL_ENV: "production"
-
-      - name: Test site
-        run: |
-          bundle exec htmlproofer "./docs/_site" \
-            \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
-      
-      #- name: Build with Jekyll
-      #  uses: actions/jekyll-build-pages@v1
-      #  with:
-      #    source: ./docs
-      #    destination: ./artifacts/site
+      - name: Build Site
+        run: ./build/run.sh buildSite
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ./docs/_site
+          path: ./artifacts/site
 
   deploy:
     environment:
