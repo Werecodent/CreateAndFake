@@ -1,0 +1,4 @@
+[*.cs]
+
+# Crashes; fix not available in all .NET versions.
+dotnet_diagnostic.CA2263.severity = None

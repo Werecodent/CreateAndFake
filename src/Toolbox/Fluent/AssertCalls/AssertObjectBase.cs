@@ -1,0 +1,352 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Fluent.Chaining;
+
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
+
+/// <summary>Handles common <see langword="object"/> assertion calls.</summary>
+/// <typeparam name="T">Type to verify.</typeparam>
+/// <param name="asserter"><inheritdoc cref="Asserter" path="/summary"/></param>
+/// <param name="actual"><inheritdoc cref="Actual" path="/summary"/></param>
+public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
+    where T : AssertObjectBase<T>
+{
+    /// <summary>Handles the actual assert behavior.</summary>
+    protected IAsserter Asserter { get; } =
+        asserter ?? throw new ArgumentNullException(nameof(asserter));
+
+    /// <summary>Instance to run assertion checks with.</summary>
+    protected object? Actual { get; } = actual;
+
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> Is(object? expected, string? details = null)
+    {
+        asserter.Is(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Is(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> Is(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.Is(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNull(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNull(string? details = null)
+    {
+        asserter.IsNull(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNull(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.IsNull(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNot(object? expected, string? details = null)
+    {
+        asserter.IsNot(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNot(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNot(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.IsNot(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNotNull(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNotNull(string? details = null)
+    {
+        asserter.IsNotNull(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.IsNotNull(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public AssertChainer<T> IsNotNull(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.IsNotNull(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ReferenceEqual(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ReferenceEqual(object? expected, string? details = null)
+    {
+        asserter.ReferenceEqual(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ReferenceEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ReferenceEqual(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.ReferenceEqual(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ReferenceNotEqual(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ReferenceNotEqual(object? expected, string? details = null)
+    {
+        asserter.ReferenceNotEqual(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ReferenceNotEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ReferenceNotEqual(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.ReferenceNotEqual(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ValuesEqual(object? expected, string? details = null)
+    {
+        asserter.ValuesEqual(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ValuesEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ValuesEqual(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.ValuesEqual(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ValuesNotEqual(object? expected, string? details = null)
+    {
+        asserter.ValuesNotEqual(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.ValuesNotEqual(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> ValuesNotEqual(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.ValuesNotEqual(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> UniqueFrom(object? expected, string? details = null)
+    {
+        asserter.AreUnique(expected, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.AreUnique(object,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> UniqueFrom(
+        object? expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        asserter.AreUnique(expected, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+#pragma warning disable CA1716 // Overriding here should be a rarity.
+
+    /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Inherits<TParent>(string? details = null)
+    {
+        Asserter.Inherits<TParent>(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Inherits<TParent>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.Inherits<TParent>(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Inherits(Type,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Inherits(Type? parent, string? details = null)
+    {
+        Asserter.Inherits(parent, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Inherits(Type,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Inherits(
+        Type? parent,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.Inherits(parent, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+#pragma warning restore
+
+    /// <inheritdoc cref="IAsserterObject.InheritedBy{T}(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> InheritedBy<TChild>(string? details = null)
+    {
+        Asserter.InheritedBy<TChild>(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.InheritedBy{T}(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> InheritedBy<TChild>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.InheritedBy<TChild>(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.InheritedBy(Type,object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> InheritedBy(Type? child, string? details = null)
+    {
+        Asserter.InheritedBy(child, Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.InheritedBy(Type,object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> InheritedBy(
+        Type? child,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.InheritedBy(child, Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Fail(object,string)"/>
+    [DoesNotReturn]
+    public virtual void Fail(string? details = null)
+    {
+        asserter.Fail(Actual, details);
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Fail(object,AsserterMod,string)"/>
+    [DoesNotReturn]
+    public virtual void Fail(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.Fail(Actual, optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Debug(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Debug(string? details = null)
+    {
+        asserter.Debug(Actual, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Debug(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Debug(AsserterMod? optionConfiguration, string? details = null)
+    {
+        asserter.Debug(Actual, optionConfiguration, details);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserter.Pass()"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Pass()
+    {
+        asserter.Pass();
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserter.Pass(AsserterMod)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Pass(AsserterMod? optionConfiguration)
+    {
+        asserter.Pass(optionConfiguration);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Called(object,Times,AsserterMod)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Called(AsserterMod? optionConfiguration = null)
+    {
+        asserter.Called(Actual, optionConfiguration);
+        return ToChainer();
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Called(object,Times,AsserterMod)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual AssertChainer<T> Called(Times total, AsserterMod? optionConfiguration = null)
+    {
+        asserter.Called(Actual, total, optionConfiguration);
+        return ToChainer();
+    }
+
+    /// <summary>Converts <see langword="this"/> to a chainer for additional assertions on <c>actual</c>.</summary>
+    /// <returns>Chainer enabling additional assertion calls.</returns>
+    protected internal AssertChainer<T> ToChainer()
+    {
+        return new AssertChainer<T>((T)this, Asserter);
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return GenericConverter.ExpandName(GetType());
+    }
+}

@@ -1,0 +1,71 @@
+global using AsserterMod = System.Func<
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions,
+    Werecodent.CreateAndFake.AsserterTool.AsserterOptions
+>;
+using System.Diagnostics.CodeAnalysis;
+using Werecodent.CreateAndFake.AsserterTool.AsyncCategories;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Design.Tooling;
+
+namespace Werecodent.CreateAndFake.AsserterTool;
+
+/// <summary>Tool to verify <see cref="object"/> states and <see cref="Type"/> behavior.</summary>
+/// <remarks>Useful for handling common test scenarios.</remarks>
+public interface IAsserter
+    : ITool<AsserterOptions>,
+        IAsserterAsyncEnumerable,
+        IAsserterAsyncObject,
+        IAsserterTask,
+        IAsserterValueTask,
+        IAsserterAction,
+        IAsserterComparable,
+        IAsserterDelegate,
+        IAsserterEnumerable,
+        IAsserterError,
+        IAsserterFunc,
+        IAsserterObject,
+        IAsserterString
+{
+    /// <summary>Creates a new tool with the <paramref name="optionConfiguration"/> changes applied.</summary>
+    /// <param name="optionConfiguration">Modifications of this tool's options for the new tool.</param>
+    /// <returns>The created tool.</returns>
+    IAsserter WithOptions(AsserterMod optionConfiguration);
+
+    /// <inheritdoc cref="Pass(AsserterMod)"/>
+    void Pass();
+
+    /// <summary>Specifies the test is successful if it reaches this point.</summary>
+    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
+    void Pass(AsserterMod? optionConfiguration);
+
+    /// <inheritdoc cref="Fail(AsserterMod,string)"/>
+    [DoesNotReturn]
+    void Fail(string? details = null);
+
+    /// <summary>Specifies the test has failed if it reaches this point.</summary>
+    /// <param name="details">Description to include in assertion failure messages.</param>
+    /// <exception cref="AssertException">Always.</exception>
+    /// <inheritdoc cref="Pass(AsserterMod)"/>
+    [DoesNotReturn]
+    void Fail(AsserterMod? optionConfiguration, string? details = null);
+
+    /// <inheritdoc cref="Debug(AsserterMod,string)"/>
+    void Debug(string? details = null);
+
+    /// <summary>Fails the test only if the option is set.</summary>
+    /// <param name="details">Description to include in assertion failure messages.</param>
+    /// <remarks>Important relevant options: <list type="bullet">
+    ///     <item><see cref="AsserterOptions.TriggerFailureForDebugAsserts"/></item>
+    /// </list></remarks>
+    /// <exception cref="AssertException">Always.</exception>
+    /// <inheritdoc cref="Pass(AsserterMod)"/>
+    void Debug(AsserterMod? optionConfiguration, string? details = null);
+
+    /// <summary>Verifies all given <paramref name="cases"/> throw no <see cref="Exception"/>s.</summary>
+    /// <param name="cases">Assertion cases to run.</param>
+    /// <remarks>Aggregates all caught <see cref="Exception"/>s.</remarks>
+    /// <exception cref="AggregateException">
+    ///     All <see cref="Exception"/>s thrown by the given <paramref name="cases"/>.
+    /// </exception>
+    void CheckAll(params IEnumerable<Action> cases);
+}

@@ -1,0 +1,65 @@
+{
+    "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+    "metadata": [
+        {
+            "src": [
+                {
+                    "src": "../src",
+                    "files": [
+                        "**/*.csproj"
+                    ],
+                    "exclude": [
+                        "Build/*.csproj",
+                        "Samples/*.csproj"
+                    ]
+                }
+            ],
+            "output": "../artifacts/api",
+            "properties": {
+                "TargetFramework": "net10"
+            },
+            "noRestore": true,
+            "namespaceLayout": "flattened",
+            "memberLayout": "separatePages"
+        }
+    ],
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "**/*.{md,yml}"
+                ]
+            },
+            {
+                "src": "../artifacts",
+                "files": [
+                    "api/**"
+                ]
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "images/**"
+                ]
+            }
+        ],
+        "output": "../artifacts/site",
+        "template": [
+            "default",
+            "modern",
+            "template"
+        ],
+        "globalMetadata": {
+            "_appName": "Create & Fake",
+            "_appTitle": "Create & Fake",
+            "_enableSearch": true,
+            "_disableContribution": true,
+            "pdf": false
+        },
+        "sitemap": {
+            "baseUrl": "https://werecodent.github.io/CreateAndFake",
+            "changefreq": "monthly"
+        }
+    }
+}
