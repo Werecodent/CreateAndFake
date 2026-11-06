@@ -36,6 +36,7 @@ internal static class ExceptionCreateHandlers
         "System.DirectoryServices.Protocols.LdapException",
         "System.Net.Mail.SmtpFailedRecipientsException",
         "System.Net.NetworkInformation.PingException",
+        "System.Xaml.XamlDuplicateMemberException",
         "System.Net.Http.HttpRequestException",
         "System.Security.SecurityException",
         "System.Web.HttpParseException",
