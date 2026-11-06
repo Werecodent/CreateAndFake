@@ -11,7 +11,7 @@ namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 [ExcludeFromCreateAndFake]
 public abstract class BaseCapAttribute : ParameterHintAttribute, ICloneable
 {
-    /// <summary>Test.</summary>
+    /// <summary>If <see cref="Min"/> has been set with a value to use.</summary>
     protected bool IsMinSet { get; }
 
     /// <summary>Lower boundary for the generated value.</summary>

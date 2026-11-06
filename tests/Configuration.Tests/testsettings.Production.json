@@ -37,11 +37,13 @@
         },
         "Mutator": {
             "MaxRecursionDepth": 8,
+            "MaxAttemptsForModify": 7,
             "IncludeFoundHints": false,
             "AttemptLimitForUniques": 18,
             "AttemptLimitForVariants": 16,
             "IncludeFrameworkHints": false,
-            "MaxAttemptsForMutatingSets": 10
+            "MaxAttemptsForMutatingSets": 10,
+            "VerifyModifyViaValueHashes": false
         },
         "Randomizer": {
             "StringMinSize": 2,

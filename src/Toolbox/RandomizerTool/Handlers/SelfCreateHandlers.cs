@@ -82,6 +82,7 @@ internal static class SelfCreateHandlers
                 IncludeFrameworkHints = true,
                 ExtractPrivateMembers = false,
                 MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                IgnoredTypesForUniques = [typeof(bool), typeof(byte), typeof(char)],
             }
         ),
         new FactoryCreateHandler<FakerOptions>(rand =>
@@ -103,6 +104,8 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
                 MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxAttemptsForModify = rand.Options.Gen.Next(8, 14),
+                MaxAttemptsForMutatingSets = rand.Options.Gen.Next(5, 9),
             }
         ),
         new FactoryCreateHandler<RandomizerOptions>(rand =>
@@ -131,9 +134,32 @@ internal static class SelfCreateHandlers
             CreateRandomOptionsBase<RunnerOptions>(rand) with
             {
                 RunTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 25)),
+                MethodsToIgnore =
+                [
+                    "Close",
+                    "Dispose",
+                    "Finalize",
+                    "DisposeAsync",
+                    "PrintMembers",
+                    "GetObjectData",
+                ],
             }
         ),
-        new FactoryCreateHandler<TesterOptions>(CreateRandomOptionsBase<TesterOptions>),
+        new FactoryCreateHandler<TesterOptions>(rand =>
+            CreateRandomOptionsBase<TesterOptions>(rand) with
+            {
+                IgnoreObsoleteMethods = true,
+                MethodsToIgnore =
+                [
+                    "Close",
+                    "Dispose",
+                    "Finalize",
+                    "DisposeAsync",
+                    "PrintMembers",
+                    "GetObjectData",
+                ],
+            }
+        ),
         new FactoryCreateHandler<ValuerOptions>(rand =>
             CreateRandomOptionsBase<ValuerOptions>(rand) with
             {

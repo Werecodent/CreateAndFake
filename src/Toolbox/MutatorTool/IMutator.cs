@@ -165,7 +165,9 @@ public interface IMutator : IHintTool<MutatorOptions, IMutateHint>
     /// </returns>
     /// <remarks>
     ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="MutatorOptions.MaxAttemptsForModify"/></item>
     ///         <item><see cref="MutatorOptions.MaxAttemptsForMutatingSets"/></item>
+    ///         <item><see cref="MutatorOptions.VerifyModifyViaValueHashes"/></item>
     ///     </list>
     /// </remarks>
     bool Modify(object? instance, MutatorMod? optionConfiguration = null);

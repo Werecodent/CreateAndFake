@@ -42,6 +42,21 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
     [ConfigurableOption]
     public int MaxAttemptsForMutatingSets { get; init; } = 6;
 
+    /// <summary>Limits attempts at mutating <see cref="object"/>s.</summary>
+    /// <remarks>Only useful when <see cref="VerifyModifyViaValueHashes"/> is set.</remarks>
+    /// <value><c>12</c></value>
+    [ConfigurableOption]
+    public int MaxAttemptsForModify { get; init; } = 12;
+
+    /// <summary>If modification attempts are verified via a change in an instance's value hash.</summary>
+    /// <remarks>
+    ///     Prevents false positives when using the <see cref="IMutator"/> to modify <see cref="object"/>s.
+    ///     Gives up if not achieved within the limit set by <see cref="MaxAttemptsForModify"/>.
+    /// </remarks>
+    /// <value><see langword="true"/></value>
+    [ConfigurableOption]
+    public bool VerifyModifyViaValueHashes { get; init; } = true;
+
     /// <summary>Derives options from <see langword="this"/> overridden by <paramref name="config"/>'s values.</summary>
     /// <param name="config">Configuration with the potential overrides to use.</param>
     /// <returns>The created options.</returns>
@@ -55,10 +70,12 @@ public sealed record MutatorOptions : ToolHintOptions<MutatorOptions, IMutateHin
 
         return this with
         {
+            VerifyModifyViaValueHashes = Config.GetValue(section, VerifyModifyViaValueHashes),
             MaxAttemptsForMutatingSets = Config.GetValue(section, MaxAttemptsForMutatingSets),
             AttemptLimitForVariants = Config.GetValue(section, AttemptLimitForVariants),
             AttemptLimitForUniques = Config.GetValue(section, AttemptLimitForUniques),
             IncludeFrameworkHints = Config.GetValue(section, IncludeFrameworkHints),
+            MaxAttemptsForModify = Config.GetValue(section, MaxAttemptsForModify),
             IncludeFoundHints = Config.GetValue(section, IncludeFoundHints),
             MaxRecursionDepth = Config.GetValue(section, MaxRecursionDepth),
         };

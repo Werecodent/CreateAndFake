@@ -196,7 +196,51 @@ public sealed class Mutator(MutatorOptions options) : IMutator
     /// <inheritdoc/>
     public bool Modify(object? instance, MutatorMod? optionConfiguration = null)
     {
-        return new MutatorChainer(Options, _Engine).Modify(instance, optionConfiguration);
+        MutatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
+
+        if (localOptions.VerifyModifyViaValueHashes)
+        {
+            int hash = localOptions.Valuer.GetHashCode(
+                instance,
+                opt => opt with { SkipAsyncValues = true }
+            );
+
+            int i = 1;
+            do
+            {
+                bool modified = new MutatorChainer(Options, _Engine).Modify(
+                    instance,
+                    (optionConfiguration != null) ? _ => localOptions : null
+                );
+
+                if (modified)
+                {
+                    if (
+                        hash
+                        != localOptions.Valuer.GetHashCode(
+                            instance,
+                            opt => opt with { SkipAsyncValues = true }
+                        )
+                    )
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            } while (i++ < localOptions.MaxAttemptsForModify);
+
+            return false;
+        }
+        else
+        {
+            return new MutatorChainer(Options, _Engine).Modify(
+                instance,
+                (optionConfiguration != null) ? _ => localOptions : null
+            );
+        }
     }
 
     /// <inheritdoc/>
