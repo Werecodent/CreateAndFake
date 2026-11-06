@@ -23,7 +23,6 @@ public interface IValuerEngine : IToolEngine<ICompareHint>
     int GetHashCode(object? item, IValuerChainer chainer);
 
     /// <param name="chainer">Handles callback behavior for child values.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <inheritdoc cref="IValuer.GetHashCodeAsync(object,CancellationToken,ValuerMod)"/>
     Task<int> GetHashCodeAsync(object? item, IValuerChainer chainer, CancellationToken canceler);
 }

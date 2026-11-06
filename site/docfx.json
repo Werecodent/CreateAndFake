@@ -52,8 +52,14 @@
         ],
         "globalMetadata": {
             "_appName": "Create & Fake",
+            "_appTitle": "Create & Fake",
             "_enableSearch": true,
+            "_disableContribution": true,
             "pdf": false
+        },
+        "sitemap": {
+            "baseUrl": "https://werecodent.github.io/CreateAndFake",
+            "changefreq": "monthly"
         }
     }
 }

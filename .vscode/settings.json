@@ -29,6 +29,7 @@
         "Callvirt",
         "Castclass",
         "Chainer",
+        "changefreq",
         "Cloneable",
         "cloneables",
         "cloner",
@@ -39,7 +40,6 @@
         "cref",
         "datacollector",
         "Delegators",
-        "docfolder",
         "docfx",
         "Duplicatable",
         "enumerables",
@@ -111,7 +111,8 @@
         ".vscode/",
         "nuget.config",
         "artifacts/",
-        "src/Design/Data/"
+        "src/Design/Data/",
+        "site/template/",
     ],
     "editor.inlineSuggest.enabled": false,
     "explorer.autoReveal": "focusNoScroll"
