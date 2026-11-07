@@ -1,5 +1,3 @@
-using System.Reflection;
-using System.Text;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
@@ -15,23 +13,7 @@ public sealed class HandlerExtractHint : IExtractHint
     /// <summary>Handlers to use that haven't already been specified.</summary>
     private static readonly IExtractHandler[] _Creators =
     [
-        new SelfExtractHandler(typeof(Lock)),
-        new SelfExtractHandler(typeof(string)),
-        new SelfExtractHandler(typeof(AssemblyName)),
-        new SelfExtractHandler(typeof(StringBuilder)),
-        new SelfExtractHandler(typeof(CancellationToken)),
-        new SelfExtractHandler(typeof(RuntimeMethodHandle)),
-        new ConvertExtractHandler(typeof(TypeDescriber), x => [((TypeDescriber)x).SupportedType]),
-        new ConvertExtractHandler(typeof(StreamReader), x => [((StreamReader)x).BaseStream]),
-        new ConvertExtractHandler(
-            typeof(StreamWriter),
-            x =>
-            {
-                StreamWriter writer = (StreamWriter)x;
-                writer.Flush();
-                return [writer.BaseStream];
-            }
-        ),
+        new ConvertExtractHandler<TypeDescriber>(x => [x.SupportedType]),
     ];
 
     /// <summary>All handlers by their supported type.</summary>
@@ -39,6 +21,7 @@ public sealed class HandlerExtractHint : IExtractHint
         TypeSupporter.GroupBySupportedType(
             _Creators
                 .Concat(ReflectionExtractHandlers.Handlers)
+                .Concat(SystemExtractHandlers.Handlers)
                 .Concat(ValueExtractHandlers.Handlers)
         );
 

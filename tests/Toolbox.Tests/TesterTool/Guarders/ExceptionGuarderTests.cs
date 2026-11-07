@@ -17,10 +17,19 @@ public static class ExceptionGuarderTests
     }
 
     [Fact]
-    internal static Task CallAllMethodsAsync_FailsWithException()
+    internal static async Task CallAllMethodsAsync_FailsWithException()
     {
-        return Tools
+        await Tools
             .Tester.PassthroughWithNoExceptionsAsync<MethodThrowsSample>(
+                TestContext.Current.CancellationToken,
+                opt => opt with { DisablePassthroughTests = false }
+            )
+            .Assert()
+            .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
+
+        await Tools
+            .Tester.PassthroughWithNoExceptionsAsync(
+                Tools.Randomizer.Create<MethodThrowsSample>(),
                 TestContext.Current.CancellationToken,
                 opt => opt with { DisablePassthroughTests = false }
             )

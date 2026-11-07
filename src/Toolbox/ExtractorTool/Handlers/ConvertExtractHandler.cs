@@ -6,7 +6,7 @@ namespace Werecodent.CreateAndFake.ExtractorTool.Handlers;
 /// <inheritdoc cref="IExtractHandler"/>
 /// <param name="type"><inheritdoc cref="SupportedType" path="/summary"/></param>
 /// <param name="factory">Behavior handling extraction of the supported type.</param>
-internal sealed class ConvertExtractHandler(Type type, Func<object, ICollection<object?>> factory)
+internal class ConvertExtractHandler(Type type, Func<object, ICollection<object?>> factory)
     : IExtractHandler
 {
     /// <inheritdoc/>
