@@ -1,50 +1,14 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.MSTest.v4.Tests;
 
 [TestClass]
-public sealed class MSTestTests
+public sealed class MSTestTests : AssemblyTester
 {
-    public TestContext TestContext { get; set; }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { AllowedTestNamePrefixes = ["Issue118"] };
 
-    [TestMethod]
-    public Task MSTest_v4_VerifyIntegrity()
-    {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(TestContext.CancellationToken);
-    }
-
-    [TestMethod]
-    public void MSTest_v4_TestClassCoverage()
-    {
-        Tools.Tester.ProvidesTestClassCoverage(
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly()
-        );
-    }
-
-    [TestMethod]
-    public void MSTest_v4_ValidateTestMethodNaming()
-    {
-        Tools.Tester.VerifyTestMethodNaming(
-            [typeof(TestMethodAttribute)],
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly(),
-            opt => opt with { AllowedTestNamePrefixes = ["Issue118"] }
-        );
-    }
-
-    [TestMethod]
-    public Task MSTest_v4_ValidateRandomDataParameters()
-    {
-        return Tools.Tester.ValidateRandomDataParametersAsync(
-            Assembly.GetExecutingAssembly(),
-            TestContext.CancellationToken
-        );
-    }
-
-    [TestMethod]
-    public Task MSTest_v4_VerifyTestSettingsConfig_Default()
-    {
-        return Tools.Tester.ValidateTestSettingsConfigAsync(null, TestContext.CancellationToken);
-    }
+    protected override Assembly CodeAssembly { get; } =
+        Assembly.GetAssembly(typeof(RandomDataAttribute));
 }

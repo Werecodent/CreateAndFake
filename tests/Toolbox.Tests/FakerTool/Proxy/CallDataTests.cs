@@ -6,10 +6,8 @@ namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;
 
 public sealed class CallDataTests() : AutoTester(typeof(CallData))
 {
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
 
     [Theory, RandomData]
     internal static void MatchesCall_MethodNameMismatch(

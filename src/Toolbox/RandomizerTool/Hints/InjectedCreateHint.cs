@@ -80,7 +80,7 @@ public sealed class InjectedCreateHint : CreateHint
             )
             .OrderByDescending(g => g.Key)
             .FirstOrDefault()
-            ?.OrderBy(c => c.GetParameters())
+            ?.OrderBy(c => c.GetParameters().Length)
             .FirstOrDefault();
     }
 }

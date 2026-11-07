@@ -4,10 +4,8 @@ namespace Werecodent.CreateAndFake.Tests.MutatorTool.Handlers;
 
 public sealed class NoMutateHandlerTests() : AutoTester(typeof(NoMutateHandler))
 {
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
 
     [Fact]
     internal static void NoMutateHandler_InternalOnly()

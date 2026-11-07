@@ -110,6 +110,46 @@ internal sealed class SupportValidator(TesterOptions options)
         );
     }
 
+    /// <inheritdoc cref="ITester.ValidateAutoTesterInstancesAsync"/>
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
+    public async Task ValidateAutoTesterInstancesAsync(CancellationToken canceler)
+    {
+        ArgumentGuard.ThrowIfNull(canceler);
+
+        Dictionary<Type, Exception> failures = [];
+        foreach (
+            Type type in TypeDescriber
+                .For(typeof(BaseAutoTester<>))
+                .FindLoadedSubclasses()
+                .Where(t => !t.IsAbstract)
+        )
+        {
+            ConstructorInfo? constructor = type.GetConstructor([]);
+            if (constructor != null)
+            {
+                try
+                {
+                    _ = await Options
+                        .Runner.RunAsync(
+                            constructor.Invoke([]),
+                            type.GetMethod(
+                                "get_TestInstance",
+                                BindingFlags.NonPublic | BindingFlags.Instance
+                            )!,
+                            canceler
+                        )
+                        .ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    failures.Add(type, e);
+                }
+            }
+        }
+
+        Options.Asserter.IsEmpty(failures, "Randomization failed for 'TestInstance'.");
+    }
+
     /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
     [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     public async Task ValidateRandomDataParametersAsync(

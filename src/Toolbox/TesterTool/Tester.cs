@@ -263,6 +263,17 @@ public class Tester(TesterOptions options) : ITester
         ).ValidateRandomDataParametersAsync(testAssembly, canceler);
     }
 
+    /// <inheritdoc/>
+    public virtual Task ValidateAutoTesterInstancesAsync(
+        CancellationToken canceler,
+        TesterMod? optionConfiguration = null
+    )
+    {
+        return new SupportValidator(
+            Configure(optionConfiguration)
+        ).ValidateAutoTesterInstancesAsync(canceler);
+    }
+
     /// <inheritdoc cref="ITester.ValidateTestSettingsConfigAsync"/>
     public virtual Task ValidateTestSettingsConfigAsync(
         string? environmentName,

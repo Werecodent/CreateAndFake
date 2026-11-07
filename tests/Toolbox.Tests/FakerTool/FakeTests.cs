@@ -6,10 +6,8 @@ namespace Werecodent.CreateAndFake.Tests.FakerTool;
 
 public sealed class FakeTests : AutoTester<Fake>
 {
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
 
     [Fact]
     internal static void Verify_NoTotalValid()

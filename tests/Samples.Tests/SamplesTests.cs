@@ -1,51 +1,28 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.Samples.Tests;
 
-public static class SamplesTests
+public sealed class SamplesTests : AssemblyTester
 {
     private static readonly Assembly _SampleAssembly = Assembly.GetAssembly(
         typeof(SampleGenerator)
     );
 
-    [Fact]
-    internal static void Samples_TestClassCoverage()
-    {
-        Tools.Tester.ProvidesTestClassCoverage(
-            _SampleAssembly,
-            Assembly.GetExecutingAssembly(),
-            opt =>
-                opt with
-                {
-                    ClassCoverageExclusions =
-                    [
-                        .. _SampleAssembly
-                            .GetTypes()
-                            .Where(t => Attribute.IsDefined(t, typeof(InvalidSampleAttribute)))
-                            .Select(t => t.Name),
-                    ],
-                }
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                ClassCoverageExclusions =
+                [
+                    .. _SampleAssembly
+                        .GetTypes()
+                        .Where(t => Attribute.IsDefined(t, typeof(InvalidSampleAttribute)))
+                        .Select(t => t.Name),
+                ],
+            };
 
-    [Fact]
-    internal static void Samples_ValidateTestMethodNaming()
-    {
-        Tools.Tester.VerifyTestMethodNaming(
-            [typeof(FactAttribute), typeof(TheoryAttribute)],
-            _SampleAssembly,
-            Assembly.GetExecutingAssembly()
-        );
-    }
-
-    [Fact]
-    internal static Task Samples_ValidateRandomDataParameters()
-    {
-        return Tools.Tester.ValidateRandomDataParametersAsync(
-            Assembly.GetExecutingAssembly(),
-            TestContext.Current.CancellationToken
-        );
-    }
+    protected override Assembly CodeAssembly { get; } = _SampleAssembly;
 
     [Fact]
     internal static Task Samples_ValidSamplesWork()
@@ -54,20 +31,5 @@ public static class SamplesTests
             SampleGenerator.AllValidDataSamples,
             TestContext.Current.CancellationToken
         );
-    }
-
-    [Fact]
-    internal static Task Samples_VerifyTestSettingsConfig_Default()
-    {
-        return Tools.Tester.ValidateTestSettingsConfigAsync(
-            null,
-            TestContext.Current.CancellationToken
-        );
-    }
-
-    [Fact]
-    internal static void Samples_VerifyAllToStrings()
-    {
-        Tools.Tester.VerifyAllToStrings(_SampleAssembly);
     }
 }

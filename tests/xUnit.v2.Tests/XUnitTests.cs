@@ -1,47 +1,13 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.xUnit.v2.Tests;
 
-public static class XUnitTests
+public sealed class XUnitTests : AssemblyTester
 {
-    [Fact]
-    internal static Task XUnit_v2_VerifyIntegrity()
-    {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(CancellationToken.None);
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { AllowedTestNamePrefixes = ["Issue118"] };
 
-    [Fact]
-    internal static void XUnit_v2_TestClassCoverage()
-    {
-        Tools.Tester.ProvidesTestClassCoverage(
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly()
-        );
-    }
-
-    [Fact]
-    internal static void XUnit_v2_ValidateTestMethodNaming()
-    {
-        Tools.Tester.VerifyTestMethodNaming(
-            [typeof(FactAttribute), typeof(TheoryAttribute)],
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly(),
-            opt => opt with { AllowedTestNamePrefixes = ["Issue118"] }
-        );
-    }
-
-    [Fact]
-    internal static Task XUnit_v2_ValidateRandomDataParameters()
-    {
-        return Tools.Tester.ValidateRandomDataParametersAsync(
-            Assembly.GetExecutingAssembly(),
-            CancellationToken.None
-        );
-    }
-
-    [Fact]
-    internal static Task XUnit_v2_VerifyTestSettingsConfig_Default()
-    {
-        return Tools.Tester.ValidateTestSettingsConfigAsync(null, CancellationToken.None);
-    }
+    protected override Assembly CodeAssembly { get; } =
+        Assembly.GetAssembly(typeof(RandomDataAttribute));
 }

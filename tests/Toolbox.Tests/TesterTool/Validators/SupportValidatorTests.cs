@@ -18,7 +18,7 @@ public sealed class SupportValidatorTests() : AutoTester(typeof(SupportValidator
             .Tester.Assert(x =>
                 x.ProvidesTestClassCoverage(
                     Assembly.GetAssembly(typeof(ToolSet)),
-                    Assembly.GetExecutingAssembly()
+                    Assembly.GetAssembly(typeof(ToolSet))
                 )
             )
             .Throws<AssertException>();

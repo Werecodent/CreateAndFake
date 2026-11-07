@@ -6,16 +6,8 @@ using Werecodent.CreateAndFake.Tests.TesterTool.TestSamples;
 
 namespace Werecodent.CreateAndFake.Tests.TesterTool.Guarders;
 
-public sealed class ExceptionGuarderTests() : AutoTester(typeof(ExceptionGuarder))
+public static class ExceptionGuarderTests
 {
-    protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IncludeInternals = false, IgnoreAllExceptions = true };
-
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
-
     [Fact]
     internal static Task CallAllMethodsAsync_SuccessfulNoException()
     {

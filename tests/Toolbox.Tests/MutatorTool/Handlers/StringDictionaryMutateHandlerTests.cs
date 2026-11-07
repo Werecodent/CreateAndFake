@@ -8,12 +8,12 @@ public sealed class StringDictionaryMutateHandlerTests()
     : AutoTester(typeof(StringDictionaryMutateHandler))
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] };
-
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(InvalidCastException)],
+                DisableParameterMutationTests = true,
+            };
 
     [Fact]
     internal static void StringDictionaryMutateHandler_InternalOnly()

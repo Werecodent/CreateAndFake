@@ -10,12 +10,12 @@ namespace Werecodent.CreateAndFake.Tests.MutatorTool;
 public sealed class MutatorTests : AutoTester<Mutator>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
-
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+        opt =>
+            opt with
+            {
+                IgnorableExceptions = [typeof(ToolException)],
+                DisableParameterMutationTests = true,
+            };
 
     [Fact]
     internal static Task Mutator_PassthroughWithNoExceptions()

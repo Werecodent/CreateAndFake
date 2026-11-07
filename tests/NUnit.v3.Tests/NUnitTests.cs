@@ -1,53 +1,14 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.TesterTool;
 
 namespace Werecodent.CreateAndFake.NUnit.v3.Tests;
 
 [TestFixture]
-public static class NUnitTests
+public sealed class NUnitTests : AssemblyTester
 {
-    [Test]
-    public static Task NUnit_v3_VerifyIntegrity()
-    {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(
-            TestContext.CurrentContext.CancellationToken
-        );
-    }
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { AllowedTestNamePrefixes = ["Issue118"] };
 
-    [Test]
-    public static void NUnit_v3_TestClassCoverage()
-    {
-        Tools.Tester.ProvidesTestClassCoverage(
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly()
-        );
-    }
-
-    [Test]
-    public static void NUnit_v3_ValidateTestMethodNaming()
-    {
-        Tools.Tester.VerifyTestMethodNaming(
-            [typeof(TestAttribute)],
-            Assembly.GetAssembly(typeof(RandomDataAttribute)),
-            Assembly.GetExecutingAssembly(),
-            opt => opt with { AllowedTestNamePrefixes = ["Issue118"] }
-        );
-    }
-
-    [Test]
-    public static Task NUnit_v3_ValidateRandomDataParameters()
-    {
-        return Tools.Tester.ValidateRandomDataParametersAsync(
-            Assembly.GetExecutingAssembly(),
-            TestContext.CurrentContext.CancellationToken
-        );
-    }
-
-    [Test]
-    public static Task NUnit_v3_VerifyTestSettingsConfig_Default()
-    {
-        return Tools.Tester.ValidateTestSettingsConfigAsync(
-            null,
-            TestContext.CurrentContext.CancellationToken
-        );
-    }
+    protected override Assembly CodeAssembly { get; } =
+        Assembly.GetAssembly(typeof(RandomDataAttribute));
 }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.FakerTool.Proxy;
@@ -60,6 +61,8 @@ internal static class Emitter
     /// <returns>Dynamic type with behavior faked.</returns>
     internal static TypeInfo BuildType(Type parent, Type[] interfaces)
     {
+        ArgumentGuard.ThrowIfNull(parent, interfaces);
+
         TypeBuilder newType = _Module.DefineType(
             "Fake_"
                 + string.Join("|", interfaces.Prepend(parent).Select(GenericConverter.ExpandName))

@@ -21,12 +21,8 @@ public sealed class MethodCallWrapperTests : AutoTester<MethodCallWrapper>
                 MethodsToIgnore = opt
                     .MethodsToIgnore.Concat([nameof(MethodCallWrapper.InvokeOn)])
                     .ToFrozenSet(),
+                DisableParameterMutationTests = true,
             };
-
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
 
     [Fact]
     internal static void MethodCallWrapper_CanRandomize()

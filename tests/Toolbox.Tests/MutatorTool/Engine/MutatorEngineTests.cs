@@ -11,10 +11,8 @@ namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;
 
 public sealed class MutatorEngineTests : AutoTester<MutatorEngine>
 {
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
 
     [Theory, RandomData]
     internal static void Variant_AcceptsNull(string value)

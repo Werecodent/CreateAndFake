@@ -11,12 +11,8 @@ public sealed class MutatorChainerTests : AutoTester<MutatorChainer>
             opt with
             {
                 IgnorableExceptions = [typeof(InvalidCastException), typeof(ToolException)],
+                DisableParameterMutationTests = true,
             };
-
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
 
     [Theory, RandomData]
     internal static void MutatorChainer_RecursionLimited([Stub] IMutatorEngine engine, string data)
