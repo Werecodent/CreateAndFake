@@ -7,12 +7,7 @@ namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
 public sealed class ValuerAsyncComparableCompareHintTests
     : CompareHintTestBase<ValuerAsyncComparableCompareHint>
 {
-    private static readonly Type[] _ValidTypes = [typeof(IValuerAsyncComparable)];
-
     protected override bool RequiresAsync { get; } = true;
-
-    public ValuerAsyncComparableCompareHintTests()
-        : base(_ValidTypes) { }
 
     [Theory, RandomData]
     internal void TryToCompare_BlocksComparison(IValuerAsyncComparable data)

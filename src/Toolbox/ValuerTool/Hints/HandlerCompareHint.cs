@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Specialized;
-using System.Text;
-using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
@@ -16,48 +12,19 @@ public sealed class HandlerCompareHint : CompareHint
     /// <remarks>WARNING: Not async compatible. Internals must have no async content.</remarks>
     private static readonly ICompareHandler[] _Handlers =
     [
-        new DefaultEqualityCompareHandler(typeof(string)),
-        new DefaultEqualityCompareHandler(typeof(RuntimeMethodHandle)),
-        new ConvertCompareHandler<StringBuilder>((s, _) => s.ToString()),
-        new ConvertCompareHandler<UriBuilder>((s, _) => s.Uri),
-        new ConvertCompareHandler<StreamReader>((reader, _) => reader.BaseStream),
-        new ConvertCompareHandler<StreamWriter>(
-            (writer, _) =>
-            {
-                writer.Flush();
-                return writer.BaseStream;
-            }
-        ),
-        new ConvertCompareHandler<CancellationToken>(
-            (token, _) => new { token.CanBeCanceled, token.IsCancellationRequested }
-        ),
-        new ConvertCompareHandler<StringDictionary>(
-            (dict, _) =>
-                dict.Cast<DictionaryEntry>().ToDictionary(e => (string)e.Key, e => (string?)e.Value)
-        ),
         new ConvertCompareHandler<SeededRandom>(
             (rand, c) =>
                 c.Options.IgnoreCurrentRandomSeed
                     ? rand.InitialSeed
                     : new[] { rand.InitialSeed, rand.Seed }
         ),
-        new ConvertCompareHandler<ValueTask>(
-            (task, _) =>
-                new
-                {
-                    SingleCallSource = SingleCallValueTaskSource.ExtractFrom(task),
-                    Token = SingleCallValueTaskSource.ExtractTokenFrom(task),
-                }
-        ),
-#if NET9_0_OR_GREATER
-        new DefaultEqualityCompareHandler(typeof(Lock)),
-#endif
     ];
 
     private static readonly IDictionary<Type, ICompareHandler> _HandlersByType =
         TypeSupporter.GroupBySupportedType(
             _Handlers
                 .Concat(ValueCompareHandlers.Handlers)
+                .Concat(SystemCompareHandlers.Handlers)
                 .Concat(ReflectionCompareHandlers.Handlers)
         );
 

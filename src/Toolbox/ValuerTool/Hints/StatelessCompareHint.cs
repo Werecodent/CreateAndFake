@@ -10,6 +10,9 @@ public sealed class StatelessCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.StatelessHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [];
+
+    /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type type = expected.GetType();

@@ -17,7 +17,7 @@ public abstract class CompareHint : ICompareHint
     public abstract int EnginePriority { get; }
 
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+    public abstract IEnumerable<Type> SupportedTypes { get; }
 
     /// <inheritdoc/>
     public DifferenceHintResult TryToCompare(object expected, object actual, IValuerChainer chainer)

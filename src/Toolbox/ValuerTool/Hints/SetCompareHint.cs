@@ -14,6 +14,9 @@ public sealed class SetCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.SetHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(ISet<>)];
+
+    /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected.GetType().Inherits(typeof(ISet<>))

@@ -13,6 +13,9 @@ public sealed class EndingExtractHint : ExtractHint
     public override int EnginePriority => (int)ExtractPriority.EndingHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = ValueRandom.SupportedTypes;
+
+    /// <inheritdoc/>
     public override ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);

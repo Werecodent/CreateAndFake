@@ -1,4 +1,5 @@
 ﻿using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Hints;
@@ -8,6 +9,9 @@ public sealed class DefaultEqualityCompareHint : CompareHint
 {
     /// <inheritdoc/>
     public override int EnginePriority => (int)ComparePriority.DefaultEqualityHint;
+
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [.. ValueRandom.SupportedTypes];
 
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Primitives;
@@ -22,6 +23,11 @@ internal static class SystemCopyHandlers
         new RefCopyHandler(typeof(object)),
         new RefCopyHandler(typeof(StringSegmentComparer)),
         new RefCopyHandler(typeof(RuntimeMethodHandle)),
+        new FactoryCopyHandler<Vector2>((source, _) => new Vector2(source.X, source.Y)),
+        new FactoryCopyHandler<Vector3>((source, _) => new Vector3(source.X, source.Y, source.Z)),
+        new FactoryCopyHandler<Vector4>(
+            (source, _) => new Vector4(source.X, source.Y, source.Z, source.W)
+        ),
         new FactoryCopyHandler<UriBuilder>((source, _) => new UriBuilder(source.Uri)),
         new FactoryCopyHandler<DateTimeFormatInfo>(
             (source, _) => source.IsReadOnly ? source : (DateTimeFormatInfo)source.Clone()
@@ -53,7 +59,7 @@ internal static class SystemCopyHandlers
                 return result;
             }
         ),
-#pragma warning disable S2930
+#pragma warning disable S2930 // Must remain undisposed to last the life of the token.
         new FactoryCopyHandler<CancellationToken>(
             (source, _) =>
             {

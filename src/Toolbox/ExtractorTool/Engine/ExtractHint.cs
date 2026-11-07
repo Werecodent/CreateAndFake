@@ -9,7 +9,7 @@ public abstract class ExtractHint : IExtractHint
     public abstract int EnginePriority { get; }
 
     /// <inheritdoc/>
-    public virtual IEnumerable<Type> SupportedTypes { get; } = [];
+    public abstract IEnumerable<Type> SupportedTypes { get; }
 
     /// <inheritdoc/>
     public abstract ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer);

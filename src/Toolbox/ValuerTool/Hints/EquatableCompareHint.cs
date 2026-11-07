@@ -9,6 +9,9 @@ public sealed class EquatableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.EquatableHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [];
+
+    /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return chainer.Options.UseEquatableComparisons

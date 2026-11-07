@@ -18,7 +18,10 @@ public sealed class AsyncSetCompareHint : CompareHint
     )!;
 
     /// <inheritdoc/>
-    public override int EnginePriority => (int)ComparePriority.Disabled;
+    public override int EnginePriority => (int)ComparePriority.AsyncSetHint;
+
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(IAsyncSet<>)];
 
     /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)

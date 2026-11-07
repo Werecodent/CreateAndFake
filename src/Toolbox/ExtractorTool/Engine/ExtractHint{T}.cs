@@ -7,6 +7,9 @@ namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 public abstract class ExtractHint<T> : ExtractHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(T)];
+
+    /// <inheritdoc/>
     public sealed override ExtractHintResult TryToExtract(object? source, IExtractorChainer chainer)
     {
         ArgumentGuard.ThrowIfNull(chainer);

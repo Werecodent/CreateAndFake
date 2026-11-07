@@ -5,6 +5,9 @@ namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Handlers;
 
 public sealed class ConvertExtractHandlerTests() : AutoTester(typeof(ConvertExtractHandler))
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { InjectionValues = [Tools.Extractor] };
+
     [Fact]
     internal static void ConvertExtractHandler_InternalOnly()
     {

@@ -16,6 +16,9 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     public override int EnginePriority => (int)ComparePriority.AsyncEnumerableHint;
 
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(IAsyncEnumerable<>)];
+
+    /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         Type expectedType = expected.GetType();

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Numerics;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -46,6 +47,13 @@ internal static class SystemCreateHandlers
         new FactoryCreateHandler<StringBuilder>(rand => new StringBuilder(rand.Create<string>())),
         new FactoryCreateHandler<NumberFormatInfo>(rand => rand.Create<CultureInfo>().NumberFormat),
         new FactoryCreateHandler<ECCurve>(rand => rand.Options.Gen.NextItem(_SupportedECDsaCurves)),
+        new FactoryCreateHandler<ValueTuple<int>>(rand => ValueTuple.Create(rand.Create<int>())),
+        new FactoryCreateHandler<ValueTuple<object>>(rand =>
+            ValueTuple.Create(rand.Create<object>())
+        ),
+        new FactoryCreateHandler<ValueTuple<string>>(rand =>
+            ValueTuple.Create(rand.Create<string>())
+        ),
         new FactoryCreateHandler<TimeZoneInfo>(rand =>
             rand.Options.Gen.NextItem(_PossibleTimeZoneInfos)
         ),
@@ -106,6 +114,21 @@ internal static class SystemCreateHandlers
 
             return stream;
         }),
+        new FactoryCreateHandler<Vector2>(rand => new Vector2(
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>()
+        )),
+        new FactoryCreateHandler<Vector3>(rand => new Vector3(
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>()
+        )),
+        new FactoryCreateHandler<Vector4>(rand => new Vector4(
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>(),
+            rand.Options.Gen.Next<float>()
+        )),
     ];
 }
 

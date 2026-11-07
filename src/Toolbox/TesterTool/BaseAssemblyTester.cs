@@ -23,7 +23,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.ProvidesTestClassCoverage"/>
     protected void TestClassCoverageImplementation()
     {
-        Tools.Tester.ProvidesTestClassCoverage(
+        AutoTools.Tester.ProvidesTestClassCoverage(
             CodeAssembly,
             GetType().Assembly,
             OptionConfiguration
@@ -36,7 +36,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.VerifyTestMethodNaming"/>
     protected void ValidateTestMethodNamingImplementation(IEnumerable<Type> testMarkers)
     {
-        Tools.Tester.VerifyTestMethodNaming(
+        AutoTools.Tester.VerifyTestMethodNaming(
             testMarkers,
             CodeAssembly,
             GetType().Assembly,
@@ -50,7 +50,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.ValidateRandomDataParametersAsync"/>
     protected Task ValidateRandomDataParametersImplementation(CancellationToken canceler)
     {
-        return Tools.Tester.ValidateRandomDataParametersAsync(
+        return AutoTools.Tester.ValidateRandomDataParametersAsync(
             GetType().Assembly,
             canceler,
             OptionConfiguration
@@ -63,7 +63,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.ValidateAutoTesterInstancesAsync"/>
     protected Task ValidateAutoTesterInstancesImplementation(CancellationToken canceler)
     {
-        return Tools.Tester.ValidateAutoTesterInstancesAsync(canceler, OptionConfiguration);
+        return AutoTools.Tester.ValidateAutoTesterInstancesAsync(canceler, OptionConfiguration);
     }
 
     /// <inheritdoc cref="VerifyTestSettingsConfigImplementation"/>
@@ -72,7 +72,11 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.ValidateTestSettingsConfigAsync"/>
     protected Task VerifyTestSettingsConfigImplementation(CancellationToken canceler)
     {
-        return Tools.Tester.ValidateTestSettingsConfigAsync(null, canceler, OptionConfiguration);
+        return AutoTools.Tester.ValidateTestSettingsConfigAsync(
+            null,
+            canceler,
+            OptionConfiguration
+        );
     }
 
     /// <inheritdoc cref="VerifyAllToStringsImplementation"/>
@@ -81,7 +85,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.VerifyAllToStrings"/>
     protected void VerifyAllToStringsImplementation()
     {
-        Tools.Tester.VerifyAllToStrings(CodeAssembly, OptionConfiguration);
+        AutoTools.Tester.VerifyAllToStrings(CodeAssembly, OptionConfiguration);
     }
 
     /// <inheritdoc cref="VerifyToolSetIntegrityImplementation"/>
@@ -90,7 +94,7 @@ public abstract class BaseAssemblyTester
     /// <inheritdoc cref="ITester.VerifyToolSetIntegrityAsync"/>
     protected Task VerifyToolSetIntegrityImplementation(CancellationToken canceler)
     {
-        return Tools.Tester.VerifyToolSetIntegrityAsync(canceler, OptionConfiguration);
+        return AutoTools.Tester.VerifyToolSetIntegrityAsync(canceler, OptionConfiguration);
     }
 }
 

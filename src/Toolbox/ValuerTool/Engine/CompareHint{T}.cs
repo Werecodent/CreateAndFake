@@ -10,6 +10,9 @@ namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 public abstract class CompareHint<T> : CompareHint
 {
     /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(T)];
+
+    /// <inheritdoc/>
     protected override bool Supports(object expected, object actual, IValuerChainer chainer)
     {
         return expected is T && actual is T;
