@@ -102,10 +102,16 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     public FrozenSet<string> ClassCoverageExclusions { get; init; } = [];
 
     /// <summary>Allowed targets for test method names.</summary>
-    /// <remarks>These prefixes are in addition to the normally allowed test names.</remarks>
+    /// <remarks>These targets are in addition to the normally allowed test names.</remarks>
     /// <value><c>[]</c></value>
     [ConfigurableOption]
     public FrozenSet<string> AllowedTestNamePrefixes { get; init; } = [];
+
+    /// <summary>If a target is required for a test method name.</summary>
+    /// <remarks>The target is the text preceding the first '_' in the test name.</remarks>
+    /// <value><see langword="true"/></value>
+    [ConfigurableOption]
+    public bool RequirePrefixInTestName { get; init; } = true;
 
     /// <summary>Names of methods to skip when running tests on classes.</summary>
     /// <remarks>
@@ -185,6 +191,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
             DisableNullRefExceptionTests = Config.GetValue(section, DisableNullRefExceptionTests),
             DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
             IntegrityIgnorableTypes = Config.GetTypes(section, IntegrityIgnorableTypes),
+            RequirePrefixInTestName = Config.GetValue(section, RequirePrefixInTestName),
             AllowedTestNamePrefixes = Config.GetSet(section, AllowedTestNamePrefixes),
             ClassCoverageExclusions = Config.GetSet(section, ClassCoverageExclusions),
             IncludeInstanceMethods = Config.GetValue(section, IncludeInstanceMethods),

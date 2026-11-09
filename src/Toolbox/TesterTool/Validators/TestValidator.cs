@@ -146,11 +146,6 @@ internal sealed class TestValidator(TesterOptions options)
             .. ScopeChecker
                 .FindLoadedSpecificTypes(testAssembly)
                 .Where(t => t != null)
-                .Where(t =>
-                    Options.TestClassNameSuffixes.Any(suffix =>
-                        t.Name.Contains(suffix, StringComparison.Ordinal)
-                    )
-                )
                 .Select(TypeDescriber.For)
                 .Select(t =>
                     Tuple.Create(
@@ -160,11 +155,20 @@ internal sealed class TestValidator(TesterOptions options)
                             .Select(m => m.Name)
                             .Where(n =>
                             {
-                                string target = getTarget(n);
-                                return !(
-                                    t.SupportedType!.Name.Contains(target, StringComparison.Ordinal)
-                                    || globalValidTargets.Contains(target)
-                                );
+                                if (n.Contains("_", StringComparison.Ordinal))
+                                {
+                                    string target = getTarget(n);
+                                    return !(
+                                        t.SupportedType!.Name.Contains(
+                                            target,
+                                            StringComparison.Ordinal
+                                        ) || globalValidTargets.Contains(target)
+                                    );
+                                }
+                                else
+                                {
+                                    return Options.RequirePrefixInTestName;
+                                }
                             })
                             .ToList()
                     )

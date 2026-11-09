@@ -12,7 +12,7 @@ exports.preTransform = function (model) {
     function simplifyTocNamespaces(item) {
         if (item.name) {
             if (item.name == "Werecodent.CreateAndFake") {
-                item.name = item.name.replace("Werecodent.CreateAndFake", "CreateAndFake");
+                item.name = "CreateAndFake";
             } else {
                 item.name = item.name.replace("Werecodent.CreateAndFake.", '');
             }

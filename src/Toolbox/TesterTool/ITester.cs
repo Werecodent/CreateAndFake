@@ -263,6 +263,7 @@ public interface ITester : ITool<TesterOptions>
     ///     Important relevant options: <list type="bullet">
     ///         <item><see cref="TesterOptions.TestClassNameSuffixes"/></item>
     ///         <item><see cref="TesterOptions.AllowedTestNamePrefixes"/></item>
+    ///         <item><see cref="TesterOptions.RequirePrefixInTestName"/></item>
     ///         <item><see cref="TesterOptions.TestClassNameGenericSubstitutes"/></item>
     ///     </list>
     /// </remarks>
