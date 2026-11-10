@@ -112,7 +112,7 @@ internal sealed class TestValidator(TesterOptions options)
             }
             else
             {
-                return cleanedName;
+                return "?";
             }
         }
 
@@ -141,7 +141,7 @@ internal sealed class TestValidator(TesterOptions options)
             testAssembly.GetName()!.Name!,
         ];
 
-        List<Tuple<string, List<string>>> testsByClass =
+        List<Tuple<string, Dictionary<string, List<string>>>> testsByTargetByClass =
         [
             .. ScopeChecker
                 .FindLoadedSpecificTypes(testAssembly)
@@ -153,24 +153,15 @@ internal sealed class TestValidator(TesterOptions options)
                         t.Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
                             .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
                             .Select(m => m.Name)
-                            .Where(n =>
-                            {
-                                if (n.Contains("_", StringComparison.Ordinal))
-                                {
-                                    string target = getTarget(n);
-                                    return !(
-                                        t.SupportedType!.Name.Contains(
-                                            target,
-                                            StringComparison.Ordinal
-                                        ) || globalValidTargets.Contains(target)
-                                    );
-                                }
-                                else
-                                {
-                                    return Options.RequirePrefixInTestName;
-                                }
-                            })
-                            .ToList()
+                            .GroupBy(n => getTarget(n))
+                            .Where(g =>
+                                !(
+                                    t.SupportedType!.Name.Contains(g.Key, StringComparison.Ordinal)
+                                    || globalValidTargets.Contains(g.Key)
+                                    || (g.Key == "?" && !Options.RequirePrefixInTestName)
+                                )
+                            )
+                            .ToDictionary(g => g.Key, g => g.ToList())
                     )
                 ),
         ];
@@ -212,17 +203,22 @@ internal sealed class TestValidator(TesterOptions options)
                     ),
             ];
 
-            for (int i = 0; i < testsByClass.Count; i++)
+            for (int i = 0; i < testsByTargetByClass.Count; i++)
             {
-                if (possibleNames.Contains(testsByClass[i].Item1))
+                if (possibleNames.Contains(testsByTargetByClass[i].Item1))
                 {
-                    _ = testsByClass[i].Item2.RemoveAll(n => methods.Contains(getTarget(n)));
+                    foreach (string validTarget in methods)
+                    {
+                        _ = testsByTargetByClass[i].Item2.Remove(validTarget);
+                    }
                 }
             }
         }
 
         Options.Asserter.IsEmpty(
-            testsByClass.SelectMany(t => t.Item2.Select(v => t.Item1 + " - " + v)),
+            testsByTargetByClass.SelectMany(t =>
+                t.Item2.Values.SelectMany(x => x).Select(v => t.Item1 + " - " + v)
+            ),
             $"Invalid test methods for classes from {codeAssembly} in {testAssembly}."
         );
     }
