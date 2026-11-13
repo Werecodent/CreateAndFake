@@ -2,6 +2,7 @@
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Builders;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
@@ -42,6 +43,8 @@ public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder, IRandomD
         List<TestMethod> results = [];
         for (int i = 0; i < Trials; i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, Tools.Runner.Options.Design.IterationLimit);
+
             MethodCallWrapper data;
             try
             {
@@ -50,7 +53,7 @@ public sealed class RandomDataAttribute : NUnitAttribute, ITestBuilder, IRandomD
             catch (Exception e)
             {
                 Console.Error.WriteLine($"Test generation failure on {method}= {e.Message}");
-                continue;
+                break;
             }
 
             string args = string.Join(",", method.GetParameters().Select(p => p.ParameterType));

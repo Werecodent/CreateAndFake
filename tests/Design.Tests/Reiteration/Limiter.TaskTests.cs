@@ -8,7 +8,7 @@ public static class LimiterTaskTests
 {
     private const int _WaitAccuracy = 5;
 
-    private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 20);
+    private static readonly TimeSpan _SmallDelay = new(0, 0, 0, 0, 1);
 
     [Theory, InlineData(1), InlineData(5)]
     internal static Task RepeatAsync_TryLimited(int tries)

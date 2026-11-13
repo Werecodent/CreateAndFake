@@ -45,6 +45,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
             while (expectedEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
+
                 if (actualEnumerator.MoveNext())
                 {
                     foreach (
@@ -68,13 +70,13 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             }
             while (actualEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
+
                 yield return new Difference(
                     index++,
                     new Difference("'out of range'", actualEnumerator.Current)
                 );
             }
-
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
         finally
         {
@@ -105,6 +107,8 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
 
             while (expectedEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
+
                 if (actualEnumerator.MoveNext())
                 {
                     await foreach (
@@ -131,13 +135,13 @@ public sealed class EnumerableCompareHint : CompareHint<IEnumerable>
             }
             while (actualEnumerator.MoveNext() && index < chainer.Options.Design.IterationLimit)
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
+
                 yield return new Difference(
                     index++,
                     new Difference("'out of range'", actualEnumerator.Current)
                 );
             }
-
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
         finally
         {

@@ -51,11 +51,10 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     {
         HashSet<Type?> internalTypes = [];
 
-        int i = 0;
         Type? currentType = SupportedType;
-        while (currentType != null)
+        for (int i = 0; currentType != null; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
             if (ScopeChecker.InternalsAreVisible(currentType, assembly))
             {
                 _ = internalTypes.Add(currentType);

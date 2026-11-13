@@ -235,7 +235,7 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
     /// <returns>Base method result.</returns>
     /// <exception cref="MissingMethodException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
-    private static T? CallBase<T>(
+    private T? CallBase<T>(
         object instance,
         MethodInfo calledMethod,
         Type[] generics,
@@ -258,8 +258,10 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
         MethodInfo? searchForSourceMethod()
         {
             Type? currentType = calledMethod.DeclaringType?.BaseType;
-            while (currentType != null)
+            for (int i = 0; currentType != null; i++)
             {
+                ArgumentGuard.ThrowUponIterationLimit(i, Options.Design.IterationLimit);
+
                 MethodInfo? method = TypeDescriber
                     .For(currentType)
                     .Methods.All.Where(m => m.Name == specificName)

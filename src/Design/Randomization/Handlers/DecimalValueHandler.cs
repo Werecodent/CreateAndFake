@@ -1,3 +1,5 @@
+using Werecodent.CreateAndFake.Design.Properties;
+
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
 /// <inheritdoc/>
@@ -18,8 +20,10 @@ internal sealed class DecimalValueHandler : ValueHandler<decimal>
     /// <inheritdoc/>
     protected override decimal Create(IRandom gen, decimal min, decimal max)
     {
-        while (true)
+        for (int i = 0; true; i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+
             decimal percent = NextPercent(gen);
             try
             {

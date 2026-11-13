@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
@@ -53,6 +54,11 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
         {
             try
             {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i,
+                    Tools.Runner.Options.Design.IterationLimit
+                );
+
                 MethodCallWrapper test = await Tools
                     .Runner.CreateForAsync(testMethod, default)
                     .ConfigureAwait(false);
@@ -73,6 +79,7 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
                     )
                     .ConfigureAwait(false);
 #pragma warning restore MA0040
+                break;
             }
         }
 

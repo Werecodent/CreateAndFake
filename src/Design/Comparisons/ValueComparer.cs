@@ -138,10 +138,9 @@ public sealed class ValueComparer(int iterationLimit)
             xGen = x.GetEnumerator();
             yGen = y.GetEnumerator();
 
-            int i = 0;
-            while (xGen.MoveNext())
+            for (int i = 0; xGen.MoveNext(); i++)
             {
-                ArgumentGuard.ThrowUponIterationLimit(i++, IterationLimit);
+                ArgumentGuard.ThrowUponIterationLimit(i, IterationLimit);
                 if (!yGen.MoveNext() || !Equals(xGen.Current, yGen.Current))
                 {
                     return false;

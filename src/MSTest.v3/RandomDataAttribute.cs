@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.RunnerTool.Attributes;
 
@@ -45,12 +46,17 @@ public sealed class RandomDataAttribute : Attribute, ITestDataSource, IRandomDat
         {
             try
             {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i,
+                    Tools.Runner.Options.Design.IterationLimit
+                );
                 MethodCallWrapper data = Tools.Runner.CreateFor(methodInfo, default);
                 results.Add([.. data.Args]);
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine($"Test generation failure on {methodInfo}= {e.Message}");
+                break;
             }
         }
         return results;

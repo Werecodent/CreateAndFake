@@ -43,7 +43,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
 
         if (result != null)
         {
-            return WithErrorHandling(result.Data!, expected, actual);
+            return WithErrorHandling(result.Data!, expected, actual, chainer);
         }
         else
         {
@@ -93,7 +93,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
 
         if (result != null)
         {
-            return WithErrorHandlingAsync(result.Data!, expected, actual, canceler);
+            return WithErrorHandlingAsync(result.Data!, expected, actual, chainer, canceler);
         }
         else
         {
@@ -188,17 +188,23 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
     private static IEnumerable<T> WithErrorHandling<T>(
         IEnumerable<T> result,
         object? expected,
-        object? actual
+        object? actual,
+        IValuerChainer chainer
     )
     {
         IEnumerator<T> enumerator = result.GetEnumerator();
         try
         {
             bool hasNext;
+            int i = 0;
             do
             {
                 try
                 {
+                    ArgumentGuard.ThrowUponIterationLimit(
+                        i++,
+                        chainer.Options.Design.IterationLimit
+                    );
                     hasNext = enumerator.MoveNext();
                 }
                 catch (Exception e)
@@ -230,6 +236,7 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         IAsyncEnumerable<T> result,
         object? expected,
         object? actual,
+        IValuerChainer chainer,
         [EnumeratorCancellation] CancellationToken canceler = default
     )
     {
@@ -238,10 +245,15 @@ public sealed class ValuerEngine : ToolEngine<ICompareHint>, IValuerEngine
         await using (enumerator.ConfigureAwait(false))
         {
             bool hasNext;
+            int i = 0;
             do
             {
                 try
                 {
+                    ArgumentGuard.ThrowUponIterationLimit(
+                        i++,
+                        chainer.Options.Design.IterationLimit
+                    );
                     canceler.ThrowIfCancellationRequested();
                     hasNext = await enumerator.MoveNextAsync().ConfigureAwait(false);
                 }

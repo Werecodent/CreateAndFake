@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
@@ -49,12 +50,17 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
         {
             try
             {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i,
+                    Tools.Runner.Options.Design.IterationLimit
+                );
                 MethodCallWrapper data = Tools.Runner.CreateFor(testMethod, default);
                 results.Add([.. data.Args.Select(FixArg)]);
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine($"Test generation failure on {testMethod}= {e.Message}");
+                break;
             }
         }
         return results;

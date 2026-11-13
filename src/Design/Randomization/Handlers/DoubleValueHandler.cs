@@ -1,4 +1,5 @@
 using System.Collections.Frozen;
+using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
@@ -15,9 +16,11 @@ internal sealed class DoubleValueHandler : ValueHandler<double>
     /// <inheritdoc/>
     protected override double Create(IRandom gen)
     {
+        int i = 0;
         double value;
         do
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++, DesignDefaults.IterationLimit);
             value = BitConverter.ToDouble(gen.NextBytes(8), 0);
         } while (gen.OnlyValidValues && _SpecialDoubles.Contains(value));
         return value;

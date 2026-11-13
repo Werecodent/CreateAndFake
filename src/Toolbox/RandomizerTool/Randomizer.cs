@@ -75,19 +75,19 @@ public sealed class Randomizer(RandomizerOptions options) : IRandomizer
     /// <inheritdoc/>
     public object CreateSized(int size, Type type, RandomizerMod? optionConfiguration = null)
     {
+        ArgumentGuard.ThrowUponIterationLimit(size, Options.Design.IterationLimit);
+
         RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        return Create(
-            type,
-            _ =>
-                localOptions with
-                {
-                    CollectionMinSize = size,
-                    CollectionMaxSize = size,
-                    StringMinSize = size,
-                    StringMaxSize = size,
-                    NestedOptions = localOptions,
-                }
+        return Create(type, _ =>
+            localOptions with
+            {
+                CollectionMinSize = size,
+                CollectionMaxSize = size,
+                StringMinSize = size,
+                StringMaxSize = size,
+                NestedOptions = localOptions,
+            }
         );
     }
 

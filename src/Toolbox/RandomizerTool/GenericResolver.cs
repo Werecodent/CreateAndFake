@@ -176,8 +176,14 @@ public static class GenericResolver
             ),
         ];
 
+        int current = 0;
         foreach (int[] indexes in FindAllIndexes(possibleArgsPerArg))
         {
+            ArgumentGuard.ThrowUponIterationLimit(
+                current++,
+                Tools.Runner.Options.Design.IterationLimit
+            );
+
             Type[] nextArgSet = new Type[genericArguments.Length];
             for (int i = 0; i < nextArgSet.Length; i++)
             {

@@ -161,6 +161,7 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                 && index < chainer.Options.Design.IterationLimit
             )
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
                 canceler.ThrowIfCancellationRequested();
 
                 if (await actualEnumerator.MoveNextAsync().ConfigureAwait(false))
@@ -199,6 +200,8 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
                 && index < chainer.Options.Design.IterationLimit
             )
             {
+                ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
+
                 yield return new Difference(
                     index++,
                     new Difference("'out of range'", actualEnumerator.Current)
@@ -207,8 +210,6 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
             }
 
             canceler.ThrowIfCancellationRequested();
-
-            ArgumentGuard.ThrowUponIterationLimit(index, chainer.Options.Design.IterationLimit);
         }
     }
 
@@ -222,16 +223,11 @@ public sealed class AsyncEnumerableCompareHint : CompareHint
     {
         int hash = ValueComparer.BaseHash;
         await AsyncSeriesHelper
-            .ForEachAsync(
-                item,
-                chainer.Options.Design.IterationLimit,
-                canceler,
-                async current =>
-                {
-                    hash *= ValueComparer.HashMultiplier;
-                    hash += await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
-                }
-            )
+            .ForEachAsync(item, chainer.Options.Design.IterationLimit, canceler, async current =>
+            {
+                hash *= ValueComparer.HashMultiplier;
+                hash += await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
+            })
             .ConfigureAwait(false);
 
         return hash;

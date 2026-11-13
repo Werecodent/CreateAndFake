@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Reiteration;
 
@@ -25,6 +26,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
             results.Add(await SafeInvokeAsync(behavior).ConfigureAwait(false));
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
@@ -154,6 +156,8 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+
             T result = await SafeInvokeAsync(behavior).ConfigureAwait(false);
 
             results.Add(result);
@@ -295,6 +299,8 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+
             TError lastError;
             try
             {
@@ -324,6 +330,8 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+
             TError lastError;
             try
             {
@@ -476,6 +484,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
             try
             {
                 return await SafeInvokeAsync(behavior).ConfigureAwait(false);
@@ -505,6 +514,7 @@ public sealed partial class Limiter : ILimiterTask
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
             try
             {
                 return await SafeInvokeAsync(behavior).ConfigureAwait(false);

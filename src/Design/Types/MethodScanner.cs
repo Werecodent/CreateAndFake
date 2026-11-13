@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -41,8 +42,9 @@ public sealed class MethodScanner(Type? type) : MemberScanner<MethodInfo>(type)
 
         Type? currentType = type;
         HashSet<Type> completedTypes = [typeof(object)];
-        while (currentType != null && completedTypes.Add(currentType))
+        for (int i = 0; currentType != null && completedTypes.Add(currentType); i++)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
             foreach (
                 MethodInfo method in currentType
                     .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
