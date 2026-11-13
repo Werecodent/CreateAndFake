@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Reflection;
 using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Extensions;
@@ -10,8 +11,6 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 #if NET6_0_OR_GREATER
 using System.Runtime.InteropServices;
-using System.Reflection;
-
 #endif
 #if NET5_0_OR_GREATER
 using System.Text;
