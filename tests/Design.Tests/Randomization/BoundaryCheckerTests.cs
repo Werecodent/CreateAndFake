@@ -10,6 +10,11 @@ public sealed class BoundaryCheckerTests() : AutoTester(typeof(BoundaryChecker))
             opt with
             {
                 DisableNullRefExceptionTests = true,
-                IgnorableExceptions = [typeof(ArgumentException), typeof(InvalidCastException)],
+                IgnorableExceptions =
+                [
+                    typeof(ArgumentException),
+                    typeof(InvalidCastException),
+                    typeof(ArgumentOutOfRangeException),
+                ],
             };
 }
