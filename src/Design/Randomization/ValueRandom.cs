@@ -51,11 +51,10 @@ public abstract class ValueRandom(
         TypeSupporter.GroupBySupportedType(_Handlers);
 
     /// <summary>Default values by their type.</summary>
-    private static readonly Dictionary<Type, IComparable> _DefaultCache =
-        _HandlersByType.ToDictionary(
-            p => p.Key,
-            p => (IComparable)Activator.CreateInstance(p.Key)!
-        );
+    private static readonly Dictionary<Type, object> _DefaultCache = _HandlersByType.ToDictionary(
+        p => p.Key,
+        p => Activator.CreateInstance(p.Key)!
+    );
 
     /// <summary>All supported value types.</summary>
     public static IEnumerable<Type> SupportedTypes { get; } = _HandlersByType.Keys.ToFrozenSet();
@@ -103,7 +102,7 @@ public abstract class ValueRandom(
     {
         if (valueType is not null && _HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            return (IComparable)gen.CreateSupported(this);
+            return gen.CreateSupported(this);
         }
         else
         {
@@ -127,7 +126,7 @@ public abstract class ValueRandom(
 
         if (_HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            IComparable zero = _DefaultCache[valueType];
+            object zero = _DefaultCache[valueType];
 
             BoundaryChecker.EnforcePositiveMax(zero, max);
 
