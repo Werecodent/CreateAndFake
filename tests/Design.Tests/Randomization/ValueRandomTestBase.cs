@@ -1,11 +1,9 @@
 ﻿using System.Numerics;
 using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.Design.Extensions;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Reiteration;
-using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 #if NET5_0_OR_GREATER
@@ -46,36 +44,6 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
     public void Supports_InvalidTypeFalse()
     {
         testInstance.Supports(typeof(object)).Assert().Is(false);
-    }
-
-    [Fact]
-    public void Supports_IntPtr()
-    {
-        TestBasicSupport<IntPtr>(default);
-        TestNextRange(IntPtr.MinValue, IntPtr.MaxValue, v => v + 1, v => v - 1);
-        TestNextOverflow(IntPtr.MinValue / 2 - 1, IntPtr.MaxValue / 2 + 1);
-    }
-
-    [Fact]
-    public void Supports_NInt()
-    {
-        TestBasicSupport<nint>(default);
-        TestNextRange(nint.MinValue, nint.MaxValue, v => v + 1, v => v - 1);
-        TestNextOverflow(nint.MinValue / 2 - 1, nint.MaxValue / 2 + 1);
-    }
-
-    [Fact]
-    public void Supports_UIntPtr()
-    {
-        TestBasicSupport<UIntPtr>(default);
-        TestNextRange(UIntPtr.MinValue, UIntPtr.MaxValue, v => v + 1, v => v - 1);
-    }
-
-    [Fact]
-    public void Supports_NUInt()
-    {
-        TestBasicSupport<nuint>(default);
-        TestNextRange(nuint.MinValue, nuint.MaxValue, v => v + 1, v => v - 1);
     }
 
     [Fact]
@@ -233,6 +201,38 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
             v => v.AddTicks(-1)
         );
     }
+
+#if NET7_0_OR_GREATER
+    [Fact]
+    public void Supports_IntPtr()
+    {
+        TestBasicSupport<IntPtr>(default);
+        TestNextRange(IntPtr.MinValue, IntPtr.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(IntPtr.MinValue / 2 - 1, IntPtr.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_NInt()
+    {
+        TestBasicSupport<nint>(default);
+        TestNextRange(nint.MinValue, nint.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(nint.MinValue / 2 - 1, nint.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_UIntPtr()
+    {
+        TestBasicSupport<UIntPtr>(default);
+        TestNextRange(UIntPtr.MinValue, UIntPtr.MaxValue, v => v + 1, v => v - 1);
+    }
+
+    [Fact]
+    public void Supports_NUInt()
+    {
+        TestBasicSupport<nuint>(default);
+        TestNextRange(nuint.MinValue, nuint.MaxValue, v => v + 1, v => v - 1);
+    }
+#endif
 
 #if NET6_0_OR_GREATER
     [Fact]
