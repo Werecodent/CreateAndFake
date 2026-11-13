@@ -28,7 +28,7 @@ internal static class Program
         Target("coverage", dependsOn: ["compile"], CoverageAsync);
         Target("pack", dependsOn: ["compile"], PackAsync);
         Target("debugCrash", dependsOn: ["compile"], DebugCrashAsync);
-        Target("buildSite", dependsOn: ["restore"], BuildSiteAsync);
+        Target("buildSite", BuildSiteAsync);
         Target("serveSite", dependsOn: ["buildSite"], ServeSiteAsync);
         return RunTargetsAndExitAsync(args);
     }
@@ -82,6 +82,8 @@ internal static class Program
 
         await RunAsync("dotnet", $"tool update docfx --tool-path {_ToolsDir}")
             .ConfigureAwait(false);
+
+        await RunAsync("dotnet", "restore -p:TargetFramework=net10.0").ConfigureAwait(false);
 
         await RunAsync(
                 $"{_ToolsDir}/docfx",
