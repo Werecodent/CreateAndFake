@@ -4,6 +4,7 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Fluent.AssertAsyncCalls;
+using Werecodent.CreateAndFake.Fluent.AssertCalls;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 using Werecodent.CreateAndFake.RunnerTool;
 
@@ -52,7 +53,8 @@ public sealed class AssertValueTaskTests : AutoTester<AssertValueTask>
 
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { MethodsToIgnore = [nameof(AssertObjectBase<>.IsA)] }
         );
         results
             .RawResults.Where(r =>

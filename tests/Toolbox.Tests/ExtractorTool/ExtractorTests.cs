@@ -52,5 +52,5 @@ public sealed class ExtractorTests : AutoTester<Extractor>
         asyncContent.Assert().Is(syncContent);
     }
 
-#pragma warning restore
+#pragma warning restore MA0042, VSTHRD103
 }

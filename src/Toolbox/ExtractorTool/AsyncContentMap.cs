@@ -32,14 +32,9 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
     }
 
     /// <inheritdoc/>
-    public async Task<bool> HasContentAsync(object? item, CancellationToken canceler)
+    public Task<bool> HasContentAsync(object? item, CancellationToken canceler)
     {
-        if (item == null)
-        {
-            return false;
-        }
-
-        return await _content.ContainsAsync(item, canceler).ConfigureAwait(false);
+        return item == null ? Task.FromResult(false) : _content.ContainsAsync(item, canceler);
     }
 
     /// <inheritdoc/>

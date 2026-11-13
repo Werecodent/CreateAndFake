@@ -102,7 +102,7 @@ public sealed class ExtractorChainer
     }
 
     /// <inheritdoc/>
-    public async Task<bool> AddFoundValueAsync(
+    public Task<bool> AddFoundValueAsync(
         object value,
         CancellationToken canceler,
         ExtractorMod? optionConfiguration = null
@@ -110,7 +110,7 @@ public sealed class ExtractorChainer
     {
         if (value == null)
         {
-            return false;
+            return Task.FromResult(false);
         }
 
         if (_isSync == true)
@@ -122,7 +122,7 @@ public sealed class ExtractorChainer
         }
         _isSync = false;
 
-        return await _asyncFoundContents.AddAsync(value, canceler).ConfigureAwait(false);
+        return _asyncFoundContents.AddAsync(value, canceler);
     }
 
     /// <inheritdoc/>

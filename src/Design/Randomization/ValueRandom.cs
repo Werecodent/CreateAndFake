@@ -28,6 +28,8 @@ public abstract class ValueRandom(
             new DateTimeValueHandler(),
             new BigIntegerValueHandler(),
             new DateTimeOffsetValueHandler(),
+            new IntPtrValueHandler(IntPtr.Size),
+            new UIntPtrValueHandler(UIntPtr.Size),
             new IntegralValueHandler<char>(2, BitConverter.ToChar),
             new IntegralValueHandler<int>(4, BitConverter.ToInt32),
             new IntegralValueHandler<uint>(4, BitConverter.ToUInt32),

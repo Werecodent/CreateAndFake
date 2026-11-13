@@ -13,7 +13,7 @@ internal static class Emitter
 {
     /// <summary>Assembly used to contain the dynamic types.</summary>
     internal static AssemblyName AssemblyName { get; } =
-        new AssemblyName("CreateAndFake.FakerTypes");
+        new AssemblyName("Werecodent.CreateAndFake.FakerTypes");
 
     /// <summary>Underlying type managing implementation details.</summary>
     internal static Type FakeType { get; } = typeof(IFaked);

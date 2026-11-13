@@ -75,5 +75,5 @@ public static class TaskAssertErrorExtensions
         return (await origin.ConfigureAwait(false)).Inherits<TChild>(optionConfiguration, details);
     }
 
-#pragma warning restore
+#pragma warning restore VSTHRD200
 }

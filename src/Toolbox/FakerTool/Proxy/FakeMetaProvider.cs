@@ -310,10 +310,12 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
         }
     }
 
+#pragma warning disable CA1307 // Not available for all .NET versions.
     private static string GetMethodName(MethodInfo method)
     {
         return method.Name.Substring(method.Name.LastIndexOf('.') + 1);
     }
+#pragma warning restore CA1307
 
     /// <summary>Matches a delegate to the method.</summary>
     /// <param name="methodInfo">Method to call.</param>

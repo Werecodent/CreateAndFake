@@ -17,8 +17,6 @@ internal static class SystemCopyHandlers
         new FactoryCopyHandler<Uri>((source, _) => new Uri(source.OriginalString)),
         new RefCopyHandler(typeof(TimeZoneInfo)),
         new RefCopyHandler(typeof(ECCurve)),
-        new RefCopyHandler(typeof(UIntPtr)),
-        new RefCopyHandler(typeof(IntPtr)),
         new RefCopyHandler(typeof(string)),
         new RefCopyHandler(typeof(object)),
         new RefCopyHandler(typeof(StringSegmentComparer)),
@@ -78,7 +76,7 @@ internal static class SystemCopyHandlers
                 }
             }
         ),
-#pragma warning restore
+#pragma warning restore S2930
 #if NET9_0_OR_GREATER
         new RefCopyHandler(typeof(Lock)),
 #endif

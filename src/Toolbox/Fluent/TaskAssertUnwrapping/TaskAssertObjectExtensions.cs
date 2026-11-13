@@ -267,6 +267,29 @@ public static class TaskAssertObjectExtensions
         );
     }
 
+    /// <inheritdoc cref="AssertObjectBase{T}.IsA{T}(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TParent>> IsA<TParent>(
+        this Task<AssertObject> origin,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).IsA<TParent>(details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.IsA{T}(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TParent>> IsA<TParent>(
+        this Task<AssertObject> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).IsA<TParent>(optionConfiguration, details);
+    }
+
     /// <inheritdoc cref="AssertObjectBase{T}.Inherits(Type,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
     public static async Task<AssertChainer<T>> Inherits<T>(

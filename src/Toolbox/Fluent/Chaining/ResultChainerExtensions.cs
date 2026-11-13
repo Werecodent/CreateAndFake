@@ -15,7 +15,7 @@ using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Fluent;
 
-#pragma warning restore
+#pragma warning restore IDE0130
 
 /// <summary>Provides fluent assertions.</summary>
 public static class ResultChainerExtensions

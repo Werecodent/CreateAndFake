@@ -8,6 +8,7 @@ using Werecodent.CreateAndFake.Design.Randomization;
 namespace Werecodent.CreateAndFake.RunnerTool.Attributes;
 
 /// <summary>Flag to create the attached value within a range.</summary>
+/// <remarks><c>0</c> is the presumed minimum when not specified.</remarks>
 [ExcludeFromCreateAndFake]
 public abstract class BaseCapAttribute : ParameterHintAttribute, ICloneable
 {

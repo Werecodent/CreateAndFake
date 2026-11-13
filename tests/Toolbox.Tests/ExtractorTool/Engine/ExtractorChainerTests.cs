@@ -37,19 +37,17 @@ public sealed class ExtractorChainerTests : AutoTester<ExtractorChainer>
 #pragma warning disable MA0042, VSTHRD103 // Behavior specifically being tested.
 
     [Theory, RandomData]
-    internal static Task AddFoundValueAsync_CannotUseAfterSyncCall(
+    internal static void AddFoundValueAsync_CannotUseAfterSyncCall(
         ExtractorChainer chainer,
         object item1,
         object item2
     )
     {
         chainer.AddFoundValue(item1).Assert().Is(true);
-
-        return chainer
-            .AddFoundValueAsync(item2, TestContext.Current.CancellationToken)
-            .Assert()
-            .ThrowsAsync<MismatchedAccessException>(TestContext.Current.CancellationToken);
+        chainer
+            .Assert(x => x.AddFoundValueAsync(item2, TestContext.Current.CancellationToken))
+            .Throws<MismatchedAccessException>();
     }
 
-#pragma warning restore
+#pragma warning restore MA0042, VSTHRD103
 }

@@ -193,6 +193,26 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
+    /// <remarks>Chained assertion calls use <c>instance</c> as a <typeparamref name="TParent"/> value.</remarks>
+    /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual ResultChainer<TParent> IsA<TParent>(string? details = null)
+    {
+        Asserter.Inherits<TParent>(Actual, details);
+        return new ResultChainer<TParent>((TParent)Actual!, Asserter);
+    }
+
+    /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,AsserterMod,string)"/>
+    /// <inheritdoc cref="ToChainer"/>
+    public virtual ResultChainer<TParent> IsA<TParent>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.Inherits<TParent>(Actual, optionConfiguration, details);
+        return new ResultChainer<TParent>((TParent)Actual!, Asserter);
+    }
+
 #pragma warning disable CA1716 // Overriding here should be a rarity.
 
     /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,string)"/>
@@ -234,7 +254,7 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
         return ToChainer();
     }
 
-#pragma warning restore
+#pragma warning restore CA1716
 
     /// <inheritdoc cref="IAsserterObject.InheritedBy{T}(object,string)"/>
     /// <inheritdoc cref="ToChainer"/>

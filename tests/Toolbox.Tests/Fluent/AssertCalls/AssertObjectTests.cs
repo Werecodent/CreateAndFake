@@ -46,7 +46,8 @@ public sealed class AssertObjectTests : AutoTester<AssertObject>
 
         RunResults results = await Tools.Runner.CallMethodsOnAsync(
             instance.Dummy,
-            TestContext.Current.CancellationToken
+            TestContext.Current.CancellationToken,
+            opt => opt with { MethodsToIgnore = [nameof(AssertObjectBase<>.IsA)] }
         );
         results
             .RawResults.Where(r =>

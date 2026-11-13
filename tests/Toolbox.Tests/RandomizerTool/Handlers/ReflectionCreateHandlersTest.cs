@@ -56,7 +56,7 @@ public sealed class ReflectionCreateHandlersTests() : AutoTester(typeof(Reflecti
 
 #pragma warning disable CA1849, MA0042, S6966, VSTHRD103 // For testing.
                 syncWrapper = Tools.Runner.CreateFor(method, TestContext.Current.CancellationToken);
-#pragma warning restore
+#pragma warning restore CA1849, MA0042, S6966, VSTHRD103
 
                 asyncWrapper = await Tools.Runner.CreateForAsync(
                     method,

@@ -232,7 +232,7 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
 
 #pragma warning disable VSTHRD002, VSTHRD104 // Completion verified.
         IDictionary<int, IList<T>> contents = _contents.Result;
-#pragma warning restore
+#pragma warning restore VSTHRD002, VSTHRD104
 
         if (contents.Count == 0)
         {

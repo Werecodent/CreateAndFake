@@ -66,11 +66,13 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             }
             catch (Exception e)
             {
+#pragma warning disable MA0040 // Not available for all .NET versions.
                 await Console
                     .Error.WriteLineAsync(
                         $"Test generation failure on {testMethod.Name}= {e.Message}"
                     )
                     .ConfigureAwait(false);
+#pragma warning restore MA0040
             }
         }
 

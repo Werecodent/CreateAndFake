@@ -175,54 +175,77 @@ public static class TaskAssertAsyncObjectExtensions
 
 #pragma warning disable VSTHRD200 // Matches underlying method.
 
-    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(string)"/>
+    /// <inheritdoc cref="AssertObjectBase{T}.IsA{T}(string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TChild>(
+    public static async Task<ResultChainer<TParent>> IsA<TParent>(
         this Task<AssertAsyncObject> origin,
         string? details = null
     )
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).Inherits<TChild>(details);
+        return (await origin.ConfigureAwait(false)).IsA<TParent>(details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.IsA{T}(AsserterMod,string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<ResultChainer<TParent>> IsA<TParent>(
+        this Task<AssertAsyncObject> origin,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).IsA<TParent>(optionConfiguration, details);
+    }
+
+    /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(string)"/>
+    /// <param name="origin">Assert provider in asynchronous context.</param>
+    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TParent>(
+        this Task<AssertAsyncObject> origin,
+        string? details = null
+    )
+    {
+        ArgumentGuard.ThrowIfNull(origin);
+        return (await origin.ConfigureAwait(false)).Inherits<TParent>(details);
     }
 
     /// <inheritdoc cref="AssertObjectBase{T}.Inherits{T}(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TChild>(
+    public static async Task<AssertChainer<AssertAsyncObject>> Inherits<TParent>(
         this Task<AssertAsyncObject> origin,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).Inherits<TChild>(optionConfiguration, details);
+        return (await origin.ConfigureAwait(false)).Inherits<TParent>(optionConfiguration, details);
     }
 
     /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TParent>(
+    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TChild>(
         this Task<AssertAsyncObject> origin,
         string? details = null
     )
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(details);
+        return (await origin.ConfigureAwait(false)).InheritedBy<TChild>(details);
     }
 
     /// <inheritdoc cref="AssertObjectBase{T}.InheritedBy{T}(AsserterMod,string)"/>
     /// <param name="origin">Assert provider in asynchronous context.</param>
-    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TParent>(
+    public static async Task<AssertChainer<AssertAsyncObject>> InheritedBy<TChild>(
         this Task<AssertAsyncObject> origin,
         AsserterMod? optionConfiguration,
         string? details = null
     )
     {
         ArgumentGuard.ThrowIfNull(origin);
-        return (await origin.ConfigureAwait(false)).InheritedBy<TParent>(
+        return (await origin.ConfigureAwait(false)).InheritedBy<TChild>(
             optionConfiguration,
             details
         );
     }
 
-#pragma warning restore
+#pragma warning restore VSTHRD200
 }

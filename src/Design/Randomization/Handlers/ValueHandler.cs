@@ -1,5 +1,7 @@
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
+#pragma warning disable IDE0004 // False positive.
+
 /// <summary>Handles randomizing <typeparamref name="T"/> values.</summary>
 /// <typeparam name="T">The <see cref="SupportedType"/>.</typeparam>
 internal abstract class ValueHandler<T> : IValueHandler
@@ -32,3 +34,5 @@ internal abstract class ValueHandler<T> : IValueHandler
     /// <inheritdoc cref="CreateSupported(IRandom,object,object)"/>
     protected abstract T Create(IRandom gen, T min, T max);
 }
+
+#pragma warning restore

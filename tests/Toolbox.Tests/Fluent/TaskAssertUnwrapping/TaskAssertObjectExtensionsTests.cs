@@ -235,6 +235,25 @@ public sealed class TaskAssertObjectExtensionsTests : AutoTester
     }
 
     [Theory, RandomData]
+    internal async Task IsA_Forwarded([Fake] IParentType parent, [Fake] IChildType child)
+    {
+        CancellationToken canceler = TestContext.Current.CancellationToken;
+
+        await Task.FromResult(child.Assert()).IsA<IParentType>();
+        await Task.FromResult(child.Assert()).IsA<IParentType>(_mod);
+        await Task.FromResult(parent.Assert())
+            .IsA<IChildType>()
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+        await Task.FromResult(parent.Assert())
+            .IsA<IChildType>(_mod)
+            .Assert()
+            .ThrowsAsync<AssertException>(canceler);
+
+        _modCount.Assert().Is(2);
+    }
+
+    [Theory, RandomData]
     internal async Task Inherits_Forwarded([Fake] IParentType parent, [Fake] IChildType child)
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
