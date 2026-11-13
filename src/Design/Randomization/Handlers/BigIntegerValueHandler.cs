@@ -22,10 +22,11 @@ internal sealed class BigIntegerValueHandler : ValueHandler<BigInteger>
         byte zeroBitsMask = 0b00000000;
         byte mostSignificantByte = rangeBytes[rangeBytes.Length - 1];
 
-        for (int i = 7; i >= 0; i--) // Sign bit 8 is always 0.
+        for (int i = 7; i >= 0; i--) // Sign bit 8 is always 0 for a positive range.
         {
             if ((mostSignificantByte & (0b1 << i)) != 0)
             {
+                // Caps randomization range to only bits with values to improve performance.
                 zeroBitsMask = (byte)(0b11111111 >> (7 - i));
                 break;
             }

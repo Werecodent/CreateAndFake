@@ -1,11 +1,18 @@
 ﻿using System.Numerics;
 using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Extensions;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Reiteration;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
+#if NET6_0_OR_GREATER
+using System.Runtime.InteropServices;
+using System.Reflection;
+
+#endif
 #if NET5_0_OR_GREATER
 using System.Text;
 #endif
@@ -28,6 +35,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
                     typeof(UnsupportedException),
                     typeof(InvalidCastException),
                     typeof(RuntimeBinderException),
+                    typeof(TargetInvocationException),
                 ],
             };
 
@@ -44,6 +52,30 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
     public void Supports_InvalidTypeFalse()
     {
         testInstance.Supports(typeof(object)).Assert().Is(false);
+    }
+
+    [Fact]
+    public void Supports_FullCompatibility()
+    {
+        TypeDescriber
+            .For<IComparable>()
+            .FindLoadedSubclasses()
+            .Where(t => t.IsValueType)
+            .Where(t => t.Inherits(typeof(IComparable<>)))
+            .Where(t => t.Inherits(typeof(IEquatable<>)))
+            .Where(t =>
+                GenericConverter.AsConcreteType(t, typeof(IComparable<>)).GetGenericArguments()[0]
+                == t
+            )
+            .Where(t =>
+                GenericConverter.AsConcreteType(t, typeof(IEquatable<>)).GetGenericArguments()[0]
+                == t
+            )
+            .Where(t => !testInstance.Supports(t))
+            .Where(t => t != typeof(ValueTuple))
+            .Where(t => t != typeof(StructSample))
+            .Assert()
+            .IsEmpty();
     }
 
     [Fact]
@@ -202,6 +234,72 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
         );
     }
 
+#if NET11_0_OR_GREATER
+    [Fact]
+    public void Supports_BFloat16()
+    {
+        TestBasicSupport<BFloat16>(default);
+        TestNextRange(
+            BFloat16.MinValue,
+            BFloat16.MaxValue,
+            v => v + (BFloat16)1f,
+            v => v - (BFloat16)1f
+        );
+        TestNextOverflow(
+            BFloat16.MinValue / (BFloat16)2 - (BFloat16)1,
+            BFloat16.MaxValue / (BFloat16)2 + (BFloat16)1
+        );
+    }
+
+    [Fact]
+    public void Supports_Decimal32()
+    {
+        TestBasicSupport<Decimal32>(default);
+        TestNextRange(
+            Decimal32.MinValue,
+            Decimal32.MaxValue,
+            v => v + (Decimal32)1,
+            v => v - (Decimal32)1
+        );
+        TestNextOverflow(
+            Decimal32.MinValue / (Decimal32)2 - (Decimal32)1,
+            Decimal32.MaxValue / (Decimal32)2 + (Decimal32)1
+        );
+    }
+
+    [Fact]
+    public void Supports_Decimal64()
+    {
+        TestBasicSupport<Decimal64>(default);
+        TestNextRange(
+            Decimal64.MinValue,
+            Decimal64.MaxValue,
+            v => v + (Decimal64)1,
+            v => v - (Decimal64)1
+        );
+        TestNextOverflow(
+            Decimal32.MinValue / (Decimal64)2 - (Decimal64)1,
+            Decimal32.MaxValue / (Decimal64)2 + (Decimal64)1
+        );
+    }
+
+    [Fact]
+    public void Supports_Decimal128()
+    {
+        TestBasicSupport<Decimal128>(default);
+        TestNextRange(
+            Decimal128.MinValue,
+            Decimal128.MaxValue,
+            v => v + (Decimal128)1,
+            v => v - (Decimal128)1
+        );
+        TestNextOverflow(
+            Decimal128.MinValue / (Decimal128)2 - (Decimal128)1,
+            Decimal128.MaxValue / (Decimal128)2 + (Decimal128)1
+        );
+    }
+#endif
+
 #if NET7_0_OR_GREATER
     [Fact]
     public void Supports_IntPtr()
@@ -232,9 +330,32 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
         TestBasicSupport<nuint>(default);
         TestNextRange(nuint.MinValue, nuint.MaxValue, v => v + 1, v => v - 1);
     }
+
+    [Fact]
+    public void Supports_Int128()
+    {
+        TestBasicSupport<Int128>(default);
+        TestNextRange(Int128.MinValue, Int128.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(Int128.MinValue / 2 - 1, Int128.MaxValue / 2 + 1);
+    }
+
+    [Fact]
+    public void Supports_UInt128()
+    {
+        TestBasicSupport<UInt128>(default);
+        TestNextRange(UInt128.MinValue, UInt128.MaxValue, v => v + 1, v => v - 1);
+    }
 #endif
 
 #if NET6_0_OR_GREATER
+    [Fact]
+    public void Supports_NFloat()
+    {
+        TestBasicSupport<NFloat>(default);
+        TestNextRange(NFloat.MinValue, NFloat.MaxValue, v => v + 1, v => v - 1);
+        TestNextOverflow(NFloat.MinValue / 2 - 1, NFloat.MaxValue / 2 + 1);
+    }
+
     [Fact]
     public void Supports_TimeOnly()
     {
@@ -315,7 +436,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
 
         TValueType sample = testInstance.Next<TValueType>();
         Limiter.Hundred.StallUntil(
-            "Variance testing.",
+            $"Variance testing against value {sample}.",
             () => !sample.Equals(testInstance.Next<TValueType>()),
             TestContext.Current.CancellationToken
         );

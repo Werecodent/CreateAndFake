@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(OS)'=='Windows_NT'">
-    <TargetFrameworks>net10.0;net9.0;net48</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0;net9.0;net48</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)'!='Windows_NT'">
-    <TargetFrameworks>net10.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0;net9.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="4.5.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.5.1" PrivateAssets="All" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" PrivateAssets="All" />
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 

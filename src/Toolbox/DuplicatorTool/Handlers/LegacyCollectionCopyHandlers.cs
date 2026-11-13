@@ -17,7 +17,7 @@ internal static class LegacyCollectionCopyHandlers
         new FactoryCopyHandler<BitArray>((data, _) => new BitArray(data)),
         new FactoryCopyHandler<ListDictionary>(CreateAndCopyDictionary),
         new FactoryCopyHandler<HybridDictionary>(CreateAndCopyDictionary),
-        new FactoryCopyHandler<NameValueCollection>((data, _) => new NameValueCollection(data)),
+        new FactoryCopyHandler<NameValueCollection>((data, _) => [with(data)]),
         new FactoryCopyHandler<Queue>(
             (data, copier) => new Queue(data.Cast<object>().Select(d => copier.Copy(d)).ToArray())
         ),

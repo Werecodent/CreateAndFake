@@ -1,6 +1,7 @@
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
-/// <inheritdoc/>
+/// <summary>Handles randomizing <see cref="UIntPtr"/> values.</summary>
+/// <param name="size">The size of an unsigned integer in the executing process, measured in bytes.</param>
 internal sealed class UIntPtrValueHandler(int size) : IValueHandler
 {
     /// <inheritdoc/>

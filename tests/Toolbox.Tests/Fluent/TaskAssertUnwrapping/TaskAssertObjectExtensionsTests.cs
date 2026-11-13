@@ -239,13 +239,13 @@ public sealed class TaskAssertObjectExtensionsTests : AutoTester
     {
         CancellationToken canceler = TestContext.Current.CancellationToken;
 
-        await Task.FromResult(child.Assert()).IsA<IParentType>();
-        await Task.FromResult(child.Assert()).IsA<IParentType>(_mod);
-        await Task.FromResult(parent.Assert())
+        await Task.FromResult(new AssertObject(Tools.Asserter, child)).IsA<IParentType>();
+        await Task.FromResult(new AssertObject(Tools.Asserter, child)).IsA<IParentType>(_mod);
+        await Task.FromResult(new AssertObject(Tools.Asserter, parent))
             .IsA<IChildType>()
             .Assert()
             .ThrowsAsync<AssertException>(canceler);
-        await Task.FromResult(parent.Assert())
+        await Task.FromResult(new AssertObject(Tools.Asserter, parent))
             .IsA<IChildType>(_mod)
             .Assert()
             .ThrowsAsync<AssertException>(canceler);

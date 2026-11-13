@@ -38,9 +38,10 @@ public sealed class FakeCreateHint : CreateHint
         Type target = type.GetGenericArguments().Single();
 
         Lock resultLock = new();
-        Dictionary<Tuple<MethodInfo, CallData>, Behavior> resultCache = new(
-            randomizer.Options.Valuer.WithOptions(opt => opt with { SkipAsyncValues = true })
-        );
+        Dictionary<Tuple<MethodInfo, CallData>, Behavior> resultCache =
+        [
+            with(randomizer.Options.Valuer.WithOptions(opt => opt with { SkipAsyncValues = true })),
+        ];
         DataRandom smartData = randomizer.Options.Gen.NextData();
 
         Fake mock = randomizer.Options.Faker.Stub(

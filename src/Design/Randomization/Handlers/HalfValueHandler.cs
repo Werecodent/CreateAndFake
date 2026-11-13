@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Content;
 
@@ -8,13 +7,6 @@ namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 [ExcludeFromCreateAndFake]
 internal sealed class HalfValueHandler : IValueHandler
 {
-    private const float _MinHalf = -65504;
-
-    private const float _MaxHalf = 65504;
-
-    /// <summary>Half factory using underlying <see langword="string"/> value.</summary>
-    private readonly MethodInfo _fromString;
-
     /// <summary>Attempts to create a handler if Half exists in the current .NET version.</summary>
     /// <returns>The created handler if Half exists, null otherwise.</returns>
     internal static HalfValueHandler? TryToCreate()
@@ -31,6 +23,15 @@ internal sealed class HalfValueHandler : IValueHandler
         }
     }
 
+    /// <summary>Handles converting using dynamic with generics.</summary>
+    private readonly MethodInfo _maker;
+
+    /// <summary>Represents the smallest possible value of Half.</summary>
+    private readonly float _minHalf;
+
+    /// <summary>Represents the largest possible value of Half.</summary>
+    private readonly float _maxHalf;
+
     /// <inheritdoc/>
     public Type? SupportedType { get; }
 
@@ -40,34 +41,46 @@ internal sealed class HalfValueHandler : IValueHandler
     {
         SupportedType = halfType;
 
-        _fromString = halfType.GetMethod("Parse", [typeof(string)])!;
+        _minHalf = (float)
+            (dynamic)
+                halfType
+                    .GetProperty("MinValue", BindingFlags.Public | BindingFlags.Static)!
+                    .GetValue(null)!;
+        _maxHalf = (float)
+            (dynamic)
+                halfType
+                    .GetProperty("MaxValue", BindingFlags.Public | BindingFlags.Static)!
+                    .GetValue(null)!;
+
+        _maker = typeof(BFloat16ValueHandler)
+            .GetMethod(nameof(CastFromFloat), BindingFlags.NonPublic | BindingFlags.Static)!
+            .MakeGenericMethod(halfType);
     }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen)
     {
-        return ToHalf(gen.Next(_MinHalf, _MaxHalf));
+        return _maker.Invoke(null, [gen.Next(_minHalf, _maxHalf)])!;
     }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object max)
     {
-        return ToHalf(gen.Next(ToFloat(max)));
+        return CreateSupported(gen, 0f, max);
     }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object min, object max)
     {
-        return ToHalf(gen.Next(ToFloat(min), ToFloat(max)));
+        return _maker.Invoke(null, [gen.Next((float)(dynamic)min, (float)(dynamic)max)])!;
     }
 
-    private object ToHalf(float value)
+    /// <summary>Converts <paramref name="value"/> to Half.</summary>
+    /// <typeparam name="T"><see cref="SupportedType"/>.</typeparam>
+    /// <param name="value">Value to convert.</param>
+    /// <returns>The converted value.</returns>
+    private static T CastFromFloat<T>(float value)
     {
-        return _fromString.Invoke(null, [value.ToString(CultureInfo.InvariantCulture)])!;
-    }
-
-    private static float ToFloat(object value)
-    {
-        return float.Parse(value.ToString()!, CultureInfo.InvariantCulture);
+        return (T)(dynamic)value;
     }
 }

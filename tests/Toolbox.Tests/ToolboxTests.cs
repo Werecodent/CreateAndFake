@@ -12,7 +12,7 @@ public sealed class ToolboxTests : AssemblyTester
         for (int i = 0; i < 100; i++)
         {
             await Tools.Tester.VerifyToolSetSupportAsync(
-                [typeof(Dictionary<string, object>)],
+                [typeof(FieldInfo)],
                 TestContext.Current.CancellationToken
             );
         }

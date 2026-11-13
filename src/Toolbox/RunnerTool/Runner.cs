@@ -179,7 +179,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 .Select(v => Tuple.Create(v!.GetType(), v)),
         ];
 
-        OrderedDictionary args = new(method.GetParameters().Length);
+        OrderedDictionary args = [with(method.GetParameters().Length)];
 
         foreach (ParameterInfo param in method.GetParameters())
         {
@@ -225,7 +225,7 @@ public sealed class Runner(RunnerOptions options) : IRunner
                 .Select(v => Tuple.Create(v!.GetType(), v)),
         ];
 
-        OrderedDictionary args = new(method.GetParameters().Length);
+        OrderedDictionary args = [with(method.GetParameters().Length)];
 
         foreach (ParameterInfo param in method.GetParameters())
         {

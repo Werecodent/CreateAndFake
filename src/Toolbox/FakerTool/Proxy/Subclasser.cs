@@ -18,6 +18,7 @@ internal static class Subclasser
     {
         { typeof(Array), $"Cannot subclass system reserved '{nameof(Array)}' type." },
         { typeof(ObjectDisposedException), $"{typeof(ObjectDisposedException)} not allowed." },
+        { typeof(Uri), $"{typeof(Uri)} not supported without a provided constructor." },
         { typeof(Task), $"{typeof(Task)} not supported without a provided constructor." },
         { typeof(ValueTask), $"{typeof(ValueTask)} not supported without a provided constructor." },
         {
@@ -37,6 +38,9 @@ internal static class Subclasser
             typeof(StreamWriter),
             $"{typeof(StreamWriter)} not supported without a provided constructor."
         },
+#if NET11_0_OR_GREATER
+        { typeof(FieldInfo), $"{typeof(FieldInfo)} itself has specific issues being faked." },
+#endif
 #if LEGACY // Required feature shipped with C# 14 / .NET 10.0
         { typeof(TypeInfo), $"{typeof(TypeInfo)} itself has specific issues being faked." },
 #endif
