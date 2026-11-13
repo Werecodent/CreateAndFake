@@ -267,6 +267,31 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
     }
 
     [Fact]
+    public void Next_HandlesDecimal32SpecialValues()
+    {
+        TestNext(Decimal32.NegativeInfinity, Decimal32.NegativeInfinity);
+        TestNext(Decimal32.PositiveInfinity, Decimal32.PositiveInfinity);
+
+        testInstance
+            .Next((Decimal32)default, Decimal32.PositiveInfinity)
+            .Assert()
+            .LessThanOrEqualTo(Decimal32.MaxValue);
+        testInstance
+            .Next(Decimal32.NegativeInfinity, (Decimal32)default)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal32.MinValue);
+        testInstance
+            .Next(Decimal32.NegativeInfinity, Decimal32.PositiveInfinity)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal32.MinValue)
+            .And()
+            .LessThanOrEqualTo(Decimal32.MaxValue);
+
+        testInstance.Next(Decimal32.NaN, (Decimal32)default).Assert().Is(Decimal32.NaN);
+        testInstance.Next(Decimal32.NaN, Decimal32.NaN).Assert().Is(Decimal32.NaN);
+    }
+
+    [Fact]
     public void Supports_Decimal64()
     {
         TestBasicSupport<Decimal64>(default);
@@ -283,6 +308,31 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
     }
 
     [Fact]
+    public void Next_HandlesDecimal64SpecialValues()
+    {
+        TestNext(Decimal64.NegativeInfinity, Decimal64.NegativeInfinity);
+        TestNext(Decimal64.PositiveInfinity, Decimal64.PositiveInfinity);
+
+        testInstance
+            .Next((Decimal64)default, Decimal64.PositiveInfinity)
+            .Assert()
+            .LessThanOrEqualTo(Decimal64.MaxValue);
+        testInstance
+            .Next(Decimal64.NegativeInfinity, (Decimal64)default)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal64.MinValue);
+        testInstance
+            .Next(Decimal64.NegativeInfinity, Decimal64.PositiveInfinity)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal64.MinValue)
+            .And()
+            .LessThanOrEqualTo(Decimal64.MaxValue);
+
+        testInstance.Next(Decimal64.NaN, (Decimal64)default).Assert().Is(Decimal64.NaN);
+        testInstance.Next(Decimal64.NaN, Decimal64.NaN).Assert().Is(Decimal64.NaN);
+    }
+
+    [Fact]
     public void Supports_Decimal128()
     {
         TestBasicSupport<Decimal128>(default);
@@ -296,6 +346,31 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
             Decimal128.MinValue / (Decimal128)2 - (Decimal128)1,
             Decimal128.MaxValue / (Decimal128)2 + (Decimal128)1
         );
+    }
+
+    [Fact]
+    public void Next_HandlesDecimal128SpecialValues()
+    {
+        TestNext(Decimal128.NegativeInfinity, Decimal128.NegativeInfinity);
+        TestNext(Decimal128.PositiveInfinity, Decimal128.PositiveInfinity);
+
+        testInstance
+            .Next((Decimal128)default, Decimal128.PositiveInfinity)
+            .Assert()
+            .LessThanOrEqualTo(Decimal128.MaxValue);
+        testInstance
+            .Next(Decimal128.NegativeInfinity, (Decimal128)default)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal128.MinValue);
+        testInstance
+            .Next(Decimal128.NegativeInfinity, Decimal128.PositiveInfinity)
+            .Assert()
+            .GreaterThanOrEqualTo(Decimal128.MinValue)
+            .And()
+            .LessThanOrEqualTo(Decimal128.MaxValue);
+
+        testInstance.Next(Decimal128.NaN, (Decimal128)default).Assert().Is(Decimal128.NaN);
+        testInstance.Next(Decimal128.NaN, Decimal128.NaN).Assert().Is(Decimal128.NaN);
     }
 #endif
 

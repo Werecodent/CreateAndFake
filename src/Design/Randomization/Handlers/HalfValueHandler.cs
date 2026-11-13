@@ -52,7 +52,7 @@ internal sealed class HalfValueHandler : IValueHandler
                     .GetProperty("MaxValue", BindingFlags.Public | BindingFlags.Static)!
                     .GetValue(null)!;
 
-        _maker = typeof(BFloat16ValueHandler)
+        _maker = typeof(HalfValueHandler)
             .GetMethod(nameof(CastFromFloat), BindingFlags.NonPublic | BindingFlags.Static)!
             .MakeGenericMethod(halfType);
     }
