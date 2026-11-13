@@ -99,7 +99,7 @@ public abstract class ValueRandom(
     }
 
     /// <inheritdoc/>
-    public IComparable Next(Type valueType)
+    public object Next(Type valueType)
     {
         if (valueType is not null && _HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
@@ -121,29 +121,17 @@ public abstract class ValueRandom(
     }
 
     /// <inheritdoc/>
-    public IComparable Next(Type valueType, IComparable max)
+    public object Next(Type valueType, object max)
     {
         ArgumentGuard.ThrowIfNull(valueType, max);
 
         if (_HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            IComparable min = _DefaultCache[valueType];
+            IComparable zero = _DefaultCache[valueType];
 
-            if (min.CompareTo(max) > 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(max),
-                    max,
-                    $"Must be greater than or equal to: '{min}'."
-                );
-            }
-            else
-            {
-                IComparable result = (IComparable)gen.CreateSupported(this, max);
+            BoundaryChecker.EnforcePositiveMax(zero, max);
 
-                // Prevent any issues stemming from scaling imprecision.
-                return result.CompareTo(max) < 0 ? result : min;
-            }
+            return BoundaryChecker.BindToMax(gen.CreateSupported(this, max), zero, max);
         }
         else
         {
@@ -161,27 +149,15 @@ public abstract class ValueRandom(
     }
 
     /// <inheritdoc/>
-    public IComparable Next(Type valueType, IComparable min, IComparable max)
+    public object Next(Type valueType, object min, object max)
     {
         ArgumentGuard.ThrowIfNull(valueType, min, max);
 
         if (_HandlersByType.TryGetValue(valueType, out IValueHandler? gen))
         {
-            if (min.CompareTo(max) > 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(max),
-                    max,
-                    $"Must be greater than or equal to the specified min: '{min}'."
-                );
-            }
-            else
-            {
-                IComparable result = (IComparable)gen.CreateSupported(this, min, max);
+            BoundaryChecker.EnforceRange(min, max);
 
-                // Prevent any issues stemming from scaling imprecision.
-                return result.CompareTo(max) <= 0 ? result : min;
-            }
+            return BoundaryChecker.BindToRange(gen.CreateSupported(this, min, max), min, max);
         }
         else
         {

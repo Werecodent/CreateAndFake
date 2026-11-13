@@ -42,7 +42,7 @@ public interface IRandom
     /// <param name="valueType">Value <see cref="Type"/> to generate.</param>
     /// <returns>The generated <paramref name="valueType"/> value.</returns>
     /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
-    IComparable Next(Type valueType);
+    object Next(Type valueType);
 
     /// <summary>Generates a positive constrained <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
@@ -65,7 +65,7 @@ public interface IRandom
     /// </returns>
     /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="max"/> &lt; <c>0</c>.</exception>
-    IComparable Next(Type valueType, IComparable max);
+    object Next(Type valueType, object max);
 
     /// <summary>Generates a constrained <typeparamref name="T"/> value.</summary>
     /// <typeparam name="T">Value <see cref="Type"/> to generate.</typeparam>
@@ -90,7 +90,7 @@ public interface IRandom
     /// </returns>
     /// <exception cref="UnsupportedException">If <paramref name="valueType"/> isn't supported.</exception>
     /// <exception cref="ArgumentOutOfRangeException">If <paramref name="max"/> &lt; <paramref name="min"/>.</exception>
-    IComparable Next(Type valueType, IComparable min, IComparable max);
+    object Next(Type valueType, object min, object max);
 
     /// <summary>Generates a [0,1) value for scaling.</summary>
     /// <returns>The generated value <c>&gt;= 0</c> and <c>&lt; 1</c>.</returns>

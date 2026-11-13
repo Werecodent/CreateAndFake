@@ -9,9 +9,6 @@ namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 [ExcludeFromCreateAndFake]
 internal sealed class RuneValueHandler : IValueHandler
 {
-    /// <summary>Rune factory using underlying <see langword="int"/> value.</summary>
-    private readonly ConstructorInfo _fromValue;
-
     /// <summary>Determines if an <see langword="int"/> can be used to successfully create a Rune.</summary>
     private readonly Func<int, bool> _isValidRuneValue;
 
@@ -40,7 +37,6 @@ internal sealed class RuneValueHandler : IValueHandler
     {
         SupportedType = runeType;
 
-        _fromValue = runeType.GetConstructor([typeof(int)])!;
         _isValidRuneValue =
             (Func<int, bool>)
                 runeType
@@ -52,21 +48,21 @@ internal sealed class RuneValueHandler : IValueHandler
     public object CreateSupported(IRandom gen)
     {
         int runeValue = NextRuneValue(gen, 0x0000, 0x10FFFF);
-        return _fromValue.Invoke([runeValue]);
+        return Activator.CreateInstance(SupportedType!, [runeValue])!;
     }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object max)
     {
         int runeValue = NextRuneValue(gen, 0x0000, ((dynamic)max).Value);
-        return _fromValue.Invoke([runeValue]);
+        return Activator.CreateInstance(SupportedType!, [runeValue])!;
     }
 
     /// <inheritdoc/>
     public object CreateSupported(IRandom gen, object min, object max)
     {
         int runeValue = NextRuneValue(gen, ((dynamic)min).Value, ((dynamic)max).Value);
-        return _fromValue.Invoke([runeValue]);
+        return Activator.CreateInstance(SupportedType!, [runeValue])!;
     }
 
     /// <summary>Generates a constrained value that can be used to successfully create a Rune.</summary>
