@@ -106,16 +106,11 @@ public static class AsyncSeriesHelper
     )
     {
         ArgumentGuard.ThrowIfNull(itemHandler);
-        return ForEachAsync(
-            collection,
-            iterationLimit,
-            canceler,
-            item =>
-            {
-                itemHandler(item);
-                return Task.CompletedTask;
-            }
-        );
+        return ForEachAsync(collection, iterationLimit, canceler, item =>
+        {
+            itemHandler(item);
+            return Task.CompletedTask;
+        });
     }
 
     /// <inheritdoc cref="ForEachAsync{T}(IAsyncEnumerable{T},int,CancellationToken,Action{T})"/>
@@ -154,11 +149,8 @@ public static class AsyncSeriesHelper
     )
     {
         ArgumentGuard.ThrowIfNull(itemHandler);
-        return SelectAsync(
-            collection,
-            iterationLimit,
-            canceler,
-            item => Task.FromResult(itemHandler(item))
+        return SelectAsync(collection, iterationLimit, canceler, item =>
+            Task.FromResult(itemHandler(item))
         );
     }
 
@@ -266,8 +258,11 @@ public static class AsyncSeriesHelper
         ArgumentGuard.ThrowIfNull(collection, source);
 
         bool notCanceled = true;
+        int i = 0;
         foreach (T value in collection)
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++);
+
             yield return value;
             if (notCanceled)
             {

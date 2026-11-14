@@ -11,12 +11,12 @@ namespace Werecodent.CreateAndFake.ExtractorTool;
 public sealed class ContentMap(ISet<object> content, ExtractorOptions options) : IContentMap
 {
     /// <summary>Flattened object data.</summary>
-    private readonly ISet<object> _content =
-        content ?? throw new ArgumentNullException(nameof(content));
+    private readonly ISet<object> _content = content
+        ?? throw new ArgumentNullException(nameof(content));
 
     /// <summary>Configured options used to extract the contents.</summary>
-    private readonly ExtractorOptions _options =
-        options ?? throw new ArgumentNullException(nameof(options));
+    private readonly ExtractorOptions _options = options
+        ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator()

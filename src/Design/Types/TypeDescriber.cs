@@ -5,7 +5,6 @@ using System.Reflection;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Extensions;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -284,7 +283,7 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
 
         for (int i = 0; sourceTypes.Count > 0; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
 
             Type source = sourceTypes.Pop();
             if (source.IsGenericType)
@@ -309,7 +308,7 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
         Stack<Assembly> sourceAssemblies = new(foundAssemblies);
         for (int i = 0; sourceAssemblies.Count > 0; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
 
             Assembly assembly = sourceAssemblies.Pop();
             foreach (AssemblyName referenced in assembly.GetReferencedAssemblies())

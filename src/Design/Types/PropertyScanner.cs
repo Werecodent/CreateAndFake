@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -96,7 +95,7 @@ public sealed class PropertyScanner(Type? type) : MemberScanner<PropertyInfo>(ty
         HashSet<Type> completedTypes = [];
         for (int i = 0; currentType != null && completedTypes.Add(currentType); i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
             foreach (
                 PropertyInfo prop in currentType
                     .GetProperties(BindingFlags.Instance | BindingFlags.NonPublic)

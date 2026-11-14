@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design;
 
@@ -237,6 +238,24 @@ public static class ArgumentGuard
 
     /// <summary>
     ///     Prevents further execution if the <paramref name="index"/>
+    ///     has exceeded the <see cref="DesignDefaults.IterationLimit"/>.
+    /// </summary>
+    /// <param name="index">Current iteration count.</param>
+    /// <exception cref="IterationLimitException">If <c>index &gt;= DesignDefaults.IterationLimit</c>.</exception>
+    [DebuggerStepThrough]
+    public static void ThrowUponIterationLimit(int index)
+    {
+        if (index >= DesignDefaults.IterationLimit)
+        {
+            throw new IterationLimitException(
+                DesignDefaults.IterationLimit,
+                $"Index {index} surpassed max iteration limit."
+            );
+        }
+    }
+
+    /// <summary>
+    ///     Prevents further execution if the <paramref name="index"/>
     ///     has exceeded the <paramref name="iterationLimit"/>.
     /// </summary>
     /// <param name="index">Current iteration count.</param>
@@ -249,7 +268,7 @@ public static class ArgumentGuard
         {
             throw new IterationLimitException(
                 iterationLimit,
-                $"Index {index} surpassed max iteration limit. Increase via 'ValuerOptions.IterationLimit'."
+                $"Index {index} surpassed max iteration limit. Increase via 'Design.IterationLimit'."
             );
         }
     }

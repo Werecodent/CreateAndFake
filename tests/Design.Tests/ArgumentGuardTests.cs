@@ -1,5 +1,6 @@
 ﻿using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Design.Properties;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 
@@ -77,8 +78,19 @@ public sealed class ArgumentGuardTests() : AutoTester(typeof(ArgumentGuard))
         ArgumentGuard.ThrowIfAsynchronous(data, message);
     }
 
+    [Fact]
+    public static void ThrowUponIterationLimit_TestsLimit()
+    {
+        DesignDefaults
+            .IterationLimit.Assert(x => ArgumentGuard.ThrowUponIterationLimit(x - 1, x))
+            .ThrowsNo<IterationLimitException>();
+        DesignDefaults
+            .IterationLimit.Assert(x => ArgumentGuard.ThrowUponIterationLimit(x, x))
+            .Throws<IterationLimitException>();
+    }
+
     [Theory, RandomData]
-    public static void ThrowUponIterationLimit_TestsLimit(int value)
+    public static void ThrowUponIterationLimit_TestsSpecificLimit(int value)
     {
         value
             .Assert(x => ArgumentGuard.ThrowUponIterationLimit(x - 1, x))

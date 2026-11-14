@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Reiteration;
 
@@ -34,7 +33,7 @@ public sealed partial class Limiter : ILimiterAsync
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
             results.Add(behavior.Invoke());
         } while (
             await DelayIfNotDoneAsync(message, watch.Elapsed, ++i, canceler).ConfigureAwait(false)
@@ -96,7 +95,7 @@ public sealed partial class Limiter : ILimiterAsync
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
 
             T result = behavior.Invoke();
 
@@ -202,7 +201,7 @@ public sealed partial class Limiter : ILimiterAsync
         Stopwatch watch = Stopwatch.StartNew();
         for (int i = 1; true; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
 
             TError lastError;
             try
@@ -311,7 +310,7 @@ public sealed partial class Limiter : ILimiterAsync
         Stopwatch watch = Stopwatch.StartNew();
         do
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
             try
             {
                 return behavior.Invoke();

@@ -1,6 +1,5 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Content;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
@@ -74,7 +73,7 @@ internal sealed class RuneValueHandler : IValueHandler
         int result;
         do
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i++);
             result = gen.Next(min, max);
         } while (!_isValidRuneValue(result));
 

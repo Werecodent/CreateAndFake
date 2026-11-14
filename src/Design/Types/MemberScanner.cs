@@ -1,5 +1,4 @@
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -54,7 +53,7 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
         Type? currentType = SupportedType;
         for (int i = 0; currentType != null; i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
             if (ScopeChecker.InternalsAreVisible(currentType, assembly))
             {
                 _ = internalTypes.Add(currentType);

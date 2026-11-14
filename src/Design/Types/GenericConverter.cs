@@ -1,5 +1,4 @@
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -66,7 +65,7 @@ public static class GenericConverter
             Type? current = origin;
             for (int i = 0; current != null; i++)
             {
-                ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+                ArgumentGuard.ThrowUponIterationLimit(i);
                 yield return current;
                 current = current.BaseType;
             }

@@ -1,5 +1,4 @@
 using System.Numerics;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
@@ -37,7 +36,7 @@ internal sealed class BigIntegerValueHandler : ValueHandler<BigInteger>
         BigInteger result;
         do
         {
-            ArgumentGuard.ThrowUponIterationLimit(j++, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(j++);
 
             byte[] bytes = gen.NextBytes((short)rangeBytes.Length);
             bytes[bytes.Length - 1] &= zeroBitsMask;

@@ -18,8 +18,10 @@ public static class TypeSupporter
         where T : ITypeSupporter
     {
         Dictionary<Type, T> results = [];
+        int i = 0;
         foreach (T handler in typeHandlers ?? [])
         {
+            ArgumentGuard.ThrowUponIterationLimit(i++);
             if (handler.SupportedType != null)
             {
                 results.Add(handler.SupportedType, handler);
@@ -47,6 +49,7 @@ public static class TypeSupporter
         ArgumentGuard.ThrowIfNull(exclusions);
 
         Dictionary<Type, IList<T>> results = [];
+        int i = 0;
         foreach (T handler in typeHandlers ?? [])
         {
             foreach (
@@ -57,6 +60,7 @@ public static class TypeSupporter
                     .Where(t => !exclusions.Contains(t))
             )
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++);
                 if (results.TryGetValue(type, out IList<T>? values))
                 {
                     values.Add(handler);
@@ -84,10 +88,12 @@ public static class TypeSupporter
         where T : ITypeSupporter
     {
         Dictionary<Type, IList<T>> results = [];
+        int i = 0;
         foreach (T handler in typeHandlers ?? [])
         {
             foreach (Type type in TypeDescriber.For(handler.SupportedType).FindLoadedSubclasses())
             {
+                ArgumentGuard.ThrowUponIterationLimit(i++);
                 if (results.TryGetValue(type, out IList<T>? values))
                 {
                     values.Add(handler);

@@ -132,6 +132,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             await foreach (T item in collection.WithCancellation(canceler).ConfigureAwait(false))
             {
                 hasItems = true;
+                await Disposer.CleanupAsync(item).ConfigureAwait(false);
                 break;
             }
         }
@@ -191,12 +192,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
         try
         {
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    collection,
-                    localOptions.Design.IterationLimit,
-                    canceler,
-                    item =>
-                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                .ForEachAsync(collection, localOptions.Design.IterationLimit, canceler, item =>
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
                 )
                 .ConfigureAwait(false);
         }
@@ -257,12 +254,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
         try
         {
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    collection,
-                    localOptions.Design.IterationLimit,
-                    canceler,
-                    item =>
-                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                .ForEachAsync(collection, localOptions.Design.IterationLimit, canceler, item =>
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
                 )
                 .ConfigureAwait(false);
         }
@@ -323,12 +316,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
         try
         {
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    collection,
-                    localOptions.Design.IterationLimit,
-                    canceler,
-                    item =>
-                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                .ForEachAsync(collection, localOptions.Design.IterationLimit, canceler, item =>
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
                 )
                 .ConfigureAwait(false);
         }
@@ -389,12 +378,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
         try
         {
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    collection,
-                    localOptions.Design.IterationLimit,
-                    canceler,
-                    item =>
-                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                .ForEachAsync(collection, localOptions.Design.IterationLimit, canceler, item =>
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
                 )
                 .ConfigureAwait(false);
         }
@@ -455,12 +440,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
         try
         {
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    collection,
-                    localOptions.Design.IterationLimit,
-                    canceler,
-                    item =>
-                        _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
+                .ForEachAsync(collection, localOptions.Design.IterationLimit, canceler, item =>
+                    _ = contents.Append('[').Append(i++).Append("]:").Append(item).AppendLine()
                 )
                 .ConfigureAwait(false);
         }
@@ -651,6 +632,8 @@ public partial class Asserter : IAsserterAsyncEnumerable
 
         string errorMessage =
             $"Expected exception of type '{GenericConverter.ExpandName<TException>()}' but received: ";
+
+        int i = 0;
         try
         {
             await foreach (
@@ -658,6 +641,7 @@ public partial class Asserter : IAsserterAsyncEnumerable
             )
             {
                 await Disposer.CleanupAsync(item).ConfigureAwait(false);
+                ArgumentGuard.ThrowUponIterationLimit(i++, Options.Design.IterationLimit);
             }
         }
         catch (Exception e)

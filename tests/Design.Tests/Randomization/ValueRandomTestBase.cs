@@ -273,11 +273,11 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
         TestNext(Decimal32.PositiveInfinity, Decimal32.PositiveInfinity);
 
         testInstance
-            .Next((Decimal32)default, Decimal32.PositiveInfinity)
+            .Next(default, Decimal32.PositiveInfinity)
             .Assert()
             .LessThanOrEqualTo(Decimal32.MaxValue);
         testInstance
-            .Next(Decimal32.NegativeInfinity, (Decimal32)default)
+            .Next(Decimal32.NegativeInfinity, default)
             .Assert()
             .GreaterThanOrEqualTo(Decimal32.MinValue);
         testInstance
@@ -287,7 +287,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
             .And()
             .LessThanOrEqualTo(Decimal32.MaxValue);
 
-        testInstance.Next(Decimal32.NaN, (Decimal32)default).Assert().Is(Decimal32.NaN);
+        testInstance.Next(Decimal32.NaN, default).Assert().Is(Decimal32.NaN);
         testInstance.Next(Decimal32.NaN, Decimal32.NaN).Assert().Is(Decimal32.NaN);
     }
 
@@ -314,11 +314,11 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
         TestNext(Decimal64.PositiveInfinity, Decimal64.PositiveInfinity);
 
         testInstance
-            .Next((Decimal64)default, Decimal64.PositiveInfinity)
+            .Next(default, Decimal64.PositiveInfinity)
             .Assert()
             .LessThanOrEqualTo(Decimal64.MaxValue);
         testInstance
-            .Next(Decimal64.NegativeInfinity, (Decimal64)default)
+            .Next(Decimal64.NegativeInfinity, default)
             .Assert()
             .GreaterThanOrEqualTo(Decimal64.MinValue);
         testInstance
@@ -328,7 +328,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
             .And()
             .LessThanOrEqualTo(Decimal64.MaxValue);
 
-        testInstance.Next(Decimal64.NaN, (Decimal64)default).Assert().Is(Decimal64.NaN);
+        testInstance.Next(Decimal64.NaN, default).Assert().Is(Decimal64.NaN);
         testInstance.Next(Decimal64.NaN, Decimal64.NaN).Assert().Is(Decimal64.NaN);
     }
 
@@ -355,11 +355,11 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
         TestNext(Decimal128.PositiveInfinity, Decimal128.PositiveInfinity);
 
         testInstance
-            .Next((Decimal128)default, Decimal128.PositiveInfinity)
+            .Next(default, Decimal128.PositiveInfinity)
             .Assert()
             .LessThanOrEqualTo(Decimal128.MaxValue);
         testInstance
-            .Next(Decimal128.NegativeInfinity, (Decimal128)default)
+            .Next(Decimal128.NegativeInfinity, default)
             .Assert()
             .GreaterThanOrEqualTo(Decimal128.MinValue);
         testInstance
@@ -369,7 +369,7 @@ public abstract class ValueRandomTestBase<T>(T testInstance) : AutoTester<T>
             .And()
             .LessThanOrEqualTo(Decimal128.MaxValue);
 
-        testInstance.Next(Decimal128.NaN, (Decimal128)default).Assert().Is(Decimal128.NaN);
+        testInstance.Next(Decimal128.NaN, default).Assert().Is(Decimal128.NaN);
         testInstance.Next(Decimal128.NaN, Decimal128.NaN).Assert().Is(Decimal128.NaN);
     }
 #endif

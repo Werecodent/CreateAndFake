@@ -1,6 +1,5 @@
 using System.Collections.Frozen;
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Types;
 
@@ -58,7 +57,7 @@ public sealed class FieldScanner(Type? type) : MemberScanner<FieldInfo>(type)
         HashSet<Type> completedTypes = [type];
         for (int i = 0; currentType != null && completedTypes.Add(currentType); i++)
         {
-            ArgumentGuard.ThrowUponIterationLimit(i, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i);
             foreach (
                 FieldInfo field in currentType
                     .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)

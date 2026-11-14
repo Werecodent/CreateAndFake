@@ -16,12 +16,12 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
         IDuplicatable<AsyncContentMap>
 {
     /// <summary>Flattened object data.</summary>
-    private readonly IAsyncSet<object> _content =
-        content ?? throw new ArgumentNullException(nameof(content));
+    private readonly IAsyncSet<object> _content = content
+        ?? throw new ArgumentNullException(nameof(content));
 
     /// <summary>Configured options used to extract the contents.</summary>
-    private readonly ExtractorOptions _options =
-        options ?? throw new ArgumentNullException(nameof(options));
+    private readonly ExtractorOptions _options = options
+        ?? throw new ArgumentNullException(nameof(options));
 
     /// <inheritdoc/>
     public IAsyncEnumerator<object> GetAsyncEnumerator(
@@ -85,6 +85,7 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
             yield break;
         }
 
+        int count = 0;
         await foreach (object item in GetAllIntersectsAsync(maps, canceler).ConfigureAwait(false))
         {
             Type itemType = item.GetType();
@@ -95,11 +96,16 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
                 {
                     foreach (object _ in series)
                     {
+                        ArgumentGuard.ThrowUponIterationLimit(
+                            count++,
+                            options.Design.IterationLimit
+                        );
                         yield return item;
                     }
                 }
                 else
                 {
+                    ArgumentGuard.ThrowUponIterationLimit(count++, options.Design.IterationLimit);
                     yield return item;
                 }
             }
@@ -223,10 +229,11 @@ public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions 
     {
         ArgumentGuard.ThrowIfNull(valuer);
 
-        return valuer.GetHashCodeAsync(
-            (_content, _options),
-            canceler,
-            opt => opt with { UseEquatableComparisons = false }
+        return valuer.GetHashCodeAsync((_content, _options), canceler, opt =>
+            opt with
+            {
+                UseEquatableComparisons = false,
+            }
         );
     }
 

@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Randomization.Handlers;
 
@@ -20,7 +19,7 @@ internal sealed class FloatValueHandler : ValueHandler<float>
         float value;
         do
         {
-            ArgumentGuard.ThrowUponIterationLimit(i++, DesignDefaults.IterationLimit);
+            ArgumentGuard.ThrowUponIterationLimit(i++);
             value = BitConverter.ToSingle(gen.NextBytes(4), 0);
         } while (gen.OnlyValidValues && _SpecialFloats.Contains(value));
         return value;
