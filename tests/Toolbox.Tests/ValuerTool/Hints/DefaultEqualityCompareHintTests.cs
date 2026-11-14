@@ -1,0 +1,22 @@
+﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Randomization;
+using Werecodent.CreateAndFake.ValuerTool.Hints;
+
+namespace Werecodent.CreateAndFake.Tests.ValuerTool.Hints;
+
+public sealed class DefaultEqualityCompareHintTests
+    : CompareHintTestBase<DefaultEqualityCompareHint>
+{
+    private static readonly Type[] _ValidTypes = [typeof(BindingFlags), typeof(Func<>)];
+
+    private static readonly Type[] _InvalidTypes = [typeof(SeededRandom)];
+
+    public DefaultEqualityCompareHintTests()
+        : base(_ValidTypes, _InvalidTypes) { }
+
+    [Theory, RandomData]
+    internal void TryToCompare_MismatchedTypesDifferent(int value)
+    {
+        TestInstance.TryToCompare(value, new object(), CreateChainer()).Data.Assert().IsNotEmpty();
+    }
+}

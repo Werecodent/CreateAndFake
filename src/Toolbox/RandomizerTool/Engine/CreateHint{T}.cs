@@ -1,0 +1,31 @@
+﻿using Werecodent.CreateAndFake.Design;
+
+namespace Werecodent.CreateAndFake.RandomizerTool.Engine;
+
+/// <typeparam name="T"><see cref="Type"/> being supported for randomization.</typeparam>
+/// <inheritdoc/>
+public abstract class CreateHint<T> : CreateHint
+{
+    /// <inheritdoc/>
+    public override IEnumerable<Type> SupportedTypes { get; } = [typeof(T)];
+
+    /// <inheritdoc/>
+    public sealed override CreateHintResult TryToCreate(Type type, IRandomizerChainer randomizer)
+    {
+        ArgumentGuard.ThrowIfNull(randomizer);
+
+        if (type.IsInheritedBy<T>() && !randomizer.AlreadyCreated<T>())
+        {
+            return new(Create(randomizer));
+        }
+        else
+        {
+            return CreateHintResult.None;
+        }
+    }
+
+    /// <summary>Creates a random <typeparamref name="T"/> instance.</summary>
+    /// <param name="randomizer">Handles randomizing child values.</param>
+    /// <returns>The created <typeparamref name="T"/> instance.</returns>
+    protected abstract T Create(IRandomizerChainer randomizer);
+}
