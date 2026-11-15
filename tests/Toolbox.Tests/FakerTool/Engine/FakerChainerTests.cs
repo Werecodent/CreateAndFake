@@ -1,4 +1,5 @@
 using System.Reflection;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Engine;
@@ -15,6 +16,7 @@ public sealed class FakerChainerTests : AutoTester<FakerChainer>
                     typeof(InvalidOperationException),
                     typeof(ArgumentOutOfRangeException),
                     typeof(TargetInvocationException),
+                    typeof(ToolException),
                 ],
             };
 }

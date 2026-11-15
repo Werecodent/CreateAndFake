@@ -35,7 +35,18 @@ public sealed class RandomDataAttributeTests : AutoTester<RandomDataAttribute>
     {
         method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
 
-        new RandomDataAttribute().GetData(method).Assert().IsEmpty().Also(method).Called();
+        using StringWriter writer = new();
+
+        TextWriter errorConsole = Console.Error;
+        Console.SetError(writer);
+        try
+        {
+            new RandomDataAttribute().GetData(method).Assert().IsEmpty().Also(method).Called();
+        }
+        finally
+        {
+            Console.SetError(errorConsole);
+        }
     }
 
     private static MethodInfo GetGeneratableMethod()

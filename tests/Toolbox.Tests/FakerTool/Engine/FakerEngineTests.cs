@@ -22,6 +22,7 @@ public sealed class FakerEngineTests : AutoTester<FakerEngine>
                 [
                     typeof(ArgumentException),
                     typeof(InvalidOperationException),
+                    typeof(ToolException),
                 ],
             };
 

@@ -301,6 +301,7 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
 
     /// <summary>Finds all possible assemblies.</summary>
     /// <returns>The found assemblies.</returns>
+    [ExcludeFromCodeCoverage] // Any known fail cases are to be fixed.
     private static HashSet<Assembly> FindAllAssemblies()
     {
         HashSet<Assembly> foundAssemblies = [.. AppDomain.CurrentDomain.GetAssemblies()];

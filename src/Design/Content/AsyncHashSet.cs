@@ -19,19 +19,17 @@ public static class AsyncHashSet
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(comparer);
+
         async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
         {
             Dictionary<int, IList<T>> results = [];
 
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    contents,
-                    iterationLimit,
-                    canceler,
-                    async item =>
-                        _ = await AsyncHashSet<T>
-                            .AddToAsync(results, item, comparer, canceler)
-                            .ConfigureAwait(false)
+                .ForEachAsync(contents, iterationLimit, canceler, async item =>
+                    _ = await AsyncHashSet<T>
+                        .AddToAsync(results, item, comparer, canceler)
+                        .ConfigureAwait(false)
                 )
                 .ConfigureAwait(false);
 
@@ -65,27 +63,24 @@ public static class AsyncHashSet
         CancellationToken canceler
     )
     {
+        ArgumentGuard.ThrowIfNull(comparer);
+
         async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
         {
             Dictionary<int, IList<T>> results = [];
 
             await AsyncSeriesHelper
-                .ForEachAsync(
-                    contents,
-                    iterationLimit,
-                    canceler,
-                    pair =>
+                .ForEachAsync(contents, iterationLimit, canceler, pair =>
+                {
+                    if (results.TryGetValue(pair.Key, out IList<T>? list))
                     {
-                        if (results.TryGetValue(pair.Key, out IList<T>? list))
-                        {
-                            list.Add(pair.Value);
-                        }
-                        else
-                        {
-                            results.Add(pair.Key, [pair.Value]);
-                        }
+                        list.Add(pair.Value);
                     }
-                )
+                    else
+                    {
+                        results.Add(pair.Key, [pair.Value]);
+                    }
+                })
                 .ConfigureAwait(false);
 
             return results;
@@ -108,7 +103,7 @@ public static class AsyncHashSet
         CancellationToken canceler
     )
     {
-        ArgumentGuard.ThrowIfNull(factory);
+        ArgumentGuard.ThrowIfNull(factory, comparer);
 
         async Task<IDictionary<int, IList<T>>> setInitialContentsAsync()
         {

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Tooling;
-using Werecodent.CreateAndFake.FakerTool.Proxy;
 
 namespace Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
@@ -36,15 +35,18 @@ public sealed class DuplicatorChainer
         return new DuplicatorChainer(subOptions, this);
     }
 
-    /// <summary>Adds successful clone details to history.</summary>
-    /// <param name="source">Object cloned.</param>
-    /// <param name="clone">The clone.</param>
-    public void AddToHistory(object source, object clone)
+    /// <inheritdoc/>
+    public object? AddToHistory(object source, object clone)
     {
         if (CanTrack(source))
         {
+            if (_history.TryGetValue(source, out object? existingClone))
+            {
+                return existingClone;
+            }
             _history.Add(source, clone);
         }
+        return null;
     }
 
     /// <inheritdoc/>
@@ -58,7 +60,6 @@ public sealed class DuplicatorChainer
     [return: NotNullIfNotNull(nameof(source))]
     public object? Copy(object? source, DuplicatorMod? optionConfiguration = null)
     {
-        RuntimeHelpers.EnsureSufficientExecutionStack();
         if (!CanTrack(source))
         {
             return Engine.Copy(source, GetSubChainer(optionConfiguration));
@@ -82,7 +83,7 @@ public sealed class DuplicatorChainer
     /// <returns><see langword="true"/> if possible, <see langword="false"/> otherwise.</returns>
     private static bool CanTrack([NotNullWhen(true)] object? source)
     {
-        return !(source == null || source is IFaked || source.GetType().IsValueType);
+        return source?.GetType().IsValueType == false;
     }
 
     /// <inheritdoc/>

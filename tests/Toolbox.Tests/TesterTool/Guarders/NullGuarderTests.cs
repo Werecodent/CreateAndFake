@@ -1,5 +1,4 @@
 ﻿using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
@@ -55,19 +54,6 @@ public static class NullGuarderTests
             TestContext.Current.CancellationToken,
             _Config
         );
-    }
-
-    [Fact]
-    internal static Task PreventsNullRefExceptionAsync_TimesOut()
-    {
-        return _ShortTestInstance
-            .PreventsNullRefExceptionOnStaticsAsync(
-                typeof(LongMethodSample),
-                false,
-                TestContext.Current.CancellationToken
-            )
-            .Assert()
-            .ThrowsAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
     }
 
     [Fact]

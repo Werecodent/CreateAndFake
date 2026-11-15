@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.DuplicatorTool;
@@ -26,37 +24,28 @@ public sealed class Duplicator(DuplicatorOptions options) : IDuplicator
     public T Copy<T>(T source, DuplicatorMod? optionConfiguration = null)
     {
         DuplicatorOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
-        try
+
+        T result = new DuplicatorChainer(localOptions, _Engine).Copy(source);
+        if (localOptions.VerifyEqualityForClones)
         {
-            T result = new DuplicatorChainer(localOptions, _Engine).Copy(source);
-            if (localOptions.VerifyEqualityForClones)
-            {
-                Options.Asserter.ValuesEqual(
-                    source,
-                    result,
-                    opt =>
-                        opt with
-                        {
-                            Valuer = opt.Valuer.WithOptions(valuer =>
-                                valuer with
-                                {
-                                    SkipAsyncValues = true,
-                                }
-                            ),
-                        },
-                    $"Type '{source?.GetType()}' did not clone properly. "
-                        + "Verify/create a hint to generate the type and pass it to the duplicator."
-                );
-            }
-            return result;
-        }
-        catch (Exception e)
-        {
-            throw new ToolException(
-                $"Issue duplicating type '{GenericConverter.ExpandName(source)}'.",
-                e
+            Options.Asserter.ValuesEqual(
+                source,
+                result,
+                opt =>
+                    opt with
+                    {
+                        Valuer = opt.Valuer.WithOptions(valuer =>
+                            valuer with
+                            {
+                                SkipAsyncValues = true,
+                            }
+                        ),
+                    },
+                $"Type '{source?.GetType()}' did not clone properly and was unequal. "
+                    + "Verify/create a hint to generate the type and pass it to the duplicator."
             );
         }
+        return result;
     }
 
     /// <inheritdoc/>

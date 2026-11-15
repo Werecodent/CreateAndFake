@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.Design.Comparisons;
 namespace Werecodent.CreateAndFake.Design.Content;
 
 /// <inheritdoc cref="IAsyncSet{T}"/>
-public sealed class AsyncHashSet<T> : IAsyncSet<T>
+public sealed class AsyncHashSet<T> : IAsyncSet<T>, IAsyncDisposable
 {
     /// <summary>Current contents for the set.</summary>
     private readonly Task<IDictionary<int, IList<T>>> _contents;
@@ -252,5 +252,11 @@ public sealed class AsyncHashSet<T> : IAsyncSet<T>
         text.AppendLine().Append('}');
 
         return text.ToString();
+    }
+
+    /// <inheritdoc/>
+    public async ValueTask DisposeAsync()
+    {
+        _ = await _contents.ConfigureAwait(false);
     }
 }

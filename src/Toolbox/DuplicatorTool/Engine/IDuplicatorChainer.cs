@@ -8,5 +8,6 @@ public interface IDuplicatorChainer : IDuplicator, IToolChainer<DuplicatorOption
     /// <summary>Adds successful clone details to history.</summary>
     /// <param name="source">Object cloned.</param>
     /// <param name="clone">The clone.</param>
-    void AddToHistory(object source, object clone);
+    /// <returns>Existing clone if there already was one created for <paramref name="source"/>.</returns>
+    object? AddToHistory(object source, object clone);
 }

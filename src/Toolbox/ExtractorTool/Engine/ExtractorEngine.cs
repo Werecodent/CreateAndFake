@@ -17,9 +17,20 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
             return false;
         }
 
-        ExtractHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryToExtract(value, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        ExtractHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryToExtract(value, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Issue extracting type '{GenericConverter.ExpandName(value)}'.",
+                e
+            );
+        }
 
         if (result != null)
         {
@@ -48,16 +59,26 @@ public sealed class ExtractorEngine : ToolEngine<IExtractHint>, IExtractorEngine
         }
 
         ExtractHintResult? result = null;
-        foreach (IExtractHint hint in SelectHints(chainer))
+        try
         {
-            ExtractHintResult? current = await hint.TryToExtractAsync(value, chainer, canceler)
-                .ConfigureAwait(false);
-
-            if (current?.HasData ?? false)
+            foreach (IExtractHint hint in SelectHints(chainer))
             {
-                result = current;
-                break;
+                ExtractHintResult? current = await hint.TryToExtractAsync(value, chainer, canceler)
+                    .ConfigureAwait(false);
+
+                if (current?.HasData ?? false)
+                {
+                    result = current;
+                    break;
+                }
             }
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Issue extracting type '{GenericConverter.ExpandName(value)}'.",
+                e
+            );
         }
 
         if (result != null)

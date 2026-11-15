@@ -59,7 +59,8 @@ public abstract class ToolChainer<TSelf, TEngine, TOptions, THint> : IToolChaine
         if (_nestedDepth >= options.MaxRecursionDepth)
         {
             throw new EngineException(
-                $"Reached max recursion depth of '{options.MaxRecursionDepth}'"
+                $"Reached max recursion depth of '{_nestedDepth}/{options.MaxRecursionDepth}' "
+                    + $"for tool '{GenericConverter.ExpandName(this)}'."
             );
         }
     }

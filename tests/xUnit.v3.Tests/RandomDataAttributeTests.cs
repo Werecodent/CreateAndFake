@@ -54,16 +54,27 @@ public static class RandomDataAttributeTests
     }
 
     [Theory, RandomData]
-    internal static Task GetData_HandlesException([Fake] MethodInfo method)
+    internal static async Task GetData_HandlesException([Fake] MethodInfo method)
     {
         method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
 
-        return new RandomDataAttribute()
-            .GetData(method, null)
-            .Assert()
-            .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
-            .Also(() => method)
-            .Called();
+        await using StringWriter writer = new();
+
+        TextWriter errorConsole = Console.Error;
+        Console.SetError(writer);
+        try
+        {
+            _ = await new RandomDataAttribute()
+                .GetData(method, null)
+                .Assert()
+                .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
+                .Also(() => method)
+                .Called();
+        }
+        finally
+        {
+            Console.SetError(errorConsole);
+        }
     }
 
     private static MethodInfo GetGeneratableMethod()

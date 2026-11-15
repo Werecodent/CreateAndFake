@@ -31,7 +31,11 @@ public sealed class ObjectCopyHint : CopyHint
         {
             return dupe;
         }
-        duplicator.AddToHistory(source, dupe);
+        object? existing = duplicator.AddToHistory(source, dupe);
+        if (existing != null)
+        {
+            return existing;
+        }
 
         foreach (
             FieldInfo field in TypeDescriber

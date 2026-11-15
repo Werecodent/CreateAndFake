@@ -9,6 +9,9 @@ public sealed class ContentMapTests : AutoTester<ContentMap>
     protected override TesterMod OptionConfiguration { get; } =
         opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
 
+    protected override ContentMap TestInstance =>
+        (ContentMap)Tools.Extractor.Extract(Tools.Randomizer.Create<DataHolderSample>());
+
     [Theory, RandomData]
     internal static void HasContent_UsesObjectByValue(DataHolderSample sample)
     {

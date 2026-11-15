@@ -23,9 +23,21 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
     {
         ArgumentGuard.ThrowIfNull(chainer);
 
-        FakeHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryToFake(parent, interfaces, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        FakeHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryToFake(parent, interfaces, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                "Issue faking type with interfaces "
+                    + $"'{string.Join("|", interfaces.Prepend(parent).Select(GenericConverter.ExpandName))}'.",
+                e
+            );
+        }
 
         IFaked instance;
         if (result != null)
@@ -40,9 +52,20 @@ public sealed class FakerEngine : ToolEngine<IFakeHint>, IFakerEngine
             );
         }
 
-        _ = SelectHints(chainer)
-            .Select(h => h.TryToSetup(instance, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false && !r.Data);
+        try
+        {
+            _ = SelectHints(chainer)
+                .Select(h => h.TryToSetup(instance, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false && !r.Data);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                "Issue configuring faked type with interfaces "
+                    + $"'{string.Join("|", interfaces.Prepend(parent).Select(GenericConverter.ExpandName))}'.",
+                e
+            );
+        }
 
         return new Fake(instance);
     }

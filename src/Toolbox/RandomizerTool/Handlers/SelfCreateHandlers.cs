@@ -70,7 +70,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
             }
         ),
         new FactoryCreateHandler<ExtractorOptions>(rand =>
@@ -81,7 +81,7 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
                 ExtractPrivateMembers = false,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
                 IgnoredTypesForUniques = [typeof(bool), typeof(byte), typeof(char)],
             }
         ),
@@ -93,7 +93,7 @@ internal static class SelfCreateHandlers
                 IncludeFoundHints = false,
                 FakeDefaultGenerator = null,
                 IncludeFrameworkHints = true,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
             }
         ),
         new FactoryCreateHandler<MutatorOptions>(rand =>
@@ -103,7 +103,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
                 MaxAttemptsForModify = rand.Options.Gen.Next(8, 14),
                 MaxAttemptsForMutatingSets = rand.Options.Gen.Next(5, 9),
             }
@@ -115,7 +115,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
                 CollectionMinSize = rand.Options.Gen.Next(0, 2),
                 CollectionMaxSize = rand.Options.Gen.Next(1, 4),
                 StringMinSize = rand.Options.Gen.Next(0, 3),
@@ -167,7 +167,7 @@ internal static class SelfCreateHandlers
                 NestedOptions = null,
                 IncludeFoundHints = false,
                 IncludeFrameworkHints = true,
-                MaxRecursionDepth = rand.Options.Gen.Next(28, 32),
+                MaxRecursionDepth = rand.Options.Gen.Next(18, 22),
                 AsyncTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 50), new TimeSpan(0, 1, 0)),
             }
         ),

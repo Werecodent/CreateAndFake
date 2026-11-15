@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -18,6 +19,7 @@ public sealed class FakerTests : AutoTester<Faker>
                     typeof(InvalidOperationException),
                     typeof(ArgumentOutOfRangeException),
                     typeof(TargetInvocationException),
+                    typeof(ToolException),
                 ],
             };
 

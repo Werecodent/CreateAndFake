@@ -22,9 +22,20 @@ public sealed class DuplicatorEngine : ToolEngine<ICopyHint>, IDuplicatorEngine
             return default!;
         }
 
-        CopyHintResult? result = SelectHints(chainer)
-            .Select(h => h.TryCopy(source, chainer))
-            .FirstOrDefault(r => r?.HasData ?? false);
+        CopyHintResult? result;
+        try
+        {
+            result = SelectHints(chainer)
+                .Select(h => h.TryCopy(source, chainer))
+                .FirstOrDefault(r => r?.HasData ?? false);
+        }
+        catch (Exception e)
+        {
+            throw new ToolException(
+                $"Issue duplicating type '{GenericConverter.ExpandName(source)}'.",
+                e
+            );
+        }
 
         if (result != null)
         {

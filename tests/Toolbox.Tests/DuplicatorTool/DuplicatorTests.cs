@@ -16,9 +16,7 @@ public sealed class DuplicatorTests : AutoTester<Duplicator>
     {
         new Duplicator(Tools.Duplicator.Options with { IncludeFrameworkHints = false })
             .Assert(x => x.Copy(new object()))
-            .Throws<ToolException>()
-            .With(e => e.InnerException.GetType())
-            .Is(typeof(UnsupportedException));
+            .Throws<UnsupportedException>();
     }
 
     [Fact]

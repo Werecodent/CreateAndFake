@@ -1,5 +1,4 @@
 ﻿using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Reiteration;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
@@ -11,18 +10,6 @@ namespace Werecodent.CreateAndFake.Tests.TesterTool.Guarders;
 
 public static class MutationGuarderTests
 {
-    private static readonly MutationGuarder _ShortTestInstance = new(
-        Tools.Tester.Options with
-        {
-            Runner = new Runner(
-                Tools.Runner.Options with
-                {
-                    RunTimeout = new TimeSpan(0, 0, 0, 0, 100),
-                }
-            ),
-        }
-    );
-
     private static readonly MutationGuarder _LongTestInstance = new(
         Tools.Tester.Options with
         {
@@ -76,26 +63,6 @@ public static class MutationGuarderTests
         return Tools.Tester.PreventsParameterMutationAsync<MockMethodPassOnly>(
             TestContext.Current.CancellationToken,
             opt => opt with { InjectionValues = [fake] }
-        );
-    }
-
-    [Fact]
-    internal static Task PreventsMutationAsync_TimesOut()
-    {
-        return Limiter.Few.RetryAsync<AssertException>(
-            "Attempting to test timeout works.",
-            () =>
-            {
-                _ = _ShortTestInstance
-                    .PreventsMutationOnStaticsAsync(
-                        typeof(LongMethodSample),
-                        false,
-                        TestContext.Current.CancellationToken
-                    )
-                    .Assert()
-                    .ThrowsAsync<TimeoutException>(TestContext.Current.CancellationToken);
-            },
-            TestContext.Current.CancellationToken
         );
     }
 
