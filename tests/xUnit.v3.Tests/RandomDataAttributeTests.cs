@@ -4,6 +4,8 @@ using Xunit.Sdk;
 
 namespace Werecodent.CreateAndFake.xUnit.v3.Tests;
 
+#pragma warning disable RCS1261 // Not available in all .NET versions.
+
 public static class RandomDataAttributeTests
 {
     [Fact]
@@ -58,7 +60,7 @@ public static class RandomDataAttributeTests
     {
         method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
 
-        await using StringWriter writer = new();
+        using StringWriter writer = new();
 
         TextWriter errorConsole = Console.Error;
         Console.SetError(writer);
@@ -90,3 +92,5 @@ public static class RandomDataAttributeTests
         );
     }
 }
+
+#pragma warning restore
