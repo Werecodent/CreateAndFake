@@ -82,6 +82,25 @@ public sealed class FakerEngineTests : AutoTester<FakerEngine>
         TestInstance.Mock(type, [], CreateHintChainer(hint)).Dummy.Assert().Is(data);
     }
 
+    [Theory, RandomData]
+    internal void Stub_WrapsFakeError([Stub] IFakeHint hint, Type data)
+    {
+        hint.TryToFake(data, [], Arg.Any<IFakerChainer>())
+            .SetupReturn(Behavior<FakeHintResult>.Throw<InvalidOperationException>());
+
+        TestInstance.Assert(x => x.Stub(data, [], CreateHintChainer(hint))).Throws<ToolException>();
+    }
+
+    [Theory, RandomData]
+    internal void Stub_WrapsSetupError([Stub] IFakeHint hint, Type data, IFaked result)
+    {
+        hint.TryToFake(data, [], Arg.Any<IFakerChainer>()).SetupReturn(new FakeHintResult(result));
+        hint.TryToSetup(result, Arg.Any<IFakerChainer>())
+            .SetupReturn(Behavior<SetupHintResult>.Throw<InvalidOperationException>());
+
+        TestInstance.Assert(x => x.Stub(data, [], CreateHintChainer(hint))).Throws<ToolException>();
+    }
+
     private static FakerChainer CreateHintChainer(IFakeHint hint)
     {
         return new FakerChainer(

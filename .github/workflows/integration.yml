@@ -10,7 +10,7 @@ jobs:
   testing:
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-24.04, macOS-latest, windows-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     environment: staging
