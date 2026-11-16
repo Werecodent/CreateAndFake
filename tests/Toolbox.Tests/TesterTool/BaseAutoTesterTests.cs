@@ -36,5 +36,9 @@ public static class BaseAutoTesterTests
             .Tester_ValueEqualityOverrideCheck()
             .Assert()
             .ThrowsAsync<AutoTesterFailureException>(TestContext.Current.CancellationToken);
+        await testInstance
+            .Tester_ToolSupport()
+            .Assert()
+            .ThrowsAsync<AutoTesterFailureException>(TestContext.Current.CancellationToken);
     }
 }

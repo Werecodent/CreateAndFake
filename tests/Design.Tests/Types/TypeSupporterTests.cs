@@ -54,6 +54,12 @@ public sealed class TypeSupporterTests() : AutoTester(typeof(TypeSupporter))
         TypeSupporter.GroupByInheritance([TypeDescriber.For(null)]).Assert().IsEmpty();
     }
 
+    [Fact]
+    internal static void GroupBySubclasses_NullSafe()
+    {
+        TypeSupporter.GroupBySubclasses<ITypeSupporter>(null).Assert().IsEmpty();
+    }
+
     [Theory, RandomData]
     internal static void GroupBySubclasses_JoinsWithSubclass(
         [Stub] ITypeSupporter item1,

@@ -16,9 +16,12 @@ public sealed class SubclassCreateHintTests : CreateHintTestBase<SubclassCreateH
     [Fact]
     internal void TryToCreate_CanNotPreferLocalSubclasses()
     {
-        TestInstance.TryToCreate(
-            typeof(IIsGoodOrBadSample),
-            CreateChainer(Tools.Randomizer.Options with { PreferLocalSubclasses = false })
-        );
+        for (int i = 0; i < 10; i++)
+        {
+            TestInstance.TryToCreate(
+                typeof(IIsGoodOrBadSample),
+                CreateChainer(Tools.Randomizer.Options with { PreferLocalSubclasses = false })
+            );
+        }
     }
 }
