@@ -5,5 +5,8 @@ namespace Werecodent.CreateAndFake.Design.Content;
 ///     including the attached <see langword="class"/> via reflection.
 /// </summary>
 /// <remarks>Does not prevent use if directly specified by callers.</remarks>
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+[AttributeUsage(
+    AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface,
+    Inherited = false
+)]
 public sealed class ExcludeFromCreateAndFakeAttribute : Attribute;

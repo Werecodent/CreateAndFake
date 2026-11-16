@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample]
+[InvalidSample, ExcludeFromCreateAndFake]
 public class IsBadSample : IIsGoodOrBadSample
 {
     public int GoodOrBadProp

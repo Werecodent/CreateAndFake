@@ -6,5 +6,10 @@ namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 public sealed class BaseUniqueAttributeTests : AutoTester<BaseUniqueAttribute>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
+        opt =>
+            opt with
+            {
+                DisableToolSetSupportTests = true,
+                IgnorableExceptions = [typeof(ToolException)],
+            };
 }

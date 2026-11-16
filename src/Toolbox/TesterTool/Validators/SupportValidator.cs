@@ -39,20 +39,17 @@ internal sealed class SupportValidator(TesterOptions options)
                 .FindLoadedSpecificTypes(codeAssembly)
                 .Where(t => !t.IsAbstract)
                 .Where(t => ScopeChecker.IsVisible(t, Assembly.GetExecutingAssembly().GetName()))
-                .ToDictionary(
-                    GenericConverter.ExpandName,
-                    t =>
+                .ToDictionary(GenericConverter.ExpandName, t =>
+                {
+                    try
                     {
-                        try
-                        {
-                            return Options.Randomizer.Create(t);
-                        }
-                        catch (ToolException)
-                        {
-                            return null;
-                        }
+                        return Options.Randomizer.Create(t);
                     }
-                )
+                    catch (ToolException)
+                    {
+                        return null;
+                    }
+                })
         );
     }
 
@@ -244,6 +241,11 @@ internal sealed class SupportValidator(TesterOptions options)
     public async Task VerifyToolSetSupportAsync(Type type, CancellationToken canceler)
     {
         ArgumentGuard.ThrowIfNull(type, canceler);
+
+        if (Options.DisableToolSetSupportTests)
+        {
+            return;
+        }
 
         object? original = null,
             variant = null,

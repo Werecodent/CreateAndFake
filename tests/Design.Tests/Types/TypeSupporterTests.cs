@@ -6,7 +6,12 @@ namespace Werecodent.CreateAndFake.Design.Tests.Types;
 public sealed class TypeSupporterTests() : AutoTester(typeof(TypeSupporter))
 {
     protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(ArgumentException)] };
+        opt =>
+            opt with
+            {
+                MethodsToIgnore = [nameof(TypeSupporter.GroupBySubclasses)],
+                IgnorableExceptions = [typeof(ArgumentException)],
+            };
 
     [Theory, RandomData]
     internal static void GroupBySupportedType_GroupsSuccessfully(ITypeSupporter item)

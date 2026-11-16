@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Werecodent.CreateAndFake.Design.Content;
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample]
+[InvalidSample, ExcludeFromCreateAndFake]
 public sealed class InvalidCreateSample : IOnlyMockSample
 {
     public InvalidCreateSample()

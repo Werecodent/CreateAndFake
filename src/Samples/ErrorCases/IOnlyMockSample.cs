@@ -1,6 +1,8 @@
-﻿namespace Werecodent.CreateAndFake.Samples.ErrorCases;
+﻿using Werecodent.CreateAndFake.Design.Content;
 
-[InvalidSample]
+namespace Werecodent.CreateAndFake.Samples.ErrorCases;
+
+[InvalidSample, ExcludeFromCreateAndFake]
 public interface IOnlyMockSample
 {
     bool FailIfNotMocked();

@@ -312,6 +312,7 @@ public interface ITester : ITool<TesterOptions>
     /// <summary>Validates the state of the <c>CreateAndFake</c> framework as configured.</summary>
     /// <remarks>
     ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="TesterOptions.DisableToolSetSupportTests"/></item>
     ///         <item><see cref="TesterOptions.IntegrityIgnorableTypes"/></item>
     ///     </list>
     /// </remarks>
@@ -321,21 +322,17 @@ public interface ITester : ITool<TesterOptions>
         TesterMod? optionConfiguration = null
     );
 
-    /// <summary>Validates <typeparamref name="T"/> are fully compatible with the framework as configured.</summary>
+    /// <summary>Validates <typeparamref name="T"/> is fully compatible with the framework as configured.</summary>
     /// <typeparam name="T"><see cref="Type"/> to verify support for.</typeparam>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <inheritdoc cref="VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
     Task VerifyToolSetSupportAsync<T>(
         CancellationToken canceler,
         TesterMod? optionConfiguration = null
     );
 
-    /// <summary>Validates the <paramref name="type"/> are fully compatible with the framework as configured.</summary>
+    /// <summary>Validates the <paramref name="type"/> is fully compatible with the framework as configured.</summary>
     /// <param name="type"><see cref="Type"/> to verify support for.</param>
-    /// <param name="canceler">Aborts execution if triggered.</param>
-    /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
-    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <inheritdoc cref="VerifyToolSetSupportAsync(IEnumerable{Type},CancellationToken,TesterMod)"/>
     Task VerifyToolSetSupportAsync(
         Type type,
         CancellationToken canceler,
@@ -347,6 +344,11 @@ public interface ITester : ITool<TesterOptions>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="TesterOptions.DisableToolSetSupportTests"/></item>
+    ///     </list>
+    /// </remarks>
     Task VerifyToolSetSupportAsync(
         IEnumerable<Type> types,
         CancellationToken canceler,

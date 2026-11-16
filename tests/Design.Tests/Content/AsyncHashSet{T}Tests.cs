@@ -33,11 +33,13 @@ public static class AsyncHashSet_T_Tests
     [Theory, RandomData]
     internal static void Debug_AsyncHashSet_T_UncompletedToString(IList<AsyncDataSample> sample)
     {
+        CancellationToken ct = TestContext.Current.CancellationToken;
+
         async IAsyncEnumerable<AsyncDataSample> slowlyIterate()
         {
             foreach (AsyncDataSample item in sample)
             {
-                await Task.Delay(3000, TestContext.Current.CancellationToken);
+                await Task.Delay(3000, ct);
                 yield return item;
             }
         }
@@ -185,22 +187,22 @@ public static class AsyncHashSet_T_Tests
         AsyncDataSample variant
     )
     {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
+        CancellationToken ct = TestContext.Current.CancellationToken;
 
         AsyncHashSet<AsyncDataSample> set = AsyncHashSet.CreateFromAsync(
             [original],
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             Tools.Valuer.Options.Design.IterationLimit,
-            canceler
+            ct
         );
 
-        await set.ContainsKeyAsync(await Tools.Valuer.GetHashCodeAsync(clone, canceler), canceler)
+        await set.ContainsKeyAsync(await Tools.Valuer.GetHashCodeAsync(clone, ct), ct)
             .Assert()
-            .HasResultAsync(true, canceler);
+            .HasResultAsync(true, ct);
 
-        await set.ContainsAsync(clone, canceler).Assert().HasResultAsync(true, canceler);
+        await set.ContainsAsync(clone, ct).Assert().HasResultAsync(true, ct);
 
-        await set.ContainsAsync(variant, canceler).Assert().HasResultAsync(false, canceler);
+        await set.ContainsAsync(variant, ct).Assert().HasResultAsync(false, ct);
     }
 
     [Theory, RandomData]
@@ -213,7 +215,7 @@ public static class AsyncHashSet_T_Tests
         int otherHash
     )
     {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
+        CancellationToken ct = TestContext.Current.CancellationToken;
 
         comparer
             .GetHashCodeAsync(Arg.Any<AsyncDataSample>(), Arg.Any<CancellationToken>())
@@ -233,37 +235,28 @@ public static class AsyncHashSet_T_Tests
 
         AsyncHashSet<AsyncDataSample> set = new(comparer);
 
-        await set.ContainsAsync(original, canceler).Assert().HasResultAsync(false, canceler);
-        await set.AddAsync(original, canceler).Assert().HasResultAsync(true, canceler);
-        await set.ContainsAsync(original, canceler).Assert().HasResultAsync(true, canceler);
+        await set.ContainsAsync(original, ct).Assert().HasResultAsync(false, ct);
+        await set.AddAsync(original, ct).Assert().HasResultAsync(true, ct);
+        await set.ContainsAsync(original, ct).Assert().HasResultAsync(true, ct);
 
-        await set.ContainsAsync(clone, canceler).Assert().HasResultAsync(true, canceler);
-        await set.AddAsync(clone, canceler).Assert().HasResultAsync(false, canceler);
+        await set.ContainsAsync(clone, ct).Assert().HasResultAsync(true, ct);
+        await set.AddAsync(clone, ct).Assert().HasResultAsync(false, ct);
 
-        await set.ContainsAsync(
-                new KeyValuePair<int, AsyncDataSample>(valueHash, variant),
-                canceler
-            )
+        await set.ContainsAsync(new KeyValuePair<int, AsyncDataSample>(valueHash, variant), ct)
             .Assert()
-            .HasResultAsync(false, canceler);
+            .HasResultAsync(false, ct);
 
-        await set.ContainsAsync(variant, canceler).Assert().HasResultAsync(false, canceler);
-        await set.AddAsync(variant, canceler).Assert().HasResultAsync(true, canceler);
-        await set.ContainsAsync(variant, canceler).Assert().HasResultAsync(true, canceler);
+        await set.ContainsAsync(variant, ct).Assert().HasResultAsync(false, ct);
+        await set.AddAsync(variant, ct).Assert().HasResultAsync(true, ct);
+        await set.ContainsAsync(variant, ct).Assert().HasResultAsync(true, ct);
 
-        await set.ContainsAsync(
-                new KeyValuePair<int, AsyncDataSample>(otherHash, original),
-                canceler
-            )
+        await set.ContainsAsync(new KeyValuePair<int, AsyncDataSample>(otherHash, original), ct)
             .Assert()
-            .HasResultAsync(false, canceler);
-        await set.ContainsAsync(
-                new KeyValuePair<int, AsyncDataSample>(valueHash, original),
-                canceler
-            )
+            .HasResultAsync(false, ct);
+        await set.ContainsAsync(new KeyValuePair<int, AsyncDataSample>(valueHash, original), ct)
             .Assert()
-            .HasResultAsync(true, canceler);
-        await set.ContainsAsync(original, canceler).Assert().HasResultAsync(true, canceler);
+            .HasResultAsync(true, ct);
+        await set.ContainsAsync(original, ct).Assert().HasResultAsync(true, ct);
     }
 
     [Theory, RandomData]
@@ -280,7 +273,7 @@ public static class AsyncHashSet_T_Tests
         int hashF
     )
     {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
+        CancellationToken ct = TestContext.Current.CancellationToken;
 
         List<AsyncDataSample> shared = [sampleA, sampleD];
 
@@ -296,7 +289,7 @@ public static class AsyncHashSet_T_Tests
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
-            canceler
+            ct
         );
 
         AsyncHashSet<AsyncDataSample> set2 = AsyncHashSet.CreateFromAsync(
@@ -311,10 +304,10 @@ public static class AsyncHashSet_T_Tests
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
-            canceler
+            ct
         );
 
-        return set1.FindMatchesInAsync(set2, canceler).Assert().IsAsync(shared, canceler);
+        return set1.FindMatchesInAsync(set2, ct).Assert().IsAsync(shared, ct);
     }
 
     [Theory, RandomData]
@@ -331,7 +324,7 @@ public static class AsyncHashSet_T_Tests
         int hashF
     )
     {
-        CancellationToken canceler = TestContext.Current.CancellationToken;
+        CancellationToken ct = TestContext.Current.CancellationToken;
 
         List<AsyncDataSample> missing1 = [sampleC, sampleF];
         List<AsyncDataSample> missing2 = [sampleB, sampleE];
@@ -348,7 +341,7 @@ public static class AsyncHashSet_T_Tests
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
-            canceler
+            ct
         );
 
         AsyncHashSet<AsyncDataSample> set2 = AsyncHashSet.CreateFromAsync(
@@ -363,14 +356,14 @@ public static class AsyncHashSet_T_Tests
             ),
             Tools.Valuer.ToAsyncComparer<AsyncDataSample>(),
             5,
-            canceler
+            ct
         );
 
-        return set1.FindMissingFromAsync(set2, canceler)
+        return set1.FindMissingFromAsync(set2, ct)
             .Assert()
-            .IsAsync(missing1, canceler)
-            .Also(() => set2.FindMissingFromAsync(set1, canceler))
-            .IsAsync(missing2, canceler);
+            .IsAsync(missing1, ct)
+            .Also(() => set2.FindMissingFromAsync(set1, ct))
+            .IsAsync(missing2, ct);
     }
 
     [Fact]

@@ -78,6 +78,7 @@
             "IncludeInstanceMethods": false,
             "DisablePassthroughTests": true,
             "RequirePrefixInTestName": false,
+            "DisableToolSetSupportTests": true,
             "DisableNullRefExceptionTests": true,
             "DisableParameterMutationTests": true,
             "ThrowsUponCancelWithEmptySeries": false,

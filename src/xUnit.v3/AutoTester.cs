@@ -29,6 +29,13 @@ public abstract class AutoTester(Type testType) : BaseAutoTester(testType)
 
     /// <inheritdoc/>
     [Fact]
+    public override Task Tester_ToolSupport()
+    {
+        return ToolSupportImplementation(TestContext.Current.CancellationToken);
+    }
+
+    /// <inheritdoc/>
+    [Fact]
     public override void Tester_Debug_ToString()
     {
         DebugToStringImplementation();

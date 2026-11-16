@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample]
+[InvalidSample, ExcludeFromCreateAndFake]
 public sealed class FactoryAlterSample
 {
     public string Data { get; }

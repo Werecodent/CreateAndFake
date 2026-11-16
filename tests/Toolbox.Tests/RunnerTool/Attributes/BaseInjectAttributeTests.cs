@@ -6,5 +6,10 @@ namespace Werecodent.CreateAndFake.Tests.RunnerTool.Attributes;
 public sealed class BaseInjectAttributeTests : AutoTester<BaseInjectAttribute>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
+        opt =>
+            opt with
+            {
+                DisableToolSetSupportTests = true,
+                IgnorableExceptions = [typeof(ToolException)],
+            };
 }

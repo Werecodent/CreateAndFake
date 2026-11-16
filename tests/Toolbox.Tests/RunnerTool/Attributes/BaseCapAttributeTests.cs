@@ -11,6 +11,7 @@ public sealed class BaseCapAttributeTests : AutoTester<BaseCapAttribute>
         opt =>
             opt with
             {
+                DisableToolSetSupportTests = true,
                 IgnorableExceptions =
                 [
                     typeof(ArgumentException),

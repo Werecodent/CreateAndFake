@@ -3,12 +3,16 @@ using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.Design.Randomization.Handlers;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.Samples.Scenarios;
+using Werecodent.CreateAndFake.TesterTool;
 using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Types;
 
 public sealed class TypeDescriberTests : AutoTester<TypeDescriber>
 {
+    protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
+        opt => opt with { DisableToolSetSupportTests = true };
+
     protected override TypeDescriber TestInstance { get; } = TypeDescriber.For(null);
 
     [Fact]

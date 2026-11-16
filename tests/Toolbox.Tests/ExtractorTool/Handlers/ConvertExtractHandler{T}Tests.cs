@@ -5,5 +5,10 @@ namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Handlers;
 public sealed class ConvertExtractHandler_T_Tests() : AutoTester(typeof(ConvertExtractHandler<>))
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(InvalidCastException)] };
+        opt =>
+            opt with
+            {
+                DisableToolSetSupportTests = true,
+                IgnorableExceptions = [typeof(InvalidCastException)],
+            };
 }

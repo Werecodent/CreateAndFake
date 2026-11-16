@@ -168,6 +168,12 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
     [ConfigurableOption]
     public bool DisablePassthroughTests { get; init; } = false;
 
+    /// <summary>Flag for disabling ToolSetSupport tests.</summary>
+    /// <remarks>Useful for debugging. Causes the tests to immediately pass instead of running.</remarks>
+    /// <value><see langword="false"/></value>
+    [ConfigurableOption]
+    public bool DisableToolSetSupportTests { get; init; } = false;
+
     /// <summary><see cref="Type"/>s to be excluded for VerifyToolSetIntegrity tests.</summary>
     /// <remarks>Useful for ignoring known incompatible <see cref="Type"/>s.</remarks>
     /// <value><c>[]</c></value>
@@ -189,6 +195,7 @@ public sealed record TesterOptions : ToolOptions<TesterOptions>
         {
             DisableParameterMutationTests = Config.GetValue(section, DisableParameterMutationTests),
             DisableNullRefExceptionTests = Config.GetValue(section, DisableNullRefExceptionTests),
+            DisableToolSetSupportTests = Config.GetValue(section, DisableToolSetSupportTests),
             DisablePassthroughTests = Config.GetValue(section, DisablePassthroughTests),
             IntegrityIgnorableTypes = Config.GetTypes(section, IntegrityIgnorableTypes),
             RequirePrefixInTestName = Config.GetValue(section, RequirePrefixInTestName),

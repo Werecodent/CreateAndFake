@@ -1,4 +1,5 @@
-﻿using Werecodent.CreateAndFake.DuplicatorTool.Hints;
+﻿using Werecodent.CreateAndFake.DuplicatorTool.Engine;
+using Werecodent.CreateAndFake.DuplicatorTool.Hints;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
@@ -34,5 +35,14 @@ public sealed class ObjectCopyHintTests : CopyHintTestBase<ObjectCopyHint>
     {
         IsBadSample sample = new();
         TestInstance.TryCopy(sample, CreateChainer()).Data.Assert().Is(sample);
+    }
+
+    [Theory, RandomData]
+    internal void Copy_DuplicateAware(DataSample sample, DataSample fakeClone)
+    {
+        IDuplicatorChainer chainer = CreateChainer();
+        chainer.AddToHistory(sample, fakeClone);
+
+        TestInstance.TryCopy(sample, chainer).Data.Assert().Is(fakeClone);
     }
 }

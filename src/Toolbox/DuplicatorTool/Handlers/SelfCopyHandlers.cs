@@ -1,4 +1,5 @@
 using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
@@ -35,5 +36,6 @@ internal static class SelfCopyHandlers
         new RefCopyHandler(typeof(Runner)),
         new RefCopyHandler(typeof(Tester)),
         new RefCopyHandler(typeof(Valuer)),
+        new RefCopyHandler(typeof(DataRandom)),
     ];
 }

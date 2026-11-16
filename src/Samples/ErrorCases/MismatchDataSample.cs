@@ -1,8 +1,9 @@
-﻿using Werecodent.CreateAndFake.Design.Types;
+﻿using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample]
+[InvalidSample, ExcludeFromCreateAndFake]
 public class MismatchDataSample(int value)
 {
     public string Data { get; set; } = "Value:" + value;

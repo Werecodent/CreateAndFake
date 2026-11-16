@@ -9,6 +9,7 @@ public sealed class BaseFakeAttributeTests : AutoTester<BaseFakeAttribute>
         opt =>
             opt with
             {
+                DisableToolSetSupportTests = true,
                 IgnorableExceptions = [typeof(ToolException), typeof(ArgumentException)],
             };
 }

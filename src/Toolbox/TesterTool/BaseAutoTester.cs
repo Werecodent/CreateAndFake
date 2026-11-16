@@ -31,10 +31,11 @@ public abstract class BaseAutoTester(Type testType)
     protected TypeDescriber TestTypeDescriber { get; } = TypeDescriber.For(testType);
 
     /// <summary>Verifies nulls are guarded on the type.</summary>
-    /// <remarks><see cref="ITester.PreventsNullRefExceptionAsync"/></remarks>
+    /// <remarks>Uses: <see cref="ITester.PreventsNullRefExceptionAsync"/></remarks>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     public abstract Task Tester_GuardsNulls();
 
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <inheritdoc cref="Tester_GuardsNulls"/>
     protected virtual async Task GuardsNullsImplementation(CancellationToken canceler)
     {
@@ -51,10 +52,11 @@ public abstract class BaseAutoTester(Type testType)
     }
 
     /// <summary>Verifies mutations are prevented on the type.</summary>
-    /// <remarks><see cref="ITester.PreventsNullRefExceptionAsync"/></remarks>
+    /// <remarks>Uses: <see cref="ITester.PreventsNullRefExceptionAsync"/></remarks>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
     public abstract Task Tester_NoParameterMutation();
 
+    /// <param name="canceler">Aborts execution if triggered.</param>
     /// <inheritdoc cref="Tester_NoParameterMutation"/>
     protected virtual async Task NoParameterMutationImplementation(CancellationToken canceler)
     {
@@ -112,11 +114,38 @@ public abstract class BaseAutoTester(Type testType)
         }
     }
 
+    /// <summary>Validates the type is fully compatible with the framework as configured.</summary>
+    /// <remarks>
+    ///     Includes randomization, mutation, duplication, equality and faking.
+    ///     Uses: <see cref="ITester.VerifyToolSetSupportAsync(Type,CancellationToken,TesterMod)"/>
+    /// </remarks>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+    public abstract Task Tester_ToolSupport();
+
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <inheritdoc cref="Tester_ToolSupport"/>
+    protected virtual async Task ToolSupportImplementation(CancellationToken canceler)
+    {
+        if (!TestTypeDescriber.IsStatic())
+        {
+            try
+            {
+                await AutoTools
+                    .Tester.VerifyToolSetSupportAsync(testType, canceler, OptionConfiguration)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw new AutoTesterFailureException(GetType(), e);
+            }
+        }
+    }
+
     /// <summary>
     ///     Allows manual inspection of <see cref="object.ToString"/> when
     ///     <see cref="AsserterOptions.TriggerFailureForDebugAsserts"/> is set.
     /// </summary>
-    /// <remarks><see cref="IAsserter.Debug(string?)"/></remarks>
+    /// <remarks>Uses: <see cref="IAsserter.Debug(string?)"/></remarks>
     public abstract void Tester_Debug_ToString();
 
     /// <inheritdoc cref="Tester_Debug_ToString"/>

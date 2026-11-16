@@ -9,15 +9,6 @@ public sealed class AsyncListTests() : AutoTester(typeof(AsyncList<>))
     protected override Func<TesterOptions, TesterOptions> OptionConfiguration { get; } =
         opt => opt with { InjectionValues = [Tools.Gen.Next(6, 9)] };
 
-    [Fact]
-    internal static Task AsyncList_FrameworkSupport()
-    {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            [typeof(AsyncList<>)],
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static Task AsyncList_AttributeSupport(
         AsyncList<AsyncDataSample> sample,

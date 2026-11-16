@@ -24,15 +24,6 @@ public sealed class ValueComparerTests : AutoTester<ValueComparer>
                 ],
             };
 
-    [Fact]
-    internal static Task ValueComparer_VerifyToolSupport()
-    {
-        return Tools.Tester.VerifyToolSetSupportAsync(
-            typeof(ValueComparer),
-            TestContext.Current.CancellationToken
-        );
-    }
-
     [Theory, RandomData]
     internal static void Equals_MismatchSizeFalse(
         [Size(1)] int[] oneValue,
