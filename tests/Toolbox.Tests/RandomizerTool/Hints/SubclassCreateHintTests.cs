@@ -18,6 +18,8 @@ public sealed class SubclassCreateHintTests : CreateHintTestBase<SubclassCreateH
     {
         for (int i = 0; i < 10; i++)
         {
+            TestInstance.TryToCreate(typeof(IIsGoodOrBadSample), CreateChainer());
+
             TestInstance.TryToCreate(
                 typeof(IIsGoodOrBadSample),
                 CreateChainer(Tools.Randomizer.Options with { PreferLocalSubclasses = false })

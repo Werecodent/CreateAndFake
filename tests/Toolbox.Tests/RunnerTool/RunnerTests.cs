@@ -40,24 +40,23 @@ public sealed class RunnerTests : AutoTester<Runner>
     internal static async Task RunAsync_DefaultTimeoutWhenNegative(AsyncDataSample sample)
     {
         await Tools
-            .Runner.CallMethodsOnAsync(
-                sample,
-                TestContext.Current.CancellationToken,
-                opt => opt with { RunTimeout = TimeSpan.Zero, IncludeBaseObjectMethods = true }
+            .Runner.CallMethodsOnAsync(sample, TestContext.Current.CancellationToken, opt =>
+                opt with
+                {
+                    RunTimeout = TimeSpan.Zero,
+                    IncludeBaseObjectMethods = true,
+                }
             )
             .Assert()
             .ThrowsAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
 
         await Tools
-            .Runner.CallMethodsOnAsync(
-                sample,
-                TestContext.Current.CancellationToken,
-                opt =>
-                    opt with
-                    {
-                        RunTimeout = TimeSpan.FromMilliseconds(-1),
-                        IncludeBaseObjectMethods = true,
-                    }
+            .Runner.CallMethodsOnAsync(sample, TestContext.Current.CancellationToken, opt =>
+                opt with
+                {
+                    RunTimeout = TimeSpan.FromMilliseconds(-1),
+                    IncludeBaseObjectMethods = true,
+                }
             )
             .Assert()
             .ThrowsNoAsync<RunnerTimeoutException>(TestContext.Current.CancellationToken);
@@ -73,7 +72,7 @@ public sealed class RunnerTests : AutoTester<Runner>
             .Runner.CreateFor(
                 TypeDescriber.For<InjectMockSample>().Constructors.OnlyPublic.Single(),
                 TestContext.Current.CancellationToken,
-                opt => opt with { InjectionValues = [fake, fake2] }
+                opt => opt with { InjectionValues = [fake, fake2.Dummy] }
             )
             .Args.ToArray()
             .Assert()

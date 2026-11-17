@@ -27,13 +27,13 @@ internal abstract class BaseGuarder(TesterOptions options)
 
         TypeDescriber describer = TypeDescriber.For(type);
 
-        return Options.IncludeInternals
-            ? describer.Constructors.Visible.Concat<MethodBase>(
-                describer.Factories.Visible.Where(f => !f.IsGenericMethodDefinition)
-            )
-            : describer.Constructors.OnlyPublic.Concat<MethodBase>(
-                describer.Factories.OnlyPublic.Where(f => !f.IsGenericMethodDefinition)
-            );
+        return (
+            Options.IncludeInternals
+                ? describer.Constructors.Visible.Concat<MethodBase>(describer.Factories.Visible)
+                : describer.Constructors.OnlyPublic.Concat<MethodBase>(
+                    describer.Factories.OnlyPublic
+                )
+        ).Where(f => !f.IsGenericMethodDefinition);
     }
 
     /// <summary>Gets all testable methods on a type.</summary>

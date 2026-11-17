@@ -16,6 +16,12 @@ public sealed class SupportValidatorTests() : AutoTester(typeof(SupportValidator
             };
 
     [Fact]
+    internal static void New_NullOptionsGuarded()
+    {
+        1.Assert(_ => new SupportValidator(null)).Throws<ArgumentNullException>();
+    }
+
+    [Fact]
     internal static void VerifyToolSetSupportAsync_FailsWithoutCoverage()
     {
         Tools

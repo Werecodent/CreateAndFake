@@ -56,7 +56,7 @@ public static class RandomDataAttributeTests
     }
 
     [Theory, RandomData]
-    internal static async Task GetData_HandlesException([Fake] MethodInfo method)
+    internal static async Task GetData_HandlesExceptionAndDisposal([Fake] MethodInfo method)
     {
         method.IsGenericMethodDefinition.SetupReturn(Behavior<bool>.Throw(Times.Once));
 
@@ -72,6 +72,16 @@ public static class RandomDataAttributeTests
                 .ThrowsNoAsync<Exception>(TestContext.Current.CancellationToken)
                 .Also(() => method)
                 .Called();
+
+            await SafeDisposer
+                .TryTracking(
+                    nameof(GetData_HandlesExceptionAndDisposal),
+                    [
+                        Tools.Faker.Mock<IDisposable>().Dummy,
+                        Tools.Faker.Mock<IAsyncDisposable>().Dummy,
+                    ]
+                )
+                .DisposeAsync();
         }
         finally
         {

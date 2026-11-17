@@ -14,5 +14,9 @@ public static class Issue107Tests
         typeof(SelfReferenceContainer<>)
             .Assert(x => x.Tools().CreateRandomInstance())
             .Throws<ToolException>();
+
+        typeof(SelfReferenceContainer<>)
+            .Assert(x => Tools.Randomizer.Inject(typeof(SelfReferenceContainer<>), []))
+            .Throws<ToolException>();
     }
 }
