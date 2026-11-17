@@ -65,7 +65,7 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
     }
 
     /// <inheritdoc cref="Inject"/>
-    public object HandleInject(Type type, IEnumerable<object?>? values, IRandomizerChainer chainer)
+    private object HandleInject(Type type, IEnumerable<object?>? values, IRandomizerChainer chainer)
     {
         TypeDescriber describer = TypeDescriber.For(type);
 

@@ -3,6 +3,7 @@ using Werecodent.CreateAndFake.Design;
 namespace Werecodent.CreateAndFake.xUnit.v3;
 
 #pragma warning disable CA1816 // To prevent crashing the entire program.
+#pragma warning disable MA0040 // Not available for all .NET versions.
 
 /// <summary>Handles disposing randomly generated data with logging for failures.</summary>
 internal sealed class SafeDisposer : IAsyncDisposable
@@ -93,4 +94,4 @@ internal sealed class SafeDisposer : IAsyncDisposable
     }
 }
 
-#pragma warning restore CA1816 // To prevent crashing the entire program.
+#pragma warning restore
