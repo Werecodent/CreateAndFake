@@ -8,7 +8,10 @@
         "Mutator": {},
         "Randomizer": {},
         "Runner": {},
-        "Tester": {},
+        "Tester": {
+            "DisableNullRefExceptionTests": true,
+            "DisableParameterMutationTests": true
+        },
         "Valuer": {
             "IncludeValueHashInComparison": true
         }

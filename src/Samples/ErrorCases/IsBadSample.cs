@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Samples.ErrorCases;
 
-[InvalidSample, ExcludeFromCreateAndFake]
+[InvalidSample]
 public class IsBadSample : IIsGoodOrBadSample
 {
     public int GoodOrBadProp
