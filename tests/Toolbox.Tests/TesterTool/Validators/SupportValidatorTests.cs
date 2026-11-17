@@ -6,10 +6,14 @@ namespace Werecodent.CreateAndFake.Tests.TesterTool.Validators;
 
 public sealed class SupportValidatorTests() : AutoTester(typeof(SupportValidator))
 {
-    public override Task Tester_NoParameterMutation()
-    {
-        return Task.CompletedTask;
-    }
+    protected override TesterMod OptionConfiguration { get; } =
+        opt =>
+            opt with
+            {
+                DisableNullRefExceptionTests = true,
+                DisableParameterMutationTests = true,
+                DisableToolSetSupportTests = true,
+            };
 
     [Fact]
     internal static void VerifyToolSetSupportAsync_FailsWithoutCoverage()

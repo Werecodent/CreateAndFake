@@ -15,6 +15,7 @@ public sealed class Behavior_T_Tests() : AutoTester(typeof(Behavior<>))
                     typeof(MemberAccessException),
                     typeof(InvalidOperationException),
                     typeof(NotImplementedException),
+                    typeof(BehaviorDefaultThrowException),
                 ],
             };
 

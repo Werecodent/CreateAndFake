@@ -21,15 +21,21 @@ public sealed class GenericCreateHint : CreateHint
 
         if (type?.IsGenericTypeDefinition ?? false)
         {
+            int i = 0;
             foreach (Type defined in GenericResolver.CreateConcreteGenerics(type, randomizer))
             {
+                ArgumentGuard.ThrowUponIterationLimit(
+                    i++,
+                    randomizer.Options.Design.IterationLimit
+                );
                 try
                 {
                     return new(
-                        randomizer.CreateSpecific(
-                            defined,
-                            type,
-                            opt => opt with { RequireRandomizedContents = false }
+                        randomizer.CreateSpecific(defined, type, opt =>
+                            opt with
+                            {
+                                RequireRandomizedContents = false,
+                            }
                         )
                     );
                 }

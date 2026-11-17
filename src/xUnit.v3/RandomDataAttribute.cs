@@ -83,10 +83,14 @@ public sealed class RandomDataAttribute : DataAttribute, IRandomDataMarker
             }
         }
 
-        disposalTracker?.AddRange(
+        SafeDisposer? disposer = SafeDisposer.TryTracking(
+            testMethod.Name,
             data.SelectMany(row => row.GetData())
-                .Where(item => item is IDisposable or IAsyncDisposable)
         );
+        if (disposer != null)
+        {
+            disposalTracker?.Add(disposer);
+        }
 
         return data;
     }

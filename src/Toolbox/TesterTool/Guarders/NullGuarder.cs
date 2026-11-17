@@ -82,7 +82,7 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     {
         ArgumentGuard.ThrowIfNull(type);
 
-        foreach (ConstructorInfo constructor in FindAllConstructors(type))
+        foreach (MethodBase constructor in FindAllConstructors(type))
         {
             await PreventsNullRefExceptionAsync(null, constructor, callAllMethods, canceler)
                 .ConfigureAwait(false);
@@ -162,10 +162,11 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
         try
         {
             data = await Options
-                .Runner.CreateForAsync(
-                    method,
-                    cleanupCanceler.Token,
-                    opt => opt with { InjectionValues = Options.InjectionValues }
+                .Runner.CreateForAsync(method, cleanupCanceler.Token, opt =>
+                    opt with
+                    {
+                        InjectionValues = Options.InjectionValues,
+                    }
                 )
                 .ConfigureAwait(false);
 

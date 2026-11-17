@@ -21,13 +21,19 @@ internal abstract class BaseGuarder(TesterOptions options)
     /// <summary>Gets all testable constructors on a type.</summary>
     /// <param name="type">Type with the constructors to test.</param>
     /// <returns>Found constructors.</returns>
-    protected IEnumerable<ConstructorInfo> FindAllConstructors(Type type)
+    protected IEnumerable<MethodBase> FindAllConstructors(Type type)
     {
         ArgumentGuard.ThrowIfNull(type);
 
+        TypeDescriber describer = TypeDescriber.For(type);
+
         return Options.IncludeInternals
-            ? TypeDescriber.For(type).Constructors.Visible
-            : TypeDescriber.For(type).Constructors.OnlyPublic;
+            ? describer.Constructors.Visible.Concat<MethodBase>(
+                describer.Factories.Visible.Where(f => !f.IsGenericMethodDefinition)
+            )
+            : describer.Constructors.OnlyPublic.Concat<MethodBase>(
+                describer.Factories.OnlyPublic.Where(f => !f.IsGenericMethodDefinition)
+            );
     }
 
     /// <summary>Gets all testable methods on a type.</summary>
@@ -114,10 +120,11 @@ internal abstract class BaseGuarder(TesterOptions options)
         )
         {
             MethodCallWrapper data = await options
-                .Runner.CreateForAsync(
-                    method,
-                    canceler,
-                    opt => opt with { InjectionValues = Options.InjectionValues }
+                .Runner.CreateForAsync(method, canceler, opt =>
+                    opt with
+                    {
+                        InjectionValues = Options.InjectionValues,
+                    }
                 )
                 .ConfigureAwait(false);
             try

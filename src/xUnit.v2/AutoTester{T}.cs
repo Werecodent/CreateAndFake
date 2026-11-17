@@ -36,8 +36,8 @@ public abstract class AutoTester<T> : BaseAutoTester<T>
 
     /// <inheritdoc/>
     [Fact]
-    public override void Tester_Debug_ToString()
+    public override Task Tester_Debug_ToString()
     {
-        DebugToStringImplementation();
+        return DebugToStringImplementation();
     }
 }

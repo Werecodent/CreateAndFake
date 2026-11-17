@@ -85,7 +85,7 @@ public abstract class BaseAutoTester<T> : BaseAutoTester
     }
 
     /// <inheritdoc/>
-    protected override void DebugToStringImplementation()
+    protected override Task DebugToStringImplementation()
     {
         try
         {
@@ -95,5 +95,6 @@ public abstract class BaseAutoTester<T> : BaseAutoTester
         {
             throw new AutoTesterFailureException(GetType(), e);
         }
+        return Task.CompletedTask;
     }
 }

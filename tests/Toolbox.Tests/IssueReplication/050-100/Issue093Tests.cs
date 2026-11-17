@@ -20,11 +20,11 @@ public static class Issue093Tests
         public string Value { get; set; }
     }
 
-    internal sealed class Api
+    public sealed class Api
     {
         private readonly IProvider _provider;
 
-        internal Api(IProvider provider)
+        public Api(IProvider provider)
         {
             _provider = provider;
         }

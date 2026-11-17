@@ -1,5 +1,6 @@
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Comparisons;
+using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ValuerTool;
@@ -97,13 +98,17 @@ public abstract class BaseAutoTester(Type testType)
                 if (EqualsOverrideUsesFullValueEquality)
                 {
                     await AutoTools
-                        .Tester.VerifyValueEqualityAsync(testType, canceler)
+                        .Tester.VerifyValueEqualityAsync(testType, canceler, OptionConfiguration)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     await AutoTools
-                        .Tester.VerifyEqualsMatchesHashCodesAsync(testType, canceler)
+                        .Tester.VerifyEqualsMatchesHashCodesAsync(
+                            testType,
+                            canceler,
+                            OptionConfiguration
+                        )
                         .ConfigureAwait(false);
                 }
             }
@@ -146,20 +151,36 @@ public abstract class BaseAutoTester(Type testType)
     ///     <see cref="AsserterOptions.TriggerFailureForDebugAsserts"/> is set.
     /// </summary>
     /// <remarks>Uses: <see cref="IAsserter.Debug(string?)"/></remarks>
-    public abstract void Tester_Debug_ToString();
+    public abstract Task Tester_Debug_ToString();
 
     /// <inheritdoc cref="Tester_Debug_ToString"/>
-    protected virtual void DebugToStringImplementation()
+    protected virtual async Task DebugToStringImplementation()
     {
         if (!TestTypeDescriber.IsStatic())
         {
+            TesterOptions localOptions = OptionConfiguration?.Invoke(AutoTools.Tester.Options)
+                ?? AutoTools.Tester.Options;
+
+            object? instance = null;
             try
             {
-                AutoTools.Asserter.Debug(AutoTools.Randomizer.Create(testType).ToString());
+                if (localOptions.InjectionValues.Length > 0)
+                {
+                    instance = AutoTools.Randomizer.Inject(testType, localOptions.InjectionValues);
+                }
+                else
+                {
+                    instance = AutoTools.Randomizer.Create(testType);
+                }
+                AutoTools.Asserter.Debug(instance.ToString());
             }
             catch (Exception e)
             {
                 throw new AutoTesterFailureException(GetType(), e);
+            }
+            finally
+            {
+                await Disposer.CleanupAsync(instance).ConfigureAwait(false);
             }
         }
     }

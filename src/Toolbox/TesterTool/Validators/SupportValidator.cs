@@ -252,7 +252,15 @@ internal sealed class SupportValidator(TesterOptions options)
             dupe = null;
         try
         {
-            original = Options.Randomizer.Create(type);
+            if (Options.InjectionValues.Length > 0)
+            {
+                original = Options.Randomizer.Inject(type, Options.InjectionValues);
+            }
+            else
+            {
+                original = Options.Randomizer.Create(type);
+            }
+
             if (original is IFaked)
             {
                 return;

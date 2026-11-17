@@ -16,14 +16,16 @@ public static class BaseAutoTesterTests
     [Theory, RandomData]
     internal static async Task BaseAutoTester_WrapsExceptions([Stub] IToolSet tools)
     {
-        ITester tester = Tools.Faker.Mock<ITester>().Dummy;
+        ITester tester = Tools.Faker.Stub<ITester>().Dummy;
         IAsserter asserter = Tools.Faker.Mock<IAsserter>().Dummy;
+
+        tester.Options.SetupReturn(Tools.Tester.Options);
+        tester.Tools().ToFake().ThrowByDefault = true;
 
         tools.Tester.SetupReturn(tester);
         tools.Asserter.SetupReturn(asserter);
 
         InjectedAutoTester testInstance = new(tools);
-        testInstance.Assert(x => x.Tester_Debug_ToString()).Throws<AutoTesterFailureException>();
         await testInstance
             .Tester_GuardsNulls()
             .Assert()
@@ -38,6 +40,10 @@ public static class BaseAutoTesterTests
             .ThrowsAsync<AutoTesterFailureException>(TestContext.Current.CancellationToken);
         await testInstance
             .Tester_ToolSupport()
+            .Assert()
+            .ThrowsAsync<AutoTesterFailureException>(TestContext.Current.CancellationToken);
+        await testInstance
+            .Tester_Debug_ToString()
             .Assert()
             .ThrowsAsync<AutoTesterFailureException>(TestContext.Current.CancellationToken);
     }

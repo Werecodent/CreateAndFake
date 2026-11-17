@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Authors>CreateAndFake Contributors</Authors>
+    <Authors>Werecodent</Authors>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://werecodent.github.io/CreateAndFake/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Werecodent/CreateAndFake</RepositoryUrl>

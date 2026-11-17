@@ -134,6 +134,7 @@ internal static class SelfCreateHandlers
             CreateRandomOptionsBase<RunnerOptions>(rand) with
             {
                 RunTimeout = rand.Options.Gen.Next(new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 25)),
+                InjectionValues = [],
                 MethodsToIgnore =
                 [
                     "Close",
@@ -149,6 +150,7 @@ internal static class SelfCreateHandlers
             CreateRandomOptionsBase<TesterOptions>(rand) with
             {
                 IgnoreObsoleteMethods = true,
+                InjectionValues = [],
                 MethodsToIgnore =
                 [
                     "Close",

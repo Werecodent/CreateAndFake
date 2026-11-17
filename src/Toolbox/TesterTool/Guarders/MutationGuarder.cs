@@ -87,7 +87,7 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         ArgumentGuard.ThrowIfNull(type);
 
         foreach (
-            ConstructorInfo constructor in FindAllConstructors(GenericFixer.FixType(type, Options))
+            MethodBase constructor in FindAllConstructors(GenericFixer.FixType(type, Options))
                 .Where(c => c.GetParameters().Length > 0)
         )
         {
@@ -166,10 +166,11 @@ internal sealed class MutationGuarder(TesterOptions options) : BaseGuarder(optio
         try
         {
             data = await Options
-                .Runner.CreateForAsync(
-                    method,
-                    cleanupCanceler.Token,
-                    opt => opt with { InjectionValues = Options.InjectionValues }
+                .Runner.CreateForAsync(method, cleanupCanceler.Token, opt =>
+                    opt with
+                    {
+                        InjectionValues = Options.InjectionValues,
+                    }
                 )
                 .ConfigureAwait(false);
 

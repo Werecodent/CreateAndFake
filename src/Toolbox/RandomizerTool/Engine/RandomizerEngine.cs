@@ -39,6 +39,36 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
     {
         ArgumentGuard.ThrowIfNull(type);
 
+        if (type.IsGenericTypeDefinition)
+        {
+            int i = 0;
+            foreach (Type defined in GenericResolver.CreateConcreteGenerics(type, chainer))
+            {
+                ArgumentGuard.ThrowUponIterationLimit(i++, chainer.Options.Design.IterationLimit);
+                try
+                {
+                    return HandleInject(defined, values, chainer);
+                }
+                catch (CreateAndFakeException)
+                {
+                    // Try next type.
+                }
+            }
+            throw new UnsupportedException(
+                $"Could not create generic '{GenericConverter.ExpandName(type)}'."
+            );
+        }
+        else
+        {
+            return HandleInject(type, values, chainer);
+        }
+    }
+
+    /// <inheritdoc cref="Inject"/>
+    public object HandleInject(Type type, IEnumerable<object?>? values, IRandomizerChainer chainer)
+    {
+        TypeDescriber describer = TypeDescriber.For(type);
+
         List<Tuple<Type, object>> data =
         [
             .. (values ?? [])
@@ -48,22 +78,25 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
                 .Select(v => Tuple.Create(v!.GetType(), v)),
         ];
 
-        ConstructorInfo? maker =
-            FindConstructor(type, data, BindingFlags.Public)
-            ?? FindConstructor(type, data, BindingFlags.NonPublic);
+        MethodBase? maker = FindBestConstructor(describer.Constructors.Visible, data)
+            ?? FindBestConstructor(describer.Factories.Visible, data);
 
         if (
             maker == null
-            || type.Inherits<Fake>()
-            || type.Inherits(typeof(Injected<>))
-            || type.Inherits<Delegate>()
+            || describer.Inherits<Fake>()
+            || describer.Inherits(typeof(Injected<>))
+            || describer.Inherits<Delegate>()
         )
         {
             return Create(type, chainer);
         }
+        else if (maker is ConstructorInfo constructor)
+        {
+            return constructor.Invoke(CreateInjectArgs(maker, data, chainer));
+        }
         else
         {
-            return maker.Invoke(CreateInjectArgs(maker, data, chainer));
+            return maker.Invoke(null, CreateInjectArgs(maker, data, chainer))!;
         }
     }
 
@@ -73,7 +106,7 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
     /// <param name="chainer">Handles callback behavior for child values.</param>
     /// <returns>The created args to inject an instance with.</returns>
     private object?[] CreateInjectArgs(
-        ConstructorInfo maker,
+        MethodBase maker,
         List<Tuple<Type, object>> data,
         IRandomizerChainer chainer
     )
@@ -98,17 +131,16 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
     }
 
     /// <summary>Finds the constructor with the most matches then by fewest parameters.</summary>
-    /// <param name="type">Type to find a constructor for.</param>
+    /// <param name="potentialMakers">Potential constructors/factories to analyze.</param>
     /// <param name="data">Injection data to use.</param>
-    /// <param name="scope">Scope of constructors to find.</param>
-    /// <returns>Constructor if found, null otherwise.</returns>
-    private static ConstructorInfo? FindConstructor(
-        Type type,
-        List<Tuple<Type, object>> data,
-        BindingFlags scope
+    /// <returns>Compatible constructor if found, null otherwise.</returns>
+    private static MethodBase? FindBestConstructor(
+        IEnumerable<MethodBase> potentialMakers,
+        List<Tuple<Type, object>> data
     )
     {
-        return type.GetConstructors(BindingFlags.Instance | scope)
+        return potentialMakers
+            .Where(c => !c.IsGenericMethodDefinition)
             .GroupBy(c =>
                 c.GetParameters().Count(p => data.Exists(t => t.Item1.Inherits(p.ParameterType)))
             )
