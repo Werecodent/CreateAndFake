@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Engine;
 
@@ -44,6 +45,26 @@ public sealed class RandomizerEngineTests : AutoTester<RandomizerEngine>
         TestInstance
             .Assert(x => x.Inject(type, [], CreateHintChainer(hint)))
             .Throws<UnsupportedException>();
+    }
+
+    [Fact]
+    internal void Inject_LimitedIteration()
+    {
+        TestInstance
+            .Assert(x =>
+                x.Inject(
+                    typeof(GoodOrBadSampleHolder<>),
+                    [],
+                    new RandomizerChainer(
+                        Tools.Randomizer.Options with
+                        {
+                            Design = Tools.Randomizer.Options.Design with { IterationLimit = 0 },
+                        },
+                        new RandomizerEngine()
+                    )
+                )
+            )
+            .Throws<IterationLimitException>();
     }
 
     private static RandomizerChainer CreateHintChainer(ICreateHint hint)
