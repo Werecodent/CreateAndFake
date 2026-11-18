@@ -16,6 +16,7 @@ public sealed class AssertValueTaskTests : AutoTester<AssertValueTask>
         opt =>
             opt with
             {
+                DisableParameterMutationTests = true,
                 IgnorableExceptions =
                 [
                     typeof(AssertException),

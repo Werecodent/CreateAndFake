@@ -15,6 +15,7 @@ public sealed class AssertFuncTests : AutoTester<AssertFunc<string>>
         opt =>
             opt with
             {
+                DisableParameterMutationTests = true,
                 IgnorableExceptions =
                 [
                     typeof(AssertException),

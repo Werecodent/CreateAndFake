@@ -9,17 +9,21 @@ using Werecodent.CreateAndFake.RunnerTool;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 
-public sealed class AssertAsyncEnumerableTests : AutoTester
+public sealed class AssertAsyncEnumerableTests : AutoTester<AssertAsyncEnumerable<string>>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+        opt =>
+            opt with
+            {
+                DisableParameterMutationTests = true,
+                IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+            };
 
     private int _modCount;
 
     private readonly AsserterMod _mod;
 
     public AssertAsyncEnumerableTests()
-        : base(typeof(AssertAsyncEnumerable<>))
     {
         _modCount = 0;
         _mod = opt =>

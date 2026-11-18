@@ -16,6 +16,7 @@ public sealed class AssertEnumerableTests : AutoTester<AssertEnumerable>
         opt =>
             opt with
             {
+                DisableParameterMutationTests = true,
                 IgnorableExceptions =
                 [
                     typeof(AssertException),

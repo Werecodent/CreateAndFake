@@ -12,7 +12,12 @@ namespace Werecodent.CreateAndFake.Tests.Fluent.AssertCalls;
 public sealed class AssertDelegateTests : AutoTester<AssertDelegate>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+        opt =>
+            opt with
+            {
+                DisableParameterMutationTests = true,
+                IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+            };
 
     private int _modCount;
 

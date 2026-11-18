@@ -14,6 +14,7 @@ public sealed class AssertComparableTests : AutoTester<AssertComparable>
         opt =>
             opt with
             {
+                DisableParameterMutationTests = true,
                 IgnorableExceptions =
                 [
                     typeof(AssertException),

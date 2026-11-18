@@ -8,7 +8,7 @@ namespace Werecodent.CreateAndFake.Fluent;
 #pragma warning disable IDE0060, RCS1175 // Provides fluent attachment.
 
 /// <summary>Provides fluent handling of fakes.</summary>
-public static class FakeExtensions
+public static class FakedExtensions
 {
     /// <summary>Ties a method call to fake behavior.</summary>
     /// <typeparam name="T">Type to return.</typeparam>

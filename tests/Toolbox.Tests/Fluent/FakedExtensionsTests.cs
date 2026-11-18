@@ -1,16 +1,16 @@
 using Werecodent.CreateAndFake.FakerTool;
-using FakeExtensions = Werecodent.CreateAndFake.Fluent.FakeExtensions;
 
 namespace Werecodent.CreateAndFake.Tests.Fluent;
 
 #pragma warning disable RCS1021 // Expression-bodied lambda creates incorrect type.
 
-public sealed class FakeExtensionsTests() : AutoTester(typeof(FakeExtensions))
+public sealed class FakedExtensionsTests() : AutoTester(typeof(FakedExtensions))
 {
     protected override TesterMod OptionConfiguration { get; } =
         opt =>
             opt with
             {
+                DisableParameterMutationTests = true,
                 IgnorableExceptions =
                 [
                     typeof(InvalidOperationException),

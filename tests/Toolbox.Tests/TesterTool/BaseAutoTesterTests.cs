@@ -1,5 +1,6 @@
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;
 
@@ -18,12 +19,14 @@ public static class BaseAutoTesterTests
     {
         ITester tester = Tools.Faker.Stub<ITester>().Dummy;
         IAsserter asserter = Tools.Faker.Mock<IAsserter>().Dummy;
+        IRandomizer randomizer = Tools.Faker.Mock<IRandomizer>().Dummy;
 
         tester.Options.SetupReturn(Tools.Tester.Options);
         tester.Tools().ToFake().ThrowByDefault = true;
 
         tools.Tester.SetupReturn(tester);
         tools.Asserter.SetupReturn(asserter);
+        tools.Randomizer.SetupReturn(randomizer);
 
         InjectedAutoTester testInstance = new(tools);
         await testInstance

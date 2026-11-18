@@ -2,6 +2,8 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 
 namespace Werecodent.CreateAndFake.TesterTool;
 
+#pragma warning disable IDE0391 // Better exception handling.
+
 /// <typeparam name="T"><see cref="Type"/> under test.</typeparam>
 /// <inheritdoc/>
 public abstract class BaseAutoTester<T> : BaseAutoTester
@@ -85,7 +87,7 @@ public abstract class BaseAutoTester<T> : BaseAutoTester
     }
 
     /// <inheritdoc/>
-    protected override Task DebugToStringImplementation()
+    protected override async Task DebugToStringImplementation()
     {
         try
         {
@@ -95,6 +97,7 @@ public abstract class BaseAutoTester<T> : BaseAutoTester
         {
             throw new AutoTesterFailureException(GetType(), e);
         }
-        return Task.CompletedTask;
     }
 }
+
+#pragma warning restore
