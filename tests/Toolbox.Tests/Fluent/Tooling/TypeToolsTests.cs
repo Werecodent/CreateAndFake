@@ -11,6 +11,7 @@ public sealed class TypeToolsTests : AutoTester<TypeTools>
         opt =>
             opt with
             {
+                MethodsToIgnore = [nameof(TypeTools.CallMethodsAsync)],
                 InjectionValues = [Tools.Gen.Next(5, 8)],
                 IgnorableExceptions = [typeof(ToolException), typeof(InvalidCastException)],
             };

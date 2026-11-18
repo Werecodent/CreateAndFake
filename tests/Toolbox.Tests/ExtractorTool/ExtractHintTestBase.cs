@@ -29,26 +29,29 @@ public abstract class ExtractHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
+            IExtractorChainer chainer = CreateChainer();
             object value = Tools.Randomizer.Create(type);
-            ExtractHintResult result = TestInstance.TryToExtract(value, CreateChainer());
             try
             {
-                result
-                    .HasData.Assert()
+                TestInstance
+                    .TryToExtract(value, chainer)
+                    .Assert()
                     .Is(
-                        true,
+                        new ExtractHintResult(true),
                         "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'."
                     );
-                result
-                    .Data.Assert()
-                    .IsNot(
-                        null,
-                        "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
+
+                TestInstance
+                    .TryToExtract(value, chainer)
+                    .Assert()
+                    .Is(
+                        new ExtractHintResult(false),
+                        "Hint '" + typeof(T).Name + "' did not ignore repeated '" + type.Name + "'."
                     );
             }
             finally
             {
-                await Disposer.CleanupAsync(value, result.Data);
+                await Disposer.CleanupAsync(value);
             }
         }
     }
@@ -59,30 +62,31 @@ public abstract class ExtractHintTestBase<T>(
     {
         foreach (Type type in _validTypes)
         {
+            IExtractorChainer chainer = CreateChainer();
             object value = Tools.Randomizer.Create(type);
-            ExtractHintResult result = await TestInstance.TryToExtractAsync(
-                value,
-                CreateChainer(),
-                TestContext.Current.CancellationToken
-            );
             try
             {
-                result
-                    .HasData.Assert()
-                    .Is(
-                        true,
+                await TestInstance
+                    .TryToExtractAsync(value, chainer, TestContext.Current.CancellationToken)
+                    .Assert()
+                    .HasResultAsync(
+                        new ExtractHintResult(true),
+                        TestContext.Current.CancellationToken,
                         "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'."
                     );
-                result
-                    .Data.Assert()
-                    .IsNot(
-                        null,
-                        "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
+
+                await TestInstance
+                    .TryToExtractAsync(value, chainer, TestContext.Current.CancellationToken)
+                    .Assert()
+                    .HasResultAsync(
+                        new ExtractHintResult(false),
+                        TestContext.Current.CancellationToken,
+                        "Hint '" + typeof(T).Name + "' did not ignore repeated '" + type.Name + "'."
                     );
             }
             finally
             {
-                await Disposer.CleanupAsync(value, result.Data);
+                await Disposer.CleanupAsync(value);
             }
         }
     }

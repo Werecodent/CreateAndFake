@@ -50,14 +50,15 @@ public sealed class SubclassCreateHint : CreateHint
             try
             {
                 return new(
-                    randomizer.CreateSpecific(
-                        subclass,
-                        type,
-                        opt => opt with { RequireRandomizedContents = false }
+                    randomizer.CreateSpecific(subclass, type, opt =>
+                        opt with
+                        {
+                            RequireRandomizedContents = false,
+                        }
                     )
                 );
             }
-            catch (CreateAndFakeException)
+            catch (Exception)
             {
                 // Try next type.
             }

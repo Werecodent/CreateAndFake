@@ -49,7 +49,7 @@ public sealed class RandomizerEngine : ToolEngine<ICreateHint>, IRandomizerEngin
                 {
                     return HandleInject(defined, values, chainer);
                 }
-                catch (CreateAndFakeException)
+                catch (Exception)
                 {
                     // Try next type.
                 }
