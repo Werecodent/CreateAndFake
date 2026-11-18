@@ -7,9 +7,9 @@ public interface IToolOptions
 {
     /// <inheritdoc cref="DesignOptions"/>
     /// <remarks>These options are shared among all tools from a configured toolset.</remarks>
-    DesignOptions Design { get; init; }
+    DesignOptions Design { get; }
 
     /// <summary>Value generator used for base randomization.</summary>
     /// <remarks>Provides access to the <see cref="IRandom.InitialSeed"/>.</remarks>
-    IRandom Gen { get; init; }
+    IRandom Gen { get; }
 }

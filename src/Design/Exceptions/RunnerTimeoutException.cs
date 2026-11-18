@@ -11,6 +11,8 @@ public sealed class RunnerTimeoutException : CreateAndFakeException
     private RunnerTimeoutException()
         : base() { }
 
+    /// <param name="timeout">Limit that was breached by the method.</param>
+    /// <param name="method">Name of the method that was executed.</param>
     /// <inheritdoc cref="RunnerTimeoutException"/>
     public RunnerTimeoutException(TimeSpan timeout, string method)
         : base(
@@ -22,7 +24,6 @@ public sealed class RunnerTimeoutException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

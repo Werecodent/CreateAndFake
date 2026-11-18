@@ -12,7 +12,9 @@ public sealed class RunnerMethodErrorException : CreateAndFakeException
     private RunnerMethodErrorException()
         : base() { }
 
+    /// <param name="method">Name of the method that was executed.</param>
     /// <inheritdoc cref="RunnerMethodErrorException"/>
+    /// <inheritdoc cref="CreateAndFakeException(string,Exception)"/>
     public RunnerMethodErrorException(string method, Exception innerException)
         : base(
             BuildMessage(
@@ -24,7 +26,6 @@ public sealed class RunnerMethodErrorException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

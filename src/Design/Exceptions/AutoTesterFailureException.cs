@@ -16,13 +16,12 @@ public sealed class AutoTesterFailureException : CreateAndFakeException
     public AutoTesterFailureException(Type testClass)
         : base($"The '{testClass?.Name}' AutoTester encountered an issue.") { }
 
-    /// <param name="testClass">Class containing the test that failed.</param>
-    /// <inheritdoc cref="AutoTesterFailureException"/>
+    /// <inheritdoc cref="AutoTesterFailureException(Type)"/>
+    /// <inheritdoc cref="CreateAndFakeException(string,Exception)"/>
     public AutoTesterFailureException(Type testClass, Exception? innerException)
         : base($"The '{testClass?.Name}' AutoTester encountered an issue.", innerException) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Werecodent.CreateAndFake.Design.Properties;
 
 namespace Werecodent.CreateAndFake.Design.Exceptions;
 
@@ -14,7 +15,9 @@ public sealed class IterationLimitException : CreateAndFakeException
     private IterationLimitException()
         : base() { }
 
+    /// <param name="iterationLimit"><inheritdoc cref="DesignDefaults.IterationLimit" path="/summary"/></param>
     /// <inheritdoc cref="IterationLimitException"/>
+    /// <inheritdoc cref="CreateAndFakeException(string)"/>
     public IterationLimitException(int iterationLimit, string? message)
         : base(
             BuildMessage(
@@ -24,7 +27,6 @@ public sealed class IterationLimitException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

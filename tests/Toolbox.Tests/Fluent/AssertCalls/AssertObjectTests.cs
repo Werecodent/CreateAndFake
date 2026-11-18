@@ -64,6 +64,12 @@ public sealed class AssertObjectTests : AutoTester<AssertObject>
     }
 
     [Theory, RandomData]
+    internal void IsA_RuntimeTypeSafe(int value)
+    {
+        value.GetType().Assert(x => x.Assert().IsA<int>()).Throws<AssertException>();
+    }
+
+    [Theory, RandomData]
     internal void Is_Forwarded(DataSample data, [Copy] DataSample clone, DataSample variant)
     {
         data.Assert().Is(clone);

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -129,6 +130,12 @@ public sealed class SubclasserTests() : AutoTester(typeof(Subclasser))
         typeof(InternalSample)
             .Assert(x => Subclasser.Create(x, Tools.Faker.Options))
             .Throws<ArgumentException>();
+    }
+
+    [Fact]
+    internal static void Supports_InitPropertiesBlocked()
+    {
+        Subclasser.Supports(typeof(DesignOptions)).Assert().Is(false);
     }
 
     [Fact]

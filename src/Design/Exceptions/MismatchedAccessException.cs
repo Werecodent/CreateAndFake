@@ -15,9 +15,9 @@ public sealed class MismatchedAccessException : CreateAndFakeException
     private MismatchedAccessException()
         : base() { }
 
-    /// <param name="value">Instance attempting to be added.</param>
-    /// <param name="message">Details to include in the error message.</param>
+    /// <param name="value">Instance being accessed.</param>
     /// <inheritdoc cref="MismatchedAccessException"/>
+    /// <inheritdoc cref="CreateAndFakeException(string)"/>
     public MismatchedAccessException(object? value, string? message)
         : base(
             BuildMessage(
@@ -28,7 +28,6 @@ public sealed class MismatchedAccessException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

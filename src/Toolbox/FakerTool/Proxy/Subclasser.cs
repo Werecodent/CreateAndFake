@@ -38,13 +38,32 @@ internal static class Subclasser
             typeof(StreamWriter),
             $"{typeof(StreamWriter)} not supported without a provided constructor."
         },
-#if NET11_0_OR_GREATER
-        { typeof(FieldInfo), $"{typeof(FieldInfo)} itself has specific issues being faked." },
-#endif
 #if LEGACY // Required feature shipped with C# 14 / .NET 10.0
         { typeof(TypeInfo), $"{typeof(TypeInfo)} itself has specific issues being faked." },
 #endif
     };
+
+    /// <summary>Type states not supported with the error message for them.</summary>
+    private static readonly Dictionary<Func<Type, bool>, Func<Type, string>> _InvalidTypeStates =
+        new()
+        {
+            { p => p.IsSealed, p => $"Cannot subclass the sealed type '{p.Name}'." },
+            { p => p.IsPointer, p => $"Cannot subclass the pointer '{p.Name}'." },
+            {
+                p => p.ContainsGenericParameters,
+                p => $"Cannot subclass with unspecified generics '{p.Name}'."
+            },
+            {
+                p => !ScopeChecker.IsVisible(p, AssemblyName),
+                p =>
+                    $"Cannot subclass with nonpublic type '{p.Name}'. Think about adding "
+                    + $"'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly."
+            },
+            {
+                p => p.Namespace == "System.Numerics",
+                p => $"Numerics private static virtual members not supported for type '{p.Name}'."
+            },
+        };
 
     /// <summary>Assembly used to contain the dynamic types.</summary>
     public static AssemblyName AssemblyName => Emitter.AssemblyName;
@@ -62,7 +81,7 @@ internal static class Subclasser
     /// <returns>True if possible; false otherwise.</returns>
     public static bool Supports(Type type)
     {
-        return CanBeSubclassed(type).Item1;
+        return type != null && CanBeSubclassed(type).Item1;
     }
 
     /// <summary>Creates a subclass of the given type.</summary>
@@ -139,11 +158,7 @@ internal static class Subclasser
     {
         TypeDescriber info = TypeDescriber.For(parent);
 
-        if (parent == null)
-        {
-            return (true, null);
-        }
-        else if (
+        if (
             _InvalidTypes.TryGetValue(
                 GenericConverter.AsGenericBase(parent) ?? parent,
                 out string? error
@@ -152,48 +167,16 @@ internal static class Subclasser
         {
             return (false, new ArgumentException(error, nameof(parent)));
         }
-        else if (parent.IsSealed)
+
+        Func<Type, string>? invalidStateMessage = _InvalidTypeStates
+            .FirstOrDefault(s => s.Key(parent))
+            .Value;
+        if (invalidStateMessage != null)
         {
-            return (
-                false,
-                new ArgumentException(
-                    $"Cannot subclass the sealed type '{parent.Name}'.",
-                    nameof(parent)
-                )
-            );
+            return (false, new ArgumentException(invalidStateMessage(parent), nameof(parent)));
         }
-        else if (parent.IsPointer)
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"Cannot subclass the pointer '{parent.Name}'.",
-                    nameof(parent)
-                )
-            );
-        }
-        else if (parent.ContainsGenericParameters)
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"Cannot subclass with unspecified generics '{parent.Name}'.",
-                    nameof(parent)
-                )
-            );
-        }
-        else if (!ScopeChecker.IsVisible(parent, AssemblyName))
-        {
-            return (
-                false,
-                new ArgumentException(
-                    $"Cannot subclass with nonpublic type '{parent.Name}'. Think about adding "
-                        + $"'InternalsVisibleTo(\"{AssemblyName.Name}\")' to the type's assembly.",
-                    nameof(parent)
-                )
-            );
-        }
-        else if (info.Inherits<Delegate>())
+
+        if (info.Inherits<Delegate>())
         {
             return (
                 false,
@@ -207,12 +190,17 @@ internal static class Subclasser
                 new ArgumentException("Static virtual members not yet supported.", nameof(parent))
             );
         }
-        else if (parent.Namespace == "System.Numerics")
+        else if (
+            info.Properties.Settable.Any(p =>
+                p.SetMethod!.ReturnParameter.GetRequiredCustomModifiers()
+                    .Contains(typeof(System.Runtime.CompilerServices.IsExternalInit))
+            )
+        )
         {
             return (
                 false,
                 new ArgumentException(
-                    "Numerics private static virtual members not supported.",
+                    "Classes with init properties not yet supported.",
                     nameof(parent)
                 )
             );

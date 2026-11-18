@@ -21,7 +21,11 @@ public abstract class ExceptionTestBase<T> : AutoTester<T>
     [Fact]
     public void Exception_XmlSerializes()
     {
-        Tools.Tester.VerifyXmlSerialization<T>();
+        Limiter.Score.Retry(
+            "Not all System exceptions support xml serialization.",
+            () => Tools.Tester.VerifyXmlSerialization<T>(),
+            TestContext.Current.CancellationToken
+        );
     }
 
     [Fact]

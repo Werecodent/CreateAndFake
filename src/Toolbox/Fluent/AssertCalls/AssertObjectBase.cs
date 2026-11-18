@@ -198,8 +198,18 @@ public abstract class AssertObjectBase<T>(IAsserter asserter, object? actual)
     /// <inheritdoc cref="ToChainer"/>
     public virtual ResultChainer<TParent> IsA<TParent>(string? details = null)
     {
-        Asserter.Inherits<TParent>(Actual, details);
-        return new ResultChainer<TParent>((TParent)Actual!, Asserter);
+        if (Actual is TParent result)
+        {
+            return new ResultChainer<TParent>(result, Asserter);
+        }
+        else
+        {
+            throw new AssertException(
+                $"'{GenericConverter.ExpandName(Actual)}' does not inherit '{GenericConverter.ExpandName<TParent>()}'.",
+                details,
+                Asserter.Options.Gen.InitialSeed
+            );
+        }
     }
 
     /// <inheritdoc cref="IAsserterObject.Inherits{T}(object,AsserterMod,string)"/>

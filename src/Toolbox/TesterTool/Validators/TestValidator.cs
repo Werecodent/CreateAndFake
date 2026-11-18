@@ -76,23 +76,15 @@ internal sealed class TestValidator(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(testMarkers, codeAssembly, testAssembly);
 
-        List<Type> markers = [.. testMarkers];
-
-        static string stripGeneric(Type codeClass)
+        static string stripGeneric(string memberName)
         {
-            if (
-                codeClass.IsGenericTypeDefinition
-                && codeClass.Name.Contains("`", StringComparison.Ordinal)
-            )
+            if (memberName.Contains("`", StringComparison.Ordinal))
             {
-                return codeClass.Name.Substring(
-                    0,
-                    codeClass.Name.IndexOf("`", StringComparison.Ordinal)
-                );
+                return memberName.Substring(0, memberName.IndexOf("`", StringComparison.Ordinal));
             }
             else
             {
-                return codeClass.Name;
+                return memberName;
             }
         }
 
@@ -141,28 +133,30 @@ internal sealed class TestValidator(TesterOptions options)
             testAssembly.GetName()!.Name!,
         ];
 
+        Dictionary<string, List<string>> findTestsByTarget(TypeDescriber t)
+        {
+            return t
+                .Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
+                .Where(m => testMarkers.Any(marker => Attribute.IsDefined(m, marker)))
+                .Select(m => m.Name)
+                .GroupBy(getTarget)
+                .Where(g =>
+                    !(
+                        t.SupportedType!.Name.Contains(g.Key, StringComparison.Ordinal)
+                        || globalValidTargets.Contains(g.Key)
+                        || (g.Key == "?" && !Options.RequirePrefixInTestName)
+                    )
+                )
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+
         List<Tuple<string, Dictionary<string, List<string>>>> testsByTargetByClass =
         [
             .. ScopeChecker
                 .FindLoadedSpecificTypes(testAssembly)
-                .Where(t => t != null)
                 .Select(TypeDescriber.For)
                 .Select(t =>
-                    Tuple.Create(
-                        stripGeneric(t.SupportedType!),
-                        t.Methods.PublicOrInternal.Concat(t.StaticMethods.PublicOrInternal)
-                            .Where(m => markers.Exists(marker => Attribute.IsDefined(m, marker)))
-                            .Select(m => m.Name)
-                            .GroupBy(n => getTarget(n))
-                            .Where(g =>
-                                !(
-                                    t.SupportedType!.Name.Contains(g.Key, StringComparison.Ordinal)
-                                    || globalValidTargets.Contains(g.Key)
-                                    || (g.Key == "?" && !Options.RequirePrefixInTestName)
-                                )
-                            )
-                            .ToDictionary(g => g.Key, g => g.ToList())
-                    )
+                    Tuple.Create(stripGeneric(t.SupportedType!.Name), findTestsByTarget(t))
                 ),
         ];
 
@@ -185,12 +179,7 @@ internal sealed class TestValidator(TesterOptions options)
                                 | BindingFlags.Public
                                 | BindingFlags.NonPublic
                         )
-                        .Select(m => m.Name)
-                        .Select(n =>
-                            n.Contains("`", StringComparison.Ordinal)
-                                ? n.Substring(0, n.IndexOf("`", StringComparison.Ordinal))
-                                : n
-                        ),
+                        .Select(m => stripGeneric(m.Name)),
                 ];
 
             List<string> possibleNames =

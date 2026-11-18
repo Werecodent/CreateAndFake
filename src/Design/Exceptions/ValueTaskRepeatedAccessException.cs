@@ -15,8 +15,8 @@ public sealed class ValueTaskRepeatedAccessException : CreateAndFakeException
     private ValueTaskRepeatedAccessException()
         : base() { }
 
-    /// <inheritdoc cref="ValueTaskRepeatedAccessException"/>
     /// <param name="token">Token owned by the parent <see cref="ValueTask"/>.</param>
+    /// <inheritdoc cref="ValueTaskRepeatedAccessException"/>
     public ValueTaskRepeatedAccessException(short token)
         : base(
             BuildMessage(
@@ -27,7 +27,6 @@ public sealed class ValueTaskRepeatedAccessException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

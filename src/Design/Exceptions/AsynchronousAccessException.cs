@@ -16,8 +16,8 @@ public sealed class AsynchronousAccessException : CreateAndFakeException
         : base() { }
 
     /// <param name="value">Asynchronous instance attempting to be accessed.</param>
-    /// <param name="message">Details to include in the error message.</param>
     /// <inheritdoc cref="AsynchronousAccessException"/>
+    /// <inheritdoc cref="CreateAndFakeException(string)"/>
     public AsynchronousAccessException(object? value, string? message)
         : base(
             BuildMessage(
@@ -28,7 +28,6 @@ public sealed class AsynchronousAccessException : CreateAndFakeException
         ) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

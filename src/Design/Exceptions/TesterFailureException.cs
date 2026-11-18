@@ -22,7 +22,6 @@ public sealed class TesterFailureException : CreateAndFakeException
         : base(BuildMessage("Encountered fatal Tester exception.", message), innerException) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

@@ -17,7 +17,6 @@ public sealed class UnsupportedException : CreateAndFakeException
         : base(BuildMessage("Case not supported by the framework.", message)) { }
 
     /// <inheritdoc/>
-    /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER
     [Obsolete("ISerializable has been disabled.", DiagnosticId = "SYSLIB0051")]
 #endif

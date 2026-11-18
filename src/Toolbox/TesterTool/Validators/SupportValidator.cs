@@ -11,7 +11,6 @@ using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
-using Werecodent.CreateAndFake.Fluent;
 using Werecodent.CreateAndFake.MutatorTool;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.RunnerTool;
@@ -252,14 +251,10 @@ internal sealed class SupportValidator(TesterOptions options)
             dupe = null;
         try
         {
-            if (Options.InjectionValues.Length > 0)
-            {
-                original = Options.Randomizer.Inject(type, Options.InjectionValues);
-            }
-            else
-            {
-                original = Options.Randomizer.Create(type);
-            }
+            original =
+                Options.InjectionValues.Length > 0
+                    ? Options.Randomizer.Inject(type, Options.InjectionValues)
+                    : Options.Randomizer.Create(type);
 
             if (original is IFaked)
             {
@@ -293,7 +288,7 @@ internal sealed class SupportValidator(TesterOptions options)
                 type.IsAbstract
                 || TypeDescriber.For(type).IsMutable()
                 || TypeDescriber.For(type).HasInitializableOnlyState()
-                || (!type.IsSealed && TypeDescriber.For(type).FindLoadedSubclasses().Skip(1).Any())
+                || TypeDescriber.For(type).FindLoadedSubclasses().Skip(1).Any()
             )
             {
                 variant = await Options
@@ -322,7 +317,7 @@ internal sealed class SupportValidator(TesterOptions options)
                     .ConfigureAwait(false);
             }
 
-            if (Options.Faker.Supports(type) && !type.Inherits<IToolOptions>())
+            if (Options.Faker.Supports(type))
             {
                 _ = Options.Faker.Mock(type);
             }
