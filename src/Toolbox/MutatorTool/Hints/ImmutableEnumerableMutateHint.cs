@@ -21,7 +21,7 @@ public sealed class ImmutableEnumerableMutateHint : MutateHint
     /// <inheritdoc/>
     protected override bool Supports(object instance)
     {
-        TypeDescriber inheritance = TypeDescriber.For(instance);
+        TypeDescriber inheritance = TypeDescriber.For(instance?.GetType());
 
         return inheritance.Inherits(typeof(ImmutableQueue<>))
             || inheritance.Inherits(typeof(ImmutableStack<>));

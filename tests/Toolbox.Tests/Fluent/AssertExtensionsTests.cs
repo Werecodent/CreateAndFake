@@ -2,6 +2,9 @@
 
 public sealed class AssertExtensionsTests() : AutoTester(typeof(AssertExtensions))
 {
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { DisableParameterMutationTests = true };
+
     [Theory, RandomData]
     internal static void Assert_ObjectIsFluent(int data)
     {

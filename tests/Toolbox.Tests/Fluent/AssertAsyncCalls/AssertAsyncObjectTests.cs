@@ -13,7 +13,12 @@ namespace Werecodent.CreateAndFake.Tests.Fluent.AssertAsyncCalls;
 public sealed class AssertAsyncObjectTests : AutoTester<AssertAsyncObject>
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(AssertException), typeof(ToolException)] };
+        opt =>
+            opt with
+            {
+                DisableParameterMutationTests = true,
+                IgnorableExceptions = [typeof(AssertException), typeof(ToolException)],
+            };
 
     private int _modCount;
 

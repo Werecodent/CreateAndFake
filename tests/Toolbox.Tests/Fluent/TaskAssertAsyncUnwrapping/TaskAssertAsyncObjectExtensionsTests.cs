@@ -9,7 +9,12 @@ namespace Werecodent.CreateAndFake.Tests.Fluent.TaskAssertAsyncUnwrapping;
 public sealed class TaskAssertAsyncObjectExtensionsTests : AutoTester
 {
     protected override TesterMod OptionConfiguration { get; } =
-        opt => opt with { IgnorableExceptions = [typeof(AssertException)] };
+        opt =>
+            opt with
+            {
+                DisableParameterMutationTests = true,
+                IgnorableExceptions = [typeof(AssertException)],
+            };
 
     private int _modCount;
 

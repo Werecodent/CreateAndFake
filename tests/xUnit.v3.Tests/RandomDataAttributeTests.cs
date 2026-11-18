@@ -73,13 +73,16 @@ public static class RandomDataAttributeTests
                 .Also(() => method)
                 .Called();
 
+            Fake<IDisposable> mockDisposable = Tools.Faker.Mock<IDisposable>();
+            mockDisposable.Setup(f => f.Dispose(), Behavior.Throw(Times.Once));
+
+            Fake<IAsyncDisposable> mockAsyncDisposable = Tools.Faker.Mock<IAsyncDisposable>();
+            mockAsyncDisposable.Setup("DisposeAsync", [], Behavior.Throw(Times.Once));
+
             await SafeDisposer
                 .TryTracking(
                     nameof(GetData_HandlesExceptionAndDisposal),
-                    [
-                        Tools.Faker.Mock<IDisposable>().Dummy,
-                        Tools.Faker.Mock<IAsyncDisposable>().Dummy,
-                    ]
+                    [mockDisposable.Dummy, mockAsyncDisposable.Dummy]
                 )
                 .DisposeAsync();
         }

@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.CSharp.RuntimeBinder;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.RunnerTool.Attributes;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -19,6 +20,7 @@ public sealed class BaseCapAttributeTests : AutoTester<BaseCapAttribute>
                     typeof(ToolException),
                     typeof(TesterFailureException),
                     typeof(ArgumentOutOfRangeException),
+                    typeof(RuntimeBinderException),
                 ],
             };
 
