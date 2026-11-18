@@ -2,7 +2,7 @@ using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Samples.Tests.Scenarios;
 
-public sealed class GoodOrBadSampleHolderTests() : AutoTester(typeof(GoodOrBadSampleHolder<>))
+public sealed class GoodOrBadSampleHolderTests : AutoTester<GoodOrBadSampleHolder<IsGoodSample>>
 {
     [Fact]
     public static void GoodOrBadSampleHolder_CanInject()
