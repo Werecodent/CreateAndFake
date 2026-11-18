@@ -18,24 +18,19 @@ public abstract class ExceptionTestBase<T> : AutoTester<T>
         Activator.CreateInstance(typeof(T), true).Assert().IsNotNull();
     }
 
-    [Theory, RandomData]
-    public void Exception_XmlSerializes(T original)
+    [Fact]
+    public void Exception_XmlSerializes()
     {
-        Tools.Tester.VerifyXmlSerialization(original);
+        Tools.Tester.VerifyXmlSerialization<T>();
     }
 
     [Fact]
     public void Exception_JsonSerializes()
     {
-        T original = Limiter
-            .Hundred.StallUntil(
-                "Not all System exceptions support json serialization.",
-                () => Tools.Randomizer.Create<T>(),
-                e => e.InnerException == null,
-                TestContext.Current.CancellationToken
-            )
-            .Last();
-
-        Tools.Tester.VerifyJsonSerialization(original);
+        Limiter.Score.Retry(
+            "Not all System exceptions support json serialization.",
+            () => Tools.Tester.VerifyJsonSerialization<T>(),
+            TestContext.Current.CancellationToken
+        );
     }
 }

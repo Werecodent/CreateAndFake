@@ -2,6 +2,7 @@ using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
 using Werecodent.CreateAndFake.ExtractorTool.Handlers;
+using Werecodent.CreateAndFake.FakerTool.Proxy;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Hints;
 
@@ -14,6 +15,7 @@ public sealed class HandlerExtractHint : IExtractHint
     private static readonly IExtractHandler[] _Creators =
     [
         new ConvertExtractHandler<TypeDescriber>(x => [x.SupportedType]),
+        new ConvertExtractHandler<FakeMetaProvider>(x => [x.Identifier]),
     ];
 
     /// <summary>All handlers by their supported type.</summary>

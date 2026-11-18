@@ -17,28 +17,34 @@ public enum ExtractPriority
     /// <summary>Priority for <see cref="ObjectExtractHint"/>.</summary>
     ObjectHint = 1,
 
+    /// <summary>Priority for <see cref="FakedExtractHint"/>.</summary>
+    FakedHint = 2,
+
     /// <summary>Priority for <see cref="StreamExtractHint"/>.</summary>
-    StreamHint = 2,
+    StreamHint = 3,
 
     /// <summary>Priority for <see cref="TaskExtractHint"/>.</summary>
-    TaskHint = 3,
+    TaskHint = 4,
 
     /// <summary>Priority for <see cref="DelegateExtractHint"/>.</summary>
-    DelegateHint = 4,
+    DelegateHint = 5,
 
     /// <summary>Priority for <see cref="EnumerableExtractHint"/>.</summary>
-    EnumerableHint = 5,
+    EnumerableHint = 6,
 
     /// <summary>Priority for <see cref="DictionaryExtractHint"/>.</summary>
-    DictionaryHint = 6,
+    DictionaryHint = 7,
+
+    /// <summary>Priority for <see cref="ExtractableExtractHint"/>.</summary>
+    ExtractableHint = 8,
 
     /// <summary>Priority for <see cref="EndingExtractHint"/>.</summary>
-    EndingHint = 7,
+    EndingHint = 9,
 
     /// <summary>Priority for <see cref="HandlerExtractHint"/>.</summary>
-    HandlerHint = 8,
+    HandlerHint = 10,
 
     /// <summary>Starting priority for custom hints that'll execute first.</summary>
     /// <remarks>Add to this priority for even higher priorities.</remarks>
-    Highest = 9,
+    Highest = 11,
 }

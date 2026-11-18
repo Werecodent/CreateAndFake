@@ -2,8 +2,8 @@ using Werecodent.CreateAndFake.Design;
 
 namespace Werecodent.CreateAndFake.ExtractorTool.Engine;
 
+/// <summary>Handles extracting <typeparamref name="T"/> instances for <see cref="IExtractor"/>.</summary>
 /// <typeparam name="T"><see cref="Type"/> being supported for extraction.</typeparam>
-/// <inheritdoc/>
 public abstract class ExtractHint<T> : ExtractHint
 {
     /// <inheritdoc/>

@@ -1,4 +1,5 @@
 ﻿using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.FakerTool.Proxy;
@@ -13,15 +14,15 @@ internal sealed class CallData(
     Type[] generics,
     object?[] args,
     FakerOptions? options
-)
+) : IDeepCloneable<CallData>
 {
     /// <summary>Name tied to the call.</summary>
-    private readonly string _methodName =
-        methodName ?? throw new ArgumentNullException(nameof(methodName));
+    private readonly string _methodName = methodName
+        ?? throw new ArgumentNullException(nameof(methodName));
 
     /// <summary>Generics tied to the call.</summary>
-    private readonly Type[] _generics =
-        generics ?? throw new ArgumentNullException(nameof(generics));
+    private readonly Type[] _generics = generics
+        ?? throw new ArgumentNullException(nameof(generics));
 
     /// <summary>Args tied to the call.</summary>
     private readonly object?[] _args = args ?? throw new ArgumentNullException(nameof(args));
@@ -99,6 +100,12 @@ internal sealed class CallData(
             }
         }
         return matches;
+    }
+
+    /// <inheritdoc/>
+    public CallData DeepClone()
+    {
+        return new CallData(_methodName, _generics, [.. _args], _options);
     }
 
     /// <summary>Converts <see langword="this"/> to a <see langword="string"/>.</summary>

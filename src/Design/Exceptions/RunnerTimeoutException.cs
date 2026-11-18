@@ -21,8 +21,6 @@ public sealed class RunnerTimeoutException : CreateAndFakeException
             )
         ) { }
 
-    //$"Attempting to run method '{GenericConverter.BuildTestName(data.Method)}' timed out: {timeout}"
-
     /// <inheritdoc/>
     /// <remarks>Serialization constructor.</remarks>
 #if NET5_0_OR_GREATER

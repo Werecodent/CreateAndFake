@@ -37,7 +37,9 @@ internal sealed class SerializationValidator(TesterOptions options)
     /// <inheritdoc cref="VerifyJsonSerialization"/>
     private void VerifyJsonSerialization(Type type, object? instance)
     {
-        VerifySerialization(type, instance, new DataContractJsonSerializer(type));
+        DataContractJsonSerializer serializer = new(type, FindExtraKnownTypes(instance));
+
+        VerifySerialization(type, instance, serializer);
     }
 
     /// <inheritdoc cref="ITester.VerifyXmlSerialization{T}(TesterMod)"/>
@@ -70,10 +72,15 @@ internal sealed class SerializationValidator(TesterOptions options)
     /// <returns>Known types to add.</returns>
     private static IEnumerable<Type> FindExtraKnownTypes(object? source)
     {
-        if (source is Exception)
+        if (source is Exception e)
         {
             yield return typeof(Exception[]);
             yield return _ListDictionaryInternalType;
+
+            if (e.InnerException != null)
+            {
+                yield return e.InnerException.GetType();
+            }
         }
     }
 
@@ -89,7 +96,7 @@ internal sealed class SerializationValidator(TesterOptions options)
             stream.Position = 0;
             result = serializer.ReadObject(stream);
         }
-        catch (Exception e) when (e is SerializationException or InvalidDataContractException)
+        catch (Exception e)
         {
             throw new TesterFailureException(
                 $"Ran into problem trying to serialize type '{GenericConverter.ExpandName(type)}'.",

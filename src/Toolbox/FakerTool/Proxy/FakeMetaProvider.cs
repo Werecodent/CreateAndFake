@@ -80,7 +80,8 @@ public sealed class FakeMetaProvider(int identifier, FakerOptions options)
         if (_LastCall == null)
         {
             throw new InvalidOperationException(
-                "Faked method never called to set behavior for. Verify instance is a [Fake] stub, and method is abstract."
+                "Faked method never called to set behavior for. "
+                    + "Verify instance is marked with [Fake] or [Stub], and method is abstract."
             );
         }
 

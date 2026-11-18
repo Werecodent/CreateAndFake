@@ -97,13 +97,24 @@ public sealed class Runner(RunnerOptions options) : IRunner
         )
         {
             task = Task.Run(
-                () =>
-                    Unwrapper.UnwrapResultAsync(
-                        data.InvokeOn(instance),
-                        data.ResultType,
-                        localOptions,
-                        timeoutTokenSource.Token
-                    ),
+                async () =>
+                {
+                    try
+                    {
+                        return await Unwrapper
+                            .UnwrapResultAsync(
+                                data.InvokeOn(instance),
+                                data.ResultType,
+                                localOptions,
+                                timeoutTokenSource.Token
+                            )
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RunnerMethodErrorException(data.ToString(), e);
+                    }
+                },
                 timeoutTokenSource.Token
             );
 
@@ -142,6 +153,11 @@ public sealed class Runner(RunnerOptions options) : IRunner
         if (result is AggregateException multi)
         {
             result = multi.InnerException;
+        }
+
+        if (result is RunnerMethodErrorException method)
+        {
+            result = method.InnerException;
         }
 
         if (result is TargetInvocationException ex)
