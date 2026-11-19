@@ -16,6 +16,7 @@ public static class Tools
 {
     /// <summary>Manages currently used tools globally.</summary>
     /// <remarks>Should only be modified in module initializer once.</remarks>
+    /// <value><c>ToolSet.DefaultSet</c></value>
     public static IToolSet Source { get; set; } = ToolSet.DefaultSet;
 
     /// <inheritdoc cref="ToolSet.Gen"/>

@@ -116,6 +116,7 @@
         ".editorconfig",
         ".gitignore",
         "nuget.config",
+        "README.md"
     ],
     "editor.inlineSuggest.enabled": false,
     "explorer.autoReveal": "focusNoScroll"

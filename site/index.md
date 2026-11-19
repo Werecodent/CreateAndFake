@@ -1,51 +1,68 @@
-# Getting Started
+# About
 
-Welcome to the documentation source for developers. 
+## Overview
 
-## Quick Start
+Create & Fake is a test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
-A default set of all tools are ready to use under the static class Tools.
+> ### Test Attribute Example
+> 
+> ```csharp
+> // Provided xUnit attributes used to automatically create the parameters.
+> [Theory, RandomData]
+> internal static void GetDirectors_UtilizesYearToPruneDirectors(
+>     [Fake] IStorage db, [Injected] Endpoint api, [Size(2)] Details[] movies)
+> {
+>     // Setup fake behavior using randomized movie data (times optional).
+>     db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
+> 
+>     // Call code and test for expected result (api is auto-injected with db fake).
+>     api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
+> 
+>     // Optionally check all behavior called as expected.
+>     db.Assert().Called();
+> }
+> ```
 
-```c#
-/// <summary>Verifies that the tools integrate together.</summary>
-[Fact]
-public void Tools_IntegrationWorks()
-{
-    DataSample original = Tools.Randomizer.Create<DataSample>();
-    DataSample variant = Tools.Mutator.Variant(original);
-    DataSample dupe = Tools.Duplicator.Copy(original);
+By default, all behavior works not by reference but by value even for complex objects. Using the fluent extension methods and attributes are optional as all functionality are present in customizable tools:
 
-    Tools.Asserter.Is(original, dupe);
-    Tools.Asserter.IsNot(original, variant);
+> ### Tool Use Example
+> 
+> ```csharp
+> [Fact]
+> internal static void MailingAddress_VerifyChangingZipCodeUpdatesAddress()
+> {
+>     // Randomizer uses readable values for some properties like 'FirstName'.
+>     User details = Tools.Randomizer.Create<User>();
+> 
+>     // Duplicator creates deep clones. 
+>     User copy = Tools.Duplicator.Copy(details);
+> 
+>     // Mutator can randomly modify objects too.
+>     details.ZipCode = Tools.Mutator.Variant(details.ZipCode);
+> 
+>     // Asserter performs checks based upon value.
+>     Tools.Asserter.IsNot(details.MailingAddress, copy.MailingAddress);
+> }
+> ```
 
-    Fake<DataSample> faked = Tools.Faker.Mock<DataSample>();
-    faked.Setup(
-        d => d.HasNested(dupe),
-        Behavior.Returns(true, Times.Once));
+Even more, classes are able to be automatically tested in a variety of ways simply by inheriting the automated test base:
 
-    Tools.Asserter.Is(true, faked.Dummy.HasNested(original),
-        "Value equality did not work for args.");
+> ### AutoTester Example
+> 
+> ```csharp
+> public sealed class MyClassTests : AutoTester<MyClass>;
+> ```
 
-    faked.Verify(Times.Once);
-}
-```
+A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
 
-The tools are designed to cover many common scenarios including immutable classes, classes with private fields, and classes with static factories instead of constructors.
-
-## Customization
-
-In case the default behavior is not enough, each tool can be customized for individual needs by creating your own instances. Additionally, interfaces have been provided for data classes to properly behave with the tools instead. Visit any tool's page to be guided on either route.
-
-Although each tool can be created and customized on a per test basis, the global tools can be modified via a 'ModuleInitializer':
-
-```c#
-[ModuleInitializer]
-internal static void ModifyTools()
-{
-    Tools.Source = ToolSet.CreateViaSeed(100);
-
-    Tools.Randomizer.AddHint(new StringCreateHint());
-}
-```
-
-This way, any customization changes are picked up throughout your code.
+> ### Tool List
+> 
+> * `Asserter` - Verify object states and behavior.
+> * `Duplicator` - Deep clone objects.
+> * `Extractor` - Flatten the contents of objects.
+> * `Faker` - Simulate behavior via stubs/mocks.
+> * `Mutator` - Modify the state of objects or create variants.
+> * `Randomizer` - Create objects populated with random values.
+> * `Runner` - Generate method data and run them.
+> * `Tester` - Test common scenarios.
+> * `Valuer` - Compare objects by value via reflection if needed.

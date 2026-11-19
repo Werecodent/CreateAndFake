@@ -1,20 +1,29 @@
 - name: Introduction
 - href: ../index.md
+- href: introduction/Installation.md
+- href: introduction/Configuration.md
+- href: introduction/GettingStarted.md
+
+- name: Essentials
+- href: essentials/TestAttributes.md
+- href: essentials/UsingTools.md
+- href: essentials/AssemblyTester.md
+- href: essentials/AutoTester.md
 
 - name: General
-- href: General-ExampleScenario.md
-- href: General-TestAttributes.md
-- href: General-V2Migration.md
+- href: general/ExampleScenario.md
+- href: general/TestAttributes.md
+- href: general/V2Migration.md
 
 - name: Design
-- href: Design-IRandom.md
-- href: Design-Limiter.md
+- href: design/IRandom.md
+- href: design/Limiter.md
 
 - name: Tools
-- href: Tools-Asserter.md
-- href: Tools-Duplicator.md
-- href: Tools-Faker.md
-- href: Tools-Mutator.md
-- href: Tools-Randomizer.md
-- href: Tools-Tester.md
-- href: Tools-Valuer.md
+- href: tools/Asserter.md
+- href: tools/Duplicator.md
+- href: tools/Faker.md
+- href: tools/Mutator.md
+- href: tools/Randomizer.md
+- href: tools/Tester.md
+- href: tools/Valuer.md

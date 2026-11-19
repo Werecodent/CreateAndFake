@@ -1,11 +1,12 @@
 # Create & Fake
 
-[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main)
+[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent)](https://img.shields.io/github/sponsors/Werecodent)
 
-A test support library that makes robust testing easy by handling all manners of test data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
+
+A test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
 ```c#
-// xUnit attributes used to automatically create the parameters.
+// Provided xUnit attributes used to automatically create the parameters.
 [Theory, RandomData]
 internal static void GetDirectors_UtilizesYearToPruneDirectors(
     [Fake] IStorage db, [Injected] Endpoint api, [Size(2)] Details[] movies)
@@ -41,6 +42,12 @@ internal static void MailingAddress_VerifyChangingZipCodeUpdatesAddress()
 }
 ```
 
+Even more, classes are able to be automatically tested in a variety of ways simply by inheriting the automated test base:
+
+```C#
+public sealed class MyClassTests : AutoTester<MyClass>;
+```
+
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
 
 * `Asserter` - Verify object states and behavior.
@@ -53,48 +60,16 @@ A key benefit of the library is in how the tools are logically integrated with e
 * `Tester` - Test common scenarios.
 * `Valuer` - Compare objects by value via reflection if needed.
 
-Visit the [documentation site](https://werecodent.github.io/CreateAndFake/) for more information and how to get started.
-
-## Installation
-
-There are three levels of packages that can be utilized for different purposes.
-1) `Werecodent.CreateAndFake.Design` - Optional support library for non-test projects.
-2) `Werecodent.CreateAndFake` - Provides the tools to use in test projects.
-3) `Werecodent.CreateAndFake.[UnitTestFramework]` - Provides attribute support for a unit test framework.
-
-Versions for the packages are synchronized and released alongside each other. Reference the wanted package using NuGet by following these instructions:
-
-1) For attribute support, identify the `[UnitTestFramework]` you're using from the available options below:
-    * MSTest.v3 (2.2.1 -> 4.0.0)
-    * MSTest.v4 (4.0.0+)
-    * NUnit.v3 (3.10.0+)
-    * xUnit.v2 (2.2.0 -> 3.0.0)
-    * xUnit.v3 (3.0.0+)
-
-2) For attribute support, install using one of the following command (replace `[UnitTestFramework]` with your chosen version):
-    ```sh
-    dotnet add package Werecodent.CreateAndFake.[UnitTestFramework]
-    ```
-
-3) Alternatively, install using the following command for just tool support (already included in the attribute support version):
-    ```sh
-    dotnet add package Werecodent.CreateAndFake
-    ```
-
-4) It's recommended to add the following lines to your tests.csproj file for ease of use:
-    ```xml
-    <ItemGroup>
-        <Using Include="Werecodent.CreateAndFake" />
-        <Using Include="Werecodent.CreateAndFake.Fluent" />
-        <Using Include="Werecodent.CreateAndFake.[UnitTestFramework]" />
-    </ItemGroup>
-    ```
-
 ## Documentation
 
-The documentation site is located here: https://werecodent.github.io/CreateAndFake/
+Visit the [documentation site](https://werecodent.github.io/CreateAndFake/) for more information and how to get started.
 
-The raw files can be viewed from the doc folder or built into a local site using "./build/run.sh serveSite".
+A local site can be built from the source code using the terminal command "./build/run.sh serveSite".
+
+## Sponsors
+
+<a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="50px" title="Werebunny" alt="Werebunny" /></a>
+<a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="50px" title="Werebunny" alt="Werebunny" /></a>
 
 ## Contributing
 

@@ -60,6 +60,9 @@
         "sitemap": {
             "baseUrl": "https://werecodent.github.io/CreateAndFake",
             "changefreq": "monthly"
-        }
+        },
+        "xref": [
+            "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json"
+        ]
     }
 }
