@@ -39,8 +39,7 @@ internal sealed class NFloatValueHandler : IValueHandler
     {
         SupportedType = nFloatType;
 
-        _size =
-            size
+        _size = size
             ?? (int)
                 nFloatType
                     .GetProperty("Size", BindingFlags.Public | BindingFlags.Static)!

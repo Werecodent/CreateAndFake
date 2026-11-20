@@ -185,16 +185,11 @@ public static class AsyncSeriesHelperTests
         await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
 
         results.Clear();
-        await AsyncSeriesHelper.ForEachAsync(
-            data,
-            2,
-            new CancellationToken(false),
-            v =>
-            {
-                results.Add(v);
-                return Task.CompletedTask;
-            }
-        );
+        await AsyncSeriesHelper.ForEachAsync(data, 2, new CancellationToken(false), v =>
+        {
+            results.Add(v);
+            return Task.CompletedTask;
+        });
         await results.Assert().IsAsync(data, TestContext.Current.CancellationToken);
     }
 
@@ -299,11 +294,8 @@ public static class AsyncSeriesHelperTests
         await results.Assert().IsAsync(data, canceler);
 
         results = await AsyncSeriesHelper.ToListAsync(
-            AsyncSeriesHelper.SelectAsync(
-                data,
-                2,
-                new CancellationToken(false),
-                v => Task.FromResult(v)
+            AsyncSeriesHelper.SelectAsync(data, 2, new CancellationToken(false), v =>
+                Task.FromResult(v)
             ),
             2,
             canceler

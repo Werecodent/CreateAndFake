@@ -20,8 +20,8 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
         IValuerAsyncComparable
 {
     /// <summary>Parameter names with associated data to pass.</summary>
-    private readonly OrderedDictionary _args =
-        args ?? throw new ArgumentNullException(nameof(args));
+    private readonly OrderedDictionary _args = args
+        ?? throw new ArgumentNullException(nameof(args));
 
     /// <summary>Associated method.</summary>
     public MethodBase Method { get; } = method ?? throw new ArgumentNullException(nameof(method));

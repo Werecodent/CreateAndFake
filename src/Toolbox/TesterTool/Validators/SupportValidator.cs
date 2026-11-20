@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,14 @@ namespace Werecodent.CreateAndFake.TesterTool.Validators;
 /// <exception cref="ArgumentNullException">If given a <see langword="null"/> parameter.</exception>
 internal sealed class SupportValidator(TesterOptions options)
 {
+    /// <summary>Types to ignore for support inheritance checking.</summary>
+    private static readonly FrozenSet<Type> _CompilerInheritedTypes =
+    [
+        typeof(ReadOnlySpan<>),
+        typeof(Nullable<>),
+        typeof(Span<>),
+    ];
+
     /// <inheritdoc cref="Tester.Options"/>
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
@@ -261,12 +270,21 @@ internal sealed class SupportValidator(TesterOptions options)
                 return;
             }
 
-            dupe = Options.Duplicator.Copy(original);
-
             string failMessage =
                 "Behavior did not work for type '"
                 + GenericConverter.ExpandName(type)
-                + $"' randomized to '{GenericConverter.ExpandName(original)}'.";
+                + $"' randomized to '{GenericConverter.ExpandName(original.GetType())}'.";
+
+            if (!_CompilerInheritedTypes.Contains(type))
+            {
+                Options.Asserter.Inherits(
+                    type,
+                    original,
+                    failMessage + " Was not the correct type."
+                );
+            }
+
+            dupe = Options.Duplicator.Copy(original);
 
             await Options
                 .Asserter.ValuesEqualAsync(

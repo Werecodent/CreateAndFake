@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Extensions;
+using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using Werecodent.CreateAndFake.Samples.Scenarios;
@@ -29,8 +31,8 @@ public abstract class CreateHintTestBase<T>(
     private readonly IEnumerable<Type> _validTypes = validTypes ?? new T().SupportedTypes;
 
     /// <summary>Types that can't be created by the hint.</summary>
-    private readonly IEnumerable<Type> _invalidTypes =
-        invalidTypes ?? [typeof(DataHolderSample), typeof(IEnumerable), typeof(IEnumerable<>)];
+    private readonly IEnumerable<Type> _invalidTypes = invalidTypes
+        ?? [typeof(DataHolderSample), typeof(IEnumerable), typeof(IEnumerable<>)];
 
     /// <summary>Verifies the hint supports the correct types.</summary>
     [Fact]
@@ -45,24 +47,35 @@ public abstract class CreateHintTestBase<T>(
                     .HasData.Assert()
                     .Is(
                         true,
-                        "Hint '" + typeof(T).Name + "' did not support type '" + type.Name + "'."
+                        $"Hint '{typeof(T).Name}' did not support type '{GenericConverter.ExpandName(type)}'."
                     );
                 result
                     .Data.Assert()
                     .IsNotNull(
-                        "Hint '" + typeof(T).Name + "' did not create valid '" + type.Name + "'."
+                        $"Hint '{typeof(T).Name}' did not create valid '{GenericConverter.ExpandName(type)}'."
                     );
+
+                if (
+                    !type.IsGenericTypeDefinition
+                    && !type.Inherits(typeof(Span<>))
+                    && !type.Inherits(typeof(ReadOnlySpan<>))
+                )
+                {
+                    result
+                        .Data.Assert()
+                        .Inherits(
+                            type,
+                            $"Hint '{typeof(T).Name}' returned type '{GenericConverter.ExpandName(result.Data)}'"
+                                + $" is not a '{GenericConverter.ExpandName(type)}'."
+                        );
+                }
 
                 if (result.Data is IEnumerable collection)
                 {
                     collection
                         .Assert()
                         .IsNotEmpty(
-                            "Hint '"
-                                + typeof(T).Name
-                                + "' failed to create populated '"
-                                + type
-                                + "'."
+                            $"Hint '{typeof(T).Name}' failed to create populated '{GenericConverter.ExpandName(type)}'."
                         );
                 }
             }
@@ -84,7 +97,7 @@ public abstract class CreateHintTestBase<T>(
                 .Assert()
                 .Is(
                     CreateHintResult.None,
-                    "Hint '" + typeof(T).Name + "' should not support type '" + type.Name + "'."
+                    $"Hint '{typeof(T).Name}' should not support type '{GenericConverter.ExpandName(type)}'."
                 );
         }
     }

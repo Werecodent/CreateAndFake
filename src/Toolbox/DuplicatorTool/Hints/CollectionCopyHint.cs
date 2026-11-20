@@ -45,8 +45,9 @@ public sealed class CollectionCopyHint : CopyHint
     {
         Type type = source.GetType();
 
-        Type itemType =
-            GenericConverter.AsConcreteType(type, typeof(IEnumerable<>))?.GetGenericArguments()[0]
+        Type itemType = GenericConverter
+            .AsConcreteType(type, typeof(IEnumerable<>))
+            ?.GetGenericArguments()[0]
             ?? type.GetElementType()
             ?? typeof(object);
 

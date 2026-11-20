@@ -33,12 +33,11 @@ public sealed class BehaviorTests() : AutoTester(typeof(Behavior))
         {
             Type type = info.GetParameters()[0].ParameterType;
 
-            Type[] generics =
-                GenericConverter
-                    .AsGenericBase(type)
-                    ?.GetGenericArguments()
-                    .Select(_ => typeof(string))
-                    .ToArray()
+            Type[] generics = GenericConverter
+                .AsGenericBase(type)
+                ?.GetGenericArguments()
+                .Select(_ => typeof(string))
+                .ToArray()
                 ?? Type.EmptyTypes;
 
             MethodInfo caller = (generics.Length != 0) ? info.MakeGenericMethod(generics) : info;

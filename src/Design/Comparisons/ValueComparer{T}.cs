@@ -19,8 +19,8 @@ public sealed class ValueComparer<T>(ValueComparer comparer)
     public static ValueComparer<T> Use { get; } = new(ValueComparer.Use);
 
     /// <summary>Handles the actual comparisons.</summary>
-    private readonly ValueComparer _comparer =
-        comparer ?? throw new ArgumentNullException(nameof(comparer));
+    private readonly ValueComparer _comparer = comparer
+        ?? throw new ArgumentNullException(nameof(comparer));
 
     /// <inheritdoc/>
     public Type? SupportedType { get; } = typeof(T);

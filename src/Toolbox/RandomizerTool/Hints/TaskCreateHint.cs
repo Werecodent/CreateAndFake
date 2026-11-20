@@ -14,6 +14,13 @@ public sealed class TaskCreateHint : CreateHint
         nameof(Task.FromResult)
     )!;
 
+    /// <summary>Method used to create completed sources.</summary>
+    /// <remarks>Dynamic can't be used due to creating the wrong type with subclasses.</remarks>
+    private static readonly MethodInfo _CompletionMaker = typeof(TaskCreateHint).GetMethod(
+        nameof(MakeCompletionSource),
+        BindingFlags.NonPublic | BindingFlags.Static
+    )!;
+
     /// <inheritdoc/>
     public override int EnginePriority => (int)CreatePriority.TaskHint;
 
@@ -28,7 +35,16 @@ public sealed class TaskCreateHint : CreateHint
 
         Type? asGeneric = GenericConverter.AsGenericBase(type);
 
-        if (asGeneric == typeof(Task<>) || asGeneric == typeof(TaskCompletionSource<>))
+        if (asGeneric == typeof(TaskCompletionSource<>))
+        {
+            Type contentType = type.GetGenericArguments().Single();
+            return new(
+                _CompletionMaker
+                    .MakeGenericMethod(contentType)
+                    .Invoke(null, [randomizer.Create(contentType)])
+            );
+        }
+        else if (asGeneric == typeof(Task<>))
         {
             Type contentType = type.GetGenericArguments().Single();
             return new(
@@ -45,5 +61,12 @@ public sealed class TaskCreateHint : CreateHint
         {
             return CreateHintResult.None;
         }
+    }
+
+    private static TaskCompletionSource<T> MakeCompletionSource<T>(T content)
+    {
+        TaskCompletionSource<T> result = new();
+        result.SetResult(content);
+        return result;
     }
 }

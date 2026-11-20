@@ -23,7 +23,7 @@ Create & Fake is a test support library that makes robust testing easy by handli
 > }
 > ```
 
-By default, all behavior works not by reference but by value even for complex objects. Using the fluent extension methods and attributes are optional as all functionality are present in customizable tools:
+By default, all behavior works not by reference but by value even for complex objects. Using the fluent extension methods and attributes are optional as all functionality are present in customizable <xref:Werecodent.CreateAndFake.Tools>:
 
 > ### Tool Use Example
 > 
@@ -53,16 +53,16 @@ Even more, classes are able to be automatically tested in a variety of ways simp
 > public sealed class MyClassTests : AutoTester<MyClass>;
 > ```
 
-A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
+A key benefit of the library is in how the tools are logically integrated with each other. For example, the <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the <xref:Werecodent.CreateAndFake.FakerTool.Faker> utilize value equality in matching arguments.
 
 > ### Tool List
 > 
-> * `Asserter` - Verify object states and behavior.
-> * `Duplicator` - Deep clone objects.
-> * `Extractor` - Flatten the contents of objects.
-> * `Faker` - Simulate behavior via stubs/mocks.
-> * `Mutator` - Modify the state of objects or create variants.
-> * `Randomizer` - Create objects populated with random values.
-> * `Runner` - Generate method data and run them.
-> * `Tester` - Test common scenarios.
-> * `Valuer` - Compare objects by value via reflection if needed.
+> * <xref:Werecodent.CreateAndFake.AsserterTool.Asserter> - Verify object states and behavior.
+> * <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> - Deep clone objects.
+> * <xref:Werecodent.CreateAndFake.ExtractorTool.Extractor> - Flatten the contents of objects.
+> * <xref:Werecodent.CreateAndFake.FakerTool.Faker> - Simulate behavior via stubs/mocks.
+> * <xref:Werecodent.CreateAndFake.MutatorTool.Mutator> - Modify the state of objects or create variants.
+> * <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> - Create objects populated with random values.
+> * <xref:Werecodent.CreateAndFake.RunnerTool.Runner> - Generate method data and run them.
+> * <xref:Werecodent.CreateAndFake.TesterTool.Tester> - Test common scenarios.
+> * <xref:Werecodent.CreateAndFake.ValuerTool.Valuer> - Compare objects by value via reflection if needed.

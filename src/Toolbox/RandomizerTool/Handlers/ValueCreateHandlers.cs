@@ -9,9 +9,8 @@ internal static class ValueCreateHandlers
         ValueRandom.SupportedTypes.SelectMany<Type, ICreateHandler>(t =>
             [
                 new FactoryCreateHandler(t, rand => rand.Options.Gen.Next(t)),
-                new FactoryCreateHandler(
-                    typeof(Nullable<>).MakeGenericType(t),
-                    rand => rand.Options.Gen.Next(t)
+                new FactoryCreateHandler(typeof(Nullable<>).MakeGenericType(t), rand =>
+                    rand.Options.Gen.Next(t)
                 ),
             ]
         );

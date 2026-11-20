@@ -17,7 +17,8 @@ public sealed class TaskCopyHint : CopyHint
     public override int EnginePriority => (int)CopyPriority.TaskHint;
 
     /// <inheritdoc/>
-    public override IEnumerable<Type> SupportedTypes => [typeof(Task), typeof(Task<>)];
+    public override IEnumerable<Type> SupportedTypes =>
+        [typeof(Task), typeof(Task<>), typeof(TaskCompletionSource<>)];
 
     /// <inheritdoc/>
     public sealed override CopyHintResult TryCopy(object source, IDuplicatorChainer duplicator)
@@ -45,6 +46,10 @@ public sealed class TaskCopyHint : CopyHint
                 return new(WrapPlainTaskAsync(task, duplicator));
             }
         }
+        else if (TypeDescriber.For(source).Inherits(typeof(TaskCompletionSource<>)))
+        {
+            return new(ConvertSource((dynamic)source, duplicator));
+        }
         else
         {
             return CopyHintResult.None;
@@ -71,7 +76,7 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-#pragma warning disable CA1849, MA0042, VSTHRD103 // Completion verified.
+#pragma warning disable CA1849, MA0042, VSTHRD002, VSTHRD103 // Completion verified.
 
     private static Task<T> WrapTaskAsync<T>(Task<T> task, IDuplicatorChainer duplicator)
     {
@@ -91,6 +96,27 @@ public sealed class TaskCopyHint : CopyHint
         {
             return Task.Run(async () => duplicator.Copy(await task.ConfigureAwait(false)));
         }
+    }
+
+    private static TaskCompletionSource<T> ConvertSource<T>(
+        TaskCompletionSource<T> source,
+        IDuplicatorChainer duplicator
+    )
+    {
+        TaskCompletionSource<T> result = new();
+        if (source.Task.IsCanceled)
+        {
+            result.SetCanceled();
+        }
+        else if (source.Task.IsFaulted)
+        {
+            result.SetException(duplicator.Copy(source.Task.Exception));
+        }
+        else
+        {
+            result.SetResult(duplicator.Copy(source.Task.Result));
+        }
+        return result;
     }
 
 #pragma warning restore CA1849, MA0042, VSTHRD103

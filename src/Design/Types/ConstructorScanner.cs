@@ -28,8 +28,8 @@ public sealed class ConstructorScanner(Type? type) : MemberScanner<ConstructorIn
     private static ConstructorInfo[] FindAllConstructors(Type? type)
     {
         return type?.GetConstructors(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-            ) ?? [];
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        ) ?? [];
     }
 }
 

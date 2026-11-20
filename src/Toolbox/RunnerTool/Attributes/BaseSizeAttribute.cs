@@ -36,17 +36,15 @@ public abstract class BaseSizeAttribute(int min, int max) : ParameterHintAttribu
     {
         ArgumentGuard.ThrowIfNull(param, localOptions);
 
-        return localOptions.Randomizer.Create(
-            param.ParameterType,
-            opt =>
-                opt with
-                {
-                    CollectionMinSize = Min,
-                    CollectionMaxSize = Max,
-                    StringMinSize = Min,
-                    StringMaxSize = Max,
-                    NestedOptions = opt,
-                }
+        return localOptions.Randomizer.Create(param.ParameterType, opt =>
+            opt with
+            {
+                CollectionMinSize = Min,
+                CollectionMaxSize = Max,
+                StringMinSize = Min,
+                StringMaxSize = Max,
+                NestedOptions = opt,
+            }
         );
     }
 }

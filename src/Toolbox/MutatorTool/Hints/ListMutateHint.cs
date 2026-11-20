@@ -25,10 +25,9 @@ public sealed class ListMutateHint : MutateHint<IList>
             return _Handler.ModifySupported(instance, chainer);
         }
 
-        Type itemType =
-            GenericConverter
-                .AsConcreteType(instance.GetType(), typeof(IEnumerable<>))
-                ?.GetGenericArguments()[0]
+        Type itemType = GenericConverter
+            .AsConcreteType(instance.GetType(), typeof(IEnumerable<>))
+            ?.GetGenericArguments()[0]
             ?? instance.Cast<object>().Select(d => d?.GetType()).FirstOrDefault(t => t != null)
             ?? typeof(string);
 

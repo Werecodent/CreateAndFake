@@ -237,9 +237,10 @@ public partial class Asserter : IAsserterObject
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Type? type = instance is Type asType ? asType : instance?.GetType();
+        Type? asType = instance as Type;
+        Type? type = instance?.GetType();
 
-        if (!type.Inherits<TParent>())
+        if (!type.Inherits<TParent>() && !asType.Inherits<TParent>())
         {
             throw new AssertException(
                 $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName<TParent>()}'.",
@@ -265,9 +266,10 @@ public partial class Asserter : IAsserterObject
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Type? type = instance is Type asType ? asType : instance?.GetType();
+        Type? asType = instance as Type;
+        Type? type = instance?.GetType();
 
-        if (!type.Inherits(parent))
+        if (!type.Inherits(parent) && !asType.Inherits(parent))
         {
             throw new AssertException(
                 $"'{GenericConverter.ExpandName(type)}' does not inherit '{GenericConverter.ExpandName(parent)}'.",
@@ -292,9 +294,10 @@ public partial class Asserter : IAsserterObject
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Type? type = instance is Type asType ? asType : instance?.GetType();
+        Type? asType = instance as Type;
+        Type? type = instance?.GetType();
 
-        if (!type.IsInheritedBy<TChild>())
+        if (!type.IsInheritedBy<TChild>() && !asType.IsInheritedBy<TChild>())
         {
             throw new AssertException(
                 $"'{GenericConverter.ExpandName<TChild>()}' does not inherit '{GenericConverter.ExpandName(type)}'.",
@@ -320,9 +323,10 @@ public partial class Asserter : IAsserterObject
     {
         AsserterOptions localOptions = ApplyConfiguration(optionConfiguration);
 
-        Type? type = instance is Type asType ? asType : instance?.GetType();
+        Type? asType = instance as Type;
+        Type? type = instance?.GetType();
 
-        if (!type.IsInheritedBy(child))
+        if (!type.IsInheritedBy(child) && !asType.IsInheritedBy(child))
         {
             throw new AssertException(
                 $"'{GenericConverter.ExpandName(child)}' does not inherit '{GenericConverter.ExpandName(type)}'.",

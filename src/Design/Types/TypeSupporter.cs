@@ -55,7 +55,9 @@ public static class TypeSupporter
             foreach (
                 Type type in TypeDescriber
                     .For(handler.SupportedType)
-                    .InheritedTypes.Where(t => !t.IsGenericTypeDefinition)
+                    .InheritedTypes.Where(t =>
+                        t.IsGenericTypeDefinition || GenericConverter.IsFullyDefined(t)
+                    )
                     .Where(t => !t.Inherits<Delegate>() || t == handler.SupportedType)
                     .Where(t => !exclusions.Contains(t))
             )

@@ -1,7 +1,6 @@
 # Create & Fake
 
-[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent)](https://img.shields.io/github/sponsors/Werecodent)
-
+[![NuGet](https://img.shields.io/nuget/v/CreateAndFake?logo=nuget)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent?logo=githubsponsors)](https://github.com/sponsors/Werecodent)
 
 A test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
@@ -68,7 +67,6 @@ A local site can be built from the source code using the terminal command "./bui
 
 ## Sponsors
 
-<a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="50px" title="Werebunny" alt="Werebunny" /></a>
 <a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="50px" title="Werebunny" alt="Werebunny" /></a>
 
 ## Contributing

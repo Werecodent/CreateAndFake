@@ -159,10 +159,11 @@ public sealed class MutatorEngineTests : AutoTester<MutatorEngine>
             opt => opt with { Valuer = valuer }
         );
         await data.Assert()
-            .ContainsNotAsync(
-                result,
-                TestContext.Current.CancellationToken,
-                opt => opt with { Valuer = valuer }
+            .ContainsNotAsync(result, TestContext.Current.CancellationToken, opt =>
+                opt with
+                {
+                    Valuer = valuer,
+                }
             );
     }
 

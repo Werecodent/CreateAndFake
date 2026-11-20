@@ -64,6 +64,7 @@ internal static class ReflectionCreateHandlers
                 )
             )
             .Where(f => f.IsPublic || f.IsAssembly)
+            .Where(f => !f.IsLiteral || f.IsInitOnly)
             .ToFrozenSet();
 
     /// <summary>Potential constants to randomize.</summary>
@@ -83,40 +84,31 @@ internal static class ReflectionCreateHandlers
     /// <summary>Supported types and the methods used to generate them.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimeType,
-            rand => rand.Options.Gen.NextItem(PossibleTypes)
+        new FactoryCreateHandler(RuntimeDetails.RuntimeType, rand =>
+            rand.Options.Gen.NextItem(PossibleTypes)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimeConstructorInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleConstructors)
+        new FactoryCreateHandler(RuntimeDetails.RuntimeConstructorInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleConstructors)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimeMethodInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleMethods)
+        new FactoryCreateHandler(RuntimeDetails.RuntimeMethodInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleMethods)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimePropertyInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleProperties)
+        new FactoryCreateHandler(RuntimeDetails.RuntimePropertyInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleProperties)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RtFieldInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleFields)
+        new FactoryCreateHandler(RuntimeDetails.RtFieldInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleFields)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.MdFieldInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleConstants)
+        new FactoryCreateHandler(RuntimeDetails.MdFieldInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleConstants)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimeParameterInfoType,
-            rand => rand.Options.Gen.NextItem(PossibleParameters)
+        new FactoryCreateHandler(RuntimeDetails.RuntimeParameterInfoType, rand =>
+            rand.Options.Gen.NextItem(PossibleParameters)
         ),
-        new FactoryCreateHandler(
-            RuntimeDetails.RuntimeAssemblyType,
-            rand =>
-                rand.Options.Gen.NextItem(
-                    AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic)
-                )
+        new FactoryCreateHandler(RuntimeDetails.RuntimeAssemblyType, rand =>
+            rand.Options.Gen.NextItem(
+                AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic)
+            )
         ),
         new FactoryCreateHandler<AssemblyName>(rand => rand.Create<Assembly>().GetName()),
     ];

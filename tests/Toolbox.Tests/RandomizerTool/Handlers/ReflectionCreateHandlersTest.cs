@@ -1,7 +1,6 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.RandomizerTool.Handlers;
 using Werecodent.CreateAndFake.RunnerTool;
 
@@ -26,14 +25,7 @@ public sealed class ReflectionCreateHandlersTests() : AutoTester(typeof(Reflecti
         ReflectionCreateHandlers.PossibleProperties.Assert().HasCountMoreThan(_HealthyMin);
         ReflectionCreateHandlers.PossibleConstants.Assert().HasCountMoreThan(_HealthyMin);
         ReflectionCreateHandlers.PossibleParameters.Assert().HasCountMoreThan(_HealthyMin);
-        ReflectionCreateHandlers
-            .PossibleFields.Where(f => f.GetType() == RuntimeDetails.RtFieldInfoType)
-            .Assert()
-            .HasCountMoreThan(_HealthyMin);
-        ReflectionCreateHandlers
-            .PossibleFields.Where(f => f.GetType() == RuntimeDetails.MdFieldInfoType)
-            .Assert()
-            .HasCountMoreThan(_HealthyMin);
+        ReflectionCreateHandlers.PossibleFields.Assert().HasCountMoreThan(_HealthyMin);
     }
 
     [Fact]

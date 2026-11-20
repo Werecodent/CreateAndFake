@@ -200,9 +200,11 @@ public sealed class Mutator(MutatorOptions options) : IMutator
 
         if (localOptions.VerifyModifyViaValueHashes)
         {
-            int hash = localOptions.Valuer.GetHashCode(
-                instance,
-                opt => opt with { SkipAsyncValues = true }
+            int hash = localOptions.Valuer.GetHashCode(instance, opt =>
+                opt with
+                {
+                    SkipAsyncValues = true,
+                }
             );
 
             int i = 1;
@@ -217,9 +219,11 @@ public sealed class Mutator(MutatorOptions options) : IMutator
                 {
                     if (
                         hash
-                        != localOptions.Valuer.GetHashCode(
-                            instance,
-                            opt => opt with { SkipAsyncValues = true }
+                        != localOptions.Valuer.GetHashCode(instance, opt =>
+                            opt with
+                            {
+                                SkipAsyncValues = true,
+                            }
                         )
                     )
                     {

@@ -22,15 +22,11 @@ public sealed class AsserterAsyncEnumerableTests
         int appliedCount = 0;
 
         await _testInstance
-            .FailAsync(
-                series,
-                TestContext.Current.CancellationToken,
-                opt =>
-                {
-                    appliedCount++;
-                    return opt;
-                }
-            )
+            .FailAsync(series, TestContext.Current.CancellationToken, opt =>
+            {
+                appliedCount++;
+                return opt;
+            })
             .Assert()
             .ThrowsAsync<AssertException>(TestContext.Current.CancellationToken);
 
@@ -382,10 +378,11 @@ public sealed class AsserterAsyncEnumerableTests
         }
 
         return _testInstance
-            .ThrowsAsync<ArgumentException, int>(
-                throwError(),
-                canceler,
-                opt => opt with { DisableCatchingForThrowAsserts = true }
+            .ThrowsAsync<ArgumentException, int>(throwError(), canceler, opt =>
+                opt with
+                {
+                    DisableCatchingForThrowAsserts = true,
+                }
             )
             .Assert()
             .ThrowsAsync<ArgumentException>(canceler)

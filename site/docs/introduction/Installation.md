@@ -30,7 +30,7 @@ Reference the wanted package using NuGet by following these instructions:
   dotnet add package Werecodent.CreateAndFake
   ```
 
-4) It's recommended to add the following implicit using lines to your {tests}.csproj file for ease of use:
+4) It's recommended to add the following implicit using lines to your `{tests}.csproj` file for ease of use:
   ```xml
   <ItemGroup>
     <Using Include="Werecodent.CreateAndFake" />

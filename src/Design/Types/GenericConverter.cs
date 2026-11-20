@@ -111,6 +111,38 @@ public static class GenericConverter
         return null;
     }
 
+    /// <summary>Determines if the <paramref name="type"/> has any undefined generics.</summary>
+    /// <param name="type">The <paramref name="type"/> to check.</param>
+    /// <returns>
+    ///     <see langword="true"/> if the <paramref name="type"/> is instantiable, <see langword="false"/> otherwise.
+    /// </returns>
+    public static bool IsFullyDefined(Type? type)
+    {
+        Stack<Type?> typesToInspect = [];
+        typesToInspect.Push(type);
+
+        for (int i = 0; typesToInspect.Count > 0; i++)
+        {
+            ArgumentGuard.ThrowUponIterationLimit(i);
+
+            Type? current = typesToInspect.Pop();
+
+            if (current?.IsGenericParameter != false)
+            {
+                return false;
+            }
+            else if (current.IsGenericType)
+            {
+                foreach (Type item in current.GetGenericArguments())
+                {
+                    typesToInspect.Push(item);
+                }
+            }
+        }
+
+        return true;
+    }
+
     /// <summary>Builds a <see cref="Type"/> name with any generics included.</summary>
     /// <param name="instance">The instance to create a <see cref="Type"/> name for.</param>
     /// <returns>The built display name.</returns>

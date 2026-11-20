@@ -132,17 +132,15 @@ public sealed class RandomizerChainer
     {
         RandomizerOptions localOptions = optionConfiguration?.Invoke(Options) ?? Options;
 
-        return Create(
-            type,
-            _ =>
-                localOptions with
-                {
-                    CollectionMinSize = size,
-                    CollectionMaxSize = size,
-                    StringMinSize = size,
-                    StringMaxSize = size,
-                    NestedOptions = localOptions,
-                }
+        return Create(type, _ =>
+            localOptions with
+            {
+                CollectionMinSize = size,
+                CollectionMaxSize = size,
+                StringMinSize = size,
+                StringMaxSize = size,
+                NestedOptions = localOptions,
+            }
         );
     }
 

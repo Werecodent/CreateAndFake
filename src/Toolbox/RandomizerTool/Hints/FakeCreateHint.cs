@@ -44,44 +44,39 @@ public sealed class FakeCreateHint : CreateHint
         ];
         DataRandom smartData = randomizer.Options.Gen.NextData();
 
-        Fake mock = randomizer.Options.Faker.Stub(
-            target,
-            [],
-            opt =>
-                opt with
+        Fake mock = randomizer.Options.Faker.Stub(target, [], opt =>
+            opt with
+            {
+                FakeDefaultGenerator = (method, callData) =>
                 {
-                    FakeDefaultGenerator = (method, callData) =>
+                    ArgumentGuard.ThrowIfNull(method);
+
+                    if (method.ReturnType == typeof(void))
                     {
-                        ArgumentGuard.ThrowIfNull(method);
+                        return Behavior.None();
+                    }
 
-                        if (method.ReturnType == typeof(void))
+                    Tuple<MethodInfo, CallData> key = Tuple.Create(method, callData);
+                    lock (resultLock)
+                    {
+                        if (!resultCache.TryGetValue(key, out Behavior? behavior))
                         {
-                            return Behavior.None();
-                        }
-
-                        Tuple<MethodInfo, CallData> key = Tuple.Create(method, callData);
-                        lock (resultLock)
-                        {
-                            if (!resultCache.TryGetValue(key, out Behavior? behavior))
+                            if (method.ReturnType.IsInheritedBy<string>())
                             {
-                                if (method.ReturnType.IsInheritedBy<string>())
-                                {
-                                    behavior = Behavior.Returns(
-                                        smartData.Find(method.Name) ?? randomizer.Create<string>()
-                                    );
-                                }
-                                else
-                                {
-                                    behavior = Behavior.Returns(
-                                        randomizer.Create(method.ReturnType)
-                                    );
-                                }
-                                resultCache.Add(key, behavior);
+                                behavior = Behavior.Returns(
+                                    smartData.Find(method.Name) ?? randomizer.Create<string>()
+                                );
                             }
-                            return behavior;
+                            else
+                            {
+                                behavior = Behavior.Returns(randomizer.Create(method.ReturnType));
+                            }
+                            resultCache.Add(key, behavior);
                         }
-                    },
-                }
+                        return behavior;
+                    }
+                },
+            }
         );
 
         return (Fake)type.GetConstructor([typeof(Fake)])!.Invoke([mock]);

@@ -189,16 +189,11 @@ public sealed class AsyncSetCompareHint : CompareHint
     {
         int hash = ValueComparer.BaseHash;
         await AsyncSeriesHelper
-            .ForEachAsync(
-                item,
-                chainer.Options.Design.IterationLimit,
-                canceler,
-                async current =>
-                {
-                    hash *= ValueComparer.HashMultiplier;
-                    hash += await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
-                }
-            )
+            .ForEachAsync(item, chainer.Options.Design.IterationLimit, canceler, async current =>
+            {
+                hash *= ValueComparer.HashMultiplier;
+                hash += await chainer.GetHashCodeAsync(current, canceler).ConfigureAwait(false);
+            })
             .ConfigureAwait(false);
 
         return hash;

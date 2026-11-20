@@ -35,8 +35,7 @@ public sealed class InjectedCreateHint : CreateHint
     {
         Type target = type.GetGenericArguments().Single();
 
-        ConstructorInfo? maker =
-            FindConstructor(target, randomizer, BindingFlags.Public)
+        ConstructorInfo? maker = FindConstructor(target, randomizer, BindingFlags.Public)
             ?? FindConstructor(target, randomizer, BindingFlags.NonPublic);
 
         if (maker != null)

@@ -71,8 +71,8 @@ internal static class Config
     )
     {
         return GetList<string>(section, name)
-                ?.Select(typeName => Type.GetType(typeName, true)!)
-                .ToFrozenSet()
+            ?.Select(typeName => Type.GetType(typeName, true)!)
+            .ToFrozenSet()
             ?? property;
     }
 

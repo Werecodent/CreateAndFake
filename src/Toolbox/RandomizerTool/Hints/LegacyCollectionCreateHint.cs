@@ -33,18 +33,14 @@ public sealed class LegacyCollectionCreateHint : CreateHint
         (typeof(Stack), (data, _) => new Stack(data)),
         (typeof(Queue), (data, _) => new Queue(data)),
         (typeof(ArrayList), (data, _) => new ArrayList(data)),
-        (
-            typeof(BitArray),
-            (data, gen) => new BitArray(data.Select(_ => gen.Create<bool>()).ToArray())
+        (typeof(BitArray), (data, gen) =>
+            new BitArray(data.Select(_ => gen.Create<bool>()).ToArray())
         ),
-        (
-            typeof(StringCollection),
-            (data, _) =>
-            {
-                StringCollection result = [.. data];
-                return result;
-            }
-        ),
+        (typeof(StringCollection), (data, _) =>
+        {
+            StringCollection result = [.. data];
+            return result;
+        }),
     ];
 
     /// <summary>Collections that the hint will create.</summary>

@@ -30,13 +30,11 @@ public sealed class DictionaryMutateHint : MutateHint<IDictionary>
             typeof(IDictionary<,>)
         );
 
-        Type keyType =
-            pairType?.GetGenericArguments()[0]
+        Type keyType = pairType?.GetGenericArguments()[0]
             ?? instance.Keys.Cast<object>().Select(d => d.GetType()).FirstOrDefault()
             ?? typeof(string);
 
-        Type valueType =
-            pairType?.GetGenericArguments()[1]
+        Type valueType = pairType?.GetGenericArguments()[1]
             ?? instance
                 .Values.Cast<object>()
                 .Select(d => d?.GetType())
