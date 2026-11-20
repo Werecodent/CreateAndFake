@@ -117,15 +117,17 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
             .IsAsync(source, TestContext.Current.CancellationToken);
     }
 
-    [Theory, RandomData]
-    internal Task TryCopy_SourceCopiesWhenCanceled(CancellationToken token)
+#pragma warning disable MA0040, xUnit1051 // Not available in all .NET versions.
+    [Fact]
+    internal Task TryCopy_SourceCopiesWhenCanceled()
     {
         TaskCompletionSource<object> source = new();
-        source.SetCanceled(token);
+        source.SetCanceled();
 
         return TestInstance
             .TryCopy(source, CreateChainer())
             .Data.Assert()
             .IsAsync(source, TestContext.Current.CancellationToken);
     }
+#pragma warning restore MA0040, xUnit1051
 }

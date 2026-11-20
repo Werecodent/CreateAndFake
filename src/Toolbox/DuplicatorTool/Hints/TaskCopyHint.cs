@@ -110,7 +110,7 @@ public sealed class TaskCopyHint : CopyHint
         }
         else if (source.Task.IsFaulted)
         {
-            result.SetException(duplicator.Copy(source.Task.Exception.InnerException));
+            result.SetException(duplicator.Copy(source.Task.Exception.InnerException!));
         }
         else
         {
