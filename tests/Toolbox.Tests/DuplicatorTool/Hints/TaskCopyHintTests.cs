@@ -104,4 +104,28 @@ public sealed class TaskCopyHintTests : CopyHintTestBase<TaskCopyHint>
             .Data.Assert()
             .IsAsync(task, TestContext.Current.CancellationToken);
     }
+
+    [Theory, RandomData]
+    internal Task TryCopy_SourceCopiesWhenFaulted(Exception error)
+    {
+        TaskCompletionSource<object> source = new();
+        source.SetException(error);
+
+        return TestInstance
+            .TryCopy(source, CreateChainer())
+            .Data.Assert()
+            .IsAsync(source, TestContext.Current.CancellationToken);
+    }
+
+    [Theory, RandomData]
+    internal Task TryCopy_SourceCopiesWhenCanceled(CancellationToken token)
+    {
+        TaskCompletionSource<object> source = new();
+        source.SetCanceled(token);
+
+        return TestInstance
+            .TryCopy(source, CreateChainer())
+            .Data.Assert()
+            .IsAsync(source, TestContext.Current.CancellationToken);
+    }
 }

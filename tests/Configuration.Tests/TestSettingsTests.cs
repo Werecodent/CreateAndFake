@@ -133,8 +133,8 @@ public static class TestSettingsTests
         string value2 = _PlainTools.Randomizer.Create<string>();
 
         _PlainTools.Asserter.Is(ToolSet.FindEnvironmentName(), "Production");
-        TestEnvironmentName("DOTNET_ENVIRONMENT", value1);
-        TestEnvironmentName("ASPNETCORE_ENVIRONMENT", value2);
+        TestEnvironmentName("ASPNETCORE_ENVIRONMENT", value1);
+        TestEnvironmentName("DOTNET_ENVIRONMENT", value2);
         _PlainTools.Asserter.Is(ToolSet.FindEnvironmentName(), "Production");
     }
 

@@ -25,10 +25,10 @@ Each option's [[ConfigurableOption]](xref:Werecodent.CreateAndFake.Design.Toolin
 2) `testsettings.json`
 3) Its default framework value
 
-Each file is optional. The specific {environment} is set via environment variables in order of preference:
+Each file is optional. The specific `{environment}` is set via environment variables in order of preference:
 
-1) `ASPNETCORE_ENVIRONMENT`
-2) `DOTNET_ENVIRONMENT`
+1) `DOTNET_ENVIRONMENT`
+2) `ASPNETCORE_ENVIRONMENT`
 3) Default value of `Production`
 
 > [!TIP]
@@ -91,7 +91,7 @@ Similar to customizing method calls, each tool has a `WithOptions` method that w
 > maker.CreateSized<string>(3).Assert().Is("AAA");
 > ```
 
-## Tools.Source Replacement
+## Substitute Tools
 
 A third configuration method is available, but not recommended for general use. This is done via replacing the default tool implementations with customized versions. <xref:Werecodent.CreateAndFake.Tools.Source?displayProperty=nameWithType> is the origin of all static and fluent <xref:Werecodent.CreateAndFake.Tools> calls, and can be replaced with a <xref:Werecodent.CreateAndFake.ToolSet> configured at runtime.
 

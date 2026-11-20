@@ -45,8 +45,8 @@ public sealed class ToolSet(
     {
         IConfigurationRoot config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 
-        return config.GetValue<string>("ASPNETCORE_ENVIRONMENT")
-            ?? config.GetValue<string>("DOTNET_ENVIRONMENT")
+        return config.GetValue<string>("DOTNET_ENVIRONMENT")
+            ?? config.GetValue<string>("ASPNETCORE_ENVIRONMENT")
             ?? "Production";
     }
 
