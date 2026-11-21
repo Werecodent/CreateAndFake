@@ -4,6 +4,7 @@ using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.ExtractorTool;
 using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.MutatorTool;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using Werecodent.CreateAndFake.RunnerTool;

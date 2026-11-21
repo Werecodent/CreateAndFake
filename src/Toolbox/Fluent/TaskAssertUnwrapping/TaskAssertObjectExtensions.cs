@@ -1,5 +1,5 @@
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.Fluent.AssertCalls;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 

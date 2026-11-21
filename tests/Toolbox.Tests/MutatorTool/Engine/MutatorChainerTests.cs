@@ -1,5 +1,4 @@
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.MutatorTool.Engine;
 
 namespace Werecodent.CreateAndFake.Tests.MutatorTool.Engine;

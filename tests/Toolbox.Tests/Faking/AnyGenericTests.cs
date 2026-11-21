@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using Werecodent.CreateAndFake.FakerTool;
 
-namespace Werecodent.CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.Faking;
 
 public static class AnyGenericTests
 {

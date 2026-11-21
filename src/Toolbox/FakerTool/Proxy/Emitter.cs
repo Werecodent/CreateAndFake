@@ -3,6 +3,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 

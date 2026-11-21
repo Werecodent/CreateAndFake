@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;

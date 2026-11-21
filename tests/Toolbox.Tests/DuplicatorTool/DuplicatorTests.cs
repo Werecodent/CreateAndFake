@@ -2,7 +2,6 @@
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.DuplicatorTool;
 using Werecodent.CreateAndFake.DuplicatorTool.Engine;
-using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.DuplicatorTool;
 

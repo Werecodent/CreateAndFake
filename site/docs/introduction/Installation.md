@@ -34,6 +34,7 @@ Reference the wanted package using NuGet by following these instructions:
   ```xml
   <ItemGroup>
     <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Faking" />
     <Using Include="Werecodent.CreateAndFake.Fluent" />
     <Using Include="Werecodent.CreateAndFake.{UnitTestFramework}" />
   </ItemGroup>

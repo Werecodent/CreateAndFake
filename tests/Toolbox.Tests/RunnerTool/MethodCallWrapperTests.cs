@@ -1,7 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Specialized;
 using System.Reflection;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 

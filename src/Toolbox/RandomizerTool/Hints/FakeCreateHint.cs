@@ -3,6 +3,7 @@ using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Randomization;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Hints;

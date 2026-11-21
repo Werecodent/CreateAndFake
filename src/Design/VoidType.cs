@@ -1,4 +1,6 @@
-namespace Werecodent.CreateAndFake.Design.Content;
+#pragma warning disable IDE0130
+
+namespace Werecodent.CreateAndFake;
 
 /// <summary>Represents <see langword="void"/>.</summary>
 public sealed class VoidType
@@ -15,3 +17,5 @@ public sealed class VoidType
         return "'void'";
     }
 }
+
+#pragma warning restore

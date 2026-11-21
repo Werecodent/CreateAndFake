@@ -12,6 +12,7 @@
     <ProjectReference Include="../Design/CreateAndFake.Design.csproj" />
     <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
     <Using Include="Werecodent.CreateAndFake" />
+    <Using Include="Werecodent.CreateAndFake.Faking" />
     <Using Include="Werecodent.CreateAndFake.Fluent" />
   </ItemGroup>
 

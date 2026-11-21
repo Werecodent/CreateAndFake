@@ -1,6 +1,4 @@
-using Werecodent.CreateAndFake.FakerTool;
-
-namespace Werecodent.CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.Faking;
 
 public sealed class OutRefTests() : AutoTester(typeof(OutRef<>))
 {

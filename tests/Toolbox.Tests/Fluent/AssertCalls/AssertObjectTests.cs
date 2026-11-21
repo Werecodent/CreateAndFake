@@ -1,5 +1,4 @@
 ﻿using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;

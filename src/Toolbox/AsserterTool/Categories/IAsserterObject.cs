@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.AsserterTool.Categories;
 

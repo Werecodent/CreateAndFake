@@ -2,7 +2,7 @@
 
 ## Overview
 
-Create & Fake is a test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
+Create & Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
 > ### Test Attribute Example
 > 

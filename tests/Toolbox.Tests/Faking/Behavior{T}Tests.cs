@@ -1,7 +1,6 @@
 ﻿using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.FakerTool;
 
-namespace Werecodent.CreateAndFake.Tests.FakerTool;
+namespace Werecodent.CreateAndFake.Tests.Faking;
 
 public sealed class Behavior_T_Tests() : AutoTester(typeof(Behavior<>))
 {

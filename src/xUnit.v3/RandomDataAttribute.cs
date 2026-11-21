@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Types;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.Fluent;
 using Werecodent.CreateAndFake.RunnerTool;
 using Werecodent.CreateAndFake.RunnerTool.Attributes;

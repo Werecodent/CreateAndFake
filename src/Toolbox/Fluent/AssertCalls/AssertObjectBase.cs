@@ -2,7 +2,7 @@
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.AsserterTool.Categories;
 using Werecodent.CreateAndFake.Design.Types;
-using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.Fluent.Chaining;
 
 namespace Werecodent.CreateAndFake.Fluent.AssertCalls;

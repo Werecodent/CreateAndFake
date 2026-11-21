@@ -1,7 +1,6 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.ExtractorTool.Engine;
-using Werecodent.CreateAndFake.FakerTool;
 
 namespace Werecodent.CreateAndFake.Tests.ExtractorTool.Engine;
 

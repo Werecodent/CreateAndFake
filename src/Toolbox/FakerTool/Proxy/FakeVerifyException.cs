@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 

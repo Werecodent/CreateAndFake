@@ -1,5 +1,4 @@
-﻿using Werecodent.CreateAndFake.FakerTool;
-using Werecodent.CreateAndFake.RandomizerTool.Hints;
+﻿using Werecodent.CreateAndFake.RandomizerTool.Hints;
 using Werecodent.CreateAndFake.Samples.ErrorCases;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 

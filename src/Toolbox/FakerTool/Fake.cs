@@ -1,5 +1,6 @@
 ﻿using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.FakerTool;
 

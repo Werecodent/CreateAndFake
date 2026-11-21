@@ -1,7 +1,7 @@
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.Fluent;
 

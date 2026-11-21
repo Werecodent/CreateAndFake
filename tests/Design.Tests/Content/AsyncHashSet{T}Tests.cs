@@ -1,6 +1,5 @@
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Content;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Design.Tests.Content;

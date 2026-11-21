@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Exceptions;
 
-namespace Werecodent.CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.Faking;
 
 /// <summary>Mock behavior for fakes.</summary>
 /// <param name="implementation"><inheritdoc cref="Implementation" path="/summary"/></param>

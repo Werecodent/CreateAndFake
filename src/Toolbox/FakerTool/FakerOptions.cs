@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Werecodent.CreateAndFake.Design.Tooling;
 using Werecodent.CreateAndFake.FakerTool.Engine;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.Properties;
 using Werecodent.CreateAndFake.ValuerTool;
 

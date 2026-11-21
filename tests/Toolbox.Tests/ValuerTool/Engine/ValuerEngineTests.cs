@@ -1,6 +1,5 @@
 using System.Reflection;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.ValuerTool;
 using Werecodent.CreateAndFake.ValuerTool.Engine;
 

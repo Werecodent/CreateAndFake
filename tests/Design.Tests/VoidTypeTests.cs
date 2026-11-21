@@ -1,8 +1,7 @@
 using System.Reflection;
-using Werecodent.CreateAndFake.Design.Content;
 using Werecodent.CreateAndFake.Design.Types;
 
-namespace Werecodent.CreateAndFake.Design.Tests.Content;
+namespace Werecodent.CreateAndFake.Design.Tests;
 
 public sealed class VoidTypeTests : AutoTester<VoidType>
 {

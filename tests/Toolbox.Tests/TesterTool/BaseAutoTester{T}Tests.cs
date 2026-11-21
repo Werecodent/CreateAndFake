@@ -1,6 +1,5 @@
 using Werecodent.CreateAndFake.AsserterTool;
 using Werecodent.CreateAndFake.Design.Exceptions;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.RandomizerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 using Werecodent.CreateAndFake.TesterTool;

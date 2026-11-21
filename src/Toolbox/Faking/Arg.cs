@@ -1,6 +1,6 @@
 ﻿using Werecodent.CreateAndFake.Design.Comparisons;
 
-namespace Werecodent.CreateAndFake.FakerTool;
+namespace Werecodent.CreateAndFake.Faking;
 
 /// <summary>Provides the ability to match arguments based upon conditions.</summary>
 public sealed class Arg : IDeepCloneable<Arg>

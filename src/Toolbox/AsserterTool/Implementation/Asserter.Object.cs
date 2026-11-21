@@ -5,6 +5,7 @@ using Werecodent.CreateAndFake.Design.Exceptions;
 using Werecodent.CreateAndFake.Design.Types;
 using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.FakerTool.Proxy;
+using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.AsserterTool;

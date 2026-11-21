@@ -1,5 +1,4 @@
 using Werecodent.CreateAndFake.AsserterTool;
-using Werecodent.CreateAndFake.FakerTool;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.AsserterTool.Implementation;

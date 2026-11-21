@@ -1,5 +1,4 @@
-﻿using Werecodent.CreateAndFake.FakerTool;
-using Werecodent.CreateAndFake.FakerTool.Proxy;
+﻿using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Samples.Scenarios;
 
 namespace Werecodent.CreateAndFake.Tests.FakerTool.Proxy;

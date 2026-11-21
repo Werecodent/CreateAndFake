@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/CreateAndFake?logo=nuget)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent?logo=githubsponsors)](https://github.com/sponsors/Werecodent)
 
-A test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
+Create & Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
 > ### Test Attribute Example
 >
@@ -55,15 +55,17 @@ Even more, classes are able to be automatically tested in a variety of ways simp
 
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
 
-* `Asserter` - Verify object states and behavior.
-* `Duplicator` - Deep clone objects.
-* `Extractor` - Flatten the contents of objects.
-* `Faker` - Simulate behavior via stubs/mocks.
-* `Mutator` - Modify the state of objects or create variants.
-* `Randomizer` - Create objects populated with random values.
-* `Runner` - Generate method data and run them.
-* `Tester` - Test common scenarios.
-* `Valuer` - Compare objects by value via reflection if needed.
+> ### Tool List
+>
+> * `Asserter` - Verify object states and behavior.
+> * `Duplicator` - Deep clone objects.
+> * `Extractor` - Flatten the contents of objects.
+> * `Faker` - Simulate behavior via stubs/mocks.
+> * `Mutator` - Modify the state of objects or create variants.
+> * `Randomizer` - Create objects populated with random values.
+> * `Runner` - Generate method data and run them.
+> * `Tester` - Test common scenarios.
+> * `Valuer` - Compare objects by value via reflection if needed.
 
 ## Documentation
 

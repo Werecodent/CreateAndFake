@@ -1,6 +1,7 @@
 ﻿using Werecodent.CreateAndFake.Design;
 using Werecodent.CreateAndFake.Design.Comparisons;
 using Werecodent.CreateAndFake.Design.Types;
+using Werecodent.CreateAndFake.Faking;
 
 namespace Werecodent.CreateAndFake.FakerTool.Proxy;
 
