@@ -1,0 +1,175 @@
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.AsserterTool.Categories;
+using Werecodent.CreateAndFake.Fluent.Chaining;
+
+namespace Werecodent.CreateAndFake.Fluent.AssertCalls;
+
+#pragma warning disable CA1068 // Cleaner calls.
+
+/// <summary>Handles assertion calls for delegates.</summary>
+/// <param name="behavior">Delegate to check.</param>
+/// <inheritdoc cref="AssertObjectBase{T}"/>
+public abstract class AssertDelegateBase<T>(IAsserter asserter, Delegate? behavior)
+    : AssertObjectBase<T>(asserter, behavior)
+    where T : AssertDelegateBase<T>
+{
+    /// <summary>Delegate to run assertion checks with.</summary>
+    protected Delegate? Behavior { get; } = behavior;
+
+    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,string)"/>
+    public virtual ExceptionChainer<TException> Throws<TException>(string? details = null)
+        where TException : Exception
+    {
+        return new ExceptionChainer<TException>(
+            Asserter.Throws<TException>(Behavior, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.Throws{T}(Delegate,AsserterMod,string)"/>
+    public virtual ExceptionChainer<TException> Throws<TException>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where TException : Exception
+    {
+        return new ExceptionChainer<TException>(
+            Asserter.Throws<TException>(Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,string)"/>
+    public virtual ExceptionChainer<Exception> ThrowsException(string? details = null)
+    {
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Behavior, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsException(Delegate,AsserterMod,string)"/>
+    public virtual ExceptionChainer<Exception> ThrowsException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ExceptionChainer<Exception>(
+            Asserter.ThrowsException(Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,string)"/>
+    public virtual AlsoChainer ThrowsNo<TException>(string? details = null)
+        where TException : Exception
+    {
+        Asserter.ThrowsNo<TException>(Behavior, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNo{T}(Delegate,AsserterMod,string)"/>
+    public virtual AlsoChainer ThrowsNo<TException>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+        where TException : Exception
+    {
+        Asserter.ThrowsNo<TException>(Behavior, optionConfiguration, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,string)"/>
+    public virtual AlsoChainer ThrowsNoException(string? details = null)
+    {
+        Asserter.ThrowsNoException(Behavior, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <returns><inheritdoc cref="AssertObjectBase{T}.ToChainer" path="/returns"/></returns>
+    /// <inheritdoc cref="IAsserterDelegate.ThrowsNoException(Delegate,AsserterMod,string)"/>
+    public virtual AlsoChainer ThrowsNoException(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        Asserter.ThrowsNoException(Behavior, optionConfiguration, details);
+        return new AlsoChainer(Asserter);
+    }
+
+    /// <inheritdoc cref="HasResult{T}(AsserterMod,string)"/>
+    public virtual ResultChainer<TResult> HasResult<TResult>(string? details = null)
+    {
+        return new ResultChainer<TResult>(Asserter.HasResult<TResult>(Behavior, details), Asserter);
+    }
+
+    /// <typeparam name="TResult">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(Delegate,AsserterMod,string)"/>
+    public virtual ResultChainer<TResult> HasResult<TResult>(
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TResult>(
+            Asserter.HasResult<TResult>(Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="HasResult{T}(T,AsserterMod,string)"/>
+    public virtual ResultChainer<TItem> HasResult<TItem>(TItem expected, string? details = null)
+    {
+        return new ResultChainer<TItem>(Asserter.HasResult(expected, Behavior, details), Asserter);
+    }
+
+    /// <typeparam name="TItem">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <inheritdoc cref="IAsserterDelegate.HasResult{T}(T,Delegate,AsserterMod,string)"/>
+    public virtual ResultChainer<TItem> HasResult<TItem>(
+        TItem expected,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            Asserter.HasResult(expected, Behavior, optionConfiguration, details),
+            Asserter
+        );
+    }
+
+    /// <inheritdoc cref="HasResultAsync{T}(T,CancellationToken,AsserterMod,string)"/>
+    public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
+        TItem expected,
+        CancellationToken canceler,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            await Asserter
+                .HasResultAsync(expected, Behavior, canceler, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
+
+    /// <typeparam name="TItem">Expected return <see cref="Type"/> of the <c>behavior</c>.</typeparam>
+    /// <inheritdoc cref="IAsserterDelegate.HasResultAsync{T}(T,Delegate,CancellationToken,AsserterMod,string)"/>
+    public virtual async Task<ResultChainer<TItem>> HasResultAsync<TItem>(
+        TItem expected,
+        CancellationToken canceler,
+        AsserterMod? optionConfiguration,
+        string? details = null
+    )
+    {
+        return new ResultChainer<TItem>(
+            await Asserter
+                .HasResultAsync(expected, Behavior, canceler, optionConfiguration, details)
+                .ConfigureAwait(false),
+            Asserter
+        );
+    }
+}
+
+#pragma warning restore

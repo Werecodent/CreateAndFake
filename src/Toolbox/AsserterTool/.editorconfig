@@ -1,0 +1,4 @@
+[*.cs]
+
+# Cleaner calls.
+dotnet_diagnostic.CA1068.severity = None

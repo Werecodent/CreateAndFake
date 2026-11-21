@@ -1,0 +1,25 @@
+name: Debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    environment: staging
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v6
+    - name: Install ICU
+      run: apt-get update && apt-get install libicu78
+      shell: bash
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: | 
+          11.0.x
+          10.0.x
+          9.0.x
+    - name: Build & Test (Debug)
+      run: ./build/run.sh debugCrash
+      shell: bash

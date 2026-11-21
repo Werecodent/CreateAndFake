@@ -1,82 +1,83 @@
 # Create & Fake
 
-[![NuGet](https://img.shields.io/nuget/v/CreateAndFake)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/CreateAndFake/CreateAndFake/workflows/Integration/badge.svg)](../../actions?query=workflow%3AIntegration) [![CodeCov Coverage](https://codecov.io/gh/CreateAndFake/CreateAndFake/branch/master/graph/badge.svg)](https://codecov.io/gh/CreateAndFake/CreateAndFake/branch/master) [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+[![NuGet](https://img.shields.io/nuget/v/CreateAndFake?logo=nuget)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent?logo=githubsponsors)](https://github.com/sponsors/Werecodent)
 
-A C# class library that handles mocking, test data generation, and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain:
+A test support library that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
-```c#
-// xUnit attributes used to automatically create the parameters.
-[Theory, RandomData]
-internal static void TestGetMovieDirectors(
-    [Fake] IStorage db, Endpoint api, [Size(2)] Details[] movies)
-{
-    // Setup fake behavior using randomized movie data (times optional).
-    db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
+> ### Test Attribute Example
+>
+> ```c#
+> // Provided xUnit attributes used to automatically create the parameters.
+> [Theory, RandomData]
+> internal static void GetDirectors_UtilizesYearToPruneDirectors(
+>     [Fake] IStorage db, [Injected] Endpoint api, [Size(2)] Details[] movies)
+> {
+>     // Setup fake behavior using randomized movie data (times optional).
+>     db.Find(movies[0].Name).SetupReturn(movies, Times.Once);
+> 
+>     // Call code and test for expected result (api is auto-injected with db fake).
+>     api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
+> 
+>     // Optionally check all behavior called as expected.
+>     db.Assert().Called();
+> }
+> ```
 
-    // Call code and test for expected result (api is auto-injected with db fake).
-    api.GetDirectors(movies[0].Name, movies[0].Year).Assert().Is(movies[0].Directors);
+By default, all behavior works not by reference but by value even for complex objects. Using the fluent extension methods and attributes are optional as all functionality are present in customizable tools:
 
-    // Optionally check all behavior called as expected.
-    db.VerifyAllCalls();
-}
-```
+> ### Tool Use Example
+>
+> ```C#
+> [Fact]
+> internal static void MailingAddress_VerifyChangingZipCodeUpdatesAddress()
+> {
+>     // Randomizer uses readable values for some properties like 'FirstName'.
+>     User details = Tools.Randomizer.Create<User>();
+> 
+>     // Duplicator creates deep clones. 
+>     User copy = Tools.Duplicator.Copy(details);
+> 
+>     // Mutator can randomly modify objects too.
+>     details.ZipCode = Tools.Mutator.Variant(details.ZipCode);
+> 
+>     // Asserter performs checks based upon value.
+>     Tools.Asserter.IsNot(details.MailingAddress, copy.MailingAddress);
+> }
+> ```
 
-By default, all behavior works not by reference but by value even for complex objects. Using the extension methods and attributes are optional as all functionality are present in customizable tools:
+Even more, classes are able to be automatically tested in a variety of ways simply by inheriting the automated test base:
 
-```C#
-[Fact]
-internal static void TestChangingZipCodeUpdatesAddress()
-{
-    // Randomizer uses readable values for some properties like 'FirstName'.
-    User details = Tools.Randomizer.Create<User>();
-
-    // Duplicator creates deep clones. 
-    User copy = Tools.Duplicator.Copy(details);
-
-    // Mutator can randomly modify objects too.
-    details.ZipCode = Tools.Mutator.Variant(details.ZipCode);
-
-    // Asserter performs checks based upon value.
-    Tools.Asserter.IsNot(copy.MailingAddress, details.MailingAddress);
-}
-```
+> ### AutoTester Example
+>
+> ```C#
+> public sealed class MyClassTests : AutoTester<MyClass>;
+> ```
 
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the `Randomizer` will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the `Faker` utilize value equality in matching arguments.
 
-* `Asserter` - Handles common test scenarios.
-* `Faker` - Creates mocks and stubs.
-* `Randomizer` - Creates random instances of any type.
-* `Duplicator` - Creates deep clones of objects.
-* `Mutator` - Mutates objects or creates variants.
-* `Valuer` - Compares objects by value.
-* `Tester` - Automates common tests.
-
-Visit the [documentation site](https://createandfake.github.io/CreateAndFake/) for more information and how to get started.
-
-## Installation
-
-* Install using:
-
-```
-dotnet add package CreateAndFake
-```
-
-* Use in a class by adding:
-
-```
-using CreateAndFake;
-using CreateAndFake.Fluent;
-```
+* `Asserter` - Verify object states and behavior.
+* `Duplicator` - Deep clone objects.
+* `Extractor` - Flatten the contents of objects.
+* `Faker` - Simulate behavior via stubs/mocks.
+* `Mutator` - Modify the state of objects or create variants.
+* `Randomizer` - Create objects populated with random values.
+* `Runner` - Generate method data and run them.
+* `Tester` - Test common scenarios.
+* `Valuer` - Compare objects by value via reflection if needed.
 
 ## Documentation
 
-The documentation site is located here: https://createandfake.github.io/CreateAndFake/
+Visit the [documentation site](https://werecodent.github.io/CreateAndFake/) for more information and how to get started.
 
-The raw files can be viewed from the doc folder or built into a local site using Jekyll.
+A local site can be built from the source code using the terminal command "./build/run.sh serveSite".
+
+## Sponsors
+
+<a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="40px" title="Werebunny" alt="Werebunny" /></a>
 
 ## Contributing
 
-If you're looking to contribute, thanks for your interest. Feel free to submit reports for any issues you can find, or request potential features you'd like to see [here](../../issues). If you wish to contribute code to the project, refer to the contributing guidelines [here](.github/CONTRIBUTING.md) which includes dev environment setup. Please follow the [code of conduct](.github/CODE_OF_CONDUCT.md) when contributing.
+If you're looking to contribute, thanks for your interest. Feel free to submit reports for any issues you can find, or request potential features you'd like to see [here](../../issues). If you wish to contribute code to the project, refer to the [contributing](https://github.com/Werecodent/.github/blob/main/CONTRIBUTING.md) requirements and the [support](https://github.com/Werecodent/.github/blob/main/SUPPORT.md) guide for environment setup. Please follow the [code of conduct](https://github.com/Werecodent/.github/blob/main/CODE_OF_CONDUCT.md) when contributing.
 
 ## License
 
@@ -86,8 +87,11 @@ View the [license](LICENSE.txt) file for more details.
 
 ## Acknowledgments
 
-* [xUnit](https://xunit.github.io/): For running tests.
-* [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator/) + [CodeCov](https://codecov.io/): For test coverage.
+* [xUnit](https://github.com/xunit/xunit) + [NUnit](https://github.com/nunit/nunit) + [MSTest](https://github.com/microsoft/testfx): For running tests.
+* [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator) + [CodeCov](https://codecov.io): For test coverage.
 * [Bullseye](https://github.com/adamralph/bullseye) + [SimpleExec](https://github.com/adamralph/simple-exec) + [MinVer](https://github.com/adamralph/minver): For project building.
-* [GitHub](https://github.com/): For hosting code.
-* [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development/): For C# and editors.
+* [AsyncFixer](https://github.com/semihokur/AsyncFixer) + [MissingAwaitWarning](https://github.com/ykoksen/unused-task-warning) + [Meziantou.Analyzer](https://github.com/meziantou/Meziantou.Analyzer) + [Sonar](https://github.com/SonarSource/sonar-dotnet): For code analyzers.
+* [DocFX](https://github.com/dotnet/docfx): For building the documentation site.
+* [CSharpier](https://github.com/belav/csharpier): For formatting code.
+* [GitHub](https://github.com): For hosting code.
+* [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development): For C# and editors.

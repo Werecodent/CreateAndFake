@@ -1,0 +1,43 @@
+using Werecodent.CreateAndFake.TesterTool;
+using Xunit;
+
+namespace Werecodent.CreateAndFake.xUnit.v3;
+
+/// <inheritdoc/>
+public abstract class AutoTester(Type testType) : BaseAutoTester(testType)
+{
+    /// <inheritdoc/>
+    [Fact]
+    public override Task Tester_GuardsNulls()
+    {
+        return GuardsNullsImplementation(TestContext.Current.CancellationToken);
+    }
+
+    /// <inheritdoc/>
+    [Fact]
+    public override Task Tester_NoParameterMutation()
+    {
+        return NoParameterMutationImplementation(TestContext.Current.CancellationToken);
+    }
+
+    /// <inheritdoc/>
+    [Fact]
+    public override Task Tester_ValueEqualityOverrideCheck()
+    {
+        return ValueEqualityOverrideCheckImplementation(TestContext.Current.CancellationToken);
+    }
+
+    /// <inheritdoc/>
+    [Fact]
+    public override Task Tester_ToolSupport()
+    {
+        return ToolSupportImplementation(TestContext.Current.CancellationToken);
+    }
+
+    /// <inheritdoc/>
+    [Fact]
+    public override Task Tester_Debug_ToString()
+    {
+        return DebugToStringImplementation();
+    }
+}
