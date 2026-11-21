@@ -2,28 +2,23 @@
 - href: ../index.md
 - href: introduction/Installation.md
 - href: introduction/Configuration.md
-- href: introduction/GettingStarted.md
 
 - name: Essentials
+- href: essentials/GettingStarted.md
 - href: essentials/TestAttributes.md
-- href: essentials/UsingTools.md
-- href: essentials/AssemblyTester.md
-- href: essentials/AutoTester.md
+- href: essentials/FakesStubsMocks.md
 
-- name: General
-- href: general/ExampleScenario.md
-- href: general/TestAttributes.md
-- href: general/V2Migration.md
-
-- name: Design
-- href: design/IRandom.md
-- href: design/Limiter.md
+- name: Automation
+- href: automation/AssemblyTester.md
+- href: automation/AutoTester.md
 
 - name: Tools
 - href: tools/Asserter.md
 - href: tools/Duplicator.md
+- href: tools/Extractor.md
 - href: tools/Faker.md
 - href: tools/Mutator.md
 - href: tools/Randomizer.md
+- href: tools/Runner.md
 - href: tools/Tester.md
 - href: tools/Valuer.md

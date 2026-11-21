@@ -45,7 +45,7 @@ public abstract class AssemblyTester : BaseAssemblyTester
     [Test]
     public override Task Tester_VerifyTestSettingsConfig_Default()
     {
-        return VerifyTestSettingsConfigImplementation(CancellationTokenProvider.Get());
+        return VerifyTestSettingsConfigImplementation(null, CancellationTokenProvider.Get());
     }
 
     /// <inheritdoc/>

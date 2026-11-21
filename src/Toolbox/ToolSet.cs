@@ -41,7 +41,7 @@ public sealed class ToolSet(
 
     /// <summary>Finds the configured environment name.</summary>
     /// <returns>The name if found, <c>Production</c> otherwise.</returns>
-    internal static string FindEnvironmentName()
+    public static string FindEnvironmentName()
     {
         IConfigurationRoot config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
 

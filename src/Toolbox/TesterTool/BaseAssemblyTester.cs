@@ -66,14 +66,18 @@ public abstract class BaseAssemblyTester
         return AutoTools.Tester.ValidateAutoTesterInstancesAsync(canceler, OptionConfiguration);
     }
 
+    /// <remarks>Tests the config without a specified environment.</remarks>
     /// <inheritdoc cref="VerifyTestSettingsConfigImplementation"/>
     public abstract Task Tester_VerifyTestSettingsConfig_Default();
 
     /// <inheritdoc cref="ITester.ValidateTestSettingsConfigAsync"/>
-    protected Task VerifyTestSettingsConfigImplementation(CancellationToken canceler)
+    protected Task VerifyTestSettingsConfigImplementation(
+        string? environment,
+        CancellationToken canceler
+    )
     {
         return AutoTools.Tester.ValidateTestSettingsConfigAsync(
-            null,
+            environment,
             canceler,
             OptionConfiguration
         );
