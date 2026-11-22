@@ -1,5 +1,19 @@
 # Asserter
 
+## Overview
+
+Tool to verify <xref:System.Object> states and <xref:System.Type> behavior. Useful for handling common test scenarios.
+
+API Specification: <xref:Werecodent.CreateAndFake.AsserterTool.Asserter>
+
+Options: <xref:Werecodent.CreateAndFake.AsserterTool.AsserterOptions>
+
+> ### Important Types
+> 
+> * <xref:Werecodent.CreateAndFake.AsserterTool.AssertException> - <xref:System.Exception> <xref:System.Type> used for all failed assertions.
+
+## Old
+
 The `Asserter` tool provides methods to verify common test scenarios:
 
 * `CheckAll` - Verifies multiple cases and aggregates failure.

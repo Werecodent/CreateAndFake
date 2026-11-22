@@ -45,19 +45,112 @@ Once you have your fake, there are a few special terms designed to make setting 
 
 ## Setting Behavior (Fluent)
 
-While optional, using the fluent interface is the easiest way to manage fakes, although not available for `Mock` instances. Simply use the <xref:Werecodent.CreateAndFake.Fluent.FakedExtensions>.`SetupReturn` methods on a fake:
+While optional, using the fluent interface is the easiest way to manage fakes, although not available for `Mock` instances or members that aren't visible. Simply use the <xref:Werecodent.CreateAndFake.Fluent.FakedExtensions>.`SetupReturn` methods on a fake:
 
 > ### SetupReturn
 >
 > ```csharp
 > [Theory, RandomData]
-> internal static void Read_TextFromPage([Stub] IBook book, int page, string text)
+> internal static void Read_TextFromPage(
+>     [Fake] IBook book, int page, int line, string text)
 > {
->   book.Read(Arg.Any<int>()).SetupReturn(text);
->   book.Read(page).Assert().Is(text);
+>   // For methods with returns:  
+>   book.Read(page, Arg.Any<int>()).SetupReturn(text);
+>   book.Read(page, line).Assert().Is(text);
+>
+>   // For void methods:
+>   book.SetupReturn(x => x.Close(), Behavior.None(Times.Once));
+>   book.Close();
+>
+>   // Verifies all behavior is called as expected.
+>   book.Assert().Called(Times.AtLeast(2));
 > }
 > ```
 
+> [!TIP]
+> Values are compared by value when determining what behavior is called for the fake.
+
 ## Setting Behavior (Fake<T>)
 
-## Specific Cases
+The <xref:Werecodent.CreateAndFake.FakerTool.Fake`1> is the wrapper for fakes to set behavior. Here's the exact same example as above using the wrapper instead:
+
+> ### Wrapper Setup
+>
+> ```csharp
+> [Theory, RandomData]
+> internal static void Read_TextFromPage(
+>     Fake<IBook> book, int page, int line, string text)
+> {
+>   // For methods with returns:  
+>   book.Setup(x => x.Read(page, Arg.Any<int>()), Behavior.Returns(text));
+>   book.Dummy.Read(page, line).Assert().Is(text);
+>
+>   // For void methods:
+>   book.Setup(x => x.Close(), Behavior.None(Times.Once));
+>   book.Dummy.Close();
+>
+>   // The wrapper may also verify all behavior is called as expected.
+>   book.Verify(Times.AtLeast(2));
+> }
+> ```
+
+## Faking Internal
+
+The assembly containing internals must grant visibility to the dynamic assembly by adding the following somewhere (typically `AssemblyInfo.cs`):
+
+> ```csharp
+> [assembly: InternalsVisibleTo("Werecodent.CreateAndFake.FakerTypes")]
+> ```
+
+## Faking Protected
+
+The fakes can be setup using the string names for protected methods with an array containing the parameters to match. However, note that using `Arg` conditions requires the .Lambda versions to successfully match calls.
+
+```c#
+/// <summary>Verifies hints generate the hashes.</summary>
+[Fact]
+public void GetHashCode_ValidHint()
+{
+    object data = new object();
+    int result = Tools.Randomizer.Create<int>();
+
+    Fake<CompareHint> hint = Tools.Faker.Mock<CompareHint>();
+    hint.Setup("Supports",
+        new[] { data, data, Arg.LambdaAny<IValuerChainer>() },
+        Behavior.Returns(true, Times.Once));
+    hint.Setup("GetHashCode",
+        new[] { data, Arg.LambdaAny<IValuerChainer>() },
+        Behavior.Returns(result, Times.Once));
+
+    Tools.Asserter.Is(result, new Valuer(false, hint.Dummy).GetHashCode(data));
+    hint.Verify(Times.Exactly(2));
+}
+```
+
+## Faking Ref & Out
+
+The special class `OutRef` is used to handle reference behavior:
+
+```c#
+/// <summary>Verifies faking works with out and ref arguments.</summary>
+[Theory, RandomData]
+public void Fake_HandlesOut(string data, string start)
+{
+    Fake<OutRefSample> fake = Tools.Faker.Mock<OutRefSample>();
+    fake.Setup(
+        d => d.WithOut(out Arg.AnyRef<string>().Var),
+        Behavior.Set((OutRef<string> d) => { d.Var = data; }, Times.Once));
+    fake.Setup(
+        d => d.WithRef(ref Arg.WhereRef<string>(v => v == start).Var),
+        Behavior.Set((OutRef<string> d) => { d.Var = data; }, Times.Once));
+
+    fake.Dummy.WithOut(out string outValue);
+    Tools.Asserter.Is(data, outValue);
+
+    string refValue = start;
+    fake.Dummy.WithRef(ref refValue);
+    Tools.Asserter.Is(data, refValue);
+
+    fake.Verify(2);
+}
+```

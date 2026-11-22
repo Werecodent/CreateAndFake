@@ -1,5 +1,22 @@
 # Mutator
 
+## Overview
+
+Tool to modify the state of objects or create variants. Useful for testing behavior under various states.
+
+API Specification: <xref:Werecodent.CreateAndFake.MutatorTool.IMutator>
+
+Options: <xref:Werecodent.CreateAndFake.MutatorTool.MutatorOptions>
+
+> ### Important Types
+> 
+> * <xref:Werecodent.CreateAndFake.MutatorTool.Engine.IMutateHint> - Customizes <xref:Werecodent.CreateAndFake.MutatorTool.Mutator> behavior for a specific <xref:System.Type>.
+> * <xref:Werecodent.CreateAndFake.MutatorTool.Engine.MutatePriority> - Values specifying running order for dynamically loaded hints.
+
+As a hint based tool, <xref:Werecodent.CreateAndFake.MutatorTool.Mutator> behavior provides customization via implementing an <xref:Werecodent.CreateAndFake.MutatorTool.Engine.IMutateHint> class. With the default configuration, all found hints in the test assembly are loaded into the tool.
+
+## Old
+
 The `Mutator` tool provides methods to modify objects and create variants.
 
 ## Example

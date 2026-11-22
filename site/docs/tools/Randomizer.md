@@ -1,5 +1,22 @@
 # Randomizer
 
+## Overview
+
+Tool to create objects populated with random values. Useful for generating data to test with.
+
+API Specification: <xref:Werecodent.CreateAndFake.RandomizerTool.IRandomizer>
+
+Options: <xref:Werecodent.CreateAndFake.RandomizerTool.RandomizerOptions>
+
+> ### Important Types
+> 
+> * <xref:Werecodent.CreateAndFake.RandomizerTool.Engine.ICreateHint> - Customizes <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> behavior for a specific <xref:System.Type>.
+> * <xref:Werecodent.CreateAndFake.RandomizerTool.Engine.CreatePriority> - Values specifying running order for dynamically loaded hints.
+
+As a hint based tool, <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> behavior provides customization via implementing an <xref:Werecodent.CreateAndFake.RandomizerTool.Engine.ICreateHint> class. With the default configuration, all found hints in the test assembly are loaded into the tool.
+
+## Old
+
 The `Randomizer` tool provides methods to create instances populated with random data, as well as injection behavior.
 
 ## Example
@@ -31,6 +48,6 @@ If `Parent` requires an instance of `Child` in the constructor, `a` will be used
 
 ## Creation & Customization
 
-The `Randomizer` requires a `Faker` to provide stubbing and an `IRandom` instance which controls the core value randomization. Like other tools, custom `CreateHint` instances can be passed in to control behavior for any specific types.
+The `Randomizer` requires a `Randomizer` to provide stubbing and an `IRandom` instance which controls the core value randomization. Like other tools, custom `CreateHint` instances can be passed in to control behavior for any specific types.
 
 By passing a `SeededRandom` during construction, the `Randomizer` can make tests random but deterministic so that results can be repeated to help track down issues. See the `IRandom` page for more details.

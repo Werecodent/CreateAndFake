@@ -1,5 +1,22 @@
 # Duplicator
 
+## Overview
+
+Tool to deep clone objects. Useful for tracking mutations by comparing against the created clones.
+
+API Specification: <xref:Werecodent.CreateAndFake.DuplicatorTool.IDuplicator>
+
+Options: <xref:Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions>
+
+> ### Important Types
+> 
+> * <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.ICopyHint> - Customizes <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> behavior for a specific <xref:System.Type>.
+> * <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.CopyPriority> - Values specifying running order for dynamically loaded hints.
+
+As a hint based tool, <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> behavior provides customization via implementing an <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.ICopyHint> class. With the default configuration, all found hints in the test assembly are loaded into the tool.
+
+## Old
+
 The `Duplicator` tool provides methods to deep clone.
 
 ## Example
