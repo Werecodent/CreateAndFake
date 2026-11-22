@@ -231,9 +231,10 @@ public sealed class AsserterObjectTests
         _configCalled.Assert().Is(true);
     }
 
-    [Fact]
-    internal static void Inherits_ParentToChild()
+    [Theory, RandomData]
+    internal static void Inherits_ParentToChild(IChildType child)
     {
+        child.Assert().Inherits<IParentType>().And().Inherits(typeof(IParentType));
         typeof(IChildType).Assert().Inherits<IParentType>().And().Inherits(typeof(IParentType));
     }
 
@@ -247,9 +248,12 @@ public sealed class AsserterObjectTests
             .Inherits(typeof(IParentType), mod);
     }
 
-    [Fact]
-    internal static void Inherits_ChildToParent()
+    [Theory, RandomData]
+    internal static void Inherits_ChildToParent(IParentType parent)
     {
+        parent.Assert(x => x.Assert().Inherits<IChildType>()).Throws<AssertException>();
+        parent.Assert(x => x.Assert().Inherits(typeof(IChildType))).Throws<AssertException>();
+
         typeof(IParentType)
             .Assert(x => x.Assert().Inherits<IChildType>())
             .Throws<AssertException>();
@@ -268,9 +272,12 @@ public sealed class AsserterObjectTests
             .InheritedBy(typeof(IChildType));
     }
 
-    [Fact]
-    internal static void InheritedBy_ParentToChild()
+    [Theory, RandomData]
+    internal static void InheritedBy_ParentToChild(IChildType child)
     {
+        child.Assert(x => x.Assert().InheritedBy<IParentType>()).Throws<AssertException>();
+        child.Assert(x => x.Assert().InheritedBy(typeof(IParentType))).Throws<AssertException>();
+
         typeof(IChildType)
             .Assert(x => x.Assert().InheritedBy<IParentType>())
             .Throws<AssertException>();

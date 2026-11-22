@@ -10,7 +10,7 @@ For the framework, refer to the following definitions for faked objects:
 > * `Stub` - Loose fake where calls return defaults if not set up.
 > * `Mock` - Strict fake where calls throw exceptions if not set up.
 
-The <xref:Werecodent.CreateAndFake.FakerTool.IFaker> tool provides mocks and stubs, while the <xref:Werecodent.CreateAndFake.RandomizerTool.IRandomizer> tool can create randomized fakes via <xref:Werecodent.CreateAndFake.FakerTool.Fake`1> wrappers. Access the faked instance itself via  <xref:Werecodent.CreateAndFake.FakerTool.Fake`1.Dummy?displayProperty=nameWithType>.
+The <xref:Werecodent.CreateAndFake.FakerTool.Faker> tool provides mocks and stubs, while the <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> tool can create randomized fakes via <xref:Werecodent.CreateAndFake.FakerTool.Fake`1> wrappers. Access the faked instance itself via  <xref:Werecodent.CreateAndFake.FakerTool.Fake`1.Dummy?displayProperty=nameWithType>.
 
 The following test attributes are available as a part of test method generation that can be attached directly to the wanted type:
 
@@ -45,11 +45,19 @@ Once you have your fake, there are a few special terms designed to make setting 
 
 ## Setting Behavior (Fluent)
 
-While optional, using the fluent interface is the easiest way to manage fakes, although not available for `Mock` instances. 
+While optional, using the fluent interface is the easiest way to manage fakes, although not available for `Mock` instances. Simply use the <xref:Werecodent.CreateAndFake.Fluent.FakedExtensions>.`SetupReturn` methods on a fake:
+
+> ### SetupReturn
+>
+> ```csharp
+> [Theory, RandomData]
+> internal static void Read_TextFromPage([Stub] IBook book, int page, string text)
+> {
+>   book.Read(Arg.Any<int>()).SetupReturn(text);
+>   book.Read(page).Assert().Is(text);
+> }
+> ```
 
 ## Setting Behavior (Fake<T>)
-
-### Fluent 
-
 
 ## Specific Cases

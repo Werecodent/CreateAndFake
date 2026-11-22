@@ -26,17 +26,14 @@ public class Fake(IFaked fake)
     /// <param name="args">Args to match on the call.</param>
     /// <param name="callback">Fake behavior to invoke.</param>
     /// <returns>Representation of the call.</returns>
+    /// <remarks>Must use <c>Arg.Lambda{X}</c> instead of <c>Arg.{X}</c> calls.</remarks>
     public void Setup(string methodName, object[] args, Behavior callback)
     {
         Setup(methodName, [], args, callback);
     }
 
-    /// <summary>Ties a method call to fake behavior.</summary>
-    /// <param name="methodName">Method name of the call.</param>
     /// <param name="generics">Generics tied to the call.</param>
-    /// <param name="args">Args to match on the call.</param>
-    /// <param name="callback">Fake behavior to invoke.</param>
-    /// <returns>Representation of the call.</returns>
+    /// <inheritdoc cref="Setup(string,object[],Behavior)"/>
     public void Setup(string methodName, Type[] generics, object?[] args, Behavior callback)
     {
         Dummy.FakeMeta.SetCallBehavior(new CallData(methodName, generics, args, Options), callback);
@@ -57,16 +54,14 @@ public class Fake(IFaked fake)
     /// <param name="times">Expected number of calls.</param>
     /// <param name="methodName">Method name of the call.</param>
     /// <param name="args">Args to match on the call.</param>
+    /// <remarks>Must use <c>Arg.Lambda{X}</c> instead of <c>Arg.{X}</c> calls.</remarks>
     public void Verify(Times times, string methodName, object[] args)
     {
         Verify(times, methodName, [], args);
     }
 
-    /// <summary>Verifies the number of calls made.</summary>
-    /// <param name="times">Expected number of calls.</param>
-    /// <param name="methodName">Method name of the call.</param>
     /// <param name="generics">Generics tied to the call.</param>
-    /// <param name="args">Args to match on the call.</param>
+    /// <inheritdoc cref="Verify(Times,string,object[])"/>
     public void Verify(Times times, string methodName, Type[] generics, object?[] args)
     {
         Verify(times, new CallData(methodName, generics, args, Options));

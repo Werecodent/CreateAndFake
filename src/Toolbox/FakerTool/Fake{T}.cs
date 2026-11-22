@@ -33,6 +33,7 @@ public sealed class Fake<T> : Fake
     /// <param name="value">Set value to match from the call.</param>
     /// <param name="callback">Fake behavior to invoke.</param>
     /// <returns>Representation of the call.</returns>
+    /// <remarks>Must use <c>Arg.Lambda{X}</c> instead of <c>Arg.{X}</c> calls.</remarks>
     public void SetupSet<TResult>(
         Expression<Func<T, TResult>> method,
         TResult value,
@@ -43,12 +44,8 @@ public sealed class Fake<T> : Fake
         Setup(call.Item1.Name, call.Item2, [value], callback);
     }
 
-    /// <summary>Ties a set method call to fake behavior.</summary>
-    /// <typeparam name="TResult">Property type.</typeparam>
-    /// <param name="method">Expression of property to setup.</param>
     /// <param name="value">Arg expression to match from the call.</param>
-    /// <param name="callback">Fake behavior to invoke.</param>
-    /// <returns>Representation of the call.</returns>
+    /// <inheritdoc cref="SetupSet{TResult}(Expression{Func{T,TResult}},TResult,Behavior{VoidType})"/>
     public void SetupSet<TResult>(
         Expression<Func<T, TResult>> method,
         Arg value,
