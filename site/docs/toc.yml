@@ -22,3 +22,6 @@
 - href: tools/Runner.md
 - href: tools/Tester.md
 - href: tools/Valuer.md
+
+- name: Design
+- href: design/HintTools.md

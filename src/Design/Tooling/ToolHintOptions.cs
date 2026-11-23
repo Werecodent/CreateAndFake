@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
+using System.Text;
 using Werecodent.CreateAndFake.Design.Comparisons;
-using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.Design.Tooling;
 
@@ -38,7 +38,9 @@ public abstract record ToolHintOptions<TSelf, THint>
     public sealed override string ToString()
     {
         // Prevents infinite loop from nested options.
-        return GenericConverter.ExpandName(GetType());
+        StringBuilder result = new();
+        _ = (this with { NestedOptions = null }).PrintMembers(result);
+        return result.ToString();
     }
 
     /// <inheritdoc/>
