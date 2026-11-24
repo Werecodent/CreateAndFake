@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 256 256"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="Create&amp;Fake.svg"
+   inkscape:export-filename="Create&amp;Fake.png"
+   inkscape:export-xdpi="95.966049"
+   inkscape:export-ydpi="95.966049"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Create &amp; Fake Logo</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="88.388348"
+     inkscape:cy="222.62815"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-7"
+     inkscape:window-y="-7"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Background"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#008080;stroke:#282828;stroke-width:0"
+       id="rect7"
+       width="28.981113"
+       height="143.96141"
+       x="24.307714"
+       y="-199.27551"
+       inkscape:label="Left Panel"
+       transform="rotate(90)" />
+    <rect
+       style="fill:#008080;stroke:#282828;stroke-width:0"
+       id="rect5"
+       width="127.23416"
+       height="96.329742"
+       x="48.572979"
+       y="-132.86543"
+       ry="0.84173036"
+       inkscape:label="Lower Panel"
+       transform="rotate(90)" />
+    <rect
+       style="fill:#008080;stroke:#282828;stroke-width:0"
+       id="rect6"
+       width="118.39845"
+       height="95.263359"
+       x="50.461399"
+       y="-223.44679"
+       inkscape:label="Upper Panel"
+       transform="rotate(90)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Eyes"
+     style="display:inline;fill:#00ffff"
+     sodipodi:insensitive="true">
+    <ellipse
+       style="fill:#00ffff;stroke:#282828;stroke-width:0"
+       id="path10"
+       cx="99.057785"
+       cy="-84.106384"
+       rx="32.692112"
+       ry="22.038536"
+       inkscape:label="Bottom"
+       transform="rotate(90)" />
+    <ellipse
+       style="fill:#00ffff;stroke:#282828;stroke-width:0"
+       id="path11"
+       cx="88.747726"
+       cy="-105.73894"
+       rx="25.270117"
+       ry="27.725903"
+       inkscape:label="Middle"
+       transform="rotate(90)" />
+    <ellipse
+       style="display:inline;fill:#00ffff;stroke:#282828;stroke-width:0"
+       id="path9"
+       cx="94.81665"
+       cy="-167.2841"
+       rx="22.442692"
+       ry="27.370441"
+       inkscape:label="Upper"
+       transform="rotate(90)" />
+  </g>
+  <g
+     inkscape:label="Text"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <path
+       d="m 183.70147,255.99996 v -72.96285 h -41.96104 v 62.69175 H 124.15677 V 183.03711 H 52.52329 V 163.8516 h 148.76185 v 92.14836 z"
+       id="text2"
+       style="white-space:pre;stroke:#282828;stroke-width:0"
+       inkscape:label="F"
+       aria-label="F" />
+    <path
+       style="white-space:pre;stroke:#282828;stroke-width:0"
+       d="m 170.6729,112.46599 q 9.42417,0 14.78107,-5.26681 5.4561,-5.17442 5.4561,-13.305649 0,-8.50081 -6.15052,-13.860035 -6.05131,-5.35922 -14.88027,-5.35922 -7.44013,0 -13.19385,3.603615 -5.7537,3.696015 -13.59063,15.800445 3.47205,9.055234 10.11857,13.675244 6.74573,4.71241 17.45953,4.71241 z m -86.90079,17.92566 46.22804,-44.167334 q -1.48802,-2.86442 -3.96807,-5.72882 -2.38085,-2.864415 -6.54731,-5.728825 -3.86888,-2.587205 -9.32499,-4.25041 -5.45609,-1.66321 -12.30101,-1.66321 -14.483475,0 -23.41165,7.85403 -8.82895,7.946435 -8.82895,22.453265 0,8.593234 4.464085,17.001654 4.56328,8.50083 13.689855,14.22965 z m 58.92587,27.81248 h -9.52338 q -9.52337,0 -21.42759,-2.31 -11.90421,-2.31002 -22.71722,-7.85402 L 52.52352,182.96742 V 160.23694 L 74.744735,139.07727 Q 60.65808,128.45124 55.00358,117.3632 49.448278,106.27517 49.448278,94.540346 q 0,-19.21926 12.003412,-31.970505 12.102625,-12.658834 31.64539,-12.658834 9.12656,0 15.77308,2.402399 6.64653,2.402405 11.50742,5.636415 4.66249,3.23401 8.72976,8.03883 4.16648,4.80481 7.24172,9.702025 7.14253,-10.164025 14.38428,-14.691635 7.24172,-4.43521 18.25313,-4.43521 6.64652,0 12.59862,2.40239 6.05131,2.49481 11.01141,7.392025 4.76169,4.62002 7.73774,12.01204 2.97604,7.48442 2.97604,16.447255 0,15.985259 -8.72975,25.872079 -8.63055,9.88683 -21.92359,9.88683 -4.36489,0 -9.92019,-1.10876 -5.45611,-1.10877 -9.82098,-3.78841 -4.86088,-2.95681 -9.32496,-8.40842 -4.46409,-5.45162 -7.63855,-14.13724 l -35.91106,34.2805 q 3.96807,1.29359 8.72976,1.94041 4.76169,0.64687 9.92019,0.73913 5.5553,0.18482 12.40021,0.093 6.84493,0 11.60662,0 z"
+       id="text3"
+       inkscape:label="&amp;"
+       aria-label="&amp;" />
+    <path
+       d="m 33.122475,183.03692 q -3.577572,-8.15143 -6.707915,-14.8208 -3.13009,-6.52116 -6.558585,-17.19214 -2.832192,-9.0407 -4.769927,-19.71168 Q 13,120.78954 13,108.04366 13,84.033946 19.707662,64.322266 26.564399,44.75879 41.023254,30.234419 55.183955,16.006445 76.946775,8.0031903 98.85867,-3.8479692e-5 127.77639,-3.8479692e-5 q 27.42695,0 49.04069,7.706831779692 21.61375,7.7068067 36.51983,22.2312027 14.45886,14.079776 22.06097,33.93965 Q 243,83.885716 243,108.19186 q 0,17.78496 -4.32295,35.42173 -4.3227,17.78497 -15.20398,39.42333 H 188.444 v -2.22311 q 15.35306,-18.22959 22.35887,-36.16278 7.00582,-17.93317 7.00582,-38.38588 0,-16.747509 -5.51506,-30.234434 -5.36623,-13.338735 -16.84381,-23.861515 -11.1797,-10.226361 -28.32167,-16.00646 -16.99263,-5.631925 -39.35176,-5.631925 -23.40241,0 -40.24622,6.224745 -16.843825,6.372943 -27.42721,16.30288 -11.03036,10.374585 -16.39659,24.15794 -5.217155,13.93155 -5.217155,29.345189 0,21.19374 7.303966,39.71975 7.303964,18.52601 21.911894,34.68069 v 2.07488 z"
+       id="text1"
+       style="white-space:pre;stroke:#282828;stroke-width:0"
+       inkscape:label="C"
+       aria-label="C" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Create &amp; Fake Logo</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Werecodent LLC</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-nc-nd/4.0/" />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Werecodent LLC</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>Create&amp;Fake</rdf:li>
+            <rdf:li>Logo</rdf:li>
+            <rdf:li>Icon</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>The logo for the Create &amp; Fake project (https://github.com/Werecodent/CreateAndFake).</dc:description>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:prohibits
+           rdf:resource="http://creativecommons.org/ns#CommercialUse" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

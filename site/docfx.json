@@ -53,6 +53,8 @@
         "globalMetadata": {
             "_appName": "Create & Fake",
             "_appTitle": "Create & Fake",
+            "_appLogoPath": "images/Create&Fake.svg",
+            "_appFaviconPath": "images/Create&Fake.svg",
             "_enableSearch": true,
             "_disableContribution": true,
             "pdf": false
