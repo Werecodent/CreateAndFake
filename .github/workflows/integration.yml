@@ -16,7 +16,9 @@ jobs:
     environment: staging
     timeout-minutes: 20
     steps:
-    - uses: actions/checkout@v6
+    - name: Checkout
+      uses: actions/checkout@v6
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -24,6 +26,7 @@ jobs:
           11.0.x
           10.0.x
           9.0.x
+
     - name: Build & Test
       run: ./build/run.sh test
       shell: bash

@@ -54,9 +54,11 @@ public interface IAsserter
 
     /// <summary>Fails the test only if the option is set.</summary>
     /// <param name="details">Description to include in assertion failure messages.</param>
-    /// <remarks>Important relevant options: <list type="bullet">
-    ///     <item><see cref="AsserterOptions.TriggerFailureForDebugAsserts"/></item>
-    /// </list></remarks>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="AsserterOptions.TriggerFailureForDebugAsserts"/></item>
+    ///     </list>
+    /// </remarks>
     /// <exception cref="AssertException">Always.</exception>
     /// <inheritdoc cref="Pass(AsserterMod)"/>
     void Debug(AsserterMod? optionConfiguration, string? details = null);

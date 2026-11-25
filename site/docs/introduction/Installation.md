@@ -4,7 +4,7 @@
 
 There are three levels of packages that can be utilized for different purposes.
 1) `Werecodent.CreateAndFake.Design` - Optional support library for non-test projects.
-2) `Werecodent.CreateAndFake` - Provides the tools to use in test projects.
+2) `Werecodent.CreateAndFake.Toolbox` - Provides the tools to use in test projects.
 3) `Werecodent.CreateAndFake.{UnitTestFramework}` - Attribute support for a unit test framework.
 
 Versions for the packages are synchronized and released alongside each other.

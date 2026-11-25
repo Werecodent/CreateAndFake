@@ -106,7 +106,7 @@ The assembly containing internals must grant visibility to the dynamic assembly 
 
 The fakes can be setup using the string names for protected methods with an array containing the parameters to match. However, note that using `Arg` conditions requires the .Lambda versions to successfully match calls.
 
-```c#
+```csharp
 /// <summary>Verifies hints generate the hashes.</summary>
 [Fact]
 public void GetHashCode_ValidHint()
@@ -131,7 +131,7 @@ public void GetHashCode_ValidHint()
 
 The special class `OutRef` is used to handle reference behavior:
 
-```c#
+```csharp
 /// <summary>Verifies faking works with out and ref arguments.</summary>
 [Theory, RandomData]
 public void Fake_HandlesOut(string data, string start)

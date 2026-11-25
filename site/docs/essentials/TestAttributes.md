@@ -8,7 +8,7 @@ Text.
 
 For many test frameworks, attributes can create parameter data for test methods. For example, using xUnit:
 
-```c#
+```csharp
 /// <summary>Verifies the option works.</summary>
 [Theory, RandomData]
 public static void AtLeast_Works(int value)
@@ -21,7 +21,7 @@ public static void AtLeast_Works(int value)
 
 Using the following attribute:
 
-```c#
+```csharp
 /// <summary>Populates theory data with random values.</summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class RandomDataAttribute : DataAttribute

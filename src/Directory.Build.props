@@ -1,4 +1,5 @@
 <Project>
+  <!-- Project settings. -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -11,6 +12,7 @@
     <RootNamespace>Werecodent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
+  <!-- Output settings. -->
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
@@ -20,20 +22,41 @@
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
+  <!-- Package settings. -->
   <PropertyGroup>
-    <Authors>Werecodent</Authors>
-    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://werecodent.github.io/CreateAndFake/</PackageProjectUrl>
+    <Authors>Werecodent;CreateAndFake Contributors</Authors>
     <RepositoryUrl>https://github.com/Werecodent/CreateAndFake</RepositoryUrl>
+    <PackageProjectUrl>https://werecodent.github.io/CreateAndFake/</PackageProjectUrl>
     <ReleaseNotes>https://github.com/Werecodent/CreateAndFake/releases/</ReleaseNotes>
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+    <PackageIcon>PackageIcon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageTags>create, fake, tdd, agile, testing, tests, stubs, mocking, mocks, mock, data, random, cloning, clones, clone</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>
+      automated-testing;clone;cloning;create;csharp;data;dotnet;equality;fake;fakes;mock;mocks;
+      random;random-data;randomization;stubs;test-coverage;testing;tests;ttd;value-equality
+    </PackageTags>
   </PropertyGroup>
 
+  <!-- Extra files. -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\site\docs\other\PackageReadme.md">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)..\site\images\PackageIcon.png">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <!-- Build dependencies. -->
   <ItemGroup>
     <PackageReference Include="MinVer" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <!-- Analyzers. -->
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" />
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="3.2.0" PrivateAssets="All" />

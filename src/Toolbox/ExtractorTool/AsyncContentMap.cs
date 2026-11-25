@@ -8,7 +8,7 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.ExtractorTool;
 
-/// <summary>Extracted content of an object.</summary>
+/// <summary>Extracted content of an <see cref="object"/>.</summary>
 /// <param name="content"><inheritdoc cref="_content" path="/summary"/></param>
 /// <param name="options"><inheritdoc cref="_options" path="/summary"/></param>
 public sealed class AsyncContentMap(IAsyncSet<object> content, ExtractorOptions options)

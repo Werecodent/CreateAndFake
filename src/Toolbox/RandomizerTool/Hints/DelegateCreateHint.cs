@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
 using Werecodent.CreateAndFake.Design;
-using Werecodent.CreateAndFake.FakerTool.Proxy;
 using Werecodent.CreateAndFake.Faking;
 using Werecodent.CreateAndFake.RandomizerTool.Engine;
 

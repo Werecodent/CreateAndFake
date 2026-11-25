@@ -1,4 +1,4 @@
-# <img src="site/images/Create&Fake.svg" height=24px title="Logo" alt="" /> Create & Fake
+# <img src="site/images/CreateAndFakeLogo.svg" height=24px title="Logo" alt="" /> Create & Fake
 
 [![NuGet](https://img.shields.io/nuget/v/CreateAndFake?logo=nuget)](https://www.nuget.org/packages/CreateAndFake) [![Build](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Werecodent/CreateAndFake/actions/workflows/integration.yml) [![CodeCov Coverage](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main/graph/badge.svg)](https://codecov.io/gh/Werecodent/CreateAndFake/branch/main) [![GitHub Sponsors](https://img.shields.io/github/sponsors/Werecodent?logo=githubsponsors)](https://github.com/sponsors/Werecodent)
 
@@ -6,7 +6,7 @@ Create & Fake is a test support library, developed by humans, that makes robust 
 
 > ### Test Attribute Example
 >
-> ```c#
+> ```csharp
 > // Provided xUnit attributes used to automatically create the parameters.
 > [Theory, RandomData]
 > internal static void GetDirectors_UtilizesYearToPruneDirectors(
@@ -27,7 +27,7 @@ By default, all behavior works not by reference but by value even for complex ob
 
 > ### Tool Use Example
 >
-> ```C#
+> ```csharp
 > [Fact]
 > internal static void MailingAddress_VerifyChangingZipCodeUpdatesAddress()
 > {
@@ -49,7 +49,7 @@ Even more, classes are able to be automatically tested in a variety of ways simp
 
 > ### AutoTester Example
 >
-> ```C#
+> ```csharp
 > public sealed class MyClassTests : AutoTester<MyClass>;
 > ```
 
@@ -93,7 +93,7 @@ View the [license](LICENSE.txt) file for more details.
 * [Coverlet](https://github.com/tonerdo/coverlet) + [ReportGenerator](https://danielpalme.github.io/ReportGenerator) + [CodeCov](https://codecov.io): For test coverage.
 * [Bullseye](https://github.com/adamralph/bullseye) + [SimpleExec](https://github.com/adamralph/simple-exec) + [MinVer](https://github.com/adamralph/minver): For project building.
 * [AsyncFixer](https://github.com/semihokur/AsyncFixer) + [MissingAwaitWarning](https://github.com/ykoksen/unused-task-warning) + [Meziantou.Analyzer](https://github.com/meziantou/Meziantou.Analyzer) + [Sonar](https://github.com/SonarSource/sonar-dotnet): For code analyzers.
-* [DocFX](https://github.com/dotnet/docfx): For building the documentation site.
+* [DocFX](https://github.com/dotnet/docfx) + [Mermaid](https://github.com/mermaid-js/mermaid): For building the documentation site.
 * [CSharpier](https://github.com/belav/csharpier): For formatting code.
 * [GitHub](https://github.com): For hosting code.
 * [Microsoft](https://visualstudio.microsoft.com/vs/features/net-development): For C# and editors.

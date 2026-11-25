@@ -17,10 +17,12 @@ public abstract class BaseAutoTester(Type testType)
     protected virtual TesterMod? OptionConfiguration { get; } = null;
 
     /// <summary>Determines the behavior for <see cref="Tester_ValueEqualityOverrideCheck"/>.</summary>
-    /// <remarks><list type="bullet">
-    ///     <item><see langword="true"/> = <see cref="ITester.VerifyValueEqualityAsync"/></item>
-    ///     <item><see langword="false"/> = <see cref="ITester.VerifyEqualsMatchesHashCodesAsync"/></item>
-    /// </list></remarks>
+    /// <remarks>
+    ///     <list type="bullet">
+    ///         <item><see langword="true"/> = <see cref="ITester.VerifyValueEqualityAsync"/></item>
+    ///         <item><see langword="false"/> = <see cref="ITester.VerifyEqualsMatchesHashCodesAsync"/></item>
+    ///     </list>
+    /// </remarks>
     /// <value><see langword="true"/></value>
     protected virtual bool EqualsOverrideUsesFullValueEquality { get; } = true;
 

@@ -12,18 +12,16 @@ Options: <xref:Werecodent.CreateAndFake.DuplicatorTool.DuplicatorOptions>
 > 
 > * <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.ICopyHint> - Customizes <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> behavior for a specific <xref:System.Type>.
 > * <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.CopyPriority> - Values specifying running order for dynamically loaded hints.
+> * <xref:Werecodent.CreateAndFake.Design.Comparisons.IDeepCloneable`1> - Specifies an instance can deep clone itself.
+> * <xref:Werecodent.CreateAndFake.DuplicatorTool.IDuplicatable`1> - Specifies an instance can deep clone itself with the help of the <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> (passed in as a parameter) for child objects.
 
 As a hint based tool, <xref:Werecodent.CreateAndFake.DuplicatorTool.Duplicator> behavior provides customization via implementing an <xref:Werecodent.CreateAndFake.DuplicatorTool.Engine.ICopyHint> class. With the default configuration, all found hints in the test assembly are loaded into the tool.
-
-## Old
-
-The `Duplicator` tool provides methods to deep clone.
 
 ## Example
 
 A common scenario for this behavior is verifying a method doesn't change the values of an instance:
 
-```c#
+```csharp
 /// <summary>Verifies that the method won't mutate the object.</summary>
 [Theory, RandomData]
 public void SomeMethod_ValuesUnchanged(DataSample original)
@@ -35,11 +33,3 @@ public void SomeMethod_ValuesUnchanged(DataSample original)
     Tools.Asserter.ValuesEqual(original, dupe);
 }
 ```
-
-## Creation & Customization
-
-The `Duplicator` requires an `Asserter` which verifies the created copy is equal to the original by value. Like other tools, custom `CopyHint` instances can be passed in to control behavior for any specific types. Alternatively, interfaces can be attached to the types that enable them to automatically work with the tool.
-
-## IDeepCloneable & IDuplicatable
-
-These interfaces can be attached to objects and enable them to be used with the `Duplicator`. `IDeepCloneable` specifies the object can deep clone itself, and `IDuplicatable` specifies the object can deep clone itself with the help of the `Duplicator` (passed in as a parameter) for child objects.

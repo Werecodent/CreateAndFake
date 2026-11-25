@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>A C# class library that handles mocking, test data generation, and validation.</Description>
+    <PackageId>Werecodent.CreateAndFake.Design</PackageId>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. This is the support package for non-test codebases.</Description>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">

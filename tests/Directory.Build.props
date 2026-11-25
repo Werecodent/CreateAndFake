@@ -1,4 +1,5 @@
 <Project>
+  <!-- Project settings. -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,6 +12,7 @@
     <RootNamespace>Werecodent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
+  <!-- Output settings. -->
   <PropertyGroup>  
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(MSBuildThisFileDirectory)..\artifacts\bin\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
@@ -22,19 +24,26 @@
     <UseAppHost>true</UseAppHost>
   </PropertyGroup>
 
+  <!-- Extra files. -->
   <ItemGroup>
     <Content Include="testsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
+  <!-- Build dependencies. -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.1" />
-
     <!-- Last version supporting .NET Standard 2.0. -->
     <PackageReference Include="coverlet.collector" Version="6.0.4" GeneratePathProperty="true" PrivateAssets="All" />
   </ItemGroup>
 
+  <!-- Test project requirements. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.1" />
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <!-- Analyzers. -->
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" />
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="3.2.0" PrivateAssets="All" />
@@ -43,9 +52,5 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" version="18.12.1" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Analyzers" Version="5.0.1" PrivateAssets="All" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.35.0.4138" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>

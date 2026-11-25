@@ -1,5 +1,4 @@
-﻿using Werecodent.CreateAndFake.FakerTool.Proxy;
-using Werecodent.CreateAndFake.RandomizerTool.Engine;
+﻿using Werecodent.CreateAndFake.RandomizerTool.Engine;
 using Werecodent.CreateAndFake.RandomizerTool.Hints;
 
 namespace Werecodent.CreateAndFake.Tests.RandomizerTool.Hints;

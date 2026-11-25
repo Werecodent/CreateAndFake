@@ -4,14 +4,20 @@ on:
   release:
     types: [published]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   nuget:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/checkout@v6
+    - name: Checkout
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0 # All history to ensure proper tagging.
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -19,7 +25,18 @@ jobs:
           11.0.x
           10.0.x
           9.0.x
+
     - name: Build & Pack
       run: ./build/run.sh pack
-    - name: Publish to NuGet
-      run: dotnet nuget push ./artifacts/releases/*.nupkg -k ${{ Secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        
+    - name: NuGet Login
+      id: login
+      uses: nuget/login@v1
+      with:
+        user: Werecodent
+      
+    - name: NuGet Publish
+      run: >-
+        dotnet nuget push ./artifacts/releases/*.nupkg
+        --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+        --source https://api.nuget.org/v3/index.json

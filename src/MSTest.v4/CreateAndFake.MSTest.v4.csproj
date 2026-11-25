@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>A C# class library that handles mocking, test data generation, and validation.</Description>
+    <PackageId>Werecodent.CreateAndFake.MSTest.v4</PackageId>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. This is the support package providing enhanced MSTest test attributes.</Description>
   </PropertyGroup>
 
   <ItemGroup>

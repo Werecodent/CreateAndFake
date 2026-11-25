@@ -1,6 +1,4 @@
-﻿using Werecodent.CreateAndFake.FakerTool.Proxy;
-
-namespace Werecodent.CreateAndFake.Faking;
+﻿namespace Werecodent.CreateAndFake.Faking;
 
 #pragma warning disable CA1051, S1104 // Required to match out/ref.
 

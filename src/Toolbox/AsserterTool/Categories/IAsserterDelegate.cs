@@ -12,10 +12,12 @@ public interface IAsserterDelegate
     /// <summary>Verifies the <c>behavior</c> throws a <typeparamref name="T"/> <see cref="Exception"/>.</summary>
     /// <typeparam name="T"><see cref="Exception"/> <see cref="Type"/> expected to be thrown.</typeparam>
     /// <returns>The thrown <see cref="Exception"/>.</returns>
-    /// <remarks>Important relevant options: <list type="bullet">
-    ///     <item><see cref="AsserterOptions.DisableCatchingForThrowAsserts"/></item>
-    ///     <item><see cref="AsserterOptions.IncludeInternalExceptionForThrowAsserts"/></item>
-    /// </list></remarks>
+    /// <remarks>
+    ///     Important relevant options: <list type="bullet">
+    ///         <item><see cref="AsserterOptions.DisableCatchingForThrowAsserts"/></item>
+    ///         <item><see cref="AsserterOptions.IncludeInternalExceptionForThrowAsserts"/></item>
+    ///     </list>
+    /// </remarks>
     /// <inheritdoc cref="ThrowsNo{T}(Delegate,AsserterMod,string)"/>
     T Throws<T>(Delegate? behavior, AsserterMod? optionConfiguration, string? details = null)
         where T : Exception;

@@ -17,20 +17,11 @@ Options: <xref:Werecodent.CreateAndFake.TesterTool.TesterOptions>
 > [!NOTE]
 > Automated testing has a dedicated documentation pages here: [AssemblyTester](~/docs/automation/AssemblyTester.md) & [AutoTester](~/docs/automation/AutoTester.md)
 
-## Old
-
-The `Tester` tool provides methods to automatically handle common scenarios:
-
-* `PreventsNullRefException` - Verifies nulls are guarded.
-* `MutationGuarder` - Verifies parameters aren't mutated by methods.
-
-Be warned that these methods are not trivial and can be relatively slow.
-
 ## Example
 
 Simply create a test method and call the `Tester` case:
 
-```c#
+```csharp
 /// <summary>Verifies null reference exceptions are prevented.</summary>
 [Fact]
 public Task ValueRandom_GuardsNulls()
@@ -39,8 +30,5 @@ public Task ValueRandom_GuardsNulls()
 }
 ```
 
-## Creation & Customization
-
-The `Tester` requires the other tools to automatically set up and run the tests.
-
-Unlike the other tools, the `Tester` can be subclassed to add new methods or override any method to provide different behavior.
+> [!WARNING]
+>  <xref:Werecodent.CreateAndFake.TesterTool.Tester> methods are not trivial and can be relatively slow.

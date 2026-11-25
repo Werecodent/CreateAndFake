@@ -8,6 +8,9 @@ Text.
 
 Text.
 
+> [!TIP]
+> It is highly recommended to always add an [AssemblyTester](~/docs/automation/AssemblyTester.md) instance in a test assembly.
+
 ## Old
 
 Welcome to the documentation source for developers. 
@@ -16,7 +19,7 @@ Welcome to the documentation source for developers.
 
 A default set of all tools are ready to use under the static class Tools.
 
-```c#
+```csharp
 /// <summary>Verifies that the tools integrate together.</summary>
 [Fact]
 public void Tools_IntegrationWorks()
@@ -48,7 +51,7 @@ In case the default behavior is not enough, each tool can be customized for indi
 
 Although each tool can be created and customized on a per test basis, the global tools can be modified via a 'ModuleInitializer':
 
-```c#
+```csharp
 [ModuleInitializer]
 internal static void ModifyTools()
 {
@@ -68,7 +71,7 @@ The result is a rather large test you spent more time setting up than actually t
 
 This library provides a solution:
 
-```c#
+```csharp
 /// <summary>Verifies data can roundtrip.</summary>
 [Fact]
 public void DataHolder_BinarySerializes()
@@ -90,7 +93,7 @@ public void DataHolder_BinarySerializes()
 
 The `IRandom` classes provide primitive value type randomization without reflection:
 
-```c#
+```csharp
 IRandom gen = new FastRandom();
 double value1 = gen.Next<double>();
 int value2 = gen.Next<int>(0, 5);
@@ -108,7 +111,7 @@ By default only valid values are generated (not NaN or infinities), but that can
 
 Providing an initial seed and using the `SeededRandom` enables one to get the same random numbers generated between runs, appearing random but giving consistent results:
 
-```c#
+```csharp
 /// <summary>Verifies values are deterministic based upon seed.</summary>
 [Fact]
 public void Seed_Deterministic()
