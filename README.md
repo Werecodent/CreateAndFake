@@ -75,6 +75,7 @@ A local site can be built from the source code using the terminal command "./bui
 
 ## Sponsors
 
+<a href="https://github.com/Werecodent"><img src="https://github.com/Werecodent.png" width="40px" title="Werecodent" alt="Werecodent" /></a>
 <a href="https://github.com/Werebunny"><img src="https://github.com/Werebunny.png" width="40px" title="Werebunny" alt="Werebunny" /></a>
 
 ## Contributing

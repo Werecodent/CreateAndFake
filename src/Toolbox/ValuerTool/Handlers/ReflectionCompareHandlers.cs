@@ -4,9 +4,10 @@ using Werecodent.CreateAndFake.ValuerTool.Engine;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Handlers;
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class ReflectionCompareHandlers
 {
-    /// <summary>Supported types and the methods used to generate them.</summary>
+    /// <summary>The collection of related handlers.</summary>
     internal static IEnumerable<ICompareHandler> Handlers { get; } =
         RuntimeDetails
             .RuntimeTypes.Select(t => new DefaultEqualityCompareHandler(t))

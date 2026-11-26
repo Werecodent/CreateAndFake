@@ -8,7 +8,7 @@ namespace Werecodent.CreateAndFake.Design.Comparisons;
 ///     Compares <see langword="object"/>s/collections by value via <see cref="IValueEquatable"/> if possible.
 /// </summary>
 /// <param name="iterationLimit"><inheritdoc cref="IterationLimit" path="/summary"/></param>
-/// <remarks>Not reflection based.</remarks>
+/// <remarks>Not recursive or reflection based.</remarks>
 public sealed class ValueComparer(int iterationLimit)
     : IValueEquatable,
         IComparer,

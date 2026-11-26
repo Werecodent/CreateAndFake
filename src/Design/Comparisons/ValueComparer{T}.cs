@@ -5,7 +5,7 @@ namespace Werecodent.CreateAndFake.Design.Comparisons;
 /// <summary>Compares <see cref="IValueEquatable"/> <see langword="object"/>s/collections by value.</summary>
 /// <typeparam name="T">The supported <see cref="IValueEquatable"/> <see cref="Type"/>.</typeparam>
 /// <param name="comparer"><inheritdoc cref="_comparer" path="/summary"/></param>
-/// <remarks>Not reflection based.</remarks>
+/// <remarks>Not recursive or reflection based.</remarks>
 public sealed class ValueComparer<T>(ValueComparer comparer)
     : IValueEquatable,
         ITypeSupporter,

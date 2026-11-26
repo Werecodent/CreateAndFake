@@ -56,48 +56,51 @@ public sealed class TaskCopyHint : CopyHint
         }
     }
 
-    private static Task WrapPlainTaskAsync(Task task, IDuplicatorChainer duplicator)
+    /// <inheritdoc cref="TryCopy"/>
+    private static Task WrapPlainTaskAsync(Task source, IDuplicatorChainer duplicator)
     {
-        if (task.IsCanceled)
+        if (source.IsCanceled)
         {
             return Task.FromCanceled(new CancellationToken(true));
         }
-        else if (task.IsFaulted)
+        else if (source.IsFaulted)
         {
-            return Task.FromException(duplicator.Copy(task.Exception.InnerException!));
+            return Task.FromException(duplicator.Copy(source.Exception.InnerException!));
         }
-        else if (task.IsCompleted)
+        else if (source.IsCompleted)
         {
             return Task.CompletedTask;
         }
         else
         {
-            return Task.Run(() => task);
+            return Task.Run(() => source);
         }
     }
 
 #pragma warning disable CA1849, MA0042, VSTHRD002, VSTHRD103 // Completion verified.
 
-    private static Task<T> WrapTaskAsync<T>(Task<T> task, IDuplicatorChainer duplicator)
+    /// <inheritdoc cref="TryCopy"/>
+    private static Task<T> WrapTaskAsync<T>(Task<T> source, IDuplicatorChainer duplicator)
     {
-        if (task.IsCanceled)
+        if (source.IsCanceled)
         {
             return Task.FromCanceled<T>(new CancellationToken(true));
         }
-        else if (task.IsFaulted)
+        else if (source.IsFaulted)
         {
-            return Task.FromException<T>(duplicator.Copy(task.Exception.InnerException!));
+            return Task.FromException<T>(duplicator.Copy(source.Exception.InnerException!));
         }
-        else if (task.IsCompleted)
+        else if (source.IsCompleted)
         {
-            return Task.FromResult(duplicator.Copy(task.Result));
+            return Task.FromResult(duplicator.Copy(source.Result));
         }
         else
         {
-            return Task.Run(async () => duplicator.Copy(await task.ConfigureAwait(false)));
+            return Task.Run(async () => duplicator.Copy(await source.ConfigureAwait(false)));
         }
     }
 
+    /// <inheritdoc cref="TryCopy"/>
     private static TaskCompletionSource<T> ConvertSource<T>(
         TaskCompletionSource<T> source,
         IDuplicatorChainer duplicator

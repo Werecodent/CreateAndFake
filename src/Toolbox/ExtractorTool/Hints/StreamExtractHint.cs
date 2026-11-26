@@ -26,14 +26,17 @@ public sealed class StreamExtractHint : ExtractHint<Stream>
         return chainer.InnerExtractAsync(ReadContents(source, chainer), canceler);
     }
 
-    private static IEnumerable<string?> ReadContents(Stream stream, IExtractorChainer chainer)
+    /// <summary>Extracts the <paramref name="source"/> by reading it line by line.</summary>
+    /// <returns>The read content.</returns>
+    /// <inheritdoc cref="ExtractAsync"/>
+    private static IEnumerable<string?> ReadContents(Stream source, IExtractorChainer chainer)
     {
-        stream.Flush();
+        source.Flush();
 
-        long startingPosition = stream.Position;
-        stream.Position = 0;
+        long startingPosition = source.Position;
+        source.Position = 0;
 
-        using StreamReader reader = new(stream, Encoding.UTF8, true, 1024, true);
+        using StreamReader reader = new(source, Encoding.UTF8, true, 1024, true);
         for (int i = 0; !reader.EndOfStream; i++)
         {
             ArgumentGuard.ThrowUponIterationLimit(i, chainer.Options.Design.IterationLimit);
@@ -45,6 +48,6 @@ public sealed class StreamExtractHint : ExtractHint<Stream>
             }
         }
 
-        stream.Position = startingPosition;
+        source.Position = startingPosition;
     }
 }

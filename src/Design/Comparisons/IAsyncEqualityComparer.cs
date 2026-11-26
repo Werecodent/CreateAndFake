@@ -1,7 +1,10 @@
 namespace Werecodent.CreateAndFake.Design.Comparisons;
 
-/// <summary>Checks if two <see cref="object"/>s are equal with <see langword="async"/> compatibility.</summary>
+/// <summary>
+///     Handles checking if two <see cref="object"/>s are equal with <see langword="async"/> compatibility.
+/// </summary>
 /// <typeparam name="T">Supported <see cref="Type"/> for comparisons.</typeparam>
+/// <remarks>The Valuer tool can be used for this dependency.</remarks>
 public interface IAsyncEqualityComparer<T>
 {
     /// <summary>Determines if <paramref name="x"/> equals <paramref name="y"/> by value.</summary>

@@ -7,6 +7,7 @@ using Werecodent.CreateAndFake.RandomizerTool.Engine;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class ReflectionCreateHandlers
 {
     /// <summary>Ignored due being performance heavy to call under certain circumstances.</summary>

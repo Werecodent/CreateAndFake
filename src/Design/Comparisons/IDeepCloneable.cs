@@ -2,7 +2,10 @@
 
 /// <summary>Provides self copy-by-value functionality.</summary>
 /// <typeparam name="T">Self-reference <see cref="Type"/>.</typeparam>
-/// <remarks>Should only be inherited by <see langword="sealed"/> <see cref="Type"/>s.</remarks>
+/// <remarks>
+///     Should only be inherited by <see langword="sealed"/> <see cref="Type"/>s.
+///     The Duplicator tool will use the implemented behavior.
+/// </remarks>
 public interface IDeepCloneable<T>
     where T : IDeepCloneable<T>
 {

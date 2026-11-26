@@ -85,7 +85,7 @@ public interface ITester : ITool<TesterOptions>
 
     /// <summary>Verifies cancellation behavior.</summary>
     /// <typeparam name="T"><see cref="Type"/> to verify.</typeparam>
-    /// <param name="factory">Behavior to test.</param>
+    /// <param name="factory">Generator for a collection of the given size to test.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
     /// <param name="optionConfiguration">Modifications of this tool's options to apply for this call.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>

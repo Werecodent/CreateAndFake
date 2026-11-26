@@ -12,18 +12,22 @@ namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 #pragma warning disable CA1308 // Uri support for .NET 4.8 is lowercase.
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class SystemCreateHandlers
 {
+    /// <summary>Supported randomizable instances.</summary>
     private static readonly ImmutableArray<CultureInfo> _PossibleCultureInfos =
     [
         .. CultureInfo.GetCultures(CultureTypes.AllCultures),
     ];
 
+    /// <summary>Supported randomizable instances.</summary>
     private static readonly ImmutableArray<TimeZoneInfo> _PossibleTimeZoneInfos =
     [
         .. GetSystemTimeZones(),
     ];
 
+    /// <summary>Supported randomizable instances.</summary>
     private static readonly ImmutableArray<TransitionTime> _PossibleTransitionTimes =
     [
         .. _PossibleTimeZoneInfos
@@ -31,6 +35,7 @@ internal static class SystemCreateHandlers
             .SelectMany(d => new[] { d.DaylightTransitionStart, d.DaylightTransitionEnd }),
     ];
 
+    /// <summary>Supported randomizable instances.</summary>
     private static readonly ECCurve[] _SupportedECDsaCurves =
     [
         ECCurve.NamedCurves.nistP256,
@@ -38,7 +43,7 @@ internal static class SystemCreateHandlers
         ECCurve.NamedCurves.nistP521,
     ];
 
-    /// <summary>Supported types and the methods used to generate them.</summary>
+    /// <summary>The collection of related handlers.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
     [
         new FactoryCreateHandler<Uri>(rand => rand.Create<UriBuilder>().Uri),

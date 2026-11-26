@@ -28,6 +28,8 @@ internal sealed class EqualityValidator(TesterOptions options)
         return VerifyValueEqualityAsync(type, true, canceler);
     }
 
+    /// <param name="mustIncludeAllValues">If all members must be included in equality comparisons.</param>
+    /// <inheritdoc cref="ITester.VerifyValueEqualityAsync(Type,CancellationToken,TesterMod)"/>
     private Task VerifyValueEqualityAsync(
         Type type,
         bool mustIncludeAllValues,
@@ -122,6 +124,15 @@ internal sealed class EqualityValidator(TesterOptions options)
         }
     }
 
+    /// <param name="describer">Inheritance and member information to use.</param>
+    /// <param name="x">Instance to compare with <paramref name="y"/>.</param>
+    /// <param name="y">Instance to compare with <paramref name="x"/>.</param>
+    /// <param name="xEquals">Equality method for <paramref name="x"/> to use.</param>
+    /// <param name="yEquals">Equality method for <paramref name="y"/> to use.</param>
+    /// <param name="xGetHash">Hashing method for <paramref name="x"/> to use.</param>
+    /// <param name="yGetHash">Hashing method for <paramref name="y"/> to use.</param>
+    /// <returns>A Task that represents the asynchronous operation.</returns>
+    /// <inheritdoc cref="VerifyValueEqualityAsync(Type,bool,CancellationToken)"/>
     private async Task VerifyValueEqualityAsync(
         TypeDescriber describer,
         object x,

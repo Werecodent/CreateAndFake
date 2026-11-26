@@ -14,6 +14,8 @@ internal sealed class CancelValidator(TesterOptions options)
     internal TesterOptions Options { get; } =
         options ?? throw new ArgumentNullException(nameof(options));
 
+    /// <inheritdoc cref="ITester.VerifySupportsCancellationAsync{T}(
+    ///     Func{int,IAsyncEnumerable{T}},CancellationToken,TesterMod)"/>
     public Task VerifySupportsCancellationAsync<T>(
         Func<int, IAsyncEnumerable<T>> factory,
         CancellationToken canceler
@@ -22,6 +24,8 @@ internal sealed class CancelValidator(TesterOptions options)
         return VerifyUsesWithCancellationAsync((size, _) => factory(size), canceler);
     }
 
+    /// <inheritdoc cref="ITester.VerifySupportsCancellationAsync{T}(
+    ///     Func{int,CancellationToken,IAsyncEnumerable{T}},CancellationToken,TesterMod)"/>
     public async Task VerifySupportsCancellationAsync<T>(
         Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
         CancellationToken canceler
@@ -31,6 +35,8 @@ internal sealed class CancelValidator(TesterOptions options)
         await VerifyUsesWithCancellationAsync(factory, canceler).ConfigureAwait(false);
     }
 
+    /// <inheritdoc cref="ITester.VerifySupportsCancellationAsync{T}(
+    ///     Func{int,CancellationToken,IAsyncEnumerable{T}},CancellationToken,TesterMod)"/>
     private Task VerifyUsesWithCancellationAsync<T>(
         Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
         CancellationToken canceler
@@ -68,6 +74,8 @@ internal sealed class CancelValidator(TesterOptions options)
         return RunCancelTestsAsync(iterateUsingForeachAsync, "using WithCancellation", canceler);
     }
 
+    /// <inheritdoc cref="ITester.VerifySupportsCancellationAsync{T}(
+    ///     Func{int,CancellationToken,IAsyncEnumerable{T}},CancellationToken,TesterMod)"/>
     private Task VerifyUsesGivenCancellationTokenAsync<T>(
         Func<int, CancellationToken, IAsyncEnumerable<T>> factory,
         CancellationToken canceler
@@ -100,6 +108,12 @@ internal sealed class CancelValidator(TesterOptions options)
         return RunCancelTestsAsync(iterateUsingForeachAsync, "given a token directly", canceler);
     }
 
+    /// <summary>Runs the round of cancellation tests.</summary>
+    /// <typeparam name="T">Content <see cref="Type"/> for the collection.</typeparam>
+    /// <param name="modifiedTestFactory">Generator for the collection of a given size to test.</param>
+    /// <param name="testNote">Detail to include in a failure <see cref="Exception"/>.</param>
+    /// <param name="canceler">Aborts execution if triggered.</param>
+    /// <returns> A Task that represents the asynchronous operation.</returns>
     private async Task RunCancelTestsAsync<T>(
         Func<int, int, IAsyncEnumerable<T>> modifiedTestFactory,
         string testNote,

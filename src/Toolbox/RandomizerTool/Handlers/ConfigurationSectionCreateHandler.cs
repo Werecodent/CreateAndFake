@@ -13,10 +13,13 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
+/// <summary>Handles creation of configuration sections.</summary>
 internal sealed class ConfigurationSectionCreateHandler : ICreateHandler
 {
+    /// <inheritdoc/>
     public Type? SupportedType => typeof(IConfigurationSection);
 
+    /// <inheritdoc/>
     public object? CreateSupported(IRandomizerChainer randomizer)
     {
         ArgumentGuard.ThrowIfNull(randomizer);

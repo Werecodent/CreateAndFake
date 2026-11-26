@@ -5,7 +5,7 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.ValuerTool;
 
-/// <summary>Expresses a value difference between two objects.</summary>
+/// <summary>Expresses a found difference between an expected vs actual state.</summary>
 public sealed class Difference : IValueEquatable, IEquatable<Difference>, IDeepCloneable<Difference>
 {
     /// <summary>Message stating the difference.</summary>

@@ -147,6 +147,9 @@ public sealed class Runner(RunnerOptions options) : IRunner
         return new(data.Method, data.Args, result, false);
     }
 
+    /// <summary>Removes wrappers obfuscating the actually thrown error.</summary>
+    /// <param name="error">potentially wrapped error that was thrown.</param>
+    /// <returns>The inner exception detailing the problem.</returns>
     private static Exception? UnwrapException(Exception? error)
     {
         Exception? result = error;

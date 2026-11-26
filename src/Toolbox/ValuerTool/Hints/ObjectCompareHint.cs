@@ -153,6 +153,9 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         return hash;
     }
 
+    /// <summary>Gets accessible properties according to configured options.</summary>
+    /// <param name="type">The <see cref="Type"/> to find properties for.</param>
+    /// <returns>The found properties.</returns>
     private IEnumerable<PropertyInfo> GetAccessibleProperties(Type? type)
     {
         return (
@@ -162,6 +165,9 @@ public abstract class ObjectCompareHint(bool onlyPublic) : CompareHint
         ).Where(p => p.CanRead);
     }
 
+    /// <summary>Gets accessible properties according to configured options.</summary>
+    /// <param name="type">The <see cref="Type"/> to find fields for.</param>
+    /// <returns>The found fields.</returns>
     private IEnumerable<FieldInfo> GetAccessibleFields(Type? type)
     {
         return onlyPublic

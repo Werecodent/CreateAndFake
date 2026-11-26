@@ -2,7 +2,8 @@ using Werecodent.CreateAndFake.Design.Types;
 
 namespace Werecodent.CreateAndFake.ValuerTool.Engine;
 
-/// <summary>Handles comparison and hashing of a specific type.</summary>
+/// <summary>Handles comparison and hashing of a concrete <see cref="Type"/>.</summary>
+/// <remarks>For optimized performance by keying off the <see cref="ITypeSupporter.SupportedType"/>.</remarks>
 internal interface ICompareHandler : ITypeSupporter
 {
     /// <summary>

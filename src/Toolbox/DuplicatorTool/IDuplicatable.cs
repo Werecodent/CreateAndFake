@@ -2,7 +2,10 @@
 
 /// <summary>Enables deep copies with the aid of the duplicator.</summary>
 /// <typeparam name="T">Self-reference <see cref="Type"/>.</typeparam>
-/// <remarks>Should only be inherited by <see langword="sealed"/> <see cref="Type"/>s.</remarks>
+/// <remarks>
+///     Should only be inherited by <see langword="sealed"/> <see cref="Type"/>s.
+///     The <see cref="Duplicator"/> tool will use the implemented behavior.
+/// </remarks>
 public interface IDuplicatable<T>
     where T : IDuplicatable<T>
 {

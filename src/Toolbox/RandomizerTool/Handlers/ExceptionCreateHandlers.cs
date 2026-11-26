@@ -8,6 +8,7 @@ namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
 #pragma warning disable CS0618, SYSLIB0050 // Needed for backwards compatibility.
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class ExceptionCreateHandlers
 {
     /// <summary>Exceptions that have issues in legacy .NET.</summary>
@@ -70,6 +71,7 @@ internal static class ExceptionCreateHandlers
             .Where(t => t.GetConstructor([typeof(string)]) != null)
             .ToFrozenSet();
 
+    /// <summary>The collection of related handlers.</summary>
     internal static IEnumerable<ICreateHandler> Handlers { get; } =
         PotentialExceptions
             .Select(t => t.GetConstructor([typeof(string)]))

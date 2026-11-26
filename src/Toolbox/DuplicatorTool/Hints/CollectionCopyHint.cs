@@ -41,6 +41,7 @@ public sealed class CollectionCopyHint : CopyHint
         return CopyHintResult.None;
     }
 
+    /// <inheritdoc cref="TryCopy"/>
     private static IEnumerable? Copy(IEnumerable source, IDuplicatorChainer duplicator)
     {
         Type type = source.GetType();
@@ -61,6 +62,10 @@ public sealed class CollectionCopyHint : CopyHint
         return MakeCollection(contents, type);
     }
 
+    /// <summary>Creates the <paramref name="collectionType"/> populated with <paramref name="contents"/>.</summary>
+    /// <param name="contents">Cloned contents to fill the collection with.</param>
+    /// <param name="collectionType">Collection <see cref="Type"/> to create.</param>
+    /// <returns>The populated collection.</returns>
     private static IEnumerable? MakeCollection(Array contents, Type collectionType)
     {
         if (collectionType.IsArray)

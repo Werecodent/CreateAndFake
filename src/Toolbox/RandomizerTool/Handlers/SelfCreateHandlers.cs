@@ -16,8 +16,10 @@ using Werecodent.CreateAndFake.ValuerTool;
 
 namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
 
+/// <summary>Holds a collection of related handlers.</summary>
 internal static class SelfCreateHandlers
 {
+    /// <summary>Generates randomized instances by properties.</summary>
     private static readonly ObjectCreateHint _SubHint = new();
 
     /// <summary>Supported types and the methods used to generate them.</summary>
@@ -187,6 +189,10 @@ internal static class SelfCreateHandlers
         )),
     ];
 
+    /// <summary>Populates the options with purely random values.</summary>
+    /// <typeparam name="T">Options <see cref="Type"/> to create.</typeparam>
+    /// <param name="randomizer">Handles randomizing child values.</param>
+    /// <returns>The created options.</returns>
     private static T CreateRandomOptionsBase<T>(IRandomizerChainer randomizer)
     {
         return (T)_SubHint.TryToCreate(typeof(T), randomizer).Data!;

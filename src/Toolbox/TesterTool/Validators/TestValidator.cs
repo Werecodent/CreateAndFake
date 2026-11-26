@@ -45,6 +45,12 @@ internal sealed class TestValidator(TesterOptions options)
         );
     }
 
+    /// <summary>
+    ///     Creates all potential test class names that would qualify
+    ///     as code coverage for the <paramref name="codeClass"/>.
+    /// </summary>
+    /// <param name="codeClass"><see cref="Type"/> to check coverage for.</param>
+    /// <returns>The test class names.</returns>
     private IEnumerable<string> FindPossibleTestClassNames(Type codeClass)
     {
         if (

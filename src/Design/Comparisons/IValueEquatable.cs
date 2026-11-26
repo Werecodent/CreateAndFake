@@ -1,6 +1,7 @@
 ﻿namespace Werecodent.CreateAndFake.Design.Comparisons;
 
 /// <summary>Provides value equality without changing the default reference equality.</summary>
+/// <remarks>The Valuer tool will use the implemented behavior.</remarks>
 public interface IValueEquatable
 {
     /// <summary>Compares <see langword="this"/> to <paramref name="other"/> by value.</summary>
