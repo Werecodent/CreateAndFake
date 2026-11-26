@@ -160,9 +160,12 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
             {
                 argDetails.Append("'FAKE'");
             }
-            else if (entry.Value is Type type)
+            else if (
+                entry.Value is Type
+                || RuntimeDetails.RuntimeTypes.Contains(entry.Value.GetType())
+            )
             {
-                argDetails.Append(GenericConverter.ExpandName(type));
+                argDetails.Append(GenericConverter.ExpandName(entry.Value));
             }
             else if (entry.Value is ICollection series)
             {
