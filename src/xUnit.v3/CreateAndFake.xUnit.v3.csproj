@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <PackageId>Werecodent.CreateAndFake.xUnit.v3</PackageId>
-    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. This is the support package providing enhanced xUnit test attributes.</Description>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. This is the support package providing enhanced xUnit test attributes.</Description>
   </PropertyGroup>
 
   <ItemGroup>

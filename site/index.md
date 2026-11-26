@@ -2,7 +2,7 @@
 
 ## Overview
 
-Create & Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
+`Create & Fake` is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. Designed to handle the bulk of test setup quickly and easily so that developers can focus on the behavior to test, making tests easier to develop and maintain like so:
 
 > ### Test Attribute Example
 > 
@@ -52,6 +52,8 @@ Even more, classes are able to be automatically tested in a variety of ways simp
 > ```csharp
 > public sealed class MyClassTests : AutoTester<MyClass>;
 > ```
+
+`Create & Fake` can even test entire assemblies and enforce quality throughout a project. Never again rely upon having to remember to add a test class per code class for example.
 
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the <xref:Werecodent.CreateAndFake.FakerTool.Faker> utilize value equality in matching arguments.
 

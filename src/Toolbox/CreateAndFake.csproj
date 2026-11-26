@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <PackageId>Werecodent.CreateAndFake.Toolbox</PackageId>
-    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons and validation. This is the core package providing all tooling to use.</Description>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. This is the core package providing all tooling to use.</Description>
   </PropertyGroup>
 
   <ItemGroup>

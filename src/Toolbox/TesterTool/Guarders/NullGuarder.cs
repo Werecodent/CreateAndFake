@@ -69,7 +69,6 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <summary>
     ///     Verifies nulls are guarded on constructors.
     ///     Tests each nullable parameter possible with null.
-    ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate constructor parameters.</param>
@@ -92,7 +91,6 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <summary>
     ///     Verifies nulls are guarded on methods.
     ///     Tests each nullable parameter possible with null.
-    ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
     /// <param name="instance">Instance to test the methods on.</param>
     /// <param name="canceler">Aborts execution if triggered.</param>
@@ -118,7 +116,6 @@ internal sealed class NullGuarder(TesterOptions options) : BaseGuarder(options)
     /// <summary>
     ///     Verifies nulls are guarded on methods.
     ///     Tests each nullable parameter possible with null.
-    ///     Ignores any exception besides NullReferenceException and moves on.
     /// </summary>
     /// <param name="type">Type to verify.</param>
     /// <param name="callAllMethods">Run instance methods to validate factory parameters.</param>
