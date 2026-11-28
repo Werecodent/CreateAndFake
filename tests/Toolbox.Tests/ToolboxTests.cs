@@ -7,7 +7,7 @@ public sealed class ToolboxTests : AssemblyTester
     protected override Assembly CodeAssembly { get; } = Assembly.GetAssembly(typeof(ToolSet));
 
     [Fact]
-    internal static async Task CreateAndFake_TestIndividual()
+    internal static async Task Toolbox_TestIndividual()
     {
         for (int i = 0; i < 100; i++)
         {

@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
+    <ProjectReference Include="../Toolbox/Werecodent.CreateAndFake.Toolbox.csproj" />
     <PackageReference Include="MSTest.TestFramework" Version="[2.2.1,4.0.0)" />
   </ItemGroup>
 

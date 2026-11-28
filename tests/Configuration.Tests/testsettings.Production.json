@@ -23,7 +23,7 @@
             "ExtractPrivateMembers": true,
             "IncludeFrameworkHints": false,
             "IgnoredTypesForUniques": [
-                "Werecodent.CreateAndFake.Design.Randomization.FastRandom, CreateAndFake.Design",
+                "Werecodent.CreateAndFake.Design.Randomization.FastRandom, Werecodent.CreateAndFake.Design",
                 "System.Int32"
             ],
             "NonExtractableTypes": [

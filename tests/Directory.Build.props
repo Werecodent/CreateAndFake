@@ -9,7 +9,6 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <TestingPlatformDotnetTestSupport>false</TestingPlatformDotnetTestSupport>
-    <RootNamespace>Werecodent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
   <!-- Output settings. -->

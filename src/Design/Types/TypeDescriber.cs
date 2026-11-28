@@ -200,7 +200,7 @@ public sealed class TypeDescriber : IValueEquatable, IEquatable<TypeDescriber>, 
     /// <param name="assembly">Accessing assembly to check visibility access for.</param>
     /// <returns>The found creatable subclasses.</returns>
     /// <remarks>
-    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("Werecodent.CreateAndFake.Toolbox")</c>
     ///     to access its <see langword="internal"/> types for the test framework.
     /// </remarks>
     private IEnumerable<Type> FindLoadedSubclasses(AssemblyName assembly)

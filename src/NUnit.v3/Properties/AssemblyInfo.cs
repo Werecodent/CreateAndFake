@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CreateAndFake.NUnit.v3.Tests")]
+[assembly: InternalsVisibleTo("Werecodent.CreateAndFake.NUnit.v3.Tests")]

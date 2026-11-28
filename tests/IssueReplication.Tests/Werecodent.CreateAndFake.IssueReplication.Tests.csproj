@@ -13,20 +13,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="testsettings.Production.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="xunit.v3" Version="3.2.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1" PrivateAssets="All" />
     <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
-    <ProjectReference Include="..\..\src\xUnit.v3\CreateAndFake.xUnit.v3.csproj" />
+    <ProjectReference Include="..\..\src\Samples\Werecodent.CreateAndFake.Samples.csproj" />
+    <ProjectReference Include="..\..\src\Toolbox\Werecodent.CreateAndFake.Toolbox.csproj" />
+    <ProjectReference Include="..\..\src\xUnit.v3\Werecodent.CreateAndFake.xUnit.v3.csproj" />
     <Using Include="Werecodent.CreateAndFake" />
     <Using Include="Werecodent.CreateAndFake.Faking" />
     <Using Include="Werecodent.CreateAndFake.Fluent" />
@@ -34,4 +29,3 @@
   </ItemGroup>
 
 </Project>
-

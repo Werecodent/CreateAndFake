@@ -13,10 +13,7 @@
     "editor.rulers": [
         120
     ],
-    "[csharp]": {
-        "editor.defaultFormatter": "csharpier.csharpier-vscode"
-    },
-    "[xml]": {
+    "[csharp][xml]": {
         "editor.defaultFormatter": "csharpier.csharpier-vscode"
     },
     "json.schemaDownload.trustedDomains": {

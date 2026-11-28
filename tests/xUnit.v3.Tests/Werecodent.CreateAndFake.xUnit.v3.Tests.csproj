@@ -8,24 +8,24 @@
     <TargetFrameworks>net11.0;net10.0;net9.0</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='net48'">
-    <DefineConstants>LEGACY</DefineConstants>
+  <PropertyGroup>
+    <OutputType>exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1" PrivateAssets="All" />
     <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Samples\CreateAndFake.Samples.csproj" />
-    <ProjectReference Include="..\..\src\Toolbox\CreateAndFake.csproj" />
-    <ProjectReference Include="..\..\src\xUnit.v2\CreateAndFake.xUnit.v2.csproj" />
+    <ProjectReference Include="..\..\src\Samples\Werecodent.CreateAndFake.Samples.csproj" />
+    <ProjectReference Include="..\..\src\Toolbox\Werecodent.CreateAndFake.Toolbox.csproj" />
+    <ProjectReference Include="..\..\src\xUnit.v3\Werecodent.CreateAndFake.xUnit.v3.csproj" />
     <Using Include="Werecodent.CreateAndFake" />
     <Using Include="Werecodent.CreateAndFake.Faking" />
     <Using Include="Werecodent.CreateAndFake.Fluent" />
-    <Using Include="Werecodent.CreateAndFake.xUnit.v2" />
+    <Using Include="Werecodent.CreateAndFake.xUnit.v3" />
   </ItemGroup>
 
 </Project>

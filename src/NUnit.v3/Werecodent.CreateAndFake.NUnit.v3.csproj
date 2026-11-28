@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Toolbox/CreateAndFake.csproj" />
+    <ProjectReference Include="../Toolbox/Werecodent.CreateAndFake.Toolbox.csproj" />
     <PackageReference Include="nunit" Version="[3.10.0,)" />
     <ProjectCapability Remove="TestContainer" />
   </ItemGroup>

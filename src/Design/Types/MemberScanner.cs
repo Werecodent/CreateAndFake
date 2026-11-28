@@ -32,10 +32,10 @@ public abstract class MemberScanner<T>(Type? type) : ITypeSupporter
     public abstract IEnumerable<T> PublicOrInternal { get; }
 
     /// <remarks>
-    ///     Finds <see langword="internal"/> <typeparamref name="T"/> members only if
-    ///     they are visible to the calling method's <see cref="Assembly"/>. Mark an
-    ///     <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c> to
-    ///     access its  <see langword="internal"/> properties for the test framework.
+    ///     Finds <see langword="internal"/> <typeparamref name="T"/> members only if they are
+    ///     visible to the calling method's <see cref="Assembly"/>. Mark an <see cref="Assembly"/>
+    ///     with <c>InternalsVisibleTo("Werecodent.CreateAndFake.Toolbox")</c> to access its
+    ///     <see langword="internal"/> properties for the test framework.
     /// </remarks>
     /// <inheritdoc cref="PublicOrInternal"/>
     public IEnumerable<T> Visible => FindVisible(Assembly.GetCallingAssembly().GetName());

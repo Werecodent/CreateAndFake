@@ -2,6 +2,6 @@
 
 [assembly: CLSCompliant(true)]
 [assembly: InternalsVisibleTo("Werecodent.CreateAndFake.FakerTypes")]
-[assembly: InternalsVisibleTo("CreateAndFake.Tests")]
-[assembly: InternalsVisibleTo("CreateAndFake.Configuration.Tests")]
-[assembly: InternalsVisibleTo("CreateAndFake.IssueReplication.Tests")]
+[assembly: InternalsVisibleTo("Werecodent.CreateAndFake.Toolbox.Tests")]
+[assembly: InternalsVisibleTo("Werecodent.CreateAndFake.Configuration.Tests")]
+[assembly: InternalsVisibleTo("Werecodent.CreateAndFake.IssueReplication.Tests")]

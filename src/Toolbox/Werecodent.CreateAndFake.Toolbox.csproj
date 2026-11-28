@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Werecodent.CreateAndFake</RootNamespace>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
@@ -14,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Design/CreateAndFake.Design.csproj" />
+    <ProjectReference Include="../Design/Werecodent.CreateAndFake.Design.csproj" />
     <Using Include="Werecodent.CreateAndFake.Design.Extensions" />
   </ItemGroup>
 

@@ -23,7 +23,7 @@ public static class ScopeChecker
     ///     the <paramref name="assembly"/>, <see langword="false"/> otherwise.
     /// </returns>
     /// <remarks>
-    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("Werecodent.CreateAndFake.Toolbox")</c>
     ///     to access its <see langword="internal"/> types for this method.
     /// </remarks>
     public static bool IsVisible(Type? type, AssemblyName assembly)
@@ -42,7 +42,7 @@ public static class ScopeChecker
     ///     are visible to the <paramref name="assembly"/>, <see langword="false"/> otherwise.
     /// </returns>
     /// <remarks>
-    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("CreateAndFake")</c>
+    ///     Mark an <see cref="Assembly"/> with <c>InternalsVisibleTo("Werecodent.CreateAndFake.Toolbox")</c>
     ///     to enable <see langword="internal"/> members visibility per this method.
     /// </remarks>
     internal static bool InternalsAreVisible(Type? type, AssemblyName assembly)

@@ -9,7 +9,6 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <NoWarn>$(NoWarn);NU1510;NU1903</NoWarn>
-    <RootNamespace>Werecodent.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
   <!-- Output settings. -->
