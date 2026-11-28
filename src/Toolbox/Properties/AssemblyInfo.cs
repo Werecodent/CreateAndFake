@@ -4,3 +4,4 @@
 [assembly: InternalsVisibleTo("Werecodent.CreateAndFake.FakerTypes")]
 [assembly: InternalsVisibleTo("CreateAndFake.Tests")]
 [assembly: InternalsVisibleTo("CreateAndFake.Configuration.Tests")]
+[assembly: InternalsVisibleTo("CreateAndFake.IssueReplication.Tests")]

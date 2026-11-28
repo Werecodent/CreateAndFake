@@ -42,21 +42,27 @@ internal sealed class SupportValidator(TesterOptions options)
     {
         ArgumentGuard.ThrowIfNull(codeAssembly);
 
+        string? safeToString(Type type)
+        {
+            try
+            {
+                return Options.Randomizer.Create(type).ToString();
+            }
+            catch (ToolException)
+            {
+                return null;
+            }
+        }
+
         Options.Asserter.Debug(
             ScopeChecker
                 .FindLoadedSpecificTypes(codeAssembly)
                 .Where(t => !t.IsAbstract)
                 .Where(t => ScopeChecker.IsVisible(t, Assembly.GetExecutingAssembly().GetName()))
-                .ToDictionary(GenericConverter.ExpandName, t =>
+                .Select(t => new
                 {
-                    try
-                    {
-                        return Options.Randomizer.Create(t);
-                    }
-                    catch (ToolException)
-                    {
-                        return null;
-                    }
+                    Type = GenericConverter.ExpandName(t),
+                    ToString = safeToString(t),
                 })
         );
     }

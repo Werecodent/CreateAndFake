@@ -1,7 +1,7 @@
 using static Bullseye.Targets;
 using static SimpleExec.Command;
 
-namespace Build;
+namespace Werecodent.CreateAndFake.Build;
 
 /// <summary>Manages build behavior for the solution.</summary>
 /// <remarks>Do not add this project to the solution file.</remarks>

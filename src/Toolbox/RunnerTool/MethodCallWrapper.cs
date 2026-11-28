@@ -141,35 +141,35 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
         StringBuilder argDetails = new();
         foreach (DictionaryEntry entry in _args)
         {
-            argDetails.Append(nl).Append(" - ").Append(entry.Key).Append(": ");
+            _ = argDetails.Append(nl).Append(" - ").Append(entry.Key).Append(": ");
 
             if (entry.Value is IDisposable)
             {
-                argDetails.Append('*');
+                _ = argDetails.Append('*');
             }
             if (entry.Value is IAsyncDisposable)
             {
-                argDetails.Append("**");
+                _ = argDetails.Append("**");
             }
 
             if (entry.Value == null)
             {
-                argDetails.Append("'NULL'");
+                _ = argDetails.Append("'NULL'");
             }
             else if (entry.Value is Fake or IFaked)
             {
-                argDetails.Append("'FAKE'");
+                _ = argDetails.Append("'FAKE'");
             }
             else if (
                 entry.Value is Type
                 || RuntimeDetails.RuntimeTypes.Contains(entry.Value.GetType())
             )
             {
-                argDetails.Append(GenericConverter.ExpandName(entry.Value));
+                _ = argDetails.Append(GenericConverter.ExpandName(entry.Value));
             }
             else if (entry.Value is ICollection series)
             {
-                argDetails
+                _ = argDetails
                     .Append('(')
                     .Append(series.Count)
                     .Append(") ")
@@ -179,13 +179,13 @@ public sealed class MethodCallWrapper(MethodBase method, OrderedDictionary args)
             {
                 argDetails
                     .Append('(')
-                    .Append(((dynamic)entry.Value).Count)
+                    .Append(Enumerable.Count((dynamic)entry.Value))
                     .Append(") ")
                     .Append(GenericConverter.ExpandName(entry.Value));
             }
             else
             {
-                argDetails.Append(entry.Value.ToString());
+                _ = argDetails.Append(entry.Value.ToString());
             }
         }
 

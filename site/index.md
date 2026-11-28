@@ -53,7 +53,7 @@ Even more, classes are able to be automatically tested in a variety of ways simp
 > public sealed class MyClassTests : AutoTester<MyClass>;
 > ```
 
-`Create & Fake` can even test entire assemblies and enforce quality throughout a project. Never again rely upon having to remember to add a test class per code class for example.
+`Create & Fake` can even test entire assemblies and enforce quality throughout a project. No more nagging or having to remember every detail like adding a test class per code class; let the tests do the talking.
 
 A key benefit of the library is in how the tools are logically integrated with each other. For example, the <xref:Werecodent.CreateAndFake.RandomizerTool.Randomizer> will use stubs for interfaces that have no known implementations in the code. Or the mocks created by the <xref:Werecodent.CreateAndFake.FakerTool.Faker> utilize value equality in matching arguments.
 
