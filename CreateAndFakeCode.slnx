@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Design/Werecodent.CreateAndFake.Design.csproj" />
+    <Project Path="src/MSTest.v3/Werecodent.CreateAndFake.MSTest.v3.csproj" />
+    <Project Path="src/MSTest.v4/Werecodent.CreateAndFake.MSTest.v4.csproj" />
+    <Project Path="src/NUnit.v3/Werecodent.CreateAndFake.NUnit.v3.csproj" />
+    <Project Path="src/Samples/Werecodent.CreateAndFake.Samples.csproj" />
+    <Project Path="src/Toolbox/Werecodent.CreateAndFake.Toolbox.csproj" />
+    <Project Path="src/xUnit.v2/Werecodent.CreateAndFake.xUnit.v2.csproj" />
+    <Project Path="src/xUnit.v3/Werecodent.CreateAndFake.xUnit.v3.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Configuration.Tests/Werecodent.CreateAndFake.Configuration.Tests.csproj" />
+    <Project Path="tests/Design.Tests/Werecodent.CreateAndFake.Design.Tests.csproj" />
+    <Project Path="tests/IssueReplication.Tests/Werecodent.CreateAndFake.IssueReplication.Tests.csproj" />
+    <Project Path="tests/MSTest.v3.Tests/Werecodent.CreateAndFake.MSTest.v3.Tests.csproj" />
+    <Project Path="tests/MSTest.v4.Tests/Werecodent.CreateAndFake.MSTest.v4.Tests.csproj" />
+    <Project Path="tests/NUnit.v3.Tests/Werecodent.CreateAndFake.NUnit.v3.Tests.csproj" />
+    <Project Path="tests/Samples.Tests/Werecodent.CreateAndFake.Samples.Tests.csproj" />
+    <Project Path="tests/Toolbox.Tests/Werecodent.CreateAndFake.Toolbox.Tests.csproj" />
+    <Project Path="tests/xUnit.v2.Tests/Werecodent.CreateAndFake.xUnit.v2.Tests.csproj" />
+    <Project Path="tests/xUnit.v3.Tests/Werecodent.CreateAndFake.xUnit.v3.Tests.csproj" />
+  </Folder>
+</Solution>

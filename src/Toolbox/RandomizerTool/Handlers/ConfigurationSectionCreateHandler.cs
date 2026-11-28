@@ -1,0 +1,43 @@
+using Microsoft.Extensions.Configuration;
+using Werecodent.CreateAndFake.AsserterTool;
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.DuplicatorTool;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.FakerTool;
+using Werecodent.CreateAndFake.Faking;
+using Werecodent.CreateAndFake.MutatorTool;
+using Werecodent.CreateAndFake.RandomizerTool.Engine;
+using Werecodent.CreateAndFake.RunnerTool;
+using Werecodent.CreateAndFake.TesterTool;
+using Werecodent.CreateAndFake.ValuerTool;
+
+namespace Werecodent.CreateAndFake.RandomizerTool.Handlers;
+
+/// <summary>Handles creation of configuration sections.</summary>
+internal sealed class ConfigurationSectionCreateHandler : ICreateHandler
+{
+    /// <inheritdoc/>
+    public Type? SupportedType => typeof(IConfigurationSection);
+
+    /// <inheritdoc/>
+    public object? CreateSupported(IRandomizerChainer randomizer)
+    {
+        ArgumentGuard.ThrowIfNull(randomizer);
+
+        Fake<IConfigurationSection> config = randomizer.Create<Fake<IConfigurationSection>>();
+        Behavior<IConfigurationSection> nullSection = Behavior.Returns<IConfigurationSection>(null);
+
+        config.Setup(c => c.GetSection("Design"), nullSection);
+        config.Setup(c => c.GetSection(nameof(Asserter)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Duplicator)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Extractor)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Faker)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Mutator)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Randomizer)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Runner)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Tester)), nullSection);
+        config.Setup(c => c.GetSection(nameof(Valuer)), nullSection);
+
+        return config.Dummy;
+    }
+}

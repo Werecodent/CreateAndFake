@@ -1,0 +1,56 @@
+using Werecodent.CreateAndFake.Design;
+using Werecodent.CreateAndFake.Design.Content;
+using Werecodent.CreateAndFake.Design.Exceptions;
+using Werecodent.CreateAndFake.ExtractorTool;
+using Werecodent.CreateAndFake.RandomizerTool.Hints;
+using Werecodent.CreateAndFake.Samples.Scenarios;
+
+namespace Werecodent.CreateAndFake.Tests.ExtractorTool;
+
+public sealed class ExtractorTests : AutoTester<Extractor>
+{
+    protected override TesterMod OptionConfiguration { get; } =
+        opt => opt with { IgnorableExceptions = [typeof(ToolException)] };
+
+    [Fact]
+    internal static void Extract_CollectionsWork()
+    {
+        foreach (
+            Type type in CollectionCreateHint.PotentialCollections.Where(t =>
+                !ArgumentGuard.IsAsynchronous(t)
+            )
+        )
+        {
+            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).Assert().IsNotEmpty();
+        }
+    }
+
+    [Fact]
+    internal static void Extract_LegacyCollectionsWork()
+    {
+        foreach (Type type in LegacyCollectionCreateHint.PotentialCollections)
+        {
+            Tools.Extractor.Extract(Tools.Randomizer.Create(type)).Assert().IsNotEmpty();
+        }
+    }
+
+#pragma warning disable MA0042, VSTHRD103 // Behavior specifically being tested.
+
+    [Theory, RandomData]
+    internal static async Task ExtractAsync_MatchesExtract(DataHolderSample sample)
+    {
+        ISet<object> asyncContent = (
+            await AsyncSeriesHelper.ToListAsync(
+                await Tools.Extractor.ExtractAsync(sample, TestContext.Current.CancellationToken),
+                Tools.Valuer.Options.Design.IterationLimit,
+                TestContext.Current.CancellationToken
+            )
+        ).ToHashSet();
+
+        ISet<object> syncContent = Tools.Extractor.Extract(sample).ToHashSet();
+
+        asyncContent.Assert().Is(syncContent);
+    }
+
+#pragma warning restore MA0042, VSTHRD103
+}

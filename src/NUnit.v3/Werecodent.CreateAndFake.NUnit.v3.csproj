@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Werecodent.CreateAndFake.NUnit.v3</PackageId>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. This is the support package providing enhanced NUnit test attributes.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Toolbox/Werecodent.CreateAndFake.Toolbox.csproj" />
+    <PackageReference Include="nunit" Version="[3.10.0,)" />
+    <ProjectCapability Remove="TestContainer" />
+  </ItemGroup>
+
+</Project>

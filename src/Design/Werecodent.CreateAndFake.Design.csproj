@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>LEGACY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Werecodent.CreateAndFake.Design</PackageId>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. This is the support package for non-test codebases.</Description>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
+    <PackageReference Include="System.Reflection.Emit" Version="[4.3.0,)" />
+    <PackageReference Include="System.ValueTuple" Version="[4.3.0,)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+#logo {
+    max-height: 48px;
+    width: auto;
+    padding-right: 8px;
+}
+
+.typelist.extensionMethods {
+    display: none;
+}
+
+footer {
+    display: none;
+}
+
+h1 {
+    text-decoration-line: underline;
+}

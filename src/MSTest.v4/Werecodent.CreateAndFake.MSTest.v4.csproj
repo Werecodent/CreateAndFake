@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Werecodent.CreateAndFake.MSTest.v4</PackageId>
+    <Description>Create &amp; Fake is a test support library, developed by humans, that makes robust testing easy by handling all manners of data generation, mocking, comparisons, validation and even automated requirement-based testing. This is the support package providing enhanced MSTest test attributes.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Toolbox/Werecodent.CreateAndFake.Toolbox.csproj" />
+    <PackageReference Include="MSTest.TestFramework" Version="[4.0.0,)" />
+  </ItemGroup>
+
+</Project>

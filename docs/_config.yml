@@ -1,6 +1,0 @@
-theme: jekyll-theme-architect
-markdown: kramdown
-highlighter: rouge
-
-title: Create & Fake
-description: Mocking and data generation for testing.
